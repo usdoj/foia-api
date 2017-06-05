@@ -1,0 +1,79 @@
+# Update the hostname to the local development environment hostname.
+vagrant_hostname: local.foia.gov
+vagrant_machine_name: foia
+
+# Set the IP address so it doesn't conflict with other Drupal VM instances.
+vagrant_ip: 192.168.25.8
+
+# Use Ubuntu 14.04 LTS to more closely match Acquia Cloud environment.
+vagrant_box: geerlingguy/ubuntu1404
+
+# Set drupal_site_name to the project's human-readable name.
+drupal_site_name: "FOIA.gov"
+
+# Provide the path to the project root to Vagrant.
+vagrant_synced_folders:
+  # Set the local_path for the first synced folder to `.`.
+  - local_path: .
+    # Set the destination to the Acquia Cloud subscription machine name.
+    destination: /var/www/foia
+    type: nfs
+
+drupal_build_composer_project: false
+# Toggling this to `true` would invoke `composer install` with the
+# projects own `composer.json` successfully.
+drupal_build_composer: false
+drupal_composer_path: false
+drupal_composer_install_dir: "/var/www/foia"
+drupal_core_path: "{{ drupal_composer_install_dir }}/docroot"
+ssh_home: /var/www/foia
+
+drupal_db_user: drupal
+drupal_db_password: drupal
+drupal_db_name: drupal
+
+# Set this to 'false' if you don't need to install drupal (using the drupal_*
+# settings below), but instead copy down a database (e.g. using drush sql-sync).
+drupal_install_site: false
+
+# Drupal VM automatically creates a drush alias file in your ~/.drush folder if
+# this variable is 'true'.
+configure_drush_aliases: false
+
+# This is required for front-end building tools.
+nodejs_version: "4.x"
+nodejs_npm_global_packages:
+  - name: bower
+  - name: gulp-cli
+nodejs_install_npm_user: "{{ drupalvm_user }}"
+npm_config_prefix: "/home/{{ drupalvm_user }}/.npm-global"
+installed_extras:
+  - adminer
+  - drush
+  - mailhog
+  - nodejs
+  - selenium
+  - xdebug
+
+# Use PHP 5.6.
+php_version: "5.6"
+php_packages_extra:
+  - "php{{ php_version }}-bz2"
+  - "php{{ php_version }}-imagick"
+  - imagemagick
+
+# XDebug configuration.
+# Change this value to 1 in order to enable xdebug by default.
+php_xdebug_default_enable: 0
+php_xdebug_coverage_enable: 0
+# Change this value to 1 in order to enable xdebug on the cli.
+php_xdebug_cli_enable: 0
+php_xdebug_remote_enable: 1
+php_xdebug_remote_connect_back: 1
+# Use PHPSTORM for PHPStorm, sublime.xdebug for Sublime Text.
+php_xdebug_idekey: PHPSTORM
+php_xdebug_max_nesting_level: 256
+php_xdebug_remote_port: "9000"
+
+post_provision_scripts:
+  - "../../../acquia/blt/scripts/drupal-vm/post-provision.sh"
