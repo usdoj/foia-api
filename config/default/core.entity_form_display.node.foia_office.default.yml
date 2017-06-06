@@ -5,10 +5,12 @@ dependencies:
   config:
     - field.field.node.foia_office.body
     - field.field.node.foia_office.field_agency
+    - field.field.node.foia_office.field_request_submission_form
     - node.type.foia_office
   module:
     - path
     - text
+    - webform
     - workbench_moderation
 id: node.foia_office.default
 targetEntityType: node
@@ -38,6 +40,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_request_submission_form:
+    weight: 33
+    settings: {  }
+    third_party_settings: {  }
+    type: webform_entity_reference_select
     region: content
   path:
     type: path

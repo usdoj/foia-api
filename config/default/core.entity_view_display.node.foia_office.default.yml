@@ -5,10 +5,12 @@ dependencies:
   config:
     - field.field.node.foia_office.body
     - field.field.node.foia_office.field_agency
+    - field.field.node.foia_office.field_request_submission_form
     - node.type.foia_office
   module:
     - text
     - user
+    - webform
 id: node.foia_office.default
 targetEntityType: node
 bundle: foia_office
@@ -28,6 +30,14 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_request_submission_form:
+    weight: 103
+    label: above
+    settings:
+      source_entity: true
+    third_party_settings: {  }
+    type: webform_entity_reference_entity_view
     region: content
   links:
     weight: 100
