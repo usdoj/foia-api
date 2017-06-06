@@ -1,0 +1,17 @@
+uuid: 00f67e95-6f24-4b8c-9e44-f475fbec5c53
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_db
+id: database
+name: Database
+description: 'The Drupal database.'
+backend: search_api_db
+backend_config:
+  database: 'default:default'
+  min_chars: 3
+  partial_matches: false
+  autocomplete:
+    suggest_suffix: true
+    suggest_words: true
