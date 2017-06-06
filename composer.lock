@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d7e56e757ebb9fd8c4f79cae560790a",
+    "content-hash": "70b87a4086d829a3cecdc01d1aad21cf",
     "packages": [
         {
             "name": "acquia/blt",
@@ -2874,6 +2874,45 @@
             }
         },
         {
+            "name": "drupal/jsonapi_extras",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/jsonapi_extras",
+                "reference": "01d63593c10506030a2e37538e24c798a936ddbf"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/jsonapi": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1496176442"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "e0ipso",
+                    "homepage": "https://www.drupal.org/user/550110"
+                }
+            ],
+            "description": "Builds on top of JSON API to deliver extra functionality.",
+            "homepage": "https://www.drupal.org/project/jsonapi_extras",
+            "support": {
+                "source": "http://cgit.drupalcode.org/jsonapi_extras"
+            },
+            "time": "2017-06-05 22:04:25"
+        },
+        {
             "name": "drupal/layout_plugin",
             "version": "1.0.0-alpha23",
             "source": {
@@ -4182,7 +4221,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/webform-8.x-5.0-beta13.zip",
-                "reference": null,
+                "reference": "8.x-5.0-beta13",
                 "shasum": "d71e4cc7a1820729e6efa26d07c862e3db364bb1"
             },
             "require": {
@@ -9826,6 +9865,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/webform": 10,
+        "drupal/jsonapi_extras": 20,
         "drupal/memcache": 20
     },
     "prefer-stable": true,
