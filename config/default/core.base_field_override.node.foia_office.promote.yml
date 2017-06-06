@@ -1,0 +1,22 @@
+uuid: 164f1ea4-2bef-42c9-9e8d-5492a71d5fdc
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.foia_office
+id: node.foia_office.promote
+field_name: promote
+entity_type: node
+bundle: foia_office
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,14 @@
+uuid: 67c8f605-d6cf-40ea-bbc2-4b4adda7f242
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.foia_office_reviewer
+  module:
+    - user
+id: user_remove_role_action.foia_office_reviewer
+label: 'Remove the FOIA Office reviewer role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: foia_office_reviewer

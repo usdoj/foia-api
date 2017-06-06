@@ -1,0 +1,28 @@
+uuid: 044427f0-ebf6-4dd0-b968-fd7d64989ed5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.foia_office.body
+    - node.type.foia_office
+  module:
+    - text
+    - user
+id: node.foia_office.teaser
+targetEntityType: node
+bundle: foia_office
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden: {  }

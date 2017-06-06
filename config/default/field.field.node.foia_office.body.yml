@@ -1,0 +1,22 @@
+uuid: de9591a7-53b7-49de-8518-7bee9e5b3e4c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.foia_office
+  module:
+    - text
+id: node.foia_office.body
+field_name: body
+entity_type: node
+bundle: foia_office
+label: 'Office Description'
+description: 'Describes the FOIA Office, and provides any textual information needed.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

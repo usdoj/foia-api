@@ -1,0 +1,14 @@
+uuid: b177db11-f861-4f2e-a80d-1702d9199437
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.foia_office_creator
+  module:
+    - user
+id: user_add_role_action.foia_office_creator
+label: 'Add the FOIA Office creator role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: foia_office_creator
