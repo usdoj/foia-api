@@ -361,13 +361,13 @@
 #  ) + $aliases['server'];
 
 // Local environment.
-$aliases['foia.local'] = array(
+$aliases['dojfoia.local'] = array(
   'root' => '/var/www/foia/docroot',
   'uri' => 'http://local.dojfoia.gov',
   );
 // Add remote connection options when alias is used outside VM.
 if ('vagrant' != $_SERVER['USER']) {
-  $aliases['foia.local'] += array(
+  $aliases['dojfoia.local'] += array(
     'remote-host' => 'local.dojfoia.gov',
     'remote-user' => 'vagrant',
     'ssh-options' => '-o PasswordAuthentication=no -i ' . drush_server_home() . '/.vagrant.d/insecure_private_key'
