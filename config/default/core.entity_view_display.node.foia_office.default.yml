@@ -6,8 +6,10 @@ dependencies:
     - field.field.node.foia_office.body
     - field.field.node.foia_office.field_agency
     - field.field.node.foia_office.field_request_submission_form
+    - field.field.node.foia_office.field_website
     - node.type.foia_office
   module:
+    - link
     - text
     - user
     - webform
@@ -38,6 +40,18 @@ content:
       source_entity: true
     third_party_settings: {  }
     type: webform_entity_reference_entity_view
+    region: content
+  field_website:
+    weight: 104
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   links:
     weight: 100
