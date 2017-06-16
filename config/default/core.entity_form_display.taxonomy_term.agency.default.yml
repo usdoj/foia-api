@@ -1,0 +1,48 @@
+uuid: 72dfad4a-c6de-46b5-ba94-08573419bf93
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.agency.field_agency_seal
+    - image.style.thumbnail
+    - taxonomy.vocabulary.agency
+  module:
+    - image
+    - path
+    - text
+id: taxonomy_term.agency.default
+targetEntityType: taxonomy_term
+bundle: agency
+mode: default
+content:
+  description:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_agency_seal:
+    weight: 31
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

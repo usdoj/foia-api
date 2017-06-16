@@ -1,0 +1,38 @@
+uuid: 53d30be3-374a-48a0-a7e1-95f0beead905
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_agency_seal
+    - taxonomy.vocabulary.agency
+  module:
+    - image
+id: taxonomy_term.agency.field_agency_seal
+field_name: field_agency_seal
+entity_type: taxonomy_term
+bundle: agency
+label: 'Agency/Department Seal'
+description: 'Upload an image of the Agency/Department''s Seal.  This will be included in the details of FOIA Offices associated with the Agency/Department.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png gif jpg jpeg'
+  max_filesize: '50 KB'
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: image

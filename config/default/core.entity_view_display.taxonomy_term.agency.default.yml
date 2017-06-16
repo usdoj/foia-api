@@ -1,0 +1,32 @@
+uuid: 1c891915-951e-44da-bb97-bf023f505856
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.agency.field_agency_seal
+    - taxonomy.vocabulary.agency
+  module:
+    - image
+    - text
+id: taxonomy_term.agency.default
+targetEntityType: taxonomy_term
+bundle: agency
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_agency_seal:
+    weight: 1
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden: {  }
