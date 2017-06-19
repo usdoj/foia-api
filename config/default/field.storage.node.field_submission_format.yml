@@ -1,0 +1,36 @@
+uuid: f11e23c0-66e9-4caf-8869-08ce8b0a963b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_submission_format
+field_name: field_submission_format
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: paper
+      label: Paper
+    -
+      value: fax
+      label: Fax
+    -
+      value: email
+      label: Email
+    -
+      value: web
+      label: Web
+    -
+      value: api
+      label: API
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
