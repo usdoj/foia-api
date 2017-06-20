@@ -5,6 +5,11 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.foia_office.body
+    - field.field.node.foia_office.field_abbreviation
+    - field.field.node.foia_office.field_agency
+    - field.field.node.foia_office.field_request_submission_form
+    - field.field.node.foia_office.field_submission_format
+    - field.field.node.foia_office.field_website
     - node.type.foia_office
   module:
     - text
@@ -25,4 +30,9 @@ content:
   links:
     weight: 100
     region: content
-hidden: {  }
+hidden:
+  field_abbreviation: true
+  field_agency: true
+  field_request_submission_form: true
+  field_submission_format: true
+  field_website: true
