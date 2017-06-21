@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8a0a8adaa607eb7fed07f5d62acca29",
+    "content-hash": "2e114dd7f0c5ffce3d9d23572b1aecdf",
     "packages": [
         {
             "name": "acquia/blt",
@@ -1599,7 +1599,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/acquia_connector-8.x-1.12.zip",
-                "reference": null,
+                "reference": "8.x-1.12",
                 "shasum": "ac8e7a955dd92dc8dc0d3476f2e3c2b0dcb3855a"
             },
             "require": {
@@ -1685,7 +1685,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/address-8.x-1.0.zip",
-                "reference": null,
+                "reference": "8.x-1.0",
                 "shasum": "2be22f841f8e4af2ba23b6bc9983e013c167c520"
             },
             "require": {
@@ -1775,7 +1775,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/cog-8.x-1.8.zip",
-                "reference": null,
+                "reference": "8.x-1.8",
                 "shasum": "5bec88499cf1b7fbf313c126a5ebaa2915c51365"
             },
             "require": {
@@ -1917,7 +1917,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_split-8.x-1.0-beta6.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta6",
                 "shasum": "c816e0e24375b697daeacd36d2112b48ed857ae2"
             },
             "require": {
@@ -2020,7 +2020,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/contact_storage-8.x-1.0-beta9.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta9",
                 "shasum": "42b12d6f755485617e949aaf1b2c9aae09eb0e3e"
             },
             "require": {
@@ -2792,7 +2792,8 @@
                     "datestamp": "1492678144"
                 },
                 "patches_applied": {
-                    "2865928 - The View widget should filter based on field settings": "https://www.drupal.org/files/issues/entity-browser-view-context-2865928-8.patch"
+                    "2865928 - The View widget should filter based on field settings": "https://www.drupal.org/files/issues/entity-browser-view-context-2865928-8.patch",
+                    "2877751 - Inform users how many items they can add to a field that uses an entity browser": "https://www.drupal.org/files/issues/2877751-10.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2987,7 +2988,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/field_group-8.x-1.0-rc6.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc6",
                 "shasum": "1ce3c6387e745a04a1099956a5bf39bb50096d44"
             },
             "require": {
@@ -3840,6 +3841,11 @@
                 "drupal": {
                     "version": "8.x-4.1",
                     "datestamp": "1493687591"
+                },
+                "patches_applied": {
+                    "2878684 - Use String.match to correlate regions when switching Layouts in Panels IPE": "https://www.drupal.org/files/issues/panels-ipe-2878684-3.patch",
+                    "2878650 - Improve Layout Picker styling in Panels IPE": "https://www.drupal.org/files/issues/panels-ipe-layout-picker-styling.patch",
+                    "2825034 - Form error messages do not appear in IPE": "https://www.drupal.org/files/issues/panels-ipe-propogate-errors-2825034-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4319,6 +4325,55 @@
             "homepage": "https://www.drupal.org/project/shield",
             "support": {
                 "source": "http://cgit.drupalcode.org/shield"
+            }
+        },
+        {
+            "name": "drupal/simple_oauth",
+            "version": "2.0.0-rc2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/simple_oauth",
+                "reference": "8.x-2.0-rc2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/simple_oauth-8.x-2.0-rc2.zip",
+                "reference": null,
+                "shasum": "e204c2a10725915337e3f855c911c5804fc87227"
+            },
+            "require": {
+                "drupal/core": "*",
+                "league/oauth2-server": "~5.1"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-rc2",
+                    "datestamp": "1496008084"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Mateu Aguiló Bosch",
+                    "homepage": "https://www.drupal.org/user/550110",
+                    "email": "mateu.aguilo.bosch@gmail.com"
+                },
+                {
+                    "name": "pcambra",
+                    "homepage": "https://www.drupal.org/user/122101"
+                }
+            ],
+            "description": "The Simple OAuth module for Drupal",
+            "homepage": "https://www.drupal.org/project/simple_oauth",
+            "support": {
+                "source": "http://cgit.drupalcode.org/simple_oauth"
             }
         },
         {
@@ -5438,6 +5493,64 @@
             "time": "2015-04-20T18:58:01+00:00"
         },
         {
+            "name": "lcobucci/jwt",
+            "version": "3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lcobucci/jwt.git",
+                "reference": "ddce703826f9c5229781933b1a39069e38e6a0f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/ddce703826f9c5229781933b1a39069e38e6a0f3",
+                "reference": "ddce703826f9c5229781933b1a39069e38e6a0f3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "mdanter/ecc": "~0.3.1",
+                "mikey179/vfsstream": "~1.5",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/php-invoker": "~1.1",
+                "phpunit/phpunit": "~4.5",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "suggest": {
+                "mdanter/ecc": "Required to use Elliptic Curves based algorithms."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Otávio Cobucci Oblonczyk",
+                    "email": "lcobucci@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to work with JSON Web Token and JSON Web Signature",
+            "keywords": [
+                "JWS",
+                "jwt"
+            ],
+            "time": "2016-10-31T20:09:32+00:00"
+        },
+        {
             "name": "league/container",
             "version": "2.4.1",
             "source": {
@@ -5501,6 +5614,132 @@
                 "service"
             ],
             "time": "2017-05-10T09:20:27+00:00"
+        },
+        {
+            "name": "league/event",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/event.git",
+                "reference": "e4bfc88dbcb60c8d8a2939a71f9813e141bbe4cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/event/zipball/e4bfc88dbcb60c8d8a2939a71f9813e141bbe4cd",
+                "reference": "e4bfc88dbcb60c8d8a2939a71f9813e141bbe4cd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "henrikbjorn/phpspec-code-coverage": "~1.0.1",
+                "phpspec/phpspec": "~2.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Event\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Event package",
+            "keywords": [
+                "emitter",
+                "event",
+                "listener"
+            ],
+            "time": "2015-05-21T12:24:47+00:00"
+        },
+        {
+            "name": "league/oauth2-server",
+            "version": "5.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/oauth2-server.git",
+                "reference": "f78dc2eca0774ec3958bbcf9b2a23d5ae61fb5aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/f78dc2eca0774ec3958bbcf9b2a23d5ae61fb5aa",
+                "reference": "f78dc2eca0774ec3958bbcf9b2a23d5ae61fb5aa",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "lcobucci/jwt": "^3.1",
+                "league/event": "^2.1",
+                "paragonie/random_compat": "^1.1 || ^2.0",
+                "php": ">=5.5.9",
+                "psr/http-message": "^1.0"
+            },
+            "replace": {
+                "league/oauth2server": "*",
+                "lncd/oauth2": "*"
+            },
+            "require-dev": {
+                "indigophp/hash-compat": "^1.1",
+                "phpunit/phpunit": "^4.8 || ^5.0",
+                "zendframework/zend-diactoros": "^1.0"
+            },
+            "suggest": {
+                "indigophp/hash-compat": "Polyfill for hash_equals function for PHP 5.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-V5-WIP": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\OAuth2\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Bilbie",
+                    "email": "hello@alexbilbie.com",
+                    "homepage": "http://www.alexbilbie.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A lightweight and powerful OAuth 2.0 authorization and resource server library with support for all the core specification grants. This library will allow you to secure your API with OAuth and allow your applications users to approve apps that want to access their data from your API.",
+            "homepage": "https://oauth2.thephpleague.com/",
+            "keywords": [
+                "Authentication",
+                "api",
+                "auth",
+                "authorisation",
+                "authorization",
+                "oauth",
+                "oauth 2",
+                "oauth 2.0",
+                "oauth2",
+                "protect",
+                "resource",
+                "secure",
+                "server"
+            ],
+            "time": "2016-10-12T14:08:15+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -10148,6 +10387,7 @@
         "drupal/webform": 10,
         "drupal/jsonapi_extras": 20,
         "drupal/field_group": 5,
+        "drupal/simple_oauth": 5,
         "drupal/memcache": 20
     },
     "prefer-stable": true,
