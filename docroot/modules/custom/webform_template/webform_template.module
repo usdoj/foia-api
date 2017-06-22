@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * FOIA Webform Template Module.
+ */
+
+use Drupal\webform\WebformInterface;
+
+/**
+ * Implements hook_webform_insert().
+ */
+function webform_template_webform_insert(WebformInterface $webform) {
+  $config = \Drupal::config('webform_template.settings')->get('webform_template_elements');
+}
