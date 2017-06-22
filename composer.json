@@ -8,7 +8,10 @@
         "acquia/blt": "^8.3",
         "drupal/jsonapi": "^1.0",
         "drupal/webform": "^5.0@beta",
-        "drupal/jsonapi_extras": "1.x-dev"
+        "drupal/jsonapi_extras": "1.x-dev",
+        "drupal/address": "~1.0",
+        "drupal/field_group": "^1.0@RC",
+        "drupal/simple_oauth": "^2.0@RC"
     },
     "require-dev": {
         "geerlingguy/drupal-vm": "~4.3"
@@ -56,6 +59,12 @@
             "merge-extra-deep": true,
             "merge-scripts": true,
             "replace": true
+        }
+    },
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
         }
     }
 }

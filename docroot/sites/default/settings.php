@@ -765,3 +765,18 @@ $settings['file_scan_ignore_directories'] = [
 # }
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 $settings['install_profile'] = 'lightning';
+
+
+/**
+ * If on Acquia Cloud, switch the location where the OAuth keys are stored.
+ *
+ */
+if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
+  $key_path = '/var/www/html/doj.' . $_ENV['AH_SITE_ENVIRONMENT'] . '/oauth_keys/';
+}
+else {
+  $key_path = '/var/www/foia/oauth_keys/';
+}
+
+$config['simple_oauth.settings']['public_key'] = $key_path . 'public.key';
+$config['simple_oauth.settings']['private_key']= $key_path . 'private.key';
