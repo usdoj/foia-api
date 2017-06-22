@@ -5,18 +5,12 @@
  * FOIA Webform Template Module.
  */
 
-use Drupal\webform\Entity\Webform;
 use Drupal\webform\WebformInterface;
-use Drupal\Core\Serialization\Yaml;
 
 /**
  * Implements hook_webform_insert().
  */
 function webform_template_webform_insert(WebformInterface $webform) {
-  // @todo: move to controller.
-  $config = \Drupal::config('webform_template.settings')->get('webform_template_elements');
-  $decoded = Yaml::decode($config);
-  $editable = Webform::load($webform->id());
-  $editable->setElements($decoded);
-  $editable->save();
+  $templateController = \Drupal::service('webform_template.template_controller');
+  $templateController->addDefaultFields($webform);
 }
