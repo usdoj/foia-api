@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\webform\WebformInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_webform_insert().
@@ -30,5 +31,16 @@ function webform_template_entity_presave(EntityInterface $entity) {
   $templateController = \Drupal::service('webform_template.template_controller');
   if (!$templateController->webformImplementsTemplate($entity)) {
     throw new \Exception('The webform does not implement the required template.');
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function webform_template_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  // Remove edit/delete links from fields provided by the template.
+  if ($form_id == 'webform_form') {
+    $templateController = \Drupal::service('webform_template.template_controller');
+    $templateController->preprocessWebformForm($form);
   }
 }

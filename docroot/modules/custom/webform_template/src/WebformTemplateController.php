@@ -112,4 +112,20 @@ class WebformTemplateController {
     }
   }
 
+  /**
+   * Remove edit/delete links from templated elements.
+   *
+   * @param array $form
+   *   The form render array.
+   */
+  public function preprocessWebformForm(array &$form) {
+    foreach ($this->getTemplateConfigurationDecoded() as $key => $element) {
+      if (!isset($form['webform_ui_elements'][$key])) {
+        continue;
+      }
+      unset($form['webform_ui_elements'][$key]['operations']['#links']['edit']);
+      unset($form['webform_ui_elements'][$key]['operations']['#links']['delete']);
+    }
+  }
+
 }
