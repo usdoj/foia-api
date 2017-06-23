@@ -5,6 +5,7 @@
  * FOIA Webform Template Module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\webform\WebformInterface;
 
 /**
@@ -13,4 +14,21 @@ use Drupal\webform\WebformInterface;
 function webform_template_webform_insert(WebformInterface $webform) {
   $templateController = \Drupal::service('webform_template.template_controller');
   $templateController->addDefaultFields($webform);
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function webform_template_entity_presave(EntityInterface $entity) {
+  if (!$entity || !$entity->bundle === 'webform') {
+    return;
+  }
+  if ($entity->isNew() && empty($entity->getElementsDecoded())) {
+    return;
+  }
+
+  $templateController = \Drupal::service('webform_template.template_controller');
+  if (!$templateController->webformImplementsTemplate($entity)) {
+    throw new \Exception('The webform does not implement the required template.');
+  }
 }
