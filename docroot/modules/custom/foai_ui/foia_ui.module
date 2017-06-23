@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * FOIA UA module.
+ */
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function foia_ui_toolbar_alter(&$items) {
+  $current_user = \Drupal::currentUser();
+
+  $empty_item_cacheability = [
+    '#cache' => [
+      'contexts' => [
+        'user.permissions',
+      ],
+    ],
+  ];
+
+  if ($current_user->hasPermission('access openapi api docs')) {
+    $items['foia_api'] = [
+      '#type' => 'toolbar_item',
+      'tab' => [
+        '#type' => 'link',
+        '#title' => t('API'),
+        '#url' => Url::fromRoute('foia_ui.api'),
+        '#options' => [
+          'set_active_class' => TRUE,
+        ],
+        '#attributes' => [
+          'class' => ['toolbar-icon', 'toolbar-icon-system-modules-list'],
+        ],
+      ],
+      '#weight' => -30,
+    ];
+  }
+  else {
+    $items['reservoir_api'] = $empty_item_cacheability;
+  }
+}

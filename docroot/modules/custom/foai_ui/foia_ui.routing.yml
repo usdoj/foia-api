@@ -1,0 +1,17 @@
+foia_ui.api:
+  path: '/admin/api'
+  defaults:
+    _controller: '\Drupal\foia_ui\Controller\OpenApiDocs::generateDocs'
+    entity_mode: 'content_entities'
+  methods: [GET]
+  requirements:
+    _permission: 'access openapi api docs'
+
+foia_ui.api.config:
+  path: '/admin/api/config'
+  defaults:
+    _controller: '\Drupal\foia_ui\Controller\OpenApiDocs::generateDocs'
+    entity_mode: 'config_entities'
+  methods: [GET]
+  requirements:
+    _permission: 'access openapi api docs'
