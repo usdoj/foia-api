@@ -42,29 +42,74 @@ class WebformTemplateController {
       return;
     }
 
-    $config = $this->config->get('webform_template.settings')->get('webform_template_elements');
-    try {
-      $decoded = Yaml::decode($config);
+    if ($decoded = $this->getTemplateConfigurationDecoded()) {
       $editable = Webform::load($webform->id());
       $editable->setElements($decoded);
       $editable->save();
     }
-    catch (\Exception $exception) {
-      // @todo: handle yaml parse exception.
-    }
+
   }
 
   /**
-   * Ensure the webform can safely inherit default elements.
+   * Determine if the webform can safely inherit default elements.
    *
    * @param \Drupal\webform\WebformInterface $webform
    *   The webform.
    *
    * @return bool
-   *   Status.
+   *   TRUE if the webform has no fields defined.
    */
   protected static function canApplyWebformTemplate(WebformInterface $webform) {
     return empty($webform->getElementsDecoded());
+  }
+
+  /**
+   * Determine if the webform contains the fields required by its template.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform.
+   *
+   * @return bool
+   *   TRUE if the webform contains all elements defined on the template.
+   */
+  public function webformImplementsTemplate(WebformInterface $webform) {
+    if (!$templateElements = $this->getTemplateConfigurationDecoded()) {
+      // No valid template elements have been configured.
+      return TRUE;
+    }
+
+    $webformElements = $webform->getElementsDecoded();
+    $filtered = array_filter($templateElements, function ($element) use ($webformElements) {
+      return in_array($element, $webformElements);
+    });
+
+    return count($filtered) === count($templateElements);
+  }
+
+  /**
+   * Retrieve the configured template (string).
+   *
+   * @return string|null
+   *   The webform elements template.
+   */
+  protected function getTemplateConfiguration() {
+    return $this->config->get('webform_template.settings')->get('webform_template_elements');
+  }
+
+  /**
+   * Parsed template configuration.
+   *
+   * @return array|bool
+   *   Elements as an associative array. Returns FALSE if YAML is invalid.
+   */
+  protected function getTemplateConfigurationDecoded() {
+    try {
+      $decoded = Yaml::decode($this->getTemplateConfiguration());
+      return $decoded;
+    }
+    catch (\Exception $exception) {
+      return FALSE;
+    }
   }
 
 }
