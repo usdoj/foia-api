@@ -5,3 +5,10 @@ webform_template.settings:
     webform_template_elements:
       label: 'Required (Default) Webform Elements'
       type: string
+webform_template.webform.*:
+  type: config_object
+  label: 'FOIA Template Settings'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Enabled'
