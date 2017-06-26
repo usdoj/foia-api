@@ -6,6 +6,7 @@ use Drupal\webform\Entity\Webform;
 use Drupal\webform\WebformInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * The Webform Template Controller.
@@ -13,6 +14,8 @@ use Drupal\Core\Config\ConfigFactoryInterface;
  * @package Drupal\webform_template
  */
 class WebformTemplateController {
+
+  const TEMPLATESTATUSDEFAULT = 1;
 
   /**
    * Config service.
@@ -42,7 +45,7 @@ class WebformTemplateController {
       return;
     }
 
-    if ($decoded = $this->getTemplateConfigurationDecoded()) {
+    if ($decoded = $this->getTemplateDecoded()) {
       $editable = Webform::load($webform->id());
       $editable->setElements($decoded);
       $editable->save();
@@ -60,7 +63,7 @@ class WebformTemplateController {
    *   TRUE if the webform has no fields defined.
    */
   protected static function canApplyWebformTemplate(WebformInterface $webform) {
-    return empty($webform->getElementsDecoded());
+    return $webform->get('foia_template') && empty($webform->getElementsDecoded());
   }
 
   /**
@@ -73,7 +76,7 @@ class WebformTemplateController {
    *   TRUE if the webform contains all elements defined on the template.
    */
   public function webformImplementsTemplate(WebformInterface $webform) {
-    if (!$templateElements = $this->getTemplateConfigurationDecoded()) {
+    if (!$templateElements = $this->getTemplateDecoded()) {
       // No valid template elements have been configured.
       return TRUE;
     }
@@ -92,19 +95,32 @@ class WebformTemplateController {
    * @return string|null
    *   The webform elements template.
    */
-  protected function getTemplateConfiguration() {
+  protected function getTemplate() {
     return $this->config->get('webform_template.settings')->get('webform_template_elements');
   }
 
   /**
-   * Parsed template configuration.
+   * Retrieve foia template settings for a webform.
+   *
+   * @return bool|null
+   *   The boolean foia template setting, or null if not defined.
+   */
+  protected function getTemplateConfiguration($webform_id) {
+    if (!$webform_id) {
+      return NULL;
+    }
+    return $this->config->get('webform_template.webform')->get($webform_id);
+  }
+
+  /**
+   * The parsed template.
    *
    * @return array|bool
    *   Elements as an associative array. Returns FALSE if YAML is invalid.
    */
-  protected function getTemplateConfigurationDecoded() {
+  protected function getTemplateDecoded() {
     try {
-      $decoded = Yaml::decode($this->getTemplateConfiguration());
+      $decoded = Yaml::decode($this->getTemplate());
       return $decoded;
     }
     catch (\Exception $exception) {
@@ -117,15 +133,52 @@ class WebformTemplateController {
    *
    * @param array $form
    *   The form render array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The submitted form state.
    */
-  public function preprocessWebformForm(array &$form) {
-    foreach ($this->getTemplateConfigurationDecoded() as $key => $element) {
+  public function preprocessWebformForm(array &$form, FormStateInterface $form_state) {
+    $webform_id = $form_state->getFormObject()->getEntity()->id();
+    $templated = $this->getTemplateConfiguration($webform_id);
+    $form['actions']['submit']['#submit'][] = [get_class($this), 'processWebformForm'];
+    $form['foia_template'] = [
+      '#type' => 'checkbox',
+      '#title' => t("Use FOIA Agency template"),
+      '#disabled' => TRUE,
+      '#default_value' => $templated === NULL ? $this::TEMPLATESTATUSDEFAULT : $templated,
+    ];
+
+    if (\Drupal::currentUser()->hasPermission('bypass foia webform template')) {
+      // Remove the disabled attribute for sufficiently privileged users.
+      $form['foia_template']['#disabled'] = FALSE;
+    }
+
+    if (!$templated) {
+      // End here if the form does not use the template.
+      return;
+    }
+
+    // Disable edit/delete links for template fields.
+    foreach ($this->getTemplateDecoded() as $key => $element) {
       if (!isset($form['webform_ui_elements'][$key])) {
         continue;
       }
       unset($form['webform_ui_elements'][$key]['operations']['#links']['edit']);
       unset($form['webform_ui_elements'][$key]['operations']['#links']['delete']);
     }
+  }
+
+  /**
+   * Additional submit handler for the webform add/edit form.
+   *
+   * @param array $form
+   *   The form render array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The submitted form state.
+   */
+  public static function processWebformForm(array $form, FormStateInterface $form_state) {
+    $webform_id = $form_state->getFormObject()->getEntity()->id();
+    $foia_template = $form_state->getValue('foia_template');
+    \Drupal::configFactory()->getEditable('webform_template.webform')->set($webform_id, $foia_template)->save();
   }
 
 }
