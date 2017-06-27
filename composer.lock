@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf25732b64b01eec676860fa6c7c1852",
+    "content-hash": "9a6ba1e436f7c357c788cd7a0015a0cf",
     "packages": [
         {
             "name": "acquia/blt",
@@ -2263,6 +2263,57 @@
             "time": "2017-06-21T18:13:27+00:00"
         },
         {
+            "name": "drupal/cors",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/cors",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cors-8.x-1.0.zip",
+                "reference": null,
+                "shasum": "eec3f9c523003258392c3dd17afa72fecf12d21b"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "drupal/coder": "dev-7.x-2.x",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1455049439"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "ericduran",
+                    "homepage": "https://www.drupal.org/user/244460"
+                },
+                {
+                    "name": "justafish",
+                    "homepage": "https://www.drupal.org/user/161058"
+                }
+            ],
+            "description": "Allows Cross-origin resource sharing.",
+            "homepage": "https://www.drupal.org/project/cors",
+            "support": {
+                "source": "http://cgit.drupalcode.org/cors"
+            }
+        },
+        {
             "name": "drupal/ctools",
             "version": "3.0.0",
             "source": {
@@ -3156,7 +3207,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/jsonapi_extras",
-                "reference": "dbb3413a1244eb8decb9066f2543a8bc305ee107"
+                "reference": "1a57e11212224129ddb0229726dc7b852bcd836c"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -3169,7 +3220,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1496700543"
+                    "datestamp": "1497302043"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3187,7 +3238,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/jsonapi_extras"
             },
-            "time": "2017-06-12 21:10:31"
+            "time": "2017-06-23 13:53:20"
         },
         {
             "name": "drupal/media_entity",
@@ -4052,20 +4103,20 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "896d21a8b0dee0bea6e49fb0b2ac38315f4b52fe"
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "c6359692a220321ee8b4d6c61970b1c846afebe2"
             },
             "require": {
-                "drupal/core": "^8.2"
+                "drupal/core": "^8.3"
             },
             "require-dev": {
                 "drupal/search_api_db": "*"
@@ -4076,8 +4127,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1494495709"
+                    "version": "8.x-1.2",
+                    "datestamp": "1498403342"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5117,16 +5168,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.2.3",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006"
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/8d6c6cc55186db87b7dc5009827429ba4e9dc006",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
                 "shasum": ""
             },
             "require": {
@@ -5136,8 +5187,11 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0",
+                "phpunit/phpunit": "^4.0 || ^5.0",
                 "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
@@ -5175,7 +5229,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-02-28T22:50:30+00:00"
+            "time": "2017-06-22T18:50:49+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -6748,16 +6802,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.7",
+            "version": "v0.8.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "be969b9dc89dcaefdb9a3117fa91fa38bca19f50"
+                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/be969b9dc89dcaefdb9a3117fa91fa38bca19f50",
-                "reference": "be969b9dc89dcaefdb9a3117fa91fa38bca19f50",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
+                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
                 "shasum": ""
             },
             "require": {
@@ -6817,7 +6871,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-06-20T12:51:31+00:00"
+            "time": "2017-06-24T06:16:19+00:00"
         },
         {
             "name": "sebastian/comparator",
