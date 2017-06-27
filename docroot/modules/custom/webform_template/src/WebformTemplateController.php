@@ -162,6 +162,9 @@ class WebformTemplateController {
       if (!isset($form['webform_ui_elements'][$key])) {
         continue;
       }
+      if (isset($form['webform_ui_elements'][$key]['required'])) {
+        $form['webform_ui_elements'][$key]['required']['#disabled'] = TRUE;
+      }
       unset($form['webform_ui_elements'][$key]['operations']['#links']['edit']);
       unset($form['webform_ui_elements'][$key]['operations']['#links']['delete']);
     }
