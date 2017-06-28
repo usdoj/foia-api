@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * FOIA Users Access Module.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_node_access().
+ */
+function foia_users_node_access($node, $op, $account) {
+
+  // Restrict editing node based on matching of 'field_agency' entity reference.
+  if ($node->bundle() == 'foia_office') {
+
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_roles = $user->getRoles();
+
+    if (in_array("foia_office_creator", $user_roles) || in_array("foia_office_reviewer", $user_roles)) {
+
+      $office_allow = AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
+      $office_deny = AccessResult::forbidden()->cachePerUser()->addCacheableDependency($node);
+
+      switch ($op) {
+        case "delete":
+          // Allow creation before entity ref is set.
+          if ($node->get('field_agency')->isEmpty()) {
+            return $office_allow;
+          }
+          else {
+            if ($user->get('field_foia_office_user')->getValue()[0]['target_id'] === $node->get('field_agency')->getValue()[0]['target_id']) {
+              return $office_allow;
+            }
+            else {
+              return $office_deny;
+            }
+          }
+          break;
+
+        case "update":
+          if ($user->get('field_foia_office_user')->getValue()[0]['target_id'] === $node->get('field_agency')->getValue()[0]['target_id']) {
+            return $office_allow;
+          }
+          else {
+            return $office_deny;
+          }
+          break;
+
+        default:
+          return $office_allow;
+      }
+    }
+  }
+  return AccessResult::neutral();
+}
