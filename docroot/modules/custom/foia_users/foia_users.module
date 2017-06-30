@@ -9,6 +9,28 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\user\Entity\User;
 
 /**
+ * Validates Office NID matching for users.
+ */
+function _office_user_nid_access($node, $account) {
+  $user = User::load(\Drupal::currentUser()->id());
+  $user_office_field_nid = $user->get('field_foia_office')->getValue();
+  $user_nid_array = [];
+
+  foreach ($user_office_field_nid as $key => $val) {
+    $user_nid_array[] = $val['target_id'];
+  }
+
+  $result = NULL;
+  if (in_array($node->get('nid')->getValue()[0]['value'], $user_nid_array)) {
+    $result = AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
+  }
+  else {
+    $result = AccessResult::forbidden()->cachePerUser()->addCacheableDependency($node);
+  }
+  return $result;
+}
+
+/**
  * Implements hook_node_access().
  */
 function foia_users_node_access($node, $op, $account) {
@@ -21,38 +43,24 @@ function foia_users_node_access($node, $op, $account) {
 
     if (in_array("foia_office_creator", $user_roles) || in_array("foia_office_reviewer", $user_roles)) {
 
-      $office_allow = AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
-      $office_deny = AccessResult::forbidden()->cachePerUser()->addCacheableDependency($node);
-
-      switch ($op) {
-        case "delete":
-          // Allow creation before entity ref is set.
-          if ($node->get('field_agency')->isEmpty()) {
-            return $office_allow;
-          }
-          else {
-            if ($user->get('field_foia_office_user')->getValue()[0]['target_id'] === $node->get('field_agency')->getValue()[0]['target_id']) {
-              return $office_allow;
-            }
-            else {
-              return $office_deny;
-            }
-          }
-          break;
-
-        case "update":
-          if ($user->get('field_foia_office_user')->getValue()[0]['target_id'] === $node->get('field_agency')->getValue()[0]['target_id']) {
-            return $office_allow;
-          }
-          else {
-            return $office_deny;
-          }
-          break;
-
-        default:
-          return $office_allow;
+      if ($op == "delete") {
+        // Allow creation before entity ref is set.
+        if ($node->get('field_agency')->isEmpty()) {
+          return AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
+        }
+        else {
+          return _office_user_nid_access($node, $account);
+        }
       }
+      elseif ($op == "update") {
+        return _office_user_nid_access($node, $account);
+      }
+      else {
+        return AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
+      }
+
     }
+
   }
   return AccessResult::neutral();
 }
