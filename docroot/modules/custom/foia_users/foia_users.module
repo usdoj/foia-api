@@ -7,6 +7,7 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\user\Entity\User;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Validates Office NID matching for users.
@@ -22,10 +23,14 @@ function _office_user_nid_access($node, $account) {
 
   $result = NULL;
   if (in_array($node->get('nid')->getValue()[0]['value'], $user_nid_array)) {
-    $result = AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
+    $result = AccessResult::allowed()
+      ->cachePerUser()
+      ->addCacheableDependency($node);
   }
   else {
-    $result = AccessResult::forbidden()->cachePerUser()->addCacheableDependency($node);
+    $result = AccessResult::forbidden()
+      ->cachePerUser()
+      ->addCacheableDependency($node);
   }
   return $result;
 }
@@ -46,7 +51,9 @@ function foia_users_node_access($node, $op, $account) {
       if ($op == "delete") {
         // Allow creation before entity ref is set.
         if ($node->get('field_agency')->isEmpty()) {
-          return AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
+          return AccessResult::allowed()
+            ->cachePerUser()
+            ->addCacheableDependency($node);
         }
         else {
           return _office_user_nid_access($node, $account);
@@ -56,11 +63,59 @@ function foia_users_node_access($node, $op, $account) {
         return _office_user_nid_access($node, $account);
       }
       else {
-        return AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
+        return AccessResult::allowed()
+          ->cachePerUser()
+          ->addCacheableDependency($node);
       }
 
     }
 
   }
   return AccessResult::neutral();
+}
+
+/**
+ * Custom submit handler for office value.
+ */
+function _form_validation_foiaoffice($form, $form_state) {
+  if ($form_state->hasValue('field_foia_office')) {
+    $field_foia_office = $form_state->getValue('field_foia_office')[0]['target_id'];
+    if (is_null($field_foia_office)) {
+      $form['field_foia_office']['widget']['#required'] = TRUE;
+      $form_state->setErrorByName('field_foia_office', t('FOIA Office editors must be assigned to an office.'));
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function foia_users_form_alter(&$form, $form_state, $form_id) {
+
+  // We are checking for the proper roles to make Foia office required.
+  if ($form_id == 'user_form') {
+    $user_entities = [];
+    $parameters = \Drupal::routeMatch()->getParameters();
+    foreach ($parameters as $param) {
+      if ($param instanceof EntityInterface) {
+        $user_entities[] = $param;
+      }
+    }
+
+    $role_array = ["foia_office_creator", "foia_office_reviewer"];
+    $user_role = $user_entities[0]->get('roles')->getValue();
+    $user_role_match = FALSE;
+    foreach ($user_role as $k => $v) {
+      if (in_array($v['target_id'], $role_array)) {
+        $user_role_match = TRUE;
+      }
+    }
+
+    // If roles match make required and user custom validation.
+    if ($user_role_match) {
+      $form['#validate'][] = '_form_validation_foiaoffice';
+      $form['field_foia_office']['widget']['#required'] = TRUE;
+    }
+
+  }
 }
