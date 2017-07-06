@@ -7,7 +7,6 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\user\Entity\User;
-use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Validates Office NID matching for users.
@@ -78,44 +77,34 @@ function foia_users_node_access($node, $op, $account) {
  * Custom submit handler for office value.
  */
 function _form_validation_foiaoffice($form, $form_state) {
+
   if ($form_state->hasValue('field_foia_office')) {
+
+    $role_array = ["foia_office_creator", "foia_office_reviewer"];
+    $user_role = $form_state->getValue('roles');
+    $user_role_match = FALSE;
     $field_foia_office = $form_state->getValue('field_foia_office')[0]['target_id'];
-    if (is_null($field_foia_office)) {
+
+    foreach ($user_role as $k => $v) {
+      if (in_array($v, $role_array)) {
+        $user_role_match = TRUE;
+      }
+    }
+
+    if (is_null($field_foia_office) && ($user_role_match)) {
       $form['field_foia_office']['widget']['#required'] = TRUE;
-      $form_state->setErrorByName('field_foia_office', t('FOIA Office editors must be assigned to an office.'));
+      $form_state->setErrorByName('field_foia_office', t('The roles "FOIA Office creator" and "FOIA Office reviewer" must be assigned to an office.'));
     }
   }
+
 }
 
 /**
  * Implements hook_form_alter().
  */
 function foia_users_form_alter(&$form, $form_state, $form_id) {
-
   // We are checking for the proper roles to make Foia office required.
-  if ($form_id == 'user_form') {
-    $user_entities = [];
-    $parameters = \Drupal::routeMatch()->getParameters();
-    foreach ($parameters as $param) {
-      if ($param instanceof EntityInterface) {
-        $user_entities[] = $param;
-      }
-    }
-
-    $role_array = ["foia_office_creator", "foia_office_reviewer"];
-    $user_role = $user_entities[0]->get('roles')->getValue();
-    $user_role_match = FALSE;
-    foreach ($user_role as $k => $v) {
-      if (in_array($v['target_id'], $role_array)) {
-        $user_role_match = TRUE;
-      }
-    }
-
-    // If roles match make required and user custom validation.
-    if ($user_role_match) {
-      $form['#validate'][] = '_form_validation_foiaoffice';
-      $form['field_foia_office']['widget']['#required'] = TRUE;
-    }
-
+  if ($form_id == ('user_form' || 'user_register_form')) {
+    $form['#validate'][] = '_form_validation_foiaoffice';
   }
 }
