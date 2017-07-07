@@ -55,6 +55,9 @@ A FOIA Request is a single submission of a FOIA Request Form.
 ### Important Functionality
 This section describes functionality which is specific to this site or which uses custom modules for implementation.
 
+#### API Access Control and Authentication
+JSONAPI endpoints require a valid OAuth Bearer token.  See [OAuth process](./oauth_process.md) for details on setting up OAuth clients, fetching a Bearer token, and using the token in a request.
+
 #### Users Restricted to Editing Only FOIA Offices Associated with their Account
 *@TODO: describe this functionality when development is complete*
 
