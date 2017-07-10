@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * FOIA Users Access Module.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\user\Entity\User;
+
+/**
+ * Validates Office NID matching for users.
+ */
+function _office_user_nid_access($node, $account) {
+  $user = User::load(\Drupal::currentUser()->id());
+  $user_office_field_nid = $user->get('field_foia_office')->getValue();
+  $user_nid_array = [];
+
+  foreach ($user_office_field_nid as $key => $val) {
+    $user_nid_array[] = $val['target_id'];
+  }
+
+  $result = NULL;
+  if (in_array($node->get('nid')->getValue()[0]['value'], $user_nid_array)) {
+    $result = AccessResult::allowed()
+      ->cachePerUser()
+      ->addCacheableDependency($node);
+  }
+  else {
+    $result = AccessResult::forbidden()
+      ->cachePerUser()
+      ->addCacheableDependency($node);
+  }
+  return $result;
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function foia_users_node_access($node, $op, $account) {
+
+  // Restrict editing node based on matching of 'field_agency' entity reference.
+  if ($node->bundle() == 'foia_office') {
+
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_roles = $user->getRoles();
+
+    if (in_array("foia_office_creator", $user_roles) || in_array("foia_office_reviewer", $user_roles)) {
+
+      if ($op == "delete") {
+        // Allow creation before entity ref is set.
+        if ($node->get('field_agency')->isEmpty()) {
+          return AccessResult::allowed()
+            ->cachePerUser()
+            ->addCacheableDependency($node);
+        }
+        else {
+          return _office_user_nid_access($node, $account);
+        }
+      }
+      elseif ($op == "update") {
+        return _office_user_nid_access($node, $account);
+      }
+      else {
+        return AccessResult::allowed()
+          ->cachePerUser()
+          ->addCacheableDependency($node);
+      }
+
+    }
+
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Custom submit handler for office value.
+ */
+function _form_validation_foiaoffice($form, $form_state) {
+
+  if ($form_state->hasValue('field_foia_office')) {
+
+    $role_array = ["foia_office_creator", "foia_office_reviewer"];
+    $user_role = $form_state->getValue('roles');
+    $user_role_match = FALSE;
+    $field_foia_office = $form_state->getValue('field_foia_office')[0]['target_id'];
+
+    foreach ($user_role as $k => $v) {
+      if (in_array($v, $role_array)) {
+        $user_role_match = TRUE;
+      }
+    }
+
+    if (is_null($field_foia_office) && ($user_role_match)) {
+      $form['field_foia_office']['widget']['#required'] = TRUE;
+      $form_state->setErrorByName('field_foia_office', t('The roles "FOIA Office creator" and "FOIA Office reviewer" must be assigned to an office.'));
+    }
+  }
+
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function foia_users_form_alter(&$form, $form_state, $form_id) {
+  // We are checking for the proper roles to make Foia office required.
+  if ($form_id == ('user_form' || 'user_register_form')) {
+    $form['#validate'][] = '_form_validation_foiaoffice';
+  }
+}
