@@ -1,5 +1,7 @@
 # DOJ FOIA Project Back-end System Documentation
 
+@todo: revise in light of discussion about headed v headless once final decision is made
+
 ## Project Description
 The FOIA project's overall vision is to create a single portal through which the public can submit Freedom of Information Act (FOIA) requests to any federal agency.  The project was mandated by the [FOIA Improvement Act of 2016](https://www.justice.gov/oip/freedom-information-act-5-usc-552).  This new portal will provide functionality to replace both https://foia.gov and https://open.foia.gov.
 
