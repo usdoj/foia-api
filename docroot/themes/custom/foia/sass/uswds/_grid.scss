@@ -9,13 +9,11 @@
 // FOIA SideBar Rules /////////////////////////////////
 
 .usa-grid {
-
   @include padding(null $site-margins-mobile);
 
   @include media($medium-screen) {
     @include padding(null $site-margins);
   }
-
 }
 
 // Left sidebar and Right sidebar
@@ -47,12 +45,10 @@
 // FOIA Panels Rules /////////////////////////////////
 
 .panel-panel .usa-grid.usa-grid-panel {
-
   padding: 0;
   margin: 15px 0;
 
   @include media($medium-screen) {
-
     .usa-width-one-third {
       @include span-columns(4);
     }
@@ -68,11 +64,7 @@
     .usa-width-two-thirds {
       @include span-columns(8);
     }
-
-
   }
-
-
 }
 
 
