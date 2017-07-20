@@ -44,6 +44,39 @@
   }
 }
 
+// FOIA Panels Rules /////////////////////////////////
+
+.panel-panel .usa-grid.usa-grid-panel {
+
+  padding: 0;
+  margin: 15px 0;
+
+  @include media($medium-screen) {
+
+    .usa-width-one-third {
+      @include span-columns(4);
+    }
+
+    .usa-width-one-fourth {
+      @include span-columns(3);
+    }
+
+    .usa-width-one-half {
+      @include span-columns(6);
+    }
+
+    .usa-width-two-thirds {
+      @include span-columns(8);
+    }
+
+
+  }
+
+
+}
+
+
+
 ////////////////////////////////////////////////////////
 
 /*

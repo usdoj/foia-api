@@ -51,7 +51,7 @@
       {% endif %}
       <!-- /sidebar-first -->
 
-      <section id="content" class="{{ uswds_grid == "sidebar_none" ? 'usa-width-one-whole' : '' }} {{ uswds_grid == "sidebar_first" or "sidebar_second" ? 'usa-width-three-fourths' : '' }} {{ uswds_grid == "sidebar_both" ? 'usa-width-one-half' : '' }}">
+      <section id="content" class="{{ uswds_grid == "sidebar_none" ? 'usa-width-one-whole' : '' }} {{ uswds_grid == "sidebar_first" ? 'usa-width-three-fourths' : '' }} {{ uswds_grid == "sidebar_second" ? 'usa-width-three-fourths' : '' }} {{ uswds_grid == "sidebar_both" ? 'usa-width-one-half' : '' }}">
 
         {% if breadcrumb or title or messages or tabs or action_links %}
           <div id="content-header">
