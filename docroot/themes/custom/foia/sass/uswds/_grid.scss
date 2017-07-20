@@ -1,0 +1,56 @@
+// Grid container
+.usa-grid,
+.usa-grid-full {
+  @include outer-container();
+
+  max-width: $site-max-width;
+}
+
+// FOIA SideBar Rules /////////////////////////////////
+
+.usa-grid {
+
+  @include padding(null $site-margins-mobile);
+
+  @include media($medium-screen) {
+    @include padding(null $site-margins);
+  }
+
+}
+
+// Left sidebar and Right sidebar
+.usa-grid {
+  @include media($medium-screen) {
+    .usa-width-one-fourth {
+      @include span-columns(3);
+    }
+
+    .usa-width-three-fourths {
+      @include span-columns(9);
+    }
+  }
+}
+
+// Both Sidebars or none
+.usa-grid {
+  @include media($medium-screen) {
+    .usa-width-one-half {
+      @include span-columns(6);
+    }
+
+    .usa-width-one-whole {
+      @include span-columns(12);
+    }
+  }
+}
+
+////////////////////////////////////////////////////////
+
+/*
+Specifies end of a row.
+ Required if grid-box contains multiple rows.
+ Required if browser does not support :last-child
+ */
+.usa-end-row {
+  @include omega();
+}

@@ -15,19 +15,6 @@ function foia_preprocess_html(&$variables) {
   $path = \Drupal::service('path.current')->getPath();
   $alias = trim(\Drupal::service('path.alias_manager')
     ->getAliasByPath($path), '/');
-  // Body classes for sidebars.
-  if (isset($variables['page']['sidebar_first']) && isset($variables['page']['sidebar_second'])) {
-    $variables['attributes']['class'][] = Html::cleanCssIdentifier('body-sidebars-both');
-  }
-  elseif (isset($variables['page']['sidebar_first'])) {
-    $variables['attributes']['class'][] = Html::cleanCssIdentifier('body-sidebars-first');
-  }
-  elseif (isset($variables['page']['sidebar_second'])) {
-    $variables['attributes']['class'][] = Html::cleanCssIdentifier('body-sidebars-second');
-  }
-  else {
-    $variables['attributes']['class'][] = Html::cleanCssIdentifier('body-sidebars-none');
-  }
   // Alias path class.
   $alias_class = preg_replace("/\//", '-', $alias);
   if (!empty($alias_class) && strpos($alias_class, 'node') !== 0) {
@@ -40,6 +27,7 @@ function foia_preprocess_html(&$variables) {
   $variables['attributes']['class'][] = isset($variables['node_type']) ? 'nodetype--' . $variables['node_type'] : '';
   // Logged in class.
   $variables['attributes']['class'][] = $variables['logged_in'] ? 'logged-in' : 'logged-out';
+
 }
 
 /**
@@ -54,6 +42,21 @@ function foia_preprocess_page(&$variables) {
   else {
     $variables['attributes']['class'][] = Html::cleanCssIdentifier('page-standard');
   }
+
+  // USWDS Page Grid variables.
+  if (!empty($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_second'])) {
+    $variables['uswds_grid'] = 'sidebar_both';
+  }
+  elseif (!empty($variables['page']['sidebar_first'])) {
+    $variables['uswds_grid'] = 'sidebar_first';
+  }
+  elseif (!empty($variables['page']['sidebar_second'])) {
+    $variables['uswds_grid'] = 'sidebar_second';
+  }
+  else {
+    $variables['uswds_grid'] = 'sidebar_none';
+  }
+
 }
 
 /**
@@ -94,38 +97,37 @@ function foia_form_node_form_alter(&$form, FormStateInterface $form_state) {
   $is_new = !$node->isNew() ? format_date($node->getChangedTime(), 'short') : t('Not saved yet');
   $form['meta'] = [
     '#attributes' => ['class' => ['entity-meta__header']],
-    '#type'       => 'container',
-    '#group'      => 'advanced',
-    '#weight'     => -100,
-    'published'   => [
-      '#type'       => 'html_tag',
-      '#tag'        => 'h3',
-      '#value'      => $node->isPublished() ? t('Published') : t('Not published'),
-      '#access'     => !$node->isNew(),
+    '#type' => 'container',
+    '#group' => 'advanced',
+    '#weight' => -100,
+    'published' => [
+      '#type' => 'html_tag',
+      '#tag' => 'h3',
+      '#value' => $node->isPublished() ? t('Published') : t('Not published'),
+      '#access' => !$node->isNew(),
       '#attributes' => [
         'class' => 'entity-meta__title',
       ],
     ],
-    'changed'     => [
-      '#type'               => 'item',
+    'changed' => [
+      '#type' => 'item',
       '#wrapper_attributes' => [
         'class' => [
           'entity-meta__last-saved',
           'container-inline',
         ],
       ],
-      '#markup'             => '<h4 class="label inline">' . t('Last saved') . '</h4> ' . $is_new,
+      '#markup' => '<h4 class="label inline">' . t('Last saved') . '</h4> ' . $is_new,
     ],
-    'author'      => [
-      '#type'               => 'item',
+    'author' => [
+      '#type' => 'item',
       '#wrapper_attributes' => [
         'class' => [
           'author',
           'container-inline',
         ],
       ],
-      '#markup'             => '<h4 class="label inline">' . t('Author') . '</h4> ' . $node->getOwner()
-        ->getUsername(),
+      '#markup' => '<h4 class="label inline">' . t('Author') . '</h4> ' . $node->getOwner()->getUsername(),
     ],
   ];
   $form['revision_information']['#type'] = 'container';

@@ -1,127 +1,130 @@
 <div {{ attributes.setAttribute('id', 'pg__c') }}>
 
-    <!-- ______________________ BRANDING _______________________ -->
+  <!-- ______________________ BRANDING _______________________ -->
 
-    <header id="branding">
-        <div class="cog--mq mq-branding">
-            {% if page.branding %}
-                <div id="branding-region">
-                    {{ page.branding }}
-                </div>
-            {% endif %}
+  <header class="usa-grid" id="branding">
+    <div class="cog--mq mq-branding">
+      {% if page.branding %}
+        <div id="branding-region">
+          {{ page.branding }}
         </div>
-    </header>
-    <!-- /branding -->
+      {% endif %}
+    </div>
+  </header>
+  <!-- /branding -->
 
 
-    <!-- ______________________ HEADER _______________________ -->
-
-    <header id="header">
-        <div class="cog--mq mq-header">
-            {% if page.header %}
-                <div id="header-region">
-                    {{ page.header }}
-                </div>
-            {% endif %}
-        </div>
+  <!-- ______________________ HEADER _______________________ -->
+  {% if page.header %}
+    <header class="usa-grid" id="header">
+      <div class="cog--mq mq-header">
+        {% if page.header %}
+          <div id="header-region">
+            {{ page.header }}
+          </div>
+        {% endif %}
+      </div>
     </header>
     <!-- /header -->
+  {% endif %}
 
-    <!-- ______________________ Pre content _______________________ -->
-    {% if page.pre_content %}
-        <div class="clearfix pre-content" id="pre-content">
-            <div class="cog--mq mq-precontent">
-                {{ page.pre_content }}
-            </div>
-        </div>
-    {% endif %}
-
-    <!-- ______________________ MAIN _______________________ -->
-
-    <div class="clearfix" id="main">
-        <div class="cog--mq mq-main">
-
-            {% if page.sidebar_first %}
-                <aside class="sidebar-first sidebars" id="sidebar-first">
-                    {{ page.sidebar_first }}
-                </aside>
-            {% endif %}
-            <!-- /sidebar-first -->
-
-            <section id="content">
-
-                {% if breadcrumb or title or messages or tabs or action_links %}
-                    <div id="content-header">
-
-                        {{ breadcrumb }}
-
-                        {% if page.highlighted %}
-                            <div id="highlighted">{{ page.highlighted }}</div>
-                        {% endif %}
-
-                        {{ title_prefix }}
-
-                        {% if title %}
-                            <h1 class="title">{{ title }}</h1>
-                        {% endif %}
-
-                        {{ title_suffix }}
-                        {{ messages }}
-                        {{ page.help }}
-
-                        {% if tabs %}
-                            <div class="tabs">{{ tabs }}</div>
-                        {% endif %}
-
-                        {% if action_links %}
-                            <ul class="action-links">{{ action_links }}</ul>
-                        {% endif %}
-
-                    </div>
-                    <!-- /#content-header -->
-                {% endif %}
-
-                <div id="content-area">
-                    {{ page.content }}
-                </div>
-
-                {{ feed_icons }}
-
-            </section>
-            <!-- /content-inner /content -->
-
-            {% if page.sidebar_second %}
-                <aside class="sidebar-second sidebars" id="sidebar-second">
-                    {{ page.sidebar_second }}
-                </aside>
-            {% endif %}
-            <!-- /sidebar-first -->
-
-        </div>
-        <!-- /cog--mq -->
+  <!-- ______________________ Pre content _______________________ -->
+  {% if page.pre_content %}
+    <div class="clearfix pre-content usa-grid" id="pre-content">
+      <div class="cog--mq mq-precontent">
+        {{ page.pre_content }}
+      </div>
     </div>
-    <!-- /main -->
+  {% endif %}
 
-    <!-- ______________________ Post content _______________________ -->
+  {#{{ uswds_grid }}#}
 
-    {% if page.post_content %}
-        <div class="clearfix post-content" id="post-content">
-            <div class="cog--mq mq-postcontent">
-                {{ page.post_content }}
-            </div>
+  <!-- ______________________ MAIN _______________________ -->
+
+  <div class="clearfix" id="main">
+    <div class="usa-grid">
+
+      {% if page.sidebar_first %}
+        <div class="{{ uswds_grid == "sidebar_first" ? 'usa-width-one-fourth' : 'usa-width-one-fourth' }}" id="sidebar-first">
+          {{ page.sidebar_first }}
         </div>
-    {% endif %}
+      {% endif %}
+      <!-- /sidebar-first -->
 
-    <!-- ______________________ FOOTER _______________________ -->
+      <section id="content" class="{{ uswds_grid == "sidebar_none" ? 'usa-width-one-whole' : '' }} {{ uswds_grid == "sidebar_first" or "sidebar_second" ? 'usa-width-three-fourths' : '' }} {{ uswds_grid == "sidebar_both" ? 'usa-width-one-half' : '' }}">
 
-    {% if page.footer %}
-        <footer id="footer">
-            <div class="cog--mq mq-footer">
-                {{ page.footer }}
-            </div>
-        </footer>
-        <!-- /footer -->
-    {% endif %}
+        {% if breadcrumb or title or messages or tabs or action_links %}
+          <div id="content-header">
+
+            {{ breadcrumb }}
+
+            {% if page.highlighted %}
+              <div id="highlighted">{{ page.highlighted }}</div>
+            {% endif %}
+
+            {{ title_prefix }}
+
+            {% if title %}
+              <h1 class="title">{{ title }}</h1>
+            {% endif %}
+
+            {{ title_suffix }}
+            {{ messages }}
+            {{ page.help }}
+
+            {% if tabs %}
+              <div class="tabs">{{ tabs }}</div>
+            {% endif %}
+
+            {% if action_links %}
+              <ul class="action-links">{{ action_links }}</ul>
+            {% endif %}
+
+          </div>
+          <!-- /#content-header -->
+        {% endif %}
+
+        <div id="content-area">
+          {{ page.content }}
+        </div>
+
+        {{ feed_icons }}
+
+      </section>
+      <!-- /content-inner /content -->
+
+      {% if page.sidebar_second %}
+        <aside class="{{ uswds_grid == "sidebar_second" ? 'usa-width-one-fourth' : 'usa-width-one-fourth' }}" id="sidebar-second">
+          {{ page.sidebar_second }}
+        </aside>
+      {% endif %}
+      <!-- /sidebar-first -->
+
+    </div>
+    <!-- /cog--mq -->
+  </div>
+  <!-- /main -->
+
+  <!-- ______________________ Post content _______________________ -->
+
+  {% if page.post_content %}
+    <div class="clearfix post-content usa-grid" id="post-content">
+      <div class="cog--mq mq-postcontent">
+        {{ page.post_content }}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- ______________________ FOOTER _______________________ -->
+
+  {% if page.footer %}
+    <footer id="footer" class="usa-grid">
+      <div class="cog--mq mq-footer">
+        {{ page.footer }}
+      </div>
+    </footer>
+    <!-- /footer -->
+  {% endif %}
 
 </div>
 <!-- /page -->
