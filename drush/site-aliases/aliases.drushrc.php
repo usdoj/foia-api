@@ -362,7 +362,7 @@
 
 // Local environment.
 $aliases['dojfoia.local'] = array(
-  'root' => '/var/www/foia/docroot',
+  'root' => '/var/www/dojfoia/docroot',
   'uri' => 'http://local.dojfoia.gov',
   );
 // Add remote connection options when alias is used outside VM.
