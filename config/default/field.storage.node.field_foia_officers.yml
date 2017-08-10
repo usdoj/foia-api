@@ -1,22 +1,23 @@
-uuid: de699703-e529-4fc0-887e-1caca85dd0b3
+uuid: 70152183-8443-4a53-b4e5-d249dc2ecc3f
 langcode: en
 status: true
 dependencies:
   module:
     - field_permissions
+    - foia_personnel
     - node
-    - telephone
 third_party_settings:
   field_permissions:
     permission_type: public
-id: node.field_submission_fax
-field_name: field_submission_fax
+id: node.field_foia_officers
+field_name: field_foia_officers
 entity_type: node
-type: telephone
-settings: {  }
-module: telephone
+type: entity_reference
+settings:
+  target_type: foia_personnel
+module: core
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

@@ -1,0 +1,25 @@
+uuid: 38ff8ea3-8893-4c3d-aa08-0068e7526ddb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_receiver
+    - node.type.agency_component
+id: node.agency_component.field_receiver
+field_name: field_receiver
+entity_type: node
+bundle: agency_component
+label: Receiver
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:foia_personnel'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

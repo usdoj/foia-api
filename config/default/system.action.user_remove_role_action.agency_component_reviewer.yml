@@ -1,0 +1,14 @@
+uuid: 7d09117e-92d2-4747-97eb-3476ca445fea
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.agency_component_reviewer
+  module:
+    - user
+id: user_remove_role_action.agency_component_reviewer
+label: 'Remove the Agency Component reviewer role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: agency_component_reviewer

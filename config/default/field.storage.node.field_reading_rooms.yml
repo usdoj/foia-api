@@ -1,22 +1,22 @@
-uuid: de699703-e529-4fc0-887e-1caca85dd0b3
+uuid: d44478e7-5cdb-4e07-96d4-063de27e08c6
 langcode: en
 status: true
 dependencies:
   module:
     - field_permissions
+    - link
     - node
-    - telephone
 third_party_settings:
   field_permissions:
     permission_type: public
-id: node.field_submission_fax
-field_name: field_submission_fax
+id: node.field_reading_rooms
+field_name: field_reading_rooms
 entity_type: node
-type: telephone
+type: link
 settings: {  }
-module: telephone
+module: link
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

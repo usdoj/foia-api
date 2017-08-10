@@ -1,0 +1,22 @@
+uuid: a9ba00ad-1c49-4f8c-a9bb-da0b90d455cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.agency_component
+  module:
+    - text
+id: node.agency_component.body
+field_name: body
+entity_type: node
+bundle: agency_component
+label: 'Agency Component Description'
+description: 'Describes the Agency Component, and provides any textual information needed.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

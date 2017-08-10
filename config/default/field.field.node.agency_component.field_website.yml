@@ -1,0 +1,23 @@
+uuid: 37af721c-baef-4fe2-81ce-bd5767526182
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_website
+    - node.type.agency_component
+  module:
+    - link
+id: node.agency_component.field_website
+field_name: field_website
+entity_type: node
+bundle: agency_component
+label: Website
+description: 'The full URL of the Agency Component''s website.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 1
+field_type: link
