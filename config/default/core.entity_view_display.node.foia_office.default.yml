@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.foia_office.body
     - field.field.node.foia_office.field_abbreviation
     - field.field.node.foia_office.field_agency
+    - field.field.node.foia_office.field_average_processing_time
     - field.field.node.foia_office.field_foia_agency_instructions
     - field.field.node.foia_office.field_request_expedited_processi
     - field.field.node.foia_office.field_request_fee_waiver_instr
@@ -24,23 +25,31 @@ dependencies:
     - address
     - link
     - options
+    - panelizer
+    - telephone
     - text
     - user
     - webform
+third_party_settings:
+  panelizer:
+    enable: false
+    custom: false
+    allow: false
+    default: default
 id: node.foia_office.default
 targetEntityType: node
 bundle: foia_office
 mode: default
 content:
   body:
-    label: hidden
+    label: above
     type: text_default
-    weight: 101
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     region: content
   field_abbreviation:
-    weight: 105
+    weight: 4
     label: above
     settings:
       link_to_entity: false
@@ -48,36 +57,44 @@ content:
     type: string
     region: content
   field_agency:
-    weight: 102
+    weight: 1
     label: above
     settings:
       link: true
+      view_mode: default
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
+    region: content
+  field_average_processing_time:
+    weight: 17
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_foia_agency_instructions:
-    weight: 117
+    weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_request_expedited_processi:
-    weight: 119
+    weight: 15
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_request_fee_waiver_instr:
-    weight: 118
+    weight: 14
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_request_submission_form:
-    weight: 103
+    weight: 16
     label: above
     settings:
       source_entity: true
@@ -85,14 +102,14 @@ content:
     type: webform_entity_reference_entity_view
     region: content
   field_submission_address:
-    weight: 109
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
     type: address_default
     region: content
   field_submission_api:
-    weight: 113
+    weight: 12
     label: above
     settings:
       link_to_entity: false
@@ -100,28 +117,29 @@ content:
     type: string
     region: content
   field_submission_email:
-    weight: 110
+    weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_submission_fax:
-    weight: 112
+    weight: 11
     label: above
-    settings: {  }
+    settings:
+      title: ''
     third_party_settings: {  }
-    type: basic_string
+    type: telephone_link
     region: content
   field_submission_format:
-    weight: 106
+    weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_submission_name:
-    weight: 107
+    weight: 6
     label: above
     settings:
       link_to_entity: false
@@ -129,7 +147,7 @@ content:
     type: string
     region: content
   field_submission_title:
-    weight: 108
+    weight: 7
     label: above
     settings:
       link_to_entity: false
@@ -137,7 +155,7 @@ content:
     type: string
     region: content
   field_submission_web:
-    weight: 111
+    weight: 10
     label: above
     settings:
       trim_length: 80
@@ -149,7 +167,7 @@ content:
     type: link
     region: content
   field_website:
-    weight: 104
+    weight: 3
     label: above
     settings:
       trim_length: 80
@@ -161,6 +179,8 @@ content:
     type: link
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden: {  }

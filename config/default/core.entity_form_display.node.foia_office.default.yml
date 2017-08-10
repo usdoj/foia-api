@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.foia_office.body
     - field.field.node.foia_office.field_abbreviation
     - field.field.node.foia_office.field_agency
+    - field.field.node.foia_office.field_average_processing_time
     - field.field.node.foia_office.field_foia_agency_instructions
     - field.field.node.foia_office.field_request_expedited_processi
     - field.field.node.foia_office.field_request_fee_waiver_instr
@@ -155,6 +156,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_average_processing_time:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_foia_agency_instructions:
     weight: 29
