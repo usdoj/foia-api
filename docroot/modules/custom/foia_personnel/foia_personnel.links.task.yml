@@ -1,0 +1,27 @@
+# FOIA Personnel routing definition
+foia_personnel.settings_tab:
+  route_name: foia_personnel.settings
+  title: 'Settings'
+  base_route: foia_personnel.settings
+
+entity.foia_personnel.canonical:
+  route_name: entity.foia_personnel.canonical
+  base_route: entity.foia_personnel.canonical
+  title: 'View'
+
+entity.foia_personnel.edit_form:
+  route_name: entity.foia_personnel.edit_form
+  base_route: entity.foia_personnel.canonical
+  title: 'Edit'
+
+entity.foia_personnel.version_history:
+  route_name: entity.foia_personnel.version_history
+  base_route: entity.foia_personnel.canonical
+  title: 'Revisions'
+
+entity.foia_personnel.delete_form:
+  route_name:  entity.foia_personnel.delete_form
+  base_route:  entity.foia_personnel.canonical
+  title: Delete
+  weight: 10
+
