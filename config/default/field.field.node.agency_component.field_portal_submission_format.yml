@@ -1,0 +1,23 @@
+uuid: faa7c942-ea2d-444c-8f9a-792efa478bdd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_portal_submission_format
+    - node.type.agency_component
+  module:
+    - options
+id: node.agency_component.field_portal_submission_format
+field_name: field_portal_submission_format
+entity_type: node
+bundle: agency_component
+label: 'Portal Submission Format'
+description: 'Select the means by which the Portal should submit requests to the Agency Component.'
+required: true
+translatable: false
+default_value:
+  -
+    value: email
+default_value_callback: ''
+settings: {  }
+field_type: list_string

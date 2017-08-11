@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.agency_component.field_agency_component_id
     - field.field.node.agency_component.field_email
     - field.field.node.agency_component.field_foia_officers
+    - field.field.node.agency_component.field_portal_submission_format
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
     - field.field.node.agency_component.field_receiver
@@ -17,7 +18,6 @@ dependencies:
     - field.field.node.agency_component.field_submission_api
     - field.field.node.agency_component.field_submission_email
     - field.field.node.agency_component.field_submission_fax
-    - field.field.node.agency_component.field_submission_format
     - field.field.node.agency_component.field_submission_web
     - field.field.node.agency_component.field_website
     - node.type.agency_component
@@ -71,6 +71,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_portal_submission_format:
+    weight: 118
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_public_liaisons:
     weight: 117
@@ -144,13 +151,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
-  field_submission_format:
-    weight: 112
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
     region: content
   field_submission_web:
     weight: 110

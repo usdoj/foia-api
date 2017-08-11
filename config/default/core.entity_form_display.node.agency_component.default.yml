@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.agency_component.field_agency_component_id
     - field.field.node.agency_component.field_email
     - field.field.node.agency_component.field_foia_officers
+    - field.field.node.agency_component.field_portal_submission_format
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
     - field.field.node.agency_component.field_receiver
@@ -17,7 +18,6 @@ dependencies:
     - field.field.node.agency_component.field_submission_api
     - field.field.node.agency_component.field_submission_email
     - field.field.node.agency_component.field_submission_fax
-    - field.field.node.agency_component.field_submission_format
     - field.field.node.agency_component.field_submission_web
     - field.field.node.agency_component.field_website
     - node.type.agency_component
@@ -38,7 +38,7 @@ third_party_settings:
         - field_receiver
         - field_submission_address
       parent_name: ''
-      weight: 16
+      weight: 15
       format_type: details
       format_settings:
         id: ''
@@ -49,8 +49,8 @@ third_party_settings:
     group_email_submissions:
       children:
         - field_submission_email
-      parent_name: ''
-      weight: 17
+      parent_name: group_portal_submission_options
+      weight: 22
       format_type: details
       format_settings:
         id: ''
@@ -74,7 +74,7 @@ third_party_settings:
       children:
         - field_submission_fax
       parent_name: ''
-      weight: 19
+      weight: 16
       format_type: details
       format_settings:
         id: ''
@@ -85,8 +85,8 @@ third_party_settings:
     group_api_submissions:
       children:
         - field_submission_api
-      parent_name: ''
-      weight: 20
+      parent_name: group_portal_submission_options
+      weight: 23
       format_type: details
       format_settings:
         id: ''
@@ -94,6 +94,20 @@ third_party_settings:
         open: true
         required_fields: true
       label: 'API Submissions'
+    group_portal_submission_options:
+      children:
+        - field_portal_submission_format
+        - group_email_submissions
+        - group_api_submissions
+      parent_name: ''
+      weight: 19
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: 'Portal Submission Options'
 id: node.agency_component.default
 targetEntityType: node
 bundle: agency_component
@@ -151,6 +165,12 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
+  field_portal_submission_format:
+    weight: 21
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_public_liaisons:
     weight: 7
     settings:
@@ -186,7 +206,7 @@ content:
     type: inline_entity_form_complex
     region: content
   field_request_submission_form:
-    weight: 21
+    weight: 20
     settings: {  }
     third_party_settings: {  }
     type: webform_entity_reference_select
@@ -233,12 +253,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: telephone_default
-    region: content
-  field_submission_format:
-    weight: 15
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
   field_submission_web:
     weight: 17
