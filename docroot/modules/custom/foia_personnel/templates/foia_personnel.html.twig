@@ -1,0 +1,22 @@
+{#
+/**
+ * @file foia_personnel.html.twig
+ * Default theme implementation to present FOIA Personnel data.
+ *
+ * This template is used when viewing FOIA Personnel pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_foia_personnel()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes.addClass('foia_personnel') }}>
+  {% if content %}
+    {{- content -}}
+  {% endif %}
+</div>

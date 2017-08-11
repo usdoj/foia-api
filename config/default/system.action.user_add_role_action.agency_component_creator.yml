@@ -1,0 +1,14 @@
+uuid: ed7a51a5-b110-46dd-9301-b02648d53cb0
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.agency_component_creator
+  module:
+    - user
+id: user_add_role_action.agency_component_creator
+label: 'Add the Agency Component creator role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: agency_component_creator

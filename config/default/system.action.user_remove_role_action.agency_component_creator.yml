@@ -1,0 +1,14 @@
+uuid: cf6580ce-4cc2-4240-8e17-d665937b3354
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.agency_component_creator
+  module:
+    - user
+id: user_remove_role_action.agency_component_creator
+label: 'Remove the Agency Component creator role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: agency_component_creator

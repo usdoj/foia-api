@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.storage.user.field_foia_office
-    - node.type.foia_office
   module:
     - user
 id: user.user.field_foia_office
@@ -20,8 +19,7 @@ default_value_callback: ''
 settings:
   handler: 'default:node'
   handler_settings:
-    target_bundles:
-      foia_office: foia_office
+    target_bundles: {  }
     sort:
       field: _none
     auto_create: false

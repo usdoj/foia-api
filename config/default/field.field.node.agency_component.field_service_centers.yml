@@ -1,0 +1,25 @@
+uuid: 72f30751-a1e3-403b-8a3a-3d65798f8380
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_service_centers
+    - node.type.agency_component
+id: node.agency_component.field_service_centers
+field_name: field_service_centers
+entity_type: node
+bundle: agency_component
+label: 'Service Centers'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:foia_personnel'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

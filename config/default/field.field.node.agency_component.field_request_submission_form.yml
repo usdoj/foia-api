@@ -1,0 +1,29 @@
+uuid: 47200c53-7f19-440c-a353-bba4b3e71072
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_request_submission_form
+    - node.type.agency_component
+  module:
+    - webform
+id: node.agency_component.field_request_submission_form
+field_name: field_request_submission_form
+entity_type: node
+bundle: agency_component
+label: 'Request Submission Form'
+description: 'Use the webform module (/structure/webform/add) to build the Request submission form used by this agency.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:webform'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+  default_data: ''
+  status: open
+  open: ''
+  close: ''
+field_type: webform
