@@ -1,0 +1,43 @@
+id: agency
+label: Agencies
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  # Normally, this is one or more fully-qualified URLs or file paths. Because
+  # we can't hardcode a local URL, we provide a relative path here which
+  # hook_install() will rewrite to a full URL for the current site.
+  urls: /modules/custom/foia_migrate/data/modified/agencies.json
+  item_selector: agencies
+  fields:
+    -
+      name: abbreviation
+      label: 'Agency Abbreviation'
+      selector: abbreviation
+    -
+      name: name
+      label: 'Agency Name'
+      selector: name
+    -
+      name: description
+      label: 'Description'
+      selector: description
+  ids:
+    name:
+      type: string
+
+process:
+  name: name
+  vid:
+    plugin: default_value
+    default_value: agency
+  field_agency_abbreviation: abbreviation
+  description/value: description
+  description/format:
+    plugin: default_value
+    default_value: rich_text
+
+destination:
+  plugin: entity:taxonomy_term
+migration_dependencies: {}
+dependencies: {}

@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the foia_migrate module.
+ */
+
+use Drupal\migrate_plus\Entity\Migration;
+
+/**
+ * Implements hook_install().
+ */
+function foia_migrate_install() {
+  /** @var \Drupal\migrate_plus\Entity\MigrationInterface $agency_migration */
+  $agency_migration = Migration::load('agency');
+  if ($agency_migration) {
+    $source = $agency_migration->get('source');
+    $request = \Drupal::request();
+    $source['urls'] = 'http://' . $request->getHttpHost() . $source['urls'];
+    $agency_migration->set('source', $source);
+    $agency_migration->save();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function foia_migrate_uninstall() {
+  $migration_config_to_delete = [
+    'agency',
+  ];
+  foreach ($migration_config_to_delete as $config_name) {
+    \Drupal::configFactory()->getEditable("migrate_plus.migration.{$config_name}")->delete();
+  }
+}
