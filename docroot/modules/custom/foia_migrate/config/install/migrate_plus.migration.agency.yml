@@ -32,7 +32,9 @@ process:
     plugin: default_value
     default_value: agency
   field_agency_abbreviation: abbreviation
-  description/value: description
+  description/value:
+    plugin: nl2br
+    source: description
   description/format:
     plugin: default_value
     default_value: rich_text
