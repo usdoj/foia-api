@@ -11,8 +11,12 @@ $modified_data_files_directory = '../data/modified';
 // Always start the script by clearing out the modified data files directory.
 delete_files_from_directory($modified_data_files_directory);
 
-// Make necessary changes to JSON to prep it for migration use.
-modify_json($original_data_files_directory, $modified_data_files_directory);
+$agency_data = extract_agencies_from_source_files($original_data_files_directory);
+$component_data = extract_components_from_agencies($agency_data['agencies']);
+remove_departments_property_from_agencies($agency_data);
+
+write_data_to_json_file("{$modified_data_files_directory}/agencies.json", $agency_data);
+write_data_to_json_file("{$modified_data_files_directory}/components.json", $component_data);
 
 /**
  * Delete all files in a specified directory.
@@ -32,35 +36,35 @@ function delete_files_from_directory($directory_path) {
 }
 
 /**
- * Modify JSON files to prep for use in migration.
+ * Extract agencies from separate json files, return single array of agencies.
  *
  * @param string $path_to_original_files
  *   Path to the directory that houses the original JSON files.
- * @param string $path_to_new_files
- *   Path to the directory that houses the modified JSON files.
+ *
+ * @return mixed
+ *   Agency data
  */
-function modify_json($path_to_original_files, $path_to_new_files) {
+function extract_agencies_from_source_files($path_to_original_files) {
   $json_files = glob("{$path_to_original_files}/*");
   foreach ($json_files as $json_file) {
-    $original_data = json_decode(file_get_contents($json_file));
-    $modified_data = wrap_in_array($original_data);
-    $json_file_name = basename($json_file);
-    $modified_data_file_name = "{$path_to_new_files}/{$json_file_name}";
-    write_data_to_json_file($modified_data_file_name, $modified_data);
+    $agency = json_decode(file_get_contents($json_file));
+    $agencies['agencies'][] = $agency;
   }
+  return $agencies;
 }
 
 /**
- * Takes passed in data and returns it in an array.
+ * Extract components from agencies and return single array of components.
  *
- * @param mixed $data
- *   Piece of data to wrap in an array.
+ * @param array $agencies
+ *   Array of all agencies.
  *
  * @return array
- *   Data wrapped in an array
+ *   Array of all components.
  */
-function wrap_in_array($data) {
-  return [$data];
+function extract_components_from_agencies(array $agencies) {
+  $components['components'] = get_components_with_agency_name($agencies);
+  return $components;
 }
 
 /**
@@ -73,4 +77,39 @@ function wrap_in_array($data) {
  */
 function write_data_to_json_file($file_name, array $data) {
   file_put_contents($file_name, json_encode($data, JSON_PRETTY_PRINT));
+}
+
+/**
+ * Add agency_name to each component and return them.
+ *
+ * @param array $agencies
+ *   Array of all agencies.
+ *
+ * @return array
+ *   Array of all components.
+ */
+function get_components_with_agency_name(array $agencies) {
+  foreach ($agencies as $agency) {
+    $name = $agency->name;
+    $components = $agency->departments;
+    foreach ($components as $component) {
+      $component->agency_name = $name;
+      $components_with_agency_name[] = $component;
+    }
+  }
+
+  return $components_with_agency_name;
+}
+
+/**
+ * Remove departments property from agencies.
+ *
+ * @param array $agency_data
+ *   Agency data.
+ */
+function remove_departments_property_from_agencies(array &$agency_data) {
+  $agencies = $agency_data['agencies'];
+  foreach ($agencies as $agency) {
+    unset($agency->departments);
+  }
 }
