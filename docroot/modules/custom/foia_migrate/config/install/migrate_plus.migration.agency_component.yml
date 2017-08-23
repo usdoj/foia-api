@@ -39,6 +39,18 @@ source:
       label: 'Agency Component Address'
       selector: address
     -
+      name: foia_officer
+      label: 'FOIA Officier'
+      selector: foia_officer
+    -
+      name: public_liaison
+      label: 'Public Liaison'
+      selector: public_liaison
+    -
+      name: service_center
+      label: 'Service Center'
+      selector: service_center
+    -
       name: id
       label: 'Component Migration ID'
       selector: id
@@ -62,6 +74,30 @@ process:
     plugin: default_value
     default_value: rich_text
   field_email: email
+  field_foia_officers:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: foia_officer
+    -
+      plugin: migration_lookup
+      migration: foia_personnel
+  field_public_liaisons:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: public_liaison
+    -
+      plugin: migration_lookup
+      migration: foia_personnel
+  field_service_centers:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: service_center
+    -
+      plugin: migration_lookup
+      migration: foia_personnel
   field_website: website
   field_reading_rooms:
     plugin: iterator
@@ -106,5 +142,8 @@ process:
 
 destination:
   plugin: entity:node
-migration_dependencies: {}
+migration_dependencies:
+  required:
+    - agency
+    - foia_personnel
 dependencies: {}
