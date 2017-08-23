@@ -102,6 +102,19 @@ function extract_personnel_from_components(array &$components) {
 }
 
 /**
+ * Assigns a unique numerical ID to agency components.
+ *
+ * @param object $component
+ *   Agency component object.
+ * @param int $id
+ *   Unique numerical ID assigned to an agency component.
+ */
+function set_component_id(&$component, &$id) {
+  $component->id = $id;
+  $id++;
+}
+
+/**
  * Assign each FOIA personnel an ID to aid in the migration effort.
  *
  * @param object $component
@@ -160,11 +173,13 @@ function write_data_to_json_file($file_name, array $data) {
  *   Array of all components.
  */
 function get_components_with_agency_name(array $agencies) {
+  $id = 1;
   foreach ($agencies as $agency) {
     $name = $agency->name;
     $components = $agency->departments;
     foreach ($components as $component) {
       $component->agency_name = $name;
+      set_component_id($component, $id);
       $components_with_agency_name[] = $component;
     }
   }
