@@ -14,9 +14,11 @@ delete_files_from_directory($modified_data_files_directory);
 $agency_data = extract_agencies_from_source_files($original_data_files_directory);
 $component_data = extract_components_from_agencies($agency_data['agencies']);
 remove_departments_property_from_agencies($agency_data);
+$personnel_data = extract_personnel_from_components($component_data['components']);
 
 write_data_to_json_file("{$modified_data_files_directory}/agencies.json", $agency_data);
 write_data_to_json_file("{$modified_data_files_directory}/components.json", $component_data);
+write_data_to_json_file("{$modified_data_files_directory}/personnel.json", $personnel_data);
 
 /**
  * Delete all files in a specified directory.
@@ -65,6 +67,75 @@ function extract_agencies_from_source_files($path_to_original_files) {
 function extract_components_from_agencies(array $agencies) {
   $components['components'] = get_components_with_agency_name($agencies);
   return $components;
+}
+
+/**
+ * Extract FOIA personnel from components and return array of personnel.
+ *
+ * @param array $components
+ *   Array of all components.
+ *
+ * @return array
+ *   Array of all FOIA personnel.
+ */
+function extract_personnel_from_components(array &$components) {
+  $id = 1;
+  foreach ($components as &$component) {
+    if (isset($component->foia_officer)) {
+      $foia_officer = set_personnel_id($component, 'foia_officer', $id);
+      assign_agency_name_to_personnel($component, $foia_officer);
+      $foia_personnel['personnel'][] = $foia_officer;
+    }
+    if (isset($component->public_liaison)) {
+      $public_liaison = set_personnel_id($component, 'public_liaison', $id);
+      assign_agency_name_to_personnel($component, $public_liaison);
+      $foia_personnel['personnel'][] = $public_liaison;
+    }
+    if (isset($component->service_center)) {
+      $service_center = set_personnel_id($component, 'service_center', $id);
+      assign_agency_name_to_personnel($component, $service_center);
+      $foia_personnel['personnel'][] = $service_center;
+    }
+  }
+
+  return $foia_personnel;
+}
+
+/**
+ * Assign each FOIA personnel an ID to aid in the migration effort.
+ *
+ * @param object $component
+ *   Agency component object.
+ * @param string $personnel_type
+ *   Type of personnel (e.g. foia_officer)
+ * @param int $id
+ *   Numerical ID to assign to FOIA personnel.
+ *
+ * @return object
+ *   FOIA Personnel object with an assigned numerical ID.
+ */
+function set_personnel_id(&$component, $personnel_type, &$id) {
+  $personnel_with_id = $component->{$personnel_type};
+  unset($component->{$personnel_type});
+  $component->{$personnel_type} = new stdClass();
+  $component->{$personnel_type}->id = $id;
+  $personnel_with_id->id = $id;
+  $id++;
+  return $personnel_with_id;
+}
+
+/**
+ * Assigns an agency name to a FOIA personnel object.
+ *
+ * @param object $component
+ *   The agency component the FOIA personnel belongs to.
+ * @param object $foia_personnel
+ *   The FOIA personnel object.
+ */
+function assign_agency_name_to_personnel($component, &$foia_personnel) {
+  if (isset($component->agency_name)) {
+    $foia_personnel->agency_name = $component->agency_name;
+  }
 }
 
 /**
