@@ -11,14 +11,29 @@ use Drupal\migrate_plus\Entity\Migration;
  * Implements hook_install().
  */
 function foia_migrate_install() {
-  /** @var \Drupal\migrate_plus\Entity\MigrationInterface $agency_migration */
-  $agency_migration = Migration::load('agency');
-  if ($agency_migration) {
-    $source = $agency_migration->get('source');
+  $migrations_with_relative_source_urls = [
+    'agency',
+    'foia_personnel',
+  ];
+  foreach ($migrations_with_relative_source_urls as $migrations_with_relative_source_url) {
+    convert_source_url_to_fully_qualified($migrations_with_relative_source_url);
+  }
+}
+
+/**
+ * Convert a migration's source url to be fully qualified.
+ *
+ * @param string $migration_id
+ *   The id of the migration to convert.
+ */
+function convert_source_url_to_fully_qualified($migration_id) {
+  $migration = Migration::load($migration_id);
+  if ($migration) {
+    $source = $migration->get('source');
     $request = \Drupal::request();
     $source['urls'] = 'http://' . $request->getHttpHost() . $source['urls'];
-    $agency_migration->set('source', $source);
-    $agency_migration->save();
+    $migration->set('source', $source);
+    $migration->save();
   }
 }
 
