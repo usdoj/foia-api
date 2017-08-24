@@ -80,21 +80,28 @@ function extract_components_from_agencies(array $agencies) {
  */
 function extract_personnel_from_components(array &$components) {
   $id = 1;
+  $foia_personnel = [];
   foreach ($components as &$component) {
     if (isset($component->foia_officer)) {
-      $foia_officer = set_personnel_id($component, 'foia_officer', $id);
-      assign_agency_name_to_personnel($component, $foia_officer);
-      $foia_personnel['personnel'][] = $foia_officer;
+      $foia_officer = set_personnel_id($foia_personnel, $component, 'foia_officer', $id);
+      if ($foia_officer) {
+        assign_agency_name_to_personnel($component, $foia_officer);
+        $foia_personnel['personnel'][] = $foia_officer;
+      }
     }
     if (isset($component->public_liaison)) {
-      $public_liaison = set_personnel_id($component, 'public_liaison', $id);
-      assign_agency_name_to_personnel($component, $public_liaison);
-      $foia_personnel['personnel'][] = $public_liaison;
+      $public_liaison = set_personnel_id($foia_personnel, $component, 'public_liaison', $id);
+      if ($public_liaison) {
+        assign_agency_name_to_personnel($component, $public_liaison);
+        $foia_personnel['personnel'][] = $public_liaison;
+      }
     }
     if (isset($component->service_center)) {
-      $service_center = set_personnel_id($component, 'service_center', $id);
-      assign_agency_name_to_personnel($component, $service_center);
-      $foia_personnel['personnel'][] = $service_center;
+      $service_center = set_personnel_id($foia_personnel, $component, 'service_center', $id);
+      if ($service_center) {
+        assign_agency_name_to_personnel($component, $service_center);
+        $foia_personnel['personnel'][] = $service_center;
+      }
     }
   }
 
@@ -124,17 +131,60 @@ function set_component_id(&$component, &$id) {
  * @param int $id
  *   Numerical ID to assign to FOIA personnel.
  *
- * @return object
- *   FOIA Personnel object with an assigned numerical ID.
+ * @return mixed
+ *   FOIA Personnel object with an assigned numerical ID if dealing with new
+ *   personnel, FALSE otherwise.
  */
-function set_personnel_id(&$component, $personnel_type, &$id) {
-  $personnel_with_id = $component->{$personnel_type};
+function set_personnel_id(&$personnel, &$component, $personnel_type, &$id) {
+  $individual_personnel = $component->{$personnel_type};
   unset($component->{$personnel_type});
   $component->{$personnel_type} = new stdClass();
-  $component->{$personnel_type}->id = $id;
-  $personnel_with_id->id = $id;
-  $id++;
-  return $personnel_with_id;
+  $existing_id = '';
+  if (isset($personnel['personnel'])) {
+    $existing_id = get_existing_personnel_id($personnel['personnel'], $component, $individual_personnel);
+  }
+  if ($existing_id) {
+    $component->{$personnel_type}->id = $existing_id;
+    return FALSE;
+  }
+  else {
+    $component->{$personnel_type}->id = $id;
+    $individual_personnel->id = $id;
+    $id++;
+    return $individual_personnel;
+  }
+}
+
+/**
+ * Checks for an existing personnel before creating a new personnel object.
+ *
+ * @param array $existing_personnel
+ *   All existing personnel objects created.
+ * @param object $component
+ *   Agency component object.
+ * @param object $individual_personnel
+ *   Individual personnel to check existing personnel for.
+ *
+ * @return mixed
+ *   Numerical ID of existing matching personnel, FALSE otherwise.
+ */
+function get_existing_personnel_id(array $existing_personnel, $component, $individual_personnel) {
+  $name_to_check = isset($individual_personnel->name) ? $individual_personnel->name : '';
+  $phone_numbers_to_check = isset($individual_personnel->phone) ? $individual_personnel->phone : [];
+  $agency_to_check = isset($component->agency_name) ? $component->agency_name : '';
+  foreach ($existing_personnel as $existing_individual_personnel) {
+    $existing_name = isset($existing_individual_personnel->name) ? $existing_individual_personnel->name : '';
+    $existing_phone_numbers = isset($existing_individual_personnel->phone) ? $existing_individual_personnel->phone : [];
+    $existing_agency_name = isset($existing_individual_personnel->agency_name) ? $existing_individual_personnel->agency_name : '';
+    if (
+      $name_to_check == $existing_name
+      && $phone_numbers_to_check == $existing_phone_numbers
+      && $agency_to_check == $existing_agency_name
+    ) {
+      return $existing_individual_personnel->id;
+    }
+  }
+  return FALSE;
 }
 
 /**
