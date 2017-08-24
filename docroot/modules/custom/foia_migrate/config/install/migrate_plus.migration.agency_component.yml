@@ -1,0 +1,110 @@
+id: agency_component
+label: Agency Components
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  # Normally, this is one or more fully-qualified URLs or file paths. Because
+  # we can't hardcode a local URL, we provide a relative path here which
+  # hook_install() will rewrite to a full URL for the current site.
+  urls: /modules/custom/foia_migrate/data/modified/components.json
+  item_selector: components
+  fields:
+    -
+      name: agency_name
+      label: 'Agency Name'
+      selector: agency_name
+    -
+      name: name
+      label: 'Agency Component Name'
+      selector: name
+    -
+      name: description
+      label: 'Agency Component Description'
+      selector: description
+    -
+      name: email
+      label: 'Agency Component Emails'
+      selector: emails
+    -
+      name: website
+      label: 'Agency Component Website'
+      selector: website
+    -
+      name: reading_rooms
+      label: 'Agency Component Reading Rooms'
+      selector: reading_rooms
+    -
+      name: address
+      label: 'Agency Component Address'
+      selector: address
+    -
+      name: id
+      label: 'Component Migration ID'
+      selector: id
+  ids:
+    id:
+      type: integer
+
+process:
+  type:
+    plugin: default_value
+    default_value: agency_component
+  title: name
+  field_agency:
+    plugin: migration_lookup
+    migration: agency
+    source: agency_name
+  body/value:
+    plugin: nl2br
+    source: description
+  body/format:
+    plugin: default_value
+    default_value: rich_text
+  field_email: email
+  field_website: website
+  field_reading_rooms:
+    plugin: iterator
+    source: reading_rooms
+    process:
+      uri:
+        -
+          plugin: get
+          source: '1'
+  field_submission_address/country_code:
+    plugin: default_value
+    default_value: US
+  field_submission_address/address_line1:
+    -
+      plugin: extract
+      source: address
+      index:
+        - address_lines
+    -
+      plugin: concat
+      delimiter: ', '
+  field_submission_address/address_line2:
+    plugin: extract
+    source: address
+    index:
+      - street
+  field_submission_address/locality:
+    plugin: extract
+    source: address
+    index:
+      - city
+  field_submission_address/administrative_area:
+    plugin: extract
+    source: address
+    index:
+      - state
+  field_submission_address/postal_code:
+    plugin: extract
+    source: address
+    index:
+      - zip
+
+destination:
+  plugin: entity:node
+migration_dependencies: {}
+dependencies: {}
