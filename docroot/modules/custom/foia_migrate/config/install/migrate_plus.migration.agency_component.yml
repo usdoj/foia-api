@@ -51,6 +51,10 @@ source:
       label: 'Service Center'
       selector: service_center
     -
+      name: request_form
+      label: 'Request Form URL'
+      selector: request_form
+    -
       name: id
       label: 'Component Migration ID'
       selector: id
@@ -139,6 +143,7 @@ process:
     source: address
     index:
       - zip
+  field_submission_web: request_form
 
 destination:
   plugin: entity:node
