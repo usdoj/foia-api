@@ -3,17 +3,26 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.foia_personnel.foia_personnel.field_agency
     - field.field.foia_personnel.foia_personnel.field_foia_personnel_email
     - field.field.foia_personnel.foia_personnel.field_foia_personnel_phone
     - field.field.foia_personnel.foia_personnel.field_foia_personnel_title
   module:
     - foia_personnel
-    - user
+    - telephone
 id: foia_personnel.foia_personnel.default
 targetEntityType: foia_personnel
 bundle: foia_personnel
 mode: default
 content:
+  field_agency:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
   field_foia_personnel_email:
     weight: 3
     label: above
@@ -24,9 +33,10 @@ content:
   field_foia_personnel_phone:
     weight: 4
     label: above
-    settings: {  }
+    settings:
+      title: ''
     third_party_settings: {  }
-    type: basic_string
+    type: telephone_link
     region: content
   field_foia_personnel_title:
     weight: 2
@@ -39,16 +49,10 @@ content:
   name:
     label: above
     type: string
-    weight: -4
+    weight: 1
     region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  user_id: true
