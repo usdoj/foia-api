@@ -71,6 +71,14 @@ source:
       label: 'Request Form URL'
       selector: request_form
     -
+      name: fax
+      label: 'Fax'
+      selector: fax
+    -
+      name: email_submission
+      label: 'Email Submission'
+      selector: email_submission
+    -
       name: id
       label: 'Component Migration ID'
       selector: id
@@ -154,6 +162,8 @@ process:
   field_submission_address/locality: city
   field_submission_address/administrative_area: state
   field_submission_address/postal_code: zip
+  field_submission_fax: fax
+  field_submission_email: email_submission
   field_submission_web: request_form
 
 destination:
