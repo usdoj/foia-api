@@ -35,9 +35,25 @@ source:
       label: 'Agency Component Reading Rooms'
       selector: reading_rooms
     -
-      name: address
-      label: 'Agency Component Address'
-      selector: address
+      name: address_lines
+      label: 'Address Lines'
+      selector: address/address_lines
+    -
+      name: street
+      label: 'Street'
+      selector: address/street
+    -
+      name: city
+      label: 'City'
+      selector: address/city
+    -
+      name: state
+      label: 'State'
+      selector: address/state
+    -
+      name: zip
+      label: 'Zip'
+      selector: address/zip
     -
       name: foia_officer
       label: 'FOIA Officier'
@@ -114,35 +130,30 @@ process:
   field_submission_address/country_code:
     plugin: default_value
     default_value: US
-  field_submission_address/address_line1:
+  address_line:
     -
-      plugin: extract
-      source: address
-      index:
-        - address_lines
+      plugin: skip_on_empty
+      method: process
+      source: address_lines
     -
       plugin: concat
       delimiter: ', '
-  field_submission_address/address_line2:
-    plugin: extract
-    source: address
-    index:
-      - street
-  field_submission_address/locality:
-    plugin: extract
-    source: address
-    index:
-      - city
-  field_submission_address/administrative_area:
-    plugin: extract
-    source: address
-    index:
-      - state
-  field_submission_address/postal_code:
-    plugin: extract
-    source: address
-    index:
-      - zip
+  field_submission_address/address_line1:
+    -
+      plugin: get
+      source:
+        - '@address_line'
+        - name
+    -
+      plugin: callback
+      callable: array_filter
+    -
+      plugin: callback
+      callable: current
+  field_submission_address/address_line2: street
+  field_submission_address/locality: city
+  field_submission_address/administrative_area: state
+  field_submission_address/postal_code: zip
   field_submission_web: request_form
 
 destination:
