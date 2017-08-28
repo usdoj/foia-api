@@ -43,6 +43,7 @@ function convert_source_url_to_fully_qualified($migration_id) {
 function foia_migrate_uninstall() {
   $migration_config_to_delete = [
     'agency',
+    'foia_personnel',
   ];
   foreach ($migration_config_to_delete as $config_name) {
     \Drupal::configFactory()->getEditable("migrate_plus.migration.{$config_name}")->delete();
