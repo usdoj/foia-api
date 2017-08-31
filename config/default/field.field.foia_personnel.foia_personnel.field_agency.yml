@@ -1,0 +1,29 @@
+uuid: faaed216-91a9-4f62-905f-56c61926a6f3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.foia_personnel.field_agency
+    - taxonomy.vocabulary.agency
+  module:
+    - foia_personnel
+id: foia_personnel.foia_personnel.field_agency
+field_name: field_agency
+entity_type: foia_personnel
+bundle: foia_personnel
+label: Agency
+description: 'The top-level agency the FOIA Personnel belongs to.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      agency: agency
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

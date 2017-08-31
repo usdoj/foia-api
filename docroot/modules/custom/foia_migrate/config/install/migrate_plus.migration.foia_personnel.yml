@@ -1,0 +1,46 @@
+id: foia_personnel
+label: FOIA Personnel
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  # Normally, this is one or more fully-qualified URLs or file paths. Because
+  # we can't hardcode a local URL, we provide a relative path here which
+  # hook_install() will rewrite to a full URL for the current site.
+  urls: /modules/custom/foia_migrate/data/modified/personnel.json
+  item_selector: personnel
+  fields:
+    -
+      name: id
+      label: 'FOIA Personnel ID'
+      selector: id
+    -
+      name: name
+      label: 'FOIA Personnel Name'
+      selector: name
+    -
+      name: phone
+      label: 'FOIA Personnel Phone Number'
+      selector: phone
+    -
+      name: agency_name
+      label: 'Agency Name'
+      selector: agency_name
+  ids:
+    id:
+      type: integer
+
+process:
+  name: name
+  field_foia_personnel_phone: phone
+  field_agency:
+    plugin: migration_lookup
+    migration: agency
+    source: agency_name
+
+destination:
+  plugin: entity:foia_personnel
+migration_dependencies:
+  required:
+    - agency
+dependencies: {}
