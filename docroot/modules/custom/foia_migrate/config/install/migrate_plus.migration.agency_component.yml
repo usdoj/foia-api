@@ -1,0 +1,175 @@
+id: agency_component
+label: Agency Components
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  # Normally, this is one or more fully-qualified URLs or file paths. Because
+  # we can't hardcode a local URL, we provide a relative path here which
+  # hook_install() will rewrite to a full URL for the current site.
+  urls: /modules/custom/foia_migrate/data/modified/components.json
+  item_selector: components
+  fields:
+    -
+      name: agency_name
+      label: 'Agency Name'
+      selector: agency_name
+    -
+      name: name
+      label: 'Agency Component Name'
+      selector: name
+    -
+      name: description
+      label: 'Agency Component Description'
+      selector: description
+    -
+      name: email
+      label: 'Agency Component Emails'
+      selector: emails
+    -
+      name: website
+      label: 'Agency Component Website'
+      selector: website
+    -
+      name: reading_rooms
+      label: 'Agency Component Reading Rooms'
+      selector: reading_rooms
+    -
+      name: address_lines
+      label: 'Address Lines'
+      selector: address/address_lines
+    -
+      name: street
+      label: 'Street'
+      selector: address/street
+    -
+      name: city
+      label: 'City'
+      selector: address/city
+    -
+      name: state
+      label: 'State'
+      selector: address/state
+    -
+      name: zip
+      label: 'Zip'
+      selector: address/zip
+    -
+      name: foia_officer
+      label: 'FOIA Officier'
+      selector: foia_officer
+    -
+      name: public_liaison
+      label: 'Public Liaison'
+      selector: public_liaison
+    -
+      name: service_center
+      label: 'Service Center'
+      selector: service_center
+    -
+      name: request_form
+      label: 'Request Form URL'
+      selector: request_form
+    -
+      name: fax
+      label: 'Fax'
+      selector: fax
+    -
+      name: email_submission
+      label: 'Email Submission'
+      selector: email_submission
+    -
+      name: id
+      label: 'Component Migration ID'
+      selector: id
+  ids:
+    id:
+      type: integer
+
+process:
+  type:
+    plugin: default_value
+    default_value: agency_component
+  title: name
+  field_agency:
+    plugin: migration_lookup
+    migration: agency
+    source: agency_name
+  body/value:
+    plugin: nl2br
+    source: description
+  body/format:
+    plugin: default_value
+    default_value: rich_text
+  field_email: email
+  field_foia_officers:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: foia_officer
+    -
+      plugin: migration_lookup
+      migration: foia_personnel
+  field_public_liaisons:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: public_liaison
+    -
+      plugin: migration_lookup
+      migration: foia_personnel
+  field_service_centers:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: service_center
+    -
+      plugin: migration_lookup
+      migration: foia_personnel
+  field_website: website
+  field_reading_rooms:
+    plugin: iterator
+    source: reading_rooms
+    process:
+      uri:
+        -
+          plugin: get
+          source: '1'
+  field_submission_address/country_code:
+    plugin: default_value
+    default_value: US
+  address_line:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: address_lines
+    -
+      plugin: concat
+      delimiter: ', '
+  field_submission_address/address_line1:
+    -
+      plugin: get
+      source:
+        - '@address_line'
+        - name
+    -
+      plugin: callback
+      callable: array_filter
+    -
+      plugin: callback
+      callable: current
+  field_submission_address/address_line2: street
+  field_submission_address/locality: city
+  field_submission_address/administrative_area: state
+  field_submission_address/postal_code: zip
+  field_submission_fax: fax
+  field_submission_email: email_submission
+  field_submission_web: request_form
+
+destination:
+  plugin: entity:node
+migration_dependencies:
+  required:
+    - agency
+    - foia_personnel
+dependencies: {}

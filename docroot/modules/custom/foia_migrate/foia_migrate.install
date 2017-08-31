@@ -14,6 +14,7 @@ function foia_migrate_install() {
   $migrations_with_relative_source_urls = [
     'agency',
     'foia_personnel',
+    'agency_component',
   ];
   foreach ($migrations_with_relative_source_urls as $migrations_with_relative_source_url) {
     convert_source_url_to_fully_qualified($migrations_with_relative_source_url);
@@ -44,6 +45,7 @@ function foia_migrate_uninstall() {
   $migration_config_to_delete = [
     'agency',
     'foia_personnel',
+    'agency_component',
   ];
   foreach ($migration_config_to_delete as $config_name) {
     \Drupal::configFactory()->getEditable("migrate_plus.migration.{$config_name}")->delete();
