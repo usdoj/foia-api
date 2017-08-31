@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Update functions for the FOIA Personnel module.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Changing size of the name column in the foia_personnel and revision table.
+ */
+function foia_personnel_update_8001() {
+  $schema = Database::getConnection()->schema();
+  if ($schema->tableExists('foia_personnel') &&
+    $schema->fieldExists('foia_personnel', 'name')) {
+    $spec = [
+      'type' => 'varchar',
+      'description' => '',
+      'length' => 255,
+      'not null' => FALSE,
+    ];
+    // Change field length to 255 characters.
+    $schema->changeField('foia_personnel', 'name', 'name', $spec);
+    $schema->changeField('foia_personnel_revision', 'name', 'name', $spec);
+  }
+}
