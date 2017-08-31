@@ -82,6 +82,14 @@ source:
       name: id
       label: 'Component Migration ID'
       selector: id
+    -
+      name: abbreviation
+      label: 'Component Abbreviation'
+      selector: abbreviation
+    -
+      name: phone
+      label: 'Component Telephone Number'
+      selector: phone
   ids:
     id:
       type: integer
@@ -165,6 +173,8 @@ process:
   field_submission_fax: fax
   field_submission_email: email_submission
   field_submission_web: request_form
+  field_agency_comp_abbreviation: abbreviation
+  field_agency_comp_telephone: phone
 
 destination:
   plugin: entity:node
