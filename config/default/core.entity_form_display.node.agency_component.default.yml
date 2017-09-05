@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.field.node.agency_component.body
     - field.field.node.agency_component.field_agency
+    - field.field.node.agency_component.field_agency_comp_abbreviation
+    - field.field.node.agency_component.field_agency_comp_telephone
     - field.field.node.agency_component.field_agency_component_id
     - field.field.node.agency_component.field_email
     - field.field.node.agency_component.field_foia_officers
@@ -38,7 +40,7 @@ third_party_settings:
         - field_receiver
         - field_submission_address
       parent_name: ''
-      weight: 15
+      weight: 17
       format_type: details
       format_settings:
         id: ''
@@ -62,7 +64,7 @@ third_party_settings:
       children:
         - field_submission_web
       parent_name: ''
-      weight: 18
+      weight: 19
       format_type: details
       format_settings:
         id: ''
@@ -74,7 +76,7 @@ third_party_settings:
       children:
         - field_submission_fax
       parent_name: ''
-      weight: 16
+      weight: 18
       format_type: details
       format_settings:
         id: ''
@@ -100,7 +102,7 @@ third_party_settings:
         - group_email_submissions
         - group_api_submissions
       parent_name: ''
-      weight: 19
+      weight: 20
       format_type: fieldset
       format_settings:
         id: ''
@@ -115,7 +117,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 3
+    weight: 4
     settings:
       rows: 9
       summary_rows: 3
@@ -124,7 +126,7 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -137,6 +139,21 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_agency_comp_abbreviation:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_agency_comp_telephone:
+    weight: 5
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: telephone_default
+    region: content
   field_agency_component_id:
     weight: 1
     settings:
@@ -145,7 +162,7 @@ content:
     type: number
     region: content
   field_email:
-    weight: 4
+    weight: 6
     settings:
       size: 60
       placeholder: ''
@@ -153,7 +170,7 @@ content:
     type: email_default
     region: content
   field_foia_officers:
-    weight: 6
+    weight: 8
     settings:
       form_mode: default
       label_singular: ''
@@ -172,7 +189,7 @@ content:
     type: options_select
     region: content
   field_public_liaisons:
-    weight: 7
+    weight: 9
     settings:
       form_mode: default
       label_singular: ''
@@ -185,7 +202,7 @@ content:
     type: inline_entity_form_complex
     region: content
   field_reading_rooms:
-    weight: 5
+    weight: 7
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -206,13 +223,13 @@ content:
     type: inline_entity_form_complex
     region: content
   field_request_submission_form:
-    weight: 20
+    weight: 21
     settings: {  }
     third_party_settings: {  }
     type: webform_entity_reference_select
     region: content
   field_service_centers:
-    weight: 8
+    weight: 10
     settings:
       form_mode: default
       label_singular: ''
@@ -263,7 +280,7 @@ content:
     type: link_default
     region: content
   field_website:
-    weight: 14
+    weight: 16
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -272,7 +289,7 @@ content:
     region: content
   path:
     type: path
-    weight: 13
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -280,14 +297,14 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 13
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 12
+    weight: 14
     region: content
     third_party_settings: {  }
   title:
@@ -300,7 +317,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 9
+    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60

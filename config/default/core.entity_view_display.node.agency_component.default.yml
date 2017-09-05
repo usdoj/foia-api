@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.field.node.agency_component.body
     - field.field.node.agency_component.field_agency
+    - field.field.node.agency_component.field_agency_comp_abbreviation
+    - field.field.node.agency_component.field_agency_comp_telephone
     - field.field.node.agency_component.field_agency_component_id
     - field.field.node.agency_component.field_email
     - field.field.node.agency_component.field_foia_officers
@@ -25,6 +27,7 @@ dependencies:
     - address
     - link
     - options
+    - telephone
     - text
     - user
     - webform
@@ -36,20 +39,36 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   field_agency:
-    weight: 102
+    weight: 2
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_agency_comp_abbreviation:
+    weight: 5
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_agency_comp_telephone:
+    weight: 6
+    label: above
+    settings:
+      title: ''
+    third_party_settings: {  }
+    type: telephone_link
+    region: content
   field_agency_component_id:
-    weight: 104
+    weight: 4
     label: above
     settings:
       thousand_separator: ''
@@ -58,14 +77,14 @@ content:
     type: number_integer
     region: content
   field_email:
-    weight: 105
+    weight: 7
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_foia_officers:
-    weight: 114
+    weight: 15
     label: above
     settings:
       link: true
@@ -73,14 +92,14 @@ content:
     type: entity_reference_label
     region: content
   field_portal_submission_format:
-    weight: 118
+    weight: 19
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_public_liaisons:
-    weight: 117
+    weight: 18
     label: above
     settings:
       link: true
@@ -88,7 +107,7 @@ content:
     type: entity_reference_label
     region: content
   field_reading_rooms:
-    weight: 107
+    weight: 9
     label: above
     settings:
       trim_length: 80
@@ -100,7 +119,7 @@ content:
     type: link
     region: content
   field_receiver:
-    weight: 116
+    weight: 17
     label: above
     settings:
       link: true
@@ -108,7 +127,7 @@ content:
     type: entity_reference_label
     region: content
   field_request_submission_form:
-    weight: 103
+    weight: 3
     label: above
     settings:
       source_entity: true
@@ -116,7 +135,7 @@ content:
     type: webform_entity_reference_entity_view
     region: content
   field_service_centers:
-    weight: 115
+    weight: 16
     label: above
     settings:
       link: true
@@ -124,14 +143,14 @@ content:
     type: entity_reference_label
     region: content
   field_submission_address:
-    weight: 108
+    weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
     type: address_default
     region: content
   field_submission_api:
-    weight: 113
+    weight: 14
     label: above
     settings:
       link_to_entity: false
@@ -139,21 +158,22 @@ content:
     type: string
     region: content
   field_submission_email:
-    weight: 109
+    weight: 11
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_submission_fax:
-    weight: 111
+    weight: 13
     label: above
-    settings: {  }
+    settings:
+      title: ''
     third_party_settings: {  }
-    type: basic_string
+    type: telephone_link
     region: content
   field_submission_web:
-    weight: 110
+    weight: 12
     label: above
     settings:
       trim_length: 80
@@ -165,7 +185,7 @@ content:
     type: link
     region: content
   field_website:
-    weight: 106
+    weight: 8
     label: above
     settings:
       trim_length: 80
@@ -177,6 +197,8 @@ content:
     type: link
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden: {  }
