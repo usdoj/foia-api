@@ -849,3 +849,4 @@ $config = array(
     'trusted.url.domains' => array(),
 
 );
+include 'acquia_config.php';
