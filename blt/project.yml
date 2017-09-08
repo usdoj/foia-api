@@ -56,3 +56,9 @@ behat:
   web-driver: selenium
 vm:
   enable: true
+phpunit:
+  -
+    config: ${docroot}/core/phpunit.xml.dist
+    path: ${docroot}/modules/custom/webform_template
+    class: WebformTemplateTest
+    file: tests/src/Functional/WebformTemplateTest.php
