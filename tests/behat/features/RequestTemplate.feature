@@ -5,6 +5,15 @@ Feature: Request template Feature
   I should be able to duplicate the universal form template with common fields
 
   @api
+  Scenario: Create a webform based upon the template
+    Given I am logged in as a user with the 'Administer webforms' permission
+    When I am at 'admin/structure/webform/manage/basic_request_submission_form/duplicate'
+    And for 'Title' I enter 'Test Duplication of Basic Request submission form'
+    And I press the 'Save' button
+    Then I should see the following success messages:
+      | Webform Test Duplication of Basic Request submission form created. |
+
+  @api
   Scenario: Ensure common universal fields in form template
     Given I am logged in as a user with the 'Administer webforms' permission
     And I am at 'form/basic-request-submission-form'
