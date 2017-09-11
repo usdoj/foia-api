@@ -10,10 +10,10 @@ project:
 git:
   default_branch: foia-develop
   remotes:
-    - 'doj@svn-6971.prod.hosting.acquia.com:doj.git'
+    - 'foia@svn-23659.prod.hosting.acquia.com:foia.git'
 drush:
   aliases:
-    remote: doj.foia
+    remote: foia.test
     local: self
     ci: self
   default_alias: '${drush.aliases.local}'
