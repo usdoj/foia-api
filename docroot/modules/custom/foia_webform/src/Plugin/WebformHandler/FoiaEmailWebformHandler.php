@@ -5,6 +5,7 @@ namespace Drupal\foia_webform\Plugin\WebformHandler;
 use Drupal\file\Entity\File;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Emails a webform submission.
@@ -24,6 +25,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * {@inheritdoc}
    */
   public function sendMessage(WebformSubmissionInterface $webform_submission, array $message) {
+    // Get form submissions.
     $data = $webform_submission->getData();
 
     // If there is a file attachment, get the file URL.
@@ -36,13 +38,34 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     // Format the submission values as CSV.
     $submissions = $this->arrayToString($data);
 
+    // Append CSV string to the message body.
     $newline = ($message['html']) ? '<br/>' : "\n";
     $text = t('The submission data is reproduced below in CSV format for your convenience.');
     $message['body'] .= $text . $newline;
     $message['body'] .= '--------------------------' . $newline;
     $message['body'] .= $submissions;
 
-    return parent::sendMessage($webform_submission, $message);
+    // Look up the agency component.
+    $form = $webform_submission->getWebform();
+    $form_id = $form->getOriginalId();
+    $agency_component = $this->lookupComponent($form_id);
+
+    // Get To email address.
+    $to_email = $agency_component->get('field_submission_email')->getValue();
+
+    // Log error if we don't have a Submission Email value.
+    if (!empty($to_email)) {
+      $message['to_mail'] = $to_email[0]['value'];
+      return parent::sendMessage($webform_submission, $message);
+    }
+    else {
+      \Drupal::logger('foia_webform')
+        ->error('No Submission Email: Unable to send email for %title',
+          [
+            '%title' => $agency_component->getTitle(),
+            'link' => $agency_component->toLink($this->t('Edit Component'), 'edit-form')->toString(),
+          ]);
+    }
   }
 
   /**
@@ -67,6 +90,26 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     fclose($handle);
 
     return $csv;
+  }
+
+  /**
+   * Queries for an associated Agency Component given a form ID.
+   *
+   * @param string $form_id
+   *   The form ID.
+   *
+   * @return object
+   *   The Agency Component object or NULL.
+   */
+  public function lookupComponent($form_id) {
+    $entity_query_service = \Drupal::service('entity.query');
+    $query = $entity_query_service->get('node')
+      ->condition('type', 'agency_component')
+      ->condition('field_request_submission_form', $form_id);
+    $nid = $query->execute();
+
+    $node = ($nid) ? Node::load(reset($nid)) : NULL;
+    return $node;
   }
 
 }

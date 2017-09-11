@@ -4,3 +4,24 @@
  * @file
  * FOIA Webform module.
  */
+
+use Drupal\webform\WebformInterface;
+
+/**
+ * Programmatically add the foia_email handler to new webforms.
+ */
+function foia_webform_webform_insert(WebformInterface $webform) {
+  $webform_handler_manager = \Drupal::service('plugin.manager.webform.handler');
+  $webform_handler = $webform_handler_manager->createInstance('foia_email');
+
+  // @todo: Add Submission Email if we add Agency Component entity reference.
+
+  // Must update original id to prevent the below error.
+  // Drupal\Core\Config\ConfigNameException: The machine name of the 'Webform'
+  // bundle cannot be changed in
+  // Drupal\Core\Config\Entity\ConfigEntityBundleBase->preSave()
+  $webform->setOriginalId($webform->id());
+
+  // Add handle to the webform, which triggers another save().
+  $webform->addWebformHandler($webform_handler);
+}
