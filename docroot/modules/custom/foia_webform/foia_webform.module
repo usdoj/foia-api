@@ -15,6 +15,34 @@ function foia_webform_webform_insert(WebformInterface $webform) {
   $webform_handler = $webform_handler_manager->createInstance('foia_email');
 
   // @todo: Add Submission Email if we add Agency Component entity reference.
+  // Set default configuration.
+  $webform_handler->setConfiguration([
+    'id' => 'foia_email',
+    'label' => 'FOIA Email',
+    'handler_id' => 'foia_email',
+    'status' => TRUE,
+    'weight' => 0,
+    'settings' => [
+      'states' => ['completed'],
+      'to_mail' => '',
+      'to_options' => [],
+      'cc_mail' => '',
+      'cc_options' => [],
+      'bcc_mail' => '',
+      'bcc_options' => [],
+      'from_mail' => 'default',
+      'from_options' => [],
+      'from_name' => 'default',
+      'subject' => '[webform_submission:values:subject:value]',
+      'body' => '[webform_submission:values:message:value]',
+      'excluded_elements' => [],
+      'html' => TRUE,
+      'attachments' => FALSE,
+      'debug' => 0,
+      'reply_to' => '',
+      'return_path' => '',
+    ],
+  ]);
 
   // Must update original id to prevent the below error.
   // Drupal\Core\Config\ConfigNameException: The machine name of the 'Webform'
