@@ -1,0 +1,17 @@
+uuid: 37d989bb-f333-4675-b470-f956d885bb11
+langcode: en
+status: true
+dependencies:
+  module:
+    - foia_api
+    - serialization
+    - user
+id: webform_submission
+plugin_id: webform_submission
+granularity: method
+configuration:
+  POST:
+    supported_formats:
+      - json
+    supported_auth:
+      - cookie
