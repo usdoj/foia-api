@@ -27,6 +27,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   public function sendMessage(WebformSubmissionInterface $webform_submission, array $message) {
     // Get form submissions.
     $data = $webform_submission->getData();
+    $error_message = NULL;
+    $context = [];
 
     // If there is a file attachment, get the file URL.
     if (isset($data['attachments_supporting_documentation'])) {
@@ -50,21 +52,38 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $form_id = $form->getOriginalId();
     $agency_component = $this->lookupComponent($form_id);
 
-    // Get To email address.
-    $to_email = $agency_component->get('field_submission_email')->getValue();
+    // If we have an Agency Component, get the Submission Email value.
+    if ($agency_component) {
+      $to_email = $agency_component->get('field_submission_email')->getValue();
 
-    // Log error if we don't have a Submission Email value.
-    if (!empty($to_email)) {
-      $message['to_mail'] = $to_email[0]['value'];
-      return parent::sendMessage($webform_submission, $message);
+      if (!empty($to_email)) {
+        $message['to_mail'] = $to_email[0]['value'];
+      }
+      // If we don't have a Submission Email value log an error.
+      else {
+        $error_message = 'No Submission Email: Unable to send email for %title';
+        $context = [
+          '%title' => $agency_component->getTitle(),
+          'link' => $agency_component->toLink($this->t('Edit Component'), 'edit-form')->toString(),
+        ];
+      }
     }
+    // If there isn't an associated Agency Component log an error.
     else {
+      $error_message = 'Unassociated form: The form, %title, is not associate with an Agency Component.';
+      $context = [
+        '%title' => $form->label(),
+      ];
+    }
+
+    // If the error message and context, log the error.
+    if ($error_message && !empty($context)) {
       \Drupal::logger('foia_webform')
-        ->error('No Submission Email: Unable to send email for %title',
-          [
-            '%title' => $agency_component->getTitle(),
-            'link' => $agency_component->toLink($this->t('Edit Component'), 'edit-form')->toString(),
-          ]);
+        ->error($error_message, $context);
+    }
+    // Send the email.
+    else {
+      return parent::sendMessage($webform_submission, $message);
     }
   }
 
