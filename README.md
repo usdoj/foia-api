@@ -20,3 +20,10 @@ Ansible - 2.2.3
 
 * [Issue queue](https://github.com/18F/beta.foia.gov/issues)
 * [GitHub](https://github.com/usdoj/foia)
+
+### Data model
+
+This diagram illustrates the data model, including what actors are responsible
+for different types of data.
+
+![Diagram describing the data flow of the system](./foia-api-data-diagram.png)
