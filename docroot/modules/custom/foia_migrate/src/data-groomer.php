@@ -103,6 +103,20 @@ function extract_personnel_from_components(array &$components) {
         $foia_personnel['personnel'][] = $service_center;
       }
     }
+    // Assign user from Misc data field.
+    if (isset($component->misc)) {
+      $misc_users = $component->misc;
+      $component->miscellaneous = new stdClass();
+      foreach ($misc_users as $title => $miscellaneous) {
+        $misc = set_personnel_id($foia_personnel, $component, 'miscellaneous', $id, $miscellaneous);
+        if ($misc) {
+          assign_agency_name_to_personnel($component, $misc);
+          $misc->title = $title;
+          $foia_personnel['personnel'][] = $misc;
+        }
+      }
+      unset($component->misc);
+    }
   }
 
   return $foia_personnel;
@@ -130,25 +144,42 @@ function set_component_id(&$component, &$id) {
  *   Type of personnel (e.g. foia_officer)
  * @param int $id
  *   Numerical ID to assign to FOIA personnel.
+ * @param object $misc
+ *   The Misc user object.
  *
  * @return mixed
  *   FOIA Personnel object with an assigned numerical ID if dealing with new
  *   personnel, FALSE otherwise.
  */
-function set_personnel_id(&$personnel, &$component, $personnel_type, &$id) {
-  $individual_personnel = $component->{$personnel_type};
-  unset($component->{$personnel_type});
-  $component->{$personnel_type} = new stdClass();
+function set_personnel_id(&$personnel, &$component, $personnel_type, &$id, $misc = NULL) {
+  if ($personnel_type === 'miscellaneous') {
+    $individual_personnel = $misc;
+  }
+  else {
+    $individual_personnel = $component->{$personnel_type};
+    unset($component->{$personnel_type});
+    $component->{$personnel_type} = new stdClass();
+  }
   $existing_id = '';
   if (isset($personnel['personnel'])) {
     $existing_id = get_existing_personnel_id($personnel['personnel'], $component, $individual_personnel);
   }
   if ($existing_id) {
-    $component->{$personnel_type}->id = $existing_id;
+    if ($personnel_type === 'miscellaneous') {
+      $component->miscellaneous->{$existing_id} = $existing_id;
+    }
+    else {
+      $component->{$personnel_type}->id = $existing_id;
+    }
     return FALSE;
   }
   else {
-    $component->{$personnel_type}->id = $id;
+    if ($personnel_type === 'miscellaneous') {
+      $component->miscellaneous->{$id} = $id;
+    }
+    else {
+      $component->{$personnel_type}->id = $id;
+    }
     $individual_personnel->id = $id;
     $id++;
     return $individual_personnel;
