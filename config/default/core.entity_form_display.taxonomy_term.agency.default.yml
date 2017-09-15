@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.taxonomy_term.agency.field_agency_abbreviation
     - field.field.taxonomy_term.agency.field_agency_seal
-    - field.field.taxonomy_term.agency.field_usa_id
     - image.style.thumbnail
     - taxonomy.vocabulary.agency
   module:
@@ -40,13 +39,6 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
-    region: content
-  field_usa_id:
-    weight: 2
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
     region: content
   name:
     type: string_textfield
