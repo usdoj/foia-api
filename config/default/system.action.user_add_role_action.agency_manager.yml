@@ -1,0 +1,14 @@
+uuid: 25407088-01da-49dd-9959-ba13dcd42d9f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.agency_manager
+  module:
+    - user
+id: user_add_role_action.agency_manager
+label: 'Add the Agency Manager role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: agency_manager
