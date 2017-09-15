@@ -70,7 +70,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     }
     // If there isn't an associated Agency Component log an error.
     else {
-      $error_message = 'Unassociated form: The form, %title, is not associate with an Agency Component.';
+      $error_message = 'Unassociated form: The form, %title, is not associated with an Agency Component.';
       $context = [
         '%title' => $form->label(),
       ];
@@ -97,7 +97,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    *   Returns the array as a string.
    */
   public function arrayToString(array $data) {
-    $handle = fopen('php://temp', 'w');
+    $handle = fopen('php://temp', 'c');
     // Use the array keys for the column headers.
     fputcsv($handle, array_keys($data));
     // Create the data row.
