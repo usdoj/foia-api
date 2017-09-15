@@ -13,21 +13,14 @@ use Drupal\user\Entity\User;
  */
 function _office_user_nid_access($node, $account) {
   $user = User::load(\Drupal::currentUser()->id());
-  $user_office_field_nid = $user->get('field_foia_office')->getValue();
-  $user_nid_array = [];
-
-  foreach ($user_office_field_nid as $key => $val) {
-    $user_nid_array[] = $val['target_id'];
-  }
+  // Get the user's Agency association.
+  $user_agency = $user->get('field_agency')->target_id;
+  // Get the node's Agency association.
+  $node_agency = $node->get('field_agency')->target_id;
 
   $result = NULL;
-  if (in_array($node->get('nid')->getValue()[0]['value'], $user_nid_array)) {
+  if ($user_agency === $node_agency) {
     $result = AccessResult::allowed()
-      ->cachePerUser()
-      ->addCacheableDependency($node);
-  }
-  else {
-    $result = AccessResult::forbidden()
       ->cachePerUser()
       ->addCacheableDependency($node);
   }
@@ -40,35 +33,26 @@ function _office_user_nid_access($node, $account) {
 function foia_users_node_access($node, $op, $account) {
 
   // Restrict editing node based on matching of 'field_agency' entity reference.
-  if ($node->bundle() == 'agency_compoent') {
-
+  if ($node->bundle() == 'agency_component') {
+    // Get the current user's roles.
     $user = User::load(\Drupal::currentUser()->id());
     $user_roles = $user->getRoles();
 
-    if (in_array("foia_office_creator", $user_roles) || in_array("foia_office_reviewer", $user_roles)) {
+    if (in_array("agency_manager", $user_roles)) {
+      switch ($op) {
+        case 'update':
+          // Check if the user has the proper Agency association.
+          return _office_user_nid_access($node, $account);
 
-      if ($op == "delete") {
-        // Allow creation before entity ref is set.
-        if ($node->get('field_agency')->isEmpty()) {
-          return AccessResult::allowed()
+        case 'delete':
+          return AccessResult::forbidden()
             ->cachePerUser()
             ->addCacheableDependency($node);
-        }
-        else {
-          return _office_user_nid_access($node, $account);
-        }
-      }
-      elseif ($op == "update") {
-        return _office_user_nid_access($node, $account);
-      }
-      else {
-        return AccessResult::allowed()
-          ->cachePerUser()
-          ->addCacheableDependency($node);
-      }
 
+        default:
+          return AccessResult::neutral();
+      }
     }
-
   }
   return AccessResult::neutral();
 }
@@ -77,13 +61,12 @@ function foia_users_node_access($node, $op, $account) {
  * Custom submit handler for office value.
  */
 function _form_validation_foiaoffice($form, $form_state) {
-
-  if ($form_state->hasValue('field_foia_office')) {
+  if ($form_state->hasValue('field_agency')) {
 
     $role_array = ["foia_office_creator", "foia_office_reviewer"];
     $user_role = $form_state->getValue('roles');
     $user_role_match = FALSE;
-    $field_foia_office = $form_state->getValue('field_foia_office')[0]['target_id'];
+    $field_foia_office = $form_state->getValue('field_agency')[0]['target_id'];
 
     foreach ($user_role as $k => $v) {
       if (in_array($v, $role_array)) {
@@ -92,8 +75,8 @@ function _form_validation_foiaoffice($form, $form_state) {
     }
 
     if (is_null($field_foia_office) && ($user_role_match)) {
-      $form['field_foia_office']['widget']['#required'] = TRUE;
-      $form_state->setErrorByName('field_foia_office', t('The roles "FOIA Office creator" and "FOIA Office reviewer" must be assigned to an office.'));
+      $form['field_agency']['widget']['#required'] = TRUE;
+      $form_state->setErrorByName('field_agency', t('The roles "Agency Component creator" and "Agency Component reviewer" must be assigned to an office.'));
     }
   }
 
