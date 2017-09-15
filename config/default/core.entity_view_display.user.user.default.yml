@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.field_foia_office
+    - field.field.user.user.field_agency
   module:
     - user
 id: user.user.default
@@ -11,7 +11,7 @@ targetEntityType: user
 bundle: user
 mode: default
 content:
-  field_foia_office:
+  field_agency:
     weight: 6
     label: above
     settings:

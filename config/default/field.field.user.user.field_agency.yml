@@ -1,25 +1,27 @@
-uuid: 7ce98870-1179-4c84-b62c-947c664ec395
+uuid: 4d68854a-a9ff-4136-a749-e4881adbd01e
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.user.field_foia_office
+    - field.storage.user.field_agency
+    - taxonomy.vocabulary.agency
   module:
     - user
-id: user.user.field_foia_office
-field_name: field_foia_office
+id: user.user.field_agency
+field_name: field_agency
 entity_type: user
 bundle: user
-label: 'FOIA Office'
+label: Agency
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: 'default:taxonomy_term'
   handler_settings:
-    target_bundles: {  }
+    target_bundles:
+      agency: agency
     sort:
       field: _none
     auto_create: false

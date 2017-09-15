@@ -40,7 +40,7 @@ function _office_user_nid_access($node, $account) {
 function foia_users_node_access($node, $op, $account) {
 
   // Restrict editing node based on matching of 'field_agency' entity reference.
-  if ($node->bundle() == 'foia_office') {
+  if ($node->bundle() == 'agency_compoent') {
 
     $user = User::load(\Drupal::currentUser()->id());
     $user_roles = $user->getRoles();
