@@ -90,6 +90,10 @@ source:
       name: phone
       label: 'Component Telephone Number'
       selector: phone
+    -
+      name: miscellaneous
+      label: 'Misc'
+      selector: miscellaneous
   ids:
     id:
       type: integer
@@ -109,7 +113,6 @@ process:
   body/format:
     plugin: default_value
     default_value: rich_text
-  field_email: email
   field_foia_officers:
     -
       plugin: skip_on_empty
@@ -123,6 +126,14 @@ process:
       plugin: skip_on_empty
       method: process
       source: public_liaison
+    -
+      plugin: migration_lookup
+      migration: foia_personnel
+  field_misc:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: miscellaneous
     -
       plugin: migration_lookup
       migration: foia_personnel
@@ -171,7 +182,7 @@ process:
   field_submission_address/administrative_area: state
   field_submission_address/postal_code: zip
   field_submission_fax: fax
-  field_submission_email: email_submission
+  field_submission_email: email
   field_submission_web: request_form
   field_agency_comp_abbreviation: abbreviation
   field_agency_comp_telephone: phone
