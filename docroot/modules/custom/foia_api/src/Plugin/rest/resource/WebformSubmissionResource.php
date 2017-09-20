@@ -146,7 +146,7 @@ class WebformSubmissionResource extends ResourceBase {
 
     $isWebformAcceptingSubmissions = WebformSubmissionForm::isOpen($webform);
     if (!$isWebformAcceptingSubmissions) {
-      $statusCode = 422;
+      $statusCode = 403;
       $message = t('Submission attempt against closed webform.');
       $this->logSubmission($statusCode, $message, $agencyComponent);
       return new ModifiedResourceResponse(['errors' => WebformSubmissionResource::INVALID_FORM_ID_ERROR], $statusCode);
@@ -515,7 +515,7 @@ class WebformSubmissionResource extends ResourceBase {
       /** @var \Drupal\file\FileInterface $file */
       foreach ($files as $file) {
         $sourceUri = $file->getFileUri();
-        $destinationUri = "{$uriScheme}://webform/{$webform->id()}/{$webformSubmission->id()}";
+        $destinationUri = "{$uriScheme}://webform/{$webform->id()}/{$webformSubmission->id()}/{$file->getFilename()}";
         $destinationDirectory = $this->fileSystem->dirname($destinationUri);
         file_prepare_directory($destinationDirectory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
         $destinationUri = file_unmanaged_move($sourceUri, $destinationUri);
