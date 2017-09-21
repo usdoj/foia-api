@@ -145,7 +145,7 @@ class WebformSubmissionResource extends ResourceBase {
     }
 
     $isWebformAcceptingSubmissions = WebformSubmissionForm::isOpen($webform);
-    if (!$isWebformAcceptingSubmissions) {
+    if ($isWebformAcceptingSubmissions !== TRUE) {
       $statusCode = 403;
       $message = t('Submission attempt against closed webform.');
       $this->logSubmission($statusCode, $message, $agencyComponent);
