@@ -245,13 +245,8 @@ class WebformSubmissionResource extends ResourceBase {
     $query = $this->queryFactory->get('node');
     $query->condition('field_request_submission_form', $webformId);
     $nids = $query->execute();
-    foreach ($nids as $nid) {
-      $agencyComponent = Node::load($nid);
-    }
-    if ($agencyComponent) {
-      return $agencyComponent;
-    }
-    return FALSE;
+    $agencyComponent = ($nids) ? Node::load(reset($nids)) : NULL;
+    return $agencyComponent;
   }
 
   /**
