@@ -7,9 +7,9 @@ dependencies:
     - field.field.node.agency_component.field_agency
     - field.field.node.agency_component.field_agency_comp_abbreviation
     - field.field.node.agency_component.field_agency_comp_telephone
-    - field.field.node.agency_component.field_agency_component_id
     - field.field.node.agency_component.field_email
     - field.field.node.agency_component.field_foia_officers
+    - field.field.node.agency_component.field_misc
     - field.field.node.agency_component.field_portal_submission_format
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
@@ -40,7 +40,7 @@ third_party_settings:
         - field_receiver
         - field_submission_address
       parent_name: ''
-      weight: 17
+      weight: 18
       format_type: details
       format_settings:
         id: ''
@@ -64,7 +64,7 @@ third_party_settings:
       children:
         - field_submission_web
       parent_name: ''
-      weight: 19
+      weight: 20
       format_type: details
       format_settings:
         id: ''
@@ -76,7 +76,7 @@ third_party_settings:
       children:
         - field_submission_fax
       parent_name: ''
-      weight: 18
+      weight: 19
       format_type: details
       format_settings:
         id: ''
@@ -102,7 +102,7 @@ third_party_settings:
         - group_email_submissions
         - group_api_submissions
       parent_name: ''
-      weight: 20
+      weight: 21
       format_type: fieldset
       format_settings:
         id: ''
@@ -126,7 +126,7 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -154,13 +154,6 @@ content:
     third_party_settings: {  }
     type: telephone_default
     region: content
-  field_agency_component_id:
-    weight: 1
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   field_email:
     weight: 6
     settings:
@@ -171,6 +164,19 @@ content:
     region: content
   field_foia_officers:
     weight: 8
+    settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      override_labels: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  field_misc:
+    weight: 10
     settings:
       form_mode: default
       label_singular: ''
@@ -223,13 +229,13 @@ content:
     type: inline_entity_form_complex
     region: content
   field_request_submission_form:
-    weight: 21
+    weight: 22
     settings: {  }
     third_party_settings: {  }
     type: webform_entity_reference_select
     region: content
   field_service_centers:
-    weight: 10
+    weight: 11
     settings:
       form_mode: default
       label_singular: ''
@@ -280,7 +286,7 @@ content:
     type: link_default
     region: content
   field_website:
-    weight: 16
+    weight: 17
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -289,7 +295,7 @@ content:
     region: content
   path:
     type: path
-    weight: 15
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -297,14 +303,14 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 13
+    weight: 14
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 14
+    weight: 15
     region: content
     third_party_settings: {  }
   title:
@@ -317,7 +323,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 11
+    weight: 12
     settings:
       match_operator: CONTAINS
       size: 60
