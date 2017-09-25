@@ -32,12 +32,16 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // If there is a file attachment, get the file URL.
     if (isset($data['attachments_supporting_documentation'])) {
+      $files = [];
       foreach ($data['attachments_supporting_documentation'] as $upload) {
         $file = File::load($upload);
         if ($file) {
-          $filename = $file->getFilename();
-          $data['attachments_supporting_documentation'] = $filename;
+          $file_url = file_create_url($file->getFileUri());
+          $files[] = $file_url;
         }
+      }
+      if (!empty($files)) {
+        $data['attachments_supporting_documentation'] = implode(',', $files);
       }
     }
 
@@ -101,7 +105,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    *   Returns the array as a comma separated string.
    */
   public function arrayToString(array $data) {
-    $handle = fopen('php://temp', 'c');
+    $handle = fopen('php://temp', 'w');
     // Use the array keys for the column headers.
     fputcsv($handle, array_keys($data));
     // Create the data row.
