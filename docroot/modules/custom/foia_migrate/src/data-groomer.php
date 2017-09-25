@@ -13,6 +13,7 @@ delete_files_from_directory($modified_data_files_directory);
 
 $agency_data = extract_agencies_from_source_files($original_data_files_directory);
 $component_data = extract_components_from_agencies($agency_data['agencies']);
+move_emails_to_email_submission_key($component_data['components']);
 remove_departments_property_from_agencies($agency_data);
 $personnel_data = extract_personnel_from_components($component_data['components']);
 
@@ -70,9 +71,28 @@ function extract_components_from_agencies(array $agencies) {
 }
 
 /**
+ * Moves email addresses to email_submission key out of emails key.
+ *
+ * @param array &$components
+ *   Array of all components.
+ */
+function move_emails_to_email_submission_key(array &$components) {
+  foreach ($components as &$component) {
+    if (isset($component->emails)) {
+      // Use the first email address as the email_submission address.
+      $email_submission = array_shift($component->emails);
+      if (empty($component->emails)) {
+        unset($component->emails);
+      }
+      $component->email_submission = $email_submission;
+    }
+  }
+}
+
+/**
  * Extract FOIA personnel from components and return array of personnel.
  *
- * @param array $components
+ * @param array &$components
  *   Array of all components.
  *
  * @return array
