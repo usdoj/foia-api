@@ -32,20 +32,24 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // If there is a file attachment, get the file URL.
     if (isset($data['attachments_supporting_documentation'])) {
-      $file = File::load($data['attachments_supporting_documentation']);
-      $file_url = file_create_url($file->getFileUri());
-      $data['attachments_supporting_documentation'] = $file_url;
+      foreach ($data['attachments_supporting_documentation'] as $upload) {
+        $file = File::load($upload);
+        if ($file) {
+          $filename = $file->getFilename();
+          $data['attachments_supporting_documentation'] = $filename;
+        }
+      }
     }
 
     // Format the submission values as CSV.
-    $submissions = $this->arrayToString($data);
+    $form_values_as_csv = $this->arrayToString($data);
 
     // Append CSV string to the message body.
     $newline = ($message['html']) ? '<br/>' : "\n";
     $text = t('The submission data is reproduced below in CSV format for your convenience.');
     $message['body'] .= $text . $newline;
     $message['body'] .= '--------------------------' . $newline;
-    $message['body'] .= $submissions;
+    $message['body'] .= $form_values_as_csv;
 
     // Look up the agency component.
     $form = $webform_submission->getWebform();
@@ -93,8 +97,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * @param array $data
    *   The form submission data.
    *
-   * @return array
-   *   Returns the array as a string.
+   * @return string
+   *   Returns the array as a comma separated string.
    */
   public function arrayToString(array $data) {
     $handle = fopen('php://temp', 'c');
@@ -117,7 +121,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * @param string $form_id
    *   The form ID.
    *
-   * @return object
+   * @return \Drupal\node\NodeInterface|null
    *   The Agency Component object or NULL.
    */
   public function lookupComponent($form_id) {
