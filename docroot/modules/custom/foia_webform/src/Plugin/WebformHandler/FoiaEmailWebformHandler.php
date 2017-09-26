@@ -99,6 +99,10 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    *   Returns the array as an HTML table.
    */
   public function arrayToTable(array $data) {
+    $table = [
+      '#markup' => t('Hello,') . '<br>' . t('A new FOIA request was submitted to your agency component:') . '<br><br>',
+    ];
+
     $table['values'] = [
       '#theme' => 'table',
       '#header' => array_keys($data),
