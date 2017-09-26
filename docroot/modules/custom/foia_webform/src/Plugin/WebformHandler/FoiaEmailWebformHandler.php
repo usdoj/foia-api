@@ -10,7 +10,7 @@ use Drupal\node\Entity\Node;
 /**
  * Emails a webform submission.
  *
- * @Webformhandler(
+ * @WebformHandler(
  *   id = "foia_email",
  *   label = @Translation("FOIA email"),
  *   category = @Translation("Notification"),
@@ -49,16 +49,22 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $form_values_as_csv = $this->arrayToString($data);
 
     // Append CSV string to the message body.
+    $body = $message['body'];
     $newline = ($message['html']) ? '<br/>' : "\n";
     $text = t('The submission data is reproduced below in CSV format for your convenience.');
-    $message['body'] .= $text . $newline;
-    $message['body'] .= '--------------------------' . $newline;
-    $message['body'] .= $form_values_as_csv;
+    $body .= $text . $newline;
+    $body .= '--------------------------' . $newline;
+    $body .= $form_values_as_csv;
+    $message['body'] = $body;
 
     // Look up the agency component.
     $form = $webform_submission->getWebform();
     $form_id = $form->getOriginalId();
     $agency_component = $this->lookupComponent($form_id);
+
+    // Set email subject.
+    $message['subject'] = t('FOIA Request Submission from: %form',
+      ['%form' => $form->label()]);
 
     // If we have an Agency Component, get the Submission Email value.
     if ($agency_component) {
