@@ -1,0 +1,25 @@
+uuid: ceafe24e-07d8-4c17-9f0d-6cf6e6d89e1a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_misc
+    - node.type.agency_component
+id: node.agency_component.field_misc
+field_name: field_misc
+entity_type: node
+bundle: agency_component
+label: Misc
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:foia_personnel'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

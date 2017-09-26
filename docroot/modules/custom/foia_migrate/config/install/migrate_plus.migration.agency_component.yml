@@ -90,6 +90,10 @@ source:
       name: phone
       label: 'Component Telephone Number'
       selector: phone
+    -
+      name: miscellaneous
+      label: 'Misc'
+      selector: miscellaneous
   ids:
     id:
       type: integer
@@ -123,6 +127,14 @@ process:
       plugin: skip_on_empty
       method: process
       source: public_liaison
+    -
+      plugin: migration_lookup
+      migration: foia_personnel
+  field_misc:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: miscellaneous
     -
       plugin: migration_lookup
       migration: foia_personnel

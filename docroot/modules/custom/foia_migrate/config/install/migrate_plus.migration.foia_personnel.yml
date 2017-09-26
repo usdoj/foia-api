@@ -26,6 +26,10 @@ source:
       name: agency_name
       label: 'Agency Name'
       selector: agency_name
+    -
+      name: title
+      label: 'Title'
+      selector: title
   ids:
     id:
       type: integer
@@ -37,6 +41,7 @@ process:
     plugin: migration_lookup
     migration: agency
     source: agency_name
+  field_foia_personnel_title: title
 
 destination:
   plugin: entity:foia_personnel
