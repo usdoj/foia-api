@@ -1,0 +1,14 @@
+uuid: cc7bcd00-251d-4a75-8e2e-285124189339
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.agency_administrator
+  module:
+    - user
+id: user_remove_role_action.agency_administrator
+label: 'Remove the Agency Administrator role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: agency_administrator
