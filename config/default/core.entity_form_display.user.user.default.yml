@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.field_foia_office
+    - field.field.user.user.field_agency
   module:
     - user
 id: user.user.default
@@ -21,8 +21,8 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_foia_office:
-    weight: 1
+  field_agency:
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60

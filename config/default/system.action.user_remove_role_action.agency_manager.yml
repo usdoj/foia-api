@@ -1,0 +1,14 @@
+uuid: f2a8040a-6498-49cb-87a3-07f6ec8be971
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.agency_manager
+  module:
+    - user
+id: user_remove_role_action.agency_manager
+label: 'Remove the Agency Manager role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: agency_manager
