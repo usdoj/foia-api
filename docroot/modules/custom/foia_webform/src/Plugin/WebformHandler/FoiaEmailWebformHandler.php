@@ -45,26 +45,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       }
     }
 
-    // Format the submission values as CSV.
-    $form_values_as_csv = $this->arrayToString($data);
-
-    // Append CSV string to the message body.
-    $body = $message['body'];
-    $newline = ($message['html']) ? '<br/>' : "\n";
-    $text = t('The submission data is reproduced below in CSV format for your convenience.');
-    $body .= $text . $newline;
-    $body .= '--------------------------' . $newline;
-    $body .= $form_values_as_csv;
-    $message['body'] = $body;
+    // Format the submission values as an HTML table.
+    $form_values_as_table = $this->arrayToTable($data);
+    $message['body'] = $form_values_as_table;
 
     // Look up the agency component.
     $form = $webform_submission->getWebform();
     $form_id = $form->getOriginalId();
     $agency_component = $this->lookupComponent($form_id);
-
-    // Set email subject.
-    $message['subject'] = t('FOIA Request Submission from: %form',
-      ['%form' => $form->label()]);
 
     // If we have an Agency Component, get the Submission Email value.
     if ($agency_component) {
@@ -102,27 +90,22 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   }
 
   /**
-   * Formats an array as a CSV string.
+   * Formats an array as an HTML table.
    *
    * @param array $data
    *   The form submission data.
    *
    * @return string
-   *   Returns the array as a comma separated string.
+   *   Returns the array as an HTML table.
    */
-  public function arrayToString(array $data) {
-    $handle = fopen('php://temp', 'w');
-    // Use the array keys for the column headers.
-    fputcsv($handle, array_keys($data));
-    // Create the data row.
-    fputcsv($handle, $data);
-    // Reset the pointer to the beginning.
-    fseek($handle, 0);
-    // Read the stream into a string.
-    $csv = stream_get_contents($handle);
-    fclose($handle);
+  public function arrayToTable(array $data) {
+    $table['values'] = [
+      '#theme' => 'table',
+      '#header' => array_keys($data),
+      '#rows' => ['data' => (array) $data],
+    ];
 
-    return $csv;
+    return render($table);
   }
 
   /**
