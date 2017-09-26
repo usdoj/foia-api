@@ -49,7 +49,6 @@ Feature: Request information from an agency
     And I am at 'admin/modules'
     And I check the box 'Maillog / Mail Developer'
     And I press the 'Install' button
-    And I am at 'admin/reports/dblog'
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'Test agency component'
     And I select "Test webform" from "Request Submission Form"
@@ -65,7 +64,11 @@ Feature: Request information from an agency
     And I select "No" from "Request Fee Waiver"
     And I select "No" from "Request Expedited Processing"
     When I press the 'Submit' button
-    Then I should see the text 'Ringo,,Star,,,test@example.com,,,,,,"United States",,,,,,"Test'
+    Then I should see the text 'Ringo'
+    And I should see the text 'Star'
+    And I should see the text 'test@example.com'
+    And I should see the text 'United States'
+    And I should see the text 'Test'
     When I am at 'admin/reports/dblog'
     Then I should see the text 'Test webform webform sent FOIA Email email.'
   
