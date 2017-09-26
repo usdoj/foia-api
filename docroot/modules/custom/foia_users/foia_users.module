@@ -107,7 +107,9 @@ function _form_validation_foia_agency($form, $form_state) {
     ];
     $user_role = $form_state->getValue('roles');
     $user_agency = $form_state->getValue('field_agency')[0]['target_id'];
-    $user_role_match = array_intersect($user_role, $role_array) ? TRUE : FALSE;
+    if (is_array($user_role)) {
+      $user_role_match = array_intersect($user_role, $role_array) ? TRUE : FALSE;
+    }
 
     if (is_null($user_agency) && ($user_role_match)) {
       $form['field_agency']['widget']['#required'] = TRUE;
