@@ -100,21 +100,16 @@ function foia_users_taxonomy_term_access(EntityInterface $entity, $operation, Ac
  */
 function _form_validation_foia_agency($form, $form_state) {
   if ($form_state->hasValue('field_agency')) {
-    $role_array = [
-      'foia_office_creator',
-      'foia_office_reviewer',
-      'agency_manager',
-    ];
-    $user_role = $form_state->getValue('roles');
+    $user_roles = $form_state->getValue('roles');
     $user_agency = $form_state->getValue('field_agency')[0]['target_id'];
     $user_role_match = FALSE;
-    if (is_array($user_role)) {
-      $user_role_match = array_intersect($user_role, $role_array) ? TRUE : $user_role_match;
+    if (is_array($user_roles)) {
+      $user_role_match = in_array('agency_manager', $user_roles) ? TRUE : $user_role_match;
     }
 
     if (is_null($user_agency) && ($user_role_match)) {
       $form['field_agency']['widget']['#required'] = TRUE;
-      $form_state->setErrorByName('field_agency', t('The roles "Agency Component creator", "Agency Component reviewer" and "Agency Manager" must be assigned to an agency.'));
+      $form_state->setErrorByName('field_agency', t('Users with the "Agency Manager" role must be assigned to an agency.'));
     }
   }
 }
