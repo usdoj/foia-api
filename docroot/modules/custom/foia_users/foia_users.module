@@ -65,7 +65,7 @@ function foia_users_node_access($node, $op, $account) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_access().
+ * Implements hook_taxonomy_term_access().
  */
 function foia_users_taxonomy_term_access(EntityInterface $entity, $operation, AccountInterface $account) {
   // Get the term ID.
@@ -93,6 +93,58 @@ function foia_users_taxonomy_term_access(EntityInterface $entity, $operation, Ac
     }
   }
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_user_access().
+ */
+function foia_users_user_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // Get the current user's roles.
+  $current_user = User::load(\Drupal::currentUser()->id());
+  $current_user_roles = $current_user->getRoles();
+  if (in_array('agency_administrator', $current_user_roles)) {
+    switch ($operation) {
+      case 'update':
+      case 'delete':
+        return _check_agency_administrator_access($entity);
+
+      default:
+        return AccessResult::neutral();
+    }
+  }
+}
+
+/**
+ * Grants or denies access for an Agency Administrator based on the user's role.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $user
+ *   The user that we are checking.
+ *
+ * @return \Drupal\Core\Access\AccessResult
+ *   Returns the AccessResult
+ */
+function _check_agency_administrator_access(EntityInterface $user) {
+  $access = AccessResult::neutral();
+
+  // Ensure that we are checking a user.
+  if ($user->bundle() === 'user') {
+    $user_roles = $user->getRoles();
+    $is_agency_manager = (in_array('agency_manager', $user_roles)) ? TRUE : FALSE;
+
+    // If the user is an agency manager allow access.
+    if ($is_agency_manager) {
+      $access = AccessResult::allowed()
+        ->cachePerUser()
+        ->addCacheableDependency($user);
+    }
+    else {
+      $access = AccessResult::forbidden()
+        ->cachePerUser()
+        ->addCacheableDependency($user);
+    }
+  }
+
+  return $access;
 }
 
 /**
