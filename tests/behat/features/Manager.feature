@@ -49,3 +49,9 @@ Feature: Agency Manager role
       | field_agency | Department of Energy |
     When I am at 'taxonomy/term/686/edit'
     Then I should not see a 'Delete' link
+
+  @api
+  Scenario: Agency Manager can view admin theme
+    Given I am logged in as a user with the 'Administrator' role
+    When I am at 'admin/people/permissions/agency_manager'
+    Then the "View the administration theme" checkbox should be checked
