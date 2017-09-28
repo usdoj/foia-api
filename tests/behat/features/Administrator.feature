@@ -30,17 +30,32 @@ Feature: Agency Administrator role
       | The changes have been saved. |
 
   @api
-  Scenario: Agency Administrator can not administer user accounts with the Administrator role
+  Scenario: Agency Administrator can not administer user accounts with the (Agency) Administrator or Authenticated roles
     Given users:
-      | name  | mail              | roles          |
-      | Mini  | mini@example.com  | Administrator  |
+      | name   | mail              | roles                |
+      | Mini   | mini@example.com  | Administrator        |
+      | Angus  | angus@example.com | Agency Administrator |
+      | Arthur | art@example.com   | Authenticated        |
     When I am logged in as a user with the 'Agency Administrator' role
     And I am at 'admin/people'
     Then I should see 'Administrator' in the 'Mini' row
     And I should not see 'Edit' in the 'Mini' row
+    And I should see 'Agency Administrator' in the 'Angus' row
+    And I should not see 'Edit' in the 'Angus' row
+    And I should not see 'Edit' in the 'Arthur' row
     When I click 'Mini'
-    And I click 'Edit'
+    And I attempt to delete the current entity
+    Then the response status code should be 404
+    When I am at 'admin/people'
+    And I click 'Edit' in the 'Angus' row
     Then I should not see a 'Cancel account' link
+    When I am at 'admin/people'
+    And I click 'Edit' in the 'Arthur' row
+    Then I should not see a 'Cancel account' link
+    When I am at 'admin/people'
+    And I click 'Arthur'
+    And I attempt to delete the current entity
+    Then the response status code should be 404
 
   @api
   Scenario: Agency Administrator can administer Agencies

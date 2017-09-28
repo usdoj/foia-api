@@ -20,4 +20,16 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
   }
 
+  /**
+   * @Given I attempt to delete the current entity
+   */
+  public function iAttemptToDeleteTheCurrentEntity()
+  {
+
+  $currentUrl = $this->getSession()->getCurrentUrl();
+  $destinationUrl = "{$currentUrl}/delete";
+  $this->getSession()->visit($destinationUrl);
+
+  }
+
 }
