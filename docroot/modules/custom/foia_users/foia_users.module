@@ -102,7 +102,9 @@ function foia_users_user_access(EntityInterface $entity, $operation, AccountInte
   // Get the current user's roles.
   $current_user = User::load(\Drupal::currentUser()->id());
   $current_user_roles = $current_user->getRoles();
-  if (in_array('agency_administrator', $current_user_roles)) {
+
+  // If the current user is an Agency Administrator check access.
+  if (in_array('agency_administrator', $current_user_roles) && ($current_user->id() !== $entity->id())) {
     switch ($operation) {
       case 'update':
       case 'delete':
@@ -112,6 +114,8 @@ function foia_users_user_access(EntityInterface $entity, $operation, AccountInte
         return AccessResult::neutral();
     }
   }
+
+  return AccessResult::neutral();
 }
 
 /**
@@ -173,5 +177,26 @@ function foia_users_form_alter(&$form, $form_state, $form_id) {
   // We are checking for the proper roles to make Foia office required.
   if ($form_id == ('user_form' || 'user_register_form')) {
     $form['#validate'][] = '_form_validation_foia_agency';
+  }
+
+  if ($form_id === 'user_register_form') {
+    $current_user = User::load(\Drupal::currentUser()->id());
+    $current_user_roles = $current_user->getRoles();
+    // Check the Agency Manager checkbox.
+    if (in_array('agency_administrator', $current_user_roles)) {
+      $form['account']['roles']['#default_value'][] = 'agency_manager';
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function foia_users_module_implements_alter(&$implementations, $hook) {
+  // Make sure that our form_alter happens after the Role Assign form alter.
+  if ($hook === 'form_alter') {
+    $group = $implementations['foia_users'];
+    unset($implementations['foia_users']);
+    $implementations['foia_users'] = $group;
   }
 }
