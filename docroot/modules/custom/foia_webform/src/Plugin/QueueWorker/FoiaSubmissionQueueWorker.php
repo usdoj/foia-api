@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides base functionality for the FoiaForm Queue Workers.
  */
-abstract class FoiaFormQueue extends QueueWorkerBase implements ContainerFactoryPluginInterface {
+abstract class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
    * The form submission.

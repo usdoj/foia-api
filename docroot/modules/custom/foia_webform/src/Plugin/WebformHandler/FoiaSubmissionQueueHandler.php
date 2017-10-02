@@ -41,20 +41,25 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
    *   The email message array.
    */
   private function queueSubmission(WebformSubmissionInterface $webform_submission, array $message) {
-    // @var @var QueueFactory $queue_factory
+    // @var QueueFactory $queue_factory
     $queue_factory = \Drupal::service('queue');
 
     // @var QueueInterface $queue
-    $queue = $queue_factory->get('foia_form_manual_submitter');
+    $foia_submission_queue = $queue_factory->get('foia_form_manual_submitter');
     $submission = new \stdClass();
     $submission->sid = $webform_submission->id();;
     $submission->message = $message;
 
     // Log the form submission.
     \Drupal::logger('foia_webform')
-      ->info('FOIA form submission added to queue.', ['link' => $webform_submission->toLink($this->t('View'))->toString()]);
+      ->info('FOIA form submission #%sid added to queue.',
+        [
+          '%sid' => $webform_submission->id(),
+          'link' => $webform_submission->toLink($this->t('View'))->toString(),
+        ]
+      );
 
-    $queue->createItem($submission);
+    $foia_submission_queue->createItem($submission);
   }
 
 }
