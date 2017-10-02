@@ -107,7 +107,59 @@ Feature: Agency Administrator role
       | The Agency Component A Test Agency Component has been deleted. |
 
   @api
-  Scenario: Agency Manager can view admin theme
-    Given I am logged in as a user with the 'Administrator' role
+  Scenario: Agency Administrator can view admin theme
+    Given I am logged in as a user with the 'Agency Administrator' role
     When I am at 'admin/people/permissions/agency_administrator'
     Then the "View the administration theme" checkbox should be checked
+
+  @api
+  Scenario: Can view admin toolbar
+    Given I am logged in as a user with the 'Agency Administrator' role
+    When I am on the homepage
+    Then I should see the link 'Manage'
+    And I should see the link 'admin'
+
+  @api
+  Scenario: can edit agency field on agency components???
+
+  @api
+  Scenario: view unpublished content
+    Given I am logged in as a user with the 'Agency Administrator' role
+
+
+  @api
+  Scenario: Administer webforms and submissions thereof
+    Given I am logged in as a user with the 'Agency Administrator' role
+    When I am at 'admin/structure/webform/add'
+    And for 'Machine-readable name' I enter 'a_test_webform'
+    And for 'Title' I enter 'A Test Webform'
+    When I press the 'Save' button
+    Then I should see the following success messages:
+      | Webform A Test Webform created. |
+    When I press the 'Save elements' button
+    Then I should see the following success messages:
+      | Webform A Test Webform elements saved. |
+    When I click 'View'
+    And for 'First Name' I enter 'A Test First Name'
+    And for 'Last name' I enter 'A Test Last Name'
+    And for 'Email' I enter 'atest@example.com'
+    And for "Describe the information you're requesting" I enter 'A Test description.'
+    And I select "No" from "Request Fee Waiver"
+    And I select "No" from "Request Expedited Processing"
+    And I press the 'Submit' button
+    Then I should see the text 'New submission added to A Test Webform.'
+    And I click '1'
+    Then I should not see a 'Delete' link
+
+#    And I click 'Back to form'
+#    And I click 'Results'
+
+    When I am at 'admin/structure/webform/manage/a_test_webform/settings'
+    And I click 'Delete'
+    And I check the box ' Yes, I want to delete this webform.'
+    And I press the 'Delete' button
+    Then I should see the following success messages:
+      | The webform A Test Webform has been deleted. |
+
+  @api
+  Scenario: Can not delete any or all revisions
