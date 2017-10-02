@@ -1,0 +1,26 @@
+uuid: 7850f651-4a9d-44c4-8798-a0a3dd60e4dc
+langcode: en
+status: true
+dependencies:
+  module:
+    - foia_users
+    - system
+  theme:
+    - bartik
+id: termsofservice
+theme: bartik
+region: content
+weight: 10
+provider: null
+plugin: foia_users_tos
+settings:
+  id: foia_users_tos
+  label: 'Terms of Service'
+  provider: foia_users
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: /user/login
+    negate: false
+    context_mapping: {  }
