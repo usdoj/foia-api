@@ -21,5 +21,6 @@ $config = array(
     'default-sp' => array(
         'saml:SP',
         'idp' => $idp,
+        'NameIDPolicy' => null,
     ),
 );
