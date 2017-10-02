@@ -174,17 +174,27 @@ function _form_validation_foia_agency($form, $form_state) {
  * Implements hook_form_alter().
  */
 function foia_users_form_alter(&$form, $form_state, $form_id) {
+  $current_user = User::load(\Drupal::currentUser()->id());
+  $current_user_roles = $current_user->getRoles();
+  $is_agency_admin = in_array('agency_administrator', $current_user_roles);
+
   // We are checking for the proper roles to make Foia office required.
   if ($form_id == ('user_form' || 'user_register_form')) {
     $form['#validate'][] = '_form_validation_foia_agency';
   }
 
   if ($form_id === 'user_register_form') {
-    $current_user = User::load(\Drupal::currentUser()->id());
-    $current_user_roles = $current_user->getRoles();
     // Check the Agency Manager checkbox.
-    if (in_array('agency_administrator', $current_user_roles)) {
+    if ($is_agency_admin) {
       $form['account']['roles']['#default_value'][] = 'agency_manager';
+    }
+  }
+
+  if ($form_id === 'user_form' && $is_agency_admin) {
+    $user = \Drupal::routeMatch()->getParameter('user');
+    $uid = $user->id();
+    if ($uid && $uid === $current_user->id()) {
+      $form['account']['roles']['#access'] = FALSE;
     }
   }
 }
