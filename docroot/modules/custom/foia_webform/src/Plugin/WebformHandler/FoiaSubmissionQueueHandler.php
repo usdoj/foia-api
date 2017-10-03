@@ -45,9 +45,9 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
     $queue_factory = \Drupal::service('queue');
 
     // @var QueueInterface $queue
-    $foia_submission_queue = $queue_factory->get('foia_form_manual_submitter');
+    $foia_submission_queue = $queue_factory->get('foia_submissions');
     $submission = new \stdClass();
-    $submission->sid = $webform_submission->id();;
+    $submission->sid = $webform_submission->id();
     $submission->message = $message;
 
     // Log the form submission.
