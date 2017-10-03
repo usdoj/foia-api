@@ -33,7 +33,7 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
   }
 
   /**
-   * Adds the submission to the foia_form_manual_submitter queue.
+   * Adds the submission to the foia_submissions queue.
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   The webform submission object.
