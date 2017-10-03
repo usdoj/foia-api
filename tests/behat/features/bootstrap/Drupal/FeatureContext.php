@@ -6,6 +6,8 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\user\Entity\User;
 use Drupal\user\UserDataInterface;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -56,6 +58,19 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $destinationUrl = "user/{$uid}";
     $this->getSession()->visit($destinationUrl);
 
+  }
+
+  /**
+   * @AfterScenario @agency
+   */
+  public function cleanTaxonomyTerms(AfterScenarioScope $scope)
+  {
+      $query = \Drupal::entityQuery('taxonomy_term');
+      $query->condition('name', "A Test", 'STARTS_WITH');
+      $tids = $query->execute();
+      $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+      $entities = $controller->loadMultiple($tids);
+      $controller->delete($entities);
   }
 
 }

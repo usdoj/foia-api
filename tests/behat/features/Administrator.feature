@@ -4,7 +4,7 @@ Feature: Agency Administrator role
   As an Agency Administrator
   I should be able to administer Agency Manager user accounts, agencies, and agency components
 
-  @api
+  @api @agency
   Scenario: Agency Administrator can administer user accounts with the Agency Manager role
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am at 'admin/structure/taxonomy/manage/agency/add'
@@ -68,7 +68,7 @@ Feature: Agency Administrator role
     Then the response status code should be 404
     And the user 'Arthur' is deleted
 
-  @api
+  @api @agency
   Scenario: Agency Administrator can administer Agencies
     Given I am logged in as a user with the 'Agency Administrator' role
     When I am at 'admin/structure/taxonomy/manage/agency/add'
@@ -169,18 +169,18 @@ Feature: Agency Administrator role
     When I click 'Revisions'
     Then I should not see 'Delete' in the 'change' row
 
-  @api
+  @api @agency
   Scenario: Agency Administrator can add the Agency term references to Agency components
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am at 'admin/structure/taxonomy/manage/agency/add'
-    And for 'Name' I enter 'A Test Agency B'
+    And for 'Name' I enter 'A Test Agency'
     And I press the 'Save' button
     Then I should see the following success messages:
       | Created new term A Test Agency. |
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
-    And for 'Agency' I enter 'A Test Agency B'
+    And for 'Agency' I enter 'A Test Agency'
     And I press the 'Save and publish' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been created. |
-    And I should see the link 'A Test Agency B'
+    And I should see the link 'A Test Agency'
