@@ -168,3 +168,19 @@ Feature: Agency Administrator role
       | Agency Component A Test Agency Component has been updated. |
     When I click 'Revisions'
     Then I should not see 'Delete' in the 'change' row
+
+  @api
+  Scenario: Agency Administrator can add the Agency term references to Agency components
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am at 'admin/structure/taxonomy/manage/agency/add'
+    And for 'Name' I enter 'A Test Agency B'
+    And I press the 'Save' button
+    Then I should see the following success messages:
+      | Created new term A Test Agency. |
+    And I am at 'node/add/agency_component'
+    And for 'Agency Component Name' I enter 'A Test Agency Component'
+    And for 'Agency' I enter 'A Test Agency B'
+    And I press the 'Save and publish' button
+    Then I should see the following success messages:
+      | Agency Component A Test Agency Component has been created. |
+    And I should see the link 'A Test Agency B'
