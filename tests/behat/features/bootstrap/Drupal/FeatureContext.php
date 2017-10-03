@@ -46,4 +46,16 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * @Then I view the user :arg1
+   */
+  public function iViewTheUser($arg1)
+  {
+    $user = user_load_by_name($arg1);
+    $uid = $user->get('uid')->value;
+    $destinationUrl = "user/{$uid}";
+    $this->getSession()->visit($destinationUrl);
+
+  }
+
 }

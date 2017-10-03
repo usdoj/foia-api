@@ -55,23 +55,15 @@ Feature: Agency Administrator role
     And I should see 'Agency Administrator' in the 'Angus' row
     And I should not see 'Edit' in the 'Angus' row
     And I should not see 'Edit' in the 'Arthur' row
-    When I click 'Devel' in the 'Mini' row
-    And I click 'View'
+    And I view the user 'Mini'
     And I attempt to delete the current entity
     Then the response status code should be 404
     When I am at 'admin/people'
-    And I click 'Devel' in the 'Angus' row
-    And I click 'View'
+    And I view the user 'Angus'
     And I attempt to delete the current entity
     Then the response status code should be 404
     When I am at 'admin/people'
-    And I click 'Devel' in the 'Arthur' row
-    And I click 'View'
-    And I attempt to delete the current entity
-    Then the response status code should be 404
-    When I am at 'admin/people'
-    And I click 'Devel' in the 'Arthur' row
-    And I click 'View'
+    And I view the user 'Arthur'
     And I attempt to delete the current entity
     Then the response status code should be 404
     And the user 'Arthur' is deleted
@@ -115,7 +107,7 @@ Feature: Agency Administrator role
     Then the "View the administration theme" checkbox should be checked
 
   @api
-  Scenario: Can view admin toolbar
+  Scenario: Agency Administrator can view admin toolbar
     Given I am logged in as a user with the 'Agency Administrator' role
     When I am on the homepage
     Then I should see the link 'Manage'
@@ -162,7 +154,7 @@ Feature: Agency Administrator role
 
   @api
   Scenario: Can not delete any or all revisions
-    Given I am logged in as a use with the 'Agency Administrator' role
+    Given I am logged in as a user with the 'Agency Administrator' role
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
     And I press the 'Save and publish' button
