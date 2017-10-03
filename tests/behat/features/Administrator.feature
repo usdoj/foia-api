@@ -32,6 +32,7 @@ Feature: Agency Administrator role
     And I press the 'Cancel account' button
     Then I should see the following success messages:
       | Alex has been disabled. |
+    And the user 'Alex' is deleted
 
   @api
   Scenario: Agency Administrator can not administer user accounts with the (Agency) Administrator or Authenticated roles
@@ -73,6 +74,7 @@ Feature: Agency Administrator role
     And I click 'View'
     And I attempt to delete the current entity
     Then the response status code should be 404
+    And the user 'Arthur' is deleted
 
   @api
   Scenario: Agency Administrator can administer Agencies
@@ -108,7 +110,7 @@ Feature: Agency Administrator role
 
   @api
   Scenario: Agency Administrator can view admin theme
-    Given I am logged in as a user with the 'Agency Administrator' role
+    Given I am logged in as a user with the 'Administrator' role
     When I am at 'admin/people/permissions/agency_administrator'
     Then the "View the administration theme" checkbox should be checked
 
@@ -117,15 +119,15 @@ Feature: Agency Administrator role
     Given I am logged in as a user with the 'Agency Administrator' role
     When I am on the homepage
     Then I should see the link 'Manage'
-    And I should see the link 'admin'
 
   @api
-  Scenario: can edit agency field on agency components???
-
-  @api
-  Scenario: view unpublished content
+  Scenario: Agency Administrator can view unpublished content
     Given I am logged in as a user with the 'Agency Administrator' role
-
+    When I am at 'node/add/agency_component'
+    And for 'Agency Component Name' I enter 'A Test Agency Component'
+    And I press the 'Save as unpublished' button
+    Then I should see the following success messages:
+      | Agency Component A Test Agency Component has been created. |
 
   @api
   Scenario: Administer webforms and submissions thereof
@@ -148,18 +150,29 @@ Feature: Agency Administrator role
     And I select "No" from "Request Expedited Processing"
     And I press the 'Submit' button
     Then I should see the text 'New submission added to A Test Webform.'
+    When I am at 'admin/structure/webform/manage/a_test_webform/results/submissions'
     And I click '1'
-    Then I should not see a 'Delete' link
-
-#    And I click 'Back to form'
-#    And I click 'Results'
-
+    Then I should see the link 'Delete'
     When I am at 'admin/structure/webform/manage/a_test_webform/settings'
     And I click 'Delete'
-    And I check the box ' Yes, I want to delete this webform.'
+    And I check the box 'Yes, I want to delete this webform.'
     And I press the 'Delete' button
     Then I should see the following success messages:
       | The webform A Test Webform has been deleted. |
 
   @api
   Scenario: Can not delete any or all revisions
+    Given I am logged in as a use with the 'Agency Administrator' role
+    And I am at 'node/add/agency_component'
+    And for 'Agency Component Name' I enter 'A Test Agency Component'
+    And I press the 'Save and publish' button
+    Then I should see the following success messages:
+      | Agency Component A Test Agency Component has been updated. |
+    When I click 'Edit'
+    And for 'Agency Component Description' I enter 'change'
+    And for 'Revision log message' I enter 'change'
+    And I press the 'Save and keep published' button
+    Then I should see the following success messages:
+      | Agency Component A Test Agency Component has been updated. |
+    When I click 'Revisions'
+    Then I should not see 'Delete' in the 'change' row
