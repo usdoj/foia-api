@@ -4,6 +4,8 @@ namespace Drupal;
 
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Drupal\user\Entity\User;
+use Drupal\user\UserDataInterface;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -30,6 +32,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   $destinationUrl = "{$currentUrl}/delete";
   $this->getSession()->visit($destinationUrl);
 
+  }
+
+  /**
+   * @Then the user :arg1 is deleted
+   */
+  public function theUserIsDeleted($arg1)
+  {
+    if(!empty($arg1)) {
+      $user = user_load_by_name($arg1);
+      $uid = $user->get('uid')->value;
+      user_cancel(array(), $uid, 'user_cancel_delete');
+    }
   }
 
 }
