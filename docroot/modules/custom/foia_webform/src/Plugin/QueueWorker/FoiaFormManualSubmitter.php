@@ -6,7 +6,7 @@ namespace Drupal\foia_webform\Plugin\QueueWorker;
  * Manually submit a form submission.
  *
  * @QueueWorker (
- *   id = "foia_form_manual_submitter",
+ *   id = "foia_submissions",
  *   title = @Translation("Manual FOIA Form submitter"),
  * )
  */
