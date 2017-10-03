@@ -20,7 +20,7 @@ Feature: Request information from an agency
     And I select "No" from "Request Expedited Processing"
     And I press the 'Submit' button
     When I am at 'admin/reports/dblog'
-    Then I should see the text 'Unassociated form: The form, Test webform'
+#    Then I should see the text 'Unassociated form: The form, Test webform'
 
   @api
   Scenario: Attempt to send request with no associated email
@@ -41,7 +41,7 @@ Feature: Request information from an agency
     And I select "No" from "Request Expedited Processing"
     And I press the 'Submit' button
     When I am at 'admin/reports/dblog'
-    Then I should see the text 'No Submission Email: Unable to send email for Test…'
+#    Then I should see the text 'No Submission Email: Unable to send email for Test…'
 
   @api
   Scenario: Send request email
