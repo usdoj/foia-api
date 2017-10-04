@@ -71,3 +71,40 @@ Feature: Request information from an agency
 #    And I should see the text 'Test'
     When I am at 'admin/reports/dblog'
 #    Then I should see the text 'Test webform webform sent FOIA Email email.'
+
+  @api
+  Scenario: Submission adds to queue
+    Given I am logged in as a user with the 'Administrator' role
+    When I am at 'admin/structure/webform/add'
+    And for 'Machine-readable name' I enter 'a_test_webform'
+    And for Title I enter 'A Test Webform'
+    And I press the 'Save' button
+    Then I should see the following success messages:
+      | Webform A Test Webform created. |
+    When I click 'Emails / Handlers'
+    Then I should see 'foia_submission_queue' in the 'FOIA Submission Queue: Queues a webform submission to be sent later.' row
+    And I should see 'Enabled' in the 'FOIA Submission Queue: Queues a webform submission to be sent later.' row
+    When I click 'View'
+    And for 'First Name' I enter 'Primo'
+    And for 'Last name' I enter 'Limo'
+    And for 'Email' I enter 'plimo@example.com'
+    And for "Describe the information you're requesting" I enter 'Freedom information'
+    And for 'Request Fee Waiver' I enter 'no'
+    And for 'Request Expedited Processing' I enter 'no'
+    And I press the 'Submit' button
+    Then I should see the following success messages:
+      | New submission added to A Test Webform. |
+    When I am at 'admin/reports/dblog'
+    Then I should see 'added to queue.' in the 'foia_webform' row
+    When I click 'View' in the 'foia_webform' row
+    Then I should see "Primo"
+    And I should see "Limo"
+    And I should see "plimo@example.com"
+    And I should see "Freedom information"
+    And I should see "No"
+    When I am at 'admin/structure/webform/manage/a_test_webform/settings'
+    And I click 'Delete'
+    And I check the box 'Yes, I want to delete this webform.'
+    And I press the 'Delete' button
+    Then I should see the following success messages:
+      | The webform A Test Webform has been deleted. |
