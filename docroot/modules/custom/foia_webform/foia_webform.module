@@ -8,18 +8,16 @@
 use Drupal\webform\WebformInterface;
 
 /**
- * Programmatically add the foia_email handler to new webforms.
+ * Programmatically add the foia_submission_queue handler to new webforms.
  */
 function foia_webform_webform_insert(WebformInterface $webform) {
   $webform_handler_manager = \Drupal::service('plugin.manager.webform.handler');
-  $webform_handler = $webform_handler_manager->createInstance('foia_email');
+  $webform_handler = $webform_handler_manager->createInstance('foia_submission_queue');
 
-  // @todo: Add Submission Email if we add Agency Component entity reference.
-  // Set default configuration.
   $webform_handler->setConfiguration([
-    'id' => 'foia_email',
-    'label' => 'FOIA Email',
-    'handler_id' => 'foia_email',
+    'id' => 'foia_submission_queue',
+    'label' => 'FOIA Submission Queue',
+    'handler_id' => 'foia_submission_queue',
     'status' => TRUE,
     'weight' => 0,
     'settings' => [
