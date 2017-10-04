@@ -142,9 +142,6 @@ Feature: Agency Administrator role
     And I select "No" from "Request Expedited Processing"
     And I press the 'Submit' button
     Then I should see the text 'New submission added to A Test Webform.'
-    When I am at 'admin/structure/webform/manage/a_test_webform/results/submissions'
-    And I click '1'
-    Then I should see the link 'Delete'
     When I am at 'admin/structure/webform/manage/a_test_webform/settings'
     And I click 'Delete'
     And I check the box 'Yes, I want to delete this webform.'
