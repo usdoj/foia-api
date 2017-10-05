@@ -6,6 +6,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
+use Drupal\foia_webform\FoiaSubmissionServiceInterface;
 use Drupal\webform\WebformSubmissionStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -38,14 +39,14 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *
    * @var \Drupal\foia_webform\FoiaSubmissionServiceApi
    */
-  protected $foiaSubmissionApiService;
+  protected $foiaSubmissionServiceApi;
 
   /**
    * The service to submit the submission via email to the Component.
    *
    * @var \Drupal\foia_webform\FoiaSubmissionServiceApi
    */
-  protected $foiaSubmissionEmailService;
+  protected $foiaSubmissionServiceEmail;
 
   /**
    * The factory class to build the submission.
@@ -60,8 +61,8 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
   public function __construct(WebformSubmissionStorageInterface $webformStorage, AgencyLookupServiceInterface $agencyLookupService, FoiaSubmissionServiceInterface $foiaSubmissionApiService, FoiaSubmissionServiceInterface $foiaSubmissionEmailService, FoiaSubmissionServiceFactoryInterface $foiaSubmissionServiceFactory) {
     $this->webformStorage = $webformStorage;
     $this->agencyLookUpService = $agencyLookupService;
-    $this->foiaSubmissionApiService = $foiaSubmissionApiService;
-    $this->foiaSubmissionApiService = $foiaSubmissionEmailService;
+    $this->foiaSubmissionServiceApi = $foiaSubmissionApiService;
+    $this->foiaSubmissionServiceEmail = $foiaSubmissionEmailService;
     $this->foiaSubmissionServiceFactory = $foiaSubmissionServiceFactory;
   }
 
@@ -85,12 +86,12 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     $webformSubmission = $this->webformStorage->load($data->sid);
 
     $agencyComponent = $this->agencyLookUpService->getComponentFromWebform($webformSubmission->getWebform()->id());
-    $submissionPreference = $agencyComponent->get('field_portal_submission_format');
+    $submissionPreference = $agencyComponent->get('field_portal_submission_format')->value;
     if ($submissionPreference == 'api') {
-      $this->foiaSubmissionApiService->sendSubmissionToComponent($data, $agencyComponent);
+      $this->foiaSubmissionServiceApi->sendSubmissionToComponent($webformSubmission, $agencyComponent);
     }
     else {
-      $this->foiaSubmissionEmailService->sendSubmissionToComponent($data, $agencyComponent);
+      $this->foiaSubmissionServiceEmail->sendSubmissionToComponent($webformSubmission, $agencyComponent);
     }
   }
 

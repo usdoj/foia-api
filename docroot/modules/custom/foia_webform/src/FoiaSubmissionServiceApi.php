@@ -11,8 +11,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class FoiaSubmissionServiceApi.
- *
- * @package Drupal\foia_webform\Plugin\QueueWorker
  */
 class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
 
@@ -69,6 +67,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    */
   public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
     $apiUrl = $agencyComponent->get('field_submission_api');
+    $requestData = NULL;
 
     if ($apiUrl) {
       $requestData = $this->assembleRequestData($webformSubmission, $agencyComponent);
@@ -81,6 +80,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
             'link' => $agencyComponent->toLink($this->t('Edit Component'), 'edit-form')->toString(),
           ]
         );
+    }
+
+    if ($requestData && $apiUrl) {
+      // @todo Send request here.
     }
   }
 
@@ -96,11 +99,21 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   Return the assemble request data in an array.
    */
   public function assembleRequestData(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
+    // Get the webform submission values.
     $submissionValues = $this->getSubmissionValues($webformSubmission);
-    $agencyInfo = $this->getAgencyInfo($agencyComponent);
-    $requestValues = array_merge($submissionValues, $agencyInfo);
 
-    return $requestValues;
+    // If there are files attached, load the files and add the file metadata.
+    if (isset($submissionValues['attachments_supporting_documentation'])) {
+      $submissionValues['attachments'] = $this->getAttachmentData($submissionValues['attachments_supporting_documentation']);
+      unset($submissionValues['attachments_supporting_documentation']);
+    }
+
+    // Get the agency information.
+    $agencyInfo = $this->getAgencyInfo($agencyComponent);
+
+    $requestData = array_merge($submissionValues, $agencyInfo);
+
+    return $requestData;
   }
 
   /**
@@ -123,8 +136,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   The Agency Component node object.
    */
   public function getAgencyInfo(NodeInterface $agencyComponent) {
+    $agency_term = $this->agencyLookUpService->getAgencyFromComponent($agencyComponent);
+
     return [
-      'agency' => $this->agencyLookUpService->getAgencyFromComponent($agencyComponent),
+      'agency' => $agency_term->label(),
       'agency_component_name' => $agencyComponent->label(),
     ];
   }
@@ -136,11 +151,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   An array containing the file IDs for the file attachments.
    */
   public function getAttachmentData(array $files) {
+    $fileData = [];
     if (!empty($files)) {
-      $fileData = [];
       foreach ($files as $fid) {
         $currentFile = File::load($fid);
-        print_r($currentFile);
         $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
         $fileData[] = [
           'content_type' => $currentFile->getMimeType(),
@@ -150,6 +164,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
         ];
       }
     }
+    return $fileData;
   }
 
 }

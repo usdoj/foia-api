@@ -20,8 +20,7 @@ class AgencyLookupService implements AgencyLookupServiceInterface {
       ->condition('field_request_submission_form', $webformId);
     $nid = $query->execute();
 
-    $node = ($nid) ? Node::load(reset($nid)) : NULL;
-    return $node;
+    return ($nid) ? Node::load(reset($nid)) : NULL;
   }
 
   /**
