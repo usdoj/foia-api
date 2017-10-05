@@ -48,7 +48,9 @@
                 "type:drupal-custom-theme"
             ],
             "docroot/libraries/{$name}": [
-                "type:drupal-library"
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset"
             ],
             "drush/contrib/{$name}": [
                 "type:drupal-drush"
@@ -65,7 +67,8 @@
             "merge-extra": true,
             "merge-extra-deep": true,
             "merge-scripts": true,
-            "replace": true
+            "replace": false,
+            "ignore-duplicates": true
         },
         "patches": {
             "drupal/core": {
@@ -77,6 +80,10 @@
         "drupal": {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
         }
     }
 }
