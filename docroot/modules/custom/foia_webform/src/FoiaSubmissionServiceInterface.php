@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\foia_webform\Plugin\QueueWorker;
+namespace Drupal\foia_webform;
 
-use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -15,12 +15,9 @@ interface FoiaSubmissionServiceInterface {
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   A webform submission.
-   * @param \Drupal\node\Entity\Node $agencyComponent
+   * @param \Drupal\node\NodeInterface $agencyComponent
    *   The Agency Component node object.
-   *
-   * @return bool
-   *   TRUE if submission has scheduled email.
    */
-  public function sendSubmissionToComponent(WebformSubmissionInterface $webform_submission, Node $agencyComponent);
+  public function sendSubmissionToComponent(WebformSubmissionInterface $webform_submission, NodeInterface $agencyComponent);
 
 }
