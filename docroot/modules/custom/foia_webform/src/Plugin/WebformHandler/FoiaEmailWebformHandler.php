@@ -52,7 +52,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $form = $webformSubmission->getWebform();
     $webformId = $form->getOriginalId();
     $agencyLookupService = \Drupal::service('foia_webform.agency_lookup_service');
-    $agencyComponent = $agencyLookupService->getComponentByWebform($webformId);
+    $agencyComponent = $agencyLookupService->getComponentFromWebform($webformId);
 
     // If we have an Agency Component, get the Submission Email value.
     if ($agencyComponent) {

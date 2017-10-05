@@ -2,8 +2,10 @@
 
 namespace Drupal\foia_webform;
 
+use Drupal\node\NodeInterface;
+
 /**
- * Interface AgencyLookupServiceInterface.
+ * Provides interface defining the Agency Lookup Service.
  */
 interface AgencyLookupServiceInterface {
 
@@ -16,6 +18,17 @@ interface AgencyLookupServiceInterface {
    * @return \Drupal\node\NodeInterface|null
    *   The Agency Component object or NULL.
    */
-  public function getComponentByWebform($webformId);
+  public function getComponentFromWebform($webformId);
+
+  /**
+   * Look up the Agency taxonomy term for a given Agency Component.
+   *
+   * @param \Drupal\node\NodeInterface $agencyComponent
+   *   The Agency Component node object.
+   *
+   * @return \Drupal\taxonomy\TermInterface
+   *   Returns the Agency taxonomy term object.
+   */
+  public function getAgencyFromComponent(NodeInterface $agencyComponent);
 
 }
