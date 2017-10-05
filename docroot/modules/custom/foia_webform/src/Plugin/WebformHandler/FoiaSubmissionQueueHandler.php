@@ -25,10 +25,7 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $state = $webform_submission->getWebform()->getSetting('results_disabled') ? WebformSubmissionInterface::STATE_COMPLETED : $webform_submission->getState();
     if (in_array($state, $this->configuration['states'])) {
-      // Get the Webform generated email message.
-      $message = $this->getMessage($webform_submission);
-      // Add the submission to the queue.
-      $this->queueSubmission($webform_submission, $message);
+      $this->queueSubmission($webform_submission);
     }
   }
 
@@ -37,10 +34,8 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   The webform submission object.
-   * @param array $message
-   *   The email message array.
    */
-  private function queueSubmission(WebformSubmissionInterface $webform_submission, array $message) {
+  private function queueSubmission(WebformSubmissionInterface $webform_submission) {
     // @var QueueFactory $queue_factory
     $queue_factory = \Drupal::service('queue');
 
@@ -48,7 +43,6 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
     $foia_submission_queue = $queue_factory->get('foia_submissions');
     $submission = new \stdClass();
     $submission->sid = $webform_submission->id();
-    $submission->message = $message;
 
     // Log the form submission.
     \Drupal::logger('foia_webform')
