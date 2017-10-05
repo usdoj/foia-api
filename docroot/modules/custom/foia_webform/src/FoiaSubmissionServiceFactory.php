@@ -7,7 +7,7 @@ use Drupal\node\NodeInterface;
 /**
  * Class FoiaSubmissionServiceFactory.
  */
-class FoiaSubmissionServiceFactory {
+class FoiaSubmissionServiceFactory implements FoiaSubmissionServiceFactoryInterface {
 
   /**
    * {@inheritdoc}
