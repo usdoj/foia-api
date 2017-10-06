@@ -38,41 +38,12 @@ $metadata['https://login.max.gov/idp/shibboleth'] = array (
     ),
   'SingleLogoutService' =>
     array (
-      0 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-          'Location' => 'https://login.max.gov/idp/profile/SAML2/Redirect/SLO',
-        ),
-      1 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-          'Location' => 'https://login.max.gov/idp/profile/SAML2/POST/SLO',
-        ),
-      2 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-          'Location' => 'https://login.max.gov/idp/profile/SAML2/SOAP/SLO',
-        ),
     ),
   'ArtifactResolutionService' =>
     array (
-      0 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding',
-          'Location' => 'https://login.max.gov/idp/profile/SAML1/SOAP/ArtifactResolution',
-          'index' => 1,
-        ),
-      1 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-          'Location' => 'https://login.max.gov/idp/profile/SAML2/SOAP/ArtifactResolution',
-          'index' => 2,
-        ),
     ),
   'NameIDFormats' =>
     array (
-      0 => 'urn:mace:shibboleth:1.0:nameIdentifier',
-      1 => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
     ),
   'keys' =>
     array (
@@ -123,41 +94,12 @@ $metadata['https://login.test.max.gov/idp/shibboleth'] = array (
     ),
   'SingleLogoutService' =>
     array (
-      0 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-          'Location' => 'https://login.test.max.gov/idp/profile/SAML2/Redirect/SLO',
-        ),
-      1 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-          'Location' => 'https://login.test.max.gov/idp/profile/SAML2/POST/SLO',
-        ),
-      2 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-          'Location' => 'https://login.test.max.gov/idp/profile/SAML2/SOAP/SLO',
-        ),
     ),
   'ArtifactResolutionService' =>
     array (
-      0 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding',
-          'Location' => 'https://login.test.max.gov/idp/profile/SAML1/SOAP/ArtifactResolution',
-          'index' => 1,
-        ),
-      1 =>
-        array (
-          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-          'Location' => 'https://login.test.max.gov/idp/profile/SAML2/SOAP/ArtifactResolution',
-          'index' => 2,
-        ),
     ),
   'NameIDFormats' =>
     array (
-      0 => 'urn:mace:shibboleth:1.0:nameIdentifier',
-      1 => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
     ),
   'keys' =>
     array (
