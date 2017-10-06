@@ -5,7 +5,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "acquia/blt": "^8.3",
+        "acquia/blt": "^8.9.7",
         "drupal/webform": "^5.0@beta",
         "drupal/address": "~1.0",
         "drupal/field_group": "^1.0@RC",
@@ -18,7 +18,9 @@
         "drupal/jsonapi_extras": "1.x-dev#1a57e11212224129ddb0229726dc7b852bcd836c",
         "drupal/maillog": "1.x-dev#14fd24cd89e299ad271608cd52706c60b753c26d",
         "drupal/restui": "^1.15",
-        "drupal/roleassign": "^1.0@alpha"
+        "drupal/roleassign": "^1.0@alpha",
+        "acquia/lightning": "^2.2.0",
+        "drupal/core": "8.4.0"
     },
     "require-dev": {
         "geerlingguy/drupal-vm": "~4.3"
@@ -72,9 +74,14 @@
         },
         "patches": {
             "drupal/core": {
-                "Account for null triggering element when validating managed file elements": "https://www.drupal.org/files/issues/validating_managed-2910320-4-8.3.7.patch"
+                "Account for null triggering element when validating managed file elements": "https://www.drupal.org/files/issues/validating_managed-2910320-4-8.3.7.patch",
+                "Allow a profile to be installed from existing config": "https://www.drupal.org/files/issues/2788777-91.patch"
             }
-        }
+        },
+        "installer-types": [
+            "bower-asset",
+            "npm-asset"
+        ]
     },
     "repositories": {
         "drupal": {
