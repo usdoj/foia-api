@@ -1,6 +1,7 @@
 services:
   foia_webform.agency_lookup_service:
     class: Drupal\foia_webform\AgencyLookupService
+    arguments: ['@entity_type.manager']
   foia_webform.foia_submission_service_api:
     class: Drupal\foia_webform\FoiaSubmissionServiceApi
     arguments: ['@http_client', '@foia_webform.agency_lookup_service', '@logger.channel.foia_webform']
@@ -11,7 +12,7 @@ services:
     class: Drupal\foia_webform\FoiaSubmissionServiceFactory
     arguments: ['@entity.manager', '@logger.channel.foia_webform']
   foia_webform.foia_submission_queue_worker:
-    class: Drupal\foia_webform\Plugin\QueueWorker
+    class: Drupal\foia_webform\Plugin\QueueWorker\FoiaSubmissionQueueWorker
     arguments: ['@entity.manager', '@foia_webform.agency_lookup_service', '@foia_webform.foia_submission_service_api', '@foia_webform.foia_submission_service_email', '@foia_webform.foia_submission_service_factory']
 
   logger.channel.foia_webform:

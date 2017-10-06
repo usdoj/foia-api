@@ -13,11 +13,11 @@ class FoiaSubmissionServiceFactory implements FoiaSubmissionServiceFactoryInterf
    * {@inheritdoc}
    */
   public function get(NodeInterface $agencyComponent) {
-    $submissionPreference = $agencyComponent->get('field_portal_submission_format');
+    $submissionPreference = $agencyComponent->get('field_portal_submission_format')->value;
 
     switch ($submissionPreference) {
       case 'api':
-        $serviceName = 'foia_webform.foia_submission_api_service';
+        $serviceName = 'foia_webform.foia_submission_service_api';
         break;
 
       default:

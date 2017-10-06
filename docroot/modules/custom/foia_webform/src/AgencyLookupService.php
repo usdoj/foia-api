@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_webform;
 
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
@@ -11,11 +12,33 @@ use Drupal\node\NodeInterface;
 class AgencyLookupService implements AgencyLookupServiceInterface {
 
   /**
+   * The entity query service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(EntityTypeManager $entityTypeManager) {
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $container->get('entity.query')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getComponentFromWebform($webformId) {
-    $entityQueryService = \Drupal::service('entity.query');
-    $query = $entityQueryService->get('node')
+    $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->condition('type', 'agency_component')
       ->condition('field_request_submission_form', $webformId);
     $nid = $query->execute();
