@@ -3,11 +3,29 @@
 namespace Drupal\foia_webform;
 
 use Drupal\node\NodeInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class FoiaSubmissionServiceFactory.
  */
 class FoiaSubmissionServiceFactory implements FoiaSubmissionServiceFactoryInterface {
+
+  /**
+   * A logger instance.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
+   * FoiaSubmissionServiceFactory constructor.
+   *
+   * @param \Psr\Log\LoggerInterface $logger
+   *   A logger instance.
+   */
+  public function __construct(LoggerInterface $logger) {
+    $this->logger = $logger;
+  }
 
   /**
    * {@inheritdoc}
@@ -21,11 +39,12 @@ class FoiaSubmissionServiceFactory implements FoiaSubmissionServiceFactoryInterf
         break;
 
       default:
-        \Drupal::logger('foia_webform')
-          ->notice('Invalid submission preference for component %nid, defaulting to email.',
+        $serviceName = 'foia_webform.foia_submission_service_email';
+        $this->logger
+          ->notice('Invalid submission preference for component #%nid, defaulting to email.',
             [
               '%nid' => $agencyComponent->id(),
-              'link' => $agencyComponent->toLink($this->t('Edit Component'), 'edit-form')->toString(),
+              'link' => $agencyComponent->toLink(t('Edit Component'), 'edit-form')->toString(),
             ]
           );
     }

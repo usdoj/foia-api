@@ -26,8 +26,8 @@ interface AgencyLookupServiceInterface {
    * @param \Drupal\node\NodeInterface $agencyComponent
    *   The Agency Component node object.
    *
-   * @return \Drupal\taxonomy\TermInterface
-   *   Returns the Agency taxonomy term object.
+   * @return \Drupal\taxonomy\TermInterface|null
+   *   Returns the Agency taxonomy term object or NULL.
    */
   public function getAgencyFromComponent(NodeInterface $agencyComponent);
 
