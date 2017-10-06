@@ -2,10 +2,13 @@
 
 namespace Drupal\foia_webform;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -53,25 +56,33 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
-    $apiUrl = $agencyComponent->get('field_submission_api');
-    $requestData = NULL;
+  public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, WebformInterface $webform, NodeInterface $agencyComponent) {
+    $apiUrl = $agencyComponent->get('field_submission_api')->value;
+
+    if (!UrlHelper::isValid($apiUrl, TRUE)) {
+      $apiUrl = FALSE;
+      $this->logger
+        ->error('Invalid API URL for the component %nid',
+          ['%nid' => $agencyComponent->id()]
+        );
+    }
+    $valuesToSubmit = NULL;
 
     if ($apiUrl) {
-      $requestData = $this->assembleRequestData($webformSubmission, $agencyComponent);
+      $valuesToSubmit = $this->assembleRequestData($webformSubmission, $agencyComponent, $webform);
     }
     else {
       $this->logger
         ->error('Unable to submit request via the API. Missing API Submission URL for node %component',
           [
             '%component' => $agencyComponent->id(),
-            'link' => $agencyComponent->toLink($this->t('Edit Component'), 'edit-form')->toString(),
+            'link' => $agencyComponent->toLink(t('Edit Component'), 'edit-form')->toString(),
           ]
         );
     }
 
-    if ($requestData && $apiUrl) {
-      // @todo Send request here.
+    if ($valuesToSubmit && $apiUrl) {
+      $this->submitToApi($apiUrl, $valuesToSubmit);
     }
   }
 
@@ -82,26 +93,22 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   The FOIA form submission form values.
    * @param \Drupal\node\NodeInterface $agencyComponent
    *   The Agency Component node object.
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The Webform node object.
    *
    * @return array
    *   Return the assemble request data in an array.
    */
-  public function assembleRequestData(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
+  public function assembleRequestData(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent, WebformInterface $webform) {
     // Get the webform submission values.
-    $submissionValues = $this->getSubmissionValues($webformSubmission);
-
-    // If there are files attached, load the files and add the file metadata.
-    if (isset($submissionValues['attachments_supporting_documentation'])) {
-      $submissionValues['attachments'] = $this->getAttachmentData($submissionValues['attachments_supporting_documentation']);
-      unset($submissionValues['attachments_supporting_documentation']);
-    }
+    $formValues = $this->getSubmissionValues($webformSubmission, $webform);
 
     // Get the agency information.
     $agencyInfo = $this->getAgencyInfo($agencyComponent);
 
-    $requestData = array_merge($submissionValues, $agencyInfo);
+    $submissionValues = array_merge($formValues, $agencyInfo);
 
-    return $requestData;
+    return $submissionValues;
   }
 
   /**
@@ -109,12 +116,31 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
    *   The Webform submission values.
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The Webform node object.
    *
    * @return array
    *   Returns the submission values as an array.
    */
-  public function getSubmissionValues(WebformSubmissionInterface $webformSubmission) {
-    return $webformSubmission->getData();
+  public function getSubmissionValues(WebformSubmissionInterface $webformSubmission, WebformInterface $webform) {
+    $submissionValues = $webformSubmission->getData();
+    // If there are files attached, load the files and add the file metadata.
+    if ($webform->hasManagedFile()) {
+      $attachments = [];
+      $fileKeys = $this->getFileAttachmentElementsOnWebform($webform);
+      if ($fileKeys) {
+        foreach ($fileKeys as $key) {
+          $files = $this->getAttachmentData($submissionValues[$key]);
+          $attachments = array_merge($files, $attachments);
+          unset($submissionValues[$key]);
+        }
+      }
+      if (!empty($attachments)) {
+        $submissionValues['attachments'] = $attachments;
+      }
+    }
+
+    return $submissionValues;
   }
 
   /**
@@ -153,6 +179,76 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       }
     }
     return $fileContents;
+  }
+
+  /**
+   * Submit the FOIA request form values to the API.
+   *
+   * @param string $apiUrl
+   *   The API URL.
+   * @param array $submissionValues
+   *   An array containing the values to submit to the API.
+   */
+  private function submitToApi($apiUrl, array $submissionValues) {
+    $client = $this->httpClient;
+    try {
+      $request = $client->post($apiUrl, [
+        'json' => $submissionValues,
+      ]);
+      return $request;
+    }
+    catch (RequestException $e) {
+      $rawResponse = $e->getResponse()->getBody();
+      $response = Json::decode($rawResponse);
+      if (empty($response)) {
+        $loggerVariables = [
+          '@exception_message' => $e->getMessage(),
+        ];
+        $this->logger->error('Send API error: Exception: @exception_message', $loggerVariables);
+      }
+      return FALSE;
+    }
+    catch (\Exception $e) {
+      $loggerVariables = [
+        '@exception_message' => $e->getMessage(),
+      ];
+      $this->logger->error('Send API error: Exception: @exception_message', $loggerVariables);
+      return FALSE;
+    }
+    finally {
+      $this->logOutgoingPost($submissionValues);
+    }
+  }
+
+  /**
+   * Helper function to log outgoing POST messages being sent.
+   *
+   * @param string $message
+   *   The message to be logged.
+   */
+  public function logOutgoingPost($message) {
+    $this->logger->debug("Sending outgoing POST (in JSON): @message", ['@message' => Json::encode($message)]);
+  }
+
+  /**
+   * Gets the names of file attachment elements on the webform.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform being submitted against.
+   *
+   * @return array
+   *   Returns an array of the names of the file attachment elements on the
+   *   webform being submitted against.
+   */
+  protected function getFileAttachmentElementsOnWebform(WebformInterface $webform) {
+    $elements = $webform->getElementsInitialized();
+    $fileAttachmentElementKeys = [];
+    foreach ($elements as $key => $element) {
+      if (isset($element['#type']) && $element['#type'] == 'managed_file') {
+        $fileAttachmentElementKeys[] = $key;
+      }
+    }
+    return $fileAttachmentElementKeys;
   }
 
 }

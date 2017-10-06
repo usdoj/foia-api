@@ -3,6 +3,7 @@
 namespace Drupal\foia_webform;
 
 use Drupal\node\NodeInterface;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -13,7 +14,7 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
+  public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, WebformInterface $webform, NodeInterface $agencyComponent) {
 
   }
 
