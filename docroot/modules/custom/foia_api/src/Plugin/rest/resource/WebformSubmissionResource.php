@@ -483,7 +483,7 @@ class WebformSubmissionResource extends ResourceBase {
    *   Array of file entities to be deleted.
    */
   protected function deleteFilesFromTemporaryStorage(array $filesByFieldName) {
-    foreach ($filesByFieldName as $fieldName => $files) {
+    foreach ($filesByFieldName as $files) {
       /** @var \Drupal\file\FileInterface $file */
       foreach ($files as $file) {
         file_delete($file->id());
