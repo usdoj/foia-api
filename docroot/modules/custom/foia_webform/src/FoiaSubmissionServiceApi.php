@@ -2,7 +2,6 @@
 
 namespace Drupal\foia_webform;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\webform\WebformSubmissionInterface;
@@ -49,17 +48,6 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $this->httpClient = $httpClient;
     $this->agencyLookUpService = $agencyLookupService;
     $this->logger = $logger;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ConfigFactoryInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $container->get('http_client'),
-      $container->get('foia_webform.agency_lookup_service'),
-      $container->get('logger.channel.foia_webform')
-    );
   }
 
   /**
@@ -130,16 +118,16 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   }
 
   /**
-   * Parse the Agency information from the Agency Component.
+   * Fetch the Agency information from the Agency Component.
    *
    * @param \Drupal\node\NodeInterface $agencyComponent
    *   The Agency Component node object.
    */
   public function getAgencyInfo(NodeInterface $agencyComponent) {
-    $agency_term = $this->agencyLookUpService->getAgencyFromComponent($agencyComponent);
+    $agencyTerm = $this->agencyLookUpService->getAgencyFromComponent($agencyComponent);
 
     return [
-      'agency' => $agency_term->label(),
+      'agency' => ($agencyTerm) ? $agencyTerm->label() : '',
       'agency_component_name' => $agencyComponent->label(),
     ];
   }
@@ -151,12 +139,12 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   An array containing the file IDs for the file attachments.
    */
   public function getAttachmentData(array $files) {
-    $fileData = [];
+    $fileContents = [];
     if (!empty($files)) {
       foreach ($files as $fid) {
         $currentFile = File::load($fid);
         $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
-        $fileData[] = [
+        $fileContents[] = [
           'content_type' => $currentFile->getMimeType(),
           'filedata' => $base64,
           'filename' => $currentFile->getFilename(),
@@ -164,7 +152,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
         ];
       }
     }
-    return $fileData;
+    return $fileContents;
   }
 
 }

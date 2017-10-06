@@ -28,15 +28,6 @@ class AgencyLookupService implements AgencyLookupServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $container->get('entity.query')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getComponentFromWebform($webformId) {
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->condition('type', 'agency_component')
@@ -50,7 +41,11 @@ class AgencyLookupService implements AgencyLookupServiceInterface {
    * {@inheritdoc}
    */
   public function getAgencyFromComponent(NodeInterface $agencyComponent) {
-    return $agencyComponent->get('field_agency')->getEntity();
+    $agencyTerm = NULL;
+    if (!$agencyComponent->get('field_agency')->isEmpty()) {
+      $agencyTerm = $agencyComponent->get('field_agency')->getEntity();
+    }
+    return $agencyTerm;
   }
 
 }
