@@ -14,8 +14,9 @@ use Drupal\jsonapi\ResourceType\ResourceTypeRepository;
 class FoiaResourceTypeRepository extends ResourceTypeRepository {
 
   /**
-   * Quite a few entity types are only relevant in Reservoir's UI: they do not
-   * make sense to expose via APIs.
+   * Do not expose certain entity types only relevant in Reservoir's UI.
+   *
+   * @var array
    *
    * @todo make protected once \Drupal\reservoir_ui\Controller\OpenApiDocs::generateDocs() no longer uses this.
    */
