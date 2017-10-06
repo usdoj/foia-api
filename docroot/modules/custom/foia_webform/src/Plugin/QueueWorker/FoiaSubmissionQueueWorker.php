@@ -51,7 +51,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
   /**
    * The factory class to build the submission.
    *
-   * @var \Drupal\foia_webform\FoiaSubmissionServiceApi
+   * @var \Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface
    */
   protected $foiaSubmissionServiceFactory;
 
@@ -86,13 +86,12 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     $webformSubmission = $this->webformStorage->load($data->sid);
 
     $agencyComponent = $this->agencyLookUpService->getComponentFromWebform($webformSubmission->getWebform()->id());
-    $submissionPreference = $agencyComponent->get('field_portal_submission_format')->value;
-    if ($submissionPreference == 'api') {
-      $this->foiaSubmissionServiceApi->sendSubmissionToComponent($webformSubmission, $agencyComponent);
-    }
-    else {
-      $this->foiaSubmissionServiceEmail->sendSubmissionToComponent($webformSubmission, $agencyComponent);
-    }
+
+    // Check the submission preference for the Agency Component.
+    $submissionService = $this->foiaSubmissionServiceFactory->get($agencyComponent);
+
+    // Submit the form values to the Agency Component.
+    $submissionService->sendSubmissionToComponent($webformSubmission, $agencyComponent);
   }
 
 }
