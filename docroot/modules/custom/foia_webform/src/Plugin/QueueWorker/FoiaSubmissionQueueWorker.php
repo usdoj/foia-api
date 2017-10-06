@@ -84,14 +84,14 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    */
   public function processItem($data) {
     $webformSubmission = $this->webformStorage->load($data->sid);
-
-    $agencyComponent = $this->agencyLookUpService->getComponentFromWebform($webformSubmission->getWebform()->id());
+    $webform = $webformSubmission->getWebform();
+    $agencyComponent = $this->agencyLookUpService->getComponentFromWebform($webform->id());
 
     // Check the submission preference for the Agency Component.
     $submissionService = $this->foiaSubmissionServiceFactory->get($agencyComponent);
 
     // Submit the form values to the Agency Component.
-    $submissionService->sendSubmissionToComponent($webformSubmission, $agencyComponent);
+    $submissionService->sendSubmissionToComponent($webformSubmission, $webform, $agencyComponent);
   }
 
 }
