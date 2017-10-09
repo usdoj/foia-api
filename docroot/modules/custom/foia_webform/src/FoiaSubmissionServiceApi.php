@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_webform;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
@@ -21,7 +22,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *
    * @var \Drupal\foia_webform\AgencyLookupService
    */
-  protected $agencyLookUpService;
+  protected $agencyLookupService;
 
   /**
    * An HTTP client to post FOIA requests to an Agency Component API endpoint.
@@ -49,7 +50,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    */
   public function __construct(ClientInterface $httpClient, AgencyLookupServiceInterface $agencyLookupService, LoggerInterface $logger) {
     $this->httpClient = $httpClient;
-    $this->agencyLookUpService = $agencyLookupService;
+    $this->agencyLookupService = $agencyLookupService;
     $this->logger = $logger;
   }
 
@@ -57,6 +58,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    * {@inheritdoc}
    */
   public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, WebformInterface $webform, NodeInterface $agencyComponent) {
+    $submissionResponse = FALSE;
     $apiUrl = $agencyComponent->get('field_submission_api')->value;
 
     if (!UrlHelper::isValid($apiUrl, TRUE)) {
@@ -82,8 +84,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     }
 
     if ($valuesToSubmit && $apiUrl) {
-      $this->submitToApi($apiUrl, $valuesToSubmit);
+      $submissionResponse = $this->submitToApi($apiUrl, $valuesToSubmit);
     }
+
+    return $submissionResponse;
   }
 
   /**
@@ -130,8 +134,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       $fileKeys = $this->getFileAttachmentElementsOnWebform($webform);
       if ($fileKeys) {
         foreach ($fileKeys as $key) {
-          $files = $this->getAttachmentData($submissionValues[$key]);
-          $attachments = array_merge($files, $attachments);
+          $attachments[$key] = $this->getAttachmentData($submissionValues[$key]);
           unset($submissionValues[$key]);
         }
       }
@@ -150,7 +153,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   The Agency Component node object.
    */
   public function getAgencyInfo(NodeInterface $agencyComponent) {
-    $agencyTerm = $this->agencyLookUpService->getAgencyFromComponent($agencyComponent);
+    $agencyTerm = $this->agencyLookupService->getAgencyFromComponent($agencyComponent);
 
     return [
       'agency' => ($agencyTerm) ? $agencyTerm->label() : '',
@@ -174,7 +177,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
           'content_type' => $currentFile->getMimeType(),
           'filedata' => $base64,
           'filename' => $currentFile->getFilename(),
-          'filesize' => $currentFile->getSize(),
+          'filesize' => (int) $currentFile->getSize(),
         ];
       }
     }
@@ -192,10 +195,17 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   private function submitToApi($apiUrl, array $submissionValues) {
     $client = $this->httpClient;
     try {
-      $request = $client->post($apiUrl, [
+      $requestResponse = $client->post($apiUrl, [
         'json' => $submissionValues,
       ]);
-      return $request;
+      $response = Json::decode($requestResponse);
+      if (isset($response['id']) && isset($response['status_tracking_number'])) {
+        $submissionResponse = [
+          'id' => $response['id'],
+          'status_tracking_number' => $response['status_tracking_number'],
+        ];
+      }
+      return (isset($submissionResponse)) ? $submissionResponse : [];
     }
     catch (RequestException $e) {
       $rawResponse = $e->getResponse()->getBody();
