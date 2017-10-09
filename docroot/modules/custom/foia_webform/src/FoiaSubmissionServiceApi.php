@@ -10,6 +10,7 @@ use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -39,6 +40,20 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected $logger;
 
   /**
+   * The agency component node.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $agencyComponent;
+
+  /**
+   * Submission-related error messages.
+   *
+   * @var array
+   */
+  protected $errors;
+
+  /**
    * FoiaSubmissionServiceApi constructor.
    *
    * @param \GuzzleHttp\ClientInterface $httpClient
@@ -58,36 +73,32 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    * {@inheritdoc}
    */
   public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, WebformInterface $webform, NodeInterface $agencyComponent) {
-    $submissionResponse = FALSE;
-    $apiUrl = $agencyComponent->get('field_submission_api')->value;
+    $this->agencyComponent = $agencyComponent;
+    $apiUrl = $this->agencyComponent->get('field_submission_api')->value;
 
     if (!UrlHelper::isValid($apiUrl, TRUE)) {
-      $apiUrl = FALSE;
       $this->logger
         ->error('Invalid API URL for the component %nid',
-          ['%nid' => $agencyComponent->id()]
+          ['%nid' => $this->agencyComponent->id()]
         );
+      return FALSE;
     }
     $valuesToSubmit = NULL;
 
     if ($apiUrl) {
-      $valuesToSubmit = $this->assembleRequestData($webformSubmission, $agencyComponent, $webform);
+      $valuesToSubmit = $this->assembleRequestData($webformSubmission, $webform);
+      return $this->submitToApi($apiUrl, $valuesToSubmit);
     }
     else {
       $this->logger
         ->error('Unable to submit request via the API. Missing API Submission URL for node %component',
           [
-            '%component' => $agencyComponent->id(),
-            'link' => $agencyComponent->toLink(t('Edit Component'), 'edit-form')->toString(),
+            '%component' => $this->agencyComponent->id(),
+            'link' => $this->agencyComponent->toLink(t('Edit Component'), 'edit-form')->toString(),
           ]
         );
+      return FALSE;
     }
-
-    if ($valuesToSubmit && $apiUrl) {
-      $submissionResponse = $this->submitToApi($apiUrl, $valuesToSubmit);
-    }
-
-    return $submissionResponse;
   }
 
   /**
@@ -95,20 +106,18 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
    *   The FOIA form submission form values.
-   * @param \Drupal\node\NodeInterface $agencyComponent
-   *   The Agency Component node object.
    * @param \Drupal\webform\WebformInterface $webform
    *   The Webform node object.
    *
    * @return array
    *   Return the assemble request data in an array.
    */
-  public function assembleRequestData(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent, WebformInterface $webform) {
+  protected function assembleRequestData(WebformSubmissionInterface $webformSubmission, WebformInterface $webform) {
     // Get the webform submission values.
     $formValues = $this->getSubmissionValues($webformSubmission, $webform);
 
     // Get the agency information.
-    $agencyInfo = $this->getAgencyInfo($agencyComponent);
+    $agencyInfo = $this->getAgencyInfo();
 
     $submissionValues = array_merge($formValues, $agencyInfo);
 
@@ -126,21 +135,11 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    * @return array
    *   Returns the submission values as an array.
    */
-  public function getSubmissionValues(WebformSubmissionInterface $webformSubmission, WebformInterface $webform) {
+  protected function getSubmissionValues(WebformSubmissionInterface $webformSubmission, WebformInterface $webform) {
     $submissionValues = $webformSubmission->getData();
     // If there are files attached, load the files and add the file metadata.
     if ($webform->hasManagedFile()) {
-      $attachments = [];
-      $fileKeys = $this->getFileAttachmentElementsOnWebform($webform);
-      if ($fileKeys) {
-        foreach ($fileKeys as $key) {
-          $attachments[$key] = $this->getAttachmentData($submissionValues[$key]);
-          unset($submissionValues[$key]);
-        }
-      }
-      if (!empty($attachments)) {
-        $submissionValues['attachments'] = $attachments;
-      }
+      $this->replaceFidsWithFileContents($webform, $submissionValues);
     }
 
     return $submissionValues;
@@ -149,39 +148,16 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   /**
    * Fetch the Agency information from the Agency Component.
    *
-   * @param \Drupal\node\NodeInterface $agencyComponent
-   *   The Agency Component node object.
+   * @return array
+   *   Returns an associative array containing the agency and component names.
    */
-  public function getAgencyInfo(NodeInterface $agencyComponent) {
-    $agencyTerm = $this->agencyLookupService->getAgencyFromComponent($agencyComponent);
+  protected function getAgencyInfo() {
+    $agencyTerm = $this->agencyLookupService->getAgencyFromComponent($this->agencyComponent);
 
     return [
       'agency' => ($agencyTerm) ? $agencyTerm->label() : '',
-      'agency_component_name' => $agencyComponent->label(),
+      'agency_component_name' => $this->agencyComponent->label(),
     ];
-  }
-
-  /**
-   * Get the metadata for the file attachments.
-   *
-   * @param array $files
-   *   An array containing the file IDs for the file attachments.
-   */
-  public function getAttachmentData(array $files) {
-    $fileContents = [];
-    if (!empty($files)) {
-      foreach ($files as $fid) {
-        $currentFile = File::load($fid);
-        $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
-        $fileContents[] = [
-          'content_type' => $currentFile->getMimeType(),
-          'filedata' => $base64,
-          'filename' => $currentFile->getFilename(),
-          'filesize' => (int) $currentFile->getSize(),
-        ];
-      }
-    }
-    return $fileContents;
   }
 
   /**
@@ -192,52 +168,94 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    * @param array $submissionValues
    *   An array containing the values to submit to the API.
    */
-  private function submitToApi($apiUrl, array $submissionValues) {
-    $client = $this->httpClient;
+  protected function submitToApi($apiUrl, array $submissionValues) {
     try {
-      $requestResponse = $client->post($apiUrl, [
+      /** @var \GuzzleHttp\Psr7\Response $requestResponse */
+      $response = $this->httpClient->post($apiUrl, [
         'json' => $submissionValues,
       ]);
-      $response = Json::decode($requestResponse);
-      if (isset($response['id']) && isset($response['status_tracking_number'])) {
-        $submissionResponse = [
-          'id' => $response['id'],
-          'status_tracking_number' => $response['status_tracking_number'],
-        ];
-      }
-      return (isset($submissionResponse)) ? $submissionResponse : [];
+      return $this->parseAgencyResponse($response);
     }
     catch (RequestException $e) {
-      $rawResponse = $e->getResponse()->getBody();
-      $response = Json::decode($rawResponse);
-      if (empty($response)) {
-        $loggerVariables = [
-          '@exception_message' => $e->getMessage(),
-        ];
-        $this->logger->error('Send API error: Exception: @exception_message', $loggerVariables);
+      $response = $e->getResponse();
+      $responseCode = $response->getStatusCode();
+      $responseBody = Json::decode($response->getBody());
+      $context = [
+        '@http_code' => $responseCode,
+      ];
+      $httpCodeMessagePrefix = 'HTTP Code: @http_code.';
+      if (empty($responseBody)) {
+        $this->log('error', "${httpCodeMessagePrefix} Did not receive JSON response from component.", $context);
+        return FALSE;
       }
+      if (isset($responseBody['code'])) {
+        $this->logErrorResponseFromComponent($responseBody);
+        $this->errors = $responseBody;
+        return FALSE;
+      }
+      $this->log('error', "${httpCodeMessagePrefix} Unexpected error response format from component.");
       return FALSE;
     }
     catch (\Exception $e) {
-      $loggerVariables = [
+      $response = $e->getResponse();
+      $responseCode = $response->getStatusCode();
+      $context = [
+        '@http_code' => $responseCode,
         '@exception_message' => $e->getMessage(),
       ];
-      $this->logger->error('Send API error: Exception: @exception_message', $loggerVariables);
+      $httpCodeMessagePrefix = 'HTTP Code: @http_code.';
+      $this->log('error', "${httpCodeMessagePrefix} Exception: @exception_message", $context);
       return FALSE;
-    }
-    finally {
-      $this->logOutgoingPost($submissionValues);
     }
   }
 
   /**
-   * Helper function to log outgoing POST messages being sent.
+   * Parses the response received from the agency component endpiont.
    *
-   * @param string $message
-   *   The message to be logged.
+   * @param \GuzzleHttp\Psr7\Response $response
+   *   The response object.
+   *
+   * @return array|mixed
+   *   An associative array with a request id and tracking number, if available.
+   *   Otherwise an empty string.
    */
-  public function logOutgoingPost($message) {
-    $this->logger->debug("Sending outgoing POST (in JSON): @message", ['@message' => Json::encode($message)]);
+  protected function parseAgencyResponse(Response $response) {
+    $responseBody = Json::decode($response->getBody());
+    // Not a json-formatted response like we expected.
+    if (empty($responseBody)) {
+      $this->log('error', 'Did not receive JSON response from component.');
+      return $responseBody;
+    }
+    $id = isset($responseBody['id']) ? $responseBody['id'] : '';
+    $statusTrackingNumber = isset($response['status_tracking_number']) ? $response['status_tracking_number'] : '';
+    if (!$id) {
+      $this->log('warning', 'Did not receive ID in response from component.');
+    }
+    $submissionResponse = [
+      'type' => 'api',
+      'id' => $id,
+      'status_tracking_number' => $statusTrackingNumber,
+    ];
+    return $submissionResponse;
+  }
+
+  /**
+   * Replaces Drupal fids with binary file attachment data.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform the submission belongs to.
+   * @param array $submissionValues
+   *   The values submitted.
+   */
+  protected function replaceFidsWithFileContents(WebformInterface $webform, array &$submissionValues) {
+    $fileAttachmentElementNames = $this->getFileAttachmentElementsOnWebform($webform);
+    if ($fileAttachmentElementNames) {
+      foreach ($fileAttachmentElementNames as $fileAttachmentElementName) {
+        $attachments = $this->getAttachmentData($submissionValues[$fileAttachmentElementName]);
+        unset($submissionValues[$fileAttachmentElementName]);
+        $submissionValues[$fileAttachmentElementName] = $attachments;
+      }
+    }
   }
 
   /**
@@ -259,6 +277,80 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       }
     }
     return $fileAttachmentElementKeys;
+  }
+
+  /**
+   * Get the file data for each file attachment.
+   *
+   * @param array $files
+   *   An array containing the file IDs for the file attachments.
+   *
+   * @return array
+   *   An array of file data for each file attachment.
+   */
+  protected function getAttachmentData(array $files) {
+    $fileContents = [];
+    if (!empty($files)) {
+      foreach ($files as $fid) {
+        $currentFile = File::load($fid);
+        $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
+        $fileContents[] = [
+          'content_type' => $currentFile->getMimeType(),
+          'filedata' => $base64,
+          'filename' => $currentFile->getFilename(),
+          'filesize' => (int) $currentFile->getSize(),
+        ];
+      }
+    }
+    return $fileContents;
+  }
+
+  /**
+   * Helper function which logs with appropriate context.
+   *
+   * @param string $level
+   *   The level with which to log (e.g. error, notice, etc.).
+   * @param string $message
+   *   The message to log.
+   * @param array $context
+   *   The message context.
+   * @param string $api
+   *   The relevant API.
+   */
+  protected function log($level, $message, array $context = [], $api = 'Submission Service API') {
+    $context['agency_component_id'] = $this->agencyComponent->id();
+    $this->logger->log($level, "{$api}: Agency Component: @agency_component_id. {$message}", $context);
+  }
+
+  /**
+   * Helper function to Log JSON error object received from Agency Component.
+   *
+   * @param array $response
+   *   Error object received from Agency Component.
+   */
+  protected function logErrorResponseFromComponent(array $response) {
+    $code = $response['code'];
+    $message = isset($response['message']) ? $response['message'] : '';
+    $description = isset($response['description']) ? $response['description'] : '';
+    $context = [
+      '@code' => $code,
+      '@message' => $message,
+      '@description' => $description,
+    ];
+    $messageToLog = "Code: @code. Message: @message. Description: @description.";
+    $this->log('error', $messageToLog, $context);
+  }
+
+  /**
+   * Returns submission-related error messages.
+   *
+   * @return array
+   *   Array of submission-related error messages.
+   */
+  public function getSubmissionErrors() {
+    $submissionErrors = $this->errors;
+    $submissionErrors['type'] = 'api';
+    return $submissionErrors;
   }
 
 }

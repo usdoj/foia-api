@@ -4,6 +4,7 @@ namespace Drupal\foia_webform\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\Core\Queue\RequeueException;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceInterface;
@@ -91,7 +92,10 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     $submissionService = $this->foiaSubmissionServiceFactory->get($agencyComponent);
 
     // Submit the form values to the Agency Component.
-    $submissionResponse = $submissionService->sendSubmissionToComponent($webformSubmission, $webform, $agencyComponent);
+    $validSubmissionResponse = $submissionService->sendSubmissionToComponent($webformSubmission, $webform, $agencyComponent);
+    if (!$validSubmissionResponse) {
+      throw new RequeueException('Error when submitting to agency component.');
+    }
   }
 
 }

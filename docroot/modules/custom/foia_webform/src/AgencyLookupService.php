@@ -5,6 +5,7 @@ namespace Drupal\foia_webform;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Class AgencyLookupService.
@@ -43,7 +44,8 @@ class AgencyLookupService implements AgencyLookupServiceInterface {
   public function getAgencyFromComponent(NodeInterface $agencyComponent) {
     $agencyTerm = NULL;
     if (!$agencyComponent->get('field_agency')->isEmpty()) {
-      $agencyTerm = $agencyComponent->get('field_agency')->getEntity();
+      $agencyTermId = $agencyComponent->get('field_agency')->value;
+      $agencyTerm = Term::load($agencyTermId);
     }
     return $agencyTerm;
   }
