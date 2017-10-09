@@ -14,6 +14,9 @@ interface FoiaSubmissionServiceFactoryInterface {
    *
    * @param \Drupal\node\NodeInterface $agencyComponent
    *   The Agency Component node object.
+   *
+   * @return \Drupal\foia_webform\FoiaSubmissionServiceInterface
+   *   Returns appropriate service for submitting a request based on component.
    */
   public function get(NodeInterface $agencyComponent);
 
