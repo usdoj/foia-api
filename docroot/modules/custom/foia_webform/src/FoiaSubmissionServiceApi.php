@@ -203,7 +203,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
         $exceptionCode = $e->getCode();
         $exceptionMessage = $e->getMessage();
         $error = [
-          'message' => "Exception code: ${exceptionCode}. Exception message: ${exceptionMessage}.",
+          'message' => "Exception message: ${exceptionMessage}.",
         ];
         $context = [
           '@exception_code' => $exceptionCode,
