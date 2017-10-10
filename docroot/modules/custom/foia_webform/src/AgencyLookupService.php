@@ -44,7 +44,7 @@ class AgencyLookupService implements AgencyLookupServiceInterface {
   public function getAgencyFromComponent(NodeInterface $agencyComponent) {
     $agencyTerm = NULL;
     if (!$agencyComponent->get('field_agency')->isEmpty()) {
-      $agencyTermId = $agencyComponent->get('field_agency')->value;
+      $agencyTermId = $agencyComponent->get('field_agency')->target_id;
       $agencyTerm = Term::load($agencyTermId);
     }
     return $agencyTerm;
