@@ -255,7 +255,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       return FALSE;
     }
     $id = isset($responseBody['id']) ? $responseBody['id'] : '';
-    $statusTrackingNumber = isset($response['status_tracking_number']) ? $response['status_tracking_number'] : '';
+    $statusTrackingNumber = isset($responseBody['status_tracking_number']) ? $responseBody['status_tracking_number'] : '';
     if (!$id) {
       $error = [
         'http_code' => $responseCode,
