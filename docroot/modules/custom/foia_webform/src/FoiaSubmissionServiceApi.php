@@ -21,7 +21,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   /**
    * The Agency Lookup service.
    *
-   * @var \Drupal\foia_webform\AgencyLookupService
+   * @var \Drupal\foia_webform\AgencyLookupServiceInterface
    */
   protected $agencyLookupService;
 
