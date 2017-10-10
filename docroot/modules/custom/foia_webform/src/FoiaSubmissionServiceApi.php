@@ -369,10 +369,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   }
 
   /**
-   * Returns submission-related error messages.
-   *
-   * @return array
-   *   Array of submission-related error messages.
+   * {@inheritdoc}
    */
   public function getSubmissionErrors() {
     $submissionErrors = $this->errors;

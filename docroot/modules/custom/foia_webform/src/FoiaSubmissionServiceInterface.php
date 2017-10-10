@@ -23,4 +23,12 @@ interface FoiaSubmissionServiceInterface {
    */
   public function sendSubmissionToComponent(WebformSubmissionInterface $webform_submission, WebformInterface $webform, NodeInterface $agencyComponent);
 
+  /**
+   * Returns submission-related error messages.
+   *
+   * @return array
+   *   Array of submission-related error messages.
+   */
+  public function getSubmissionErrors();
+
 }
