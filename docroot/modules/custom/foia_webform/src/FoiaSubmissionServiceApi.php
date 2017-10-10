@@ -77,10 +77,9 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $apiUrl = $this->agencyComponent->get('field_submission_api')->value;
 
     if (!UrlHelper::isValid($apiUrl, TRUE)) {
-      $this->logger
-        ->error('Invalid API URL for the component %nid',
-          ['%nid' => $this->agencyComponent->id()]
-        );
+      $error['message'] = 'Invalid API URL for the component';
+      $this->addSubmissionError($error);
+      $this->log('warning', $error['message']);
       return FALSE;
     }
     $valuesToSubmit = NULL;
@@ -90,13 +89,9 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       return $this->submitToApi($apiUrl, $valuesToSubmit);
     }
     else {
-      $this->logger
-        ->error('Unable to submit request via the API. Missing API Submission URL for node %component',
-          [
-            '%component' => $this->agencyComponent->id(),
-            'link' => $this->agencyComponent->toLink(t('Edit Component'), 'edit-form')->toString(),
-          ]
-        );
+      $error['message'] = 'Missing API Submission URL for component.';
+      $this->addSubmissionError($error);
+      $this->log('warning', $error['message']);
       return FALSE;
     }
   }
@@ -170,7 +165,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    */
   protected function submitToApi($apiUrl, array $submissionValues) {
     try {
-      /** @var \GuzzleHttp\Psr7\Response $requestResponse */
+      /** @var \GuzzleHttp\Psr7\Response $response */
       $response = $this->httpClient->post($apiUrl, [
         'json' => $submissionValues,
       ]);
@@ -185,23 +180,36 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       ];
       $httpCodeMessagePrefix = 'HTTP Code: @http_code.';
       if (empty($responseBody)) {
-        $this->log('error', "${httpCodeMessagePrefix} Did not receive JSON response from component.", $context);
+        $error = [
+          'http_code' => $responseCode,
+          'message' => 'Did not receive JSON response from component.',
+        ];
+        $this->addSubmissionError($error);
+        $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
         return FALSE;
       }
       if (isset($responseBody['code'])) {
-        $this->logErrorResponseFromComponent($responseBody);
-        $this->errors = $responseBody;
+        $this->handleErrorResponseFromComponent($responseBody, $responseCode);
         return FALSE;
       }
-      $this->log('error', "${httpCodeMessagePrefix} Unexpected error response format from component.");
+      $error = [
+        'http_code' => $responseCode,
+        'message' => 'Unexpected error response format from component.',
+      ];
+      $this->addSubmissionError($error);
+      $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
       return FALSE;
     }
     catch (\Exception $e) {
       $response = $e->getResponse();
-      $responseCode = $response->getStatusCode();
+      $error = [
+        'http_code' => $response->getStatusCode(),
+        'message' => $e->getMessage(),
+      ];
+      $this->addSubmissionError($error);
       $context = [
-        '@http_code' => $responseCode,
-        '@exception_message' => $e->getMessage(),
+        '@http_code' => $error['http_code'],
+        '@exception_message' => $error['message'],
       ];
       $httpCodeMessagePrefix = 'HTTP Code: @http_code.';
       $this->log('error', "${httpCodeMessagePrefix} Exception: @exception_message", $context);
@@ -221,18 +229,31 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    */
   protected function parseAgencyResponse(Response $response) {
     $responseBody = Json::decode($response->getBody());
+    $responseCode = $response->getStatusCode();
     // Not a json-formatted response like we expected.
     if (empty($responseBody)) {
-      $this->log('error', 'Did not receive JSON response from component.');
-      return $responseBody;
+      $error = [
+        'http_code' => $responseCode,
+        'message' => 'Did not receive JSON response from component.',
+      ];
+      $this->addSubmissionError($error);
+      $this->log('warning', $error['message']);
+      return FALSE;
     }
     $id = isset($responseBody['id']) ? $responseBody['id'] : '';
     $statusTrackingNumber = isset($response['status_tracking_number']) ? $response['status_tracking_number'] : '';
     if (!$id) {
-      $this->log('warning', 'Did not receive ID in response from component.');
+      $error = [
+        'http_code' => $responseCode,
+        'message' => 'Did not receive ID in response from component.',
+      ];
+      $this->addSubmissionError($error);
+      $this->log('warning', $error['message']);
+      return FALSE;
     }
     $submissionResponse = [
       'type' => 'api',
+      'http_code' => $responseCode,
       'id' => $id,
       'status_tracking_number' => $statusTrackingNumber,
     ];
@@ -327,17 +348,22 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *
    * @param array $response
    *   Error object received from Agency Component.
+   * @param int $responseCode
+   *   HTTP response code.
    */
-  protected function logErrorResponseFromComponent(array $response) {
-    $code = $response['code'];
-    $message = isset($response['message']) ? $response['message'] : '';
-    $description = isset($response['description']) ? $response['description'] : '';
+  protected function handleErrorResponseFromComponent(array $response, $responseCode) {
+    $error['http_code'] = $responseCode;
+    $error['code'] = $response['code'];
+    $error['message'] = isset($response['message']) ? $response['message'] : '';
+    $error['description'] = isset($response['description']) ? $response['description'] : '';
+    $this->addSubmissionError($error);
     $context = [
-      '@code' => $code,
-      '@message' => $message,
-      '@description' => $description,
+      '@http_code' => $error['http_code'],
+      '@code' => $error['code'],
+      '@message' => $error['message'],
+      '@description' => $error['description'],
     ];
-    $messageToLog = "Code: @code. Message: @message. Description: @description.";
+    $messageToLog = "HTTP Code: @http_code. Code: @code. Message: @message. Description: @description.";
     $this->log('error', $messageToLog, $context);
   }
 
@@ -351,6 +377,19 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $submissionErrors = $this->errors;
     $submissionErrors['type'] = 'api';
     return $submissionErrors;
+  }
+
+  /**
+   * Adds a submission error for later retrieval.
+   *
+   * @param array $error
+   *   An associative array containing error information.
+   */
+  protected function addSubmissionError(array $error) {
+    $this->errors['http_code'] = isset($error['http_code']) ? $error['http_code'] : '';;
+    $this->errors['error_code'] = isset($error['error_code']) ? $error['error_code'] : '';
+    $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
+    $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
   }
 
 }
