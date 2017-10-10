@@ -13,8 +13,8 @@ use Drupal\webform\WebformSubmissionInterface;
  *   label = @Translation("FOIA Submission Queue"),
  *   category = @Translation("Queueing"),
  *   description = @Translation("Queues a webform submission to be sent later."),
- *   cardinality = \Drupal\webform\WebformHandlerInterface::CARDINALITY_UNLIMITED,
- *   results = \Drupal\webform\WebformHandlerInterface::RESULTS_PROCESSED,
+ *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
+ *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  * )
  */
 class FoiaSubmissionQueueHandler extends EmailWebformHandler {

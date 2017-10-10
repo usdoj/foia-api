@@ -15,8 +15,8 @@ use Drupal\node\Entity\Node;
  *   label = @Translation("FOIA email"),
  *   category = @Translation("Notification"),
  *   description = @Translation("Sends a webform submission to appropriate the agency."),
- *   cardinality = \Drupal\webform\WebformHandlerInterface::CARDINALITY_UNLIMITED,
- *   results = \Drupal\webform\WebformHandlerInterface::RESULTS_PROCESSED,
+ *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
+ *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  * )
  */
 class FoiaEmailWebformHandler extends EmailWebformHandler {
