@@ -849,4 +849,7 @@ $config = array(
     'trusted.url.domains' => array(),
 
 );
-include 'acquia_config.php';
+
+if (file_exists('/var/www/site-php')) {
+  include "/mnt/gfs/home/foia/config/saml/acquia_config.php";
+}
