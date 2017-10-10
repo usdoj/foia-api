@@ -171,39 +171,54 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       return $this->parseAgencyResponse($response);
     }
     catch (RequestException $e) {
-      $response = $e->getResponse();
-      $responseCode = $response->getStatusCode();
-      $responseBody = Json::decode($response->getBody());
-      $context = [
-        '@http_code' => $responseCode,
-      ];
-      $httpCodeMessagePrefix = 'HTTP Code: @http_code.';
-      if (empty($responseBody)) {
+      if ($e->hasResponse()) {
+        $response = $e->getResponse();
+        $responseCode = $response->getStatusCode();
+        $responseBody = Json::decode($response->getBody());
+        $context = [
+          '@http_code' => $responseCode,
+        ];
+        $httpCodeMessagePrefix = 'HTTP Code: @http_code.';
+        if (empty($responseBody)) {
+          $error = [
+            'http_code' => $responseCode,
+            'message' => 'Did not receive JSON response from component.',
+          ];
+          $this->addSubmissionError($error);
+          $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
+          return FALSE;
+        }
+        if (isset($responseBody['code'])) {
+          $this->handleErrorResponseFromComponent($responseBody, $responseCode);
+          return FALSE;
+        }
         $error = [
           'http_code' => $responseCode,
-          'message' => 'Did not receive JSON response from component.',
+          'message' => 'Unexpected error response format from component.',
         ];
         $this->addSubmissionError($error);
         $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
-        return FALSE;
       }
-      if (isset($responseBody['code'])) {
-        $this->handleErrorResponseFromComponent($responseBody, $responseCode);
-        return FALSE;
+      else {
+        $exceptionCode = $e->getCode();
+        $exceptionMessage = $e->getMessage();
+        $error = [
+          'message' => "Exception code: ${exceptionCode}. Exception message: ${exceptionMessage}.",
+        ];
+        $context = [
+          '@exception_code' => $exceptionCode,
+        ];
+        $httpCodeMessagePrefix = 'Exception code: @exception_code.';
+        $this->addSubmissionError($error);
+        $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
       }
-      $error = [
-        'http_code' => $responseCode,
-        'message' => 'Unexpected error response format from component.',
-      ];
-      $this->addSubmissionError($error);
-      $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
       return FALSE;
     }
     catch (\Exception $e) {
-      $response = $e->getResponse();
+      $exceptionCode = $e->getCode();
+      $exceptionMessage = $e->getMessage();
       $error = [
-        'http_code' => $response->getStatusCode(),
-        'message' => $e->getMessage(),
+        'message' => "Exception code: ${exceptionCode}. Exception message: ${exceptionMessage}.",
       ];
       $this->addSubmissionError($error);
       $context = [
@@ -340,7 +355,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   The relevant API.
    */
   protected function log($level, $message, array $context = [], $api = 'Submission Service API') {
-    $context['agency_component_id'] = $this->agencyComponent->id();
+    $context['@agency_component_id'] = $this->agencyComponent->id();
     $this->logger->log($level, "{$api}: Agency Component: @agency_component_id. {$message}", $context);
   }
 
