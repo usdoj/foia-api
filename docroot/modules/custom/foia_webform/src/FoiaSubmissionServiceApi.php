@@ -82,7 +82,6 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       $this->log('warning', $error['message']);
       return FALSE;
     }
-    $valuesToSubmit = NULL;
 
     if ($apiUrl) {
       $valuesToSubmit = $this->assembleRequestData($webformSubmission, $webform);
@@ -272,9 +271,11 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $fileAttachmentElementNames = $this->getFileAttachmentElementsOnWebform($webform);
     if ($fileAttachmentElementNames) {
       foreach ($fileAttachmentElementNames as $fileAttachmentElementName) {
-        $attachments = $this->getAttachmentData($submissionValues[$fileAttachmentElementName]);
-        unset($submissionValues[$fileAttachmentElementName]);
-        $submissionValues[$fileAttachmentElementName] = $attachments;
+        if (isset($submissionValues[$fileAttachmentElementName])) {
+          $attachments = $this->getAttachmentData($submissionValues[$fileAttachmentElementName]);
+          unset($submissionValues[$fileAttachmentElementName]);
+          $submissionValues[$fileAttachmentElementName] = $attachments;
+        }
       }
     }
   }
