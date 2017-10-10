@@ -12,10 +12,26 @@ use Drupal\webform\WebformSubmissionInterface;
 class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
 
   /**
+   * Submission-related error messages.
+   *
+   * @var array
+   */
+  protected $errors;
+
+  /**
    * {@inheritdoc}
    */
   public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, WebformInterface $webform, NodeInterface $agencyComponent) {
 
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSubmissionErrors() {
+    $submissionErrors = $this->errors;
+    $submissionErrors['type'] = 'email';
+    return $submissionErrors;
   }
 
 }
