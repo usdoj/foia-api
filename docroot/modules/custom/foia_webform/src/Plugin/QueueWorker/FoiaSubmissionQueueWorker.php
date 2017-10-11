@@ -6,7 +6,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
-use Drupal\foia_webform\FoiaSubmissionServiceInterface;
 use Drupal\webform\WebformSubmissionStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -35,20 +34,6 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
   protected $agencyLookUpService;
 
   /**
-   * The service to submit the submissions to the Component API.
-   *
-   * @var \Drupal\foia_webform\FoiaSubmissionServiceApi
-   */
-  protected $foiaSubmissionServiceApi;
-
-  /**
-   * The service to submit the submission via email to the Component.
-   *
-   * @var \Drupal\foia_webform\FoiaSubmissionServiceApi
-   */
-  protected $foiaSubmissionServiceEmail;
-
-  /**
    * The factory class to build the submission.
    *
    * @var \Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface
@@ -58,11 +43,9 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
   /**
    * {@inheritdoc}
    */
-  public function __construct(WebformSubmissionStorageInterface $webformStorage, AgencyLookupServiceInterface $agencyLookupService, FoiaSubmissionServiceInterface $foiaSubmissionApiService, FoiaSubmissionServiceInterface $foiaSubmissionEmailService, FoiaSubmissionServiceFactoryInterface $foiaSubmissionServiceFactory) {
+  public function __construct(WebformSubmissionStorageInterface $webformStorage, AgencyLookupServiceInterface $agencyLookupService, FoiaSubmissionServiceFactoryInterface $foiaSubmissionServiceFactory) {
     $this->webformStorage = $webformStorage;
     $this->agencyLookUpService = $agencyLookupService;
-    $this->foiaSubmissionServiceApi = $foiaSubmissionApiService;
-    $this->foiaSubmissionServiceEmail = $foiaSubmissionEmailService;
     $this->foiaSubmissionServiceFactory = $foiaSubmissionServiceFactory;
   }
 
@@ -71,10 +54,8 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('entity.manager')->getStorage('webform_submission'),
+      $container->get('entity_type.manager')->getStorage('webform_submission'),
       $container->get('foia_webform.agency_lookup_service'),
-      $container->get('foia_webform.foia_submission_service_api'),
-      $container->get('foia_webform.foia_submission_service_email'),
       $container->get('foia_webform.foia_submission_service_factory')
     );
   }
