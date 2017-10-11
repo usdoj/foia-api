@@ -76,23 +76,23 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $this->agencyComponent = $agencyComponent;
     $apiUrl = $this->agencyComponent->get('field_submission_api')->value;
 
-    if (!UrlHelper::isValid($apiUrl, TRUE)) {
-      $error['message'] = 'Invalid API URL for the component';
-      $this->addSubmissionError($error);
-      $this->log('warning', $error['message']);
-      return FALSE;
-    }
-
-    if ($apiUrl) {
-      $valuesToSubmit = $this->assembleRequestData($webformSubmission, $webform);
-      return $this->submitToApi($apiUrl, $valuesToSubmit);
-    }
-    else {
+    if (!$apiUrl) {
       $error['message'] = 'Missing API Submission URL for component.';
       $this->addSubmissionError($error);
       $this->log('warning', $error['message']);
       return FALSE;
     }
+
+    if (!UrlHelper::isValid($apiUrl, TRUE)) {
+      $error['message'] = 'Invalid API URL for the component.';
+      $this->addSubmissionError($error);
+      $this->log('warning', $error['message']);
+      return FALSE;
+    }
+
+    $valuesToSubmit = $this->assembleRequestData($webformSubmission, $webform);
+    return $this->submitToApi($apiUrl, $valuesToSubmit);
+
   }
 
   /**
