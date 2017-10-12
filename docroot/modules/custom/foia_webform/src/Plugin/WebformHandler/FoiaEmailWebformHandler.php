@@ -5,7 +5,6 @@ namespace Drupal\foia_webform\Plugin\WebformHandler;
 use Drupal\file\Entity\File;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
-use Drupal\node\Entity\Node;
 
 /**
  * Emails a webform submission.
@@ -24,10 +23,10 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   /**
    * {@inheritdoc}
    */
-  public function sendMessage(WebformSubmissionInterface $webform_submission, array $message) {
+  public function sendMessage(WebformSubmissionInterface $webformSubmission, array $message) {
     // Get form submissions.
-    $data = $webform_submission->getData();
-    $error_message = NULL;
+    $data = $webformSubmission->getData();
+    $errorMessage = NULL;
     $context = [];
 
     // If there is a file attachment, get the file URL.
@@ -36,8 +35,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       foreach ($data['attachments_supporting_documentation'] as $upload) {
         $file = File::load($upload);
         if ($file) {
-          $file_url = file_create_url($file->getFileUri());
-          $files[] = $file_url;
+          $fileUrl = file_create_url($file->getFileUri());
+          $files[] = $fileUrl;
         }
       }
       if (!empty($files)) {
@@ -46,46 +45,47 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     }
 
     // Format the submission values as an HTML table.
-    $form_values_as_table = $this->arrayToTable($data);
-    $message['body'] = $form_values_as_table;
+    $formValuesAsTable = $this->arrayToTable($data);
+    $message['body'] = $formValuesAsTable;
 
     // Look up the agency component.
-    $form = $webform_submission->getWebform();
-    $form_id = $form->getOriginalId();
-    $agency_component = $this->lookupComponent($form_id);
+    $form = $webformSubmission->getWebform();
+    $webformId = $form->getOriginalId();
+    $agencyLookupService = \Drupal::service('foia_webform.agency_lookup_service');
+    $agencyComponent = $agencyLookupService->getComponentFromWebform($webformId);
 
     // If we have an Agency Component, get the Submission Email value.
-    if ($agency_component) {
-      $to_email = $agency_component->get('field_submission_email')->getValue();
+    if ($agencyComponent) {
+      $toEmail = $agencyComponent->get('field_submission_email')->getValue();
 
-      if (!empty($to_email)) {
-        $message['to_mail'] = $to_email[0]['value'];
+      if (!empty($toEmail)) {
+        $message['to_mail'] = $toEmail[0]['value'];
       }
       // If we don't have a Submission Email value log an error.
       else {
-        $error_message = 'No Submission Email: Unable to send email for %title';
+        $errorMessage = 'No Submission Email: Unable to send email for %title';
         $context = [
-          '%title' => $agency_component->getTitle(),
-          'link' => $agency_component->toLink($this->t('Edit Component'), 'edit-form')->toString(),
+          '%title' => $agencyComponent->getTitle(),
+          'link' => $agencyComponent->toLink($this->t('Edit Component'), 'edit-form')->toString(),
         ];
       }
     }
     // If there isn't an associated Agency Component log an error.
     else {
-      $error_message = 'Unassociated form: The form, %title, is not associated with an Agency Component.';
+      $errorMessage = 'Unassociated form: The form, %title, is not associated with an Agency Component.';
       $context = [
         '%title' => $form->label(),
       ];
     }
 
     // If the error message and context, log the error.
-    if ($error_message && !empty($context)) {
+    if ($errorMessage && !empty($context)) {
       \Drupal::logger('foia_webform')
-        ->error($error_message, $context);
+        ->error($errorMessage, $context);
     }
     // Send the email.
     else {
-      return parent::sendMessage($webform_submission, $message);
+      return parent::sendMessage($webformSubmission, $message);
     }
   }
 
@@ -110,26 +110,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     ];
 
     return render($table);
-  }
-
-  /**
-   * Queries for an associated Agency Component given a form ID.
-   *
-   * @param string $form_id
-   *   The form ID.
-   *
-   * @return \Drupal\node\NodeInterface|null
-   *   The Agency Component object or NULL.
-   */
-  public function lookupComponent($form_id) {
-    $entity_query_service = \Drupal::service('entity.query');
-    $query = $entity_query_service->get('node')
-      ->condition('type', 'agency_component')
-      ->condition('field_request_submission_form', $form_id);
-    $nid = $query->execute();
-
-    $node = ($nid) ? Node::load(reset($nid)) : NULL;
-    return $node;
   }
 
 }
