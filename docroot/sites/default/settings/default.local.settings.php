@@ -132,3 +132,10 @@ $settings['file_private_path'] = $dir . '/files-private';
 $settings['trusted_host_patterns'] = array(
   '^.+$',
 );
+
+/**
+ * Disable authentication via SimpleSAMLphp on local environments.
+ *
+ * @see: https://www.drupal.org/node/2837029
+ */
+$config['simplesamlphp_auth.settings']['activate'] = false;
