@@ -6,6 +6,7 @@ use Drupal\jsonapi\Normalizer\ConfigEntityNormalizer as JsonapiConfigEntityNorma
 use Drupal\jsonapi\ResourceType\ResourceType;
 use Drupal\webform\Entity\Webform;
 use Drupal\Core\Serialization\Yaml;
+use Drupal\webform\Entity\WebformOptions;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -23,6 +24,7 @@ class WebformNormalizer extends JsonapiConfigEntityNormalizer {
     if (!empty($enabled_public_fields['elements'])) {
       try {
         $parsed = Yaml::decode($enabled_public_fields['elements']);
+        $this->getSelectFields($parsed);
         $enabled_public_fields['elements'] = $parsed;
       }
       catch (\Exception $exception) {
@@ -34,6 +36,22 @@ class WebformNormalizer extends JsonapiConfigEntityNormalizer {
     }
 
     return $enabled_public_fields;
+  }
+
+  /**
+   * Add the options for select items if the options are stored in config files.
+   *
+   * @param array $formItems
+   *   The already parsed form array.
+   */
+  private function getSelectFields(array &$formItems) {
+    foreach ($formItems as $key => $element) {
+      if ($element['#type'] === 'select' && !is_array($element['#options'])) {
+        /** @var \Drupal\webform\Entity\WebformOptions $webformOptions */
+        $webformOptions = WebformOptions::getElementOptions($element);
+        $formItems[$key]['#options'] = $webformOptions;
+      }
+    }
   }
 
 }
