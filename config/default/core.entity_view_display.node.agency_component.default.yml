@@ -12,6 +12,10 @@ dependencies:
     - field.field.node.agency_component.field_complex_lowest_days
     - field.field.node.agency_component.field_complex_median_days
     - field.field.node.agency_component.field_email
+    - field.field.node.agency_component.field_expedited_average_days
+    - field.field.node.agency_component.field_expedited_highest_days
+    - field.field.node.agency_component.field_expedited_lowest_days
+    - field.field.node.agency_component.field_expedited_median_days
     - field.field.node.agency_component.field_foia_officers
     - field.field.node.agency_component.field_misc
     - field.field.node.agency_component.field_portal_submission_format
@@ -114,6 +118,38 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
+  field_expedited_average_days:
+    weight: 30
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_expedited_highest_days:
+    weight: 31
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_expedited_lowest_days:
+    weight: 32
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_expedited_median_days:
+    weight: 33
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_foia_officers:
     weight: 15
