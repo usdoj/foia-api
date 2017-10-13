@@ -24,7 +24,7 @@ class WebformNormalizer extends JsonapiConfigEntityNormalizer {
     if (!empty($enabled_public_fields['elements'])) {
       try {
         $parsed = Yaml::decode($enabled_public_fields['elements']);
-        $this->getSelectFields($parsed);
+        $this->populateSelectFieldsWithOptions($parsed);
         $enabled_public_fields['elements'] = $parsed;
       }
       catch (\Exception $exception) {
@@ -39,17 +39,17 @@ class WebformNormalizer extends JsonapiConfigEntityNormalizer {
   }
 
   /**
-   * Add the options for select items if the options are stored in config files.
+   * Replaces webform option machine names with fully rendered list of options.
    *
-   * @param array $formItems
-   *   The already parsed form array.
+   * @param array $elements
+   *   Webform elements.
    */
-  private function getSelectFields(array &$formItems) {
-    foreach ($formItems as $key => $element) {
+  protected function populateSelectFieldsWithOptions(array &$elements) {
+    foreach ($elements as $elementKey => $element) {
       if ($element['#type'] === 'select' && !is_array($element['#options'])) {
         /** @var \Drupal\webform\Entity\WebformOptions $webformOptions */
         $webformOptions = WebformOptions::getElementOptions($element);
-        $formItems[$key]['#options'] = $webformOptions;
+        $elements[$elementKey]['#options'] = $webformOptions;
       }
     }
   }
