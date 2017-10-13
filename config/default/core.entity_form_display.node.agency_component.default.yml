@@ -17,7 +17,6 @@ dependencies:
     - field.field.node.agency_component.field_request_submission_form
     - field.field.node.agency_component.field_service_centers
     - field.field.node.agency_component.field_submission_address
-    - field.field.node.agency_component.field_submission_api
     - field.field.node.agency_component.field_submission_api_secret
     - field.field.node.agency_component.field_submission_email
     - field.field.node.agency_component.field_submission_fax
@@ -255,14 +254,6 @@ content:
       default_country: null
     third_party_settings: {  }
     type: address_default
-    region: content
-  field_submission_api:
-    weight: 19
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
     region: content
   field_submission_api_secret:
     weight: 20
