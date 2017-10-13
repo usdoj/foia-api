@@ -12,6 +12,10 @@ dependencies:
     - field.field.node.agency_component.field_complex_lowest_days
     - field.field.node.agency_component.field_complex_median_days
     - field.field.node.agency_component.field_email
+    - field.field.node.agency_component.field_expedited_average_days
+    - field.field.node.agency_component.field_expedited_highest_days
+    - field.field.node.agency_component.field_expedited_lowest_days
+    - field.field.node.agency_component.field_expedited_median_days
     - field.field.node.agency_component.field_foia_officers
     - field.field.node.agency_component.field_misc
     - field.field.node.agency_component.field_portal_submission_format
@@ -126,6 +130,10 @@ third_party_settings:
         - field_complex_highest_days
         - field_complex_lowest_days
         - field_complex_median_days
+        - field_expedited_average_days
+        - field_expedited_highest_days
+        - field_expedited_lowest_days
+        - field_expedited_median_days
         - field_simple_average_days
         - field_simple_highest_days
         - field_simple_lowest_days
@@ -223,6 +231,38 @@ content:
     third_party_settings: {  }
     type: email_default
     region: content
+  field_expedited_average_days:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_highest_days:
+    weight: 33
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_lowest_days:
+    weight: 34
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_median_days:
+    weight: 35
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_foia_officers:
     weight: 8
     settings:
@@ -317,7 +357,7 @@ content:
     type: inline_entity_form_complex
     region: content
   field_simple_average_days:
-    weight: 32
+    weight: 36
     settings:
       size: 60
       placeholder: ''
@@ -325,7 +365,7 @@ content:
     type: string_textfield
     region: content
   field_simple_highest_days:
-    weight: 33
+    weight: 37
     settings:
       size: 60
       placeholder: ''
@@ -333,7 +373,7 @@ content:
     type: string_textfield
     region: content
   field_simple_lowest_days:
-    weight: 34
+    weight: 38
     settings:
       size: 60
       placeholder: ''
@@ -341,7 +381,7 @@ content:
     type: string_textfield
     region: content
   field_simple_median_days:
-    weight: 35
+    weight: 39
     settings:
       size: 60
       placeholder: ''
