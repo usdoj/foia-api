@@ -185,7 +185,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
             'message' => 'Did not receive JSON response from component.',
           ];
           $this->addSubmissionError($error);
-          $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
+          $this->log('error', "{$httpCodeMessagePrefix} {$error['message']}", $context);
           return FALSE;
         }
         if (isset($responseBody['code'])) {
@@ -197,20 +197,20 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
           'message' => 'Unexpected error response format from component.',
         ];
         $this->addSubmissionError($error);
-        $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
+        $this->log('error', "{$httpCodeMessagePrefix} {$error['message']}", $context);
       }
       else {
         $exceptionCode = $e->getCode();
         $exceptionMessage = $e->getMessage();
         $error = [
-          'message' => "Exception message: ${exceptionMessage}.",
+          'message' => "Exception message: {$exceptionMessage}.",
         ];
         $context = [
           '@exception_code' => $exceptionCode,
         ];
-        $httpCodeMessagePrefix = 'Exception code: @exception_code.';
+        $exceptionCodeMessagePrefix = 'Exception code: @exception_code.';
         $this->addSubmissionError($error);
-        $this->log('error', "${httpCodeMessagePrefix} {$error['message']}", $context);
+        $this->log('error', "{$exceptionCodeMessagePrefix} {$error['message']}", $context);
       }
       return FALSE;
     }
@@ -218,15 +218,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       $exceptionCode = $e->getCode();
       $exceptionMessage = $e->getMessage();
       $error = [
-        'message' => "Exception code: ${exceptionCode}. Exception message: ${exceptionMessage}.",
+        'message' => "Exception code: {$exceptionCode}. Exception message: {$exceptionMessage}",
       ];
       $this->addSubmissionError($error);
-      $context = [
-        '@http_code' => $error['http_code'],
-        '@exception_message' => $error['message'],
-      ];
-      $httpCodeMessagePrefix = 'HTTP Code: @http_code.';
-      $this->log('error', "${httpCodeMessagePrefix} Exception: @exception_message", $context);
+      $this->log('error', "{$error['message']}");
       return FALSE;
     }
   }
