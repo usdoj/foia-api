@@ -32,23 +32,21 @@ class WebformNormalizerTest extends BrowserTestBase {
    * Test that jsonapi returns fully rendered webform options.
    */
   public function testPopulateSelectFieldsWithOptions() {
-
     // Create webform.
-    $this->webform = Webform::create(['id' => 'serialization_test']);
-    $this->webform->set('foia_template', 1);
-    $this->webform->save();
+    $webform = Webform::create(['id' => 'serialization_test']);
+    $webform->set('foia_template', 1);
+    $webform->save();
     $webform = Webform::load('serialization_test');
 
-    $uuid = $webform->get('uuid');
+    $uuid = $webform->uuid();
     user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, ['access content']);
     $webformFromJsonApi = Json::decode($this->drupalGet('/jsonapi/webform/webform/' . $uuid));
     $this->assertSession()->statusCodeEquals(200);
 
-    $webformElements = $webform->getElementsInitialized();
+    $webformElements = $webform->getElementsDecoded();
     foreach ($webformElements as $elementName => $webformElement) {
       if ($webformElement['#type'] === 'select' && !is_array($webformElement['#options'])) {
-        /** @var \Drupal\webform\Entity\WebformOptions $webformOptions */
-        $expectedElementOptions = WebformOptions::getElementOptions($elementName);
+        $expectedElementOptions = WebformOptions::getElementOptions($webformElement);
         $elementOptionsFromJsonApi = $webformFromJsonApi['data']['attributes']['elements'][$elementName]['#options'];
         $this->assertEquals($expectedElementOptions, $elementOptionsFromJsonApi, "\$canonicalize = true", $delta = 0.0, $maxDepth = 10, $canonicalize = TRUE);
       }
