@@ -163,7 +163,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
       'message' => 'agency component not found',
       'description' => 'description of the error that is specific to the case management system',
     ];
-    $this->setupHttpClientErrorMock($responseContents, 404);
+    $this->setupHttpClientRequestExceptionMock($responseContents, 404);
     $this->submissionServiceApi = new FoiaSubmissionServiceApi($this->httpClient, $this->agencyLookupService, $this->logger);
     $validSubmission = $this->submissionServiceApi->sendSubmissionToComponent($this->webformSubmission, $this->webform, $this->agencyComponent);
     $errorMessage = $this->submissionServiceApi->getSubmissionErrors();
@@ -171,6 +171,19 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $this->assertEquals(404, $errorMessage['http_code']);
     $this->assertEquals($responseContents['message'], $errorMessage['message']);
     $this->assertEquals($responseContents['description'], $errorMessage['description']);
+  }
+
+  /**
+   * Tests generic exceptions that are thrown.
+   */
+  public function testExceptionPostingToComponent() {
+    $exceptionMessage = 'A generic exception message.';
+    $this->setupHttpClientExceptionMock($exceptionMessage);
+    $this->submissionServiceApi = new FoiaSubmissionServiceApi($this->httpClient, $this->agencyLookupService, $this->logger);
+    $validSubmission = $this->submissionServiceApi->sendSubmissionToComponent($this->webformSubmission, $this->webform, $this->agencyComponent);
+    $error = $this->submissionServiceApi->getSubmissionErrors();
+    $this->assertEquals(FALSE, $validSubmission);
+    $this->assertEquals("Exception code: 0. Exception message: {$exceptionMessage}", $error['message']);
   }
 
   /**
@@ -386,10 +399,22 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
   /**
    * Sets up Guzzle error mock.
    */
-  protected function setupHttpClientErrorMock(array $responseContents, $responseStatusCode) {
+  protected function setupHttpClientRequestExceptionMock(array $responseContents, $responseStatusCode) {
     $testAgencyErrorResponse = Json::encode($responseContents);
     $guzzleMock = new MockHandler([
       new RequestException("Error communicating with component", new Request('POST', 'test'), new Response($responseStatusCode, [], $testAgencyErrorResponse)),
+    ]);
+
+    $guzzleHandlerMock = HandlerStack::create($guzzleMock);
+    $this->httpClient = new Client(['handler' => $guzzleHandlerMock]);
+  }
+
+  /**
+   * Sets up Guzzle exception mock.
+   */
+  protected function setupHttpClientExceptionMock($exceptionMessage) {
+    $guzzleMock = new MockHandler([
+      new \Exception($exceptionMessage),
     ]);
 
     $guzzleHandlerMock = HandlerStack::create($guzzleMock);
