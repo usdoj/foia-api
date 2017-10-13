@@ -12,7 +12,7 @@ use Drupal\webform\Entity\WebformOptions;
  *
  * @group foiaapi
  */
-class WebformNormalizationFormOptionsTest extends BrowserTestBase {
+class WebformNormalizerTest extends BrowserTestBase {
 
   /**
    * Modules to enable.
@@ -29,19 +29,13 @@ class WebformNormalizationFormOptionsTest extends BrowserTestBase {
   ];
 
   /**
-   * Test the GET method.
+   * Test that jsonapi returns fully rendered webform options.
    */
-  public function testRead() {
+  public function testPopulateSelectFieldsWithOptions() {
 
     // Create webform.
     $this->webform = Webform::create(['id' => 'serialization_test']);
-    $this->webform->set('foia_template', [
-      '#type' => 'checkbox',
-      '#title' => t('Use FOIA Agency template'),
-      '#disabled' => TRUE,
-      '#default_value' => 'foia_template',
-      '#value' => 'foia_template',
-    ]);
+    $this->webform->set('foia_template', 1);
     $this->webform->save();
     $webform = Webform::load('serialization_test');
 
