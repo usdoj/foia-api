@@ -2,18 +2,15 @@
 
 namespace Drupal\Tests\webform_serialization\Functional;
 
-use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\webform\Entity\Webform;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use Drupal\Component\Serialization\Json;
 use Drupal\webform\Entity\WebformOptions;
 
 /**
  * Tests for webform select options.
  *
- * @group jsonapi
+ * @group foiaapi
  */
 class WebformNormalizationFormOptionsTest extends BrowserTestBase {
 
@@ -28,51 +25,8 @@ class WebformNormalizationFormOptionsTest extends BrowserTestBase {
     'webform',
     'webform_serialization',
     'webform_template',
-    'rest',
     'user',
   ];
-
-  /**
-   * The HTTP Client.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected $httpClient;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-
-    // Set up a HTTP client that accepts relative URLs.
-    $this->httpClient = $this->container->get('http_client_factory')
-      ->fromOptions(['base_uri' => $this->baseUrl]);
-  }
-
-  /**
-   * Performs a HTTP request. Wraps the Guzzle HTTP client.
-   *
-   * @param string $method
-   *   HTTP method.
-   * @param \Drupal\Core\Url $url
-   *   URL to request.
-   * @param array $request_options
-   *   Request options to apply.
-   */
-  protected function request($method, Url $url, array $request_options) {
-    try {
-      $response = $this->httpClient->request($method, $url->toString(), $request_options);
-    }
-    catch (ClientException $e) {
-      $response = $e->getResponse();
-    }
-    catch (ServerException $e) {
-      $response = $e->getResponse();
-    }
-
-    return $response;
-  }
 
   /**
    * Test the GET method.
