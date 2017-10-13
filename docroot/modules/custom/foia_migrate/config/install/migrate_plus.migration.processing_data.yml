@@ -1,0 +1,28 @@
+id: processing_data
+label: Latest Processing Data
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  # Normally, this is one or more fully-qualified URLs or file paths. Because
+  # we can't hardcode a local URL, we provide a relative path here which
+  # hook_install() will rewrite to a full URL for the current site.
+  urls: /modules/custom/foia_migrate/data/modified/components.json
+  item_selector: components
+  fields:
+    -
+      name: latest_request_time_stats
+      label: 'Latest Request Stats'
+      selector: latest_request_time_stats
+    -
+      name: latest_request_time_stats_year
+      label: 'Latest Request Stats Year'
+      selector: latest_request_time_stats_year
+  ids:
+    id:
+      type: integer
+
+process:
+  type:
+    plugin: default_value
+    default_value: agency_component
