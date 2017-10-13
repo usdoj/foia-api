@@ -44,15 +44,21 @@ class WebformNormalizationFormOptionsTest extends BrowserTestBase {
     ]);
     $this->webform->save();
     $webform = Webform::load('serialization_test');
-    $element = $webform->getElement('state_province');
-    /** @var \Drupal\webform\Entity\WebformOptions $webformOptions */
-    $stateOptions = WebformOptions::getElementOptions($element);
-    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, ['access content']);
+
     $uuid = $webform->get('uuid');
-    $single_output = Json::decode($this->drupalGet('/jsonapi/webform/webform/' . $uuid));
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, ['access content']);
+    $webformFromJsonApi = Json::decode($this->drupalGet('/jsonapi/webform/webform/' . $uuid));
     $this->assertSession()->statusCodeEquals(200);
-    $returnStateOptions = $single_output['data']['attributes']['elements']['state_province']['#options'];
-    $this->assertEquals($stateOptions, $returnStateOptions, "\$canonicalize = true", $delta = 0.0, $maxDepth = 10, $canonicalize = TRUE);
+
+    $webformElements = $webform->getElementsInitialized();
+    foreach ($webformElements as $elementName => $webformElement) {
+      if ($webformElement['#type'] === 'select' && !is_array($webformElement['#options'])) {
+        /** @var \Drupal\webform\Entity\WebformOptions $webformOptions */
+        $expectedElementOptions = WebformOptions::getElementOptions($elementName);
+        $elementOptionsFromJsonApi = $webformFromJsonApi['data']['attributes']['elements'][$elementName]['#options'];
+        $this->assertEquals($expectedElementOptions, $elementOptionsFromJsonApi, "\$canonicalize = true", $delta = 0.0, $maxDepth = 10, $canonicalize = TRUE);
+      }
+    }
 
   }
 
