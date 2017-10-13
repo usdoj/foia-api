@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
     - field.field.node.agency_component.field_receiver
+    - field.field.node.agency_component.field_request_data_year
     - field.field.node.agency_component.field_request_submission_form
     - field.field.node.agency_component.field_service_centers
     - field.field.node.agency_component.field_simple_average_days
@@ -120,6 +121,7 @@ third_party_settings:
       label: 'Portal Submission Options'
     group_processing_data:
       children:
+        - field_request_data_year
         - field_complex_average_days
         - field_complex_highest_days
         - field_complex_lowest_days
@@ -128,7 +130,7 @@ third_party_settings:
         - field_simple_highest_days
         - field_simple_lowest_days
         - field_simple_median_days
-      parent_name: group_api_submissions
+      parent_name: ''
       weight: 24
       format_type: details
       format_settings:
@@ -182,22 +184,6 @@ content:
     type: telephone_default
     region: content
   field_complex_average_days:
-    weight: 26
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_complex_highest_days:
-    weight: 27
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_complex_lowest_days:
     weight: 28
     settings:
       size: 60
@@ -205,8 +191,24 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_complex_median_days:
+  field_complex_highest_days:
     weight: 29
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_complex_lowest_days:
+    weight: 30
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_complex_median_days:
+    weight: 31
     settings:
       size: 60
       placeholder: ''
@@ -287,6 +289,14 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
+  field_request_data_year:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_request_submission_form:
     weight: 22
     settings: {  }
@@ -307,22 +317,6 @@ content:
     type: inline_entity_form_complex
     region: content
   field_simple_average_days:
-    weight: 30
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_simple_highest_days:
-    weight: 31
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_simple_lowest_days:
     weight: 32
     settings:
       size: 60
@@ -330,8 +324,24 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_simple_median_days:
+  field_simple_highest_days:
     weight: 33
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_simple_lowest_days:
+    weight: 34
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_simple_median_days:
+    weight: 35
     settings:
       size: 60
       placeholder: ''
