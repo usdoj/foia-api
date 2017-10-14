@@ -97,16 +97,16 @@ access:
     roles: {  }
     users: {  }
 handlers:
-  foia_email:
-    id: foia_email
-    label: 'FOIA Email'
-    handler_id: foia_email
+  foia_submission_queue:
+    id: foia_submission_queue
+    label: 'FOIA Submission Queue'
+    handler_id: foia_submission_queue
     status: true
     weight: 0
     settings:
       states:
         - completed
-      to_mail: ''
+      to_mail: default
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
@@ -115,11 +115,11 @@ handlers:
       from_mail: default
       from_options: {  }
       from_name: default
-      subject: 'FOIA Request Submission'
-      body: '[webform_submission:values:message:value]'
+      subject: default
+      body: default
       excluded_elements: {  }
       html: true
       attachments: false
-      debug: 0
+      debug: false
       reply_to: ''
       return_path: ''
