@@ -3,6 +3,7 @@
 namespace Drupal\Tests\foia_request\Kernel;
 
 use Drupal\foia_request\Entity\FoiaRequest;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
@@ -12,7 +13,7 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
  */
 class FoiaRequestTest extends EntityKernelTestBase {
 
-  public static $modules = ['foia_request', 'options'];
+  public static $modules = ['foia_request', 'options', 'field_permissions'];
 
   /**
    * {@inheritdoc}
@@ -20,26 +21,32 @@ class FoiaRequestTest extends EntityKernelTestBase {
   public function setUp() {
     parent::setUp();
 
+    $this->installConfig('system');
     $this->installEntitySchema('foia_request');
-
   }
 
   /**
-   * Tests FOIA Request creation.
+   * Tests FOIA Requests are created with appropriate defaults.
    */
   public function testFoiaRequest() {
-    $foiaRequest = FoiaRequest::create([
-      'field_agency_component' => 1,
-      'field_case_management_id' => '1',
-      'field_error_code' => '1',
-      'field_error_message' => 'error message',
-      'field_http_code' => 200,
-      'field_requester_email' => 'requester@example.com',
-      'field_submission_id' => 1,
-      'field_submission_method' => 'api',
-      'field_tracking_number' => '1',
-    ]);
+    $foiaRequest = FoiaRequest::create();
 
+    $this->assertEquals('foia_request', $foiaRequest->getEntityTypeId());
+    $this->assertEquals(FoiaRequestInterface::STATUS_QUEUED, $foiaRequest->getRequestStatus());
+    $this->assertNotEmpty($foiaRequest->get('created')->value);
+  }
+
+  /**
+   * Tests that invalid request status becomes default and submitted passes.
+   */
+  public function testSetRequestStatus() {
+    $foiaRequest = FoiaRequest::create();
+
+    $foiaRequest->setRequestStatus(5);
+    $this->assertEquals(FoiaRequestInterface::STATUS_QUEUED, $foiaRequest->getRequestStatus());
+
+    $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SUBMITTED);
+    $this->assertEquals(FoiaRequestInterface::STATUS_SUBMITTED, $foiaRequest->getRequestStatus());
   }
 
 }
