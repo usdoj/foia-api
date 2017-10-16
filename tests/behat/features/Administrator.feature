@@ -119,7 +119,8 @@ Feature: Agency Administrator role
     Given I am logged in as a user with the 'Agency Administrator' role
     When I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
-    And I press the 'Save as unpublished' button
+    And I uncheck the box "Published"
+    And I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been created. |
 
@@ -156,13 +157,13 @@ Feature: Agency Administrator role
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
-    And I press the 'Save and publish' button
+    And I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been updated. |
     When I click 'Edit'
     And for 'Agency Component Description' I enter 'change'
     And for 'Revision log message' I enter 'change'
-    And I press the 'Save and keep published' button
+    And I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been updated. |
     When I click 'Revisions'
@@ -179,7 +180,7 @@ Feature: Agency Administrator role
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
     And for 'Agency' I enter 'A Test Agency'
-    And I press the 'Save and publish' button
+    And I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been created. |
     And I should see the link 'A Test Agency'

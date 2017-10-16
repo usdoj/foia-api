@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - lightning_workflow
     - node
     - user
 _core:
@@ -655,7 +656,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       max-age: 0
@@ -687,7 +687,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       max-age: 0
