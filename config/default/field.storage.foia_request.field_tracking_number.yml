@@ -1,0 +1,25 @@
+uuid: f44a1033-810b-4824-aba4-6824c29e67ff
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - foia_request
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: foia_request.field_tracking_number
+field_name: field_tracking_number
+entity_type: foia_request
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

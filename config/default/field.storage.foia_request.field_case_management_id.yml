@@ -1,0 +1,25 @@
+uuid: e74c27cb-e1a2-4cf2-a573-4e90ad02832e
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - foia_request
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: foia_request.field_case_management_id
+field_name: field_case_management_id
+entity_type: foia_request
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,109 @@
+uuid: d7bd8e18-3ca3-4ebc-9e2e-fd848881ff9e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.foia_request.foia_request.field_agency_component
+    - field.field.foia_request.foia_request.field_case_management_id
+    - field.field.foia_request.foia_request.field_error_code
+    - field.field.foia_request.foia_request.field_error_message
+    - field.field.foia_request.foia_request.field_http_code
+    - field.field.foia_request.foia_request.field_medium
+    - field.field.foia_request.foia_request.field_requester_email
+    - field.field.foia_request.foia_request.field_status
+    - field.field.foia_request.foia_request.field_submission_id
+    - field.field.foia_request.foia_request.field_time_received
+    - field.field.foia_request.foia_request.field_tracking_number
+  module:
+    - foia_request
+id: foia_request.foia_request.default
+targetEntityType: foia_request
+bundle: foia_request
+mode: default
+content:
+  field_agency_component:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_case_management_id:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_error_code:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_error_message:
+    weight: 9
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_http_code:
+    weight: 7
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_medium:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_requester_email:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_status:
+    weight: 0
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_submission_id:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_time_received:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_timestamp
+    region: content
+  field_tracking_number:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  name: true
+  user_id: true

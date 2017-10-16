@@ -1,0 +1,22 @@
+uuid: 5f91d3dc-e080-47a8-8e44-bb6fa4effd77
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - foia_request
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: foia_request.field_requester_email
+field_name: field_requester_email
+entity_type: foia_request
+type: email
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

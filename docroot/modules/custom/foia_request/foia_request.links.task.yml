@@ -1,0 +1,22 @@
+# FOIA Request routing definition
+foia_request.settings_tab:
+  route_name: foia_request.settings
+  title: 'Settings'
+  base_route: foia_request.settings
+
+entity.foia_request.canonical:
+  route_name: entity.foia_request.canonical
+  base_route: entity.foia_request.canonical
+  title: 'View'
+
+entity.foia_request.edit_form:
+  route_name: entity.foia_request.edit_form
+  base_route: entity.foia_request.canonical
+  title: 'Edit'
+
+entity.foia_request.delete_form:
+  route_name:  entity.foia_request.delete_form
+  base_route:  entity.foia_request.canonical
+  title: Delete
+  weight: 10
+

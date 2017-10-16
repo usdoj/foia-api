@@ -1,0 +1,29 @@
+uuid: c1ace7cd-0e14-4a8d-a820-4e63c4c0def9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.foia_request.field_agency_component
+    - node.type.agency_component
+  module:
+    - foia_request
+id: foia_request.foia_request.field_agency_component
+field_name: field_agency_component
+entity_type: foia_request
+bundle: foia_request
+label: 'Agency Component'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      agency_component: agency_component
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
