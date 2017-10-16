@@ -324,17 +324,14 @@ function extract_processing_data(array &$components, array $agency_data) {
       }
     }
 
-    if (!isset($component->latest_request_time_stats)) {
-      $component->latest_request_time_stats = '';
-    }
+    // Add empty values for any statistics missing data.
+    $latest_request_time_stats_array = (array) $component->latest_request_time_stats;
+    $component->latest_request_time_stats = (object) insert_empty_days_values($latest_request_time_stats_array);
 
     if (!isset($component->latest_request_time_stats_year)) {
       $component->latest_request_time_stats_year = '';
     }
 
-    // Add empty values for any statistics missing data.
-    $latest_request_time_stats_array = (array) $component->latest_request_time_stats;
-    $component->latest_request_time_stats = (object) insert_empty_days_values($latest_request_time_stats_array);
   }
 }
 
