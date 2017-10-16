@@ -13,6 +13,7 @@ Feature: Agency Administrator role
     Then I should see the following success messages:
       | Created new term A Test Agency. |
     When I am at 'admin/people/create'
+    And for 'Email address' I enter 'alex@alex.com'
     And for 'Username' I enter 'Alex'
     And for 'Password' I enter 'abc123!@#'
     And for 'Confirm password' I enter 'abc123!@#'
@@ -42,6 +43,7 @@ Feature: Agency Administrator role
       | Angus  | angus@example.com | Agency Administrator |
     When I am logged in as a user with the 'Agency Administrator' role
     And I am at 'admin/people/create'
+    And for 'Email address' I enter 'arthur@arthur.com'
     And for 'Username' I enter 'Arthur'
     And for 'Password' I enter 'abc123!@#'
     And for 'Confirm password' I enter 'abc123!@#'
