@@ -383,5 +383,31 @@ function insert_empty_days_values(array $latest_request_time_stats_array) {
   if (array_key_exists('0', $latest_request_time_stats_array)) {
     unset($latest_request_time_stats_array['0']);
   }
+  $latest_request_time_stats_array = remove_processing_from_expedited_fields($latest_request_time_stats_array);
+  return $latest_request_time_stats_array;
+}
+
+/**
+ * Removes processing from expedited field names.
+ *
+ * @param array $latest_request_time_stats_array
+ *   An array of most recent year statistics.
+ */
+function remove_processing_from_expedited_fields(array $latest_request_time_stats_array) {
+  $keys = array_keys($latest_request_time_stats_array);
+  // Transform keys that begin w/'expedited_processing' to begin w/'expedited'.
+  if (in_array('expedited_processing_average_days', $keys) ||
+    in_array('expedited_processing_highest_days', $keys) ||
+    in_array('expedited_processing_lowest_days', $keys) ||
+    in_array('expedited_processing_median_days', $keys)
+  ) {
+    foreach ($latest_request_time_stats_array as $latest_request_time_stats_key => $latest_request_time_stats_item) {
+      if (strpos($latest_request_time_stats_key, '_processing_')) {
+        $newkey = str_replace('_processing_', '_', $latest_request_time_stats_key);
+        $latest_request_time_stats_array[$newkey] = $latest_request_time_stats_array[$latest_request_time_stats_key];
+        unset($latest_request_time_stats_array[$latest_request_time_stats_key]);
+      }
+    }
+  }
   return $latest_request_time_stats_array;
 }
