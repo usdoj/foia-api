@@ -17,7 +17,7 @@ source:
     -
       name: complex_average_days
       label: 'Complex Average Days'
-      selector: /latest_request_time_stats/complex_average_day
+      selector: /latest_request_time_stats/complex_average_days
     -
       name: complex_highest_days
       label: 'Complex Highest Day'
@@ -61,7 +61,7 @@ source:
     -
       name: simple_median_days
       label: 'Simple Median Days'
-      selector: simple_median_days
+      selector: /latest_request_time_stats/simple_median_days
     -
       name: id
       label: 'Component Migration ID'
@@ -75,19 +75,19 @@ process:
     plugin: migration_lookup
     migration: agency_component
     source: id
-  latest_request_time_stats_year: latest_request_time_stats_year
+  field_request_data_year: latest_request_time_stats_year
   field_complex_average_days: complex_average_days
   field_complex_highest_days: complex_highest_days
   field_complex_lowest_days: complex_lowest_days
-  field_complex_lowest_days: complex_lowest_days
+  field_complex_median_days: complex_median_days
   field_expedited_average_days: expedited_average_days
   field_expedited_highest_days: expedited_highest_days
   field_expedited_lowest_days: expedited_lowest_days
-  field_expedited_lowest_days: expedited_lowest_days
+  field_expedited_median_days: expedited_median_days
   field_simple_average_days: simple_average_days
   field_simple_highest_days: simple_highest_days
   field_simple_lowest_days: simple_lowest_days
-  field_simple_lowest_days: simple_lowest_days
+  field_simple_median_days: simple_median_days
 
 destination:
   plugin: entity:node
