@@ -45,11 +45,10 @@ class WebformNormalizer extends JsonapiConfigEntityNormalizer {
    *   Webform elements.
    */
   protected function populateSelectFieldsWithOptions(array &$elements) {
-    foreach ($elements as $elementKey => $element) {
+    foreach ($elements as &$element) {
       if ($element['#type'] === 'select' && !is_array($element['#options'])) {
-        /** @var \Drupal\webform\Entity\WebformOptions $webformOptions */
-        $webformOptions = WebformOptions::getElementOptions($element);
-        $elements[$elementKey]['#options'] = $webformOptions;
+        $selectElementOptions = WebformOptions::getElementOptions($element);
+        $element['#options'] = $selectElementOptions;
       }
     }
   }
