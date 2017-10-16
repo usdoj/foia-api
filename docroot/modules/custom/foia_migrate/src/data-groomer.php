@@ -331,6 +331,10 @@ function extract_processing_data(array &$components, array $agency_data) {
     if (!isset($component->latest_request_time_stats_year)) {
       $component->latest_request_time_stats_year = '';
     }
+
+    // Add empty values for any statistics missing data.
+    $latest_request_time_stats_array = (array) $component->latest_request_time_stats;
+    $component->latest_request_time_stats = (object) insert_empty_days_values($latest_request_time_stats_array);
   }
 }
 
@@ -350,4 +354,37 @@ function extract_processing_data_from_agency($agency_name, $agency_data) {
       return ['data' => $latest_data, 'year' => $year];
     }
   }
+}
+
+/**
+ * Adds empty values for any statistics missing data.
+ *
+ * @param array $latest_request_time_stats_array
+ *   An array containing values for component statistics.
+ */
+function insert_empty_days_values(array $latest_request_time_stats_array) {
+  $fields = [
+    'complex_average_days',
+    'complex_highest_days',
+    'complex_lowest_days',
+    'complex_median_days',
+    'expedited_average_days',
+    'expedited_highest_days',
+    'expedited_lowest_days',
+    'expedited_median_days',
+    'simple_average_days',
+    'simple_highest_days',
+    'simple_lowest_days',
+    'simple_median_days',
+  ];
+  foreach ($fields as $field) {
+    if (!array_key_exists($field, $latest_request_time_stats_array)) {
+      $latest_request_time_stats_array[$field] = '';
+    }
+  }
+  // Cleans up any array items with key of '0'.
+  if (array_key_exists('0', $latest_request_time_stats_array)) {
+    unset($latest_request_time_stats_array['0']);
+  }
+  return $latest_request_time_stats_array;
 }
