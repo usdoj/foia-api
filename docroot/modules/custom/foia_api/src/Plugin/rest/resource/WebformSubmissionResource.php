@@ -12,7 +12,7 @@ use Drupal\node\NodeInterface;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ModifiedResourceResponse;
 use Drupal\webform\Entity\Webform;
-use Drupal\webform\WebformElementManagerInterface;
+use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionForm;
 use Drupal\webform\WebformSubmissionInterface;
@@ -483,7 +483,7 @@ class WebformSubmissionResource extends ResourceBase {
    *   Array of file entities to be deleted.
    */
   protected function deleteFilesFromTemporaryStorage(array $filesByFieldName) {
-    foreach ($filesByFieldName as $fieldName => $files) {
+    foreach ($filesByFieldName as $files) {
       /** @var \Drupal\file\FileInterface $file */
       foreach ($files as $file) {
         file_delete($file->id());

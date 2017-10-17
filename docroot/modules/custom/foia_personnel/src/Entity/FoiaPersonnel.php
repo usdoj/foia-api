@@ -241,4 +241,20 @@ class FoiaPersonnel extends RevisionableContentEntityBase implements FoiaPersonn
     return $fields;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function urlRouteParameters($rel) {
+    $uri_route_parameters = parent::urlRouteParameters($rel);
+
+    switch ($rel) {
+      case 'revision_revert':
+      case 'revision_delete':
+        $uri_route_parameters['foia_personnel_revision'] = $this->getRevisionId();
+        break;
+    }
+    return $uri_route_parameters;
+
+  }
+
 }

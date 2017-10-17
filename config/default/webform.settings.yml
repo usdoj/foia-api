@@ -4,6 +4,7 @@ settings:
   default_form_close_message: 'Sorry...This form is closed to new submissions.'
   default_form_exception_message: 'Unable to display this webform. Please contact the site administrator.'
   default_submit_button_label: Submit
+  default_reset_button_label: Reset
   default_form_submit_once: false
   default_form_confidential_message: 'This form is confidential. You must <a href="[site:login-url]/logout?destination=[current-page:url:relative]">Log out</a> to submit it.'
   default_form_disable_back: false
@@ -26,7 +27,9 @@ settings:
   default_draft_loaded_message: 'A partially-completed form was found. Please complete the remaining portions.'
   default_confirmation_message: 'New submission added to [webform:title].'
   default_confirmation_back_label: 'Back to form'
+  default_submission_label: '[webform_submission:submitted-to]: Submission #[webform_submission:serial]'
   default_submission_log: false
+  preview_classes: "messages messages--error\nmessages messages--warning\nmessages messages--status\n"
   confirmation_classes: "messages messages--error\nmessages messages--warning\nmessages messages--status\n"
   confirmation_back_classes: "button\n"
   default_limit_total_message: 'No more submissions are permitted.'
@@ -47,9 +50,13 @@ export:
   header_prefix_label_delimiter: ': '
   header_prefix_key_delimiter: __
   composite_element_item_format: label
-  options_format: compact
+  options_single_format: compact
+  options_multiple_format: compact
   options_item_format: label
-  entity_reference_format: link
+  entity_reference_items:
+    - id
+    - title
+    - url
   likert_answers_format: label
   signature_format: status
   excluded_exporters: {  }
@@ -60,15 +67,24 @@ batch:
 purge:
   cron_size: 100
 element:
+  empty_message: '{Empty}'
   allowed_tags: admin
   wrapper_classes: "container-inline clearfix\nform--inline clearfix\nmessages messages--error\nmessages messages--warning\nmessages messages--status\n"
   classes: "container-inline clearfix\nform--inline clearfix\nmessages messages--error\nmessages messages--warning\nmessages messages--status\n"
   default_description_display: ''
+  default_empty_option: true
+  default_empty_option_required: ''
+  default_empty_option_optional: ''
   default_icheck: ''
   default_google_maps_api_key: ''
   excluded_elements: {  }
+html_editor:
+  disabled: false
+  format: ''
+  tidy: true
 file:
   file_public: false
+  file_private_redirect: true
   default_max_filesize: ''
   default_managed_file_extensions: 'gif jpg png bmp eps tif pict psd txt rtf html odf pdf doc docx ppt pptx xls xlsx xml avi mov mp3 ogg wav bz2 dmg gz jar rar sit svg tar zip'
   default_audio_file_extensions: 'mp3 ogg wav'
@@ -77,10 +93,13 @@ file:
   default_video_file_extensions: 'avi mov mp4 ogg wav webm'
 format: {  }
 mail:
+  default_to_mail: '[site:mail]'
   default_from_mail: '[site:mail]'
   default_from_name: '[site:name]'
   default_reply_to: ''
   default_return_path: ''
+  default_sender_mail: ''
+  default_sender_name: ''
   default_subject: 'Webform submission from: [webform_submission:source-entity]'
   default_body_text: "Submitted on [webform_submission:created]\nSubmitted by: [webform_submission:user]\n\nSubmitted values are:\n[webform_submission:values]\n"
   default_body_html: "<p>Submitted on [webform_submission:created]</p>\n<p>Submitted by: [webform_submission:user]</p>\n<p>Submitted values are:</p>\n[webform_submission:values]\n"
@@ -93,12 +112,17 @@ ui:
   details_save: true
   dialog_disabled: false
   offcanvas_disabled: false
-  help_menu_disabled: false
+  about_disabled: false
+  promotions_disabled: false
+  description_help: true
   html_editor_disabled: false
 libraries:
   excluded_libraries:
     - jquery.chosen
-  cdn: false
+requirements:
+  cdn: true
+  bootstrap: true
+  spam: true
 langcode: en
 third_party_settings: {  }
 _core:

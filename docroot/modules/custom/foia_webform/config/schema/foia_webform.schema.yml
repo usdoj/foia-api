@@ -42,6 +42,12 @@ webform.handler.foia_submission_queue:
     return_path:
       type: label
       label: 'Return path email'
+    sender_mail:
+      type: email
+      label: 'Sender email'
+    sender_name:
+      type: label
+      label: 'Sender name'
     subject:
       label: 'Email subject'
       type: label
@@ -54,6 +60,12 @@ webform.handler.foia_submission_queue:
       sequence:
         type: string
         label: 'Element name'
+    ignore_access:
+      type: boolean
+      label: 'Always include private and restricted access elements.'
+    exclude_empty:
+      type: boolean
+      label: 'Preview exclude empty elements'
     html:
       type: boolean
       label: 'HTML'

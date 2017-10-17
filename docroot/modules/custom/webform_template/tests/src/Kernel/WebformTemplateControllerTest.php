@@ -26,6 +26,7 @@ class RequestTemplateTest extends KernelTestBase {
    */
   public function testAddDefaultFields() {
 
+    $this->installSchema('webform', ['webform']);
     $this->installConfig(['webform', 'webform_template']);
 
     // Gets template elements from module config.

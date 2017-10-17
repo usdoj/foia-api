@@ -31,7 +31,7 @@ Feature: Request information from an agency
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'Test agency component'
     And I select "Test webform" from "Request Submission Form"
-    And I press the 'Save and publish' button
+    And I press the 'Save' button
     And I am at 'form/test-webform'
     And for "First Name" I enter "Ringo"
     And for 'Last name' I enter 'Star'
@@ -53,7 +53,7 @@ Feature: Request information from an agency
     And for 'Agency Component Name' I enter 'Test agency component'
     And I select "Test webform" from "Request Submission Form"
     And for 'Submission Email' I enter 'test@example.com'
-    When I press the 'Save and publish' button
+    When I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component Test agency component has been created. |
     And I am at 'form/test-webform'
