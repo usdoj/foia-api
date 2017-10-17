@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.agency_component.field_service_centers
     - field.field.node.agency_component.field_submission_address
     - field.field.node.agency_component.field_submission_api
+    - field.field.node.agency_component.field_submission_api_secret
     - field.field.node.agency_component.field_submission_email
     - field.field.node.agency_component.field_submission_fax
     - field.field.node.agency_component.field_submission_web
@@ -87,6 +88,7 @@ third_party_settings:
     group_api_submissions:
       children:
         - field_submission_api
+        - field_submission_api_secret
       parent_name: group_portal_submission_options
       weight: 23
       format_type: details
@@ -255,7 +257,15 @@ content:
     type: address_default
     region: content
   field_submission_api:
-    weight: 19
+    weight: 26
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_submission_api_secret:
+    weight: 27
     settings:
       size: 60
       placeholder: ''
