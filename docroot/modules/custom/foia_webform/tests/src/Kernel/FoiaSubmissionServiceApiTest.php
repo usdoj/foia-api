@@ -115,8 +115,9 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    $this->installSchema('webform', ['webform']);
     $this->installConfig(['webform', 'webform_template', 'foia_webform']);
-    $this->installSchema('file', 'file_usage');
+    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('webform_submission');
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
