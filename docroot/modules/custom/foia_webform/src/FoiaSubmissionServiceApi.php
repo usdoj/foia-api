@@ -74,7 +74,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    */
   public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, WebformInterface $webform, NodeInterface $agencyComponent) {
     $this->agencyComponent = $agencyComponent;
-    $apiUrl = $this->agencyComponent->get('field_submission_api')->value;
+    $apiUrl = $this->agencyComponent->get('field_submission_api')->uri;
 
     if (!$apiUrl) {
       $error['message'] = 'Missing API Submission URL for component.';
