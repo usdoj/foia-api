@@ -145,6 +145,30 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
   /**
    * {@inheritdoc}
    */
+  public function getStatus() {
+    $this->get('status')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStatus($status) {
+    if ($status = 0) {
+      $status = FoiaRequestInterface::QUEUED;
+    }
+    elseif ($status = 1) {
+      $status = FoiaRequestInterface::SUBMITTED;
+    }
+    elseif ($status = 2) {
+      $status = FoiaRequestInterface::FAILED;
+    }
+    $this->set('status', $status);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

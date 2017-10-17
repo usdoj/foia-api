@@ -11,9 +11,45 @@ use Drupal\user\EntityOwnerInterface;
  *
  * @ingroup foia_request
  */
-interface FoiaRequestInterface extends  ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
+interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
 
-  // Add get/set methods for your configuration properties here.
+  /**
+   * Request is in queue to be processed.
+   */
+  const QUEUED = 0;
+
+  /**
+   * Request has been submitted.
+   */
+  const SUBMITTED = 1;
+
+  /**
+   * Submission has failed.
+   */
+  const FAILED = 2;
+
+  /**
+   * Gets the status of the foia_request entity.
+   *
+   * @return int
+   *   One of FoiaRequestInterface::QUEUED or
+   *   FoiaRequestInterface::SUBMITTED or
+   *   FoiaRequestInterface::FAILED
+   */
+  public function getStatus();
+
+  /**
+   * Sets the status of the foia_request entity.
+   *
+   * @param int $status
+   *   Set to QUEUED to mark enqueued,
+   *   SUBMITTED to mark submitted,
+   *   FAILED to mark failure.
+   *
+   * @return \Drupal\foia_request\Entity\FoiaRequestInterface
+   *   The called foia_request entity.
+   */
+  public function setStatus($status);
 
   /**
    * Gets the FOIA Request name.
@@ -67,7 +103,8 @@ interface FoiaRequestInterface extends  ContentEntityInterface, EntityChangedInt
    * Sets the published status of a FOIA Request.
    *
    * @param bool $published
-   *   TRUE to set this FOIA Request to published, FALSE to set it to unpublished.
+   *   TRUE to set this FOIA Request to published,
+   *   FALSE to set it to unpublished.
    *
    * @return \Drupal\foia_request\Entity\FoiaRequestInterface
    *   The called FOIA Request entity.
