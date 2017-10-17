@@ -1,0 +1,97 @@
+id: processing_data
+label: Latest Processing Data
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  # Normally, this is one or more fully-qualified URLs or file paths. Because
+  # we can't hardcode a local URL, we provide a relative path here which
+  # hook_install() will rewrite to a full URL for the current site.
+  urls: /modules/custom/foia_migrate/data/modified/components.json
+  item_selector: components
+  fields:
+    -
+      name: latest_request_time_stats_year
+      label: 'Latest Request Stats Year'
+      selector: latest_request_time_stats_year
+    -
+      name: complex_average_days
+      label: 'Complex Average Days'
+      selector: /latest_request_time_stats/complex_average_day
+    -
+      name: complex_highest_days
+      label: 'Complex Highest Day'
+      selector: /latest_request_time_stats/complex_highest_days
+    -
+      name: complex_lowest_days
+      label: 'Complex Lowest Days'
+      selector: /latest_request_time_stats/complex_lowest_days
+    -
+      name: complex_median_days
+      label: 'Complex Median Days'
+      selector: /latest_request_time_stats/complex_median_days
+    -
+      name: expedited_average_days
+      label: 'Expedited Average Days'
+      selector: /latest_request_time_stats/expedited_average_days
+    -
+      name: expedited_highest_days
+      label: 'Expedited Highest Days'
+      selector: /latest_request_time_stats/expedited_highest_days
+    -
+      name: expedited_lowest_days
+      label: 'Expedited Lowest Days'
+      selector: /latest_request_time_stats/expedited_lowest_days
+    -
+      name: expedited_median_days
+      label: 'Expedited Median Days'
+      selector: /latest_request_time_stats/expedited_median_days
+    -
+      name: simple_average_days
+      label: 'Simple Average Days'
+      selector: /latest_request_time_stats/simple_average_days
+    -
+      name: simple_highest_days
+      label: 'Simple Highest Days'
+      selector: /latest_request_time_stats/simple_highest_days
+    -
+      name: simple_lowest_days
+      label: 'Simple Lowest Days'
+      selector: /latest_request_time_stats/simple_lowest_days
+    -
+      name: simple_median_days
+      label: 'Simple Median Days'
+      selector: simple_median_days
+    -
+      name: id
+      label: 'Component Migration ID'
+      selector: id
+  ids:
+    id:
+      type: integer
+
+process:
+  nid:
+    plugin: migration_lookup
+    migration: agency_component
+    source: id
+  latest_request_time_stats_year: latest_request_time_stats_year
+  field_complex_average_days: complex_average_days
+  field_complex_highest_days: complex_highest_days
+  field_complex_lowest_days: complex_lowest_days
+  field_complex_lowest_days: complex_lowest_days
+  field_expedited_average_days: expedited_average_days
+  field_expedited_highest_days: expedited_highest_days
+  field_expedited_lowest_days: expedited_lowest_days
+  field_expedited_lowest_days: expedited_lowest_days
+  field_simple_average_days: simple_average_days
+  field_simple_highest_days: simple_highest_days
+  field_simple_lowest_days: simple_lowest_days
+  field_simple_lowest_days: simple_lowest_days
+
+destination:
+  plugin: entity:node
+migration_dependencies:
+  required:
+    - agency_component
+dependencies: {}
