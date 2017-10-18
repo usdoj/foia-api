@@ -137,17 +137,22 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
    * {@inheritdoc}
    */
   public function setRequestStatus($requestStatus) {
-    if ($requestStatus = 0) {
-      $requestStatus = FoiaRequestInterface::QUEUED;
-    }
-    elseif ($requestStatus = 1) {
-      $requestStatus = FoiaRequestInterface::SUBMITTED;
-    }
-    elseif ($requestStatus = 2) {
-      $requestStatus = FoiaRequestInterface::FAILED;
+    if (!in_array($requestStatus, self::getValidRequestStatuses())) {
+      $requestStatus = FoiaRequestInterface::STATUS_QUEUED;
     }
     $this->set('request_status', $requestStatus);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getValidRequestStatuses() {
+    return [
+      FoiaRequestInterface::STATUS_QUEUED,
+      FoiaRequestInterface::STATUS_SUBMITTED,
+      FoiaRequestInterface::STATUS_FAILED,
+    ];
   }
 
   /**
@@ -180,6 +185,28 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
+
+    $requestStatusOptions = [
+      FoiaRequestInterface::STATUS_QUEUED => 'Queued for submission',
+      FoiaRequestInterface::STATUS_SUBMITTED => 'Submitted to component',
+      FoiaRequestInterface::STATUS_FAILED => 'Failed submission to component',
+    ];
+    $fields['request_status'] = BaseFieldDefinition::create('list_integer')
+      ->setLabel(t('Request Status'))
+      ->setDescription(t('The status of the FOIA Request.'))
+      ->setDefaultValue(FoiaRequestInterface::STATUS_QUEUED)
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => -1,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'inline',
+        'type' => 'list_default',
+        'weight' => -1,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setSetting('allowed_values', $requestStatusOptions);
 
     $fields['status'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Publishing status'))

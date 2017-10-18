@@ -16,17 +16,17 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   /**
    * Request is in queue to be processed.
    */
-  const QUEUED = 0;
+  const STATUS_QUEUED = 0;
 
   /**
    * Request has been submitted.
    */
-  const SUBMITTED = 1;
+  const STATUS_SUBMITTED = 1;
 
   /**
    * Submission has failed.
    */
-  const FAILED = 2;
+  const STATUS_FAILED = 2;
 
   /**
    * Gets the status of the foia_request entity.

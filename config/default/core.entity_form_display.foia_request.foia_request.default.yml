@@ -10,7 +10,6 @@ dependencies:
     - field.field.foia_request.foia_request.field_http_code
     - field.field.foia_request.foia_request.field_medium
     - field.field.foia_request.foia_request.field_requester_email
-    - field.field.foia_request.foia_request.field_status
     - field.field.foia_request.foia_request.field_submission_id
     - field.field.foia_request.foia_request.field_time_received
     - field.field.foia_request.foia_request.field_tracking_number
@@ -75,13 +74,6 @@ content:
     third_party_settings: {  }
     type: email_default
     region: content
-  field_status:
-    weight: 0
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   field_submission_id:
     weight: 3
     settings:
@@ -103,6 +95,12 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  request_status:
+    type: options_select
+    weight: -1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   name: true
   user_id: true
