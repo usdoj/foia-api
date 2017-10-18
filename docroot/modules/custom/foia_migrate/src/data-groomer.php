@@ -16,6 +16,7 @@ $component_data = extract_components_from_agencies($agency_data['agencies']);
 move_emails_to_email_submission_key($component_data['components']);
 remove_departments_property_from_agencies($agency_data);
 $personnel_data = extract_personnel_from_components($component_data['components']);
+extract_processing_data($component_data['components'], $agency_data['agencies']);
 
 write_data_to_json_file("{$modified_data_files_directory}/agencies.json", $agency_data);
 write_data_to_json_file("{$modified_data_files_directory}/components.json", $component_data);
@@ -299,4 +300,88 @@ function remove_departments_property_from_agencies(array &$agency_data) {
   foreach ($agencies as $agency) {
     unset($agency->departments);
   }
+}
+
+/**
+ * Extract that last item in the Request Times Stats data object.
+ *
+ * @param array &$components
+ *   Array of all components.
+ */
+function extract_processing_data(array &$components, array $agency_data) {
+  foreach ($components as &$component) {
+    if (isset($component->request_time_stats)) {
+      $latest_data = end($component->request_time_stats);
+      $year = key($component->request_time_stats);
+      $component->latest_request_time_stats = $latest_data;
+      $component->latest_request_time_stats_year = $year;
+    }
+    else {
+      $latest_data = extract_processing_data_from_agency($component->agency_name, $agency_data);
+      if ($latest_data) {
+        $component->latest_request_time_stats = $latest_data['data'];
+        $component->latest_request_time_stats_year = $latest_data['year'];
+      }
+    }
+
+    // Add empty values for any statistics missing data.
+    $latest_request_time_stats = (array) $component->latest_request_time_stats;
+    $component->latest_request_time_stats = (object) insert_empty_days_values($latest_request_time_stats);
+
+    if (!isset($component->latest_request_time_stats_year)) {
+      $component->latest_request_time_stats_year = '';
+    }
+
+  }
+}
+
+/**
+ * Extract that last item in the Request Times Stats data object from an Agency.
+ *
+ * @param string $agency_name
+ *   String representing the name of the Agency.
+ * @param object $agency_data
+ *   An object containing the Agency information.
+ */
+function extract_processing_data_from_agency($agency_name, $agency_data) {
+  foreach ($agency_data as $agency) {
+    if ($agency->name === $agency_name && isset($agency->request_time_stats)) {
+      $latest_data = end($agency->request_time_stats);
+      $year = key($agency->request_time_stats);
+      return ['data' => $latest_data, 'year' => $year];
+    }
+  }
+}
+
+/**
+ * Adds empty values for any statistics missing data.
+ *
+ * @param array $latest_request_time_stats
+ *   An array containing values for component statistics.
+ */
+function insert_empty_days_values(array $latest_request_time_stats) {
+  $fields = [
+    'complex_average_days',
+    'complex_highest_days',
+    'complex_lowest_days',
+    'complex_median_days',
+    'expedited_processing_average_days',
+    'expedited_processing_highest_days',
+    'expedited_processing_lowest_days',
+    'expedited_processing_median_days',
+    'simple_average_days',
+    'simple_highest_days',
+    'simple_lowest_days',
+    'simple_median_days',
+  ];
+  foreach ($fields as $field) {
+    if (!array_key_exists($field, $latest_request_time_stats)) {
+      $latest_request_time_stats[$field] = '';
+    }
+  }
+  // Cleans up any array items with key of '0'.
+  if (array_key_exists('0', $latest_request_time_stats)) {
+    unset($latest_request_time_stats['0']);
+  }
+  return $latest_request_time_stats;
 }
