@@ -6,7 +6,7 @@ Feature: Agency Component Feature
 
   @api
   Scenario: Confirm existence of Phone and Abbreviation fields
-    Given I am logged in as a user with the 'Agency Administrator' role
+    Given I am logged in as a user with the 'Administrator' role
     When I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
     And for 'Abbreviation' I enter 'TEST'
