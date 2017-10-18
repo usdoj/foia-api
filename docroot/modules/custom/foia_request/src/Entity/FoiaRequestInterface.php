@@ -36,12 +36,12 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    *   FoiaRequestInterface::SUBMITTED or
    *   FoiaRequestInterface::FAILED
    */
-  public function getStatus();
+  public function getRequestStatus();
 
   /**
    * Sets the status of the foia_request entity.
    *
-   * @param int $status
+   * @param int $requestStatus
    *   Set to QUEUED to mark enqueued,
    *   SUBMITTED to mark submitted,
    *   FAILED to mark failure.
@@ -49,7 +49,7 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    * @return \Drupal\foia_request\Entity\FoiaRequestInterface
    *   The called foia_request entity.
    */
-  public function setStatus($status);
+  public function setRequestStatus($requestStatus);
 
   /**
    * Gets the FOIA Request name.

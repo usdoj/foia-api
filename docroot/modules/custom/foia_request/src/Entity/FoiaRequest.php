@@ -145,24 +145,24 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStatus() {
-    $this->get('status')->value;
+  public function getRequestStatus() {
+    $this->get('request_status')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setStatus($status) {
-    if ($status = 0) {
-      $status = FoiaRequestInterface::QUEUED;
+  public function setRequestStatus($requestStatus) {
+    if ($requestStatus = 0) {
+      $requestStatus = FoiaRequestInterface::QUEUED;
     }
-    elseif ($status = 1) {
-      $status = FoiaRequestInterface::SUBMITTED;
+    elseif ($requestStatus = 1) {
+      $requestStatus = FoiaRequestInterface::SUBMITTED;
     }
-    elseif ($status = 2) {
-      $status = FoiaRequestInterface::FAILED;
+    elseif ($requestStatus = 2) {
+      $requestStatus = FoiaRequestInterface::FAILED;
     }
-    $this->set('status', $status);
+    $this->set('request_status', $requestStatus);
     return $this;
   }
 
