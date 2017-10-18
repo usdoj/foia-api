@@ -324,6 +324,9 @@ function extract_processing_data(array &$components, array $agency_data) {
       }
     }
 
+    if (!isset($component->latest_request_time_stats)) {
+      $component->latest_request_time_stats = new stdClass();
+    }
     // Add empty values for any statistics missing data.
     $latest_request_time_stats = (array) $component->latest_request_time_stats;
     $component->latest_request_time_stats = (object) insert_empty_days_values($latest_request_time_stats);
@@ -331,6 +334,8 @@ function extract_processing_data(array &$components, array $agency_data) {
     if (!isset($component->latest_request_time_stats_year)) {
       $component->latest_request_time_stats_year = '';
     }
+
+    unset($component->request_time_stats);
 
   }
 }
