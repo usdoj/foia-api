@@ -52,25 +52,6 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   public function setRequestStatus($requestStatus);
 
   /**
-   * Gets the FOIA Request name.
-   *
-   * @return string
-   *   Name of the FOIA Request.
-   */
-  public function getName();
-
-  /**
-   * Sets the FOIA Request name.
-   *
-   * @param string $name
-   *   The FOIA Request name.
-   *
-   * @return \Drupal\foia_request\Entity\FoiaRequestInterface
-   *   The called FOIA Request entity.
-   */
-  public function setName($name);
-
-  /**
    * Gets the FOIA Request creation timestamp.
    *
    * @return int
