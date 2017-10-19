@@ -1,21 +1,21 @@
-uuid: 5f51b91a-a78e-4dc2-a7ee-49e55d5db1f7
+uuid: ee940df0-c0f5-4902-9471-30a57644419f
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.foia_request.field_submission_medium
+    - field.storage.foia_request.field_submission_method
   module:
     - foia_request
     - options
-id: foia_request.foia_request.field_submission_medium
-field_name: field_submission_medium
+id: foia_request.foia_request.field_submission_method
+field_name: field_submission_method
 entity_type: foia_request
 bundle: foia_request
-label: 'Submission Medium'
+label: 'Submission Method'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: list_integer
+field_type: list_string

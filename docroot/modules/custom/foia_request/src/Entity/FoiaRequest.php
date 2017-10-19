@@ -130,7 +130,7 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
    * {@inheritdoc}
    */
   public function getRequestStatus() {
-    $this->get('request_status')->value;
+    return $this->get('request_status')->value;
   }
 
   /**
@@ -152,6 +152,34 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
       FoiaRequestInterface::STATUS_QUEUED,
       FoiaRequestInterface::STATUS_SUBMITTED,
       FoiaRequestInterface::STATUS_FAILED,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSubmissionMethod() {
+    return $this->get('submission_method')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setSubmissionMethod($submissionMethod) {
+    if (!in_array($submissionMethod, self::getValidSubmissionMethods())) {
+      $submissionMethod = FoiaRequestInterface::METHOD_EMAIL;
+    }
+    $this->set('submission_method', $submissionMethod);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getValidSubmissionMethods() {
+    return [
+      FoiaRequestInterface::METHOD_EMAIL,
+      FoiaRequestInterface::METHOD_API,
     ];
   }
 

@@ -1,25 +1,21 @@
-uuid: 6d56af39-f112-4381-89da-7577b6e116f5
+uuid: ffb919d1-f102-4f71-9190-e43b6e15a79d
 langcode: en
 status: true
 dependencies:
   module:
-    - field_permissions
     - foia_request
     - options
-third_party_settings:
-  field_permissions:
-    permission_type: public
-id: foia_request.field_submission_medium
-field_name: field_submission_medium
+id: foia_request.field_submission_method
+field_name: field_submission_method
 entity_type: foia_request
-type: list_integer
+type: list_string
 settings:
   allowed_values:
     -
-      value: 0
+      value: email
       label: Email
     -
-      value: 1
+      value: api
       label: API
   allowed_values_function: ''
 module: options

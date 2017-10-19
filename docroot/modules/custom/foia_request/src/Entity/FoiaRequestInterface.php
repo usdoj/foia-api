@@ -31,12 +31,12 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   /**
    * Sent to component via email.
    */
-  const MEDIUM_EMAIL = 0;
+  const METHOD_EMAIL = 'email';
 
   /**
    * Sent to component via api.
    */
-  const MEDIUM_API = 1;
+  const METHOD_API = 'api';
 
   /**
    * Gets the status of the foia_request entity.
@@ -44,7 +44,7 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    * @return int
    *   One of FoiaRequestInterface::QUEUED or
    *   FoiaRequestInterface::SUBMITTED or
-   *   FoiaRequestInterface::FAILED
+   *   FoiaRequestInterface::FAILED.
    */
   public function getRequestStatus();
 
@@ -61,11 +61,38 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    */
   public function setRequestStatus($requestStatus);
 
-  /*
-   * @todo add public static getValidRequestStatuses method to interface
-   * @todo add setMedium and getMedium methods, as well as public static method
-   * to return valid mediums
+  /**
+   * Returns an array of valid statuses for a FOIA request.
+   *
+   * @return array
+   *   Valid statuses for a FOIA request.
    */
+  public static function getValidRequestStatuses();
+
+  /**
+   * Gets the method by which the request was submitted to the component.
+   *
+   * @return string
+   *   One of FoiaRequestInterface::METHOD_EMAIL or
+   *   FoiaRequestInterface::METHOD_API.
+   */
+  public function getSubmissionMethod();
+
+  /**
+   * Sets the method by which the request was submitted to the component.
+   *
+   * @param string $submissionMethod
+   *   The submission method.
+   */
+  public function setSubmissionMethod($submissionMethod);
+
+  /**
+   * Returns array of valid methods by which request can be sent to component.
+   *
+   * @return array
+   *   Valid submission methods for a FOIA request.
+   */
+  public static function getValidSubmissionMethods();
 
   /**
    * Gets the FOIA Request creation timestamp.
