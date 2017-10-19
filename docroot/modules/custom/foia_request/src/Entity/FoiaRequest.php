@@ -41,6 +41,7 @@ use Drupal\user\UserInterface;
  *     "uid" = "user_id",
  *     "langcode" = "langcode",
  *     "status" = "status",
+ *     "request_status" = "request_status",
  *   },
  *   links = {
  *     "canonical" = "/admin/structure/foia_request/{foia_request}",
