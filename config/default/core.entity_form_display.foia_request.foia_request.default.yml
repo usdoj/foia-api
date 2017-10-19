@@ -10,6 +10,7 @@ dependencies:
     - field.field.foia_request.foia_request.field_http_code
     - field.field.foia_request.foia_request.field_requester_email
     - field.field.foia_request.foia_request.field_submission_method
+    - field.field.foia_request.foia_request.field_submission_time
     - field.field.foia_request.foia_request.field_tracking_number
     - field.field.foia_request.foia_request.field_webform_submission_id
   module:
@@ -74,6 +75,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_submission_time:
+    weight: 12
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_timestamp
     region: content
   field_tracking_number:
     weight: 6
