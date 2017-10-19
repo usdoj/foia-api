@@ -40,7 +40,6 @@ use Drupal\user\UserInterface;
  *     "uuid" = "uuid",
  *     "uid" = "user_id",
  *     "langcode" = "langcode",
- *     "status" = "status",
  *     "request_status" = "request_status",
  *   },
  *   links = {
@@ -109,21 +108,6 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
    */
   public function setOwner(UserInterface $account) {
     $this->set('user_id', $account->id());
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isPublished() {
-    return (bool) $this->getEntityKey('status');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setPublished($published) {
-    $this->set('status', $published ? TRUE : FALSE);
     return $this;
   }
 
@@ -236,11 +220,6 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
       ])
       ->setDisplayConfigurable('view', TRUE)
       ->setSetting('allowed_values', $requestStatusOptions);
-
-    $fields['status'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Publishing status'))
-      ->setDescription(t('A boolean indicating whether the FOIA Request is published.'))
-      ->setDefaultValue(TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

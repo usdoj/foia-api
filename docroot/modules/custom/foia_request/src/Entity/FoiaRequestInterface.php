@@ -113,26 +113,4 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    */
   public function setCreatedTime($timestamp);
 
-  /**
-   * Returns the FOIA Request published status indicator.
-   *
-   * Unpublished FOIA Request are only visible to restricted users.
-   *
-   * @return bool
-   *   TRUE if the FOIA Request is published.
-   */
-  public function isPublished();
-
-  /**
-   * Sets the published status of a FOIA Request.
-   *
-   * @param bool $published
-   *   TRUE to set this FOIA Request to published,
-   *   FALSE to set it to unpublished.
-   *
-   * @return \Drupal\foia_request\Entity\FoiaRequestInterface
-   *   The called FOIA Request entity.
-   */
-  public function setPublished($published);
-
 }

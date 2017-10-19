@@ -21,10 +21,7 @@ class FoiaRequestAccessControlHandler extends EntityAccessControlHandler {
     /** @var \Drupal\foia_request\Entity\FoiaRequestInterface $entity */
     switch ($operation) {
       case 'view':
-        if (!$entity->isPublished()) {
-          return AccessResult::allowedIfHasPermission($account, 'view unpublished foia request entities');
-        }
-        return AccessResult::allowedIfHasPermission($account, 'view published foia request entities');
+        return AccessResult::allowedIfHasPermission($account, 'view foia request entities');
 
       case 'update':
         return AccessResult::allowedIfHasPermission($account, 'edit foia request entities');
