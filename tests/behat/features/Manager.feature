@@ -55,3 +55,19 @@ Feature: Agency Manager role
     Given I am logged in as a user with the 'Administrator' role
     When I am at 'admin/people/permissions/agency_manager'
     Then the "View the administration theme" checkbox should be checked
+
+  @api
+  Scenario: Agency Manager can not view FOIA requests
+    Given I am logged in as a user with the 'Agency Manager' role
+    And I am on "/admin/structure/foia_request"
+    Then I should see "Access Denied"
+    And I go to "/admin/structure/foia_request/add"
+    Then I should see "Access Denied"
+    And I go to "/admin/content/foia-requests"
+    Then I should see "Access Denied"
+    When I am logged in as a user with the 'Administrator' role
+    And I am on "/admin/structure/foia_request/add"
+    Then I press "Save"
+    When I am logged in as a user with the 'Agency Manager' role
+    And I go to "/admin/structure/foia_request/1"
+    Then I should see "Access Denied"
