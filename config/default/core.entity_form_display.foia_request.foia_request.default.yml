@@ -9,9 +9,9 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_message
     - field.field.foia_request.foia_request.field_http_code
     - field.field.foia_request.foia_request.field_requester_email
-    - field.field.foia_request.foia_request.field_submission_id
     - field.field.foia_request.foia_request.field_submission_method
     - field.field.foia_request.foia_request.field_tracking_number
+    - field.field.foia_request.foia_request.field_webform_submission_id
   module:
     - foia_request
 _core:
@@ -69,13 +69,6 @@ content:
     third_party_settings: {  }
     type: email_default
     region: content
-  field_submission_id:
-    weight: 3
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   field_submission_method:
     weight: 10
     settings: {  }
@@ -89,6 +82,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_webform_submission_id:
+    weight: 11
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
     region: content
   request_status:
     type: options_select

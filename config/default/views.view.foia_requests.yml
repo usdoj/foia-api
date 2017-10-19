@@ -7,7 +7,6 @@ dependencies:
     - field.storage.foia_request.field_case_management_id
     - field.storage.foia_request.field_error_code
     - field.storage.foia_request.field_error_message
-    - field.storage.foia_request.field_submission_id
     - field.storage.foia_request.field_tracking_number
     - system.menu.admin
     - user.role.administrator
@@ -464,70 +463,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_submission_id:
-          id: field_submission_id
-          table: foia_request__field_submission_id
-          field: field_submission_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Submission ID'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
       filters:
         field_status_value:
           id: field_status_value
@@ -666,7 +601,6 @@ display:
         - 'config:field.storage.foia_request.field_case_management_id'
         - 'config:field.storage.foia_request.field_error_code'
         - 'config:field.storage.foia_request.field_error_message'
-        - 'config:field.storage.foia_request.field_submission_id'
         - 'config:field.storage.foia_request.field_tracking_number'
   page_1:
     display_plugin: page
@@ -694,5 +628,4 @@ display:
         - 'config:field.storage.foia_request.field_case_management_id'
         - 'config:field.storage.foia_request.field_error_code'
         - 'config:field.storage.foia_request.field_error_message'
-        - 'config:field.storage.foia_request.field_submission_id'
         - 'config:field.storage.foia_request.field_tracking_number'

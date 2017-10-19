@@ -9,9 +9,9 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_message
     - field.field.foia_request.foia_request.field_http_code
     - field.field.foia_request.foia_request.field_requester_email
-    - field.field.foia_request.foia_request.field_submission_id
     - field.field.foia_request.foia_request.field_submission_method
     - field.field.foia_request.foia_request.field_tracking_number
+    - field.field.foia_request.foia_request.field_webform_submission_id
   module:
     - foia_request
     - options
@@ -69,15 +69,6 @@ content:
     third_party_settings: {  }
     type: basic_string
     region: content
-  field_submission_id:
-    weight: 3
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
   field_submission_method:
     weight: 9
     label: above
@@ -92,6 +83,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_webform_submission_id:
+    weight: 10
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
     region: content
   request_status:
     label: inline
