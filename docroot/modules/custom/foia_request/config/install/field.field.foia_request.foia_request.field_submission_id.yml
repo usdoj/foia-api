@@ -1,26 +1,23 @@
-uuid: 36544513-51b0-46bf-802f-323ea4b10e15
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.foia_request.field_http_code
+    - field.storage.foia_request.field_submission_id
   module:
     - foia_request
-_core:
-  default_config_hash: KVncQ4t69BePCsbwvk8OucRk4uwmW1Ts7dKWcMv7jWI
-id: foia_request.foia_request.field_http_code
-field_name: field_http_code
+id: foia_request.foia_request.field_submission_id
+field_name: field_submission_id
 entity_type: foia_request
 bundle: foia_request
-label: 'HTTP Code'
+label: 'Submission ID'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  min: 100
-  max: 598
+  min: null
+  max: null
   prefix: ''
   suffix: ''
 field_type: integer

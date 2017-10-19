@@ -1,4 +1,3 @@
-uuid: 5eff5914-d06b-4159-aecd-44c47381786c
 langcode: en
 status: true
 dependencies:
@@ -8,16 +7,13 @@ dependencies:
 third_party_settings:
   field_permissions:
     permission_type: public
-_core:
-  default_config_hash: hr0ObV8vdV4Ci_RaAKNW-OlSxoxZn81RCDRbGYtrB0Y
-id: foia_request.field_case_management_id
-field_name: field_case_management_id
+id: foia_request.field_http_code
+field_name: field_http_code
 entity_type: foia_request
-type: string
+type: integer
 settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
+  unsigned: false
+  size: normal
 module: core
 locked: false
 cardinality: 1

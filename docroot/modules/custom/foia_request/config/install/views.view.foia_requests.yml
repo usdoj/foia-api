@@ -1,4 +1,3 @@
-uuid: 7cf7e31c-d37a-4ce9-b9ef-291eb8c87772
 langcode: en
 status: false
 dependencies:
@@ -16,8 +15,6 @@ dependencies:
   module:
     - foia_request
     - user
-_core:
-  default_config_hash: 6JF3-3c8igqKh8CXzMlYJYnrurP9hxltFBIdfHiRqYE
 id: foia_requests
 label: 'FOIA Requests'
 module: views
@@ -659,6 +656,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.roles
       tags:
@@ -687,6 +685,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.roles
       tags:

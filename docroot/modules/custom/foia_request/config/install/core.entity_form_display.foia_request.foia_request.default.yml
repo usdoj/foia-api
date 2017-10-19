@@ -1,4 +1,3 @@
-uuid: 323a71a7-ed58-4328-be7f-1fb3b9b5349f
 langcode: en
 status: true
 dependencies:
@@ -14,9 +13,6 @@ dependencies:
     - field.field.foia_request.foia_request.field_tracking_number
   module:
     - foia_request
-    - options
-_core:
-  default_config_hash: mZ_veoEUmvyaWJ9zMbhczvJzVGx637GTZNjy62epjUw
 id: foia_request.foia_request.default
 targetEntityType: foia_request
 bundle: foia_request
@@ -24,81 +20,78 @@ mode: default
 content:
   field_agency_component:
     weight: 1
-    label: above
     settings:
-      link: true
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_autocomplete
     region: content
   field_case_management_id:
-    weight: 4
-    label: above
+    weight: 5
     settings:
-      link_to_entity: false
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: string
+    type: string_textfield
     region: content
   field_error_code:
-    weight: 7
-    label: above
+    weight: 8
     settings:
-      link_to_entity: false
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: string
+    type: string_textfield
     region: content
   field_error_message:
-    weight: 8
-    label: above
-    settings: {  }
+    weight: 9
+    settings:
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
-    type: basic_string
+    type: string_textarea
     region: content
   field_http_code:
-    weight: 6
-    label: above
+    weight: 7
     settings:
-      thousand_separator: ''
-      prefix_suffix: true
+      placeholder: ''
     third_party_settings: {  }
-    type: number_integer
+    type: number
     region: content
   field_requester_email:
     weight: 2
-    label: above
-    settings: {  }
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: basic_string
+    type: email_default
     region: content
   field_submission_id:
     weight: 3
-    label: above
     settings:
-      thousand_separator: ''
-      prefix_suffix: true
+      placeholder: ''
     third_party_settings: {  }
-    type: number_integer
+    type: number
     region: content
   field_submission_method:
-    weight: 9
-    label: above
+    weight: 10
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    type: options_select
     region: content
   field_tracking_number:
-    weight: 5
-    label: above
+    weight: 6
     settings:
-      link_to_entity: false
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: string
+    type: string_textfield
     region: content
   request_status:
-    label: inline
-    type: list_default
+    type: options_select
+    weight: -1
     region: content
     settings: {  }
     third_party_settings: {  }
-    weight: 0
 hidden:
   user_id: true
