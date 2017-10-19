@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\foia_request\Kernel;
 
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
@@ -21,9 +20,7 @@ class FoiaRequestTest extends EntityKernelTestBase {
   public function setUp() {
     parent::setUp();
 
-    $fieldStorageConfig = \Drupal::config('')
-
-    FieldStorageConfig::create([])->save();
+    $this->installEntitySchema('foia_request');
 
   }
 
