@@ -8,12 +8,15 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_message
     - field.field.foia_request.foia_request.field_http_code
     - field.field.foia_request.foia_request.field_requester_email
-    - field.field.foia_request.foia_request.field_submission_id
     - field.field.foia_request.foia_request.field_submission_method
+    - field.field.foia_request.foia_request.field_submission_time
     - field.field.foia_request.foia_request.field_tracking_number
+    - field.field.foia_request.foia_request.field_webform_submission_id
   module:
     - foia_request
     - options
+_core:
+  default_config_hash: mZ_veoEUmvyaWJ9zMbhczvJzVGx637GTZNjy62epjUw
 id: foia_request.foia_request.default
 targetEntityType: foia_request
 bundle: foia_request
@@ -66,21 +69,22 @@ content:
     third_party_settings: {  }
     type: basic_string
     region: content
-  field_submission_id:
-    weight: 3
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
   field_submission_method:
     weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_submission_time:
+    weight: 11
+    label: above
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    type: timestamp
     region: content
   field_tracking_number:
     weight: 5
@@ -89,6 +93,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_webform_submission_id:
+    weight: 10
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
     region: content
   request_status:
     label: inline

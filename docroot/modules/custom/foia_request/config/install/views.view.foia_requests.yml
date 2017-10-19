@@ -1,20 +1,25 @@
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - field.storage.foia_request.field_agency_component
     - field.storage.foia_request.field_case_management_id
     - field.storage.foia_request.field_error_code
     - field.storage.foia_request.field_error_message
-    - field.storage.foia_request.field_submission_id
     - field.storage.foia_request.field_tracking_number
-    - system.menu.admin
+    - field.storage.foia_request.field_webform_submission_id
+    - taxonomy.vocabulary.agency
     - user.role.administrator
     - user.role.agency_administrator
     - user.role.agency_manager
   module:
     - foia_request
+    - node
+    - options
+    - taxonomy
     - user
+_core:
+  default_config_hash: 6JF3-3c8igqKh8CXzMlYJYnrurP9hxltFBIdfHiRqYE
 id: foia_requests
 label: 'FOIA Requests'
 module: views
@@ -93,8 +98,8 @@ display:
           alter:
             alter_text: false
             text: ''
-            make_link: false
-            path: ''
+            make_link: true
+            path: 'admin/structure/foia_request/{{ id }}'
             absolute: false
             external: false
             replace_spaces: false
@@ -146,6 +151,70 @@ display:
           field_api_classes: false
           entity_type: foia_request
           entity_field: id
+          plugin_id: field
+        request_status:
+          id: request_status
+          table: foia_request
+          field: request_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Status
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: foia_request
+          entity_field: request_status
           plugin_id: field
         field_agency_component:
           id: field_agency_component
@@ -200,6 +269,137 @@ display:
           settings:
             link: false
           group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_webform_submission_id:
+          id: field_webform_submission_id
+          table: foia_request__field_webform_submission_id
+          field: field_webform_submission_id
+          plugin_id: field
+        field_case_management_id:
+          id: field_case_management_id
+          table: foia_request__field_case_management_id
+          field: field_case_management_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Case Management ID'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_tracking_number:
+          id: field_tracking_number
+          table: foia_request__field_tracking_number
+          field: field_tracking_number
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Case Management Tracking Number'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -335,201 +535,62 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_case_management_id:
-          id: field_case_management_id
-          table: foia_request__field_case_management_id
-          field: field_case_management_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Case Management ID'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_tracking_number:
-          id: field_tracking_number
-          table: foia_request__field_tracking_number
-          field: field_tracking_number
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Case Management Tracking Number'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_submission_id:
-          id: field_submission_id
-          table: foia_request__field_submission_id
-          field: field_submission_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Submission ID'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
       filters:
-        field_status_value:
-          id: field_status_value
-          table: foia_request__field_status
-          field: field_status_value
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: 'FOIA Request ID'
+            description: ''
+            use_operator: false
+            operator: combine_op
+            identifier: combine
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            id: id
+          plugin_id: combine
+        request_status:
+          id: request_status
+          table: foia_request
+          field: request_status
           relationship: none
           group_type: group
           admin_label: ''
@@ -541,61 +602,127 @@ display:
           group: 1
           exposed: true
           expose:
-            operator_id: field_status_value_op
-            label: Status
-            description: ''
+            operator_id: request_status_op
+            label: 'Request Status'
+            description: null
             use_operator: false
-            operator: field_status_value_op
-            identifier: field_status_value
+            operator: request_status_op
+            identifier: request_status
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              page_creator: '0'
-              layout_manager: '0'
-              page_reviewer: '0'
-              landing_page_creator: '0'
-              landing_page_reviewer: '0'
-              media_creator: '0'
-              media_manager: '0'
-              agency_component_creator: '0'
-              agency_component_reviewer: '0'
-              agency_administrator: '0'
-              agency_manager: '0'
-          is_grouped: false
+          is_grouped: true
           group_info:
-            label: ''
+            label: 'Request Status'
             description: ''
-            identifier: ''
+            identifier: request_status
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
+            group_items:
+              1:
+                title: 'Queued for submission'
+                operator: '='
+                value:
+                  value: '0'
+                  min: ''
+                  max: ''
+              2:
+                title: 'Submitted to component'
+                operator: '='
+                value:
+                  value: '1'
+                  min: ''
+                  max: ''
+              3:
+                title: 'Failed submitting to component'
+                operator: '='
+                value:
+                  value: '2'
+                  min: ''
+                  max: ''
+          entity_type: foia_request
+          entity_field: request_status
           plugin_id: numeric
-        field_medium_value:
-          id: field_medium_value
-          table: foia_request__field_medium
-          field: field_medium_value
-          relationship: none
+        field_agency_target_id:
+          id: field_agency_target_id
+          table: node__field_agency
+          field: field_agency_target_id
+          relationship: field_agency_component
           group_type: group
           admin_label: ''
-          operator: '='
-          value: All
+          operator: or
+          value: {  }
           group: 1
           exposed: true
           expose:
-            operator_id: ''
-            label: 'Submission Medium'
+            operator_id: field_agency_target_id_op
+            label: Agency
             description: ''
             use_operator: false
-            operator: field_medium_value_op
-            identifier: field_medium_value
+            operator: field_agency_target_id_op
+            identifier: agency
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: agency
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: field_agency_component
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: title_op
+            label: 'Agency Component Name'
+            description: ''
+            use_operator: false
+            operator: title_op
+            identifier: component_name
             required: false
             remember: false
             multiple: false
@@ -626,12 +753,14 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: boolean
+          entity_type: node
+          entity_field: title
+          plugin_id: string
       sorts:
-        field_time_received_value:
-          id: field_time_received_value
-          table: foia_request__field_time_received
-          field: field_time_received_value
+        created:
+          id: created
+          table: foia_request
+          field: created
           relationship: none
           group_type: group
           admin_label: ''
@@ -639,12 +768,24 @@ display:
           exposed: false
           expose:
             label: ''
-          plugin_id: standard
+          granularity: second
+          entity_type: foia_request
+          entity_field: created
+          plugin_id: date
       title: 'FOIA Requests'
       header: {  }
       footer: {  }
       empty: {  }
-      relationships: {  }
+      relationships:
+        field_agency_component:
+          id: field_agency_component
+          table: foia_request__field_agency_component
+          field: field_agency_component
+          relationship: none
+          group_type: group
+          admin_label: 'field_agency_component: Content'
+          required: false
+          plugin_id: standard
       arguments: {  }
       display_extenders: {  }
       filter_groups:
@@ -658,14 +799,15 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - user.roles
       tags:
         - 'config:field.storage.foia_request.field_agency_component'
         - 'config:field.storage.foia_request.field_case_management_id'
         - 'config:field.storage.foia_request.field_error_code'
         - 'config:field.storage.foia_request.field_error_message'
-        - 'config:field.storage.foia_request.field_submission_id'
         - 'config:field.storage.foia_request.field_tracking_number'
+        - 'config:field.storage.foia_request.field_webform_submission_id'
   page_1:
     display_plugin: page
     id: page_1
@@ -673,13 +815,16 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: foia-requests
+      path: admin/content/foia-requests
       menu:
-        type: normal
+        type: tab
         title: 'FOIA Requests'
-        menu_name: admin
-        weight: -95
+        description: ''
+        expanded: false
         parent: system.admin_content
+        weight: null
+        context: '0'
+        menu_name: admin
     cache_metadata:
       max-age: 0
       contexts:
@@ -687,11 +832,12 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - user.roles
       tags:
         - 'config:field.storage.foia_request.field_agency_component'
         - 'config:field.storage.foia_request.field_case_management_id'
         - 'config:field.storage.foia_request.field_error_code'
         - 'config:field.storage.foia_request.field_error_message'
-        - 'config:field.storage.foia_request.field_submission_id'
         - 'config:field.storage.foia_request.field_tracking_number'
+        - 'config:field.storage.foia_request.field_webform_submission_id'

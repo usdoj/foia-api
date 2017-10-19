@@ -2,20 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.foia_request.field_error_code
+    - field.storage.foia_request.field_submission_time
   module:
     - foia_request
-_core:
-  default_config_hash: ZEvfA10HcoSULoSPpDlHuGW278y1i0Fa5Jj3HxrP0i0
-id: foia_request.foia_request.field_error_code
-field_name: field_error_code
+id: foia_request.foia_request.field_submission_time
+field_name: field_submission_time
 entity_type: foia_request
 bundle: foia_request
-label: 'Error Code'
+label: 'Submission Time'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: string
+field_type: timestamp
