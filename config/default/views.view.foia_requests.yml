@@ -1,15 +1,13 @@
 uuid: 36448dad-439b-4cdb-9bc9-3777a6a040a3
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.foia_request.field_agency_component
     - field.storage.foia_request.field_case_management_id
     - field.storage.foia_request.field_error_code
     - field.storage.foia_request.field_error_message
-    - field.storage.foia_request.field_medium
     - field.storage.foia_request.field_submission_id
-    - field.storage.foia_request.field_time_received
     - field.storage.foia_request.field_tracking_number
     - system.menu.admin
     - user.role.administrator
@@ -203,71 +201,6 @@ display:
           settings:
             link: false
           group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_medium:
-          id: field_medium
-          table: foia_request__field_medium
-          field: field_medium
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Submission Medium'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: boolean
-          settings:
-            format: custom
-            format_custom_true: API
-            format_custom_false: Email
-          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -593,71 +526,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_time_received:
-          id: field_time_received
-          table: foia_request__field_time_received
-          field: field_time_received
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Time Received'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: medium
-            custom_date_format: ''
-            timezone: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
       filters:
         field_status_value:
           id: field_status_value
@@ -797,9 +665,7 @@ display:
         - 'config:field.storage.foia_request.field_case_management_id'
         - 'config:field.storage.foia_request.field_error_code'
         - 'config:field.storage.foia_request.field_error_message'
-        - 'config:field.storage.foia_request.field_medium'
         - 'config:field.storage.foia_request.field_submission_id'
-        - 'config:field.storage.foia_request.field_time_received'
         - 'config:field.storage.foia_request.field_tracking_number'
   page_1:
     display_plugin: page
@@ -828,7 +694,5 @@ display:
         - 'config:field.storage.foia_request.field_case_management_id'
         - 'config:field.storage.foia_request.field_error_code'
         - 'config:field.storage.foia_request.field_error_message'
-        - 'config:field.storage.foia_request.field_medium'
         - 'config:field.storage.foia_request.field_submission_id'
-        - 'config:field.storage.foia_request.field_time_received'
         - 'config:field.storage.foia_request.field_tracking_number'

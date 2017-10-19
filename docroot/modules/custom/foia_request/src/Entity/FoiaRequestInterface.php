@@ -29,6 +29,16 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   const STATUS_FAILED = 2;
 
   /**
+   * Sent to component via email.
+   */
+  const MEDIUM_EMAIL = 0;
+
+  /**
+   * Sent to component via api.
+   */
+  const MEDIUM_API = 1;
+
+  /**
    * Gets the status of the foia_request entity.
    *
    * @return int
@@ -50,6 +60,12 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    *   The called foia_request entity.
    */
   public function setRequestStatus($requestStatus);
+
+  /*
+   * @todo add public static getValidRequestStatuses method to interface
+   * @todo add setMedium and getMedium methods, as well as public static method
+   * to return valid mediums
+   */
 
   /**
    * Gets the FOIA Request creation timestamp.

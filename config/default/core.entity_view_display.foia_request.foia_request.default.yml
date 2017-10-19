@@ -8,13 +8,13 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_code
     - field.field.foia_request.foia_request.field_error_message
     - field.field.foia_request.foia_request.field_http_code
-    - field.field.foia_request.foia_request.field_medium
     - field.field.foia_request.foia_request.field_requester_email
     - field.field.foia_request.foia_request.field_submission_id
-    - field.field.foia_request.foia_request.field_time_received
+    - field.field.foia_request.foia_request.field_submission_medium
     - field.field.foia_request.foia_request.field_tracking_number
   module:
     - foia_request
+    - options
 id: foia_request.foia_request.default
 targetEntityType: foia_request
 bundle: foia_request
@@ -29,7 +29,7 @@ content:
     type: entity_reference_label
     region: content
   field_case_management_id:
-    weight: 6
+    weight: 4
     label: above
     settings:
       link_to_entity: false
@@ -37,7 +37,7 @@ content:
     type: string
     region: content
   field_error_code:
-    weight: 9
+    weight: 7
     label: above
     settings:
       link_to_entity: false
@@ -45,30 +45,20 @@ content:
     type: string
     region: content
   field_error_message:
-    weight: 10
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_http_code:
-    weight: 8
+    weight: 6
     label: above
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
     type: number_integer
-    region: content
-  field_medium:
-    weight: 5
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
     region: content
   field_requester_email:
     weight: 2
@@ -78,7 +68,7 @@ content:
     type: basic_string
     region: content
   field_submission_id:
-    weight: 4
+    weight: 3
     label: above
     settings:
       thousand_separator: ''
@@ -86,18 +76,15 @@ content:
     third_party_settings: {  }
     type: number_integer
     region: content
-  field_time_received:
-    weight: 3
+  field_submission_medium:
+    weight: 9
     label: above
-    settings:
-      date_format: medium
-      custom_date_format: ''
-      timezone: ''
+    settings: {  }
     third_party_settings: {  }
-    type: timestamp
+    type: list_default
     region: content
   field_tracking_number:
-    weight: 7
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -112,5 +99,4 @@ content:
     third_party_settings: {  }
     weight: 0
 hidden:
-  name: true
   user_id: true

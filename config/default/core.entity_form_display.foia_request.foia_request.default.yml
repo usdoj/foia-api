@@ -8,10 +8,9 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_code
     - field.field.foia_request.foia_request.field_error_message
     - field.field.foia_request.foia_request.field_http_code
-    - field.field.foia_request.foia_request.field_medium
     - field.field.foia_request.foia_request.field_requester_email
     - field.field.foia_request.foia_request.field_submission_id
-    - field.field.foia_request.foia_request.field_time_received
+    - field.field.foia_request.foia_request.field_submission_medium
     - field.field.foia_request.foia_request.field_tracking_number
   module:
     - foia_request
@@ -60,12 +59,6 @@ content:
     third_party_settings: {  }
     type: number
     region: content
-  field_medium:
-    weight: 4
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_requester_email:
     weight: 2
     settings:
@@ -81,11 +74,11 @@ content:
     third_party_settings: {  }
     type: number
     region: content
-  field_time_received:
+  field_submission_medium:
     weight: 10
     settings: {  }
     third_party_settings: {  }
-    type: datetime_timestamp
+    type: options_select
     region: content
   field_tracking_number:
     weight: 6
@@ -102,5 +95,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  name: true
   user_id: true
