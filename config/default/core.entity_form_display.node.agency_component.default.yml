@@ -7,15 +7,28 @@ dependencies:
     - field.field.node.agency_component.field_agency
     - field.field.node.agency_component.field_agency_comp_abbreviation
     - field.field.node.agency_component.field_agency_comp_telephone
+    - field.field.node.agency_component.field_complex_average_days
+    - field.field.node.agency_component.field_complex_highest_days
+    - field.field.node.agency_component.field_complex_lowest_days
+    - field.field.node.agency_component.field_complex_median_days
     - field.field.node.agency_component.field_email
+    - field.field.node.agency_component.field_expedited_average_days
+    - field.field.node.agency_component.field_expedited_highest_days
+    - field.field.node.agency_component.field_expedited_lowest_days
+    - field.field.node.agency_component.field_expedited_median_days
     - field.field.node.agency_component.field_foia_officers
     - field.field.node.agency_component.field_misc
     - field.field.node.agency_component.field_portal_submission_format
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
     - field.field.node.agency_component.field_receiver
+    - field.field.node.agency_component.field_request_data_year
     - field.field.node.agency_component.field_request_submission_form
     - field.field.node.agency_component.field_service_centers
+    - field.field.node.agency_component.field_simple_average_days
+    - field.field.node.agency_component.field_simple_highest_days
+    - field.field.node.agency_component.field_simple_lowest_days
+    - field.field.node.agency_component.field_simple_median_days
     - field.field.node.agency_component.field_submission_address
     - field.field.node.agency_component.field_submission_api
     - field.field.node.agency_component.field_submission_email
@@ -110,6 +123,30 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Portal Submission Options'
+    group_processing_data:
+      children:
+        - field_request_data_year
+        - field_complex_average_days
+        - field_complex_highest_days
+        - field_complex_lowest_days
+        - field_complex_median_days
+        - field_expedited_average_days
+        - field_expedited_highest_days
+        - field_expedited_lowest_days
+        - field_expedited_median_days
+        - field_simple_average_days
+        - field_simple_highest_days
+        - field_simple_lowest_days
+        - field_simple_median_days
+      parent_name: ''
+      weight: 24
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: true
+        required_fields: true
+      label: 'Processing Data'
 id: node.agency_component.default
 targetEntityType: node
 bundle: agency_component
@@ -154,6 +191,38 @@ content:
     third_party_settings: {  }
     type: telephone_default
     region: content
+  field_complex_average_days:
+    weight: 28
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_complex_highest_days:
+    weight: 29
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_complex_lowest_days:
+    weight: 30
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_complex_median_days:
+    weight: 31
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_email:
     weight: 6
     settings:
@@ -161,6 +230,38 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: email_default
+    region: content
+  field_expedited_average_days:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_highest_days:
+    weight: 33
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_lowest_days:
+    weight: 34
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_median_days:
+    weight: 35
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_foia_officers:
     weight: 8
@@ -228,6 +329,14 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
+  field_request_data_year:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_request_submission_form:
     weight: 22
     settings: {  }
@@ -247,6 +356,38 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
+  field_simple_average_days:
+    weight: 36
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_simple_highest_days:
+    weight: 37
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_simple_lowest_days:
+    weight: 38
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_simple_median_days:
+    weight: 39
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_submission_address:
     weight: 7
     settings:
@@ -255,7 +396,7 @@ content:
     type: address_default
     region: content
   field_submission_api:
-    weight: 19
+    weight: 21
     settings:
       size: 60
       placeholder: ''
