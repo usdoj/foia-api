@@ -144,7 +144,7 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
    * {@inheritdoc}
    */
   public function getSubmissionMethod() {
-    return $this->get('submission_method')->value;
+    return $this->get('field_submission_method')->value;
   }
 
   /**
@@ -154,7 +154,7 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
     if (!in_array($submissionMethod, self::getValidSubmissionMethods())) {
       $submissionMethod = FoiaRequestInterface::METHOD_EMAIL;
     }
-    $this->set('submission_method', $submissionMethod);
+    $this->set('field_submission_method', $submissionMethod);
     return $this;
   }
 
