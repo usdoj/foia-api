@@ -2,24 +2,22 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.foia_request.field_http_code
+    - field.storage.foia_request.field_response_code
   module:
     - foia_request
-_core:
-  default_config_hash: KVncQ4t69BePCsbwvk8OucRk4uwmW1Ts7dKWcMv7jWI
-id: foia_request.foia_request.field_http_code
-field_name: field_http_code
+id: foia_request.foia_request.field_response_code
+field_name: field_response_code
 entity_type: foia_request
 bundle: foia_request
-label: 'HTTP Code'
+label: 'Response Code'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  min: 100
-  max: 598
+  min: null
+  max: null
   prefix: ''
   suffix: ''
 field_type: integer

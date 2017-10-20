@@ -6,6 +6,8 @@ dependencies:
     - field.storage.foia_request.field_case_management_id
     - field.storage.foia_request.field_error_code
     - field.storage.foia_request.field_error_message
+    - field.storage.foia_request.field_response_code
+    - field.storage.foia_request.field_submission_method
     - field.storage.foia_request.field_tracking_number
     - field.storage.foia_request.field_webform_submission_id
     - taxonomy.vocabulary.agency
@@ -348,6 +350,132 @@ display:
           id: field_webform_submission_id
           table: foia_request__field_webform_submission_id
           field: field_webform_submission_id
+          plugin_id: field
+        field_submission_method:
+          id: field_submission_method
+          table: foia_request__field_submission_method
+          field: field_submission_method
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Submission Method'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_response_code:
+          id: field_response_code
+          table: foia_request__field_response_code
+          field: field_response_code
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Response Code'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
           plugin_id: field
         field_case_management_id:
           id: field_case_management_id
@@ -821,6 +949,57 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: string
+        field_submission_method_value:
+          id: field_submission_method_value
+          table: foia_request__field_submission_method
+          field: field_submission_method_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_submission_method_value_op
+            label: 'Submission Method'
+            description: ''
+            use_operator: false
+            operator: field_submission_method_value_op
+            identifier: submission_method
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
       sorts:
         created:
           id: created
@@ -871,6 +1050,8 @@ display:
         - 'config:field.storage.foia_request.field_case_management_id'
         - 'config:field.storage.foia_request.field_error_code'
         - 'config:field.storage.foia_request.field_error_message'
+        - 'config:field.storage.foia_request.field_response_code'
+        - 'config:field.storage.foia_request.field_submission_method'
         - 'config:field.storage.foia_request.field_tracking_number'
         - 'config:field.storage.foia_request.field_webform_submission_id'
   page_1:
@@ -904,5 +1085,7 @@ display:
         - 'config:field.storage.foia_request.field_case_management_id'
         - 'config:field.storage.foia_request.field_error_code'
         - 'config:field.storage.foia_request.field_error_message'
+        - 'config:field.storage.foia_request.field_response_code'
+        - 'config:field.storage.foia_request.field_submission_method'
         - 'config:field.storage.foia_request.field_tracking_number'
         - 'config:field.storage.foia_request.field_webform_submission_id'

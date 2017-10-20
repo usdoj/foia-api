@@ -6,8 +6,8 @@ dependencies:
     - field.field.foia_request.foia_request.field_case_management_id
     - field.field.foia_request.foia_request.field_error_code
     - field.field.foia_request.foia_request.field_error_message
-    - field.field.foia_request.foia_request.field_http_code
     - field.field.foia_request.foia_request.field_requester_email
+    - field.field.foia_request.foia_request.field_response_code
     - field.field.foia_request.foia_request.field_submission_method
     - field.field.foia_request.foia_request.field_submission_time
     - field.field.foia_request.foia_request.field_tracking_number
@@ -31,7 +31,7 @@ content:
     type: entity_reference_label
     region: content
   field_case_management_id:
-    weight: 4
+    weight: 6
     label: above
     settings:
       link_to_entity: false
@@ -39,7 +39,7 @@ content:
     type: string
     region: content
   field_error_code:
-    weight: 7
+    weight: 8
     label: above
     settings:
       link_to_entity: false
@@ -47,14 +47,21 @@ content:
     type: string
     region: content
   field_error_message:
-    weight: 8
+    weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
-  field_http_code:
-    weight: 6
+  field_requester_email:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_response_code:
+    weight: 5
     label: above
     settings:
       thousand_separator: ''
@@ -62,22 +69,15 @@ content:
     third_party_settings: {  }
     type: number_integer
     region: content
-  field_requester_email:
-    weight: 2
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
   field_submission_method:
-    weight: 9
+    weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_submission_time:
-    weight: 11
+    weight: 4
     label: above
     settings:
       date_format: medium
@@ -87,7 +87,7 @@ content:
     type: timestamp
     region: content
   field_tracking_number:
-    weight: 5
+    weight: 7
     label: above
     settings:
       link_to_entity: false
@@ -109,6 +109,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 2
 hidden:
   user_id: true
