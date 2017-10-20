@@ -1,0 +1,24 @@
+uuid: 169c5c4d-95f8-4238-8c24-1aba18182bef
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - foia_request
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: foia_request.field_response_code
+field_name: field_response_code
+entity_type: foia_request
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

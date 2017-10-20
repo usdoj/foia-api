@@ -184,3 +184,23 @@ Feature: Agency Administrator role
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been created. |
     And I should see the link 'A Test Agency'
+
+  @api
+  Scenario: Agency Administrator can not view admin-related FOIA request pages
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/admin/structure/foia_request"
+    Then I should see "Access Denied"
+    And I go to "/admin/structure/foia_request/add"
+    Then I should see "Access Denied"
+
+  @api
+  Scenario: Agency Administrator can view custom FOIA request view
+    Given I am logged in as a user with the 'Administrator' role
+    And I am on "/admin/structure/foia_request/add"
+    Then I press "Save"
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/admin/content/foia-requests"
+    Then I should see "FOIA Requests"
+    And I should see 'Queued for submission' in the '1' row
+    And I go to "/admin/structure/foia_request/1"
+    Then I should see "Request Status"

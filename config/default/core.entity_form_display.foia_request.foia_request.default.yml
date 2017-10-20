@@ -1,0 +1,107 @@
+uuid: 0b2c0560-c950-4f60-af31-542fb957db6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.foia_request.foia_request.field_agency_component
+    - field.field.foia_request.foia_request.field_case_management_id
+    - field.field.foia_request.foia_request.field_error_code
+    - field.field.foia_request.foia_request.field_error_message
+    - field.field.foia_request.foia_request.field_requester_email
+    - field.field.foia_request.foia_request.field_response_code
+    - field.field.foia_request.foia_request.field_submission_method
+    - field.field.foia_request.foia_request.field_submission_time
+    - field.field.foia_request.foia_request.field_tracking_number
+    - field.field.foia_request.foia_request.field_webform_submission_id
+  module:
+    - foia_request
+_core:
+  default_config_hash: 0bZN5j677Niu7ovGBW8WSefYQM0bomi4eAGBQ3KTKRs
+id: foia_request.foia_request.default
+targetEntityType: foia_request
+bundle: foia_request
+mode: default
+content:
+  field_agency_component:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_case_management_id:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_error_code:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_error_message:
+    weight: 9
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_requester_email:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_response_code:
+    weight: 13
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_submission_method:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_submission_time:
+    weight: 12
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_timestamp
+    region: content
+  field_tracking_number:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_webform_submission_id:
+    weight: 11
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  request_status:
+    type: options_select
+    weight: -1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  user_id: true
