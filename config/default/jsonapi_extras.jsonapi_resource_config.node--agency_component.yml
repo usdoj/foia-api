@@ -110,11 +110,11 @@ resourceFields:
     enhancer:
       id: ''
   metatag:
+    disabled: true
     fieldName: metatag
     publicName: metatag
     enhancer:
       id: ''
-    disabled: false
   path:
     disabled: true
     fieldName: path
@@ -159,25 +159,25 @@ resourceFields:
     disabled: false
   field_complex_average_days:
     fieldName: field_complex_average_days
-    publicName: complex_average_days
+    publicName: request_data_complex_average_days
     enhancer:
       id: ''
     disabled: false
   field_complex_highest_days:
     fieldName: field_complex_highest_days
-    publicName: complex_highest_days
+    publicName: request_data_complex_highest_days
     enhancer:
       id: ''
     disabled: false
   field_complex_lowest_days:
     fieldName: field_complex_lowest_days
-    publicName: complex_lowest_days
+    publicName: request_data_complex_lowest_days
     enhancer:
       id: ''
     disabled: false
   field_complex_median_days:
     fieldName: field_complex_median_days
-    publicName: complex_median_days
+    publicName: request_data_complex_median_days
     enhancer:
       id: ''
     disabled: false
@@ -189,25 +189,25 @@ resourceFields:
     disabled: false
   field_expedited_average_days:
     fieldName: field_expedited_average_days
-    publicName: expedited_average_days
+    publicName: request_data_expedited_average_days
     enhancer:
       id: ''
     disabled: false
   field_expedited_highest_days:
     fieldName: field_expedited_highest_days
-    publicName: expedited_highest_days
+    publicName: request_data_expedited_highest_days
     enhancer:
       id: ''
     disabled: false
   field_expedited_lowest_days:
     fieldName: field_expedited_lowest_days
-    publicName: expedited_lowest_days
+    publicName: request_data_expedited_lowest_days
     enhancer:
       id: ''
     disabled: false
   field_expedited_median_days:
     fieldName: field_expedited_median_days
-    publicName: expedited_median_days
+    publicName: request_data_expedited_median_days
     enhancer:
       id: ''
     disabled: false
@@ -249,7 +249,7 @@ resourceFields:
     disabled: false
   field_request_data_year:
     fieldName: field_request_data_year
-    publicName: field_request_data_year
+    publicName: request_data_year
     enhancer:
       id: ''
     disabled: false
@@ -267,25 +267,25 @@ resourceFields:
     disabled: false
   field_simple_average_days:
     fieldName: field_simple_average_days
-    publicName: simple_average_days
+    publicName: request_data_simple_average_days
     enhancer:
       id: ''
     disabled: false
   field_simple_highest_days:
     fieldName: field_simple_highest_days
-    publicName: simple_highest_days
+    publicName: request_data_simple_highest_days
     enhancer:
       id: ''
     disabled: false
   field_simple_lowest_days:
     fieldName: field_simple_lowest_days
-    publicName: simple_lowest_days
+    publicName: request_data_simple_lowest_days
     enhancer:
       id: ''
     disabled: false
   field_simple_median_days:
     fieldName: field_simple_median_days
-    publicName: simple_median_days
+    publicName: request_data_simple_median_days
     enhancer:
       id: ''
     disabled: false
@@ -296,11 +296,17 @@ resourceFields:
       id: ''
     disabled: false
   field_submission_api:
+    disabled: true
     fieldName: field_submission_api
     publicName: submission_api
     enhancer:
       id: ''
-    disabled: false
+  field_submission_api_secret:
+    disabled: true
+    fieldName: field_submission_api_secret
+    publicName: field_submission_api_secret
+    enhancer:
+      id: ''
   field_submission_email:
     fieldName: field_submission_email
     publicName: submission_email
