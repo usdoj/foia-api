@@ -138,11 +138,11 @@ Feature: Agency Administrator role
       | Webform A Test Webform elements saved. |
     When I click 'View'
     And for 'First Name' I enter 'A Test First Name'
-    And for 'Last name' I enter 'A Test Last Name'
+    And for 'Last Name' I enter 'A Test Last Name'
     And for 'Email' I enter 'atest@example.com'
-    And for "Describe the information you're requesting" I enter 'A Test description.'
-    And I select "No" from "Request Fee Waiver"
-    And I select "No" from "Request Expedited Processing"
+    And for "Your request" I enter 'A Test description.'
+    And I select "No" from "Would you like to request a fee waiver?"
+    And I select "No" from "Would you like to request expedited processing?"
     And I press the 'Submit' button
     Then I should see the text 'New submission added to A Test Webform.'
     When I am at 'admin/structure/webform/manage/a_test_webform/settings'
