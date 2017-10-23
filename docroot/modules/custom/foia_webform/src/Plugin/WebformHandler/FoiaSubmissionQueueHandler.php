@@ -2,6 +2,8 @@
 
 namespace Drupal\foia_webform\Plugin\WebformHandler;
 
+use Drupal\foia_request\Entity\FoiaRequest;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -22,38 +24,60 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
   /**
    * {@inheritdoc}
    */
-  public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
-    $state = $webform_submission->getWebform()->getSetting('results_disabled') ? WebformSubmissionInterface::STATE_COMPLETED : $webform_submission->getState();
+  public function postSave(WebformSubmissionInterface $webformSubmission, $update = TRUE) {
+    $state = $webformSubmission->getWebform()->getSetting('results_disabled') ? WebformSubmissionInterface::STATE_COMPLETED : $webformSubmission->getState();
     if (in_array($state, $this->configuration['states'])) {
-      $this->queueSubmission($webform_submission);
+      $foiaRequest = $this->createFoiaRequest($webformSubmission);
+      $this->queueFoiaRequest($foiaRequest);
     }
   }
 
   /**
-   * Adds the submission to the foia_submissions queue.
+   * Creates a FOIA Request entity that references the webform submission ID.
    *
-   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
-   *   The webform submission object.
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   *   The webform submission to reference in the FOIA Request entity.
+   *
+   * @return \Drupal\foia_request\Entity\FoiaRequestInterface
+   *   The created FOIA request entity.
    */
-  private function queueSubmission(WebformSubmissionInterface $webform_submission) {
-    // @var QueueFactory $queue_factory
-    $queue_factory = \Drupal::service('queue');
+  protected function createFoiaRequest(WebformSubmissionInterface $webformSubmission) {
+    $foiaRequest = FoiaRequest::create([
+      'field_webform_submission_id' => $webformSubmission->id(),
+    ]);
+    $requesterEmailAddress = $webformSubmission->getElementData('email');
+    if (isset($requesterEmailAddress)) {
+      $foiaRequest->set('field_requester_email', $requesterEmailAddress);
+    }
+    $foiaRequest->save();
+    return $foiaRequest;
+  }
+
+  /**
+   * Adds the FOIA request to the foia_submissions queue.
+   *
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA Request to queue for later processing.
+   */
+  protected function queueFoiaRequest(FoiaRequestInterface $foiaRequest) {
+    // @var QueueFactory $queueFactory
+    $queueFactory = \Drupal::service('queue');
 
     // @var QueueInterface $queue
-    $foia_submission_queue = $queue_factory->get('foia_submissions');
+    $foiaSubmissionsQueue = $queueFactory->get('foia_submissions');
     $submission = new \stdClass();
-    $submission->sid = $webform_submission->id();
+    $submission->id = $foiaRequest->id();
 
     // Log the form submission.
     \Drupal::logger('foia_webform')
-      ->info('FOIA form submission #%sid added to queue.',
+      ->info('FOIA request #%request_id added to queue.',
         [
-          '%sid' => $webform_submission->id(),
-          'link' => $webform_submission->toLink($this->t('View'))->toString(),
+          '%request_id' => $foiaRequest->id(),
+          'link' => $foiaRequest->toLink($this->t('View'))->toString(),
         ]
       );
 
-    $foia_submission_queue->createItem($submission);
+    $foiaSubmissionsQueue->createItem($submission);
   }
 
 }
