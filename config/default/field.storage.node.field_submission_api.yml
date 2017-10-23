@@ -1,22 +1,20 @@
-uuid: 83ff8fbc-6135-48b9-969f-5fea18dc188c
+uuid: 40a4413c-2e32-44c2-90f0-beab4b7799b4
 langcode: en
 status: true
 dependencies:
   module:
     - field_permissions
+    - link
     - node
 third_party_settings:
   field_permissions:
-    permission_type: public
+    permission_type: custom
 id: node.field_submission_api
 field_name: field_submission_api
 entity_type: node
-type: string
-settings:
-  max_length: 450
-  is_ascii: false
-  case_sensitive: false
-module: core
+type: link
+settings: {  }
+module: link
 locked: false
 cardinality: 1
 translatable: true

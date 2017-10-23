@@ -1,19 +1,23 @@
-uuid: 0fafee46-4314-4d19-a5ea-ed6f11dc90c6
+uuid: d7c14c49-0ad9-4411-b453-a3d32bef3de4
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_submission_api
     - node.type.agency_component
+  module:
+    - link
 id: node.agency_component.field_submission_api
 field_name: field_submission_api
 entity_type: node
 bundle: agency_component
 label: 'Submission API URL'
-description: ''
+description: 'Provide the fully-qualified URL, including the protocol (e.g., https://), to which the Portal should submit requests received for your Component.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
-field_type: string
+settings:
+  link_type: 16
+  title: 0
+field_type: link

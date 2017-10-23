@@ -31,6 +31,7 @@ dependencies:
     - field.field.node.agency_component.field_simple_median_days
     - field.field.node.agency_component.field_submission_address
     - field.field.node.agency_component.field_submission_api
+    - field.field.node.agency_component.field_submission_api_secret
     - field.field.node.agency_component.field_submission_email
     - field.field.node.agency_component.field_submission_fax
     - field.field.node.agency_component.field_submission_web
@@ -50,14 +51,14 @@ bundle: agency_component
 mode: default
 content:
   body:
-    label: hidden
+    label: above
     type: text_default
-    weight: 1
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     region: content
   field_agency:
-    weight: 2
+    weight: 1
     label: above
     settings:
       link: true
@@ -65,7 +66,7 @@ content:
     type: entity_reference_label
     region: content
   field_agency_comp_abbreviation:
-    weight: 5
+    weight: 2
     label: above
     settings:
       link_to_entity: false
@@ -73,7 +74,7 @@ content:
     type: string
     region: content
   field_agency_comp_telephone:
-    weight: 6
+    weight: 4
     label: above
     settings:
       title: ''
@@ -81,14 +82,6 @@ content:
     type: telephone_link
     region: content
   field_complex_average_days:
-    weight: 21
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_complex_highest_days:
     weight: 22
     label: above
     settings:
@@ -96,7 +89,7 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_complex_lowest_days:
+  field_complex_highest_days:
     weight: 23
     label: above
     settings:
@@ -104,7 +97,7 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_complex_median_days:
+  field_complex_lowest_days:
     weight: 24
     label: above
     settings:
@@ -112,8 +105,16 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_complex_median_days:
+    weight: 25
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_email:
-    weight: 7
+    weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -152,7 +153,7 @@ content:
     type: string
     region: content
   field_foia_officers:
-    weight: 15
+    weight: 8
     label: above
     settings:
       link: true
@@ -160,7 +161,7 @@ content:
     type: entity_reference_label
     region: content
   field_misc:
-    weight: 20
+    weight: 11
     label: above
     settings:
       link: true
@@ -168,14 +169,14 @@ content:
     type: entity_reference_label
     region: content
   field_portal_submission_format:
-    weight: 19
+    weight: 16
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_public_liaisons:
-    weight: 18
+    weight: 10
     label: above
     settings:
       link: true
@@ -183,7 +184,7 @@ content:
     type: entity_reference_label
     region: content
   field_reading_rooms:
-    weight: 9
+    weight: 7
     label: above
     settings:
       trim_length: 80
@@ -195,7 +196,7 @@ content:
     type: link
     region: content
   field_receiver:
-    weight: 17
+    weight: 12
     label: above
     settings:
       link: true
@@ -203,7 +204,7 @@ content:
     type: entity_reference_label
     region: content
   field_request_data_year:
-    weight: 29
+    weight: 21
     label: above
     settings:
       link_to_entity: false
@@ -211,15 +212,15 @@ content:
     type: string
     region: content
   field_request_submission_form:
-    weight: 3
+    weight: 20
     label: above
     settings:
-      source_entity: true
+      label: '[webform:title]'
     third_party_settings: {  }
-    type: webform_entity_reference_entity_view
+    type: webform_entity_reference_link
     region: content
   field_service_centers:
-    weight: 16
+    weight: 9
     label: above
     settings:
       link: true
@@ -227,14 +228,6 @@ content:
     type: entity_reference_label
     region: content
   field_simple_average_days:
-    weight: 25
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_simple_highest_days:
     weight: 26
     label: above
     settings:
@@ -242,7 +235,7 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_simple_lowest_days:
+  field_simple_highest_days:
     weight: 27
     label: above
     settings:
@@ -250,7 +243,7 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_simple_median_days:
+  field_simple_lowest_days:
     weight: 28
     label: above
     settings:
@@ -258,15 +251,35 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_simple_median_days:
+    weight: 29
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_submission_address:
-    weight: 10
+    weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
     type: address_default
     region: content
   field_submission_api:
-    weight: 14
+    weight: 18
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_submission_api_secret:
+    weight: 19
     label: above
     settings:
       link_to_entity: false
@@ -274,14 +287,14 @@ content:
     type: string
     region: content
   field_submission_email:
-    weight: 11
+    weight: 17
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_submission_fax:
-    weight: 13
+    weight: 15
     label: above
     settings:
       title: ''
@@ -289,7 +302,7 @@ content:
     type: telephone_link
     region: content
   field_submission_web:
-    weight: 12
+    weight: 14
     label: above
     settings:
       trim_length: 80
@@ -301,7 +314,7 @@ content:
     type: link
     region: content
   field_website:
-    weight: 8
+    weight: 6
     label: above
     settings:
       trim_length: 80
