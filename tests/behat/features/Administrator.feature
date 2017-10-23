@@ -198,7 +198,9 @@ Feature: Agency Administrator role
     Given I am logged in as a user with the 'Administrator' role
     And I am on "/admin/structure/foia_request/add"
     Then I press "Save"
+    And save the current URL
     When I am logged in as a user with the 'Agency Administrator' role
     And I am on "/admin/content/foia-requests"
     Then I should see "FOIA Requests"
-    And I should see "Queued for submission"
+    And I go to saved URL
+    Then I should see "Request Status"

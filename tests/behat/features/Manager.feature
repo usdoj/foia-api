@@ -65,3 +65,10 @@ Feature: Agency Manager role
     Then I should see "Access Denied"
     And I go to "/admin/content/foia-requests"
     Then I should see "Access Denied"
+    When I am logged in as a user with the 'Administrator' role
+    And I am on "/admin/structure/foia_request/add"
+    Then I press "Save"
+    And save the current URL
+    When I am logged in as a user with the 'Agency Manager' role
+    And I go to saved URL
+    Then I should see "Access Denied"
