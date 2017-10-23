@@ -54,6 +54,7 @@ Feature: Request information from an agency
     And I select "Test webform" from "Request Submission Form"
     And for 'Submission Email' I enter 'test@example.com'
     When I press the 'Save' button
+    And save the current URL
     Then I should see the following success messages:
       | Agency Component Test agency component has been created. |
     And I am at 'form/test-webform'
@@ -71,3 +72,6 @@ Feature: Request information from an agency
 #    And I should see the text 'Test'
     When I am at 'admin/reports/dblog'
 #    Then I should see the text 'Test webform webform sent FOIA Email email.'
+    Given I am an anonymous user
+    When I go to saved URL
+    Then I should see the link 'Test webform'
