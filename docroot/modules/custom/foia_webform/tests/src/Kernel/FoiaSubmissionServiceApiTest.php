@@ -201,11 +201,17 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webform = Webform::create([
       'id' => $this->randomMachineName(),
     ]);
-    $webform->set('foia_template', 1);
+    $webform->set('foia_template', [
+      '#type' => 'checkbox',
+      '#title' => t("Use FOIA Agency template"),
+      '#disabled' => TRUE,
+      '#default_value' => 'foia_template',
+      '#value' => 'foia_template',
+    ]);
     $webform->save();
     $webformSubmissionData = [
-      'first_name' => 'Another',
-      'last_name' => 'Test',
+      'name_first' => 'Another',
+      'name_last' => 'Test',
       'email' => 'test@test.com',
       'request_description' => 'The best request',
       'request_fee_waiver' => 'yes',
@@ -273,8 +279,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $file->save();
 
     $webformSubmissionData = [
-      'first_name' => 'Another',
-      'last_name' => 'Test',
+      'name_first' => 'Another',
+      'name_last' => 'Test',
       'email' => 'test@test.com',
       'request_description' => 'The best request',
       'request_fee_waiver' => 'no',
@@ -295,8 +301,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     }
 
     $webformSubmissionWithFileContents = [
-      'first_name' => 'Another',
-      'last_name' => 'Test',
+      'name_first' => 'Another',
+      'name_last' => 'Test',
       'email' => 'test@test.com',
       'request_description' => 'The best request',
       'request_fee_waiver' => 'no',
