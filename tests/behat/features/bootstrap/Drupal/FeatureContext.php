@@ -84,7 +84,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function saveTheCurrentUrl()
   {
     $this->url = $this->getSession()->getCurrentUrl();
-    print_r($this->url);
   }
 
   /**
