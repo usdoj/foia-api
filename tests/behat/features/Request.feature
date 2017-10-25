@@ -12,12 +12,12 @@ Feature: Request information from an agency
     And for 'Title' I enter 'Test webform'
     And I press the 'Save' button
     And I am at 'form/test-webform'
-    And for "First Name" I enter "Ringo"
-    And for 'Last Name' I enter 'Star'
+    And for "First name" I enter "Ringo"
+    And for 'Last name' I enter 'Star'
     And for 'Email' I enter 'test@example.com'
     And for "Your request" I enter 'Test description'
-    And I select "No" from "Would you like to request a fee waiver?"
-    And I select "No" from "Would you like to request expedited processing?"
+    And I select "No" from "Fee waiver"
+    And I select "No" from "Expedited processing"
     And I press the 'Submit' button
     When I am at 'admin/reports/dblog'
 #    Then I should see the text 'Unassociated form: The form, Test webform'
@@ -33,12 +33,12 @@ Feature: Request information from an agency
     And I select "Test webform" from "Request Submission Form"
     And I press the 'Save' button
     And I am at 'form/test-webform'
-    And for "First Name" I enter "Ringo"
-    And for 'Last Name' I enter 'Star'
+    And for "First name" I enter "Ringo"
+    And for 'Last name' I enter 'Star'
     And for 'Email' I enter 'test@example.com'
     And for "Your request" I enter 'Test description'
-    And I select "No" from "Would you like to request a fee waiver?"
-    And I select "No" from "Would you like to request expedited processing?"
+    And I select "No" from "Fee waiver"
+    And I select "No" from "Expedited processing"
     And I press the 'Submit' button
     When I am at 'admin/reports/dblog'
 #    Then I should see the text 'No Submission Email: Unable to send email for Test…'
@@ -58,12 +58,12 @@ Feature: Request information from an agency
     Then I should see the following success messages:
       | Agency Component Test agency component has been created. |
     And I am at 'form/test-webform'
-    And for "First Name" I enter "Ringo"
-    And for 'Last Name' I enter 'Star'
+    And for "First name" I enter "Ringo"
+    And for 'Last name' I enter 'Star'
     And for 'Email' I enter 'test@example.com'
     And for "Your request" I enter 'Test description'
-    And I select "No" from "Would you like to request a fee waiver?"
-    And I select "No" from "Would you like to request expedited processing?"
+    And I select "No" from "Fee waiver"
+    And I select "No" from "Expedited processing"
     When I press the 'Submit' button
 #    Then I should see the text 'Ringo'
 #    And I should see the text 'Star'
