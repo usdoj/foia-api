@@ -4,6 +4,7 @@ namespace Drupal\foia_webform\Plugin\WebformHandler;
 
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
+use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -27,9 +28,29 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
   public function postSave(WebformSubmissionInterface $webformSubmission, $update = TRUE) {
     $state = $webformSubmission->getWebform()->getSetting('results_disabled') ? WebformSubmissionInterface::STATE_COMPLETED : $webformSubmission->getState();
     if (in_array($state, $this->configuration['states'])) {
-      $foiaRequest = $this->createFoiaRequest($webformSubmission);
-      $this->queueFoiaRequest($foiaRequest);
+      $componentAssociatedToWebform = $this->getComponentAssociatedToWebform($webformSubmission);
+      if ($componentAssociatedToWebform) {
+        $foiaRequest = $this->createFoiaRequest($webformSubmission, $componentAssociatedToWebform);
+        $this->queueFoiaRequest($foiaRequest);
+      }
     }
+  }
+
+  /**
+   * Gets the agency component associated to the webform submission.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   *   The webform submission.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   The agency component the webform is associated to, otherwise null if it
+   *   is not associated to a component.
+   */
+  protected function getComponentAssociatedToWebform(WebformSubmissionInterface $webformSubmission) {
+    $webformId = $webformSubmission->getWebform()->id();
+    /** @var \Drupal\foia_webform\AgencyLookupServiceInterface $agencyLookupService */
+    $agencyLookupService = \Drupal::service('foia_webform.agency_lookup_service');
+    return $agencyLookupService->getComponentFromWebform($webformId);
   }
 
   /**
@@ -37,25 +58,25 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
    *   The webform submission to reference in the FOIA Request entity.
+   * @param \Drupal\node\NodeInterface $agencyComponent
+   *   The agency component the request will be submitted to.
    *
-   * @return \Drupal\foia_request\Entity\FoiaRequestInterface
-   *   The created FOIA request entity.
+   * @return \Drupal\foia_request\Entity\FoiaRequest
+   *   A FOIA Request that references the webform submission and agency
+   *   component being submitted to.
    */
-  protected function createFoiaRequest(WebformSubmissionInterface $webformSubmission) {
+  protected function createFoiaRequest(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
     $foiaRequest = FoiaRequest::create([
       'field_webform_submission_id' => $webformSubmission->id(),
+      'field_agency_component' => [
+        'target_id' => $agencyComponent->id(),
+      ],
     ]);
 
     $requesterEmailAddress = $webformSubmission->getElementData('email');
     if (isset($requesterEmailAddress)) {
       $foiaRequest->set('field_requester_email', $requesterEmailAddress);
     }
-
-    $webformId = $webformSubmission->getWebform()->id();
-    /** @var \Drupal\foia_webform\AgencyLookupServiceInterface $agencyLookupService */
-    $agencyLookupService = \Drupal::service('foia_webform.agency_lookup_service');
-    $agencyComponent = $agencyLookupService->getComponentFromWebform($webformId);
-    $foiaRequest->field_agency_component->target_id = $agencyComponent->id();
 
     $foiaRequest->save();
     return $foiaRequest;
