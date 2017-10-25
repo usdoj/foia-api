@@ -5,6 +5,7 @@ namespace Drupal\Tests\foia_webform\Kernel;
 use Drupal\Component\Serialization\Json;
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_webform\FoiaSubmissionServiceApi;
+use Drupal\foia_webform\FoiaSubmissionServiceInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\webform\Entity\Webform;
@@ -233,11 +234,13 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     foreach (\Drupal::entityTypeManager()->getStorage('webform_submission')->loadMultiple($query->execute()) as $submission) {
       $webformSubmission = $submission;
     }
+    $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
+    $requestId = ['request_id' => $this->foiaRequest->id()];
     $agencyInfo = [
       'agency' => $this->agency->label(),
       'agency_component_name' => $this->agencyComponent->label(),
     ];
-    $expectedData = array_merge($webformSubmissionData, $agencyInfo);
+    $expectedData = array_merge($apiVersion, $requestId, $agencyInfo, $webformSubmissionData);
 
     $this->setProtectedProperty($this->submissionServiceApi, 'agencyComponent', $this->agencyComponent);
     $this->foiaRequest->set('field_webform_submission_id', $webformSubmission->id());
@@ -324,11 +327,13 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
         ],
       ],
     ];
+    $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
+    $requestId = ['request_id' => $this->foiaRequest->id()];
     $agencyInfo = [
       'agency' => $this->agency->label(),
       'agency_component_name' => $this->agencyComponent->label(),
     ];
-    $expectedData = array_merge($webformSubmissionWithFileContents, $agencyInfo);
+    $expectedData = array_merge($apiVersion, $requestId, $agencyInfo, $webformSubmissionWithFileContents);
 
     $this->setProtectedProperty($this->submissionServiceApi, 'agencyComponent', $this->agencyComponent);
     $this->foiaRequest->set('field_webform_submission_id', $webformSubmission->id());

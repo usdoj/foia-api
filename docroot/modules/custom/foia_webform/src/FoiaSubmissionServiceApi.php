@@ -120,7 +120,9 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     // Get the agency information.
     $agencyInfo = $this->getAgencyInfo();
 
-    $submissionValues = array_merge($formValues, $agencyInfo);
+    $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
+    $foiaRequestId = ['request_id' => $foiaRequest->id()];
+    $submissionValues = array_merge($foiaRequestId, $apiVersion, $agencyInfo, $formValues);
 
     return $submissionValues;
   }
