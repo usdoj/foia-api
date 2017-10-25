@@ -387,7 +387,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
       'title' => t('A Test Agency Component'),
       'field_portal_submission_format' => 'api',
       'field_submission_api' => [
-        'uri' => 'http://atest.com',
+        'uri' => 'https://atest.com',
       ],
       'field_request_submission_form' => [
         'target_id' => $this->webform->id(),

@@ -84,6 +84,15 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       return FALSE;
     }
 
+    // Force HTTPS.
+    $scheme = parse_url($apiUrl, PHP_URL_SCHEME);
+    if ($scheme != 'https') {
+      $error['message'] = 'API URL for the component must use the HTTPS protocol.';
+      $this->addSubmissionError($error);
+      $this->log('warning', $error['message']);
+      return FALSE;
+    }
+
     if (!UrlHelper::isValid($apiUrl, TRUE)) {
       $error['message'] = 'Invalid API URL for the component.';
       $this->addSubmissionError($error);
