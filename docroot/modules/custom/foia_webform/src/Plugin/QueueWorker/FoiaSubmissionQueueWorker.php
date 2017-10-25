@@ -8,7 +8,6 @@ use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
 use Drupal\node\Entity\Node;
-use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

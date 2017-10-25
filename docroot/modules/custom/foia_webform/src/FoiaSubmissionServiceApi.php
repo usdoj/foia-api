@@ -99,6 +99,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    * Gathers the required fields for the API request.
    *
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA request being submitted.
    *
    * @return array
    *   Return the assembled request data in an array.
@@ -119,6 +120,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    * Return the form submission values as an array.
    *
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA request being submitted.
    *
    * @return array
    *   Returns the submission values as an array.
