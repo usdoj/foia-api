@@ -3,9 +3,9 @@
 namespace Drupal\Tests\foia_webform\Kernel;
 
 use Drupal\Component\Serialization\Json;
+use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_webform\FoiaSubmissionServiceApi;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\node\NodeTypeInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
@@ -13,6 +13,7 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\Entity\Node;
+use Drupal\webform\WebformInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
@@ -90,6 +91,13 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    */
   protected $submissionServiceApi;
 
+  /**
+   * A FOIA Request.
+   *
+   * @var \Drupal\foia_request\Entity\FoiaRequestInterface
+   */
+  protected $foiaRequest;
+
 
   /**
    * Modules to enable.
@@ -109,6 +117,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     'text',
     'file',
     'link',
+    'foia_request',
+    'options',
   ];
 
   /**
@@ -119,6 +129,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $this->installSchema('webform', ['webform']);
     $this->installConfig(['webform', 'webform_template', 'foia_webform']);
     $this->installSchema('file', ['file_usage']);
+    $this->installEntitySchema('foia_request');
     $this->installEntitySchema('webform_submission');
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
@@ -129,12 +140,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webformWithTemplate = Webform::create(['id' => 'webform_with_template']);
     $webformWithTemplate->set('foia_template', 1);
     $webformWithTemplate->save();
+    $this->deleteWebformHandlers($webformWithTemplate);
     $this->webform = $webformWithTemplate;
-
-    // Check creating a submission with default data.
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
-    $webformSubmission->save();
-    $this->webformSubmission = $webformSubmission;
 
     Vocabulary::create([
       'name' => 'Agency',
@@ -153,13 +160,16 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
 
     $this->setupAgencyComponent();
     $this->setupAgencyLookupServiceMock();
+    $this->setupFoiaRequest();
     $this->setupLoggerMock();
+    $this->setupWebformSubmission();
   }
 
   /**
    * Tests receiving an error response from an agency component.
    */
   public function testErrorResponseFromComponent() {
+    $this->foiaRequest->set('field_webform_submission_id', $this->webformSubmission->id());
     $responseContents = [
       'code' => 'A234',
       'message' => 'agency component not found',
@@ -167,7 +177,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     ];
     $this->setupHttpClientRequestExceptionMock($responseContents, 404);
     $this->submissionServiceApi = new FoiaSubmissionServiceApi($this->httpClient, $this->agencyLookupService, $this->logger);
-    $validSubmission = $this->submissionServiceApi->sendSubmissionToComponent($this->webformSubmission, $this->webform, $this->agencyComponent);
+    $validSubmission = $this->submissionServiceApi->sendRequestToComponent($this->foiaRequest, $this->agencyComponent);
     $errorMessage = $this->submissionServiceApi->getSubmissionErrors();
     $this->assertEquals(FALSE, $validSubmission);
     $this->assertEquals(404, $errorMessage['http_code']);
@@ -179,10 +189,11 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    * Tests generic exceptions that are thrown.
    */
   public function testExceptionPostingToComponent() {
+    $this->foiaRequest->set('field_webform_submission_id', $this->webformSubmission->id());
     $exceptionMessage = 'A generic exception message.';
     $this->setupHttpClientExceptionMock($exceptionMessage);
     $this->submissionServiceApi = new FoiaSubmissionServiceApi($this->httpClient, $this->agencyLookupService, $this->logger);
-    $validSubmission = $this->submissionServiceApi->sendSubmissionToComponent($this->webformSubmission, $this->webform, $this->agencyComponent);
+    $validSubmission = $this->submissionServiceApi->sendRequestToComponent($this->foiaRequest, $this->agencyComponent);
     $error = $this->submissionServiceApi->getSubmissionErrors();
     $this->assertEquals(FALSE, $validSubmission);
     $this->assertEquals("Exception code: 0. Exception message: {$exceptionMessage}", $error['message']);
@@ -203,6 +214,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     ]);
     $webform->set('foia_template', 1);
     $webform->save();
+    $this->deleteWebformHandlers($webform);
     $webformSubmissionData = [
       'first_name' => 'Another',
       'last_name' => 'Test',
@@ -228,7 +240,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $expectedData = array_merge($webformSubmissionData, $agencyInfo);
 
     $this->setProtectedProperty($this->submissionServiceApi, 'agencyComponent', $this->agencyComponent);
-    $assembledData = $this->invokeMethod($this->submissionServiceApi, 'assembleRequestData', [$webformSubmission, $webform]);
+    $this->foiaRequest->set('field_webform_submission_id', $webformSubmission->id());
+    $assembledData = $this->invokeMethod($this->submissionServiceApi, 'assembleRequestData', [$this->foiaRequest]);
     $this->assertEquals($expectedData, $assembledData);
   }
 
@@ -250,6 +263,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $templateElements = yaml_parse($config);
     $webform->setElements($templateElements);
     $webform->save();
+    $this->deleteWebformHandlers($webform);
 
     // Need to create Drupal file entity.
     $file = File::create([
@@ -317,7 +331,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $expectedData = array_merge($webformSubmissionWithFileContents, $agencyInfo);
 
     $this->setProtectedProperty($this->submissionServiceApi, 'agencyComponent', $this->agencyComponent);
-    $assembledData = $this->invokeMethod($this->submissionServiceApi, 'assembleRequestData', [$webformSubmission, $webform]);
+    $this->foiaRequest->set('field_webform_submission_id', $webformSubmission->id());
+    $assembledData = $this->invokeMethod($this->submissionServiceApi, 'assembleRequestData', [$this->foiaRequest]);
     $this->assertEquals($expectedData, $assembledData);
   }
 
@@ -325,13 +340,14 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    * Tests receiving a successful response from an agency component.
    */
   public function testSuccessResponseFromComponent() {
+    $this->foiaRequest->set('field_webform_submission_id', $this->webformSubmission->id());
     $responseContents = [
       'id' => 33,
       'status_tracking_number' => 'doj-1234',
     ];
     $this->setupHttpClientMock($responseContents, 200);
     $this->submissionServiceApi = new FoiaSubmissionServiceApi($this->httpClient, $this->agencyLookupService, $this->logger);
-    $validSubmission = $this->submissionServiceApi->sendSubmissionToComponent($this->webformSubmission, $this->webform, $this->agencyComponent);
+    $validSubmission = $this->submissionServiceApi->sendRequestToComponent($this->foiaRequest, $this->agencyComponent);
     $submissionError = $this->submissionServiceApi->getSubmissionErrors();
     $this->assertNotEquals(FALSE, $validSubmission);
     $this->assertEquals(200, $validSubmission['http_code']);
@@ -339,7 +355,6 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $this->assertEquals($responseContents['status_tracking_number'], $validSubmission['status_tracking_number']);
     $this->assertEquals('api', $validSubmission['type']);
     $this->assertEquals([], $submissionError);
-
   }
 
   /**
@@ -353,28 +368,13 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     ];
     $agencyComponentType = NodeType::create($agencyComponentTypeDefinition);
     $agencyComponentType->save();
-    $this->addFieldsToComponentType($agencyComponentType);
+    $fieldsToSetup = [
+      'field_request_submission_form',
+      'field_submission_api',
+      'field_agency',
+    ];
+    $this->installFieldsOnEntity($fieldsToSetup, 'node', 'agency_component');
     $this->createAgencyComponentNode();
-  }
-
-  /**
-   * Adds fields to agency component content type.
-   */
-  protected function addFieldsToComponentType(NodeTypeInterface $agencyComponentType) {
-    $this->addFieldToComponentType('field_request_submission_form');
-    $this->addFieldToComponentType('field_submission_api');
-    $this->addFieldToComponentType('field_agency');
-  }
-
-  /**
-   * Adds field to agency component content type.
-   */
-  protected function addFieldToComponentType($fieldName) {
-    $path = '/var/www/dojfoia/config/default';
-    $yml = yaml_parse(file_get_contents($path . "/field.storage.node.{$fieldName}.yml"));
-    FieldStorageConfig::create($yml)->save();
-    $yml = yaml_parse(file_get_contents($path . "/field.field.node.agency_component.{$fieldName}.yml"));
-    FieldConfig::create($yml)->save();
   }
 
   /**
@@ -447,10 +447,83 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
   }
 
   /**
+   * Sets up a FOIA request for testing.
+   */
+  protected function setupFoiaRequest() {
+    $fields = [
+      'field_webform_submission_id',
+      'field_agency_component',
+    ];
+    $this->installFieldsOnEntity($fields, 'foia_request', 'foia_request');
+    $this->foiaRequest = FoiaRequest::create();
+    $this->foiaRequest->save();
+  }
+
+  /**
    * Sets up logger mock.
    */
   protected function setupLoggerMock() {
     $this->logger = $this->getMock('\Psr\Log\LoggerInterface');
+  }
+
+  /**
+   * Sets up a webform submission.
+   */
+  protected function setupWebformSubmission() {
+    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
+    $webformSubmission->save();
+    $this->webformSubmission = $webformSubmission;
+  }
+
+  /**
+   * Installs fields from config.
+   *
+   * @param array $fieldNames
+   *   The fields to install.
+   * @param string $entityType
+   *   The entity type.
+   * @param string $bundle
+   *   The bundle.
+   * @param string $configPath
+   *   The path to config.
+   */
+  protected function installFieldsOnEntity(array $fieldNames, $entityType, $bundle, $configPath = '/var/www/dojfoia/config/default') {
+    foreach ($fieldNames as $fieldName) {
+      $this->installFieldOnEntity($fieldName, $entityType, $bundle, $configPath);
+    }
+  }
+
+  /**
+   * Install a field from config.
+   *
+   * @param string $fieldName
+   *   The field to install.
+   * @param string $entityType
+   *   The entity type.
+   * @param string $bundle
+   *   The bundle.
+   * @param string $configPath
+   *   The path to config.
+   */
+  protected function installFieldOnEntity($fieldName, $entityType, $bundle, $configPath) {
+    $yml = yaml_parse(file_get_contents($configPath . "/field.storage.{$entityType}.{$fieldName}.yml"));
+    FieldStorageConfig::create($yml)->save();
+    $yml = yaml_parse(file_get_contents($configPath . "/field.field.{$entityType}.{$bundle}.{$fieldName}.yml"));
+    FieldConfig::create($yml)->save();
+  }
+
+  /**
+   * Deletes webform handlers to disable queuing of FOIA requests.
+   *
+   * @param \Drupal\webform\WebformInterface &$webform
+   *   The webform to remove handlers for.
+   */
+  protected function deleteWebformHandlers(WebformInterface &$webform) {
+    $handlers = $webform->getHandlers();
+    foreach ($handlers as $handler) {
+      $webform->deleteWebformHandler($handler);
+    }
+    $webform->save();
   }
 
 }
