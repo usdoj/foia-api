@@ -45,10 +45,18 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
     $foiaRequest = FoiaRequest::create([
       'field_webform_submission_id' => $webformSubmission->id(),
     ]);
+
     $requesterEmailAddress = $webformSubmission->getElementData('email');
     if (isset($requesterEmailAddress)) {
       $foiaRequest->set('field_requester_email', $requesterEmailAddress);
     }
+
+    $webformId = $webformSubmission->getWebform()->id();
+    /** @var \Drupal\foia_webform\AgencyLookupServiceInterface $agencyLookupService */
+    $agencyLookupService = \Drupal::service('foia_webform.agency_lookup_service');
+    $agencyComponent = $agencyLookupService->getComponentFromWebform($webformId);
+    $foiaRequest->field_agency_component->target_id = $agencyComponent->id();
+
     $foiaRequest->save();
     return $foiaRequest;
   }
