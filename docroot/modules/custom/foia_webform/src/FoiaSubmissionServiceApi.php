@@ -5,9 +5,10 @@ namespace Drupal\foia_webform;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\file\Entity\File;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\node\NodeInterface;
+use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformInterface;
-use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
@@ -72,7 +73,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendSubmissionToComponent(WebformSubmissionInterface $webformSubmission, WebformInterface $webform, NodeInterface $agencyComponent) {
+  public function sendRequestToComponent(FoiaRequestInterface $foiaRequest, NodeInterface $agencyComponent) {
     $this->agencyComponent = $agencyComponent;
     $apiUrl = $this->agencyComponent->get('field_submission_api')->uri;
 
@@ -90,25 +91,21 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       return FALSE;
     }
 
-    $valuesToSubmit = $this->assembleRequestData($webformSubmission, $webform);
+    $valuesToSubmit = $this->assembleRequestData($foiaRequest);
     return $this->submitToApi($apiUrl, $valuesToSubmit);
-
   }
 
   /**
    * Gathers the required fields for the API request.
    *
-   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
-   *   The FOIA form submission form values.
-   * @param \Drupal\webform\WebformInterface $webform
-   *   The Webform node object.
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
    *
    * @return array
-   *   Return the assemble request data in an array.
+   *   Return the assembled request data in an array.
    */
-  protected function assembleRequestData(WebformSubmissionInterface $webformSubmission, WebformInterface $webform) {
+  protected function assembleRequestData(FoiaRequestInterface $foiaRequest) {
     // Get the webform submission values.
-    $formValues = $this->getSubmissionValues($webformSubmission, $webform);
+    $formValues = $this->getSubmissionValues($foiaRequest);
 
     // Get the agency information.
     $agencyInfo = $this->getAgencyInfo();
@@ -119,17 +116,17 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   }
 
   /**
-   * Return the FOIA form submission values as an array.
+   * Return the form submission values as an array.
    *
-   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
-   *   The Webform submission values.
-   * @param \Drupal\webform\WebformInterface $webform
-   *   The Webform node object.
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
    *
    * @return array
    *   Returns the submission values as an array.
    */
-  protected function getSubmissionValues(WebformSubmissionInterface $webformSubmission, WebformInterface $webform) {
+  protected function getSubmissionValues(FoiaRequestInterface $foiaRequest) {
+    $webformSubmission = WebformSubmission::load($foiaRequest->get('field_webform_submission_id')->value);
+    $webform = $webformSubmission->getWebform();
+
     $submissionValues = $webformSubmission->getData();
     // If there are files attached, load the files and add the file metadata.
     if ($webform->hasManagedFile()) {
