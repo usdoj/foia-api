@@ -74,7 +74,7 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
     ]);
 
     $requesterEmailAddress = $webformSubmission->getElementData('email');
-    if (isset($requesterEmailAddress)) {
+    if ($requesterEmailAddress) {
       $foiaRequest->set('field_requester_email', $requesterEmailAddress);
     }
 
@@ -89,7 +89,7 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
    *   The FOIA Request to queue for later processing.
    */
   protected function queueFoiaRequest(FoiaRequestInterface $foiaRequest) {
-    // @var QueueFactory $queueFactory
+    /** @var \Drupal\Core\Queue\QueueFactory $queueFactory */
     $queueFactory = \Drupal::service('queue');
 
     // @var QueueInterface $queue
