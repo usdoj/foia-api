@@ -75,9 +75,9 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    */
   public function sendRequestToComponent(FoiaRequestInterface $foiaRequest, NodeInterface $agencyComponent) {
     $this->agencyComponent = $agencyComponent;
-    $apiUrl = $this->agencyComponent->get('field_submission_api')->uri;
+    $componentEndpoint = $this->agencyComponent->get('field_submission_api')->uri;
 
-    if (!$apiUrl) {
+    if (!$componentEndpoint) {
       $error['message'] = 'Missing API Submission URL for component.';
       $this->addSubmissionError($error);
       $this->log('warning', $error['message']);
@@ -85,7 +85,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     }
 
     // Force HTTPS.
-    $scheme = parse_url($apiUrl, PHP_URL_SCHEME);
+    $scheme = parse_url($componentEndpoint, PHP_URL_SCHEME);
     if ($scheme != 'https') {
       $error['message'] = 'API URL for the component must use the HTTPS protocol.';
       $this->addSubmissionError($error);
@@ -93,7 +93,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       return FALSE;
     }
 
-    if (!UrlHelper::isValid($apiUrl, TRUE)) {
+    if (!UrlHelper::isValid($componentEndpoint, TRUE)) {
       $error['message'] = 'Invalid API URL for the component.';
       $this->addSubmissionError($error);
       $this->log('warning', $error['message']);
@@ -101,7 +101,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     }
 
     $valuesToSubmit = $this->assembleRequestData($foiaRequest);
-    return $this->submitToApi($apiUrl, $valuesToSubmit);
+    return $this->submitToComponentEndpoint($componentEndpoint, $valuesToSubmit);
   }
 
   /**
@@ -165,19 +165,17 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   }
 
   /**
-   * Submit the FOIA request form values to the API.
+   * Submit the FOIA request form values to the component endpoint.
    *
-   * @param string $apiUrl
-   *   The API URL.
+   * @param string $componentEndpoint
+   *   The URL of the component's endpoint.
    * @param array $submissionValues
-   *   An array containing the values to submit to the API.
+   *   An array containing the values to submit to the component endpoint.
    */
-  protected function submitToApi($apiUrl, array $submissionValues) {
+  protected function submitToComponentEndpoint($componentEndpoint, array $submissionValues) {
+    $secretToken = $this->agencyComponent->get('field_submission_api_secret')->value;
     try {
-      /** @var \GuzzleHttp\Psr7\Response $response */
-      $response = $this->httpClient->post($apiUrl, [
-        'json' => $submissionValues,
-      ]);
+      $response = $this->postToEndpoint($componentEndpoint, $submissionValues, $secretToken);
       return $this->parseAgencyResponse($response);
     }
     catch (RequestException $e) {
@@ -233,6 +231,39 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       $this->addSubmissionError($error);
       $this->log('error', "{$error['message']}");
       return FALSE;
+    }
+  }
+
+  /**
+   * Submits a POST request to the agency component's endpoint.
+   *
+   * @param string $endpointUrl
+   *   The URL of the component's endpoint.
+   * @param array $submissionValues
+   *   An array containing the values to submit to the component endpoint.
+   * @param string $secretToken
+   *   The secret token to use in the FOIA-API-SECRET header.
+   *
+   * @return \GuzzleHttp\Psr7\Response
+   *   The Guzzle response.
+   *
+   * @throws \GuzzleHttp\Exception\TransferException
+   *
+   * @see http://docs.guzzlephp.org/en/stable/quickstart.html#exceptions
+   */
+  protected function postToEndpoint($endpointUrl, array $submissionValues, $secretToken = '') {
+    if ($secretToken) {
+      return $this->httpClient->post($endpointUrl, [
+        'json' => $submissionValues,
+        'headers' => [
+          'FOIA-API-SECRET' => $secretToken,
+        ],
+      ]);
+    }
+    else {
+      return $this->httpClient->post($endpointUrl, [
+        'json' => $submissionValues,
+      ]);
     }
   }
 

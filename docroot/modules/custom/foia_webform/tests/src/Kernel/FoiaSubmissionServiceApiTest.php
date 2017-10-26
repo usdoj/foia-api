@@ -376,6 +376,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $fieldsToSetup = [
       'field_request_submission_form',
       'field_submission_api',
+      'field_submission_api_secret',
       'field_agency',
     ];
     $this->installFieldsOnEntity($fieldsToSetup, 'node', 'agency_component');
@@ -394,6 +395,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
       'field_submission_api' => [
         'uri' => 'https://atest.com',
       ],
+      'field_submission_api_secret' => 'secret_token',
       'field_request_submission_form' => [
         'target_id' => $this->webform->id(),
       ],
