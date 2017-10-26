@@ -10,8 +10,6 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\Entity\Node;
 use Drupal\webform\WebformInterface;
@@ -35,6 +33,7 @@ use Drupal\file\Entity\File;
 class FoiaSubmissionServiceApiTest extends KernelTestBase {
 
   use ReflectionTrait;
+  use FieldInstallTrait;
 
   /**
    * Test agency.
@@ -480,43 +479,6 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
     $webformSubmission->save();
     $this->webformSubmission = $webformSubmission;
-  }
-
-  /**
-   * Installs fields from config.
-   *
-   * @param array $fieldNames
-   *   The fields to install.
-   * @param string $entityType
-   *   The entity type.
-   * @param string $bundle
-   *   The bundle.
-   * @param string $configPath
-   *   The path to config.
-   */
-  protected function installFieldsOnEntity(array $fieldNames, $entityType, $bundle, $configPath = '/var/www/dojfoia/config/default') {
-    foreach ($fieldNames as $fieldName) {
-      $this->installFieldOnEntity($fieldName, $entityType, $bundle, $configPath);
-    }
-  }
-
-  /**
-   * Install a field from config.
-   *
-   * @param string $fieldName
-   *   The field to install.
-   * @param string $entityType
-   *   The entity type.
-   * @param string $bundle
-   *   The bundle.
-   * @param string $configPath
-   *   The path to config.
-   */
-  protected function installFieldOnEntity($fieldName, $entityType, $bundle, $configPath) {
-    $yml = yaml_parse(file_get_contents($configPath . "/field.storage.{$entityType}.{$fieldName}.yml"));
-    FieldStorageConfig::create($yml)->save();
-    $yml = yaml_parse(file_get_contents($configPath . "/field.field.{$entityType}.{$bundle}.{$fieldName}.yml"));
-    FieldConfig::create($yml)->save();
   }
 
   /**
