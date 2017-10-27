@@ -180,7 +180,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $validSubmission = $this->submissionServiceApi->sendRequestToComponent($this->foiaRequest, $this->agencyComponent);
     $errorMessage = $this->submissionServiceApi->getSubmissionErrors();
     $this->assertEquals(FALSE, $validSubmission);
-    $this->assertEquals(404, $errorMessage['http_code']);
+    $this->assertEquals(404, $errorMessage['response_code']);
     $this->assertEquals($responseContents['message'], $errorMessage['message']);
     $this->assertEquals($responseContents['description'], $errorMessage['description']);
   }
@@ -354,7 +354,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $validSubmission = $this->submissionServiceApi->sendRequestToComponent($this->foiaRequest, $this->agencyComponent);
     $submissionError = $this->submissionServiceApi->getSubmissionErrors();
     $this->assertNotEquals(FALSE, $validSubmission);
-    $this->assertEquals(200, $validSubmission['http_code']);
+    $this->assertEquals(200, $validSubmission['response_code']);
     $this->assertEquals($responseContents['id'], $validSubmission['id']);
     $this->assertEquals($responseContents['status_tracking_number'], $validSubmission['status_tracking_number']);
     $this->assertEquals('api', $validSubmission['type']);

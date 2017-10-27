@@ -303,7 +303,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     }
     $submissionResponse = [
       'type' => 'api',
-      'http_code' => $responseCode,
+      'response_code' => $responseCode,
       'id' => $id,
       'status_tracking_number' => $statusTrackingNumber,
     ];
@@ -438,7 +438,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   An associative array containing error information.
    */
   protected function addSubmissionError(array $error) {
-    $this->errors['http_code'] = isset($error['http_code']) ? $error['http_code'] : '';;
+    $this->errors['response_code'] = isset($error['http_code']) ? $error['http_code'] : '';;
     $this->errors['error_code'] = isset($error['error_code']) ? $error['error_code'] : '';
     $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
     $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
