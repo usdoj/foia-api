@@ -94,13 +94,11 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
       $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
       $webformSubmission = WebformSubmission::load($webformSubmissionId);
       $webformSubmission->delete();
-      // @todo change http_code in service api error to response_code
     }
     else {
       $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
       $invalidSubmissionInfo = $submissionService->getSubmissionErrors();
       $submissionMethod = isset($invalidSubmissionInfo['type']) ? $invalidSubmissionInfo['type'] : '';
-      // @todo change http_code in service api error to response_code
       $responseCode = isset($invalidSubmissionInfo['response_code']) ? $invalidSubmissionInfo['response_code'] : '';
       $errorCode = isset($invalidSubmissionInfo['error_code']) ? $invalidSubmissionInfo['error_code'] : '';
       $errorMessage = isset($invalidSubmissionInfo['message']) ? $invalidSubmissionInfo['message'] : '';
