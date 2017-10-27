@@ -201,13 +201,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webform = Webform::create([
       'id' => $this->randomMachineName(),
     ]);
-    $webform->set('foia_template', [
-      '#type' => 'checkbox',
-      '#title' => t("Use FOIA Agency template"),
-      '#disabled' => TRUE,
-      '#default_value' => 'foia_template',
-      '#value' => 'foia_template',
-    ]);
+    $webform->set('foia_template', 1);
     $webform->save();
     $webformSubmissionData = [
       'name_first' => 'Another',
