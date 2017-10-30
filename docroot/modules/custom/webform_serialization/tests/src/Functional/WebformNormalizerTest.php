@@ -21,6 +21,7 @@ class WebformNormalizerTest extends BrowserTestBase {
    */
   protected static $modules = [
     'jsonapi',
+    'jsonapi_extras',
     'serialization',
     'webform',
     'webform_serialization',
@@ -40,7 +41,7 @@ class WebformNormalizerTest extends BrowserTestBase {
 
     $uuid = $webform->uuid();
     user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, ['access content']);
-    $webformFromJsonApi = Json::decode($this->drupalGet('/jsonapi/webform/webform/' . $uuid));
+    $webformFromJsonApi = Json::decode($this->drupalGet("/jsonapi/webform/webform/{$uuid}"));
     $this->assertSession()->statusCodeEquals(200);
 
     $webformElements = $webform->getElementsDecoded();
