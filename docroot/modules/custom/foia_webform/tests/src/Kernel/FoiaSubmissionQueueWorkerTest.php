@@ -6,24 +6,23 @@ use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceApi;
 use Drupal\foia_webform\Plugin\QueueWorker\FoiaSubmissionQueueWorker;
 use Drupal\foia_request\Entity\FoiaRequest;
-use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
 
 /**
- * Class FoiaSubmissionQueueWorkerTest
+ * Class FoiaSubmissionQueueWorkerTest.
  */
 class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
 
   /**
-   * Test queue worker
+   * Test queue worker.
    *
-   * @var FoiaSubmissionQueueWorker
+   * @var \Drupal\foia_webform\Plugin\QueueWorker\FoiaSubmissionQueueWorker
    */
   protected $queueWorker;
 
   /**
    * Test submission service factory.
    *
-   * @var FoiaSubmissionServiceFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \PHPUnit_Framework_MockObject_MockObject|FoiaSubmissionServiceFactoryInterface
    */
   protected $foiaSubmissionServiceFactory;
 
@@ -50,7 +49,7 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
     $responseContents = [
       'id' => 33,
       'status_tracking_number' => 'doj-1234',
-    ] ;
+    ];
     $this->setupHttpClientMock($responseContents, 200);
     $this->setupSubmissionServiceFactoryMock();
     $this->queueWorker = new FoiaSubmissionQueueWorker($this->foiaSubmissionServiceFactory);
@@ -63,10 +62,16 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
 
   }
 
+  /**
+   * Tests FOIA submission queue processing failures.
+   */
   public function testProcessingFailedSubmission() {
 
   }
 
+  /**
+   * Creates test double for submission service factory.
+   */
   protected function setupSubmissionServiceFactoryMock() {
     $submissionServiceApi = new FoiaSubmissionServiceApi($this->httpClient, $this->agencyLookupService, $this->logger);
     // Tests getComponentFromWebform.

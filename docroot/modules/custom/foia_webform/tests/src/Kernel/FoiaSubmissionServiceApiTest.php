@@ -460,6 +460,9 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
       'field_agency_component',
       'field_case_management_id',
       'field_tracking_number',
+      'field_submission_time',
+      'field_submission_method',
+      'field_response_code',
     ];
     $this->installFieldsOnEntity($fields, 'foia_request', 'foia_request');
     $this->foiaRequest = FoiaRequest::create();
