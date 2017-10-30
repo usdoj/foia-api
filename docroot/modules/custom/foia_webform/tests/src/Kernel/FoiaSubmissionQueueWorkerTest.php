@@ -9,6 +9,8 @@ use Drupal\foia_request\Entity\FoiaRequest;
 
 /**
  * Class FoiaSubmissionQueueWorkerTest.
+ *
+ * @group local
  */
 class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
 
@@ -49,6 +51,8 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
     $responseContents = [
       'id' => 33,
       'status_tracking_number' => 'doj-1234',
+      // @TODO test email METHOD_API VVV.
+      'type' => FoiaRequestInterface::METHOD_API,
     ];
     $this->setupHttpClientMock($responseContents, 200);
     $this->setupSubmissionServiceFactoryMock();
@@ -59,6 +63,12 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
     $this->assertEquals(FoiaRequestInterface::STATUS_QUEUED, $foiaRequest->getRequestStatus());
     $this->queueWorker->processItem($data);
     $this->assertEquals(FoiaRequestInterface::STATUS_SUBMITTED, $foiaRequest->getRequestStatus());
+    $caseManagementId = $foiaRequest->get('field_case_management_id')->getString();
+    $this->assertEquals('33', $caseManagementId);
+    $trackingNumber = $foiaRequest->get('field_tracking_number')->getString();
+    $this->assertEquals('doj-1234', $trackingNumber);
+    $type = $foiaRequest->getSubmissionMethod();
+    $this->assertEquals(FoiaRequestInterface::METHOD_API, $type);
 
   }
 
@@ -66,6 +76,19 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
    * Tests FOIA submission queue processing failures.
    */
   public function testProcessingFailedSubmission() {
+    $responseContents = [
+      'id' => 66,
+      'status_tracking_number' => 'doj-5678',
+      'type' => FoiaRequestInterface::METHOD_EMAIL,
+
+    ];
+    $this->setupHttpClientMock($responseContents, 400);
+    $this->setupSubmissionServiceFactoryMock();
+    $this->queueWorker = new FoiaSubmissionQueueWorker($this->foiaSubmissionServiceFactory);
+    $data = $this->foiaSubmissionsQueue->claimItem()->data;
+    $foiaRequestId = $data->id;
+    $foiaRequest = FoiaRequest::load($foiaRequestId);
+    $this->assertEquals(FoiaRequestInterface::STATUS_QUEUED, $foiaRequest->getRequestStatus());
 
   }
 
@@ -79,7 +102,7 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
       ->disableOriginalConstructor()
       ->setMethods(['get'])
       ->getMock();
-    $this->foiaSubmissionServiceFactory->expects($this->once())
+    $this->foiaSubmissionServiceFactory->expects($this->any())
       ->method('get')
       ->will($this->returnValue($submissionServiceApi));
   }
