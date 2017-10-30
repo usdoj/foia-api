@@ -4,8 +4,10 @@ namespace Drupal\foia_webform\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
+use Drupal\node\Entity\Node;
 use Drupal\webform\WebformSubmissionStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -64,15 +66,15 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    * {@inheritdoc}
    */
   public function processItem($data) {
-    $webformSubmission = $this->webformStorage->load($data->sid);
-    $webform = $webformSubmission->getWebform();
-    $agencyComponent = $this->agencyLookUpService->getComponentFromWebform($webform->id());
+    $foiaRequest = FoiaRequest::load($data->id);
 
     // Check the submission preference for the Agency Component.
+    $agencyComponentId = $foiaRequest->get('field_agency_component')->target_id;
+    $agencyComponent = Node::load($agencyComponentId);
     $submissionService = $this->foiaSubmissionServiceFactory->get($agencyComponent);
 
     // Submit the form values to the Agency Component.
-    $validSubmissionResponse = $submissionService->sendSubmissionToComponent($webformSubmission, $webform, $agencyComponent);
+    $validSubmissionResponse = $submissionService->sendRequestToComponent($foiaRequest, $agencyComponent);
   }
 
 }

@@ -2,26 +2,29 @@
 
 namespace Drupal\foia_webform;
 
+use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\node\NodeInterface;
-use Drupal\webform\WebformInterface;
-use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Provides an interface for submitting submissions to the Components.
  */
 interface FoiaSubmissionServiceInterface {
 
+  const VERSION = '1.0.0';
+
   /**
-   * Determine if submission has scheduled email for specified handler.
+   * Sends a FOIA request to an agency component.
    *
-   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
-   *   A webform submission.
-   * @param \Drupal\webform\WebformInterface $webform
-   *   The Webform node object.
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA request to send.
    * @param \Drupal\node\NodeInterface $agencyComponent
-   *   The Agency Component node object.
+   *   The Agency Component node.
+   *
+   * @return array|bool
+   *   On successful submissions returns an associative array with id and
+   *   status_tracking_number, otherwise returns FALSE.
    */
-  public function sendSubmissionToComponent(WebformSubmissionInterface $webform_submission, WebformInterface $webform, NodeInterface $agencyComponent);
+  public function sendRequestToComponent(FoiaRequestInterface $foiaRequest, NodeInterface $agencyComponent);
 
   /**
    * Returns submission-related error messages.
