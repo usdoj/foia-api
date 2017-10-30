@@ -140,7 +140,6 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webformWithTemplate = Webform::create(['id' => 'webform_with_template']);
     $webformWithTemplate->set('foia_template', 1);
     $webformWithTemplate->save();
-    $this->deleteWebformHandlers($webformWithTemplate);
     $this->webform = $webformWithTemplate;
 
     Vocabulary::create([
@@ -459,6 +458,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $fields = [
       'field_webform_submission_id',
       'field_agency_component',
+      'field_case_management_id',
+      'field_tracking_number',
     ];
     $this->installFieldsOnEntity($fields, 'foia_request', 'foia_request');
     $this->foiaRequest = FoiaRequest::create();
