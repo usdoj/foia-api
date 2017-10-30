@@ -204,8 +204,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webform->set('foia_template', 1);
     $webform->save();
     $webformSubmissionData = [
-      'first_name' => 'Another',
-      'last_name' => 'Test',
+      'name_first' => 'Another',
+      'name_last' => 'Test',
       'email' => 'test@test.com',
       'request_description' => 'The best request',
       'request_fee_waiver' => 'yes',
@@ -273,8 +273,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $file->save();
 
     $webformSubmissionData = [
-      'first_name' => 'Another',
-      'last_name' => 'Test',
+      'name_first' => 'Another',
+      'name_last' => 'Test',
       'email' => 'test@test.com',
       'request_description' => 'The best request',
       'request_fee_waiver' => 'no',
@@ -295,8 +295,8 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     }
 
     $webformSubmissionWithFileContents = [
-      'first_name' => 'Another',
-      'last_name' => 'Test',
+      'name_first' => 'Another',
+      'name_last' => 'Test',
       'email' => 'test@test.com',
       'request_description' => 'The best request',
       'request_fee_waiver' => 'no',

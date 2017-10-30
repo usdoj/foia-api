@@ -12,6 +12,11 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
   /**
+   * @var
+   */
+  private $url;
+
+  /**
    * Every scenario gets its own context instance.
    *
    * You can also pass arbitrary arguments to the
@@ -69,6 +74,26 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     $entities = $controller->loadMultiple($tids);
     $controller->delete($entities);
+  }
+
+  /**
+   * Saves the current URL into a variable.
+   *
+   * @Then save the current URL
+   */
+  public function saveTheCurrentUrl()
+  {
+    $this->url = $this->getSession()->getCurrentUrl();
+  }
+
+  /**
+   * Retrieves previously saved URL.
+   *
+   * @When I go to saved URL
+   */
+  public function iGoToSavedUrl()
+  {
+    $this->getSession()->visit($this->url);
   }
 
 }

@@ -137,12 +137,12 @@ Feature: Agency Administrator role
     Then I should see the following success messages:
       | Webform A Test Webform elements saved. |
     When I click 'View'
-    And for 'First Name' I enter 'A Test First Name'
+    And for 'First name' I enter 'A Test First Name'
     And for 'Last name' I enter 'A Test Last Name'
     And for 'Email' I enter 'atest@example.com'
-    And for "Describe the information you're requesting" I enter 'A Test description.'
-    And I select "No" from "Request Fee Waiver"
-    And I select "No" from "Request Expedited Processing"
+    And for "Your request" I enter 'A Test description.'
+    And I select "No" from "Fee waiver"
+    And I select "No" from "Expedited processing"
     And I press the 'Submit' button
     Then I should see the text 'New submission added to A Test Webform.'
     When I am at 'admin/structure/webform/manage/a_test_webform/settings'
@@ -198,7 +198,9 @@ Feature: Agency Administrator role
     Given I am logged in as a user with the 'Administrator' role
     And I am on "/admin/structure/foia_request/add"
     Then I press "Save"
+    And save the current URL
     When I am logged in as a user with the 'Agency Administrator' role
     And I am on "/admin/content/foia-requests"
     Then I should see "FOIA Requests"
-    And I should see "Queued for submission"
+    And I go to saved URL
+    Then I should see "Request Status"

@@ -12,12 +12,12 @@ Feature: Request information from an agency
     And for 'Title' I enter 'Test webform'
     And I press the 'Save' button
     And I am at 'form/test-webform'
-    And for "First Name" I enter "Ringo"
+    And for "First name" I enter "Ringo"
     And for 'Last name' I enter 'Star'
     And for 'Email' I enter 'test@example.com'
-    And for "Describe the information you're requesting" I enter 'Test description'
-    And I select "No" from "Request Fee Waiver"
-    And I select "No" from "Request Expedited Processing"
+    And for "Your request" I enter 'Test description'
+    And I select "No" from "Fee waiver"
+    And I select "No" from "Expedited processing"
     And I press the 'Submit' button
     When I am at 'admin/reports/dblog'
 #    Then I should see the text 'Unassociated form: The form, Test webform'
@@ -33,12 +33,12 @@ Feature: Request information from an agency
     And I select "Test webform" from "Request Submission Form"
     And I press the 'Save' button
     And I am at 'form/test-webform'
-    And for "First Name" I enter "Ringo"
+    And for "First name" I enter "Ringo"
     And for 'Last name' I enter 'Star'
     And for 'Email' I enter 'test@example.com'
-    And for "Describe the information you're requesting" I enter 'Test description'
-    And I select "No" from "Request Fee Waiver"
-    And I select "No" from "Request Expedited Processing"
+    And for "Your request" I enter 'Test description'
+    And I select "No" from "Fee waiver"
+    And I select "No" from "Expedited processing"
     And I press the 'Submit' button
     When I am at 'admin/reports/dblog'
 #    Then I should see the text 'No Submission Email: Unable to send email for Test…'
@@ -54,15 +54,16 @@ Feature: Request information from an agency
     And I select "Test webform" from "Request Submission Form"
     And for 'Submission Email' I enter 'test@example.com'
     When I press the 'Save' button
+    And save the current URL
     Then I should see the following success messages:
       | Agency Component Test agency component has been created. |
     And I am at 'form/test-webform'
-    And for "First Name" I enter "Ringo"
+    And for "First name" I enter "Ringo"
     And for 'Last name' I enter 'Star'
     And for 'Email' I enter 'test@example.com'
-    And for "Describe the information you're requesting" I enter 'Test description'
-    And I select "No" from "Request Fee Waiver"
-    And I select "No" from "Request Expedited Processing"
+    And for "Your request" I enter 'Test description'
+    And I select "No" from "Fee waiver"
+    And I select "No" from "Expedited processing"
     When I press the 'Submit' button
 #    Then I should see the text 'Ringo'
 #    And I should see the text 'Star'
@@ -71,3 +72,6 @@ Feature: Request information from an agency
 #    And I should see the text 'Test'
     When I am at 'admin/reports/dblog'
 #    Then I should see the text 'Test webform webform sent FOIA Email email.'
+    Given I am an anonymous user
+    When I go to saved URL
+    Then I should see the link 'Test webform'

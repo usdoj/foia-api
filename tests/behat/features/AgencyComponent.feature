@@ -27,12 +27,13 @@ Feature: Agency Component Feature
     And for 'Simple Median Days' I enter '1'
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Agency Component Test Agency Component has been created. |
-    When I am logged in as a user with the 'Agency Manager' role
-    And I am at 'search?keywords=%22A+Test+Agency+Component%22'
+      | Agency Component A Test Agency Component has been created. |
     And I click 'A Test Agency Component'
+    And save the current URL
+    When I am logged in as a user with the 'Agency Manager' role
+    And I go to saved URL
     Then I should see the text 'TEST'
-    And I should see the text '(555) 555-5555'
+    And I should see the link '(555) 555-5555'
     And I should see the text 'Request Data Year'
     And I should see the text 'Complex Average Days'
     And I should see the text 'Complex Highest Days'
