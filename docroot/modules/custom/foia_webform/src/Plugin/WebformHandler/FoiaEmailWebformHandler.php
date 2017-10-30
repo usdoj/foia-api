@@ -3,6 +3,7 @@
 namespace Drupal\foia_webform\Plugin\WebformHandler;
 
 use Drupal\file\Entity\File;
+use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -23,69 +24,69 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   /**
    * {@inheritdoc}
    */
-  public function sendMessage(WebformSubmissionInterface $webformSubmission, array $message) {
+  public function defaultConfiguration() {
+    return [
+      'states' => [WebformSubmissionInterface::STATE_COMPLETED],
+      'to_mail' => 'default',
+      'to_options' => [],
+      'cc_mail' => '',
+      'cc_options' => [],
+      'bcc_mail' => '',
+      'bcc_options' => [],
+      'from_mail' => 'default',
+      'from_options' => [],
+      'from_name' => 'default',
+      'subject' => 'default',
+      'body' => 'default',
+      'excluded_elements' => [],
+      'ignore_access' => FALSE,
+      'exclude_empty' => TRUE,
+      'html' => TRUE,
+      'attachments' => TRUE,
+      'debug' => FALSE,
+      'reply_to' => '',
+      'return_path' => '',
+      'sender_mail' => '',
+      'sender_name' => '',
+    ];
+  }
+
+  /**
+   * Gets the email message to send out to the agency component.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   * @param \Drupal\node\NodeInterface $agencyComponent
+   */
+  public function getEmailMessage(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
+    $message = parent::getMessage($webformSubmission);
     // Get form submissions.
     $data = $webformSubmission->getData();
     $errorMessage = NULL;
     $context = [];
 
-    // If there is a file attachment, get the file URL.
-    if (isset($data['attachments_supporting_documentation'])) {
-      $files = [];
-      foreach ($data['attachments_supporting_documentation'] as $upload) {
-        $file = File::load($upload);
-        if ($file) {
-          $fileUrl = file_create_url($file->getFileUri());
-          $files[] = $fileUrl;
-        }
-      }
-      if (!empty($files)) {
-        $data['attachments_supporting_documentation'] = implode(',', $files);
-      }
-    }
-
     // Format the submission values as an HTML table.
     $formValuesAsTable = $this->arrayToTable($data);
     $message['body'] = $formValuesAsTable;
 
-    // Look up the agency component.
-    $form = $webformSubmission->getWebform();
-    $webformId = $form->getOriginalId();
-    $agencyLookupService = \Drupal::service('foia_webform.agency_lookup_service');
-    $agencyComponent = $agencyLookupService->getComponentFromWebform($webformId);
+    $toEmail = $agencyComponent->get('field_submission_email')->value;
 
-    // If we have an Agency Component, get the Submission Email value.
-    if ($agencyComponent) {
-      $toEmail = $agencyComponent->get('field_submission_email')->getValue();
-
-      if (!empty($toEmail)) {
-        $message['to_mail'] = $toEmail[0]['value'];
-      }
-      // If we don't have a Submission Email value log an error.
-      else {
-        $errorMessage = 'No Submission Email: Unable to send email for %title';
-        $context = [
-          '%title' => $agencyComponent->getTitle(),
-          'link' => $agencyComponent->toLink($this->t('Edit Component'), 'edit-form')->toString(),
-        ];
-      }
+    if (!empty($toEmail)) {
+      $message['to_mail'] = $toEmail;
     }
-    // If there isn't an associated Agency Component log an error.
+    // If we don't have a Submission Email value log an error.
     else {
-      $errorMessage = 'Unassociated form: The form, %title, is not associated with an Agency Component.';
+      $errorMessage = 'No Submission Email: Unable to send email for %title';
       $context = [
-        '%title' => $form->label(),
+        '%title' => $agencyComponent->getTitle(),
+        'link' => $agencyComponent->toLink($this->t('Edit Component'), 'edit-form')->toString(),
       ];
     }
+
 
     // If the error message and context, log the error.
     if ($errorMessage && !empty($context)) {
       \Drupal::logger('foia_webform')
         ->error($errorMessage, $context);
-    }
-    // Send the email.
-    else {
-      return parent::sendMessage($webformSubmission, $message);
     }
   }
 
@@ -111,5 +112,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     return render($table);
   }
+
 
 }
