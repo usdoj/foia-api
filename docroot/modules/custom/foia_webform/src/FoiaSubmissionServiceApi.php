@@ -202,7 +202,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
         }
         $error = [
           'http_code' => $responseCode,
-          'message' => 'Unexpected error response format from component.',
+          'message' => 'Unexpected error response format from component',
         ];
         $this->addSubmissionError($error);
         $this->log('error', "{$httpCodeMessagePrefix} {$error['message']}", $context);
@@ -268,7 +268,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   }
 
   /**
-   * Parses the response received from the agency component endpiont.
+   * Parses the response received from the agency component endpoint.
    *
    * @param \GuzzleHttp\Psr7\Response $response
    *   The response object.
