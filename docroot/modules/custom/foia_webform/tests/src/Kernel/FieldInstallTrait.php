@@ -43,10 +43,25 @@ trait FieldInstallTrait {
    *   The path to config.
    */
   public function installFieldOnEntity($fieldName, $entityType, $bundle, $configPath) {
-    $yml = yaml_parse(file_get_contents($configPath . "/field.storage.{$entityType}.{$fieldName}.yml"));
-    FieldStorageConfig::create($yml)->save();
-    $yml = yaml_parse(file_get_contents($configPath . "/field.field.{$entityType}.{$bundle}.{$fieldName}.yml"));
-    FieldConfig::create($yml)->save();
+    $fieldStorageConfig = yaml_parse(file_get_contents($configPath . "/field.storage.{$entityType}.{$fieldName}.yml"));
+    $this->unsetAllowedValues($fieldStorageConfig);
+    FieldStorageConfig::create($fieldStorageConfig)->save();
+    $fieldConfig = yaml_parse(file_get_contents($configPath . "/field.field.{$entityType}.{$bundle}.{$fieldName}.yml"));
+    FieldConfig::create($fieldConfig)->save();
+  }
+
+  /**
+   * Unsets the allowed values list fields to bypass an unresolved core bug.
+   *
+   * @param &$fieldStorageConfig
+   *   The field's storage config.
+   *
+   * @see https://www.drupal.org/node/2802379
+   */
+  protected function unsetAllowedValues(&$fieldStorageConfig) {
+    if (isset($fieldStorageConfig['settings']['allowed_values'])) {
+      unset ($fieldStorageConfig['settings']['allowed_values']);
+    }
   }
 
 }
