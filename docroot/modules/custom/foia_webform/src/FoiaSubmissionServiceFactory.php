@@ -37,11 +37,13 @@ class FoiaSubmissionServiceFactory implements FoiaSubmissionServiceFactoryInterf
       case 'api':
         $serviceName = 'foia_webform.foia_submission_service_api';
         break;
-
+      case 'email':
+        $serviceName = 'foia_webform.foia_submission_service_email';
+        break;
       default:
         $serviceName = 'foia_webform.foia_submission_service_email';
         $this->logger
-          ->notice('Invalid submission preference for component #%nid, defaulting to email.',
+          ->notice('Invalid or missing submission preference for component #%nid, defaulting to email.',
             [
               '%nid' => $agencyComponent->id(),
               'link' => $agencyComponent->toLink(t('Edit Component'), 'edit-form')->toString(),
