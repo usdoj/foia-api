@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_webform\Plugin\WebformHandler;
 
+use Drupal\Core\Render\Markup;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
@@ -57,61 +58,83 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
    * @param \Drupal\node\NodeInterface $agencyComponent
    */
-  public function getEmailMessage(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
+  public function getEmailMessage(WebformSubmissionInterface $webformSubmission, $componentEmailAddress) {
+    // Let webform do the heavy lifting in setting up the email.
     $message = parent::getMessage($webformSubmission);
-    // Get form submissions.
-    $data = $webformSubmission->getData();
-    $errorMessage = NULL;
-    $context = [];
+
+    // Get form submission contents.
+    $submissionContents = $webformSubmission->getData();
 
     // Format the submission values as an HTML table.
-    $formValuesAsTable = $this->arrayToTable($data);
-    $message['body'] = $formValuesAsTable;
+    $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($submissionContents);
+    $message['body'] = $submissionContentsAsTable;
 
-    $toEmail = $agencyComponent->get('field_submission_email')->value;
+    // Update the destination email address to the component's email address.
+    $message['to_mail'] = $componentEmailAddress;
 
-    if (!empty($toEmail)) {
-      $message['to_mail'] = $toEmail;
+    return $message;
+  }
+
+  public function sendEmailMessage(WebformSubmissionInterface $webformSubmission, array $message) {
+    $to = $message['to_mail'];
+    $from = $message['from_mail'];
+
+    // Remove less than (<) and greater (>) than from name.
+    // @todo Figure out the proper way to encode special characters.
+    // Note: PhpMail call.
+    $message['from_name'] = preg_replace('/[<>]/', '', $message['from_name']);
+
+    if (!empty($message['from_name'])) {
+      $from = $message['from_name'] . ' <' . $from . '>';
     }
-    // If we don't have a Submission Email value log an error.
-    else {
-      $errorMessage = 'No Submission Email: Unable to send email for %title';
-      $context = [
-        '%title' => $agencyComponent->getTitle(),
-        'link' => $agencyComponent->toLink($this->t('Edit Component'), 'edit-form')->toString(),
-      ];
+
+    $current_langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    // Render body using webform email message (wrapper) template.
+    $build = [
+      '#theme' => 'webform_email_message_' . (($this->configuration['html']) ? 'html' : 'text'),
+      '#message' => [
+          'body' => is_string($message['body']) ? Markup::create($message['body']) : $message['body'],
+        ] + $message,
+      '#webform_submission' => $webformSubmission,
+      '#handler' => $this,
+    ];
+    $message['body'] = trim((string) \Drupal::service('renderer')->renderPlain($build));
+
+    if ($this->configuration['html']) {
+      switch ($this->getMailSystemSender()) {
+        case 'swiftmailer':
+          // SwiftMailer requires that the body be valid Markup.
+          $message['body'] = Markup::create($message['body']);
+          break;
+      }
     }
 
-
-    // If the error message and context, log the error.
-    if ($errorMessage && !empty($context)) {
-      \Drupal::logger('foia_webform')
-        ->error($errorMessage, $context);
-    }
+    // Send message.
+    return $this->mailManager->mail('foia_webform', 'email_' . $this->getHandlerId(), $to, $current_langcode, $message, $from);
   }
 
   /**
-   * Formats an array as an HTML table.
+   * Formats the webform submission contents as an HTML table.
    *
-   * @param array $data
-   *   The form submission data.
+   * @param array $submissionContents
+   *   The webform submission contents.
    *
    * @return string
-   *   Returns the array as an HTML table.
+   *   Returns the submission contents as an HTML table.
    */
-  public function arrayToTable(array $data) {
+  public function formatSubmissionContentsAsTable(array $submissionContents) {
     $table = [
       '#markup' => t('Hello,') . '<br>' . t('A new FOIA request was submitted to your agency component:') . '<br><br>',
     ];
 
     $table['values'] = [
       '#theme' => 'table',
-      '#header' => array_keys($data),
-      '#rows' => ['data' => (array) $data],
+      '#header' => array_keys($submissionContents),
+      '#rows' => ['data' => $submissionContents],
     ];
 
     return render($table);
   }
-
 
 }
