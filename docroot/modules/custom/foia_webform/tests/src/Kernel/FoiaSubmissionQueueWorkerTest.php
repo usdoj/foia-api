@@ -77,8 +77,6 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
    */
   public function testProcessingFailedSubmission() {
     $responseContents = [
-      'id' => 66,
-      'status_tracking_number' => 'doj-5678',
       'type' => FoiaRequestInterface::METHOD_EMAIL,
       'error_code' => 'error99',
       'message' => 'error message',
