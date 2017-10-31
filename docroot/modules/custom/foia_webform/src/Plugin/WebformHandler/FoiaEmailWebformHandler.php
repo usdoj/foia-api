@@ -55,10 +55,13 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   /**
    * Gets the email message to send out to the agency component.
    *
+   * @param string $foiaRequestId
    * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
-   * @param \Drupal\node\NodeInterface $agencyComponent
+   * @param string $componentEmailAddress
+   *
+   * @return array
    */
-  public function getEmailMessage(WebformSubmissionInterface $webformSubmission, $componentEmailAddress) {
+  public function getEmailMessage($foiaRequestId, WebformSubmissionInterface $webformSubmission, $componentEmailAddress) {
     // Let webform do the heavy lifting in setting up the email.
     $message = parent::getMessage($webformSubmission);
 
@@ -66,7 +69,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $submissionContents = $webformSubmission->getData();
 
     // Format the submission values as an HTML table.
-    $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($submissionContents);
+    $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($foiaRequestId, $submissionContents);
     $message['body'] = $submissionContentsAsTable;
 
     // Update the destination email address to the component's email address.
@@ -123,15 +126,17 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * @return string
    *   Returns the submission contents as an HTML table.
    */
-  public function formatSubmissionContentsAsTable(array $submissionContents) {
+  public function formatSubmissionContentsAsTable($foiaRequestId, array $submissionContents) {
+    $tableHeaders = array_merge(['request_id'], array_keys($submissionContents));
+    $tableRows = array_merge(['request_id' => $foiaRequestId], $submissionContents);
     $table = [
       '#markup' => t('Hello,') . '<br>' . t('A new FOIA request was submitted to your agency component:') . '<br><br>',
     ];
 
     $table['values'] = [
       '#theme' => 'table',
-      '#header' => array_keys($submissionContents),
-      '#rows' => ['data' => $submissionContents],
+      '#header' => $tableHeaders,
+      '#rows' => ['data' => $tableRows],
     ];
 
     return render($table);
