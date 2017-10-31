@@ -136,7 +136,7 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
       ];
     }
     else {
-      $error['message'] = 'Failed sending email to component.';
+      $error['message'] = 'Failed sending email to email server.';
       $this->addSubmissionError($error);
       $this->log('warning', $error['message']);
       return FALSE;
@@ -159,7 +159,6 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
    *   An associative array containing error information.
    */
   protected function addSubmissionError(array $error) {
-    $this->errors['response_code'] = isset($error['smtp_code']) ? $error['smtp_code'] : '';;
     $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
     $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
   }
