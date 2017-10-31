@@ -28,13 +28,6 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
   protected $agencyComponent;
 
   /**
-   * The webform handler manager service.
-   *
-   * @var \Drupal\webform\Plugin\WebformHandlerManagerInterface
-   */
-  protected $webformHandlerManager;
-
-  /**
    * The email validator.
    *
    * @var \Egulias\EmailValidator\EmailValidator
@@ -47,6 +40,18 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
    * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
+
+  /**
+   * Email webform handler.
+   *
+   * @var \Drupal\foia_webform\Plugin\WebformHandler\FoiaEmailWebformHandler
+   */
+  protected $foiaEmailWebformHandler;
+
+  /**
+   * @var \Drupal\webform\WebformSubmissionInterface
+   */
+  protected $webformSubmission;
 
   /**
    * Submission-related error messages.
@@ -69,7 +74,7 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
    */
   public function __construct(AgencyLookupServiceInterface $agencyLookupService, WebformHandlerManagerInterface $webformHandlerManager, EmailValidator $emailValidator, LoggerInterface $logger) {
     $this->agencyLookupService = $agencyLookupService;
-    $this->webformHandlerManager = $webformHandlerManager;
+    $this->foiaEmailWebformHandler = $webformHandlerManager->createInstance('foia_email');
     $this->emailValidator = $emailValidator;
     $this->logger = $logger;
   }
@@ -95,56 +100,47 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
       return FALSE;
     }
 
-    $emailToSend = $this->assembleEmailMessage($foiaRequest);
-    return $this->sendEmailToComponent($emailToSend, $componentEmailAddress);
+    $emailToSend = $this->assembleEmailMessage($foiaRequest, $componentEmailAddress);
+    return $this->sendEmailToComponent($emailToSend);
   }
 
   /**
-   * Gathers the required fields for the API request.
+   * Assembles the contents of the email message to be sent to the component.
    *
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
    *   The FOIA request being submitted.
+   * @param string $componentEmailAddress
+   *   The agency component's email address.
    *
    * @return array
-   *   Return the assembled request data in an array.
+   *   The email to send to the agency component.
    */
-  protected function assembleEmailMessage(FoiaRequestInterface $foiaRequest) {
-    // Get the webform submission values.
-    $emailMessage = $this->getEmailToSend($foiaRequest);
-
-    $foiaRequestId = ['request_id' => $foiaRequest->id()];
-    $submissionValues = array_merge($foiaRequestId, $emailMessage);
-
-    return $submissionValues;
-  }
-
-  /**
-   * Return the form submission values as an array.
-   *
-   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
-   *   The FOIA request being submitted.
-   *
-   * @return array
-   *   Returns the submission values as an array.
-   */
-  protected function getEmailToSend(FoiaRequestInterface $foiaRequest) {
-    $webformSubmission = WebformSubmission::load($foiaRequest->get('field_webform_submission_id')->value);
-    /** @var \Drupal\foia_webform\Plugin\WebformHandler\FoiaEmailWebformHandler $foiaEmailWebformHandler */
-    $foiaEmailWebformHandler = $this->webformHandlerManager->createInstance('foia_email');
-    $messageToSend = $foiaEmailWebformHandler->getEmailMessage($webformSubmission, $this->agencyComponent);
+  protected function assembleEmailMessage(FoiaRequestInterface $foiaRequest, $componentEmailAddress) {
+    $this->webformSubmission = WebformSubmission::load($foiaRequest->get('field_webform_submission_id')->value);
+    $webform = $this->webformSubmission->getWebform();
+    $this->foiaEmailWebformHandler->setWebform($webform);
+    $messageToSend = $this->foiaEmailWebformHandler->getEmailMessage($this->webformSubmission, $componentEmailAddress);
     return $messageToSend;
   }
 
   /**
-   * Submit the FOIA request form values to the component endpoint.
+   * @param array $emailToSend
    *
-   * @param string $componentEndpoint
-   *   The URL of the component's endpoint.
-   * @param array $submissionValues
-   *   An array containing the values to submit to the component endpoint.
+   * @return array|bool
    */
-  protected function sendEmailToComponent($emailToSend, $componentEmailAddress) {
-
+  protected function sendEmailToComponent(array $emailToSend) {
+    $message = $this->foiaEmailWebformHandler->sendEmailMessage($this->webformSubmission, $emailToSend);
+    if ($message['result']) {
+      return [
+        'type' => FoiaRequestInterface::METHOD_EMAIL,
+      ];
+    }
+    else {
+      $error['message'] = 'Failed sending email to component.';
+      $this->addSubmissionError($error);
+      $this->log('warning', $error['message']);
+      return FALSE;
+    }
   }
 
   /**
@@ -152,7 +148,7 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
    */
   public function getSubmissionErrors() {
     $submissionErrors = $this->errors;
-    $submissionErrors['type'] = 'email';
+    $submissionErrors['type'] = FoiaRequestInterface::METHOD_EMAIL;
     return $submissionErrors;
   }
 
