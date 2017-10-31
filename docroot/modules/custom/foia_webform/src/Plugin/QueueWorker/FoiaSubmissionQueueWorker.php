@@ -4,11 +4,13 @@ namespace Drupal\foia_webform\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\file\Entity\File;
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
 use Drupal\node\Entity\Node;
 use Drupal\webform\Entity\WebformSubmission;
+use Drupal\webform\WebformSubmissionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -71,9 +73,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
       if ($caseManagementStatusTrackingNumber) {
         $foiaRequest->set('field_tracking_number', $caseManagementStatusTrackingNumber);
       }
-      $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
-      $webformSubmission = WebformSubmission::load($webformSubmissionId);
-      $webformSubmission->delete();
+      $this->deleteWebformSubmission($foiaRequest);
     }
     else {
       $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
@@ -94,6 +94,41 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     $foiaRequest->setSubmissionMethod($submissionMethod);
     $foiaRequest->set('field_response_code', $responseCode);
     $foiaRequest->save();
+  }
+
+  /**
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   */
+  protected function deleteWebformSubmission(FoiaRequestInterface $foiaRequest) {
+    $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
+    $webformSubmission = WebformSubmission::load($webformSubmissionId);
+    $this->deleteWebformSubmissionAttachments($webformSubmission);
+    $webformSubmission->delete();
+  }
+
+  /**
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   */
+  protected function deleteWebformSubmissionAttachments(WebformSubmissionInterface $webformSubmission) {
+    $webform = $webformSubmission->getWebform();
+    $elements = $webform->getElementsInitializedAndFlattened();
+    foreach ($elements as $elementMachineName => $element) {
+      if (isset($element['#type']) && $element['#type'] != 'managed_file') {
+        continue;
+      }
+
+      // Get file ids.
+      $fids = $webformSubmission->getElementData($elementMachineName);
+      if (empty($fids)) {
+        continue;
+      }
+
+      /** @var \Drupal\file\FileInterface[] $files */
+      $files = File::loadMultiple(is_array($fids) ? $fids : [$fids]);
+      foreach ($files as $file) {
+        $file->delete();
+      }
+    }
   }
 
 }
