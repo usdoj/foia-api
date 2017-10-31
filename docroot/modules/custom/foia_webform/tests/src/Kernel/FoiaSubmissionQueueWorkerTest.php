@@ -51,7 +51,7 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
     $responseContents = [
       'id' => 33,
       'status_tracking_number' => 'doj-1234',
-      // @TODO test email METHOD_API VVV.
+      // @TODO test email METHOD_API.
       'type' => FoiaRequestInterface::METHOD_API,
     ];
     $this->setupHttpClientMock($responseContents, 200);
@@ -80,15 +80,34 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
       'id' => 66,
       'status_tracking_number' => 'doj-5678',
       'type' => FoiaRequestInterface::METHOD_EMAIL,
-
+      'error_code' => 'error99',
+      'message' => 'error message',
+      'description' => 'error description',
     ];
-    $this->setupHttpClientMock($responseContents, 400);
+    $this->setupHttpClientMock($responseContents, 404);
     $this->setupSubmissionServiceFactoryMock();
     $this->queueWorker = new FoiaSubmissionQueueWorker($this->foiaSubmissionServiceFactory);
     $data = $this->foiaSubmissionsQueue->claimItem()->data;
     $foiaRequestId = $data->id;
     $foiaRequest = FoiaRequest::load($foiaRequestId);
     $this->assertEquals(FoiaRequestInterface::STATUS_QUEUED, $foiaRequest->getRequestStatus());
+    $this->queueWorker->processItem($data);
+    $this->assertEquals(FoiaRequestInterface::STATUS_FAILED, $foiaRequest->getRequestStatus());
+    $errorCode = $foiaRequest->get('field_error_code')->getValue();
+    //print_r($errorCode);
+    //$this->assertEquals($responseContents['error_code'], $errorCode);
+    $errorMessage = $foiaRequest->get('field_error_message')->getString();
+    $this->assertEquals('Message: Unexpected error response format from component. Description: ', $errorMessage);
+
+    $responseCode = $foiaRequest->get('field_response_code')->getString();
+    $this->assertEquals(404, $responseCode);
+
+    $timeStamp = $foiaRequest->get('field_submission_time')->getString();
+    $this->assertNotEmpty($timeStamp);
+
+    // no reponse code
+    /*$this->setupHttpClientMock($responseContents,);
+    $this*/
 
   }
 
