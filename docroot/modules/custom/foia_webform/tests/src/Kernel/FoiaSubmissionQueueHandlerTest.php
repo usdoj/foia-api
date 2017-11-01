@@ -19,7 +19,7 @@ use Drupal\taxonomy\Entity\Term;
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */
-class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
+class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformKernelTestBase {
 
   use ReflectionTrait;
   use FieldInstallTrait;
@@ -58,27 +58,6 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
    * @var \Drupal\Core\Queue\QueueInterface
    */
   protected $foiaSubmissionsQueue;
-
-  /**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  public static $modules = [
-    'webform_template',
-    'webform',
-    'system',
-    'user',
-    'foia_webform',
-    'node',
-    'field',
-    'taxonomy',
-    'field_permissions',
-    'text',
-    'link',
-    'foia_request',
-    'options',
-  ];
 
   /**
    * {@inheritdoc}

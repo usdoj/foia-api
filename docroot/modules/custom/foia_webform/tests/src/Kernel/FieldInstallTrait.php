@@ -53,14 +53,14 @@ trait FieldInstallTrait {
   /**
    * Unsets the allowed values list fields to bypass an unresolved core bug.
    *
-   * @param &$fieldStorageConfig
+   * @param array &$fieldStorageConfig
    *   The field's storage config.
    *
    * @see https://www.drupal.org/node/2802379
    */
   protected function unsetAllowedValues(&$fieldStorageConfig) {
     if (isset($fieldStorageConfig['settings']['allowed_values'])) {
-      unset ($fieldStorageConfig['settings']['allowed_values']);
+      unset($fieldStorageConfig['settings']['allowed_values']);
     }
   }
 

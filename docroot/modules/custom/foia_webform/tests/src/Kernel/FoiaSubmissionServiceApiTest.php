@@ -30,7 +30,7 @@ use Drupal\file\Entity\File;
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */
-class FoiaSubmissionServiceApiTest extends KernelTestBase {
+class FoiaSubmissionServiceApiTest extends FoiaWebformKernelTestBase {
 
   use ReflectionTrait;
   use FieldInstallTrait;
@@ -104,22 +104,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
-    'webform_template',
-    'webform',
-    'system',
-    'user',
-    'foia_webform',
-    'node',
-    'field',
-    'taxonomy',
-    'field_permissions',
-    'text',
-    'file',
-    'link',
-    'foia_request',
-    'options',
-  ];
+  public static $modules = ['file'];
 
   /**
    * {@inheritdoc}
