@@ -68,12 +68,12 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
    *   The FOIA request sent off to the agency component.
-   * @param array $submissionResponse
+   * @param array|bool $submissionResponse
    *   The response received when sending the request.
    * @param \Drupal\foia_webform\FoiaSubmissionServiceInterface $submissionService
    *   The submission service used to submit the request.
    */
-  protected function handleSubmissionResponse(FoiaRequestInterface $foiaRequest, array $submissionResponse, FoiaSubmissionServiceInterface $submissionService) {
+  protected function handleSubmissionResponse(FoiaRequestInterface $foiaRequest, $submissionResponse, FoiaSubmissionServiceInterface $submissionService) {
     if ($submissionResponse) {
       $this->handleValidSubmission($foiaRequest, $submissionResponse);
     }
