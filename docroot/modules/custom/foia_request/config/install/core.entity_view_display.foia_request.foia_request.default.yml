@@ -5,6 +5,7 @@ dependencies:
     - field.field.foia_request.foia_request.field_agency_component
     - field.field.foia_request.foia_request.field_case_management_id
     - field.field.foia_request.foia_request.field_error_code
+    - field.field.foia_request.foia_request.field_error_description
     - field.field.foia_request.foia_request.field_error_message
     - field.field.foia_request.foia_request.field_requester_email
     - field.field.foia_request.foia_request.field_response_code
@@ -45,6 +46,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_error_description:
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_error_message:
     weight: 9
