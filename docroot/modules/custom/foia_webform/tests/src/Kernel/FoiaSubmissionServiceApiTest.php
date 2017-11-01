@@ -140,7 +140,6 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webformWithTemplate = Webform::create(['id' => 'webform_with_template']);
     $webformWithTemplate->set('foia_template', 1);
     $webformWithTemplate->save();
-    $this->deleteWebformHandlers($webformWithTemplate);
     $this->webform = $webformWithTemplate;
 
     Vocabulary::create([
@@ -180,7 +179,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $validSubmission = $this->submissionServiceApi->sendRequestToComponent($this->foiaRequest, $this->agencyComponent);
     $errorMessage = $this->submissionServiceApi->getSubmissionErrors();
     $this->assertEquals(FALSE, $validSubmission);
-    $this->assertEquals(404, $errorMessage['http_code']);
+    $this->assertEquals(404, $errorMessage['response_code']);
     $this->assertEquals($responseContents['message'], $errorMessage['message']);
     $this->assertEquals($responseContents['description'], $errorMessage['description']);
   }
@@ -354,7 +353,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $validSubmission = $this->submissionServiceApi->sendRequestToComponent($this->foiaRequest, $this->agencyComponent);
     $submissionError = $this->submissionServiceApi->getSubmissionErrors();
     $this->assertNotEquals(FALSE, $validSubmission);
-    $this->assertEquals(200, $validSubmission['http_code']);
+    $this->assertEquals(200, $validSubmission['response_code']);
     $this->assertEquals($responseContents['id'], $validSubmission['id']);
     $this->assertEquals($responseContents['status_tracking_number'], $validSubmission['status_tracking_number']);
     $this->assertEquals('api', $validSubmission['type']);
@@ -459,6 +458,13 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $fields = [
       'field_webform_submission_id',
       'field_agency_component',
+      'field_case_management_id',
+      'field_tracking_number',
+      'field_submission_time',
+      'field_submission_method',
+      'field_response_code',
+      'field_error_message',
+      'field_error_code',
     ];
     $this->installFieldsOnEntity($fields, 'foia_request', 'foia_request');
     $this->foiaRequest = FoiaRequest::create();
