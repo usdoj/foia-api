@@ -7,6 +7,7 @@ use Drupal\node\NodeInterface;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Plugin\WebformHandlerManagerInterface;
 use Egulias\EmailValidator\EmailValidator;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class FoiaSubmissionServiceEmail.
@@ -119,7 +120,7 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
     $this->webformSubmission = WebformSubmission::load($foiaRequest->get('field_webform_submission_id')->value);
     $webform = $this->webformSubmission->getWebform();
     $this->foiaEmailWebformHandler->setWebform($webform);
-    $messageToSend = $this->foiaEmailWebformHandler->getEmailMessage($this->webformSubmission, $componentEmailAddress);
+    $messageToSend = $this->foiaEmailWebformHandler->getEmailMessage($foiaRequest->id(), $this->webformSubmission, $componentEmailAddress);
     return $messageToSend;
   }
 
