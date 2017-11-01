@@ -92,9 +92,8 @@ class FoiaSubmissionQueueWorkerTest extends FoiaWebformKernelTestBase {
     $this->assertEquals(FoiaRequestInterface::STATUS_QUEUED, $foiaRequest->getRequestStatus());
     $this->queueWorker->processItem($data);
     $this->assertEquals(FoiaRequestInterface::STATUS_FAILED, $foiaRequest->getRequestStatus());
-    $errorCode = $foiaRequest->get('field_error_code')->getValue();
-    //print_r($errorCode);
-    //$this->assertEquals($responseContents['error_code'], $errorCode);
+    $errorCode = $foiaRequest->get('field_error_code')->getString();
+    $this->assertEquals($responseContents['error_code'], $errorCode);
     $errorMessage = $foiaRequest->get('field_error_message')->getString();
     $this->assertEquals('Message: Unexpected error response format from component. Description: ', $errorMessage);
 

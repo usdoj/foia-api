@@ -53,16 +53,10 @@ class AgencyLookupServiceTest extends FoiaWebformKernelTestBase {
       ->getMock();
     $webform->expects($this->once())
       ->method('id')
-      ->will($this->returnValue('a_test_webform'));
+      ->will($this->returnValue('webform_with_template'));
 
     $webformId = $webform->id();
-
-    $etm = \Drupal::entityTypeManager();
-
-    $lookup = new AgencyLookupService($etm);
-
-    $return = $lookup->getComponentFromWebform($webformId);
-print_r($return);
+    $return = $this->agencyLookupService->getComponentFromWebform($webformId);
     $title = $return->label();
 
     $query = \Drupal::entityQuery('node')
