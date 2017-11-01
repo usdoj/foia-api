@@ -127,9 +127,11 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     if ($errorCode) {
       $foiaRequest->set('field_error_code', $errorCode);
     }
-    // @todo create separate error message and description fields
-    if ($errorMessage || $errorDescription) {
-      $foiaRequest->set('field_error_message', "Message: {$errorMessage}. Description: {$errorDescription}");
+    if ($errorMessage) {
+      $foiaRequest->set('field_error_message', $errorMessage);
+    }
+    if ($errorDescription) {
+      $foiaRequest->set('field_error_description', $errorDescription);
     }
   }
 
