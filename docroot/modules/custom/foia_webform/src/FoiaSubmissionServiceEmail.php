@@ -50,6 +50,8 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
   protected $foiaEmailWebformHandler;
 
   /**
+   * The webform submission.
+   *
    * @var \Drupal\webform\WebformSubmissionInterface
    */
   protected $webformSubmission;
@@ -125,9 +127,14 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
   }
 
   /**
+   * Sends an email containing a requester's submission info to a component.
+   *
    * @param array $emailToSend
+   *   The email to send to the component.
    *
    * @return array|bool
+   *   Returns an array containing the submission method on successful
+   *   submissions, else returns FALSE.
    */
   protected function sendEmailToComponent(array $emailToSend) {
     $message = $this->foiaEmailWebformHandler->sendEmailMessage($this->webformSubmission, $emailToSend);

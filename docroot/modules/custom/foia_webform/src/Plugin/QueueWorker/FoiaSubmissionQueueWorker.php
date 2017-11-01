@@ -4,14 +4,12 @@ namespace Drupal\foia_webform\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
-use Drupal\file\Entity\File;
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceInterface;
 use Drupal\node\Entity\Node;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\webform\WebformSubmissionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -51,7 +49,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    * {@inheritdoc}
    */
   public function processItem($data) {
-    /** @var FoiaRequestInterface $foiaRequest */
+    /** @var \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest */
     $foiaRequest = FoiaRequest::load($data->id);
 
     // Check the submission preference for the Agency Component.

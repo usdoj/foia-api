@@ -2,9 +2,6 @@
 
 namespace Drupal\foia_webform\Plugin\WebformHandler;
 
-use Drupal\Core\Render\Markup;
-use Drupal\file\Entity\File;
-use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -56,10 +53,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * Gets the email message to send out to the agency component.
    *
    * @param string $foiaRequestId
+   *   The id of the FOIA request to include in the email.
    * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   *   The webform submission.
    * @param string $componentEmailAddress
+   *   The email address of the agency component.
    *
    * @return array
+   *   The email to send to the agency component.
    */
   public function getEmailMessage($foiaRequestId, WebformSubmissionInterface $webformSubmission, $componentEmailAddress) {
     // Let webform do the heavy lifting in setting up the email.
@@ -78,6 +79,23 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     return $message;
   }
 
+  /**
+   * Sends the email message to the appropriate component.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   *   The webform submission.
+   * @param array $message
+   *   The email message to send.
+   *
+   * @return array
+   *   The $message array structure containing all details of the message. If
+   *   already sent ($send = TRUE), then the 'result' element will contain the
+   *   success indicator of the email, failure being already written to the
+   *   watchdog. (Success means nothing more than the message being accepted at
+   *   php-level, which still doesn't guarantee it to be delivered.)
+   *
+   * @see \Drupal\Core\Mail\MailManagerInterface::mail()
+   */
   public function sendEmailMessage(WebformSubmissionInterface $webformSubmission, array $message) {
     $to = $message['to_mail'];
     $from = $message['from_mail'];
@@ -96,7 +114,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     // Render body using webform email message (wrapper) template.
     $build = [
       '#theme' => 'webform_email_message_' . (($this->configuration['html']) ? 'html' : 'text'),
-      '#message' => [
+      '#message' =>
+        [
           'body' => is_string($message['body']) ? Markup::create($message['body']) : $message['body'],
         ] + $message,
       '#webform_submission' => $webformSubmission,
@@ -120,6 +139,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   /**
    * Formats the webform submission contents as an HTML table.
    *
+   * @param string $foiaRequestId
+   *   The id of the FOIA request to include in the email.
    * @param array $submissionContents
    *   The webform submission contents.
    *
