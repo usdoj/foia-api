@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_webform\Plugin\WebformHandler;
 
+use Drupal\Core\Render\Markup;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
