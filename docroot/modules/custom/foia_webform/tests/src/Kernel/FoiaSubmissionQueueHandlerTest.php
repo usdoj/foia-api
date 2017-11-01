@@ -63,10 +63,8 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformKernelTestBase {
    * Tests that a FOIA request ID is queued when a webform is submitted.
    */
   public function testFoiaRequestCreatedAndQueuedOnWebformSubmission() {
-    $item = $this->foiaSubmissionsQueue->claimItem();
-    $this->foiaSubmissionsQueue->deleteItem($item);
+
     $queuedSubmission = $this->foiaSubmissionsQueue->claimItem()->data;
-    print_r($queuedSubmission);
     $this->assertNotEmpty($queuedSubmission, "Expected a FOIA request ID to be queued, but nothing was found in the queue.");
     $this->assertEquals('1', $queuedSubmission->id, "Queued FOIA Request ID does not match expected.");
 
