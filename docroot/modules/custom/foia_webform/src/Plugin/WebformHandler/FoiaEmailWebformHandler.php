@@ -134,7 +134,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     }
 
     // Send message.
-    return $this->mailManager->mail('foia_webform', 'email_' . $this->getHandlerId(), $to, $current_langcode, $message, $from, TRUE);
+    return $this->mailManager->mail('webform', 'email_' . $this->getHandlerId(), $to, $current_langcode, $message, $from, TRUE);
   }
 
   /**
