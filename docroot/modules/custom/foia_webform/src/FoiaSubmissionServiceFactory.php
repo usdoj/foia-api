@@ -37,9 +37,11 @@ class FoiaSubmissionServiceFactory implements FoiaSubmissionServiceFactoryInterf
       case 'api':
         $serviceName = 'foia_webform.foia_submission_service_api';
         break;
+
       case 'email':
         $serviceName = 'foia_webform.foia_submission_service_email';
         break;
+
       default:
         $serviceName = 'foia_webform.foia_submission_service_email';
         $this->logger
