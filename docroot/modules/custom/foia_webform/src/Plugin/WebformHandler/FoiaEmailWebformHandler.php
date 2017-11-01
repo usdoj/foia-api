@@ -139,7 +139,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       '#rows' => ['data' => $tableRows],
     ];
 
-    return render($table);
+    return \Drupal::service('renderer')->renderPlain($table);
   }
 
 }
