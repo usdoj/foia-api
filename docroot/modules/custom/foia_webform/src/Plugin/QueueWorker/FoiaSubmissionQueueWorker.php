@@ -102,33 +102,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
   protected function deleteWebformSubmission(FoiaRequestInterface $foiaRequest) {
     $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
     $webformSubmission = WebformSubmission::load($webformSubmissionId);
-    $this->deleteWebformSubmissionAttachments($webformSubmission);
     $webformSubmission->delete();
-  }
-
-  /**
-   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
-   */
-  protected function deleteWebformSubmissionAttachments(WebformSubmissionInterface $webformSubmission) {
-    $webform = $webformSubmission->getWebform();
-    $elements = $webform->getElementsInitializedAndFlattened();
-    foreach ($elements as $elementMachineName => $element) {
-      if (isset($element['#type']) && $element['#type'] != 'managed_file') {
-        continue;
-      }
-
-      // Get file ids.
-      $fids = $webformSubmission->getElementData($elementMachineName);
-      if (empty($fids)) {
-        continue;
-      }
-
-      /** @var \Drupal\file\FileInterface[] $files */
-      $files = File::loadMultiple(is_array($fids) ? $fids : [$fids]);
-      foreach ($files as $file) {
-        $file->delete();
-      }
-    }
   }
 
 }
