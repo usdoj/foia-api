@@ -8,6 +8,7 @@ use Drupal\file\Entity\File;
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceFactoryInterface;
+use Drupal\foia_webform\FoiaSubmissionServiceInterface;
 use Drupal\node\Entity\Node;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionInterface;
@@ -50,6 +51,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    * {@inheritdoc}
    */
   public function processItem($data) {
+    /** @var FoiaRequestInterface $foiaRequest */
     $foiaRequest = FoiaRequest::load($data->id);
 
     // Check the submission preference for the Agency Component.
@@ -59,45 +61,85 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
 
     $foiaRequest->set('field_submission_time', REQUEST_TIME);
     // Submit the form values to the Agency Component.
-    $validSubmissionResponse = $submissionService->sendRequestToComponent($foiaRequest, $agencyComponent);
+    $submissionResponse = $submissionService->sendRequestToComponent($foiaRequest, $agencyComponent);
+    $this->handleSubmissionResponse($foiaRequest, $submissionResponse, $submissionService);
+  }
 
-    if ($validSubmissionResponse) {
-      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SUBMITTED);
-      $submissionMethod = isset($validSubmissionResponse['type']) ? $validSubmissionResponse['type'] : '';
-      $responseCode = isset($validSubmissionResponse['response_code']) ? $validSubmissionResponse['response_code'] : '';
-      $caseManagementId = isset($validSubmissionResponse['id']) ? $validSubmissionResponse['id'] : '';
-      $caseManagementStatusTrackingNumber = isset($validSubmissionResponse['status_tracking_number']) ? $validSubmissionResponse['status_tracking_number'] : '';
-      if ($caseManagementId) {
-        $foiaRequest->set('field_case_management_id', $caseManagementId);
-      }
-      if ($caseManagementStatusTrackingNumber) {
-        $foiaRequest->set('field_tracking_number', $caseManagementStatusTrackingNumber);
-      }
-      $this->deleteWebformSubmission($foiaRequest);
+  /**
+   * Updates the FOIA request depending on successful or failed submission.
+   *
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA request sent off to the agency component.
+   * @param array $submissionResponse
+   *   The response received when sending the request.
+   * @param \Drupal\foia_webform\FoiaSubmissionServiceInterface $submissionService
+   *   The submission service used to submit the request.
+   */
+  protected function handleSubmissionResponse(FoiaRequestInterface $foiaRequest, array $submissionResponse, FoiaSubmissionServiceInterface $submissionService) {
+    if ($submissionResponse) {
+      $this->handleValidSubmission($foiaRequest, $submissionResponse);
     }
     else {
-      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
-      $invalidSubmissionInfo = $submissionService->getSubmissionErrors();
-      $submissionMethod = isset($invalidSubmissionInfo['type']) ? $invalidSubmissionInfo['type'] : '';
-      $responseCode = isset($invalidSubmissionInfo['response_code']) ? $invalidSubmissionInfo['response_code'] : '';
-      $errorCode = isset($invalidSubmissionInfo['error_code']) ? $invalidSubmissionInfo['error_code'] : '';
-      $errorMessage = isset($invalidSubmissionInfo['message']) ? $invalidSubmissionInfo['message'] : '';
-      $errorDescription = isset($invalidSubmissionInfo['description']) ? $invalidSubmissionInfo['description'] : '';
-      if ($errorCode) {
-        $foiaRequest->set('field_error_code', $errorCode);
-      }
-      // @todo create separate error message and description fields
-      if ($errorMessage || $errorDescription) {
-        $foiaRequest->set('field_error_message', "Message: {$errorMessage}. Description: {$errorDescription}");
-      }
+      $submissionResponse = $submissionService->getSubmissionErrors();
+      $this->handleFailedSubmission($foiaRequest, $submissionResponse);
     }
+    $submissionMethod = isset($submissionResponse['type']) ? $submissionResponse['type'] : '';
+    $responseCode = isset($submissionResponse['response_code']) ? $submissionResponse['response_code'] : '';
     $foiaRequest->setSubmissionMethod($submissionMethod);
     $foiaRequest->set('field_response_code', $responseCode);
     $foiaRequest->save();
   }
 
   /**
+   * Handles FOIA requests after successfully submitting them to components.
+   *
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA request sent off to the agency component.
+   * @param array $validSubmissionResponse
+   *   An array of valid submission response info.
+   */
+  protected function handleValidSubmission(FoiaRequestInterface $foiaRequest, array $validSubmissionResponse) {
+    $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SUBMITTED);
+
+    $caseManagementId = isset($validSubmissionResponse['id']) ? $validSubmissionResponse['id'] : '';
+    $caseManagementStatusTrackingNumber = isset($validSubmissionResponse['status_tracking_number']) ? $validSubmissionResponse['status_tracking_number'] : '';
+    if ($caseManagementId) {
+      $foiaRequest->set('field_case_management_id', $caseManagementId);
+    }
+    if ($caseManagementStatusTrackingNumber) {
+      $foiaRequest->set('field_tracking_number', $caseManagementStatusTrackingNumber);
+    }
+    $this->deleteWebformSubmission($foiaRequest);
+  }
+
+  /**
+   * Handles FOIA requests after failed submission attempts to components.
+   *
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA request sent off to the agency component.
+   * @param array $failedSubmissionInfo
+   *   An array of failed submission response info.
+   */
+  protected function handleFailedSubmission(FoiaRequestInterface $foiaRequest, array $failedSubmissionInfo) {
+    $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
+
+    $errorCode = isset($failedSubmissionInfo['error_code']) ? $failedSubmissionInfo['error_code'] : '';
+    $errorMessage = isset($failedSubmissionInfo['message']) ? $failedSubmissionInfo['message'] : '';
+    $errorDescription = isset($failedSubmissionInfo['description']) ? $failedSubmissionInfo['description'] : '';
+    if ($errorCode) {
+      $foiaRequest->set('field_error_code', $errorCode);
+    }
+    // @todo create separate error message and description fields
+    if ($errorMessage || $errorDescription) {
+      $foiaRequest->set('field_error_message', "Message: {$errorMessage}. Description: {$errorDescription}");
+    }
+  }
+
+  /**
+   * Deletes the webform submission associated to the given FOIA request.
+   *
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA request sent off to the agency component.
    */
   protected function deleteWebformSubmission(FoiaRequestInterface $foiaRequest) {
     $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
