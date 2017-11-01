@@ -12,7 +12,10 @@ use Drupal\foia_request\Entity\FoiaRequest;
  *
  * @group local
  */
-class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
+class FoiaSubmissionQueueWorkerTest extends FoiaWebformKernelTestBase {
+
+  use ReflectionTrait;
+  use FieldInstallTrait;
 
   /**
    * Test queue worker.
@@ -40,8 +43,6 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
    */
   protected function setUp() {
     parent::setUp();
-    $this->installSchema('node', ['node_access']);
-    $this->foiaSubmissionsQueue = \Drupal::service('queue')->get('foia_submissions');
   }
 
   /**

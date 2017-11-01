@@ -4,7 +4,6 @@ namespace Drupal\Tests\foia_webform\Kernel;
 
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
@@ -53,59 +52,21 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformKernelTestBase {
   protected $agencyComponent;
 
   /**
-   * The foia submissions queue.
-   *
-   * @var \Drupal\Core\Queue\QueueInterface
-   */
-  protected $foiaSubmissionsQueue;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-    $this->installSchema('webform', ['webform']);
-    $this->installConfig(['webform', 'webform_template', 'foia_webform']);
-    $this->installSchema('node', ['node_access']);
-    $this->installEntitySchema('foia_request');
-    $this->installEntitySchema('webform_submission');
-    $this->installEntitySchema('user');
-    $this->installEntitySchema('node');
-    $this->installEntitySchema('taxonomy_term');
-    $this->foiaSubmissionsQueue = \Drupal::service('queue')->get('foia_submissions');
 
-    // Creates webform and specifies to use the template fields.
-    $webformWithTemplate = Webform::create(['id' => 'webform_with_template']);
-    $webformWithTemplate->set('foia_template', 1);
-    $webformWithTemplate->save();
-    $this->webform = $webformWithTemplate;
-
-    Vocabulary::create([
-      'name' => 'Agency',
-      'vid' => 'agency',
-    ])->save();
-    Term::create([
-      'name' => 'A Test Agency',
-      'vid' => 'agency',
-    ])->save();
-
-    $agency = \Drupal::entityTypeManager()
-      ->getStorage('taxonomy_term')
-      ->loadByProperties(['name' => 'A Test Agency']);
-
-    $this->agency = reset($agency);
-
-    $this->setupAgencyComponent();
-    $this->setupFoiaRequestEntity();
   }
 
   /**
    * Tests that a FOIA request ID is queued when a webform is submitted.
    */
   public function testFoiaRequestCreatedAndQueuedOnWebformSubmission() {
-    $this->setupWebformSubmission();
-
+    $item = $this->foiaSubmissionsQueue->claimItem();
+    $this->foiaSubmissionsQueue->deleteItem($item);
     $queuedSubmission = $this->foiaSubmissionsQueue->claimItem()->data;
+    print_r($queuedSubmission);
     $this->assertNotEmpty($queuedSubmission, "Expected a FOIA request ID to be queued, but nothing was found in the queue.");
     $this->assertEquals('1', $queuedSubmission->id, "Queued FOIA Request ID does not match expected.");
 
@@ -127,7 +88,7 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformKernelTestBase {
     $this->agencyComponent->field_request_submission_form->target_id = '';
     $this->agencyComponent->save();
     $this->setupWebformSubmission();
-
+    $this->foiaSubmissionsQueue->claimItem();
     $queuedSubmission = $this->foiaSubmissionsQueue->claimItem();
     $this->assertEmpty($queuedSubmission, "Expected the queue to be empty, but was able to claim an item.");
   }
@@ -147,27 +108,6 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformKernelTestBase {
     $foiaRequest = FoiaRequest::load($queuedSubmission->id);
     $requesterEmailAddress = $foiaRequest->get('field_requester_email')->value;
     $this->assertEquals($requesterEmailAddress, $testRequesterEmailAddress, 'FOIA Request created with no or incorrect requester email.');
-  }
-
-  /**
-   * Adds agency component content type.
-   */
-  protected function setupAgencyComponent() {
-    $agencyComponentTypeDefinition = [
-      'type' => 'agency_component',
-      'name' => t('Agency Component'),
-      'description' => 'An agency component to which a request can be sent and which will be fulfilling requests.',
-    ];
-    $agencyComponentType = NodeType::create($agencyComponentTypeDefinition);
-    $agencyComponentType->save();
-    $fieldsToSetup = [
-      'field_request_submission_form',
-      'field_submission_api',
-      'field_submission_api_secret',
-      'field_agency',
-    ];
-    $this->installFieldsOnEntity($fieldsToSetup, 'node', 'agency_component');
-    $this->createAgencyComponentNode();
   }
 
   /**
@@ -192,27 +132,6 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformKernelTestBase {
     ]);
     $agencyComponent->save();
     $this->agencyComponent = $agencyComponent;
-  }
-
-  /**
-   * Sets up a FOIA request for testing.
-   */
-  protected function setupFoiaRequestEntity() {
-    $fields = [
-      'field_webform_submission_id',
-      'field_agency_component',
-      'field_requester_email',
-    ];
-    $this->installFieldsOnEntity($fields, 'foia_request', 'foia_request');
-  }
-
-  /**
-   * Sets up a webform submission.
-   */
-  protected function setupWebformSubmission() {
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
-    $webformSubmission->save();
-    $this->webformSubmission = $webformSubmission;
   }
 
 }
