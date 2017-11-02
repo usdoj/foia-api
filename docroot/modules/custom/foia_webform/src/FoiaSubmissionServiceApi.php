@@ -415,7 +415,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       '@message' => $error['message'],
       '@description' => $error['description'],
     ];
-    $messageToLog = "HTTP Code: @http_code. Code: @code. Message: @message. Description: @description.";
+    $messageToLog = "HTTP Code: @http_code. Error Code: @code. Error Message: @message. Error Description: @description.";
     $this->log('error', $messageToLog, $context);
   }
 
@@ -439,7 +439,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    */
   protected function addSubmissionError(array $error) {
     $this->errors['response_code'] = isset($error['http_code']) ? $error['http_code'] : '';;
-    $this->errors['error_code'] = isset($error['error_code']) ? $error['error_code'] : '';
+    $this->errors['code'] = isset($error['code']) ? $error['code'] : '';
     $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
     $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
   }
