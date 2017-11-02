@@ -121,7 +121,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
   protected function handleFailedSubmission(FoiaRequestInterface $foiaRequest, array $failedSubmissionInfo) {
     $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
 
-    $errorCode = isset($failedSubmissionInfo['error_code']) ? $failedSubmissionInfo['error_code'] : '';
+    $errorCode = isset($failedSubmissionInfo['code']) ? $failedSubmissionInfo['code'] : '';
     $errorMessage = isset($failedSubmissionInfo['message']) ? $failedSubmissionInfo['message'] : '';
     $errorDescription = isset($failedSubmissionInfo['description']) ? $failedSubmissionInfo['description'] : '';
     if ($errorCode) {
