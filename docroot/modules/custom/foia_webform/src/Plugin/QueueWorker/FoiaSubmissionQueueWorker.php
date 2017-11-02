@@ -84,7 +84,9 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     $submissionMethod = isset($submissionResponse['type']) ? $submissionResponse['type'] : '';
     $responseCode = isset($submissionResponse['response_code']) ? $submissionResponse['response_code'] : '';
     $foiaRequest->setSubmissionMethod($submissionMethod);
-    $foiaRequest->set('field_response_code', $responseCode);
+    if ($responseCode) {
+      $foiaRequest->set('field_response_code', $responseCode);
+    }
     $foiaRequest->save();
   }
 
