@@ -6,7 +6,6 @@
 5. `git add` and `git commit` the modified data
 6. Enable the module in the environment you'd like to run the migration in: `drush en foia_migrate -y`
 7. Import any new agencies: `drush mi agency`
-8. Import any new agency components: `drush mi agency_component`
-9. Import any new FOIA personnel: `drush mi foia_personnel`
+8. Import any new FOIA personnel: `drush mi foia_personnel`
+9. Import any new agency components: `drush mi agency_component`
 10. Import new processing data, while updating data for existing components: `drush mi processing_data --update`
- 
