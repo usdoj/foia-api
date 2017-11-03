@@ -2,7 +2,7 @@
 
 namespace Drupal\foia_webform\Plugin\WebformHandler;
 
-use Drupal\file\Entity\File;
+use Drupal\Core\Render\Markup;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -23,93 +23,145 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   /**
    * {@inheritdoc}
    */
-  public function sendMessage(WebformSubmissionInterface $webformSubmission, array $message) {
-    // Get form submissions.
-    $data = $webformSubmission->getData();
-    $errorMessage = NULL;
-    $context = [];
-
-    // If there is a file attachment, get the file URL.
-    if (isset($data['attachments_supporting_documentation'])) {
-      $files = [];
-      foreach ($data['attachments_supporting_documentation'] as $upload) {
-        $file = File::load($upload);
-        if ($file) {
-          $fileUrl = file_create_url($file->getFileUri());
-          $files[] = $fileUrl;
-        }
-      }
-      if (!empty($files)) {
-        $data['attachments_supporting_documentation'] = implode(',', $files);
-      }
-    }
-
-    // Format the submission values as an HTML table.
-    $formValuesAsTable = $this->arrayToTable($data);
-    $message['body'] = $formValuesAsTable;
-
-    // Look up the agency component.
-    $form = $webformSubmission->getWebform();
-    $webformId = $form->getOriginalId();
-    $agencyLookupService = \Drupal::service('foia_webform.agency_lookup_service');
-    $agencyComponent = $agencyLookupService->getComponentFromWebform($webformId);
-
-    // If we have an Agency Component, get the Submission Email value.
-    if ($agencyComponent) {
-      $toEmail = $agencyComponent->get('field_submission_email')->getValue();
-
-      if (!empty($toEmail)) {
-        $message['to_mail'] = $toEmail[0]['value'];
-      }
-      // If we don't have a Submission Email value log an error.
-      else {
-        $errorMessage = 'No Submission Email: Unable to send email for %title';
-        $context = [
-          '%title' => $agencyComponent->getTitle(),
-          'link' => $agencyComponent->toLink($this->t('Edit Component'), 'edit-form')->toString(),
-        ];
-      }
-    }
-    // If there isn't an associated Agency Component log an error.
-    else {
-      $errorMessage = 'Unassociated form: The form, %title, is not associated with an Agency Component.';
-      $context = [
-        '%title' => $form->label(),
-      ];
-    }
-
-    // If the error message and context, log the error.
-    if ($errorMessage && !empty($context)) {
-      \Drupal::logger('foia_webform')
-        ->error($errorMessage, $context);
-    }
-    // Send the email.
-    else {
-      return parent::sendMessage($webformSubmission, $message);
-    }
+  public function defaultConfiguration() {
+    return [
+      'states' => [WebformSubmissionInterface::STATE_COMPLETED],
+      'to_mail' => 'default',
+      'to_options' => [],
+      'cc_mail' => '',
+      'cc_options' => [],
+      'bcc_mail' => '',
+      'bcc_options' => [],
+      'from_mail' => 'default',
+      'from_options' => [],
+      'from_name' => 'default',
+      'subject' => 'default',
+      'body' => 'default',
+      'excluded_elements' => [],
+      'ignore_access' => FALSE,
+      'exclude_empty' => TRUE,
+      'html' => TRUE,
+      'attachments' => TRUE,
+      'debug' => FALSE,
+      'reply_to' => '',
+      'return_path' => '',
+      'sender_mail' => '',
+      'sender_name' => '',
+    ];
   }
 
   /**
-   * Formats an array as an HTML table.
+   * Gets the email message to send out to the agency component.
    *
-   * @param array $data
-   *   The form submission data.
+   * @param string $foiaRequestId
+   *   The id of the FOIA request to include in the email.
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   *   The webform submission.
+   * @param string $componentEmailAddress
+   *   The email address of the agency component.
+   *
+   * @return array
+   *   The email to send to the agency component.
+   */
+  public function getEmailMessage($foiaRequestId, WebformSubmissionInterface $webformSubmission, $componentEmailAddress) {
+    // Let webform do the heavy lifting in setting up the email.
+    $message = parent::getMessage($webformSubmission);
+
+    // Get form submission contents.
+    $submissionContents = $webformSubmission->getData();
+
+    // Format the submission values as an HTML table.
+    $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($foiaRequestId, $submissionContents);
+    $message['body'] = $submissionContentsAsTable;
+
+    // Update the destination email address to the component's email address.
+    $message['to_mail'] = $componentEmailAddress;
+
+    return $message;
+  }
+
+  /**
+   * Sends the email message to the appropriate component.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   *   The webform submission.
+   * @param array $message
+   *   The email message to send.
+   *
+   * @return array
+   *   The $message array structure containing all details of the message. If
+   *   already sent ($send = TRUE), then the 'result' element will contain the
+   *   success indicator of the email, failure being already written to the
+   *   watchdog. (Success means nothing more than the message being accepted at
+   *   php-level, which still doesn't guarantee it to be delivered.)
+   *
+   * @see \Drupal\Core\Mail\MailManagerInterface::mail()
+   */
+  public function sendEmailMessage(WebformSubmissionInterface $webformSubmission, array $message) {
+    $to = $message['to_mail'];
+    $from = $message['from_mail'];
+
+    // Remove less than (<) and greater (>) than from name.
+    // @todo Figure out the proper way to encode special characters.
+    // Note: PhpMail call.
+    $message['from_name'] = preg_replace('/[<>]/', '', $message['from_name']);
+
+    if (!empty($message['from_name'])) {
+      $from = $message['from_name'] . ' <' . $from . '>';
+    }
+
+    $current_langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+    // Render body using webform email message (wrapper) template.
+    $build = [
+      '#theme' => 'webform_email_message_' . (($this->configuration['html']) ? 'html' : 'text'),
+      '#message' =>
+        [
+          'body' => is_string($message['body']) ? Markup::create($message['body']) : $message['body'],
+        ] + $message,
+      '#webform_submission' => $webformSubmission,
+      '#handler' => $this,
+    ];
+    $message['body'] = trim((string) \Drupal::service('renderer')->renderPlain($build));
+
+    if ($this->configuration['html']) {
+      switch ($this->getMailSystemSender()) {
+        case 'swiftmailer':
+          // SwiftMailer requires that the body be valid Markup.
+          $message['body'] = Markup::create($message['body']);
+          break;
+      }
+    }
+
+    // Send message.
+    return $this->mailManager->mail('webform', 'email_' . $this->getHandlerId(), $to, $current_langcode, $message, $from, TRUE);
+  }
+
+  /**
+   * Formats the webform submission contents as an HTML table.
+   *
+   * @param string $foiaRequestId
+   *   The id of the FOIA request to include in the email.
+   * @param array $submissionContents
+   *   The webform submission contents.
    *
    * @return string
-   *   Returns the array as an HTML table.
+   *   Returns the submission contents as an HTML table.
    */
-  public function arrayToTable(array $data) {
+  public function formatSubmissionContentsAsTable($foiaRequestId, array $submissionContents) {
+    $tableHeaders = array_merge(['request_id'], array_keys($submissionContents));
+    $tableRows = array_merge(['request_id' => $foiaRequestId], $submissionContents);
     $table = [
       '#markup' => t('Hello,') . '<br>' . t('A new FOIA request was submitted to your agency component:') . '<br><br>',
     ];
 
     $table['values'] = [
       '#theme' => 'table',
-      '#header' => array_keys($data),
-      '#rows' => ['data' => (array) $data],
+      '#header' => $tableHeaders,
+      '#rows' => ['data' => $tableRows],
     ];
 
-    return render($table);
+    return \Drupal::service('renderer')->renderPlain($table);
   }
 
 }
