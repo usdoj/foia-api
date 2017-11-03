@@ -69,24 +69,24 @@ purge:
 element:
   empty_message: '{Empty}'
   allowed_tags: admin
-  wrapper_classes: "container-inline clearfix\nform--inline clearfix\nmessages messages--error\nmessages messages--warning\nmessages messages--status\n"
-  classes: "container-inline clearfix\nform--inline clearfix\nmessages messages--error\nmessages messages--warning\nmessages messages--status\n"
+  wrapper_classes: "container-inline clearfix\r\nform--inline clearfix\r\nmessages messages--error\r\nmessages messages--warning\r\nmessages messages--status\r\n"
+  classes: "container-inline clearfix\r\nform--inline clearfix\r\nmessages messages--error\r\nmessages messages--warning\r\nmessages messages--status\r\n"
   default_description_display: ''
+  default_icheck: ''
+  default_google_maps_api_key: ''
   default_empty_option: true
   default_empty_option_required: ''
   default_empty_option_optional: ''
-  default_icheck: ''
-  default_google_maps_api_key: ''
   excluded_elements: {  }
 html_editor:
+  tidy: true
   disabled: false
   format: ''
-  tidy: true
 file:
   file_public: false
   file_private_redirect: true
-  default_max_filesize: ''
-  default_managed_file_extensions: 'gif jpg png bmp eps tif pict psd txt rtf html odf pdf doc docx ppt pptx xls xlsx xml avi mov mp3 ogg wav bz2 dmg gz jar rar sit svg tar zip'
+  default_max_filesize: '20 MB'
+  default_managed_file_extensions: 'gif jpg png txt pdf doc docx odf'
   default_audio_file_extensions: 'mp3 ogg wav'
   default_document_file_extensions: 'txt rtf pdf doc docx odt ppt pptx odp xls xlsx ods'
   default_image_file_extensions: 'gif jpg png svg'
