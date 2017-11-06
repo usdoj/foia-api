@@ -137,7 +137,7 @@ Feature: Agency Administrator role
     Then I should see the following success messages:
       | Webform A Test Webform elements saved. |
     When I click 'View'
-    And for 'First name' I enter 'A Test First Name'
+    And for 'First name' I enter 'A Test First name'
     And for 'Last name' I enter 'A Test Last Name'
     And for 'Email' I enter 'atest@example.com'
     And for "Your request" I enter 'A Test description.'

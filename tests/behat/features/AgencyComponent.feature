@@ -5,29 +5,13 @@ Feature: Agency Component Feature
   I should be able to specify data and relationships specific to my component
 
   @api
-  Scenario: Confirm existence of Phone and Abbreviation fields
+  Scenario: Confirm existence of Agency Component fields
     Given I am logged in as a user with the 'Administrator' role
-    When I am at 'node/add/agency_component'
-    And for 'Agency Component Name' I enter 'A Test Agency Component'
-    And for 'Abbreviation' I enter 'TEST'
-    And for 'Telephone' I enter '(555) 555-5555'
-    And for 'Request Submission Form' I enter 'basic_request_submission_form'
-    And for 'Request Data Year' I enter '2016'
-    And for 'Complex Average Days' I enter '1'
-    And for 'Complex Highest Days' I enter '1'
-    And for 'Complex Lowest Days' I enter 'less than 1'
-    And for 'Complex Median Days' I enter '1'
-    And for 'Expedited Average Days' I enter '3.14'
-    And for 'Expedited Highest Days' I enter '0'
-    And for 'Expedited Lowest Days' I enter '3'
-    And for 'Expedited Median Days' I enter '9'
-    And for 'Simple Average Days' I enter '1'
-    And for 'Simple Highest Days' I enter '6'
-    And for 'Simple Lowest Days' I enter '1'
-    And for 'Simple Median Days' I enter '1'
-    And I press the 'Save' button
-    Then I should see the following success messages:
-      | Agency Component A Test Agency Component has been created. |
+    And I create a webform "a_test_webform"
+    And agency_component content:
+      | title                   | field_agency_comp_abbreviation | field_agency_comp_telephone | Request Submission Form | field_request_data_year | field_complex_average_days | field_complex_highest_days | field_complex_lowest_days | field_complex_median_days | field_expedited_average_days | field_expedited_highest_days | field_expedited_lowest_days | field_expedited_median_days | field_simple_average_days | field_simple_highest_days | field_simple_lowest_days | field_simple_median_days |
+      | A Test Agency Component | TST                            | (555) 555-5555              | a_test_webform          | 2016                    | 1                          | 1                          | Less than 1               | 1                         | 3.14                         | 0                            | 3                           | 9                           | 1                         | 6                         | 1                        | 1                        |
+    And I am at 'admin/content'
     And I click 'A Test Agency Component'
     And save the current URL
     When I am logged in as a user with the 'Agency Manager' role
