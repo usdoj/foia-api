@@ -32,7 +32,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class WebformSubmissionResource extends ResourceBase {
 
+  /**
+   * Generic message to return if a submission is made against an invalid form.
+   */
   const INVALID_FORM_ID_ERROR = 'Invalid form ID. Check the agency metadata for the latest form information for the desired agency component.';
+
+  /**
+   * Maximum total file upload limit in MB.
+   */
+  const MAX_TOTAL_FILE_UPLOAD_MB = 20;
 
   /**
    * The query factory to create entity queries.
@@ -423,6 +431,7 @@ class WebformSubmissionResource extends ResourceBase {
    *   field name.
    */
   protected function validateFileEntities(WebformInterface $webform, array $filesByFieldName) {
+    $fileSizes = [];
     $errors = [];
     foreach ($filesByFieldName as $fieldName => $files) {
       $element = $webform->getElementInitialized($fieldName);
@@ -434,10 +443,19 @@ class WebformSubmissionResource extends ResourceBase {
       $validators['file_validate_extensions'] = [$fileExtensions];
       /** @var \Drupal\file\FileInterface $file */
       foreach ($files as $file) {
+        $fileSizes[] = $file->getSize();
         $validationErrors = file_validate($file, $validators);
         if (!empty($validationErrors)) {
           $errors[$fieldName][] = $validationErrors;
         }
+      }
+    }
+    // No individual files failed validation.
+    // So do a global check against total upload size against max upload limit.
+    if (!$errors) {
+      $uploadSizeError = $this->validateTotalFileUploadSizeBelowMax($fileSizes);
+      if ($uploadSizeError) {
+        $errors[] = $uploadSizeError;
       }
     }
     return $errors;
@@ -456,6 +474,43 @@ class WebformSubmissionResource extends ResourceBase {
     /** @var \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase $elementHandler */
     $elementHandler = $this->elementManager->getElementInstance($element);
     return $elementHandler->getDefaultProperties();
+  }
+
+  /**
+   * Validates that the total file upload size is below the maximum.
+   *
+   * @param array $fileSizes
+   *   An array of file sizes in bytes.
+   *
+   * @return string
+   *   An error message if validation fails, otherwise an empty string.
+   */
+  protected function validateTotalFileUploadSizeBelowMax(array $fileSizes) {
+    $error = '';
+    $maxUploadSize = $this->getMaximumTotalFileUploadSize();
+    $totalUploadSize = array_sum($fileSizes);
+    if ($totalUploadSize > $maxUploadSize) {
+      $error = "The total of all files cannot exceed {$this->getMaximumTotalFileUploadSize(TRUE)}MB.";
+    }
+    return $error;
+  }
+
+  /**
+   * Gets the maximum total file upload size.
+   *
+   * @param bool $readable
+   *   Flag that decides if the returned size is in a readable format (i.e. not
+   *   in bytes).
+   *
+   * @return int
+   *   The maximum total file upload size.
+   */
+  protected function getMaximumTotalFileUploadSize($readable = FALSE) {
+    $maxUploadSize = WebformSubmissionResource::MAX_TOTAL_FILE_UPLOAD_MB;
+    if ($readable) {
+      return $maxUploadSize;
+    }
+    return Bytes::toInt("{$maxUploadSize}MB");
   }
 
   /**
