@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\foia_webform\Kernel;
 
-use Drupal\Core\Entity\EntityTypeManager;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\foia_webform\AgencyLookupService;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\Entity\Node;
@@ -17,7 +15,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */
-class AgencyLookupServiceTest extends KernelTestBase {
+class AgencyLookupServiceTest extends FoiaWebformKernelTestBase {
 
   /**
    * Modules to install.
@@ -25,19 +23,9 @@ class AgencyLookupServiceTest extends KernelTestBase {
    * @var array
    */
   public static $modules = [
-    'system',
-    'user',
-    'webform',
-    'webform_template',
-    'foia_webform',
-    'field',
-    'node',
     'entity_reference',
-    'menu_ui',
-    'field_permissions',
-    'taxonomy',
     'filter',
-    'text',
+    'menu_ui',
   ];
 
   /**
@@ -45,13 +33,8 @@ class AgencyLookupServiceTest extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-
     $this->installConfig(['system', 'taxonomy']);
     $this->installSchema('user', 'users_data');
-    $this->installEntitySchema('node');
-    $this->installEntitySchema('user');
-    $this->installEntitySchema('taxonomy_term');
-
   }
 
   /**

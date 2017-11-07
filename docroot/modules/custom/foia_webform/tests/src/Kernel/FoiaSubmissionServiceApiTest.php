@@ -6,12 +6,8 @@ use Drupal\Component\Serialization\Json;
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_webform\FoiaSubmissionServiceApi;
 use Drupal\foia_webform\FoiaSubmissionServiceInterface;
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\node\Entity\NodeType;
-use Drupal\node\Entity\Node;
 use Drupal\webform\WebformInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -20,7 +16,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Drupal\foia_webform\AgencyLookupService;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\file\Entity\File;
 
 /**
@@ -30,38 +25,7 @@ use Drupal\file\Entity\File;
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */
-class FoiaSubmissionServiceApiTest extends KernelTestBase {
-
-  use ReflectionTrait;
-  use FieldInstallTrait;
-
-  /**
-   * Test agency.
-   *
-   * @var \Drupal\taxonomy\Entity\Term
-   */
-  protected $agency;
-
-  /**
-   * Test webform to submit against.
-   *
-   * @var \Drupal\webform\WebformInterface
-   */
-  protected $webform;
-
-  /**
-   * Test webform submission.
-   *
-   * @var \Drupal\webform\WebformSubmissionInterface
-   */
-  protected $webformSubmission;
-
-  /**
-   * Test agency component we're submitting to.
-   *
-   * @var \Drupal\node\NodeInterface
-   */
-  protected $agencyComponent;
+class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
 
   /**
    * Guzzle client.
@@ -98,65 +62,20 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    */
   protected $foiaRequest;
 
-
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = [
-    'webform_template',
-    'webform',
-    'system',
-    'user',
-    'foia_webform',
-    'node',
-    'field',
-    'taxonomy',
-    'field_permissions',
-    'text',
-    'file',
-    'link',
-    'foia_request',
-    'options',
-  ];
+  public static $modules = ['file'];
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-    $this->installSchema('webform', ['webform']);
-    $this->installConfig(['webform', 'webform_template', 'foia_webform']);
     $this->installSchema('file', ['file_usage']);
-    $this->installEntitySchema('foia_request');
-    $this->installEntitySchema('webform_submission');
-    $this->installEntitySchema('user');
-    $this->installEntitySchema('node');
-    $this->installEntitySchema('taxonomy_term');
     $this->installEntitySchema('file');
-
-    // Creates webform and specifies to use the template fields.
-    $webformWithTemplate = Webform::create(['id' => 'webform_with_template']);
-    $webformWithTemplate->set('foia_template', 1);
-    $webformWithTemplate->save();
-    $this->webform = $webformWithTemplate;
-
-    Vocabulary::create([
-      'name' => 'Agency',
-      'vid' => 'agency',
-    ])->save();
-    Term::create([
-      'name' => 'A Test Agency',
-      'vid' => 'agency',
-    ])->save();
-
-    $agency = \Drupal::entityTypeManager()
-      ->getStorage('taxonomy_term')
-      ->loadByProperties(['name' => 'A Test Agency']);
-
-    $this->agency = reset($agency);
-
     $this->setupAgencyComponent();
     $this->setupAgencyLookupServiceMock();
     $this->setupFoiaRequest();
@@ -358,51 +277,6 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $this->assertEquals($responseContents['status_tracking_number'], $validSubmission['status_tracking_number']);
     $this->assertEquals('api', $validSubmission['type']);
     $this->assertEquals([], $submissionError);
-  }
-
-  /**
-   * Adds agency component content type.
-   */
-  protected function setupAgencyComponent() {
-    $agencyComponentTypeDefinition = [
-      'type' => 'agency_component',
-      'name' => t('Agency Component'),
-      'description' => 'An agency component to which a request can be sent and which will be fulfilling requests.',
-    ];
-    $agencyComponentType = NodeType::create($agencyComponentTypeDefinition);
-    $agencyComponentType->save();
-    $fieldsToSetup = [
-      'field_request_submission_form',
-      'field_submission_api',
-      'field_submission_api_secret',
-      'field_agency',
-    ];
-    $this->installFieldsOnEntity($fieldsToSetup, 'node', 'agency_component');
-    $this->createAgencyComponentNode();
-  }
-
-  /**
-   * Creates an agency component entity.
-   */
-  protected function createAgencyComponentNode() {
-    /** @var \Drupal\node\NodeInterface $agencyComponent */
-    $agencyComponent = Node::create([
-      'type' => 'agency_component',
-      'title' => t('A Test Agency Component'),
-      'field_portal_submission_format' => 'api',
-      'field_submission_api' => [
-        'uri' => 'https://atest.com',
-      ],
-      'field_submission_api_secret' => 'secret_token',
-      'field_request_submission_form' => [
-        'target_id' => $this->webform->id(),
-      ],
-      'field_agency' => [
-        'target_id' => $this->agency->id(),
-      ],
-    ]);
-    $agencyComponent->save();
-    $this->agencyComponent = $agencyComponent;
   }
 
   /**
