@@ -3,6 +3,7 @@
 namespace Drupal\foia_webform\Plugin\WebformHandler;
 
 use Drupal\Core\Render\Markup;
+use Drupal\file\Entity\File;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -69,6 +70,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // Get form submission contents.
     $submissionContents = $webformSubmission->getData();
+    $this->listFileAttachmentNamesInSubmission($submissionContents);
 
     // Format the submission values as an HTML table.
     $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($foiaRequestId, $submissionContents);
@@ -138,6 +140,65 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   }
 
   /**
+   * Updates the submission contents to list the names of all file attachments.
+   *
+   * @param array &$submissionContents
+   *   The submission contents.
+   */
+  protected function listFileAttachmentNamesInSubmission(array &$submissionContents) {
+    $fileAttachmentElementsOnWebform = $this->getFileAttachmentElementsOnWebform();
+    if ($fileAttachmentElementsOnWebform) {
+      $this->updateSubmissionWithFileAttachmentNames($fileAttachmentElementsOnWebform, $submissionContents);
+    }
+  }
+
+  /**
+   * Gets the names of file attachment elements on the webform.
+   *
+   * @return array
+   *   Returns an array of the names of the file attachment elements on the
+   *   webform being submitted against.
+   */
+  protected function getFileAttachmentElementsOnWebform() {
+    $fileAttachmentElementKeys = [];
+    $webform = $this->getWebform();
+    if ($webform->hasManagedFile()) {
+      $elements = $webform->getElementsInitializedAndFlattened();
+      $fileAttachmentElementKeys = [];
+      foreach ($elements as $key => $element) {
+        if (isset($element['#type']) && $element['#type'] == 'managed_file') {
+          $fileAttachmentElementKeys[] = $key;
+        }
+      }
+    }
+    return $fileAttachmentElementKeys;
+  }
+
+  /**
+   * Updates the submission contents with file attachment names.
+   *
+   * @param array $fileAttachmentElementKeys
+   *   The keys of the file attachment webform elements.
+   * @param array $submissionContents
+   *   The submission contents.
+   */
+  protected function updateSubmissionWithFileAttachmentNames(array $fileAttachmentElementKeys, array &$submissionContents) {
+    foreach ($fileAttachmentElementKeys as $fileAttachmentElementKey) {
+      $fileAttachmentNames = [];
+      $fids = isset($submissionContents[$fileAttachmentElementKey]) ? $submissionContents[$fileAttachmentElementKey] : '';
+      if (empty($fids)) {
+        continue;
+      }
+      /** @var \Drupal\file\FileInterface[] $files */
+      $files = File::loadMultiple(is_array($fids) ? $fids : [$fids]);
+      foreach ($files as $file) {
+        $fileAttachmentNames[] = $file->getFilename();
+      }
+      $submissionContents[$fileAttachmentElementKey] = implode(", ", $fileAttachmentNames);
+    }
+  }
+
+  /**
    * Formats the webform submission contents as an HTML table.
    *
    * @param string $foiaRequestId
@@ -148,11 +209,11 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * @return string
    *   Returns the submission contents as an HTML table.
    */
-  public function formatSubmissionContentsAsTable($foiaRequestId, array $submissionContents) {
+  protected function formatSubmissionContentsAsTable($foiaRequestId, array $submissionContents) {
     $tableHeaders = array_merge(['request_id'], array_keys($submissionContents));
     $tableRows = array_merge(['request_id' => $foiaRequestId], $submissionContents);
     $table = [
-      '#markup' => t('Hello,') . '<br>' . t('A new FOIA request was submitted to your agency component:') . '<br><br>',
+      '#markup' => t('Hello,') . '<br />' . t('A new FOIA request was submitted to your agency component:') . '<br /><br />',
     ];
 
     $table['values'] = [
