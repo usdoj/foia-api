@@ -4,6 +4,7 @@ namespace Drupal\foia_webform\Plugin\WebformHandler;
 
 use Drupal\Core\Render\Markup;
 use Drupal\file\Entity\File;
+use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -22,33 +23,33 @@ use Drupal\webform\WebformSubmissionInterface;
 class FoiaEmailWebformHandler extends EmailWebformHandler {
 
   /**
+   * The agency component node.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $agencyComponent;
+
+  /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return [
-      'states' => [WebformSubmissionInterface::STATE_COMPLETED],
-      'to_mail' => 'default',
-      'to_options' => [],
-      'cc_mail' => '',
-      'cc_options' => [],
-      'bcc_mail' => '',
-      'bcc_options' => [],
-      'from_mail' => 'default',
-      'from_options' => [],
-      'from_name' => 'default',
-      'subject' => 'default',
-      'body' => 'default',
-      'excluded_elements' => [],
-      'ignore_access' => FALSE,
-      'exclude_empty' => TRUE,
-      'html' => TRUE,
-      'attachments' => TRUE,
-      'debug' => FALSE,
-      'reply_to' => '',
-      'return_path' => '',
-      'sender_mail' => '',
-      'sender_name' => '',
-    ];
+    $defaultConfiguration = parent::defaultConfiguration();
+    $defaultConfiguration['attachments'] = TRUE;
+    return $defaultConfiguration;
+  }
+
+  /**
+   * Get configuration default values.
+   *
+   * @return array
+   *   Configuration default values.
+   */
+  protected function getDefaultConfigurationValues() {
+    $defaultValues = parent::getDefaultConfigurationValues();
+    $defaultValues['subject'] = $this->getEmailSubject();
+    $defaultValues['to_mail'] = $this->agencyComponent->get('field_submission_email')->value;
+
+    return $defaultValues;
   }
 
   /**
@@ -58,13 +59,15 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    *   The id of the FOIA request to include in the email.
    * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
    *   The webform submission.
-   * @param string $componentEmailAddress
-   *   The email address of the agency component.
+   * @param \Drupal\node\NodeInterface $agencyComponent
+   *   The agency component.
    *
    * @return array
    *   The email to send to the agency component.
    */
-  public function getEmailMessage($foiaRequestId, WebformSubmissionInterface $webformSubmission, $componentEmailAddress) {
+  public function getEmailMessage($foiaRequestId, WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
+    $this->agencyComponent = $agencyComponent;
+
     // Let webform do the heavy lifting in setting up the email.
     $message = parent::getMessage($webformSubmission);
 
@@ -75,9 +78,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     // Format the submission values as an HTML table.
     $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($foiaRequestId, $submissionContents);
     $message['body'] = $submissionContentsAsTable;
-
-    // Update the destination email address to the component's email address.
-    $message['to_mail'] = $componentEmailAddress;
 
     return $message;
   }
@@ -223,6 +223,16 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     ];
 
     return \Drupal::service('renderer')->renderPlain($table);
+  }
+
+  /**
+   * Returns the subject to use for the email.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The email subject.
+   */
+  protected function getEmailSubject() {
+    return t('New FOIA request received for @agency_component_name', ['@agency_component_name' => $this->agencyComponent->label()]);
   }
 
 }

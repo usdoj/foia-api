@@ -87,7 +87,7 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
    */
   public function sendRequestToComponent(FoiaRequestInterface $foiaRequest, NodeInterface $agencyComponent) {
     $this->agencyComponent = $agencyComponent;
-    $componentEmailAddress = $agencyComponent->get('field_submission_email')->value;
+    $componentEmailAddress = $this->agencyComponent->get('field_submission_email')->value;
 
     if (!$componentEmailAddress) {
       $error['message'] = 'Missing Submission Email Address for component.';
@@ -103,7 +103,7 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
       return FALSE;
     }
 
-    $emailToSend = $this->assembleEmailMessage($foiaRequest, $componentEmailAddress);
+    $emailToSend = $this->assembleEmailMessage($foiaRequest);
     return $this->sendEmailToComponent($emailToSend);
   }
 
@@ -111,18 +111,16 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
    * Assembles the contents of the email message to be sent to the component.
    *
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
-   *   The FOIA request being submitted.
-   * @param string $componentEmailAddress
-   *   The agency component's email address.
+   *   The FOIA request being sent to the agency.
    *
    * @return array
    *   The email to send to the agency component.
    */
-  protected function assembleEmailMessage(FoiaRequestInterface $foiaRequest, $componentEmailAddress) {
+  protected function assembleEmailMessage(FoiaRequestInterface $foiaRequest) {
     $this->webformSubmission = WebformSubmission::load($foiaRequest->get('field_webform_submission_id')->value);
     $webform = $this->webformSubmission->getWebform();
     $this->foiaEmailWebformHandler->setWebform($webform);
-    $messageToSend = $this->foiaEmailWebformHandler->getEmailMessage($foiaRequest->id(), $this->webformSubmission, $componentEmailAddress);
+    $messageToSend = $this->foiaEmailWebformHandler->getEmailMessage($foiaRequest->id(), $this->webformSubmission, $this->agencyComponent);
     return $messageToSend;
   }
 
