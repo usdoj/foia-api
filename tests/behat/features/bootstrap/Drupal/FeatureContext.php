@@ -5,6 +5,7 @@ namespace Drupal;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Drupal\webform\Entity\Webform;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -94,6 +95,56 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function iGoToSavedUrl()
   {
     $this->getSession()->visit($this->url);
+  }
+
+  /**
+   * @Given I create a webform :arg1
+   */
+  public function iCreateAWebform($arg1)
+  {
+    if (!empty($arg1)) {
+      Webform::create(['id' => $arg1])->save();
+    }
+  }
+
+  /**
+   * @When I go to the :arg1 type entity with the :arg2 label
+   */
+  public function iGoToTheTypeEntityWithTheLabel($entityType, $label) {
+    if (\Drupal::entityTypeManager()->getDefinition($entityType)) {
+      switch ($entityType) {
+        case 'node':
+          $labelField = 'title';
+          $path = 'node';
+          break;
+        case 'taxonomy_term':
+          $labelField = 'name';
+          $path = 'taxonomy/term';
+          break;
+        case 'user':
+          $labelField = 'name';
+          $path = 'user';
+          break;
+      }
+      $entities = \Drupal::entityTypeManager()
+        ->getStorage($entityType)
+        ->loadByProperties([$labelField => $label]);
+      if ($entity = reset($entities)) {
+        $eid = $entity->id();
+        $alias = \Drupal::service('path.alias_manager')->getAliasByPath("/{$path}/{$eid}");
+        $this->getSession()->visit($alias);
+      }
+    }
+  }
+
+  /**
+   * @Given I edit the current entity
+   */
+  public function iEditTheCurrentEntity()
+  {
+    $currentPath = $this->getSession()->getCurrentUrl();
+    $newPath = "{$currentPath}/edit";
+    $this->getSession()->visit($newPath);
   }
 
 }
