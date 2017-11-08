@@ -32,6 +32,8 @@ abstract class FoiaWebformKernelTestBase extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    $this->installSchema('webform', ['webform']);
+    $this->installConfig(['webform', 'webform_template', 'foia_webform']);
     $this->installEntitySchema('node');
     $this->installEntitySchema('user');
     $this->installEntitySchema('taxonomy_term');

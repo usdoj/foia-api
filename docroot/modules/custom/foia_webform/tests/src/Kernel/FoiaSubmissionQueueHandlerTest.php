@@ -23,20 +23,12 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformApiKernelTestBase
   protected $foiaSubmissionsQueue;
 
   /**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  public static $modules = ['node'];
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
     $this->installSchema('node', ['node_access']);
     $this->foiaSubmissionsQueue = \Drupal::service('queue')->get('foia_submissions');
-    $this->setupAgencyComponent();
     $this->setupFoiaRequestEntity();
   }
 
@@ -100,15 +92,6 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformApiKernelTestBase
       'field_requester_email',
     ];
     $this->installFieldsOnEntity($fields, 'foia_request', 'foia_request');
-  }
-
-  /**
-   * Sets up a webform submission.
-   */
-  protected function setupWebformSubmission() {
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
-    $webformSubmission->save();
-    $this->webformSubmission = $webformSubmission;
   }
 
 }
