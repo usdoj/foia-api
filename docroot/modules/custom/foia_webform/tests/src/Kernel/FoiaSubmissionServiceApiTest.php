@@ -6,8 +6,6 @@ use Drupal\Component\Serialization\Json;
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_webform\FoiaSubmissionServiceApi;
 use Drupal\foia_webform\FoiaSubmissionServiceInterface;
-use Drupal\webform\Entity\Webform;
-use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -76,7 +74,6 @@ class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
     parent::setUp();
     $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('file');
-    $this->setupAgencyComponent();
     $this->setupAgencyLookupServiceMock();
     $this->setupFoiaRequest();
     $this->setupLoggerMock();
@@ -127,12 +124,7 @@ class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
     ];
     $this->setupHttpClientMock($responseContents, 200);
     $this->submissionServiceApi = new FoiaSubmissionServiceApi($this->httpClient, $this->agencyLookupService, $this->logger);
-    $webform = Webform::create([
-      'id' => $this->randomMachineName(),
-    ]);
-    $webform->set('foia_template', 1);
-    $webform->save();
-    $this->deleteWebformHandlers($webform);
+    $this->deleteWebformHandlers($this->webform);
     $webformSubmissionData = [
       'name_first' => 'Another',
       'name_last' => 'Test',
@@ -141,13 +133,9 @@ class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
       'request_fee_waiver' => 'yes',
       'request_expedited_processing' => 'no',
     ];
-    $webformSubmission = WebformSubmission::create([
-      'webform_id' => $webform->id(),
-      'data' => $webformSubmissionData,
-    ]);
-    $webformSubmission->save();
+    $this->setupWebformSubmission(NULL, $webformSubmissionData);
     $query = \Drupal::entityTypeManager()->getStorage('webform_submission')->getQuery();
-    $query->condition('webform_id', $webform->id());
+    $query->condition('webform_id', $this->webform->id());
     foreach (\Drupal::entityTypeManager()->getStorage('webform_submission')->loadMultiple($query->execute()) as $submission) {
       $webformSubmission = $submission;
     }
@@ -175,15 +163,12 @@ class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
     ];
     $this->setupHttpClientMock($responseContents, 200);
     $this->submissionServiceApi = new FoiaSubmissionServiceApi($this->httpClient, $this->agencyLookupService, $this->logger);
-    $webform = Webform::create([
-      'id' => 'a_test_webform',
-    ]);
 
     $config = \Drupal::config('webform_template.settings')->get('webform_template_elements');
     $templateElements = yaml_parse($config);
-    $webform->setElements($templateElements);
-    $webform->save();
-    $this->deleteWebformHandlers($webform);
+    $this->webform->setElements($templateElements);
+    $this->webform->save();
+    $this->deleteWebformHandlers($this->webform);
 
     // Need to create Drupal file entity.
     $file = File::create([
@@ -216,14 +201,10 @@ class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
       'attachments_supporting_documentation' => [$file->id()],
     ];
 
-    $webformSubmission = WebformSubmission::create([
-      'webform_id' => $webform->id(),
-      'data' => $webformSubmissionData,
-    ]);
-    $webformSubmission->save();
+    $webformSubmission = $this->setupWebformSubmission(NULL, $webformSubmissionData);
 
     $query = \Drupal::entityTypeManager()->getStorage('webform_submission')->getQuery();
-    $query->condition('webform_id', $webform->id());
+    $query->condition('webform_id', $this->webform->id());
     foreach (\Drupal::entityTypeManager()->getStorage('webform_submission')->loadMultiple($query->execute()) as $submission) {
       $webformSubmission = $submission;
     }
@@ -340,6 +321,7 @@ class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
       'field_error_message',
       'field_error_code',
       'field_error_description',
+      'field_requester_email',
     ];
     $this->installFieldsOnEntity($fields, 'foia_request', 'foia_request');
     $this->foiaRequest = FoiaRequest::create();
@@ -351,15 +333,6 @@ class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
    */
   protected function setupLoggerMock() {
     $this->logger = $this->getMock('\Psr\Log\LoggerInterface');
-  }
-
-  /**
-   * Sets up a webform submission.
-   */
-  protected function setupWebformSubmission() {
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
-    $webformSubmission->save();
-    $this->webformSubmission = $webformSubmission;
   }
 
   /**

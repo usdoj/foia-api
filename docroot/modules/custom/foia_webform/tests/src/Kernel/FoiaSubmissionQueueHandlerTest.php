@@ -23,20 +23,12 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformApiKernelTestBase
   protected $foiaSubmissionsQueue;
 
   /**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  public static $modules = ['node'];
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
     $this->installSchema('node', ['node_access']);
     $this->foiaSubmissionsQueue = \Drupal::service('queue')->get('foia_submissions');
-    $this->setupAgencyComponent();
     $this->setupFoiaRequestEntity();
   }
 
@@ -78,9 +70,8 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformApiKernelTestBase
    */
   public function testQueuedFoiaRequestContainsRequesterEmailAddress() {
     $testRequesterEmailAddress = 'requester@requester.com';
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['email' => $testRequesterEmailAddress]]);
-    $webformSubmission->save();
-    $this->webformSubmission = $webformSubmission;
+    $data = ['email' => $testRequesterEmailAddress];
+    $this->setupWebformSubmission(NULL, $data);
 
     $queuedSubmission = $this->foiaSubmissionsQueue->claimItem()->data;
     $this->assertNotEmpty($queuedSubmission, "Expected a FOIA request ID to be queued, but nothing was found in the queue.");
@@ -100,15 +91,6 @@ class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformApiKernelTestBase
       'field_requester_email',
     ];
     $this->installFieldsOnEntity($fields, 'foia_request', 'foia_request');
-  }
-
-  /**
-   * Sets up a webform submission.
-   */
-  protected function setupWebformSubmission() {
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
-    $webformSubmission->save();
-    $this->webformSubmission = $webformSubmission;
   }
 
 }

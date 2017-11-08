@@ -7,6 +7,7 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\webform\Entity\Webform;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\Entity\Node;
+use Drupal\webform\Entity\WebformSubmission;
 
 /**
  * Base Class for FOIA Webform Kernel tests that use the API.
@@ -60,8 +61,6 @@ abstract class FoiaWebformApiKernelTestBase extends FoiaWebformKernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->installSchema('webform', ['webform']);
-    $this->installConfig(['webform', 'webform_template', 'foia_webform']);
     $this->installEntitySchema('foia_request');
     $this->installEntitySchema('webform_submission');
 
@@ -85,7 +84,7 @@ abstract class FoiaWebformApiKernelTestBase extends FoiaWebformKernelTestBase {
       ->loadByProperties(['name' => 'A Test Agency']);
 
     $this->agency = reset($agency);
-
+    $this->setupAgencyComponent();
   }
 
   /**
@@ -131,6 +130,21 @@ abstract class FoiaWebformApiKernelTestBase extends FoiaWebformKernelTestBase {
     ]);
     $agencyComponent->save();
     $this->agencyComponent = $agencyComponent;
+  }
+
+  /**
+   * Sets up a webform submission.
+   */
+  protected function setupWebformSubmission($id = NULL, $data = NULL) {
+    if ($id === NULL) {
+      $id = $this->webform->id();
+    }
+    if ($data === NULL) {
+      $data = ['custom' => 'value'];
+    }
+    $webformSubmission = WebformSubmission::create(['webform_id' => $id, 'data' => $data]);
+    $webformSubmission->save();
+    $this->webformSubmission = $webformSubmission;
   }
 
 }
