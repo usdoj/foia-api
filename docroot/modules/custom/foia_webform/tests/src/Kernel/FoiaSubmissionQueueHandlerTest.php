@@ -4,7 +4,6 @@ namespace Drupal\Tests\foia_webform\Kernel;
 
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
-use Drupal\webform\Entity\WebformSubmission;
 
 /**
  * Class FoiaSubmissionServiceApiTest.
@@ -13,7 +12,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */
-class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformApiKernelTestBase {
+class FoiaSubmissionServiceQueueHandlerTest extends FoiaWebformKernelTestBase {
 
   /**
    * The foia submissions queue.

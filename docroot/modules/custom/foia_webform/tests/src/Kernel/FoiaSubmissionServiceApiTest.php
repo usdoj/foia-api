@@ -23,7 +23,7 @@ use Drupal\file\Entity\File;
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */
-class FoiaSubmissionServiceApiTest extends FoiaWebformApiKernelTestBase {
+class FoiaSubmissionServiceApiTest extends FoiaWebformKernelTestBase {
 
   /**
    * Guzzle client.

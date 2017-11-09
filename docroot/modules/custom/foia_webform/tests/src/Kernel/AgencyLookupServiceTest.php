@@ -10,7 +10,7 @@ use Drupal\node\Entity\Node;
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */
-class AgencyLookupServiceTest extends FoiaWebformApiKernelTestBase {
+class AgencyLookupServiceTest extends FoiaWebformKernelTestBase {
 
   /**
    * Modules to install.
