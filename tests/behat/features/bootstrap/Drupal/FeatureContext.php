@@ -147,4 +147,40 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->getSession()->visit($newPath);
   }
 
+  /**
+     * Check if the given radio button is selected or not
+     *
+     * @param $radioButtonSelector
+     *   string The label of the radio button
+     * @param $selected
+     *   boolean To test against selected or not
+     *
+     * @Given /^I (?:|should )see the radio button "([^"]*)" selected$/
+     * @Then /^the radio button "([^"]*)" (?:is|should be) selected$/
+     * @Then /^the "([^"]*)" radio button (?:is|should be) selected$/
+     */
+    public function isRadioButtonSelected($radioButtonSelector, $selected = TRUE) {
+      // Verify whether a field with the given selector exists or not
+      $field = $this->getSession()->getPage()->findField($radioButtonSelector);
+      if (empty($field)) {
+        throw new \Exception(sprintf("Form field with id|name|label|value '%s' was not found on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+      }
+      // Verify if the field is a radio button or not
+      $type = $field->getAttribute('type');
+      if ($type != "radio") {
+        throw new \Exception(sprintf("The field '%s' was found but it is not a radio button on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+      }
+      // If the field should be selected, then the attribute 'checked' should exist
+      if ($selected) {
+        if (!$field->hasAttribute('checked')) {
+          throw new \Exception(sprintf("The radio button '%s' was not selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+        }
+      }
+      else {
+        if ($field->hasAttribute('checked')) {
+          throw new \Exception(sprintf("The radio button '%s' was selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+        }
+      }
+    }
+
 }
