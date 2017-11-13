@@ -70,7 +70,7 @@ AddEncoding gzip svgz
   RewriteEngine on
 
   # Forbid access to admin and node paths on the api2.foia.gov domain.
-  RewriteCond %{HTTP_HOST} api2.foia.gov
+  RewriteCond %{HTTP_HOST} !(.*)admin\.foia\.gov$ [NC]
   RewriteRule ^(admin.*|node/.+) - [F]
 
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
