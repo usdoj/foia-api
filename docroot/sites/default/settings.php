@@ -770,8 +770,11 @@ $settings['install_profile'] = 'lightning';
  * Disable caching on paths that begin with admin or node.
  */
 if (isset($_GET['q'])) {
-  if (strpos($_GET['q'], 'admin') === 0 ||
-    strpos($_GET['q'], 'node') === 0) {
+  if (
+    strpos($_GET['q'], 'admin') === 0 ||
+    strpos($_GET['q'], 'node') === 0 ||
+    strpos($_GET['q'], 'user') === 0
+  ) {
     $config['page_cache_maximum_age'] = 0;
   }
 }

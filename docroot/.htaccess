@@ -69,10 +69,13 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
+  # Forbid access to install and update files.
+  RewriteRule ^(core/install|update)\.php - [F]
+
   # Forbid access to admin, node, and user paths on domains other than admin.foia.gov and local.dojfoia.gov.
-  RewriteCond %{HTTP_HOST} !local.dojfoia.gov
-  RewriteCond %{HTTP_HOST} !(.*)admin\.foia\.gov$ [NC]
-  RewriteRule ^(admin.*|node/.+|user.*) - [F]
+#  RewriteCond %{HTTP_HOST} !local.dojfoia.gov
+#  RewriteCond %{HTTP_HOST} !(.*)admin\.foia\.gov$ [NC]
+#  RewriteRule ^((admin|node|user)($|/)) - [F]
 
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
