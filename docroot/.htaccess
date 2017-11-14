@@ -72,13 +72,13 @@ AddEncoding gzip svgz
   # Forbid access to install and update files.
   RewriteRule ^(core/install|update)\.php - [F]
 
-  # Forbid access to admin, node, and user paths on domains other than admin.foia.gov and local.dojfoia.gov.
-  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^(prod|test|dev)$
+  # Forbid access to admin, node, and user paths on non-server domains & environments.
+  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
   RewriteCond %{HTTP_HOST} !(.*)admin\.foia\.gov$ [NC]
   RewriteRule ^((admin|node|user)($|/)) - [F]
 
   # Redirect all HTTP server traffic to HTTPS.
-  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^(prod|test|dev)$
+  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [NE,L,R=301]
