@@ -164,9 +164,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $webform = $this->getWebform();
     if ($webform->hasManagedFile()) {
       $elements = $webform->getElementsInitializedAndFlattened();
-      $fileAttachmentElementKeys = [];
       foreach ($elements as $key => $element) {
-        if (isset($element['#type']) && $element['#type'] == 'managed_file') {
+        if (isset($element['#type']) && $element['#type'] === 'managed_file') {
           $fileAttachmentElementKeys[] = $key;
         }
       }

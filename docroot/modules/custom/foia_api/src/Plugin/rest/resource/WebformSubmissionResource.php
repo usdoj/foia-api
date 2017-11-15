@@ -279,13 +279,13 @@ class WebformSubmissionResource extends ResourceBase {
   }
 
   /**
-   * Gets the names of file attachment elements on the webform.
+   * Gets the machine names of file attachment elements on the webform.
    *
    * @param \Drupal\webform\WebformInterface $webform
    *   The webform being submitted against.
    *
    * @return array
-   *   Returns an array of the names of the file attachment elements on the
+   *   Returns an array of machine names of file attachment elements on the
    *   webform being submitted against.
    */
   protected function getFileAttachmentElementsOnWebform(WebformInterface $webform) {
