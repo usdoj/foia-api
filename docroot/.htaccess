@@ -70,6 +70,7 @@ AddEncoding gzip svgz
   RewriteEngine on
 
   # Forbid access to install and update files.
+  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
   RewriteRule ^(core/install|update)\.php - [F]
 
   # Forbid access to admin, node, and user paths on non-server domains & environments.
