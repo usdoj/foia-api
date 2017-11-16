@@ -56,6 +56,8 @@
  * implementations with custom ones.
  */
 
+use Drupal\Component\Utility\Bytes;
+
 /**
  * Database settings:
  *
@@ -765,3 +767,44 @@ $settings['file_scan_ignore_directories'] = [
 # }
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 $settings['install_profile'] = 'lightning';
+
+// @todo Delete the following when https://github.com/acquia/blt/pull/2063 is pulled.
+$fix = __DIR__ . 'apcu_fix.yml';
+$containerYamls = $settings['container_yamls'];
+if (in_array($fix, $containerYamls, TRUE)) {
+  $containerYamls = array_diff($containerYamls, [$fix]);
+  $settings['container_yamls'] = $containerYamls;
+}
+
+// @todo Delete the following when https://github.com/acquia/blt/pull/2063 is pulled.
+// Prevent APCu memory exhaustion.
+// Acquia assigns 8 MB for APCu, which is only adequate for small cache pools.
+$apc_shm_size = Bytes::toInt(ini_get('apc.shm_size'));
+$apcu_fix_size = Bytes::toInt('32M');
+if ($apc_shm_size < $apcu_fix_size) {
+  $containerYamls[] = $fix;
+}
+
+// @todo Delete the following when https://github.com/acquia/blt/pull/2063 is pulled.
+if ($is_ah_env) {
+  switch ($ah_env) {
+    case 'test':
+    case 'prod':
+      if ($modules && isset($modules['module']['memcache'])) {
+        // Use Memcached extension.
+        $memcached_exists = class_exists('Memcached', FALSE);
+        if ($memcached_exists) {
+          $settings['memcache']['extension'] = 'Memcached';
+        }
+
+        // Use memcache as the default bin.
+        $settings['cache']['default'] = 'cache.backend.memcache';
+
+        // Enable stampede protection.
+        $settings['memcache']['stampede_protection'] = TRUE;
+        // Move locks to memcache.
+        $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/default/settings/memcache.yml';
+      }
+      break;
+  }
+}
