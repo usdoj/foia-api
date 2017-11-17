@@ -754,6 +754,7 @@ $settings['file_scan_ignore_directories'] = [
  */
 if ($is_ah_env) {
   switch ($ah_env) {
+    case 'dev':
     case 'test':
     case 'prod':
       if ($modules && isset($modules['module']['memcache'])) {
