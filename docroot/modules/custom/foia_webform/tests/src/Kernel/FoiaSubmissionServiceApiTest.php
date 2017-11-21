@@ -234,11 +234,12 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     }
     $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
     $requestId = ['request_id' => $this->foiaRequest->id()];
+    $confirmationId = ['confirmation_id' => $webformSubmission->id()];
     $agencyInfo = [
       'agency' => $this->agency->label(),
       'agency_component_name' => $this->agencyComponent->label(),
     ];
-    $expectedData = array_merge($apiVersion, $requestId, $agencyInfo, $webformSubmissionData);
+    $expectedData = array_merge($apiVersion, $requestId, $agencyInfo, $webformSubmissionData, $confirmationId);
 
     $this->setProtectedProperty($this->submissionServiceApi, 'agencyComponent', $this->agencyComponent);
     $this->foiaRequest->set('field_webform_submission_id', $webformSubmission->id());
@@ -327,11 +328,12 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     ];
     $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
     $requestId = ['request_id' => $this->foiaRequest->id()];
+    $confirmationId = ['confirmation_id' => $webformSubmission->id()];
     $agencyInfo = [
       'agency' => $this->agency->label(),
       'agency_component_name' => $this->agencyComponent->label(),
     ];
-    $expectedData = array_merge($apiVersion, $requestId, $agencyInfo, $webformSubmissionWithFileContents);
+    $expectedData = array_merge($apiVersion, $requestId, $agencyInfo, $webformSubmissionWithFileContents, $confirmationId);
 
     $this->setProtectedProperty($this->submissionServiceApi, 'agencyComponent', $this->agencyComponent);
     $this->foiaRequest->set('field_webform_submission_id', $webformSubmission->id());
