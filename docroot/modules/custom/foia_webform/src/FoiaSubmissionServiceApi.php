@@ -122,7 +122,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
 
     $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
     $foiaRequestId = ['request_id' => $foiaRequest->id()];
-    $submissionValues = array_merge($foiaRequestId, $apiVersion, $agencyInfo, $formValues);
+    $confirmationId = ['confirmation_id' => $foiaRequest->get('field_webform_submission_id')->value];
+    $submissionValues = array_merge($foiaRequestId, $apiVersion, $agencyInfo, $formValues, $confirmationId);
 
     return $submissionValues;
   }
