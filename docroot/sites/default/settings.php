@@ -765,4 +765,3 @@ $settings['file_scan_ignore_directories'] = [
 # }
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 $settings['install_profile'] = 'lightning';
-

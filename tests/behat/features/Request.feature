@@ -4,6 +4,12 @@ Feature: Request information from an agency
   As an end user
   I should be able to submit a request
 
+  Background:
+    Given I am logged in as a user with the "Administrator" role
+    When I am at "admin/modules"
+    Then I check the box "Database Logging"
+    And I press the "Install" button
+
   @api
   Scenario: Attempt to send request via email with unassociated form
     Given I am logged in as a user with the 'Administrator' role
