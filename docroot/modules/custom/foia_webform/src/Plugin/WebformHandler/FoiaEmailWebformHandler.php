@@ -74,6 +74,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     // Get form submission contents.
     $submissionContents = $webformSubmission->getData();
     $this->listFileAttachmentNamesInSubmission($submissionContents);
+    $submissionContents['confirmation_id'] = $webformSubmission->id();
 
     // Format the submission values as an HTML table.
     $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($foiaRequestId, $submissionContents);
