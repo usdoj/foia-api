@@ -1,0 +1,53 @@
+diff --git a/settings/blt.settings.php b/settings/blt.settings.php
+index c8ef4d26..48acfa70 100644
+--- a/settings/blt.settings.php
++++ b/settings/blt.settings.php
+@@ -4,6 +4,8 @@
+  * Setup BLT utility variables.
+  ******************************************************************************/
+
++use Drupal\Component\Utility\Bytes;
++
+ /**
+  * Host detection.
+  */
+@@ -75,6 +77,14 @@
+  * BLT includes & BLT default configuration.
+  ******************************************************************************/
+
++// Prevent APCu memory exhaustion.
++// Acquia assigns 8 MB for APCu, which is only adequate for small cache pools.
++$apc_shm_size = Bytes::toInt(ini_get('apc.shm_size'));
++$apcu_fix_size = Bytes::toInt('32M');
++if ($apc_shm_size < $apcu_fix_size) {
++  $settings['container_yamls'][] = __DIR__ . '/apcu_fix.yml';
++}
++
+ // Includes caching configuration.
+ require __DIR__ . '/cache.settings.php';
+
+@@ -87,9 +97,6 @@
+ // Includes filesystem configuration.
+ require __DIR__ . '/filesystem.settings.php';
+
+-// Prevent APCu memory exhaustion.
+-$settings['container_yamls'][] = __DIR__ . '/apcu_fix.yml';
+-
+ // Include simplesamlphp settings if the file exists.
+ if (file_exists(__DIR__ . '/simplesamlphp.settings.php')) {
+   require __DIR__ . '/simplesamlphp.settings.php';
+diff --git a/settings/memcache.yml b/settings/memcache.yml
+new file mode 100644
+index 00000000..863cf843
+--- /dev/null
++++ b/settings/memcache.yml
+@@ -0,0 +1,9 @@
++services:
++  # Replaces the default lock backend with a memcache implementation.
++  lock:
++    class: Drupal\Core\Lock\LockBackendInterface
++    factory: memcache.lock.factory:get
++  # Replaces the default persistent lock backend with a memcache implementation.
++  lock.persistent:
++    class: Drupal\Core\Lock\LockBackendInterface
++    factory: memcache.lock.factory:getPersistent
