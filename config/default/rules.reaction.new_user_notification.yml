@@ -29,8 +29,8 @@ expression:
         context_values:
           to:
             - National.FOIAPortal@usdoj.gov
-          subject: 'FOIA.gov new user notification'
-          message: 'A new user account has been created at FOIA.gov user: [user.name.value] [user.mail.value]'
+          subject: 'National FOIA Portal: New user account created'
+          message: 'A new user account has been created at National FOIA Portal. User ID: {{ user.uid.value }} Username: {{ user.name.value }}'
           reply: ''
           language: ''
         context_mapping: {  }
