@@ -81,7 +81,6 @@ AddEncoding gzip svgz
 
   # Redirect all HTTP server traffic to HTTPS.
   RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
-  RewriteCond %{HTTP_HOST} !(.*)acquia-sites\.com$ [NC]
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [NE,L,R=301]
