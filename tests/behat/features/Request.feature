@@ -12,8 +12,7 @@ Feature: Request information from an agency
 
   @api
   Scenario: Attempt to send request via email with unassociated form
-    Given I am logged in as a user with the 'Administrator' role
-    And I am at 'admin/structure/webform/add'
+    Given I am at 'admin/structure/webform/add'
     And for 'Machine-readable name' I enter 'test_webform'
     And for 'Title' I enter 'Test webform'
     And I press the 'Save' button
@@ -30,8 +29,7 @@ Feature: Request information from an agency
 
   @api
   Scenario: Attempt to send request with no associated email
-    Given I am logged in as a user with the 'Administrator' role
-    And I am at 'admin/modules'
+    Given I am at 'admin/modules'
     And I check the box 'Maillog / Mail Developer'
     And I press the 'Install' button
     And I am at 'node/add/agency_component'
@@ -51,8 +49,7 @@ Feature: Request information from an agency
 
   @api
   Scenario: Send request email
-    Given I am logged in as a user with the 'Administrator' role
-    And I am at 'admin/modules'
+    Given I am at 'admin/modules'
     And I check the box 'Maillog / Mail Developer'
     And I press the 'Install' button
     And I am at 'node/add/agency_component'
