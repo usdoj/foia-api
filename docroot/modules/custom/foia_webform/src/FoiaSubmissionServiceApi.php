@@ -122,8 +122,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
 
     $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
     $foiaRequestId = ['request_id' => $foiaRequest->id()];
-    $confirmationId = ['confirmation_id' => $foiaRequest->get('field_webform_submission_id')->value];
-    $submissionValues = array_merge($foiaRequestId, $apiVersion, $agencyInfo, $formValues, $confirmationId);
+    $submissionValues = array_merge($foiaRequestId, $apiVersion, $agencyInfo, $formValues);
 
     return $submissionValues;
   }
@@ -138,7 +137,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   Returns the submission values as an array.
    */
   protected function getSubmissionValues(FoiaRequestInterface $foiaRequest) {
-    $webformSubmission = WebformSubmission::load($foiaRequest->get('field_webform_submission_id')->value);
+    $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
+    $webformSubmission = WebformSubmission::load($webformSubmissionId);
     $webform = $webformSubmission->getWebform();
 
     $submissionValues = $webformSubmission->getData();
@@ -146,6 +146,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     if ($webform->hasManagedFile()) {
       $this->replaceFidsWithFileContents($webform, $submissionValues);
     }
+
+    // Append confirmation ID.
+    $confirmationId = ['confirmation_id' => $webformSubmissionId];
+    $submissionValues = array_merge($submissionValues, $confirmationId);
 
     return $submissionValues;
   }
