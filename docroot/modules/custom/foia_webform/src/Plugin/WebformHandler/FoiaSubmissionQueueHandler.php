@@ -78,6 +78,11 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
       $foiaRequest->set('field_requester_email', $requesterEmailAddress);
     }
 
+    $fileAttachment = $webformSubmission->getElementData('attachments_supporting_documentation');
+    if ($fileAttachment) {
+      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SCAN);
+    }
+
     $foiaRequest->save();
     return $foiaRequest;
   }
