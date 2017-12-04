@@ -29,6 +29,11 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   const STATUS_FAILED = 2;
 
   /**
+   * Request pending file attachment virus scan.
+   */
+  const STATUS_SCAN = 3;
+
+  /**
    * Sent to component via email.
    */
   const METHOD_EMAIL = 'email';
