@@ -11,6 +11,7 @@ use Drupal\webform\Entity\WebformSubmission;
 use Drupal\node\Entity\NodeType;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\file\Entity\File;
 
 /**
  * Class FoiaSubmissionServiceApiTest.
@@ -72,6 +73,7 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
     'foia_webform',
     'node',
     'field',
+    'file',
     'taxonomy',
     'field_permissions',
     'text',
@@ -88,11 +90,13 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
     $this->installSchema('webform', ['webform']);
     $this->installConfig(['webform', 'webform_template', 'foia_webform']);
     $this->installSchema('node', ['node_access']);
+    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('foia_request');
     $this->installEntitySchema('webform_submission');
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('taxonomy_term');
+    $this->installEntitySchema('file');
     $this->foiaSubmissionsQueue = \Drupal::service('queue')->get('foia_submissions');
 
     // Creates webform and specifies to use the template fields.
@@ -139,6 +143,62 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
     $this->assertNull($foiaRequest->get('field_requester_email')->value, 'Created FOIA Request with requester email despite no email address being submitted.');
     $this->assertEquals(FoiaRequestInterface::STATUS_QUEUED, $foiaRequest->getRequestStatus(), 'Created FOIA Request with incorrect status.');
     $this->assertNotEmpty($foiaRequest->getCreatedTime(), 'Created FOIA Request without a created timestamp.');
+  }
+
+  /**
+   * Tests that a request with an attachment gets "Pending virus scan" status.
+   */
+  public function testFoiaRequestAttachmentPendingScan() {
+
+    $webform = Webform::create([
+      'id' => 'a_test_webform',
+    ]);
+
+    $config = \Drupal::config('webform_template.settings')->get('webform_template_elements');
+    $templateElements = yaml_parse($config);
+    $webform->setElements($templateElements);
+    $webform->save();
+
+    // Need to create Drupal file entity.
+    $file = File::create([
+      'uid' => 1,
+      'filename' => 'test.txt',
+      'uri' => 'public://test.txt',
+      'status' => 1,
+    ]);
+    $file->save();
+
+    $dir = dirname($file->getFileUri());
+    if (!file_exists($dir)) {
+      mkdir($dir, 0770, TRUE);
+    }
+    file_put_contents($file->getFileUri(), "test");
+    $file->save();
+
+    /** @var \Drupal\file\FileUsage\FileUsageInterface $file_usage */
+    $file_usage = \Drupal::service('file.usage');
+    $file_usage->add($file, 'foia_webform', 'user', 1);
+    $file->save();
+
+    $webformSubmissionData = [
+      'request_description' => 'show me the info!',
+      'attachments_supporting_documentation' => $file->id(),
+    ];
+
+    $webformSubmission = WebformSubmission::create([
+      'webform_id' => $this->webform->id(),
+      'data' => $webformSubmissionData,
+    ]);
+    $webformSubmission->save();
+    $this->webformSubmission = $webformSubmission;
+
+    $queuedSubmission = $this->foiaSubmissionsQueue->claimItem()->data;
+
+    $this->assertNotEmpty($queuedSubmission, "Expeted a FOIA request ID to be queued, but nothing was found in the queue.");
+    $this->assertEquals('1', $queuedSubmission->id, "Queued FOIA Request ID does not match expected.");
+
+    $foiaRequest = FoiaRequest::load($queuedSubmission->id);
+    $this->assertEquals(FoiaRequestInterface::STATUS_SCAN, $foiaRequest->getRequestStatus());
   }
 
   /**
