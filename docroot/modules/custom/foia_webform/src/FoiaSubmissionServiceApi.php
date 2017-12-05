@@ -122,7 +122,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
 
     $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
     $foiaRequestId = ['request_id' => $foiaRequest->id()];
-    $submissionValues = array_merge($foiaRequestId, $apiVersion, $agencyInfo, $formValues);
+    $submissionValues = array_merge($apiVersion, $agencyInfo, $foiaRequestId, $formValues);
 
     return $submissionValues;
   }
@@ -149,7 +149,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
 
     // Append confirmation ID.
     $confirmationId = ['confirmation_id' => $webformSubmissionId];
-    $submissionValues = array_merge($submissionValues, $confirmationId);
+    $submissionValues = array_merge($confirmationId, $submissionValues);
 
     return $submissionValues;
   }
