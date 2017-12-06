@@ -1,0 +1,65 @@
+uuid: a731f671-179e-43ff-b570-23535adc983d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.file.attachment_support_document.field_virus_scan_status
+    - file_entity.type.attachment_support_document
+  module:
+    - file_entity
+    - options
+id: file.attachment_support_document.default
+targetEntityType: file
+bundle: attachment_support_document
+mode: default
+content:
+  field_virus_scan_status:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  filemime:
+    type: string
+    weight: 2
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  filename:
+    type: string
+    label: hidden
+    weight: -5
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  filesize:
+    type: file_size
+    weight: 3
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  uid:
+    type: uri_link
+    weight: 1
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  uri:
+    type: file_image
+    label: hidden
+    weight: -5
+    region: content
+    settings:
+      title: field_image_title_text
+      alt: field_image_alt_text
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+hidden:
+  url: true
