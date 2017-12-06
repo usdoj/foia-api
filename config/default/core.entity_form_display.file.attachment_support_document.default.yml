@@ -1,0 +1,27 @@
+uuid: 7d8b8778-2549-4f9a-b200-baa3dae3f866
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.file.attachment_support_document.field_virus_scan_status
+    - file_entity.type.attachment_support_document
+id: file.attachment_support_document.default
+targetEntityType: file
+bundle: attachment_support_document
+mode: default
+content:
+  field_virus_scan_status:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  filename:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
