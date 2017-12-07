@@ -6,6 +6,7 @@ use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -78,13 +79,37 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
       $foiaRequest->set('field_requester_email', $requesterEmailAddress);
     }
 
-    $fileAttachment = $webformSubmission->getElementData('attachments_supporting_documentation');
-    if ($fileAttachment) {
-      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SCAN);
+    $webform = $webformSubmission->getWebform();
+    if ($webform->hasManagedFile()) {
+      $fileAttachmentElementsOnWebform = $this->getFileAttachmentElementsOnWebform($webform);
+      if (!empty($fileAttachmentElementsOnWebform)) {
+        $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SCAN);
+      }
     }
 
     $foiaRequest->save();
     return $foiaRequest;
+  }
+
+  /**
+   * Gets the submitted file attachment data.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform being submitted against.
+   *
+   * @return array
+   *   Returns an array of machine names of file attachment elements on the
+   *   webform being submitted against.
+   */
+  protected function getFileAttachmentElementsOnWebform(WebformInterface $webform) {
+    $elements = $webform->getElementsIntitialized();
+    $fileAttachmentElementKeys = [];
+    foreach ($elements as $key => $element) {
+      if (isset($element['#type']) && $element['#type'] == 'managed_file') {
+        $fileAttachmentElementKeys[] = $key;
+      }
+    }
+    return $fileAttachmentElementKeys;
   }
 
   /**
