@@ -4,9 +4,9 @@ namespace Drupal\foia_api\Plugin\rest\resource;
 
 use Drupal\Component\Utility\Bytes;
 use Drupal\Core\Entity\Query\QueryFactory;
-use Drupal\file\Entity\File;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\FileUsage\FileUsageInterface;
+use Drupal\file_entity\Entity\FileEntity;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\rest\Plugin\ResourceBase;
@@ -396,7 +396,7 @@ class WebformSubmissionResource extends ResourceBase {
    * @param array $fileAttachment
    *   An individual file attachment.
    *
-   * @return \Drupal\file\FileInterface
+   * @return \Drupal\file\FileEntityInterface
    *   Returns a file entity corresponding to the given file attachment.
    */
   protected function createFileEntityInTempStorage(array $fileAttachment) {
@@ -406,12 +406,14 @@ class WebformSubmissionResource extends ResourceBase {
     $fileName = isset($fileAttachment['filename']) ? $fileAttachment['filename'] : '';
     $fileUri = file_unmanaged_save_data($fileContents);
     if ($fileUri) {
-      $file = File::create([
+      $file = FileEntity::create([
+        'type' => 'attachment_support_document',
         'uri' => $fileUri,
         'uid' => \Drupal::currentUser()->id(),
         'filesize' => $fileSize,
         'filemime' => $mimeType,
         'filename' => $fileName,
+        'field_virus_scan_status' => 'scan',
       ]);
       $file->save();
       return $file;
@@ -441,7 +443,7 @@ class WebformSubmissionResource extends ResourceBase {
       $fileExtensions = isset($element['#file_extensions']) ? $element['#file_extensions'] : $defaultProperties['file_extensions'];
       $validators['file_validate_size'] = [$maxFileSize];
       $validators['file_validate_extensions'] = [$fileExtensions];
-      /** @var \Drupal\file\FileInterface $file */
+      /** @var \Drupal\file\FileEntityInterface $file */
       foreach ($files as $file) {
         $fileSizes[] = $file->getSize();
         $validationErrors = file_validate($file, $validators);
@@ -451,7 +453,7 @@ class WebformSubmissionResource extends ResourceBase {
       }
     }
     // No individual files failed validation.
-    // So do a global check against total upload size against max upload limit.
+    // So do a global check of total upload size against max upload limit.
     if (!$errors) {
       $uploadSizeError = $this->validateTotalFileUploadSizeBelowMax($fileSizes);
       if ($uploadSizeError) {
@@ -524,7 +526,7 @@ class WebformSubmissionResource extends ResourceBase {
   protected function attachFileEntitiesToSubmission(array $filesByFieldName, array &$data) {
     foreach ($filesByFieldName as $fieldName => $files) {
       unset($data[$fieldName]);
-      /** @var \Drupal\file\FileInterface $file */
+      /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {
         $data[$fieldName][] = $file->id();
       }
@@ -539,7 +541,7 @@ class WebformSubmissionResource extends ResourceBase {
    */
   protected function deleteFilesFromTemporaryStorage(array $filesByFieldName) {
     foreach ($filesByFieldName as $files) {
-      /** @var \Drupal\file\FileInterface $file */
+      /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {
         file_delete($file->id());
       }
@@ -562,7 +564,7 @@ class WebformSubmissionResource extends ResourceBase {
       $defaultProperties = $this->getDefaultWebformElementProperties($element);
       $uriScheme = isset($element['#uri_scheme']) ? $element['#uri_scheme'] : $defaultProperties['uri_scheme'];
 
-      /** @var \Drupal\file\FileInterface $file */
+      /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {
         $sourceUri = $file->getFileUri();
         $destinationUri = "{$uriScheme}://webform/{$webform->id()}/{$webformSubmission->id()}/{$file->getFilename()}";
