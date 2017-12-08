@@ -74,9 +74,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     // Get form submission contents.
     $submissionContents = $webformSubmission->getData();
     $this->listFileAttachmentNamesInSubmission($submissionContents);
+    $submissionMetadata = [
+      'request_id' => $foiaRequestId,
+      'confirmation_id' => $webformSubmission->id(),
+    ];
+    $submissionContents = array_merge($submissionMetadata, $submissionContents);
 
     // Format the submission values as an HTML table.
-    $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($foiaRequestId, $submissionContents);
+    $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($submissionContents);
     $message['body'] = $submissionContentsAsTable;
 
     return $message;
@@ -200,25 +205,21 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   /**
    * Formats the webform submission contents as an HTML table.
    *
-   * @param string $foiaRequestId
-   *   The id of the FOIA request to include in the email.
    * @param array $submissionContents
    *   The webform submission contents.
    *
    * @return string
    *   Returns the submission contents as an HTML table.
    */
-  protected function formatSubmissionContentsAsTable($foiaRequestId, array $submissionContents) {
-    $tableHeaders = array_merge(['request_id'], array_keys($submissionContents));
-    $tableRows = array_merge(['request_id' => $foiaRequestId], $submissionContents);
+  protected function formatSubmissionContentsAsTable(array $submissionContents) {
     $table = [
       '#markup' => t('Hello,') . '<br />' . t('A new FOIA request was submitted to your agency component:') . '<br /><br />',
     ];
 
     $table['values'] = [
       '#theme' => 'table',
-      '#header' => $tableHeaders,
-      '#rows' => ['data' => $tableRows],
+      '#header' => array_keys($submissionContents),
+      '#rows' => ['data' => $submissionContents],
     ];
 
     return \Drupal::service('renderer')->renderPlain($table);
