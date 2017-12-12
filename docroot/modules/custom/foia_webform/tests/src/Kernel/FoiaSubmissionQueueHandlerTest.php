@@ -150,10 +150,7 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
    */
   public function testFoiaRequestAttachmentPendingScan() {
 
-    $webform = Webform::create([
-      'id' => 'a_test_webform',
-    ]);
-
+    $webform = $this->webform;
     $config = \Drupal::config('webform_template.settings')->get('webform_template_elements');
     $templateElements = yaml_parse($config);
     $webform->setElements($templateElements);
@@ -182,11 +179,11 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
 
     $webformSubmissionData = [
       'request_description' => 'show me the info!',
-      'attachments_supporting_documentation' => $file->id(),
+      'attachments_supporting_documentation' => [$file->id()],
     ];
 
     $webformSubmission = WebformSubmission::create([
-      'webform_id' => $this->webform->id(),
+      'webform_id' => $webform->id(),
       'data' => $webformSubmissionData,
     ]);
     $webformSubmission->save();
@@ -194,7 +191,7 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
 
     $queuedSubmission = $this->foiaSubmissionsQueue->claimItem()->data;
 
-    $this->assertNotEmpty($queuedSubmission, "Expeted a FOIA request ID to be queued, but nothing was found in the queue.");
+    $this->assertNotEmpty($queuedSubmission, "Expected a FOIA request ID to be queued, but nothing was found in the queue.");
     $this->assertEquals('1', $queuedSubmission->id, "Queued FOIA Request ID does not match expected.");
 
     $foiaRequest = FoiaRequest::load($queuedSubmission->id);
