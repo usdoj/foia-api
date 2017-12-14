@@ -29,6 +29,11 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   const STATUS_FAILED = 2;
 
   /**
+   * Request pending file attachment virus scan.
+   */
+  const STATUS_SCAN = 3;
+
+  /**
    * Sent to component via email.
    */
   const METHOD_EMAIL = 'email';
@@ -42,9 +47,10 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    * Gets the status of the foia_request entity.
    *
    * @return int
-   *   One of FoiaRequestInterface::QUEUED or
-   *   FoiaRequestInterface::SUBMITTED or
-   *   FoiaRequestInterface::FAILED.
+   *   One of FoiaRequestInterface::STATUS_QUEUED or
+   *   FoiaRequestInterface::STATUS_SUBMITTED or
+   *   FoiaRequestInterface::STATUS_FAILED or
+   *   FoiaRequestInterface::STATUS_SCAN.
    */
   public function getRequestStatus();
 
@@ -52,9 +58,10 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    * Sets the status of the foia_request entity.
    *
    * @param int $requestStatus
-   *   Set to QUEUED to mark enqueued,
-   *   SUBMITTED to mark submitted,
-   *   FAILED to mark failure.
+   *   Set to FoiaRequestInterface::STATUS_QUEUED to mark enqueued,
+   *   FoiaRequestInterface::STATUS_SUBMITTED to mark submitted,
+   *   FoiaRequestInterface::STATUS_FAILED to mark failure,
+   *   FoiaRequestInterface::STATUS_SCAN to mark file(s) pending virus scan.
    *
    * @return \Drupal\foia_request\Entity\FoiaRequestInterface
    *   The called foia_request entity.

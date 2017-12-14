@@ -6,6 +6,7 @@ use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -78,8 +79,71 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
       $foiaRequest->set('field_requester_email', $requesterEmailAddress);
     }
 
+    if ($this->fileAttachmentSubmitted($webformSubmission)) {
+      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SCAN);
+    }
+
     $foiaRequest->save();
     return $foiaRequest;
+  }
+
+  /**
+   * Determines whether or not any file attachments were submitted.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   *   The webform submission.
+   *
+   * @return bool
+   *   TRUE if at least one attachment was submitted, otherwise FALSE.
+   */
+  protected function fileAttachmentSubmitted(WebformSubmissionInterface $webformSubmission) {
+    $webform = $webformSubmission->getWebform();
+    if ($webform->hasManagedFile()) {
+      $fileAttachmentElementsOnWebform = $this->getFileAttachmentElementsOnWebform($webform);
+      return $this->fileAttachmentsExist($fileAttachmentElementsOnWebform, $webformSubmission);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Gets the machine names of all file attachment elements on the webform.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform being submitted against.
+   *
+   * @return array
+   *   Returns an array of machine names of file attachment elements on the
+   *   webform being submitted against.
+   */
+  protected function getFileAttachmentElementsOnWebform(WebformInterface $webform) {
+    $elements = $webform->getElementsInitialized();
+    $fileAttachmentElementKeys = [];
+    foreach ($elements as $key => $element) {
+      if (isset($element['#type']) && $element['#type'] == 'managed_file') {
+        $fileAttachmentElementKeys[] = $key;
+      }
+    }
+    return $fileAttachmentElementKeys;
+  }
+
+  /**
+   * Determines whether or not any file attachments were submitted.
+   *
+   * @param array $fileAttachmentElementKeys
+   *   The machine names of all file attachment elements on the webform.
+   * @param \Drupal\webform\WebformSubmissionInterface $webformSubmission
+   *   The webform submission.
+   *
+   * @return bool
+   *   TRUE if at least one attachment was submitted, otherwise FALSE.
+   */
+  protected function fileAttachmentsExist(array $fileAttachmentElementKeys, WebformSubmissionInterface $webformSubmission) {
+    foreach ($fileAttachmentElementKeys as $fileAttachmentElementKey) {
+      if ($webformSubmission->getElementData($fileAttachmentElementKey)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**
