@@ -65,10 +65,16 @@ function drush_foia_file_file_entity_updater_validate($clamAvOutput) {
  */
 function drush_foia_file_file_entity_updater($clamAvOutput) {
 
+  // Get filename trimmed to webform dir
+  // Delete all instances of the string '/var/www/html/foia.uat/acquia-files/files-private/webform/'.
+
+  $trimmedFiles = str_replace('/var/www/html/foia.uat/acquia-files/files-private/webform/', '', $clamAvOutput);
+
+
   // Sprint string into lines
 
   // This works VV @todo preg split \R???
-  $scans = explode("\\n", $clamAvOutput);
+  $scans = explode("\\n", $trimmedFiles);
 
 //  $scans = preg_split("/$\\R?^/m", $clamAvOutput);
 //  print_r($scans);
@@ -81,24 +87,64 @@ function drush_foia_file_file_entity_updater($clamAvOutput) {
     // Split the string into filename and status
 
     preg_match('/[^ ]*$/', $scan, $wordsArray);
-    $lastWord = $wordsArray[0];
-    print_r($lastWord);
+    $status = $wordsArray[0];
+    print_r($status);
     print_r(" | ");
 
     // Get fully qualified file path (everything except for the last word)
 
     //preg_replace('/$last');
     $scanLength = strlen($scan);
-    $statusLength = strlen($lastWord);
+    $statusLength = strlen($status);
     $fileLength = $scanLength-$statusLength-2;
-    $fileName = substr($scan, 0, $fileLength);
+    $fileNameWithVirusName = substr($scan, 0, $fileLength);
+    print_r($fileNameWithVirusName);
+    print_r(" | ");
+
+    // Trim virus description
+    // regex = allowed file extension, colon, space, no allowed file extension
+
+    preg_match('/(\.(pdf|txt|doc|docx|fodt|odt|gif|jpg|png))(: .*)?$/', $fileNameWithVirusName, $fileExtension);
+    print_r('fileExtension');
+    print_r($fileExtension);
+    print_r($fileExtension[1]);
+    $delimiter = $fileExtension[1];
+    $fileName = substr($scan, 0, strpos($fileNameWithVirusName, $delimiter));
     print_r($fileName);
+
+    print_r($fileExtension[1]);
+
+    $fileNameWithExtension = $fileName.$fileExtension[1];
+    print_r('!!!!!!!!!');
+    print_r($fileNameWithExtension);
 
     // Determine file entity id based upon file path & name
 
+    $query = \Drupal::entityQuery('file')
+      ->condition('uri', "private://webform/{$fileNameWithExtension}");
+    $fids = $query->execute();
+
+    $fid = array_values($fids)[0];
+
+
+    // Validate that only one item in fids array.
+
+    // Nice to have >> verify that submission id is same as file path
+
     // Update file entity based upon status
 
+    print_r($fid);
+    print_r($status);
+
       // If clean or virus, set file entity status to clean or virus
+    $fileEntity = Drupal\file_entity\Entity\FileEntity::load($fid);
+    if ($status === "OK") {
+      $fileEntity->set('field_virus_scan_status', 'clean');
+    } elseif ($status === "Removed.") {
+      $fileEntity->set('field_virus_scan_status', 'virus');
+    }
+    $fileEntity->save();
+
 
     // ??? handle white spaces from filename
 
