@@ -42,7 +42,7 @@ function drush_foia_file_file_entity_updater($scanResult) {
   $trimmedFiles = str_replace($webformDir, '', $scanResult);
 
   // Split string into lines. @todo change to preg split \R?
-  $scans = explode("\\n", $trimmedFiles);
+  $scans = explode("\n", $trimmedFiles);
 
   foreach ($scans as $scan) {
 
