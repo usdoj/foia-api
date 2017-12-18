@@ -2,7 +2,7 @@
 
 /**
  * @file
- * FOIA Api module drush commands.
+ * FOIA Api module drush command.
  */
 
 use Drupal\file_entity\Entity\FileEntity;
@@ -17,7 +17,6 @@ function foia_file_drush_command() {
     'description' => 'Updates file entities virus scan statuses.',
     'core' => ['8+'],
     'arguments' => [
-      'fully_qualified_fine_name' => 'A filename that includes the complete absolute path on the server.',
       'scan_result' => 'The result of the file scan.',
     ],
     'aliases' => ['feu'],
@@ -35,24 +34,24 @@ function drush_foia_file_file_entity_updater($scanResult) {
 
   $message = "File Entity updater started. *******************************\n";
 
+  // Get webform directory on the server.
   $fileDir = explode('/webform/', $scanResult, 2);
   $webformDir = "{$fileDir[0]}/webform/";
 
-  // Get filename trimmed to webform dir
-  // Temporarily delete all instances of the $webformDir.
+  // Temporarily delete instances of the webform directory during processing.
   $trimmedFiles = str_replace($webformDir, '', $scanResult);
 
-  // Sprint string into lines.
-  // @todo change to preg split \R?
+  // Split string into lines. @todo change to preg split \R?
   $scans = explode("\\n", $trimmedFiles);
 
   foreach ($scans as $scan) {
 
-    // Split the string into filename and status.
+    // Split the scan line into filename and status.
     preg_match('/[^ ]*$/', $scan, $wordsArray);
+    // Set status to the last word of the line.
     $status = $wordsArray[0];
 
-    // Get fully qualified file path (everything except for the last word)
+    // Get relative file path.
     $scanLength = strlen($scan);
     $statusLength = strlen($status);
     $fileLength = $scanLength - $statusLength - 2;
