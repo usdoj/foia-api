@@ -35,7 +35,7 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
         $foiaRequest = $this->createFoiaRequest($webformSubmission, $componentAssociatedToWebform);
       }
 
-      if ($foiaRequest && $foiaRequest->getRequestStatus() === 0) {
+      if ($foiaRequest && $foiaRequest->getRequestStatus() === FoiaRequestInterface::STATUS_QUEUED) {
         $queuer = new FoiaSubmissionQueueingService();
         $queuer->addRequestToQueue($foiaRequest);
       }
