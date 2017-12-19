@@ -60,7 +60,7 @@ function drush_foia_file_file_entity_update($scanResult) {
     // Trim virus description.
     $config = \Drupal::config('file_entity.settings');
     $extensions = $config->get('default_allowed_extensions');
-    preg_match('/(\.('. $extensions .'))(: .*)?$/', $fileNameWithVirusName, $fileExtension);
+    preg_match('/(\.(' . $extensions . '))(: .*)?$/', $fileNameWithVirusName, $fileExtension);
     $delimiter = $fileExtension[1];
     $fileName = substr($scan, 0, strpos($fileNameWithVirusName, $delimiter));
     $fileNameWithExtension = $fileName . $fileExtension[1];
@@ -77,7 +77,8 @@ function drush_foia_file_file_entity_update($scanResult) {
 
     // Update file entity based upon status.
     $fileEntity = FileEntity::load($fid);
-    if ($fileEntity && $fileEntity->get('field_virus_scan_status')->getString() === 'scan') {
+    $doNotScanStates = ['clean', 'virus'];
+    if ($fileEntity && !in_array($fileEntity->get('field_virus_scan_status')->getString(), $doNotScanStates)) {
       if ($status === "OK") {
         $fileEntity->set('field_virus_scan_status', 'clean');
         $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to clean.\n";
