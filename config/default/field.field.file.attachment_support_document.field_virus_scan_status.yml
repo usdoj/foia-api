@@ -1,0 +1,23 @@
+uuid: e5697c15-b055-4771-8cac-c88b6c8f8366
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.file.field_virus_scan_status
+    - file_entity.type.attachment_support_document
+  module:
+    - options
+id: file.attachment_support_document.field_virus_scan_status
+field_name: field_virus_scan_status
+entity_type: file
+bundle: attachment_support_document
+label: 'Virus scan status'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: scan
+default_value_callback: ''
+settings: {  }
+field_type: list_string
