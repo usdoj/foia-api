@@ -13,7 +13,7 @@ use Drupal\file_entity\Entity\FileEntity;
 function foia_file_drush_command() {
   $items = [];
 
-  $items['file-entity-updater'] = [
+  $items['file-entity-update'] = [
     'description' => 'Updates file entities virus scan statuses.',
     'core' => ['8+'],
     'arguments' => [
@@ -28,11 +28,11 @@ function foia_file_drush_command() {
 /**
  * Implements drush_hook_COMMAND().
  */
-function drush_foia_file_file_entity_updater($scanResult) {
+function drush_foia_file_file_entity_update($scanResult) {
 
   $startTime = microtime(TRUE);
 
-  $message = "File Entity updater started. *******************************\n";
+  $message = "File Entity update started. *******************************\n";
 
   // Get webform directory on the server.
   $fileDir = explode('/webform/', $scanResult, 2);
@@ -101,7 +101,7 @@ function drush_foia_file_file_entity_updater($scanResult) {
 
   $executionTime = ($endTime - $startTime);
 
-  $message .= "File Entity updater completed in {$executionTime} seconds.";
+  $message .= "File Entity update completed in {$executionTime} seconds.";
 
   return $message;
 
