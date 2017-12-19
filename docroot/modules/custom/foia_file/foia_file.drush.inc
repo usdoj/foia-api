@@ -58,7 +58,9 @@ function drush_foia_file_file_entity_update($scanResult) {
     $fileNameWithVirusName = substr($scan, 0, $fileLength);
 
     // Trim virus description.
-    preg_match('/(\.(pdf|txt|doc|docx|fodt|odt|gif|jpg|png))(: .*)?$/', $fileNameWithVirusName, $fileExtension);
+    $config = \Drupal::config('file_entity.settings');
+    $extensions = $config->get('default_allowed_extensions');
+    preg_match('/(\.('. $extensions .'))(: .*)?$/', $fileNameWithVirusName, $fileExtension);
     $delimiter = $fileExtension[1];
     $fileName = substr($scan, 0, strpos($fileNameWithVirusName, $delimiter));
     $fileNameWithExtension = $fileName . $fileExtension[1];
