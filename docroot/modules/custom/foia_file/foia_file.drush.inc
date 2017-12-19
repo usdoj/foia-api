@@ -75,15 +75,26 @@ function drush_foia_file_file_entity_updater($scanResult) {
 
     // Update file entity based upon status.
     $fileEntity = FileEntity::load($fid);
-    if ($status === "OK") {
-      $fileEntity->set('field_virus_scan_status', 'clean');
-      $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to clean.\n";
+    if ($fileEntity && $fileEntity->get('field_virus_scan_status') === 'scan') {
+      if ($status === "OK") {
+        $fileEntity->set('field_virus_scan_status', 'clean');
+        $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to clean.\n";
+      }
+      elseif ($status === "Removed.") {
+        $fileEntity->set('field_virus_scan_status', 'virus');
+        $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to virus.\n";
+      }
+      $fileEntity->save();
     }
-    elseif ($status === "Removed.") {
-      $fileEntity->set('field_virus_scan_status', 'virus');
-      $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to virus.\n";
+    else {
+      if ($fileEntity) {
+        $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} has already been scanned {$fileNameWithExtension}.\n";
+      }
+      else {
+        $message .= "There is no entity associated with {$fileNameWithExtension}.\n";
+      }
     }
-    $fileEntity->save();
+
   }
 
   $endTime = microtime(TRUE);
