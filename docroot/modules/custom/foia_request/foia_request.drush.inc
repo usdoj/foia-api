@@ -7,7 +7,9 @@
 
 use Drupal\webform\entity\WebformSubmission;
 use Drupal\file\Entity\File;
-use Drupal\webform\WebformInterface;
+use Drupal\foia_webform\FileFieldLookupService;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
+use Drupal\foia_request\Entity\FoiaRequest;
 
 /**
  * Implements hook_drush_command().
@@ -67,7 +69,8 @@ function foia_request_check_requests($request) {
     $file_fields = $attachment_fields[$webform_id];
   }
   else {
-    $attachment_fields[$webform_id] = foia_request_get_file_fields($webform);
+    $file_field_lookup = new FileFieldLookupService();
+    $attachment_fields[$webform_id] = $file_field_lookup->getFileAttachmentElementsOnWebform($webform);
     $file_fields = $attachment_fields[$webform_id];
   }
 
@@ -116,31 +119,14 @@ function foia_request_check_file_statuses(array $file_ids) {
 }
 
 /**
- * Returns all file attachment fields associated with a given Webform.
- *
- * @param \Drupal\webform\WebformInterface $webform
- *   The webform to check.
- *
- * @return array
- *   Returns an array containing the file field keyes.
- */
-function foia_request_get_file_fields(WebformInterface $webform) {
-  $elements = $webform->getElementsInitialized();
-  $file_attachment_element_keys = [];
-  foreach ($elements as $key => $element) {
-    if (isset($element['#type']) && $element['#type'] == 'managed_file') {
-      $file_attachment_element_keys[] = $key;
-    }
-  }
-  return $file_attachment_element_keys;
-}
-
-/**
  * Adds the clean request to the Queue.
  *
  * @param object $request
  *   An database object containing the submission ID and foia_request ID.
  */
 function foia_request_queue_request($request) {
-
+  $foiaRequest = FoiaRequest::load($request->id);
+  \Drupal::service('foia_webform.foia_submission_queueing_service')
+    ->enqueue($foiaRequest);
+  $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_QUEUED);
 }
