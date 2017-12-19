@@ -75,7 +75,7 @@ function drush_foia_file_file_entity_updater($scanResult) {
 
     // Update file entity based upon status.
     $fileEntity = FileEntity::load($fid);
-    if ($fileEntity && $fileEntity->get('field_virus_scan_status') === 'scan') {
+    if ($fileEntity && $fileEntity->get('field_virus_scan_status')->getString() === 'scan') {
       if ($status === "OK") {
         $fileEntity->set('field_virus_scan_status', 'clean');
         $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to clean.\n";
