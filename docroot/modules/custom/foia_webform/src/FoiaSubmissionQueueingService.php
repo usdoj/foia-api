@@ -3,6 +3,8 @@
 namespace Drupal\foia_webform;
 
 use Drupal\foia_request\Entity\FoiaRequestInterface;
+use Drupal\Core\Queue\QueueFactory;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class FoiaSubmissionQueueingService.
@@ -10,19 +12,43 @@ use Drupal\foia_request\Entity\FoiaRequestInterface;
 class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInterface {
 
   /**
+   * The core Queue factory.
+   *
+   * @var \Drupal\Core\Queue\QueueFactory
+   */
+  protected $queueFactory;
+
+  /**
+   * A logger instance.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
+   * Constructs the Queueing service.
+   *
+   * @param \Drupal\Core\Queue\QueueFactory $queueFactory
+   *   The core Queue Factory.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The core Logger interface.
+   */
+  public function __construct(QueueFactory $queueFactory, LoggerInterface $logger) {
+    $this->queueFactory = $queueFactory;
+    $this->logger = $logger;
+  }
+
+  /**
    * {@inheritdoc}
    */
-  public function addRequestToQueue(FoiaRequestInterface $foiaRequest) {
-    /** @var \Drupal\Core\Queue\QueueFactory $queueFactory */
-    $queueFactory = \Drupal::service('queue');
-
+  public function enqueue(FoiaRequestInterface $foiaRequest) {
     // @var QueueInterface $queue
-    $foiaSubmissionsQueue = $queueFactory->get('foia_submissions');
+    $foiaSubmissionsQueue = $this->queueFactory->get('foia_submissions');
     $submission = new \stdClass();
     $submission->id = $foiaRequest->id();
 
     // Log the form submission.
-    \Drupal::logger('foia_webform')
+    $this->logger
       ->info('FOIA request #%request_id added to queue.',
         [
           '%request_id' => $foiaRequest->id(),
