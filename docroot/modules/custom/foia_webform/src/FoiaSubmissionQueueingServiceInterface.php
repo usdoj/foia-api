@@ -15,6 +15,6 @@ interface FoiaSubmissionQueueingServiceInterface {
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
    *   The FOIA Request to queue for later processing.
    */
-  public function addRequestToQueue(FoiaRequestInterface $foiaRequest);
+  public function enqueue(FoiaRequestInterface $foiaRequest);
 
 }

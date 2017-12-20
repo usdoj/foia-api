@@ -4,7 +4,6 @@ namespace Drupal\foia_webform\Plugin\WebformHandler;
 
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
-use Drupal\foia_webform\FoiaSubmissionQueueingService;
 use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformInterface;
@@ -33,11 +32,7 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
       $componentAssociatedToWebform = $this->getComponentAssociatedToWebform($webformSubmission);
       if ($componentAssociatedToWebform) {
         $foiaRequest = $this->createFoiaRequest($webformSubmission, $componentAssociatedToWebform);
-      }
-
-      if ($foiaRequest && $foiaRequest->getRequestStatus() === FoiaRequestInterface::STATUS_QUEUED) {
-        $queuer = new FoiaSubmissionQueueingService();
-        $queuer->addRequestToQueue($foiaRequest);
+        $this->queueFoiaRequest($foiaRequest);
       }
     }
   }
@@ -149,6 +144,19 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
       }
     }
     return FALSE;
+  }
+
+  /**
+   * Enqueue the FOIA Request if the status is STATUS_QUEUED.
+   *
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA Request to be enqueued.
+   */
+  protected function queueFoiaRequest(FoiaRequestInterface $foiaRequest) {
+    if ($foiaRequest->getRequestStatus() === FoiaRequestInterface::STATUS_QUEUED) {
+      \Drupal::service('foia_webform.foia_submission_queueing_service')
+        ->enqueue($foiaRequest);
+    }
   }
 
 }
