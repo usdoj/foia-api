@@ -55,7 +55,7 @@ class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInte
         ]
       );
 
-    $foiaSubmissionsQueue->createItem($submission);
+    return $foiaSubmissionsQueue->createItem($submission);
   }
 
 }
