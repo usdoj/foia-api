@@ -43,7 +43,7 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
 
   $startTime = microtime(TRUE);
 
-  $message = "File Entity update validation started. ***********************\n";
+  drush_log("File Entity update validation started. ***********************", LogLevel::INFO);
 
   // Get allowed extensions.
   $config = \Drupal::config('file_entity.settings');
@@ -97,9 +97,7 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
 
   $executionTime = ($endTime - $startTime);
 
-  $message .= "File Entity update validation completed in {$executionTime} seconds.";
-
-  return $message;
+  drush_log("File Entity update validation completed in {$executionTime} seconds.", LogLevel::INFO);
 
 }
 
@@ -156,7 +154,12 @@ function drush_foia_file_file_entity_update($scanOutput) {
     // @todo Nice to have >> verify that submission id is same as file path.
 
     // Update file entity based upon status.
-    $fileEntity = FileEntity::load($fid);
+    if ($fid) {
+      $fileEntity = FileEntity::load($fid);
+    }
+    else {
+      $fileEntity = NULL;
+    }
     $doNotScanStates = ['clean', 'virus'];
     if ($fileEntity && !in_array($fileEntity->get('field_virus_scan_status')->getString(), $doNotScanStates)) {
       if ($status === "OK") {
