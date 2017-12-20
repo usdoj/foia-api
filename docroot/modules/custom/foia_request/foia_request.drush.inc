@@ -106,7 +106,7 @@ function foia_request_check_file_statuses(array $file_ids) {
   foreach ($file_ids as $file_id) {
     $file = File::load($file_id);
     if ($file->hasField('field_virus_scan_status')) {
-      $file_status = $file->get('field_virus_scan_status');
+      $file_status = $file->get('field_virus_scan_status')->value;
       if ($file_status === 'scan') {
         return FALSE;
       }
@@ -126,7 +126,27 @@ function foia_request_check_file_statuses(array $file_ids) {
  */
 function foia_request_queue_request($request) {
   $foiaRequest = FoiaRequest::load($request->id);
-  \Drupal::service('foia_webform.foia_submission_queueing_service')
+  $enqueueing_status = \Drupal::service('foia_webform.foia_submission_queueing_service')
     ->enqueue($foiaRequest);
+
+  if ($enqueueing_status) {
+    foia_request_update_request_status($foiaRequest);
+  }
+  else {
+    Drupal::logger('FOIA Request Drush')
+      ->warning('Unable to enqueue FOIA Request ID: @id', [
+        '@id' => $foiaRequest->id(),
+      ]);
+  }
+}
+
+/**
+ * Update the Request status after enqueueing.
+ *
+ * @param \Drupal\foia_request\Entity\FoiaRequest $foiaRequest
+ *   The FOIA Request entity.
+ */
+function foia_request_update_request_status(FoiaRequest $foiaRequest) {
   $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_QUEUED);
+  $foiaRequest->save();
 }
