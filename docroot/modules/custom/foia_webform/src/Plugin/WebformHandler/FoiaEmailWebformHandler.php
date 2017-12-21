@@ -196,7 +196,9 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       /** @var \Drupal\file\FileInterface[] $files */
       $files = File::loadMultiple(is_array($fids) ? $fids : [$fids]);
       foreach ($files as $file) {
-        $fileAttachmentNames[] = $file->getFilename();
+        $status = $this->getFileStatuses();
+        $scanStatus = $file->get('field_virus_scan_status')->value;
+        $fileAttachmentNames[] = $file->getFilename() . ' - File Status: ' . $status[$scanStatus];
       }
       $submissionContents[$fileAttachmentElementKey] = implode(", ", $fileAttachmentNames);
     }
@@ -233,6 +235,17 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    */
   protected function getEmailSubject() {
     return t('New FOIA request received for @agency_component_name', ['@agency_component_name' => $this->agencyComponent->label()]);
+  }
+
+  /**
+   * Returns an array of file status.
+   */
+  protected function getFileStatuses() {
+    return [
+      'scan' => 'Virus Scan Pending',
+      'clean' => 'Clean',
+      'virus' => 'Virus Detect. File Removed',
+    ];
   }
 
 }
