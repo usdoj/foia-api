@@ -194,7 +194,10 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
 
     $this->assertEquals($originalQueueCount, $queueCount, "Expect that the submission with attachment would not be queued, it was.");
 
-    $foiaRequest = FoiaRequest::load($this->webformSubmission->id());
+    $foiaRequest = \Drupal::entityTypeManager()
+      ->getStorage('foia_request')
+      ->loadByProperties(['field_webform_submission_id' => $this->webformSubmission->id()]);
+    $foiaRequest = reset($foiaRequest);
     $this->assertEquals(FoiaRequestInterface::STATUS_SCAN, $foiaRequest->getRequestStatus());
   }
 
