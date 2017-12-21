@@ -7,7 +7,6 @@
 
 use Drupal\webform\entity\WebformSubmission;
 use Drupal\file\Entity\File;
-use Drupal\foia_webform\FileFieldLookupService;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_request\Entity\FoiaRequest;
 
@@ -77,7 +76,7 @@ function foia_request_check_file_fields($request) {
   }
   else {
     $webform = $webform_submission->getWebform();
-    $file_field_lookup = new FileFieldLookupService();
+    $file_field_lookup = \Drupal::service('foia_webform.file_field_lookup_service');
     $attachment_fields[$request->webform_id] = $file_field_lookup->getFileAttachmentElementsOnWebform($webform);
     $file_fields = $attachment_fields[$request->webform_id];
   }
