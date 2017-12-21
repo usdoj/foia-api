@@ -4,7 +4,7 @@ namespace Drupal\foia_webform;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\file\Entity\File;
+use Drupal\file_entity\Entity\FileEntity;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\node\NodeInterface;
 use Drupal\webform\Entity\WebformSubmission;
@@ -370,11 +370,18 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $fileContents = [];
     if (!empty($files)) {
       foreach ($files as $fid) {
-        $currentFile = File::load($fid);
-        $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
+        $currentFile = FileEntity::load($fid);
+        $virusScanStatus = $currentFile->get('field_virus_scan_status')->getString();
+        $fileUri = $currentFile->getFileUri();
+        if ($virusScanStatus === 'clean') {
+          $fileData = base64_encode(file_get_contents($fileUri));
+        }
+        elseif ($virusScanStatus === 'virus') {
+          $fileData = "A virus was detected in the file {$fileUri} and it was deleted.";
+        }
         $fileContents[] = [
           'content_type' => $currentFile->getMimeType(),
-          'filedata' => $base64,
+          'filedata' => $fileData,
           'filename' => $currentFile->getFilename(),
           'filesize' => (int) $currentFile->getSize(),
         ];
