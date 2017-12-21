@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * FOIA File module.
+ */
+
+use Drupal\file\FileInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function foia_file_file_insert(FileInterface $file) {
+  if ($file->bundle() == 'attachment_support_document') {
+    $file->set('field_virus_scan_status', 'scan');
+    $file->save();
+  }
+}
