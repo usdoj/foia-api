@@ -172,7 +172,7 @@ function drush_foia_file_file_entity_update($scanOutput) {
             '@fid' => $fid,
           ]
         );
-        \Drupal::logger('foia_file')->("File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to virus.");
+        \Drupal::logger('foia_file')->notice("File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to virus.");
       }
       $fileEntity->save();
     }
