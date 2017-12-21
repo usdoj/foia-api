@@ -6,7 +6,6 @@
  */
 
 use Drupal\file_entity\Entity\FileEntity;
-use Drush\Log\LogLevel;
 
 /**
  * Implements hook_drush_command().
@@ -43,7 +42,7 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
 
   $startTime = microtime(TRUE);
 
-  drush_log("File Entity update validation started. ***********************", LogLevel::INFO);
+  \Drupal::logger('foia_file')->info('File Entity update validation started.');
 
   // Get allowed extensions.
   $config = \Drupal::config('file_entity.settings');
@@ -55,7 +54,7 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
     if (!isset($scan) || is_null($scan)) {
       $msg = 'A blank line was output by the virus scanner.';
       $msg .= 'This is not expected behavior.';
-      drush_log($msg, LogLevel::WARNING);
+      \Drupal::logger('foia_file')->warning($msg);
     }
 
     // Split the scan line into filename and status.
@@ -67,6 +66,7 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
     if (!in_array($status, $validStates)) {
       $msg = 'An invalid status was detected in the virus scan output.';
       $msg .= 'Virus scanning will not continue until this is resolved!!!';
+      \Drupal::logger('foia_file')->error($msg);
       return drush_set_error('POLICY_PM_DENY', dt($msg));
     }
 
@@ -84,12 +84,12 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
 
     if ($status === 'OK' && !is_file($fileNameWithExtension)) {
       $msg = "The file {$fileNameWithExtension} was not detected on the filesystem and was marked as clean by the virus scanner.";
-      drush_log($msg, LogLevel::WARNING);
+      \Drupal::logger('foia_file')->warning($msg);
     }
 
     if ($status === 'FOUND' || $status === 'Removed.') {
       $msg = "The file {$fileNameWithExtension} was detected on the filesystem and was marked as infected by a virus. It should have been deleted by the scanner.";
-      drush_log($msg, LogLevel::WARNING);
+      \Drupal::logger('foia_file')->warning($msg);
     }
   }
 
@@ -97,7 +97,7 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
 
   $executionTime = ($endTime - $startTime);
 
-  drush_log("File Entity update validation completed in {$executionTime} seconds.", LogLevel::INFO);
+  \Drupal::logger('foia_file')->info("File Entity update validation completed in {$executionTime} seconds.");
 
 }
 
@@ -168,7 +168,7 @@ function drush_foia_file_file_entity_update($scanOutput) {
       }
       elseif ($status === "Removed.") {
         $fileEntity->set('field_virus_scan_status', 'virus');
-        Drupal::logger('foia_file')->warning(
+        \Drupal::logger('foia_file')->warning(
           "A virus was detected in the file @webformDir@fileNameWithExtension associated with the Entity ID @fid. The file has been deleted.",
           [
             '@webformDir' => $webformDir,
@@ -196,6 +196,8 @@ function drush_foia_file_file_entity_update($scanOutput) {
   $executionTime = ($endTime - $startTime);
 
   $message .= "File Entity update completed in {$executionTime} seconds.";
+
+  \Drupal::logger('foia_file')->info("File Entity update completed in {$executionTime} seconds.");
 
   return $message;
 
