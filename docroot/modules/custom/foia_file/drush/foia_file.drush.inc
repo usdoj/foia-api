@@ -42,8 +42,6 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
 
   $startTime = microtime(TRUE);
 
-  \Drupal::logger('foia_file')->info('File Entity update validation started.');
-
   // Get allowed extensions.
   $config = \Drupal::config('file_entity.settings');
   $extensions = $config->get('default_allowed_extensions');
@@ -107,8 +105,6 @@ function drush_foia_file_file_entity_update_validate($scanOutput) {
 function drush_foia_file_file_entity_update($scanOutput) {
   $startTime = microtime(TRUE);
 
-  $message = "File Entity update started. **********************************\n";
-
   // Get webform directory on the server.
   $fileDir = explode('/webform/', $scanOutput, 2);
   $webformDir = "{$fileDir[0]}/webform/";
@@ -164,7 +160,7 @@ function drush_foia_file_file_entity_update($scanOutput) {
     if ($fileEntity && !in_array($fileEntity->get('field_virus_scan_status')->getString(), $doNotScanStates)) {
       if ($status === "OK") {
         $fileEntity->set('field_virus_scan_status', 'clean');
-        $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to clean.\n";
+        \Drupal::logger('foia_file')->info("File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to clean.");
       }
       elseif ($status === "Removed.") {
         $fileEntity->set('field_virus_scan_status', 'virus');
@@ -176,16 +172,16 @@ function drush_foia_file_file_entity_update($scanOutput) {
             '@fid' => $fid,
           ]
         );
-        $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to virus.\n";
+        \Drupal::logger('foia_file')->("File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to virus.");
       }
       $fileEntity->save();
     }
     else {
       if ($fileEntity) {
-        $message .= "File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} has already been scanned {$fileNameWithExtension}.\n";
+        \Drupal::logger('foia_file')->info("File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} has already been scanned {$fileNameWithExtension}.");
       }
       else {
-        $message .= "There is no entity associated with {$fileNameWithExtension}.\n";
+        \Drupal::logger('foia_file')->warning("There is no entity associated with {$fileNameWithExtension}.");
       }
     }
 
@@ -194,8 +190,6 @@ function drush_foia_file_file_entity_update($scanOutput) {
   $endTime = microtime(TRUE);
 
   $executionTime = ($endTime - $startTime);
-
-  $message .= "File Entity update completed in {$executionTime} seconds.";
 
   \Drupal::logger('foia_file')->info("File Entity update completed in {$executionTime} seconds.");
 
