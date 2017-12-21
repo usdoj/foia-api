@@ -2,7 +2,7 @@
 
 namespace Unish;
 
-if (class_exists( 'Unish\CommandUnishTestCase')) {
+if (class_exists('Unish\CommandUnishTestCase')) {
 
   /**
    * Class foia_fileDrushTest.
@@ -25,13 +25,13 @@ if (class_exists( 'Unish\CommandUnishTestCase')) {
       // Symlink this module in site so it can be enabled.
       $target = dirname(__DIR__);
       \symlink($target, $this->webroot() . '/modules/custom/foia_file');
-      $options = array(
+      $options = [
         'root' => $this->webroot(),
         'uri' => key($sites),
-      );
-      $this->drush('pm-enable', array('foia_file'), $options + array('skip' => NULL, 'yes' => NULL));
+      ];
+      $this->drush('pm-enable', ['foia_file'], $options + ['skip' => NULL, 'yes' => NULL]);
 
-      $this->drush('file-entity-update', array('/var/www/files/test.txt: Eicar-Test-Signature FOUND\n/var/www/files/test.txt: Removed.\n/var/www/files/another.test.txt: OK\n/var/www/files/test.txt.txt: OK'), $options);
+      $this->drush('file-entity-update', ['/var/www/files/test.txt: Eicar-Test-Signature FOUND\n/var/www/files/test.txt: Removed.\n/var/www/files/another.test.txt: OK\n/var/www/files/test.txt.txt: OK'], $options);
 
       $output = $this->getOutput();
       $this->assertContains('File Entity update started.', $output, 'Output contains "File Entity update started."');
