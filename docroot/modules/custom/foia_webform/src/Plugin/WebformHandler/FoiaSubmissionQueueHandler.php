@@ -147,30 +147,16 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
   }
 
   /**
-   * Adds the FOIA request to the foia_submissions queue.
+   * Enqueue the FOIA Request if the status is STATUS_QUEUED.
    *
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
-   *   The FOIA Request to queue for later processing.
+   *   The FOIA Request to be enqueued.
    */
   protected function queueFoiaRequest(FoiaRequestInterface $foiaRequest) {
-    /** @var \Drupal\Core\Queue\QueueFactory $queueFactory */
-    $queueFactory = \Drupal::service('queue');
-
-    // @var QueueInterface $queue
-    $foiaSubmissionsQueue = $queueFactory->get('foia_submissions');
-    $submission = new \stdClass();
-    $submission->id = $foiaRequest->id();
-
-    // Log the form submission.
-    \Drupal::logger('foia_webform')
-      ->info('FOIA request #%request_id added to queue.',
-        [
-          '%request_id' => $foiaRequest->id(),
-          'link' => $foiaRequest->toLink($this->t('View'))->toString(),
-        ]
-      );
-
-    $foiaSubmissionsQueue->createItem($submission);
+    if ($foiaRequest->getRequestStatus() === FoiaRequestInterface::STATUS_QUEUED) {
+      \Drupal::service('foia_webform.foia_submission_queueing_service')
+        ->enqueue($foiaRequest);
+    }
   }
 
 }
