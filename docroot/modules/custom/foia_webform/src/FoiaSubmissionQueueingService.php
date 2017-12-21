@@ -42,7 +42,6 @@ class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInte
    * {@inheritdoc}
    */
   public function enqueue(FoiaRequestInterface $foiaRequest) {
-    // @var QueueInterface $queue
     $foiaSubmissionsQueue = $this->queueFactory->get('foia_submissions');
     $submission = new \stdClass();
     $submission->id = $foiaRequest->id();
