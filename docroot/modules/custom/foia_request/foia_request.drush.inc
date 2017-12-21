@@ -17,9 +17,9 @@ use Drupal\foia_request\Entity\FoiaRequest;
 function foia_request_drush_command() {
   $commands = [];
 
-  $commands['update-foia-request'] = [
-    'description' => 'Updates request status when files have been scanned.',
-    'aliases' => ['ufr'],
+  $commands['queue-clean-request'] = [
+    'description' => 'Queue clean FOIA request when files have been scanned.',
+    'aliases' => ['qcr'],
   ];
   return $commands;
 }
@@ -37,14 +37,24 @@ function foia_request_drush_help($section) {
 /**
  * Implements drush_hook_COMMAND().
  */
-function drush_foia_request_update_foia_request() {
+function drush_foia_request_queue_clean_request() {
   $requests_to_be_scanned = foia_request_to_be_scanned();
   if (!empty($requests_to_be_scanned)) {
-    foreach ($requests_to_be_scanned as $request) {
-      $ready_to_queue = foia_request_check_requests($request);
-      if ($ready_to_queue) {
-        foia_request_queue_request($request);
-      }
+    foia_request_check_request($requests_to_be_scanned);
+  }
+}
+
+/**
+ * Check each request to see if it can be queued.
+ *
+ * @param array $requests_to_be_scanned
+ *   An array containing FOIA Requests IDs to be checked.
+ */
+function foia_request_check_request(array $requests_to_be_scanned) {
+  foreach ($requests_to_be_scanned as $request) {
+    $ready_to_queue = foia_request_check_file_fields($request);
+    if ($ready_to_queue) {
+      foia_request_queue_request($request);
     }
   }
 }
@@ -58,26 +68,27 @@ function drush_foia_request_update_foia_request() {
  * @return bool
  *   Returns TRUE if all of the files have been scanned, else FALSE.
  */
-function foia_request_check_requests($request) {
+function foia_request_check_file_fields($request) {
   $attachment_fields = &drupal_static(__FUNCTION__);
   $webform_submission = WebformSubmission::load($request->sid);
-  $webform = $webform_submission->getWebform();
-  $webform_id = $webform->id();
-  $data = $webform_submission->getData();
 
-  if (isset($attachment_fields[$webform_id])) {
-    $file_fields = $attachment_fields[$webform_id];
+  if (isset($attachment_fields[$request->webform_id])) {
+    $file_fields = $attachment_fields[$request->webform_id];
   }
   else {
+    $webform = $webform_submission->getWebform();
     $file_field_lookup = new FileFieldLookupService();
-    $attachment_fields[$webform_id] = $file_field_lookup->getFileAttachmentElementsOnWebform($webform);
-    $file_fields = $attachment_fields[$webform_id];
+    $attachment_fields[$request->webform_id] = $file_field_lookup->getFileAttachmentElementsOnWebform($webform);
+    $file_fields = $attachment_fields[$request->webform_id];
   }
 
-  foreach ($file_fields as $field_name) {
-    $ready_to_queue = foia_request_check_file_statuses($data[$field_name]);
-    if (!$ready_to_queue) {
-      return FALSE;
+  if (isset($file_fields)) {
+    $data = $webform_submission->getData();
+    foreach ($file_fields as $field_name) {
+      $ready_to_queue = foia_request_check_file_statuses($data[$field_name]);
+      if (!$ready_to_queue) {
+        return FALSE;
+      }
     }
   }
   return $ready_to_queue;
@@ -91,7 +102,9 @@ function foia_request_to_be_scanned() {
   $query->addField('fr', 'id');
   $query->join('foia_request__field_webform_submission_id', 'frid', 'frid.entity_id = fr.id');
   $query->addField('frid', 'field_webform_submission_id_value', 'sid');
-  $query->condition('fr.request_status', 3);
+  $query->join('webform_submission', 'ws', 'ws.sid = frid.field_webform_submission_id_value');
+  $query->addField('ws', 'webform_id');
+  $query->condition('fr.request_status', FoiaRequestInterface::STATUS_SCAN);
   return $query->execute()->fetchAll();
 }
 
@@ -125,28 +138,22 @@ function foia_request_check_file_statuses(array $file_ids) {
  *   An database object containing the submission ID and foia_request ID.
  */
 function foia_request_queue_request($request) {
-  $foiaRequest = FoiaRequest::load($request->id);
+  $foia_request = FoiaRequest::load($request->id);
   $enqueueing_status = \Drupal::service('foia_webform.foia_submission_queueing_service')
-    ->enqueue($foiaRequest);
+    ->enqueue($foia_request);
 
   if ($enqueueing_status) {
-    foia_request_update_request_status($foiaRequest);
-  }
-  else {
-    Drupal::logger('FOIA Request Drush')
-      ->warning('Unable to enqueue FOIA Request ID: @id', [
-        '@id' => $foiaRequest->id(),
-      ]);
+    foia_request_update_request_status($foia_request);
   }
 }
 
 /**
  * Update the Request status after enqueueing.
  *
- * @param \Drupal\foia_request\Entity\FoiaRequest $foiaRequest
+ * @param \Drupal\foia_request\Entity\FoiaRequest $foia_request
  *   The FOIA Request entity.
  */
-function foia_request_update_request_status(FoiaRequest $foiaRequest) {
-  $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_QUEUED);
-  $foiaRequest->save();
+function foia_request_update_request_status(FoiaRequest $foia_request) {
+  $foia_request->setRequestStatus(FoiaRequestInterface::STATUS_QUEUED);
+  $foia_request->save();
 }
