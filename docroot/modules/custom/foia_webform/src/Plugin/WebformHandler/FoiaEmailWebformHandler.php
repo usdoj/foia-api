@@ -196,6 +196,12 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       /** @var \Drupal\file\FileInterface[] $files */
       $files = File::loadMultiple(is_array($fids) ? $fids : [$fids]);
       foreach ($files as $file) {
+
+        // Check if file has virus.
+        if ($file->get('field_virsuc_scan_status')->getString()) {
+          // If file does have virus set flag.
+        }
+
         $fileAttachmentNames[] = $file->getFilename();
       }
       $submissionContents[$fileAttachmentElementKey] = implode(", ", $fileAttachmentNames);
