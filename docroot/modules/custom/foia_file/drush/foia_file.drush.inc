@@ -58,10 +58,9 @@ function drush_foia_file_file_entity_update($scanOutput) {
     // Set status to the last word of the line.
     $status = $wordsArray[0];
 
-    $validStatuses = ['OK', 'Removed.', 'Empty file'];
-    if (!in_array($status, $validStatuses)) {
-      \Drupal::logger('foia_file')->critical("An invalid status was detected in the virus scan output.");
-      $status = 'invalid';
+    $expectedStatuses = ['OK', 'Removed.', 'Empty file'];
+    if (!in_array($status, $expectedStatuses)) {
+      \Drupal::logger('foia_file')->warning("An unexpected status was detected in the virus scan output.");
     }
 
     // Get relative file path.
@@ -69,8 +68,8 @@ function drush_foia_file_file_entity_update($scanOutput) {
     $statusLength = strlen($status);
     // Length of the file name is the remainder of the scan minus the colon and
     // space characters.
-    $fileLength = $scanLength - $statusLength - 2;
-    $fileName = substr($scan, 0, $fileLength);
+    $fileNameLength = $scanLength - $statusLength - 2;
+    $fileName = substr($scan, 0, $fileNameLength);
 
     // Validate path, filename, and extension.
     $pathParts = pathinfo($fileName);
