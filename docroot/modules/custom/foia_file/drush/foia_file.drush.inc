@@ -36,70 +36,6 @@ function foia_file_drush_help($command) {
 }
 
 /**
- * Implements drush_hook_COMMAND_validate().
- */
-function drush_foia_file_file_entity_update_validate($scanOutput) {
-
-  $startTime = microtime(TRUE);
-
-  // Get allowed extensions.
-  $config = \Drupal::config('file_entity.settings');
-  $extensions = $config->get('default_allowed_extensions');
-  $pipeDelimitedExtensions = str_replace(" ", "|", $extensions);
-  $scans = explode("\n", $scanOutput);
-
-  foreach ($scans as $scan) {
-    if (!isset($scan) || is_null($scan)) {
-      $msg = 'A blank line was output by the virus scanner.';
-      $msg .= 'This is not expected behavior.';
-      \Drupal::logger('foia_file')->warning($msg);
-    }
-
-    // Split the scan line into filename and status.
-    preg_match('/[^ ]*$/', $scan, $wordsArray);
-    // Set status to the last word of the line.
-    $status = $wordsArray[0];
-
-    $validStates = ['OK', 'Removed.', 'FOUND'];
-    if (!in_array($status, $validStates)) {
-      $msg = 'An invalid status was detected in the virus scan output.';
-      $msg .= 'Virus scanning will not continue until this is resolved!!!';
-      \Drupal::logger('foia_file')->error($msg);
-      return drush_set_error('POLICY_PM_DENY', dt($msg));
-    }
-
-    // Get relative file path.
-    $scanLength = strlen($scan);
-    $statusLength = strlen($status);
-    $fileLength = $scanLength - $statusLength - 2;
-    $fileNameWithVirusName = substr($scan, 0, $fileLength);
-
-    // Trim virus description.
-    preg_match('/(\.(' . $pipeDelimitedExtensions . '))(: .*)?$/', $fileNameWithVirusName, $fileExtension);
-    $delimiter = $fileExtension[1];
-    $fileName = substr($scan, 0, strpos($fileNameWithVirusName, $delimiter));
-    $fileNameWithExtension = $fileName . $fileExtension[1];
-
-    if ($status === 'OK' && !is_file($fileNameWithExtension)) {
-      $msg = "The file {$fileNameWithExtension} was not detected on the filesystem and was marked as clean by the virus scanner.";
-      \Drupal::logger('foia_file')->warning($msg);
-    }
-
-    if ($status === 'FOUND' || $status === 'Removed.') {
-      $msg = "The file {$fileNameWithExtension} was detected on the filesystem and was marked as infected by a virus. It should have been deleted by the scanner.";
-      \Drupal::logger('foia_file')->warning($msg);
-    }
-  }
-
-  $endTime = microtime(TRUE);
-
-  $executionTime = ($endTime - $startTime);
-
-  \Drupal::logger('foia_file')->info("File Entity update validation completed in {$executionTime} seconds.");
-
-}
-
-/**
  * Implements drush_hook_COMMAND().
  */
 function drush_foia_file_file_entity_update($scanOutput) {
@@ -115,11 +51,6 @@ function drush_foia_file_file_entity_update($scanOutput) {
   // Split string into lines. @todo change to preg split \R?
   $scans = explode("\n", $trimmedFiles);
 
-  // Get allowed extensions.
-  $config = \Drupal::config('file_entity.settings');
-  $extensions = $config->get('default_allowed_extensions');
-  $pipeDelimitedExtensions = str_replace(" ", "|", $extensions);
-
   foreach ($scans as $scan) {
 
     // Split the scan line into filename and status.
@@ -127,21 +58,45 @@ function drush_foia_file_file_entity_update($scanOutput) {
     // Set status to the last word of the line.
     $status = $wordsArray[0];
 
+    $validStatuses = ['OK', 'Removed.', 'Empty file'];
+    if (!in_array($status, $validStatuses)) {
+      \Drupal::logger('foia_file')->critical("An invalid status was detected in the virus scan output.");
+      $status = 'invalid';
+    }
+
     // Get relative file path.
     $scanLength = strlen($scan);
     $statusLength = strlen($status);
+    // Length of the file name is the remainder of the scan minus the colon and
+    // space characters.
     $fileLength = $scanLength - $statusLength - 2;
-    $fileNameWithVirusName = substr($scan, 0, $fileLength);
+    $fileName = substr($scan, 0, $fileLength);
 
-    // Trim virus description.
-    preg_match('/(\.(' . $pipeDelimitedExtensions . '))(: .*)?$/', $fileNameWithVirusName, $fileExtension);
-    $delimiter = $fileExtension[1];
-    $fileName = substr($scan, 0, strpos($fileNameWithVirusName, $delimiter));
-    $fileNameWithExtension = $fileName . $fileExtension[1];
+    // Validate path, filename, and extension.
+    $pathParts = pathinfo($fileName);
+    foreach ($pathParts as $pathPart) {
+      if (empty($pathPart)) {
+        $status = 'invalid';
+      }
+    }
+
+    // Log any discrepancies between filesystem and entities.
+    if ($status === 'OK' && !is_file($fileName)) {
+      \Drupal::logger('foia_file')->warning(
+        "The file @fileName was not detected on the filesystem and was marked as clean by the virus scanner.",
+        ['@fileName' => $fileName]
+        );
+    }
+    if ($status === 'Removed.' && is_file($fileName)) {
+      \Drupal::logger('foia_file')->warning(
+        "The file @fileName was detected on the filesystem and a virus was detected in it. The file should have been deleted by the scanner.",
+        ['@fileName' => $fileName]
+      );
+    }
 
     // Determine file entity id based upon file path & name.
     $query = \Drupal::entityQuery('file')
-      ->condition('uri', "private://webform/{$fileNameWithExtension}");
+      ->condition('uri', "private://webform/{$fileName}");
     $fids = $query->execute();
     $fid = array_values($fids)[0];
 
@@ -156,32 +111,56 @@ function drush_foia_file_file_entity_update($scanOutput) {
     else {
       $fileEntity = NULL;
     }
-    $doNotScanStates = ['clean', 'virus'];
-    if ($fileEntity && !in_array($fileEntity->get('field_virus_scan_status')->getString(), $doNotScanStates)) {
+    $doNotScanStatuses = ['clean', 'virus', 'invalid'];
+    if ($fileEntity && !in_array($fileEntity->get('field_virus_scan_status')->getString(), $doNotScanStatuses)) {
       if ($status === "OK") {
         $fileEntity->set('field_virus_scan_status', 'clean');
-        \Drupal::logger('foia_file')->info("File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to clean.");
+        \Drupal::logger('foia_file')->info(
+          "File @webformDir@fileName Entity ID @fid set to clean.",
+          [
+            '@webformDir' => $webformDir,
+            '@fileName' => $fileName,
+            '@fid' => $fid,
+          ]
+        );
       }
       elseif ($status === "Removed.") {
         $fileEntity->set('field_virus_scan_status', 'virus');
         \Drupal::logger('foia_file')->warning(
-          "A virus was detected in the file @webformDir@fileNameWithExtension associated with the Entity ID @fid. The file has been deleted.",
+          "A virus was detected in the file @webformDir@fileName associated with the Entity ID @fid. The file has been deleted.",
           [
             '@webformDir' => $webformDir,
-            '@fileNameWithExtension' => $fileNameWithExtension,
+            '@fileName' => $fileName,
             '@fid' => $fid,
           ]
         );
-        \Drupal::logger('foia_file')->notice("File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} set to virus.");
+        \Drupal::logger('foia_file')->notice(
+          "File @webformDir@fileName Entity ID @fid set to virus.",
+          [
+            '@webformDir' => $webformDir,
+            '@fileName' => $fileName,
+            '@fid' => $fid,
+          ]
+        );
       }
       $fileEntity->save();
     }
     else {
       if ($fileEntity) {
-        \Drupal::logger('foia_file')->info("File {$webformDir}{$fileNameWithExtension} Entity ID {$fid} has already been scanned {$fileNameWithExtension}.");
+        \Drupal::logger('foia_file')->info(
+          "File @webformDir@fileName Entity ID @fid has already been scanned.",
+          [
+            '@webformDir' => $webformDir,
+            '@fileName' => $fileName,
+            '@fid' => $fid,
+          ]
+        );
       }
       else {
-        \Drupal::logger('foia_file')->warning("There is no entity associated with {$fileNameWithExtension}.");
+        \Drupal::logger('foia_file')->warning(
+          "There is no entity associated with @fileName.",
+          ['@fileName' => $fileName]
+        );
       }
     }
 
@@ -192,7 +171,5 @@ function drush_foia_file_file_entity_update($scanOutput) {
   $executionTime = ($endTime - $startTime);
 
   \Drupal::logger('foia_file')->info("File Entity update completed in {$executionTime} seconds.");
-
-  return $message;
 
 }
