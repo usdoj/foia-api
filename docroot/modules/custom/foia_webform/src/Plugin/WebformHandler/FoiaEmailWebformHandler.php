@@ -196,11 +196,13 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       /** @var \Drupal\file\FileInterface[] $files */
       $files = File::loadMultiple(is_array($fids) ? $fids : [$fids]);
       foreach ($files as $file) {
-        $status = $this->getFileStatuses();
-        $scanStatus = $file->get('field_virus_scan_status')->value;
-        $fileAttachmentNames[] = $file->getFilename() . ' - File Status: ' . $status[$scanStatus];
+        $fileName = $file->getFilename();
+        if ($file->hasField('field_virus_scan_status') && $file->get('field_virus_scan_status')->value === 'virus') {
+          $fileName .= ': A virus was detected in this file and it was deleted.';
+        }
+        $fileAttachmentNames[] = $fileName;
       }
-      $submissionContents[$fileAttachmentElementKey] = implode(", ", $fileAttachmentNames);
+      $submissionContents[$fileAttachmentElementKey] = implode("\n", $fileAttachmentNames);
     }
   }
 
@@ -235,17 +237,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    */
   protected function getEmailSubject() {
     return t('New FOIA request received for @agency_component_name', ['@agency_component_name' => $this->agencyComponent->label()]);
-  }
-
-  /**
-   * Returns an array of file status.
-   */
-  protected function getFileStatuses() {
-    return [
-      'scan' => 'Virus Scan Pending',
-      'clean' => 'Clean',
-      'virus' => 'Virus Detect. File Removed',
-    ];
   }
 
 }
