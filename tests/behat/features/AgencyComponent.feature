@@ -12,6 +12,8 @@ Feature: Agency Component Feature
       | title                   | field_agency_comp_abbreviation | field_agency_comp_telephone | Request Submission Form | field_request_data_year | field_complex_average_days | field_complex_highest_days | field_complex_lowest_days | field_complex_median_days | field_expedited_average_days | field_expedited_highest_days | field_expedited_lowest_days | field_expedited_median_days | field_simple_average_days | field_simple_highest_days | field_simple_lowest_days | field_simple_median_days |
       | A Test Agency Component | TST                            | (555) 555-5555              | a_test_webform          | 2016                    | 1                          | 1                          | Less than 1               | 1                         | 3.14                         | 0                            | 3                           | 9                           | 1                         | 6                         | 1                        | 1                        |
     And I am at 'admin/content'
+    And for 'Title' I enter 'A Test Agency Component'
+    And I press the 'Filter' button
     And I click 'A Test Agency Component'
     And save the current URL
     When I am logged in as a user with the 'Agency Manager' role
