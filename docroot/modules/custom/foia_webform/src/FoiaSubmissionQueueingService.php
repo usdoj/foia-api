@@ -45,17 +45,38 @@ class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInte
     $foiaSubmissionsQueue = $this->queueFactory->get('foia_submissions');
     $submission = new \stdClass();
     $submission->id = $foiaRequest->id();
+    $queueId = $foiaSubmissionsQueue->createItem($submission);
+    $this->logQueuingResult($foiaRequest, $queueId);
 
-    // Log the form submission.
-    $this->logger
-      ->info('FOIA request #%request_id added to queue.',
-        [
-          '%request_id' => $foiaRequest->id(),
-          'link' => $foiaRequest->toLink(t('View'))->toString(),
-        ]
-      );
+    return $queueId;
+  }
 
-    $foiaSubmissionsQueue->createItem($submission);
+  /**
+   * Log the result of the queueing attempt.
+   *
+   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
+   *   The FOIA Request entity.
+   * @param mixed $query_id
+   *   The queue ID if enqueueing was successful, else NULL.
+   */
+  protected function logQueuingResult(FoiaRequestInterface $foiaRequest, $query_id) {
+    if ($query_id) {
+      $this->logger
+        ->info('FOIA request #%request_id added to queue.',
+          [
+            '%request_id' => $foiaRequest->id(),
+            'link' => $foiaRequest->toLink(t('View'))->toString(),
+          ]
+        );
+    }
+    else {
+      $this->logger
+        ->info('Unable to enqueue FOIA Request ID: @id',
+          [
+            '@id' => $foiaRequest->id(),
+          ]
+        );
+    }
   }
 
 }

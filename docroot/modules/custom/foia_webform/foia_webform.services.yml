@@ -14,6 +14,8 @@ services:
   foia_webform.foia_submission_queueing_service:
     class: Drupal\foia_webform\FoiaSubmissionQueueingService
     arguments: ['@queue','@logger.channel.foia_webform']
+  foia_webform.file_field_lookup_service:
+    class: Drupal\foia_webform\FileFieldLookupService
 
   logger.channel.foia_webform:
     class: Drupal\Core\Logger\LoggerChannel

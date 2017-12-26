@@ -145,6 +145,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     // If there are files attached, load the files and add the file metadata.
     if ($webform->hasManagedFile()) {
       $this->replaceFidsWithFileContents($webform, $submissionValues);
+      $this->includeReferenceToRemovedFiles($webform, $submissionValues);
     }
 
     // Append confirmation ID.
@@ -337,6 +338,26 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   }
 
   /**
+   * Add reference to files that have been removed by virus scanning.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform the submission belongs to.
+   * @param array $submissionValues
+   *   The values submitted.
+   */
+  protected function includeReferenceToRemovedFiles(WebformInterface $webform, array &$submissionValues) {
+    $fileAttachmentElementNames = $this->getFileAttachmentElementsOnWebform($webform);
+    if ($fileAttachmentElementNames) {
+      foreach ($fileAttachmentElementNames as $fileAttachmentElementName) {
+        if (isset($submissionValues[$fileAttachmentElementName])) {
+          $attachments = $this->getRemovedFiles($submissionValues[$fileAttachmentElementName]);
+          $submissionValues['removed_files'] = $attachments;
+        }
+      }
+    }
+  }
+
+  /**
    * Gets the names of file attachment elements on the webform.
    *
    * @param \Drupal\webform\WebformInterface $webform
@@ -371,13 +392,44 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     if (!empty($files)) {
       foreach ($files as $fid) {
         $currentFile = File::load($fid);
-        $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
-        $fileContents[] = [
-          'content_type' => $currentFile->getMimeType(),
-          'filedata' => $base64,
-          'filename' => $currentFile->getFilename(),
-          'filesize' => (int) $currentFile->getSize(),
-        ];
+        $virusScanStatus = $currentFile->get('field_virus_scan_status')->value;
+        if ($virusScanStatus !== 'virus') {
+          $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
+          $fileContents[] = [
+            'content_type' => $currentFile->getMimeType(),
+            'filedata' => $base64,
+            'filename' => $currentFile->getFilename(),
+            'filesize' => (int) $currentFile->getSize(),
+          ];
+        }
+      }
+    }
+    return $fileContents;
+  }
+
+  /**
+   * Get the files that have been removed by file scanning.
+   *
+   * @param array $files
+   *   An array containing the file IDs for the file attachments.
+   *
+   * @return array
+   *   An array of files that have been removed by file scanning.
+   */
+  protected function getRemovedFiles(array $files) {
+    $fileContents = [];
+    if (!empty($files)) {
+      foreach ($files as $fid) {
+        $currentFile = File::load($fid);
+        $virusScanStatus = $currentFile->get('field_virus_scan_status')->value;
+        if ($virusScanStatus === 'virus') {
+          $fileContents[] = [
+            'content_type' => $currentFile->getMimeType(),
+            'filename' => $currentFile->getFilename(),
+            'filesize' => (int) $currentFile->getSize(),
+            'filestatus' => t('File removed by virus scanning.'),
+          ];
+        }
       }
     }
     return $fileContents;
