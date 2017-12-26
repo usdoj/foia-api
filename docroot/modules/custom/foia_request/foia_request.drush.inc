@@ -6,7 +6,7 @@
  */
 
 use Drupal\webform\entity\WebformSubmission;
-use Drupal\file\Entity\File;
+use Drupal\file_entity\Entity\FileEntity;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_request\Entity\FoiaRequest;
 
@@ -116,7 +116,7 @@ function foia_request_to_be_scanned() {
 function foia_request_check_file_statuses(array $file_ids) {
   $ready_to_queue = FALSE;
   foreach ($file_ids as $file_id) {
-    $file = File::load($file_id);
+    $file = FileEntity::load($file_id);
     if ($file->hasField('field_virus_scan_status')) {
       $file_status = $file->get('field_virus_scan_status')->value;
       if ($file_status === 'scan') {
