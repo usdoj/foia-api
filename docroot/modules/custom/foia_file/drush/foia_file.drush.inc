@@ -69,8 +69,7 @@ function drush_foia_file_file_entity_update($scanOutput) {
     }
     else {
       \Drupal::logger('foia_file')->warning(
-        "An unexpected scanStatus of @scanStatus was detected in the virus scan output.",
-        ['@scanStatus' => $scanStatus]
+        "An unexpected scan status was detected in the virus scan output."
       );
       continue;
     }
@@ -80,13 +79,13 @@ function drush_foia_file_file_entity_update($scanOutput) {
     $pathParts = pathinfo($absoluteFileName);
 
     // Log any discrepancies between filesystem and entities.
-    if (in_array($scanStatus, $cleanScanStatuses) && !is_file($absoluteFileName)) {
+    if (in_array($scanStatus, $cleanScanStatuses) && !file_exists($absoluteFileName)) {
       \Drupal::logger('foia_file')->warning(
         "The file @absoluteFileName was not detected on the filesystem but was marked as clean by the virus scanner.",
         ['@absoluteFileName' => $absoluteFileName]
       );
     }
-    if ($scanStatus === 'Removed.' && is_file($absoluteFileName)) {
+    if ($scanStatus === 'Removed.' && file_exists($absoluteFileName)) {
       \Drupal::logger('foia_file')->warning(
         "The file @absoluteFileName was detected on the filesystem and a virus was detected in it. The file should have been deleted by the scanner.",
         ['@absoluteFileName' => $absoluteFileName]
