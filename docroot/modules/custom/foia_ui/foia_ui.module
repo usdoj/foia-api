@@ -42,3 +42,10 @@ function foia_ui_toolbar_alter(&$items) {
     $items['reservoir_api'] = $empty_item_cacheability;
   }
 }
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function foia_ui_entity_type_build(array &$entity_types) {
+  $entity_types['node']->addConstraint('foia_ui_required_fields');
+}
