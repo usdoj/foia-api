@@ -350,8 +350,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     if ($fileAttachmentElementNames) {
       foreach ($fileAttachmentElementNames as $fileAttachmentElementName) {
         if (isset($submissionValues[$fileAttachmentElementName])) {
-          $attachments = $this->getRemovedFiles($submissionValues[$fileAttachmentElementName]);
-          $submissionValues['removed_files'] = $attachments;
+          $removedAttachmentFiles = $this->getRemovedFiles($submissionValues[$fileAttachmentElementName]);
+          $submissionValues['removed_files'] = $removedAttachmentFiles;
         }
       }
     }
@@ -392,7 +392,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     if (!empty($files)) {
       foreach ($files as $fid) {
         $currentFile = File::load($fid);
-        $virusScanStatus = $currentFile->get('field_virus_scan_status')->value;
+        $virusScanStatus = $currentFile->get('field_virus_scan_status')->getString();
         if ($virusScanStatus !== 'virus') {
           $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
           $fileContents[] = [
@@ -421,10 +421,11 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     if (!empty($files)) {
       foreach ($files as $fid) {
         $currentFile = File::load($fid);
-        $virusScanStatus = $currentFile->get('field_virus_scan_status')->value;
+        $virusScanStatus = $currentFile->get('field_virus_scan_status')->getString();
         if ($virusScanStatus === 'virus') {
           $fileContents[] = [
             'content_type' => $currentFile->getMimeType(),
+            'filedata' => NULL,
             'filename' => $currentFile->getFilename(),
             'filesize' => (int) $currentFile->getSize(),
             'filestatus' => t('File removed by virus scanning.'),
