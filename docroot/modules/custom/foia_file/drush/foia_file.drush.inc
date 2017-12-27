@@ -44,52 +44,58 @@ function drush_foia_file_file_entity_update($scanOutput) {
   // Get webform directory on the server.
   $fileDir = explode('/webform/', $scanOutput, 2);
   $webformDir = "{$fileDir[0]}/webform/";
-
   // Temporarily delete similar paths of the webform dir during processing.
   $trimmedFiles = str_replace($webformDir, '', $scanOutput);
 
   // Split string into lines. @todo change to preg split \R?
   $scans = explode("\n", $trimmedFiles);
 
+  // Set constants.
+  $cleanScanStatuses = ['OK', 'Empty file'];
+  $doNotScanEntityStatuses = ['clean', 'virus'];
+
   foreach ($scans as $scan) {
 
-    // Split the scan line into filename and status.
-    preg_match('/[^ ]*$/', $scan, $wordsArray);
-    // Set status to the last word of the line.
-    $status = $wordsArray[0];
-
-    $expectedStatuses = ['OK', 'Removed.', 'Empty file'];
-    if (!in_array($status, $expectedStatuses)) {
-      \Drupal::logger('foia_file')->warning("An unexpected status was detected in the virus scan output.");
+    // Validate the scan output status.
+    preg_match('/ (OK|Empty file|FOUND|Removed\.)$/', $scan, $scanStatusWithLeadingSpace);
+    // Do not process scan status "FOUND".
+    // These will be processed under the duplicate "Remove." scan status.
+    if ($scanStatusWithLeadingSpace[0] === ' FOUND') {
+      continue;
+    }
+    if ($scanStatusWithLeadingSpace) {
+      // Trim the leading space.
+      $scanStatus = ltrim($scanStatusWithLeadingSpace[0], " ");
+    }
+    else {
+      \Drupal::logger('foia_file')->warning(
+        "An unexpected output was detected in the virus scan: @scan",
+        ['@scan' => $scan]
+      );
+      continue;
     }
 
-    // Get relative file path.
-    $scanLength = strlen($scan);
-    $statusLength = strlen($status);
-    // Length of the file name is the remainder of the scan minus the colon and
-    // space characters.
-    $fileNameLength = $scanLength - $statusLength - 2;
-    $fileName = substr($scan, 0, $fileNameLength);
-
-    $cleanStatuses = ['OK', 'Empty file'];
+    $relativeFileName = preg_replace('/: (OK|Empty file|Removed\.)$/', '', $scan);
+    $absoluteFileName = $webformDir . $relativeFileName;
+    $pathParts = pathinfo($absoluteFileName);
 
     // Log any discrepancies between filesystem and entities.
-    if (in_array($status, $cleanStatuses) && !is_file($fileName)) {
+    if (in_array($scanStatus, $cleanScanStatuses) && !file_exists($absoluteFileName)) {
       \Drupal::logger('foia_file')->warning(
-        "The file @fileName was not detected on the filesystem and was marked as clean by the virus scanner.",
-        ['@fileName' => $fileName]
+        "The file @absoluteFileName was not detected on the filesystem but was marked as clean by the virus scanner.",
+        ['@absoluteFileName' => $absoluteFileName]
       );
     }
-    if ($status === 'Removed.' && is_file($fileName)) {
+    if ($scanStatus === 'Removed.' && file_exists($absoluteFileName)) {
       \Drupal::logger('foia_file')->warning(
-        "The file @fileName was detected on the filesystem and a virus was detected in it. The file should have been deleted by the scanner.",
-        ['@fileName' => $fileName]
+        "The file @absoluteFileName was detected on the filesystem and a virus was detected in it. The file should have been deleted by the scanner.",
+        ['@absoluteFileName' => $absoluteFileName]
       );
     }
 
     // Determine file entity id based upon file path & name.
     $query = \Drupal::entityQuery('file')
-      ->condition('uri', "private://webform/{$fileName}");
+      ->condition('uri', "private://webform/{$relativeFileName}");
     $fids = $query->execute();
     if ($fids) {
       $fid = array_values($fids)[0];
@@ -99,47 +105,44 @@ function drush_foia_file_file_entity_update($scanOutput) {
 
     // @todo Nice to have >> verify that submission id is same as file path.
 
-    // Update file entity based upon status.
+    // Update file entity based upon scanStatus.
     if ($fid) {
       $file = File::load($fid);
     }
     else {
       $file = NULL;
     }
-    $doNotScanStatuses = ['clean', 'virus'];
-    if ($file && !in_array($file->get('field_virus_scan_status')->getString(), $doNotScanStatuses)) {
-      if (in_array($status, $cleanStatuses)) {
+    if ($file && !in_array($file->get('field_virus_scan_status')->getString(), $doNotScanEntityStatuses)) {
+      if (in_array($scanStatus, $cleanScanStatuses)) {
         if ($file->hasField('field_virus_scan_status')) {
           $file->set('field_virus_scan_status', 'clean');
         }
         else {
           \Drupal::logger('foia_file')->warning(
-            "The file @webformDir@fileName with the ID @fid does not have a \"Virus scan status\" field and was not able to be marked as clean even though it passed the file scan.",
+            "The file @absoluteFileName with the ID @fid does not have a \"Virus scan scanStatus\" field and was not able to be marked as clean even though it passed the file scan.",
             [
-              '@weformDir' => $webformDir,
-              '@fileName' => $fileName,
+              '@absoluteFileName' => $absoluteFileName,
               '@fid' => $fid,
             ]);
         }
       }
-      elseif ($status === "Removed.") {
+      elseif ($scanStatus === "Removed.") {
         $file->set('field_virus_scan_status', 'virus');
         \Drupal::logger('foia_file')->warning(
-          "A virus was detected in the file @webformDir@fileName. The file has been deleted. The associated Entity ID @fid has been set to virus.",
+          "A virus was detected in the file @absoluteFileName. The file has been deleted. The associated Entity ID @fid has been set to virus.",
           [
-            '@webformDir' => $webformDir,
-            '@fileName' => $fileName,
+            '@absoluteFileName' => $absoluteFileName,
             '@fid' => $fid,
           ]);
       }
       $file->save();
     }
 
-    else {
-      \Drupal::logger('foia_file')->warning("An invalid path of @path, filename of @fileName, or extension of @extension was detected.",
+    if (array_search('', $pathParts) === TRUE) {
+      \Drupal::logger('foia_file')->warning("An invalid path of @path, filename of @relativeFileName, or extension of @extension was detected.",
       [
         '@path' => $pathParts['dirname'],
-        '@fileName' => $pathParts['filename'],
+        '@relativeFileName' => $pathParts['filename'],
         '@extension' => $pathParts['extension'],
       ]
       );
