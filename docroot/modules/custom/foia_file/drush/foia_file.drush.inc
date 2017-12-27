@@ -65,11 +65,12 @@ function drush_foia_file_file_entity_update($scanOutput) {
     }
     if ($scanStatusWithLeadingSpace) {
       // Trim the leading space.
-      $scanStatus = substr($scanStatusWithLeadingSpace[0], 1);
+      $scanStatus = ltrim($scanStatusWithLeadingSpace[0], " ");
     }
     else {
       \Drupal::logger('foia_file')->warning(
-        "An unexpected scan status was detected in the virus scan output."
+        "An unexpected output was detected in the virus scan: @scan",
+        ['@scan' => $scan]
       );
       continue;
     }
