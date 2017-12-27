@@ -71,7 +71,7 @@ class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInte
     }
     else {
       $this->logger
-        ->info('Unable to enqueue FOIA Request ID: @id',
+        ->error('Unable to enqueue FOIA Request ID: @id',
           [
             '@id' => $foiaRequest->id(),
           ]
