@@ -8,7 +8,13 @@ Feature: General sitewide configuration
     Given I am logged in as a user with the "Administrator" role
     When I am at "admin/modules"
     Then the "Syslog" checkbox should be checked
+    And the "Contact" checkbox should not be checked
+    And the "Contact Form" checkbox should not be checked
+    And the "Contact storage" checkbox should not be checked
     And the "Database Logging" checkbox should not be checked
+    And the "Migrate" checkbox should not be checked
+    And the "Migrate Plus" checkbox should not be checked
+    And the "Migrate Tools" checkbox should not be checked
 
   @api
   Scenario: Only administrators should see error messages
