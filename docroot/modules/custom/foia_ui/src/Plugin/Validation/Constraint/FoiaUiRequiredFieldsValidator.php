@@ -35,9 +35,6 @@ class FoiaUiRequiredFieldsValidator extends ConstraintValidator {
         if (!$emailAddress) {
           $this->context->addViolation($constraint->emailRequired);
         }
-        elseif (!\Drupal::service('email.validator')->isValid($emailAddress, TRUE, TRUE)) {
-          $this->context->addViolation($constraint->emailNotValid, ['%email' => $emailAddress]);
-        }
       }
     }
   }

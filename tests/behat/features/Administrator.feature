@@ -91,6 +91,22 @@ Feature: Agency Administrator role
     When I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
     And I press the 'Save' button
+    Then I should see the following error message:
+      | Submission Email is required if Portal Submission Format is set to Email |
+    When I select "API" from "Portal Submission Format"
+    And I press the 'Save' button
+    Then I should see the following error message:
+      | Submission API URL is required if Portal Submission Format is set to API |
+    When for 'Submission API URL' I enter 'http://eçample'
+    And I press the 'Save' button
+    Then I should see the following error message:
+      | http://eçample is not a valid URL. |
+    When for 'Submission API URL' I enter 'http://example.com'
+    And I press the 'Save' button
+    Then I should see the following error message:
+      | Submission API Shared Secret is required if Portal Submission Format is set to API |
+    When for 'Submission API Shared Secret' I enter 'bottom secret'
+    And I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been created. |
     And I click 'Edit'
@@ -155,8 +171,9 @@ Feature: Agency Administrator role
   @api
   Scenario: Can not delete any or all revisions
     Given I am logged in as a user with the 'Agency Administrator' role
-    And I am at 'node/add/agency_component'
+    When I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
+    And for 'Submission Email' I enter 'valid@example.com'
     And I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been updated. |
@@ -180,6 +197,7 @@ Feature: Agency Administrator role
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
     And for 'Agency' I enter 'A Test Agency'
+    And for 'Submission Email' I enter 'valid@example.com'
     And I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been created. |

@@ -22,13 +22,6 @@ class FoiaUiRequiredFields extends Constraint {
   public $emailRequired = 'Submission Email is required if Portal Submission Format is set to Email';
 
   /**
-   * Error message if Email address is not valid.
-   *
-   * @var string
-   */
-  public $emailNotValid = '%email is not a valid email address.';
-
-  /**
    * Error message if Submission format is API and Submission API URL is blank.
    *
    * @var string
