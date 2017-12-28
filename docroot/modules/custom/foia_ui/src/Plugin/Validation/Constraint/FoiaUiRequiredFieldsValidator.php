@@ -23,7 +23,7 @@ class FoiaUiRequiredFieldsValidator extends ConstraintValidator {
         if (!$apiUrl) {
           $this->context->addViolation($constraint->urlRequired);
         }
-        if (!UrlHelper::isValid($apiUrl)) {
+        if (!UrlHelper::isValid($apiUrl, TRUE)) {
           $this->context->addViolation($constraint->apiUrlNotValid, ['%url' => $apiUrl]);
         }
         if (!$apiSecret) {
@@ -35,7 +35,7 @@ class FoiaUiRequiredFieldsValidator extends ConstraintValidator {
         if (!$emailAddress) {
           $this->context->addViolation($constraint->emailRequired);
         }
-        elseif (!\Drupal::service('email.validator')->isValie($emailAddress)) {
+        elseif (!\Drupal::service('email.validator')->isValid($emailAddress, TRUE, TRUE)) {
           $this->context->addViolation($constraint->emailNotValid, ['%email' => $emailAddress]);
         }
       }
