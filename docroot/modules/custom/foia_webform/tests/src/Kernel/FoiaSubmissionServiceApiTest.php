@@ -254,8 +254,6 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
 
   /**
    * Tests the assembly of request data with attachments.
-   *
-   * @group broken
    */
   public function testAssesmbleRequestDataWithAttachments() {
     $configPath = '/var/www/dojfoia/config/default';
@@ -336,6 +334,14 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
           'filedata' => base64_encode(file_get_contents($file->getFileUri())),
           'filename' => $file->getFilename(),
           'filesize' => $file->getSize(),
+        ],
+      ],
+      'removed_files' => [
+        [
+          'content_type' => 'text/plain',
+          'filedata' => 'dGVzdA==',
+          'filename' => 'test.txt',
+          'filesize' => 4,
         ],
       ],
     ];

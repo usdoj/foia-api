@@ -420,16 +420,21 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $fileContents = [];
     if (!empty($files)) {
       foreach ($files as $fid) {
-        $currentFile = File::load($fid);
-        $virusScanStatus = $currentFile->get('field_virus_scan_status')->getString();
-        if ($virusScanStatus === 'virus') {
-          $fileContents[] = [
-            'content_type' => $currentFile->getMimeType(),
-            'filedata' => NULL,
-            'filename' => $currentFile->getFilename(),
-            'filesize' => (int) $currentFile->getSize(),
-            'filestatus' => t('File removed by virus scanning.'),
-          ];
+        if (is_int($fid)) {
+          $currentFile = File::load($fid);
+          $virusScanStatus = $currentFile->get('field_virus_scan_status')->getString();
+          if ($virusScanStatus === 'virus') {
+            $fileContents[] = [
+              'content_type' => $currentFile->getMimeType(),
+              'filedata' => NULL,
+              'filename' => $currentFile->getFilename(),
+              'filesize' => (int) $currentFile->getSize(),
+              'filestatus' => t('File removed by virus scanning.'),
+            ];
+          }
+        }
+        else {
+          $fileContents[] = $fid;
         }
       }
     }
