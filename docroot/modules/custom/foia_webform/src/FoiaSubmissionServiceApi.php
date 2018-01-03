@@ -55,6 +55,13 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected $errors;
 
   /**
+   * Files removed from submission.
+   *
+   * @var array
+   */
+  protected $removedFiles;
+
+  /**
    * FoiaSubmissionServiceApi constructor.
    *
    * @param \GuzzleHttp\ClientInterface $httpClient
@@ -145,7 +152,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     // If there are files attached, load the files and add the file metadata.
     if ($webform->hasManagedFile()) {
       $this->replaceFidsWithFileContents($webform, $submissionValues);
-      $this->includeReferenceToRemovedFiles($webform, $submissionValues);
+      $this->includeRemovedFiles($submissionValues);
     }
 
     // Append confirmation ID.
@@ -329,9 +336,12 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     if ($fileAttachmentElementNames) {
       foreach ($fileAttachmentElementNames as $fileAttachmentElementName) {
         if (isset($submissionValues[$fileAttachmentElementName])) {
-          $attachments = $this->getAttachmentData($submissionValues[$fileAttachmentElementName]);
+          $fids = $submissionValues[$fileAttachmentElementName];
+          $attachmentContents = $this->getAttachmentData($fids);
           unset($submissionValues[$fileAttachmentElementName]);
-          $submissionValues[$fileAttachmentElementName] = $attachments;
+          if ($attachmentContents) {
+            $submissionValues[$fileAttachmentElementName] = $attachmentContents;
+          }
         }
       }
     }
@@ -340,20 +350,12 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   /**
    * Add reference to files that have been removed by virus scanning.
    *
-   * @param \Drupal\webform\WebformInterface $webform
-   *   The webform the submission belongs to.
    * @param array $submissionValues
    *   The values submitted.
    */
-  protected function includeReferenceToRemovedFiles(WebformInterface $webform, array &$submissionValues) {
-    $fileAttachmentElementNames = $this->getFileAttachmentElementsOnWebform($webform);
-    if ($fileAttachmentElementNames) {
-      foreach ($fileAttachmentElementNames as $fileAttachmentElementName) {
-        if (isset($submissionValues[$fileAttachmentElementName])) {
-          $removedAttachmentFiles = $this->getRemovedFiles($submissionValues[$fileAttachmentElementName]);
-          $submissionValues['removed_files'] = $removedAttachmentFiles;
-        }
-      }
+  protected function includeRemovedFiles(array &$submissionValues) {
+    if ($this->removedFiles) {
+      $submissionValues['removed_files'] = $this->removedFiles;
     }
   }
 
@@ -381,60 +383,32 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   /**
    * Get the file data for each file attachment.
    *
-   * @param array $files
+   * @param array $fids
    *   An array containing the file IDs for the file attachments.
    *
    * @return array
    *   An array of file data for each file attachment.
    */
-  protected function getAttachmentData(array $files) {
+  protected function getAttachmentData(array $fids) {
     $fileContents = [];
-    if (!empty($files)) {
-      foreach ($files as $fid) {
-        $currentFile = File::load($fid);
-        $virusScanStatus = $currentFile->get('field_virus_scan_status')->getString();
-        if ($virusScanStatus !== 'virus') {
-          $base64 = base64_encode(file_get_contents($currentFile->getFileUri()));
+    if (!empty($fids)) {
+      foreach ($fids as $fid) {
+        $virusScanStatus = '';
+        $file = File::load($fid);
+        if ($file->hasField('field_virus_scan_status')) {
+          $virusScanStatus = $file->get('field_virus_scan_status')->value;
+        }
+        if ($virusScanStatus == 'clean') {
+          $base64 = base64_encode(file_get_contents($file->getFileUri()));
           $fileContents[] = [
-            'content_type' => $currentFile->getMimeType(),
+            'content_type' => $file->getMimeType(),
             'filedata' => $base64,
-            'filename' => $currentFile->getFilename(),
-            'filesize' => (int) $currentFile->getSize(),
+            'filename' => $file->getFilename(),
+            'filesize' => (int) $file->getSize(),
           ];
         }
-      }
-    }
-    return $fileContents;
-  }
-
-  /**
-   * Get the files that have been removed by file scanning.
-   *
-   * @param array $files
-   *   An array containing the file IDs for the file attachments.
-   *
-   * @return array
-   *   An array of files that have been removed by file scanning.
-   */
-  protected function getRemovedFiles(array $files) {
-    $fileContents = [];
-    if (!empty($files)) {
-      foreach ($files as $fid) {
-        if (is_int($fid)) {
-          $currentFile = File::load($fid);
-          $virusScanStatus = $currentFile->get('field_virus_scan_status')->getString();
-          if ($virusScanStatus === 'virus') {
-            $fileContents[] = [
-              'content_type' => $currentFile->getMimeType(),
-              'filedata' => NULL,
-              'filename' => $currentFile->getFilename(),
-              'filesize' => (int) $currentFile->getSize(),
-              'filestatus' => t('File removed by virus scanning.'),
-            ];
-          }
-        }
         else {
-          $fileContents[] = $fid;
+          $this->addRemovedFile($file->getFilename());
         }
       }
     }
@@ -505,6 +479,16 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $this->errors['code'] = isset($error['code']) ? $error['code'] : '';
     $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
     $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
+  }
+
+  /**
+   * Adds a filename to the list of files removed from the submission.
+   *
+   * @param string $fileName
+   *   The name fo the file that was removed.
+   */
+  protected function addRemovedFile($fileName) {
+    $this->removedFiles[] = $fileName;
   }
 
 }
