@@ -3,11 +3,10 @@
 namespace Drupal\foia_api\Plugin\rest\resource;
 
 use Drupal\Component\Utility\Bytes;
-use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file_entity\Entity\FileEntity;
-use Drupal\node\Entity\Node;
+use Drupal\foia_webform\AgencyLookupServiceInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ModifiedResourceResponse;
@@ -43,16 +42,9 @@ class WebformSubmissionResource extends ResourceBase {
   const MAX_TOTAL_FILE_UPLOAD_MB = 20;
 
   /**
-   * The query factory to create entity queries.
-   *
-   * @var \Drupal\Core\Entity\Query\QueryFactory
-   */
-  protected $queryFactory;
-
-  /**
    * The webform element manager.
    *
-   * @var \Drupal\webform\WebformElementManagerInterface
+   * @var \Drupal\webform\Plugin\WebformElementManagerInterface
    */
   protected $elementManager;
 
@@ -71,6 +63,13 @@ class WebformSubmissionResource extends ResourceBase {
   protected $fileUsage;
 
   /**
+   * The Agency Lookup service.
+   *
+   * @var \Drupal\foia_webform\AgencyLookupServiceInterface
+   */
+  protected $agencyLookupService;
+
+  /**
    * Constructs a new WebformSubmissionResource instance.
    *
    * @param array $configuration
@@ -83,21 +82,21 @@ class WebformSubmissionResource extends ResourceBase {
    *   The available serialization formats.
    * @param \Psr\Log\LoggerInterface $logger
    *   A logger instance.
-   * @param \Drupal\Core\Entity\Query\QueryFactory $queryFactory
-   *   Entity query service.
-   * @param \Drupal\webform\WebformElementManagerInterface $elementManager
+   * @param \Drupal\webform\Plugin\WebformElementManagerInterface $elementManager
    *   Webform element manager.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system service.
    * @param \Drupal\file\FileUsage\FileUsageInterface $fileUsage
    *   File usage service.
+   * @param \Drupal\foia_webform\AgencyLookupServiceInterface $agencyLookupService
+   *   The Agency Lookup service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializerFormats, LoggerInterface $logger, QueryFactory $queryFactory, WebformElementManagerInterface $elementManager, FileSystemInterface $fileSystem, FileUsageInterface $fileUsage) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, array $serializerFormats, LoggerInterface $logger, WebformElementManagerInterface $elementManager, FileSystemInterface $fileSystem, FileUsageInterface $fileUsage, AgencyLookupServiceInterface $agencyLookupService) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializerFormats, $logger);
-    $this->queryFactory = $queryFactory;
     $this->elementManager = $elementManager;
     $this->fileSystem = $fileSystem;
     $this->fileUsage = $fileUsage;
+    $this->agencyLookupService = $agencyLookupService;
   }
 
   /**
@@ -110,10 +109,10 @@ class WebformSubmissionResource extends ResourceBase {
       $plugin_definition,
       $container->getParameter('serializer.formats'),
       $container->get('logger.factory')->get('rest'),
-      $container->get('entity.query'),
       $container->get('plugin.manager.webform.element'),
       $container->get('file_system'),
-      $container->get('file.usage')
+      $container->get('file.usage'),
+      $container->get('foia_webform.agency_lookup_service')
     );
   }
 
@@ -144,7 +143,7 @@ class WebformSubmissionResource extends ResourceBase {
       return new ModifiedResourceResponse(['errors' => WebformSubmissionResource::INVALID_FORM_ID_ERROR], $statusCode);
     }
 
-    $agencyComponent = $this->getAssociatedAgencyComponent($webformId);
+    $agencyComponent = $this->agencyLookupService->getComponentFromWebform($webformId);
     if (!$agencyComponent) {
       $statusCode = 422;
       $message = t('Submission attempt against webform unassociated with agency component.');
@@ -237,24 +236,6 @@ class WebformSubmissionResource extends ResourceBase {
     $context['%agency_component_id'] = $agencyComponent->id();
     $context['%agency_component'] = $agencyComponent->getTitle();
     $this->logger->info("FOIA API Webform Submission for agency component %agency_component_id - %agency_component: HTTP Status: %status, Message: %message", $context);
-  }
-
-  /**
-   * Gets the loaded agency component node associated to the webform.
-   *
-   * @param string $webformId
-   *   The ID of the webform to perform an association lookup against.
-   *
-   * @return \Drupal\node\NodeInterface|bool
-   *   Returns the agency component that references the webform. FALSE if no
-   *   component node references the form.
-   */
-  protected function getAssociatedAgencyComponent($webformId) {
-    $query = $this->queryFactory->get('node');
-    $query->condition('field_request_submission_form', $webformId);
-    $nids = $query->execute();
-    $agencyComponent = ($nids) ? Node::load(reset($nids)) : NULL;
-    return $agencyComponent;
   }
 
   /**
@@ -443,7 +424,7 @@ class WebformSubmissionResource extends ResourceBase {
       $fileExtensions = isset($element['#file_extensions']) ? $element['#file_extensions'] : $defaultProperties['file_extensions'];
       $validators['file_validate_size'] = [$maxFileSize];
       $validators['file_validate_extensions'] = [$fileExtensions];
-      /** @var \Drupal\file\FileEntityInterface $file */
+      /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {
         $fileSizes[] = $file->getSize();
         $validationErrors = file_validate($file, $validators);
