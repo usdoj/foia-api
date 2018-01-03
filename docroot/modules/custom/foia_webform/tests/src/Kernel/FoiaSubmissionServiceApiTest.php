@@ -277,27 +277,16 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webform->save();
     $this->deleteWebformHandlers($webform);
 
-    // Need to create Drupal file entity.
-    $file = FileEntity::create([
-      'uid' => 1,
-      'filename' => 'test.txt',
-      'uri' => 'public://test.txt',
-      'status' => 1,
-    ]);
-    $file->updateBundle('attachment_support_document');
-    $file->save();
-
-    $dir = dirname($file->getFileUri());
-    if (!file_exists($dir)) {
-      mkdir($dir, 0770, TRUE);
+    $files = $this->createFiles();
+    $fids = array_keys($files);
+    foreach ($files as $file) {
+      if ($file->get('field_virus_scan_status')->value == 'clean') {
+        $cleanFile = $file;
+      }
+      else {
+        $virusFile = $file;
+      }
     }
-    file_put_contents($file->getFileUri(), "test");
-    $file->save();
-
-    /** @var \Drupal\file\FileUsage\FileUsageInterface $file_usage */
-    $file_usage = \Drupal::service('file.usage');
-    $file_usage->add($file, 'foia_webform', 'user', 1);
-    $file->save();
 
     $webformSubmissionData = [
       'name_first' => 'Another',
@@ -306,7 +295,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
       'request_description' => 'The best request',
       'request_fee_waiver' => 'no',
       'request_expedited_processing' => 'no',
-      'attachments_supporting_documentation' => [$file->id()],
+      'attachments_supporting_documentation' => $fids,
     ];
 
     $webformSubmission = WebformSubmission::create([
@@ -330,19 +319,14 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
       'request_expedited_processing' => 'no',
       'attachments_supporting_documentation' => [
         [
-          'content_type' => $file->getMimeType(),
-          'filedata' => base64_encode(file_get_contents($file->getFileUri())),
-          'filename' => $file->getFilename(),
-          'filesize' => $file->getSize(),
+          'content_type' => $cleanFile->getMimeType(),
+          'filedata' => base64_encode(file_get_contents($cleanFile->getFileUri())),
+          'filename' => $cleanFile->getFilename(),
+          'filesize' => $cleanFile->getSize(),
         ],
       ],
       'removed_files' => [
-        [
-          'content_type' => 'text/plain',
-          'filedata' => 'dGVzdA==',
-          'filename' => 'test.txt',
-          'filesize' => 4,
-        ],
+        $virusFile->getFilename(),
       ],
     ];
     $apiVersion = ['version' => FoiaSubmissionServiceInterface::VERSION];
@@ -379,6 +363,45 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $this->assertEquals($responseContents['status_tracking_number'], $validSubmission['status_tracking_number']);
     $this->assertEquals('api', $validSubmission['type']);
     $this->assertEquals([], $submissionError);
+  }
+
+  /**
+   * Creates test attachments.
+   */
+  protected function createFiles() {
+    $filesToCreate = [
+      'test1.txt' => 'clean',
+      'test2.txt' => 'virus',
+    ];
+    $fileEntities = [];
+
+    foreach ($filesToCreate as $fileName => $fileVirusStatus) {
+      // Create Drupal file entity.
+      $file = FileEntity::create([
+        'type' => 'attachment_support_document',
+        'uid' => 1,
+        'filename' => $fileName,
+        'uri' => "public://{$fileName}",
+        'status' => 1,
+      ]);
+      $file->save();
+
+      $dir = dirname($file->getFileUri());
+      if (!file_exists($dir)) {
+        mkdir($dir, 0770, TRUE);
+      }
+      file_put_contents($file->getFileUri(), "test");
+      $file->set('field_virus_scan_status', $fileVirusStatus);
+      $file->save();
+
+      /** @var \Drupal\file\FileUsage\FileUsageInterface $file_usage */
+      $file_usage = \Drupal::service('file.usage');
+      $file_usage->add($file, 'foia_webform', 'user', 1);
+      $file->save();
+      $fileEntities[$file->id()] = $file;
+    }
+    return $fileEntities;
+
   }
 
   /**
