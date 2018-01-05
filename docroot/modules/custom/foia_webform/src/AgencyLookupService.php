@@ -32,7 +32,8 @@ class AgencyLookupService implements AgencyLookupServiceInterface {
   public function getComponentFromWebform($webformId) {
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->condition('type', 'agency_component')
-      ->condition('field_request_submission_form', $webformId);
+      ->condition('field_request_submission_form', $webformId)
+      ->condition('status', NodeInterface::PUBLISHED);
     $nid = $query->execute();
 
     return ($nid) ? Node::load(reset($nid)) : NULL;
