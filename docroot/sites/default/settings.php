@@ -765,3 +765,6 @@ $settings['file_scan_ignore_directories'] = [
 # }
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 $settings['install_profile'] = 'lightning';
+
+// Suppress display of error messages.
+ini_set ('display_errors', '0');
