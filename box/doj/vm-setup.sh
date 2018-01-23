@@ -6,11 +6,6 @@ DRUPAL_BASIC_SETUP_FILE=/etc/doj_basic_setup_complete
 # Check to see if we've already performed this setup.
 if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
 
-  # Allow insecure use of wget and curl, because of DOJ network/SSL issues.
-  # TODO: Any way to remove the need for this?
-  echo "check_certificate = off" > /home/vagrant/.wgetrc
-  echo "insecure" > /home/vagrant/.curlrc
-
   # Clone our repos.
   cd /var/www
   sudo chmod 777 .
