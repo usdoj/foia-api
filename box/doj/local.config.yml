@@ -1,0 +1,36 @@
+# DrupalVM configuration for a VirtualBox containing both the "front stage" and
+# the "back stage" for www.foia.gov, tailored for local DOJ development.
+
+# Update the hostname to the local development environment hostname. This host
+# tweaked because we need it locally to end with "doj.gov".
+vagrant_hostname: local-api.foia.doj.gov
+
+# Set the IP address so it doesn't conflict with other Drupal VM instances. This
+# tweaked because we need it to end with 33.x.
+vagrant_ip: 192.168.33.83
+
+# Use only inside-VM workflow - no synced folders, because of restrictive DOJ
+# networks/laptops.
+vagrant_synced_folders: []
+vagrant_synced_folder_default_type: ""
+
+# Apache VirtualHosts - just one each for the front/back stages, plus Adminer.
+apache_vhosts:
+  - servername: "{{ drupal_domain }}"
+    serveralias: "local.dojfoia.gov"
+    documentroot: "{{ drupal_core_path }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
+  - servername: "local-www.foia.doj.gov"
+    documentroot: "/var/www/foia.gov/_site"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
+  - servername: "adminer.{{ vagrant_hostname }}"
+    documentroot: "{{ adminer_install_dir }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
+# The front stage requires node 6.x.
+nodejs_version: "6.x"
+
+# We're doing all post-provisioning manually because of restrictive laptops.
+post_provision_scripts: []
