@@ -13,13 +13,14 @@ use Drupal\file\Entity\File;
 function foia_file_drush_command() {
   $items = [];
 
-  $items['file-entity-update'] = [
-    'description' => 'Updates file entities virus scan statuses.',
+  $items['virus-scan'] = [
+    'description' => 'Performs virus scan and updates status on file entities accordingly.',
     'core' => ['8+'],
     'arguments' => [
-      'scan_result' => 'The result of the file scan.',
+      'path_to_executable' => 'The absolute path of the virus scanning executable.',
+      'path_to_webform_attachments' => 'The absolute path of the webform attachments to scan.',
     ],
-    'aliases' => ['feu'],
+    'aliases' => ['vs'],
   ];
 
   return $items;
@@ -30,16 +31,24 @@ function foia_file_drush_command() {
  */
 function foia_file_drush_help($command) {
   switch ($command) {
-    case 'drush:file-entity-update':
-      return dt('Update virus scan statuses for file entites based upon output from virus scanner.');
+    case 'drush:virus-scan':
+      return dt('Performs virus scan and updates status on file entities accordingly.');
   }
 }
 
 /**
  * Implements drush_hook_COMMAND().
  */
-function drush_foia_file_file_entity_update($scanOutput) {
+function drush_foia_file_virus_scan($path_to_executable, $path_to_webform_attachments) {
+  if (empty($path_to_executable) || empty($path_to_webform_attachments)) {
+    \Drupal::logger('foia_file')->error('Virus scanning executable path or directory to scan missing.');
+    return FALSE;
+  }
+
+  $scan_options = '-r --remove --no-summary';
+  $scan_command = "${path_to_executable} ${scan_options} ${path_to_webform_attachments}";
   $startTime = microtime(TRUE);
+  $scanOutput = shell_exec($scan_command);
 
   // Get webform directory on the server.
   $fileDir = explode('/webform/', $scanOutput, 2);
@@ -154,6 +163,6 @@ function drush_foia_file_file_entity_update($scanOutput) {
 
   $executionTime = ($endTime - $startTime);
 
-  \Drupal::logger('foia_file')->info("File Entity update completed in {$executionTime} seconds.");
+  \Drupal::logger('foia_file')->info("Virus scanning and file updates completed in {$executionTime} seconds.");
 
 }
