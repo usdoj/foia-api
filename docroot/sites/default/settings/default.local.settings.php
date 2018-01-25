@@ -139,10 +139,3 @@ $settings['trusted_host_patterns'] = array(
  * @see: https://www.drupal.org/node/2837029
  */
 $config['simplesamlphp_auth.settings']['activate'] = false;
-
-/**
- * Set a hash_salt for non-BLT local environments.
- */
-if (empty($settings['hash_salt'])) {
-  $settings['hash_salt'] = file_get_contents(DRUPAL_ROOT . '/../salt.txt');
-}
