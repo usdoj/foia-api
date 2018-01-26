@@ -17,9 +17,10 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   # Back-stage installation.
   cd /var/www/dojfoia
   composer install
-  cp docroot/sites/default/settings/default.local.settings.php docroot/sites/default/settings/local.settings.php
-  cp -r simplesamlphp/* vendor/simplesamlphp/simplesamlphp/
-  cat /dev/urandom | tr -cd 'a-f0-9' | head -c 32 > salt.txt
+  composer run-script blt-alias
+  source ~/.bash_profile
+  blt setup:settings
+  blt setup:build
 
   # Front-stage installation.
   # Includes a manual Ruby installation because I can't get DrupalVM to set
