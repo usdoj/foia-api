@@ -1,7 +1,9 @@
 uuid: 0df7cdd0-2514-4190-b58f-2cc5d0ef348c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.agency_component
 id: node--agency_component
 disabled: false
 path: agency_components
@@ -214,6 +216,12 @@ resourceFields:
   field_foia_officers:
     fieldName: field_foia_officers
     publicName: foia_officers
+    enhancer:
+      id: ''
+    disabled: false
+  field_is_centralized:
+    fieldName: field_is_centralized
+    publicName: is_centralized
     enhancer:
       id: ''
     disabled: false
