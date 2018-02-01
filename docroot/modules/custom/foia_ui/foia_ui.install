@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Update functions for the FOIA UI module.
+ */
+
+use Drupal\node\Entity\Node;
+
+/**
+ * Set Agency Component Centralized field.
+ */
+function foia_ui_update_8001() {
+
+  // Get all components.
+  $bundle = 'agency_component';
+  $query = \Drupal::entityQuery('node');
+  $query->condition('type', $bundle);
+  $componentEntityIds = $query->execute();
+
+  // Loop through Components.
+  foreach ($componentEntityIds as $componentEntityId) {
+    $component = Node::load($componentEntityId);
+
+    // Get agency.
+    $agencyTid = $component->field_agency->target_id;
+
+    // Find if other component has agency.
+    $query = \Drupal::entityQuery('node');
+    $query->condition('type', $bundle);
+    $query->condition('field_agency', $agencyTid);
+    $siblingComponentEntityIds = $query->execute();
+    if (count($siblingComponentEntityIds) > 1) {
+      $component->set('field_is_centralized', FALSE);
+    }
+    elseif (count($siblingComponentEntityIds) === 1) {
+      $component->set('field_is_centralized', TRUE);
+    }
+    $component->save();
+  }
+
+}
