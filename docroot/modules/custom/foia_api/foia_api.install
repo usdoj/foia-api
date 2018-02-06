@@ -5,38 +5,35 @@
  * Update functions for the FOIA API module.
  */
 
-use Drupal\node\Entity\Node;
-
 /**
  * Set Agency Component Centralized field.
  */
 function foia_api_update_8001() {
 
-  // Get all components.
-  $bundle = 'agency_component';
-  $query = \Drupal::entityQuery('node');
-  $query->condition('type', $bundle);
-  $componentEntityIds = $query->execute();
+  // Get all agencies.
+  $vid = 'agency';
+  $agencies = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
 
-  // Loop through Components.
-  foreach ($componentEntityIds as $componentEntityId) {
-    $component = Node::load($componentEntityId);
+  foreach ($agencies as $agency) {
 
-    // Get agency.
-    $agencyTid = $component->field_agency->target_id;
+    $component = NULL;
 
-    // Find if other component has agency.
-    $query = \Drupal::entityQuery('node');
-    $query->condition('type', $bundle);
-    $query->condition('field_agency', $agencyTid);
-    $siblingComponentEntityIds = $query->execute();
-    if (count($siblingComponentEntityIds) > 1) {
-      $component->set('field_is_centralized', FALSE);
+    // Get agencies associated with more than one component.
+    $components = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_agency' => $agency->tid]);
+
+    if (count($components) > 1) {
+      foreach ($components as $component) {
+        $component->set('field_is_centralized', FALSE);
+        $component->save();
+      }
     }
-    elseif (count($siblingComponentEntityIds) === 1) {
-      $component->set('field_is_centralized', TRUE);
+    elseif (count($components) == 1) {
+      foreach ($components as $component) {
+        $component->set('field_is_centralized', TRUE);
+        $component->save();
+      }
     }
-    $component->save();
+
   }
 
 }
