@@ -1,0 +1,23 @@
+uuid: 0e4047be-47c8-4818-bcb9-2c40d9c41606
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_centralized
+    - node.type.agency_component
+id: node.agency_component.field_is_centralized
+field_name: field_is_centralized
+entity_type: node
+bundle: agency_component
+label: 'Is Centralized'
+description: 'Denotes whether or not this agency component belongs to a centralized agency. If it is the only component in the agency, the value should be set to true.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'True'
+  off_label: 'False'
+field_type: boolean
