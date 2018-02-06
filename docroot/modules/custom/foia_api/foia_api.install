@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Update functions for the FOIA UI module.
+ * Update functions for the FOIA API module.
  */
 
 use Drupal\node\Entity\Node;
@@ -10,7 +10,7 @@ use Drupal\node\Entity\Node;
 /**
  * Set Agency Component Centralized field.
  */
-function foia_ui_update_8001() {
+function foia_api_update_8001() {
 
   // Get all components.
   $bundle = 'agency_component';
