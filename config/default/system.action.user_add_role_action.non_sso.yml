@@ -1,0 +1,14 @@
+uuid: 8f3c6eb9-d0f6-417c-831c-1b76f3e163a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.non_sso
+  module:
+    - user
+id: user_add_role_action.non_sso
+label: 'Add the Drupal user role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: non_sso
