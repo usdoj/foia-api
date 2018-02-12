@@ -80,9 +80,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     ];
     $submissionContents = array_merge($submissionMetadata, $submissionContents);
 
-    // Format the submission values as an HTML table.
-    $submissionContentsAsTable = $this->formatSubmissionContentsAsTable($submissionContents);
-    $message['body'] = $submissionContentsAsTable;
+    // Build the message body.
+    $bodySections = [
+      t('Hello,'),
+      t('A new FOIA request was submitted to your agency component:'),
+      $this->formatSubmissionContentsAsTable($submissionContents),
+      $this->formatSubmissionContentsAsList($submissionContents),
+    ];
+    $message['body'] = implode('<br /><br />', $bodySections);
 
     return $message;
   }
@@ -207,6 +212,24 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   }
 
   /**
+   * Formats the webform submission contents as a human-readable list.
+   *
+   * @param array $submissionContents
+   *   The webform submission contents.
+   *
+   * @return string
+   *   Returns the submission contents as a human-readable list.
+   */
+  protected function formatSubmissionContentsAsList(array $submissionContents) {
+    $list = t('The following list contains the entire submission, and is formatted for ease of viewing and printing.');
+    $list .= '<br /><br />';
+    foreach ($submissionContents as $key => $value) {
+      $list .= "$key: $value<br />";
+    }
+    return $list;
+  }
+
+  /**
    * Formats the webform submission contents as an HTML table.
    *
    * @param array $submissionContents
@@ -217,7 +240,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    */
   protected function formatSubmissionContentsAsTable(array $submissionContents) {
     $table = [
-      '#markup' => t('Hello,') . '<br />' . t('A new FOIA request was submitted to your agency component:') . '<br /><br />',
+      '#markup' => t('The following table contains the entire submission, and is formatted for ease of copy/pasting into a spreadsheet.') . '<br /><br />',
     ];
 
     $table['values'] = [
