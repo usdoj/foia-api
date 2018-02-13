@@ -1,5 +1,7 @@
 # DOJ-specific Development Box
 
+## Installation
+
 Internal DOJ developers are not able to run BLT, so will need a different setup
 for local development. Local installation will consist of these steps:
 
@@ -17,3 +19,16 @@ for local development. Local installation will consist of these steps:
    `vagrant ssh`
 7. Run the Bash script to complete the setup, inside the VM:
    `bash /vagrant/box/doj/vm-setup.sh`
+
+## Working within the DOJ network
+
+When firewall and proxy exceptions are finalized, working within the DOJ network
+should be a possibility. Note that currently this is not finalized, so this is
+not yet feasible. But to eventually set this up, complete these steps:
+
+1. Install these Vagrant plugins: vagrant-proxyconf and vagrant-ca-certificates
+2. Download the raw version of [this](https://github.com/usdoj/justicegov/blob/integration/scripts/copy-to-drupalvm-folder/Vagrantfile.local)
+   file and place it at `/path/to/repo/box/Vagrantfile.local`.
+3. Download the raw version of [this](https://github.com/usdoj/justicegov/blob/integration/scripts/copy-to-drupalvm-folder/doj-enterprise.crt)
+   file and place it at `/path/to/repo/box/doj-enterprise.crt`.
+4. Reload the VM: `vagrant reload`
