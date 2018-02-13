@@ -224,7 +224,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $list = t('The following list contains the entire submission, and is formatted for ease of viewing and printing.');
     $list .= '<br /><br />';
     foreach ($submissionContents as $key => $value) {
-      $list .= "$key: $value<br />";
+      $list .= "<strong>$key</strong>: $value<br />";
     }
     return $list;
   }
