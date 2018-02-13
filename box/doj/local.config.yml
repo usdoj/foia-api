@@ -23,8 +23,8 @@ apache_vhosts:
     documentroot: "{{ adminer_install_dir }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-# The front stage requires node 6.x.
-nodejs_version: "6.x"
+# The front stage requires node 8.x.
+nodejs_version: "8.x"
 
 # We're doing all post-provisioning manually because of restrictive laptops.
 post_provision_scripts: []
