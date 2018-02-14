@@ -36,7 +36,7 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   git remote add fork https://github.com/$github_user/foia-api.git
   composer install
   composer run-script blt-alias
-  source ~/.bash_profile
+  source ~/.bashrc
   blt setup:settings
   blt setup:build
 
