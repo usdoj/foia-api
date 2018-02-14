@@ -22,13 +22,9 @@ for local development. Local installation will consist of these steps:
 
 ## Working within the DOJ network
 
-When firewall and proxy exceptions are finalized, working within the DOJ network
-should be a possibility. Note that currently this is not finalized, so this is
-not yet feasible. But to eventually set this up, complete these steps:
+Working within the DOJ network involves some additional steps which are detailed
+in [this private repository](https://github.com/usdoj/vagrant-doj). The files
+in that repository will need to be copied into the `/box` folder above, like so:
 
-1. Install these Vagrant plugins: vagrant-proxyconf and vagrant-ca-certificates
-2. Download the raw version of [this](https://github.com/usdoj/justicegov/blob/integration/scripts/copy-to-drupalvm-folder/Vagrantfile.local)
-   file and place it at `/path/to/repo/box/Vagrantfile.local`.
-3. Download the raw version of [this](https://github.com/usdoj/justicegov/blob/integration/scripts/copy-to-drupalvm-folder/doj-enterprise.crt)
-   file and place it at `/path/to/repo/box/doj-enterprise.crt`.
-4. Reload the VM: `vagrant reload`
+* `/box/Vagrantfile.local`
+* `/box/doj-enterprise.crt`
