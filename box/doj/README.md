@@ -1,5 +1,7 @@
 # DOJ-specific Development Box
 
+## Installation
+
 Internal DOJ developers are not able to run BLT, so will need a different setup
 for local development. Local installation will consist of these steps:
 
@@ -17,3 +19,12 @@ for local development. Local installation will consist of these steps:
    `vagrant ssh`
 7. Run the Bash script to complete the setup, inside the VM:
    `bash /vagrant/box/doj/vm-setup.sh`
+
+## Working within the DOJ network
+
+Working within the DOJ network involves some additional steps which are detailed
+in [this private repository](https://github.com/usdoj/vagrant-doj). The files
+in that repository will need to be copied into the `/box` folder above, like so:
+
+* `/box/Vagrantfile.local`
+* `/box/doj-enterprise.crt`

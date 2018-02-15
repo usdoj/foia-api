@@ -14,11 +14,29 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   # Rename the API repo to match the way it is used in various files: dojfoia.
   mv foia-api dojfoia
 
+  # Collect Github info.
+  echo "Github email address?"
+  read github_email
+  echo "Github user name?"
+  read github_user
+  echo "Full name?"
+  read full_name
+
+  # Git config and aliases.
+  git config --global user.name "$full_name"
+  git config --global user.email "$github_email"
+  git config --global alias.co checkout
+  git config --global alias.br branch
+  git config --global alias.ci commit
+  git config --global alias.di diff
+  git config --global alias.st status
+
   # Back-stage installation.
   cd /var/www/dojfoia
+  git remote add fork https://github.com/$github_user/foia-api.git
   composer install
   composer run-script blt-alias
-  source ~/.bash_profile
+  source ~/.bashrc
   blt setup:settings
   blt setup:build
 
@@ -30,6 +48,7 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   source /home/vagrant/.rvm/scripts/rvm
   rvm install "ruby-2.3.4"
   cd /var/www/foia.gov
+  git remote add fork https://github.com/$github_user/foia.gov.git
   gem install bundler
   bundle install
   npm install
