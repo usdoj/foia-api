@@ -1,0 +1,14 @@
+uuid: 9e43e7bf-900f-4292-a701-668cb98ee863
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.non_sso
+  module:
+    - user
+id: user_remove_role_action.non_sso
+label: 'Remove the Drupal user role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: non_sso
