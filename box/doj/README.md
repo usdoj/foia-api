@@ -19,6 +19,8 @@ for local development. Local installation will consist of these steps:
    `vagrant ssh`
 7. Run the Bash script to complete the setup, inside the VM:
    `bash /vagrant/box/doj/vm-setup.sh`
+8. Use drush to setup your local database:
+   `drush sql-sync @foia.test @dojfoia.local`
 
 ## Working within the DOJ network
 

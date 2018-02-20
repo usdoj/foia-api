@@ -39,6 +39,7 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   source ~/.bashrc
   blt setup:settings
   blt setup:build
+  blt setup:hash-salt
 
   # Front-stage installation.
   # Includes a manual Ruby installation because I can't get DrupalVM to set
@@ -53,6 +54,9 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   bundle install
   npm install
   NODE_ENV=local APP_ENV=local make build
+
+  echo "Local codebase installed."
+  echo "Please run 'drush sql-sync @foia.test @dojfoia.local' to set up your local database."
 
   # Create a file to indicate this script has already run.
   sudo touch $DRUPAL_BASIC_SETUP_FILE
