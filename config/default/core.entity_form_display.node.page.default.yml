@@ -13,7 +13,6 @@ dependencies:
     - metatag
     - path
     - text
-    - workbench_moderation
 _core:
   default_config_hash: REvJbUqTIymX9RPtmwNz2c13OKbrTk8Y3UfJWXLl8CY
 id: node.page.default
@@ -65,13 +64,7 @@ content:
       allow_new: true
       allow_existing: false
       match_operator: CONTAINS
-    third_party_settings: {  }
-    region: content
-  status:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 123
+      form_mode: default
     third_party_settings: {  }
     region: content
   sticky:
@@ -100,3 +93,4 @@ content:
     region: content
 hidden:
   panelizer: true
+  status: true
