@@ -6,7 +6,7 @@ project:
     name: lightning
   local:
     protocol: http
-    hostname: 'local-api.foia.doj.gov'
+    hostname: local-api.foia.doj.gov
 git:
   default_branch: foia-develop
   remotes:
@@ -54,8 +54,6 @@ target-hooks:
     command: 'echo ''No post-deploy build configured.'''
 behat:
   web-driver: chrome
-vm:
-  enable: true
 simplesamlphp: 'TRUE'
 phpunit:
   -
