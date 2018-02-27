@@ -53,6 +53,10 @@ local:
         drupal_root: ${docroot}
       drush:
         alias: '@self'
+      subcontexts:
+        paths:
+          - /var/www/dojfoia/docroot/profiles/contrib/lightning/tests
+        autoload: 0
 
 example-multisite:
   extensions:
