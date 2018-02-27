@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\webform_serialization\Functional;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\webform\Entity\Webform;
 use Drupal\Component\Serialization\Json;
@@ -40,7 +41,7 @@ class WebformNormalizerTest extends BrowserTestBase {
     $webform = Webform::load('serialization_test');
 
     $uuid = $webform->uuid();
-    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, ['access content']);
+    user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, ['access content']);
     $webformFromJsonApi = Json::decode($this->drupalGet("/jsonapi/webform/webform/{$uuid}"));
     $this->assertSession()->statusCodeEquals(200);
 
