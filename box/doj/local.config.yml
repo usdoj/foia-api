@@ -9,6 +9,10 @@ vagrant_ip: 192.168.33.83
 vagrant_synced_folders: []
 vagrant_synced_folder_default_type: ""
 
+# To deal with Composer's heavy memory usage, provide plenty of RAM.
+php_memory_limit: "2048M"
+vagrant_memory: 4096
+
 # Apache VirtualHosts - just one each for the front/back stages, plus Adminer.
 apache_vhosts:
   - servername: "{{ drupal_domain }}"
