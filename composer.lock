@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "46920852c3e72855367e240587f9fc6d",
+    "content-hash": "2c880043b8f9d3c1a3b2986a61d6f067",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9620,6 +9620,11 @@
                 "phpunit/phpunit": "~4.8"
             },
             "type": "project",
+            "extra": {
+                "patches_applied": {
+                    "patch": "./patches/simplesamlphp-nameidpolicy-always-sent-1.15.4.patch"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "SimpleSAML\\": "lib/SimpleSAML"

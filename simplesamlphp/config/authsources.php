@@ -30,7 +30,7 @@ $config = array(
     'default-sp' => array(
         'saml:SP',
         'idp' => $idp,
-        'NameIDPolicy' => null,
+        'NameIDPolicy' => FALSE,
         'AuthnContextClassRef' => 'https://max.gov/icam/2015/10/securityLevels/piv',
     ),
 
