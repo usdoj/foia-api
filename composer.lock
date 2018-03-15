@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef4f784899a757ce176fe8f355a3623c",
+    "content-hash": "63dacb8c43d7017092b62ecc906aa7e6",
     "packages": [
         {
             "name": "acquia/blt",
@@ -6323,7 +6323,8 @@
                     }
                 },
                 "patches_applied": {
-                    "2925369 - TokenAuthUser does not fulfill RevisionableInterface, causes fatals": "https://www.drupal.org/files/issues/2925369-2.patch"
+                    "2925369 - TokenAuthUser does not fulfill RevisionableInterface, causes fatals": "https://www.drupal.org/files/issues/2925369-2.patch",
+                    "2945431 - Make compatible with TranslatableRevisionableInterface in 8.5.x": "https://www.drupal.org/files/issues/2945431-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6455,17 +6456,17 @@
         },
         {
             "name": "drupal/swiftmailer",
-            "version": "1.0.0-beta2",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/swiftmailer",
-                "reference": "8.x-1.0-beta2"
+                "reference": "8.x-1.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/swiftmailer-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "a63a91e7816a06bf8e52ac9b5e48a892a1e6b1d4"
+                "url": "https://ftp.drupal.org/files/projects/swiftmailer-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "d49a50638a629c24d681181b82255fd50c1b2642"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -6479,7 +6480,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
+                    "version": "8.x-1.0-beta1",
                     "datestamp": "1519655285",
                     "security-coverage": {
                         "status": "not-covered",
@@ -13245,7 +13246,6 @@
         "drupal/field_group": 5,
         "drupal/maillog": 20,
         "drupal/roleassign": 15,
-        "drupal/swiftmailer": 10,
         "drupal/rules": 15,
         "drupal/file_entity": 10,
         "drupal/password_policy": 15
