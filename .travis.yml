@@ -1,12 +1,9 @@
-# Note that the example .travis.yml file for child projects lives in /install.
-# Temporarily use legacy infrastructure until Travis resolves MySQL issues with their containerized infrastructure.
-# @see https://github.com/travis-ci/travis-ci/issues/6842
-sudo: required
+sudo: true
 language: php
 dist: trusty
 
 php:
-  - 5.6
+  - 7.1
 
 matrix:
   fast_finish: true
@@ -28,8 +25,8 @@ cache:
   - "$HOME/.drush/cache"
   - "$HOME/.npm"
   - "$HOME/.nvm"
-  - "vendor"
-  # Cache front end dependecies to dramatically improve build time.
+  - ".rules"
+  # Cache front end dependencies to dramatically improve build time.
   # - "docroot/themes/custom/mytheme/node_modules"
   # - "docroot/themes/custom/mytheme/bower_components"
 
@@ -65,16 +62,16 @@ deploy:
      skip_cleanup: true
      on:
        branch: develop
-       php: 5.6
+       php: 7.1
    - provider: script
      script: "${BLT_DIR}/scripts/travis/deploy_branch"
      skip_cleanup: true
      on:
        branch: master
-       php: 5.6
+       php: 7.1
    - provider: script
      script: "${BLT_DIR}/scripts/travis/deploy_tag"
      skip_cleanup: true
      on:
        tags: true
-       php: 5.6
+       php: 7.1
