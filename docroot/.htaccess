@@ -205,3 +205,6 @@ AddEncoding gzip svgz
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
 </IfModule>
+
+# Disallow file uploads larger than 20MB.
+LimitRequestBody 20971520
