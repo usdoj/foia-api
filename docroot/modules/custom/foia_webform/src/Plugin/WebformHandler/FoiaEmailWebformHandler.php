@@ -228,7 +228,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $rows = [];
     foreach ($submissionContents as $key => $value) {
       $rows[] = [
-        ['data' => "<strong>$key</strong>"],
+        ['data' => ['#markup' => "<strong>$key</strong>"]],
         ['data' => $value],
       ];
     }
