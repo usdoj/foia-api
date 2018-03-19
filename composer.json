@@ -5,8 +5,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "acquia/blt": "^8.9.12",
-        "drupal/webform": "^5.0@beta",
+        "php": ">=7.1",
+        "acquia/blt": "^8.9.14",
+        "drupal/webform": "5.0.0-beta19",
         "drupal/address": "~1.0",
         "drupal/field_group": "^1.0@RC",
         "drupal/cors": "~1.0",
@@ -23,7 +24,7 @@
         "drupal/core": "^8.4.4",
         "drush/drush": "^8.1.16",
         "drupal/mailsystem": "^4.1",
-        "drupal/swiftmailer": "^1.0@beta",
+        "drupal/swiftmailer": "1.0.0-beta1",
         "drupal/rules": "^3.0@alpha",
         "drupal/autologout": "^1.0",
         "drupal/file_entity": "^2.0@beta",
@@ -88,8 +89,8 @@
                 "Config install issues": "https://www.drupal.org/files/issues/password-policy-config-import-field-error-2771129-49-D8.patch",
                 "Fix inconsistent date format issues": "https://www.drupal.org/files/issues/password_policy-inconsistent-datetime-formats-2860671-13-D8.patch"
             },
-            "drupal/jsonapi_extras": {
-                "Fix performance issue with resource config loading": "https://www.drupal.org/files/issues/jsonapi_extras-redundant-loading-of-resource-configs-2948512-3-D8.patch"
+            "simplesamlphp/simplesamlphp": {
+                "patch": "./patches/simplesamlphp-nameidpolicy-always-sent-1.15.4.patch"
             }
         },
         "installer-types": [
