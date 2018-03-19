@@ -227,7 +227,10 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     ];
     $rows = [];
     foreach ($submissionContents as $key => $value) {
-      $rows[] = ["<strong>$key</strong>", $value];
+      $rows[] = [
+        ['data' => "<strong>$key</strong>"],
+        ['data' => $value],
+      ];
     }
     $table['values'] = [
       '#theme' => 'table',
