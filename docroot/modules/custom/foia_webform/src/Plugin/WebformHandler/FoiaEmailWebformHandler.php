@@ -84,8 +84,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $bodySections = [
       t('Hello,'),
       t('A new FOIA request was submitted to your agency component:'),
-      $this->formatSubmissionContentsAsTable($submissionContents),
       $this->formatSubmissionContentsAsList($submissionContents),
+      $this->formatSubmissionContentsAsTable($submissionContents),
     ];
     $message['body'] = implode('<br /><br />', $bodySections);
 
