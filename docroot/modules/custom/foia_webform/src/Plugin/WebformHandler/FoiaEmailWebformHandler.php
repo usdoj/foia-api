@@ -84,8 +84,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $bodySections = [
       t('Hello,'),
       t('A new FOIA request was submitted to your agency component:'),
-      $this->formatSubmissionContentsAsTable($submissionContents),
       $this->formatSubmissionContentsAsList($submissionContents),
+      $this->formatSubmissionContentsAsTable($submissionContents),
     ];
     $message['body'] = implode('<br /><br />', $bodySections);
 
@@ -212,7 +212,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   }
 
   /**
-   * Formats the webform submission contents as a human-readable list.
+   * Formats the webform submission contents as a vertical list.
    *
    * @param array $submissionContents
    *   The webform submission contents.
@@ -221,12 +221,24 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    *   Returns the submission contents as a human-readable list.
    */
   protected function formatSubmissionContentsAsList(array $submissionContents) {
-    $list = t('The following list contains the entire submission, and is formatted for ease of viewing and printing.');
-    $list .= '<br /><br />';
+
+    $table = [
+      '#markup' => t('The following list contains the entire submission, and is formatted for ease of viewing and printing.'),
+    ];
+    $rows = [];
     foreach ($submissionContents as $key => $value) {
-      $list .= "<strong>$key</strong>: $value<br />";
+      $rows[] = [
+        ['data' => ['#markup' => "<strong>$key</strong>"]],
+        ['data' => $value],
+      ];
     }
-    return $list;
+    $table['values'] = [
+      '#theme' => 'table',
+      '#rows' => $rows,
+      '#attributes' => ['width' => '500'],
+    ];
+
+    return \Drupal::service('renderer')->renderPlain($table);
   }
 
   /**

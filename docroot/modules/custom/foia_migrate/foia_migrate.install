@@ -33,7 +33,14 @@ function convert_source_url_to_fully_qualified($migration_id) {
   if ($migration) {
     $source = $migration->get('source');
     $request = \Drupal::request();
-    $source['urls'] = 'http://' . $request->getHttpHost() . $source['urls'];
+    $host = 'http://' . $request->getHttpHost();
+
+    // Fix the dev/test/prod URLs.
+    $host = str_replace('http://foiastg.prod.acquia-sites.com', 'https://stg-admin.foia.gov', $host);
+    $host = str_replace('http://foiadev.prod.acquia-sites.com', 'https://dev-admin.foia.gov', $host);
+    $host = str_replace('http://foia.prod.acquia-sites.com', 'https://admin.foia.gov', $host);
+
+    $source['urls'] = $host . $source['urls'];
     $migration->set('source', $source);
     $migration->save();
   }

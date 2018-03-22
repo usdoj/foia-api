@@ -119,9 +119,15 @@ class WebformSubmissionResource extends ResourceBase {
   /**
    * {@inheritdoc}
    */
-  public function post(array $data) {
-    $webformId = isset($data['id']) ? $data['id'] : '';
+  public function post($data) {
+    if (!is_array($data)) {
+      $statusCode = 400;
+      $message = t("Data in unexpected format.");
+      $this->logSubmission($statusCode, $message);
+      return new ModifiedResourceResponse(['errors' => $message], $statusCode);
+    }
 
+    $webformId = isset($data['id']) ? $data['id'] : '';
     if (!$webformId) {
       $statusCode = 400;
       $message = t("Missing form 'id'.");
