@@ -36,7 +36,7 @@ following into the Vagrantfile.local file:
 
 ```
 config.vm.provision :ansible_local do |ansible|
-  ansible.playbook = "#{guest_config_dir}/box/doj/local.playbook.yml"
-  ansible.galaxy_role_file = "#{guest_config_dir}/box/doj/local.requirements.yml"
+  ansible.playbook = "#{guest_config_dir}/doj/local.playbook.yml"
+  ansible.galaxy_role_file = "#{guest_config_dir}/doj/local.requirements.yml"
 end
 ```
