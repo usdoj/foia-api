@@ -30,3 +30,13 @@ in that repository will need to be copied into the `/box` folder above, like so:
 
 * `/box/Vagrantfile.local`
 * `/box/doj-enterprise.crt`
+
+Also, if you would like to install the items in the local.playbook.yml, put the
+following into the Vagrantfile.local file:
+
+```
+config.vm.provision :ansible_local do |ansible|
+  ansible.playbook = "#{guest_config_dir}/box/doj/local.playbook.yml"
+  ansible.galaxy_role_file = "#{guest_config_dir}/box/doj/local.requirements.yml"
+end
+```

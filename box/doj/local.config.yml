@@ -32,3 +32,7 @@ nodejs_version: "8.x"
 
 # We're doing all post-provisioning manually because of restrictive laptops.
 post_provision_scripts: []
+
+# Since we work inside the VM, install ubuntu-desktop.
+extra_packages:
+  - ubuntu-desktop
