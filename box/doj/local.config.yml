@@ -1,5 +1,6 @@
 # DrupalVM configuration for a VirtualBox containing both the "front stage" and
 # the "back stage" for www.foia.gov, tailored for local DOJ development.
+vagrant_box: geerlingguy/ubuntu1604
 
 # This IP is tweaked because we need it to end with 33.x.
 vagrant_ip: 192.168.33.83
@@ -32,3 +33,7 @@ nodejs_version: "8.x"
 
 # We're doing all post-provisioning manually because of restrictive laptops.
 post_provision_scripts: []
+
+# Since we work inside the VM, install ubuntu-desktop.
+extra_packages:
+  - ubuntu-desktop

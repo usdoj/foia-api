@@ -21,14 +21,15 @@
         "drupal/restui": "^1.15",
         "drupal/roleassign": "^1.0@alpha",
         "acquia/lightning": "^3.0.2",
-        "drupal/core": "^8.4.4",
+        "drupal/core": "^8.5.1",
         "drush/drush": "^8.1.16",
         "drupal/mailsystem": "^4.1",
         "drupal/swiftmailer": "1.0.0-beta1",
         "drupal/rules": "^3.0@alpha",
         "drupal/autologout": "^1.0",
         "drupal/file_entity": "^2.0@beta",
-        "drupal/password_policy": "^3.0@alpha"
+        "drupal/password_policy": "^3.0@alpha",
+        "drupal/lightning_api": "^2.1"
     },
     "require-dev": {
         "geerlingguy/drupal-vm": "~4.3"
@@ -84,6 +85,9 @@
             "drupal/core": {
                 "Account for null triggering element when validating managed file elements": "https://www.drupal.org/files/issues/validating_managed-2910320-2.patch",
                 "Allow a profile to be installed from existing config": "https://www.drupal.org/files/issues/2788777-91.patch"
+            },
+            "drupal/jsonapi_extras": {
+                "Normalizer serializer": "https://www.drupal.org/files/issues/2018-03-30/jsonapi_extras-serializer-2955812-14.patch"
             },
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/password-policy-config-import-field-error-2771129-49-D8.patch",
