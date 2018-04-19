@@ -69,22 +69,6 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
-  # Forbid access to install and update files.
-  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
-  RewriteRule ^(core/install|update)\.php - [F]
-
-  # Forbid access to admin, node, and user paths on non-server domains & environments.
-  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
-  RewriteCond %{HTTP_HOST} !(.*)admin\.foia\.gov$ [NC]
-  RewriteCond %{HTTP_HOST} !(.*)acquia-sites\.com$ [NC]
-  RewriteRule ^((admin|node|user)($|/)) - [F]
-
-  # Redirect all HTTP server traffic to HTTPS.
-  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
-  RewriteCond %{HTTPS} off
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [NE,L,R=301]
-
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
@@ -166,8 +150,6 @@ AddEncoding gzip svgz
   # Copy and adapt this rule to directly execute PHP files in contributed or
   # custom modules or to run another PHP application in the same directory.
   RewriteCond %{REQUEST_URI} !/core/modules/statistics/statistics.php$
-  # Allow access to simplesaml paths.
-  RewriteCond %{REQUEST_URI} !^/simplesaml
   # Deny access to any other PHP files that do not match the rules above.
   # Specifically, disallow autoload.php from being served directly.
   RewriteRule "^(.+/.*|autoload)\.php($|/)" - [F]
