@@ -1174,12 +1174,16 @@ display:
               manager: ''
               company: ''
       path: foia-requests-export
-      filename: FOIA-Requests.csv
+      filename: 'FOIA-Requests-[current-date:raw].csv'
       auth: {  }
       pager:
         type: none
         options:
           offset: 0
+      export_method: batch
+      export_batch_size: 1000
+      automatic_download: false
+      redirect_path: ''
     cache_metadata:
       max-age: -1
       contexts:
