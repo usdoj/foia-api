@@ -34,6 +34,11 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   const STATUS_SCAN = 3;
 
   /**
+   * Request was emailed but could still fail.
+   */
+  const STATUS_IN_TRANSIT = 4;
+
+  /**
    * Sent to component via email.
    */
   const METHOD_EMAIL = 'email';
