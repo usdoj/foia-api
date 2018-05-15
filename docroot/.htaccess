@@ -69,6 +69,9 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
+  # enforce HSTS header
+  Header always set Strict-Transport-Security "max-age=31536000; preload"
+
   # Forbid access to install and update files.
   RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
   RewriteRule ^(core/install|update)\.php - [F]
