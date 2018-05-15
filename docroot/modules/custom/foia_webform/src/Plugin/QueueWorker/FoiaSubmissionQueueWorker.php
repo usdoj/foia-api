@@ -99,7 +99,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   An array of valid submission response info.
    */
   protected function handleValidSubmission(FoiaRequestInterface $foiaRequest, array $validSubmissionResponse) {
-    $newStatus = FoiaRequestInterace::STATUS_SUBMITTED;
+    $newStatus = FoiaRequestInterface::STATUS_SUBMITTED;
     if ($foiaRequest->getSubmissionMethod() == FoiaRequestInterface::METHOD_EMAIL) {
       $newStatus = FoiaRequestInterface::STATUS_IN_TRANSIT;
     }
