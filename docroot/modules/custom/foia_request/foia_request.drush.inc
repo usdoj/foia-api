@@ -59,6 +59,10 @@ function drush_foia_request_assume_emails_arrived() {
     $foiaRequest = FoiaRequest::load($deliveredEmail->id);
     $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SUBMITTED);
     $foiaRequest->save();
+    // We also need to now delete the webform submission.
+    $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
+    $webformSubmission = WebformSubmission::load($webformSubmissionId);
+    $webformSubmission->delete();
   }
 }
 
