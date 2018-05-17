@@ -20,8 +20,8 @@
         "drupal/maillog": "1.x-dev#14fd24cd89e299ad271608cd52706c60b753c26d",
         "drupal/restui": "^1.15",
         "drupal/roleassign": "^1.0@alpha",
-        "acquia/lightning": "^3.0.2",
-        "drupal/core": "^8.5.1",
+        "acquia/lightning": "^3.1.2",
+        "drupal/core": "^8.5.3",
         "drush/drush": "^8.1.16",
         "drupal/mailsystem": "^4.1",
         "drupal/swiftmailer": "1.0.0-beta1",
@@ -29,7 +29,9 @@
         "drupal/autologout": "^1.0",
         "drupal/file_entity": "^2.0@beta",
         "drupal/password_policy": "^3.0@alpha",
-        "drupal/lightning_api": "^2.1"
+        "drupal/lightning_api": "^2.2",
+        "drupal/views_data_export": "^1.0",
+        "drupal/hsts": "^1.0"
     },
     "require-dev": {
         "geerlingguy/drupal-vm": "~4.3"
@@ -92,6 +94,10 @@
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/password-policy-config-import-field-error-2771129-49-D8.patch",
                 "Fix inconsistent date format issues": "https://www.drupal.org/files/issues/password_policy-inconsistent-datetime-formats-2860671-13-D8.patch"
+            },
+           "drupal/views_data_export": {
+               "Views Data export format path": "https://www.drupal.org/files/issues/2018-04-20/views_data_export_format_path-2957085-19.patch",
+               "Generate a batch": "https://www.drupal.org/files/issues/2789531-116.patch"
             },
             "simplesamlphp/simplesamlphp": {
                 "patch": "./patches/simplesamlphp-nameidpolicy-always-sent-1.15.4.patch"
