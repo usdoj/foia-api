@@ -99,7 +99,12 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   An array of valid submission response info.
    */
   protected function handleValidSubmission(FoiaRequestInterface $foiaRequest, array $validSubmissionResponse) {
-    $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SUBMITTED);
+    $newStatus = FoiaRequestInterface::STATUS_SUBMITTED;
+    $submissionMethod = isset($validSubmissionResponse['type']) ? $validSubmissionResponse['type'] : '';
+    if ($submissionMethod == FoiaRequestInterface::METHOD_EMAIL) {
+      $newStatus = FoiaRequestInterface::STATUS_IN_TRANSIT;
+    }
+    $foiaRequest->setRequestStatus($newStatus);
 
     $caseManagementId = isset($validSubmissionResponse['id']) ? $validSubmissionResponse['id'] : '';
     $caseManagementStatusTrackingNumber = isset($validSubmissionResponse['status_tracking_number']) ? $validSubmissionResponse['status_tracking_number'] : '';
@@ -109,7 +114,11 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     if ($caseManagementStatusTrackingNumber) {
       $foiaRequest->set('field_tracking_number', $caseManagementStatusTrackingNumber);
     }
-    $this->deleteWebformSubmission($foiaRequest);
+
+    // Only delete the webform submission if it is not "email in transit".
+    if ($newStatus != FoiaRequestInterface::STATUS_IN_TRANSIT) {
+      $this->deleteWebformSubmission($foiaRequest);
+    }
   }
 
   /**

@@ -34,6 +34,11 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   const STATUS_SCAN = 3;
 
   /**
+   * Request was emailed but could still fail.
+   */
+  const STATUS_IN_TRANSIT = 4;
+
+  /**
    * Sent to component via email.
    */
   const METHOD_EMAIL = 'email';
@@ -44,13 +49,19 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   const METHOD_API = 'api';
 
   /**
+   * The number of seconds before assuming that an email request was delivered.
+   */
+  const ASSUME_DELIVERED_AFTER = 259200;
+
+  /**
    * Gets the status of the foia_request entity.
    *
    * @return int
    *   One of FoiaRequestInterface::STATUS_QUEUED or
    *   FoiaRequestInterface::STATUS_SUBMITTED or
    *   FoiaRequestInterface::STATUS_FAILED or
-   *   FoiaRequestInterface::STATUS_SCAN.
+   *   FoiaRequestInterface::STATUS_SCAN or
+   *   FoiaRequestInterface::STATUS_IN_TRANSIT
    */
   public function getRequestStatus();
 

@@ -20,6 +20,10 @@ function foia_request_drush_command() {
     'description' => 'Queue clean FOIA request when files have been scanned.',
     'aliases' => ['qcr'],
   ];
+  $commands['assume-emails-arrived'] = [
+    'description' => 'Update in-transit email requests, marking them as submitted if they are old enough.',
+    'aliases' => ['aea'],
+  ];
   return $commands;
 }
 
@@ -28,7 +32,10 @@ function foia_request_drush_command() {
  */
 function foia_request_drush_help($section) {
   switch ($section) {
-    case 'update-foia-request':
+    case 'assume-emails-arrived':
+      return dt('This command will update in-transit email requests, marking them as submitted if they are old enough.');
+
+    case 'queue-clean-request':
       return dt('This command will update the status of a FOIA request if all the files have been scanned.');
   }
 }
@@ -40,6 +47,22 @@ function drush_foia_request_queue_clean_request() {
   $requests_to_be_scanned = foia_request_to_be_scanned();
   if (!empty($requests_to_be_scanned)) {
     foia_request_check_request($requests_to_be_scanned);
+  }
+}
+
+/**
+ * Implements drush_hook_COMMAND().
+ */
+function drush_foia_request_assume_emails_arrived() {
+  $deliveredEmails = foia_request_delivered_emails();
+  foreach ($deliveredEmails as $deliveredEmail) {
+    $foiaRequest = FoiaRequest::load($deliveredEmail->id);
+    $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SUBMITTED);
+    $foiaRequest->save();
+    // We also need to now delete the webform submission.
+    $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
+    $webformSubmission = WebformSubmission::load($webformSubmissionId);
+    $webformSubmission->delete();
   }
 }
 
@@ -104,6 +127,20 @@ function foia_request_to_be_scanned() {
   $query->join('webform_submission', 'ws', 'ws.sid = frid.field_webform_submission_id_value');
   $query->addField('ws', 'webform_id');
   $query->condition('fr.request_status', FoiaRequestInterface::STATUS_SCAN);
+  return $query->execute()->fetchAll();
+}
+
+/**
+ * Query for FOIA email requests that are now assumed to have arrived.
+ *
+ * The criteria for this assumption are that they are old enough, based on the
+ * FoiaRequestInterface::ASSUME_DELIVERED_AFTER constant.
+ */
+function foia_request_delivered_emails() {
+  $query = db_select('foia_request', 'fr');
+  $query->addField('fr', 'id');
+  $query->condition('fr.request_status', FoiaRequestInterface::STATUS_IN_TRANSIT);
+  $query->condition('fr.created', time() - FoiaRequestInterface::ASSUME_DELIVERED_AFTER, '<');
   return $query->execute()->fetchAll();
 }
 
