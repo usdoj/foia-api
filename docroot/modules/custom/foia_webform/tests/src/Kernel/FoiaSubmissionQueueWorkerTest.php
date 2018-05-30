@@ -111,7 +111,7 @@ class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
     $foiaRequest = FoiaRequest::load($foiaRequestId);
     $this->assertEquals(FoiaRequestInterface::STATUS_QUEUED, $foiaRequest->getRequestStatus());
     $this->queueWorker->processItem($data);
-    $this->assertEquals(FoiaRequestInterface::STATUS_SUBMITTED, $foiaRequest->getRequestStatus());
+    $this->assertEquals(FoiaRequestInterface::STATUS_IN_TRANSIT, $foiaRequest->getRequestStatus());
     $this->assertEquals(FoiaRequestInterface::METHOD_EMAIL, $foiaRequest->getSubmissionMethod());
     $timeStamp = $foiaRequest->get('field_submission_time')->value;
     $this->assertNotEmpty($timeStamp);
