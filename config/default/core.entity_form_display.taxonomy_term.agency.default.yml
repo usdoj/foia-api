@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.agency.field_agency_abbreviation
+    - field.field.taxonomy_term.agency.field_agency_category
     - field.field.taxonomy_term.agency.field_agency_seal
     - image.style.thumbnail
     - taxonomy.vocabulary.agency
@@ -31,6 +32,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_agency_category:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_agency_seal:
     weight: 3
