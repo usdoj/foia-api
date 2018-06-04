@@ -31,7 +31,8 @@
         "drupal/password_policy": "^3.0@alpha",
         "drupal/lightning_api": "^2.2",
         "drupal/views_data_export": "^1.0",
-        "drupal/hsts": "^1.0"
+        "drupal/hsts": "^1.0",
+        "consolidation/robo": "~1.2.4"
     },
     "require-dev": {
         "geerlingguy/drupal-vm": "~4.3"
@@ -101,6 +102,9 @@
             },
             "simplesamlphp/simplesamlphp": {
                 "patch": "./patches/simplesamlphp-nameidpolicy-always-sent-1.15.4.patch"
+            },
+            "drupal/lightning_core": {
+                "Container error on drush updb": "https://www.drupal.org/files/issues/2018-05-11/2972217-2.patch"
             }
         },
         "installer-types": [
