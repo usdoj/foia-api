@@ -1,20 +1,20 @@
-uuid: 7ea90805-259b-4b12-8956-f03eadbbe158
+uuid: 501ad34e-7079-425b-ab65-72376c37007d
 langcode: en
 status: true
 dependencies:
   config:
-    - taxonomy.vocabulary.agency
-id: taxonomy_term--agency
+    - taxonomy.vocabulary.agency_category
+id: taxonomy_term--agency_category
 disabled: false
-path: agency
-resourceType: agency
+path: agency_category
+resourceType: agency_category
 resourceFields:
   tid:
+    disabled: true
     fieldName: tid
     publicName: tid
     enhancer:
       id: ''
-    disabled: false
   uuid:
     disabled: true
     fieldName: uuid
@@ -40,11 +40,11 @@ resourceFields:
       id: ''
     disabled: false
   description:
+    disabled: true
     fieldName: description
     publicName: description
     enhancer:
       id: ''
-    disabled: false
   weight:
     disabled: true
     fieldName: weight
@@ -70,32 +70,14 @@ resourceFields:
     enhancer:
       id: ''
   metatag:
+    disabled: true
     fieldName: metatag
     publicName: metatag
     enhancer:
       id: ''
-    disabled: false
   path:
     disabled: true
     fieldName: path
     publicName: path
-    enhancer:
-      id: ''
-  field_agency_abbreviation:
-    fieldName: field_agency_abbreviation
-    publicName: abbreviation
-    enhancer:
-      id: ''
-    disabled: false
-  field_agency_category:
-    fieldName: field_agency_category
-    publicName: category
-    enhancer:
-      id: ''
-    disabled: false
-  field_agency_seal:
-    disabled: true
-    fieldName: field_agency_seal
-    publicName: field_agency_seal
     enhancer:
       id: ''

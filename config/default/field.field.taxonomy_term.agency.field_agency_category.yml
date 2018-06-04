@@ -1,0 +1,29 @@
+uuid: c3a342ff-c232-4bc9-8a35-00a040dbe5b4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_agency_category
+    - taxonomy.vocabulary.agency
+    - taxonomy.vocabulary.agency_category
+id: taxonomy_term.agency.field_agency_category
+field_name: field_agency_category
+entity_type: taxonomy_term
+bundle: agency
+label: Category
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      agency_category: agency_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
