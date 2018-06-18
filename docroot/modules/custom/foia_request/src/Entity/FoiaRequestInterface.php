@@ -51,7 +51,7 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   /**
    * The number of seconds before assuming that an email request was delivered.
    */
-  const ASSUME_DELIVERED_AFTER = 259200;
+  const ASSUME_DELIVERED_AFTER = 604800;
 
   /**
    * Gets the status of the foia_request entity.
