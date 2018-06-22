@@ -98,6 +98,7 @@ function ah_response($response, $client_ip, $current_path) {
       break;
     case 403:
       header('HTTP/1.0 403 Forbidden');
+      header('Strict-Transport-Security: max-age=31536000; includeSubDomains; preload');
       print "403 Forbidden: Access denied (${client_ip})";
       exit;
       break;
