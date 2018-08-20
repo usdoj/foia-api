@@ -24,7 +24,7 @@ Feature: Request information from an agency
     And I select "No" from "Fee waiver"
     And I select "No" from "Expedited processing"
     And I press the 'Submit' button
-    When I am at 'admin/reports/dblog'
+#    When I am at 'admin/reports/dblog'
 #    Then I should see the text 'Unassociated form: The form, Test webform'
 
   @api
@@ -32,6 +32,7 @@ Feature: Request information from an agency
     Given I am at 'admin/modules'
     And I check the box 'Maillog / Mail Developer'
     And I press the 'Install' button
+    And the cache has been cleared
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'Test agency component'
     And I select "Test webform" from "Request Submission Form"
@@ -44,7 +45,7 @@ Feature: Request information from an agency
     And I select "No" from "Fee waiver"
     And I select "No" from "Expedited processing"
     And I press the 'Submit' button
-    When I am at 'admin/reports/dblog'
+#    When I am at 'admin/reports/dblog'
 #    Then I should see the text 'No Submission Email: Unable to send email for Test…'
 
   @api
@@ -52,6 +53,7 @@ Feature: Request information from an agency
     Given I am at 'admin/modules'
     And I check the box 'Maillog / Mail Developer'
     And I press the 'Install' button
+    And the cache has been cleared
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'Test agency component'
     And I select "Test webform" from "Request Submission Form"
@@ -73,7 +75,7 @@ Feature: Request information from an agency
 #    And I should see the text 'test@example.com'
 #    And I should see the text 'United States'
 #    And I should see the text 'Test'
-    When I am at 'admin/reports/dblog'
+#    When I am at 'admin/reports/dblog'
 #    Then I should see the text 'Test webform webform sent FOIA Email email.'
     Given I am an anonymous user
     When I go to saved URL
