@@ -16,12 +16,11 @@
         "drupal/migrate_plus": "^4.0",
         "drupal/migrate_tools": "^4.0",
         "drupal/simplesamlphp_auth": "^3.0",
-        "drupal/jsonapi_extras": "^1.0-rc5",
+        "drupal/jsonapi_extras": "^2.5",
         "drupal/maillog": "1.x-dev#14fd24cd89e299ad271608cd52706c60b753c26d",
         "drupal/restui": "^1.15",
         "drupal/roleassign": "^1.0@alpha",
-        "acquia/lightning": "^3.1.2",
-        "drupal/core": "^8.5.3",
+        "acquia/lightning": "~3.1.5",
         "drush/drush": "^8.1.16",
         "drupal/mailsystem": "^4.1",
         "drupal/swiftmailer": "1.0.0-beta1",
@@ -29,7 +28,6 @@
         "drupal/autologout": "^1.0",
         "drupal/file_entity": "^2.0@beta",
         "drupal/password_policy": "^3.0@alpha",
-        "drupal/lightning_api": "^2.2",
         "drupal/views_data_export": "^1.0",
         "drupal/hsts": "^1.0",
         "consolidation/robo": "~1.2.4"
@@ -89,9 +87,6 @@
                 "Account for null triggering element when validating managed file elements": "https://www.drupal.org/files/issues/validating_managed-2910320-2.patch",
                 "Allow a profile to be installed from existing config": "https://www.drupal.org/files/issues/2788777-91.patch"
             },
-            "drupal/jsonapi_extras": {
-                "Normalizer serializer": "https://www.drupal.org/files/issues/2018-03-30/jsonapi_extras-serializer-2955812-14.patch"
-            },
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/password-policy-config-import-field-error-2771129-49-D8.patch",
                 "Fix inconsistent date format issues": "https://www.drupal.org/files/issues/password_policy-inconsistent-datetime-formats-2860671-13-D8.patch"
@@ -102,9 +97,6 @@
             },
             "simplesamlphp/simplesamlphp": {
                 "patch": "./patches/simplesamlphp-nameidpolicy-always-sent-1.15.4.patch"
-            },
-            "drupal/lightning_core": {
-                "Container error on drush updb": "https://www.drupal.org/files/issues/2018-05-11/2972217-2.patch"
             }
         },
         "installer-types": [
