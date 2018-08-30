@@ -1,8 +1,9 @@
-uuid: 323a71a7-ed58-4328-be7f-1fb3b9b5349f
+uuid: 3b147ec7-60e3-435e-8639-ae4c594c1b5c
 langcode: en
-status: true
+status: false
 dependencies:
   config:
+    - core.entity_view_mode.foia_request.foia_request
     - field.field.foia_request.foia_request.field_agency_component
     - field.field.foia_request.foia_request.field_case_management_id
     - field.field.foia_request.foia_request.field_error_code
@@ -23,10 +24,10 @@ third_party_settings:
     pdf_label: 'View PDF'
 _core:
   default_config_hash: mZ_veoEUmvyaWJ9zMbhczvJzVGx637GTZNjy62epjUw
-id: foia_request.foia_request.default
+id: foia_request.foia_request.foia_request
 targetEntityType: foia_request
 bundle: foia_request
-mode: default
+mode: foia_request
 content:
   entity_print_view_pdf:
     weight: 12
