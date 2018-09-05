@@ -7,6 +7,7 @@ use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
+use Dompdf\Dompdf;
 
 /**
  * Emails a webform submission.
@@ -88,8 +89,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $this->formatSubmissionContentsAsTable($submissionContents),
     ];
     $message['body'] = implode('<br /><br />', $bodySections);
+    // Create PDF file
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml($this->formatSubmissionContentsAsList($submissionContents));
+    $dompdf->setPaper('A4', 'portrait');
+    $attachment = $dompdf->render();
+    
     $message['attachments'][] = [
-      'filecontent' => generatePDF($submissionContents),
+      'filecontent' => $attachment,
       'filename' => 'CharlesTestattachment.pdf',
       'filemime' => 'application/pdf',
     ];
