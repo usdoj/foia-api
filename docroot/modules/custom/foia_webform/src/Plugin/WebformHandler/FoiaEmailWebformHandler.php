@@ -88,12 +88,11 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $this->formatSubmissionContentsAsTable($submissionContents),
     ];
     $message['body'] = implode('<br /><br />', $bodySections);
-    
-    $message['attachments'][] = array(
-        'filecontent' => generatePDF($submissionContents),
-        'filename' => 'CharlesTestattachment.pdf',
-        'filemime' => 'application/pdf'
-    );
+    $message['attachments'][] = [
+      'filecontent' => generatePDF($submissionContents),
+      'filename' => 'CharlesTestattachment.pdf',
+      'filemime' => 'application/pdf',
+    ];
 
     return $message;
   }
