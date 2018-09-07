@@ -89,11 +89,22 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $this->formatSubmissionContentsAsTable($submissionContents),
     ];
     $message['body'] = implode('<br /><br />', $bodySections);
+    
+   
+    $message['body'] .= '<div>MESSAGE BODY MESSAGE BODY MESSAGE BODY MESSAGE BODY </div>';
+   
+    
     // Create PDF file.
     $dompdf = new Dompdf();
     $dompdf->loadHtml($this->formatSubmissionContentsAsList($submissionContents));
     $dompdf->setPaper('A4', 'portrait');
-    $attachment = $dompdf->render();
+    $dompdf->render();
+    $attachment = $dompdf->output();
+    file_put_contents('/sites/default/files/Brochure.pdf', $attachment);
+    
+    \Drupal::logger('my_module')->notice($message);
+    
+    
     // Attach PDF to email.
     $message['attachments'][] = [
       'filecontent' => $attachment,
@@ -101,6 +112,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       'filemime' => 'application/pdf',
     ];
 
+   
+    
     return $message;
   }
 
