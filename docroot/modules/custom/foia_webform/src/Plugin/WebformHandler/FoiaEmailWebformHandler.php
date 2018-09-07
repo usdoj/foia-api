@@ -97,7 +97,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $dompdf->render();
     $attachment = $dompdf->output();
     file_put_contents('/sites/default/files/Brochure.pdf', $attachment);
-    
     \Drupal::logger('foia_webform')->notice('$message = xxxxxx');
     // Attach PDF to email.
     $message['attachments'][] = [
