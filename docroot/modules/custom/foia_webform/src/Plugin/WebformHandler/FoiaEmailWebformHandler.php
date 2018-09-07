@@ -89,7 +89,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $this->formatSubmissionContentsAsTable($submissionContents),
     ];
     $message['body'] = implode('<br /><br />', $bodySections);
-    $message['body'] .= '<div>MESSAGE BODY MESSAGE BODY MESSAGE BODY MESSAGE BODY </div>'
+    $message['body'] .= '<div>MESSAGE BODY MESSAGE BODY MESSAGE BODY MESSAGE BODY </div>';
     // Create PDF file.
     $dompdf = new Dompdf();
     $dompdf->loadHtml($this->formatSubmissionContentsAsList($submissionContents));
