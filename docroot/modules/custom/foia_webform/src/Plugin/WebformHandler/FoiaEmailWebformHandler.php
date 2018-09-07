@@ -83,7 +83,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // Build the message body.
     $bodySections = [
-      t('Hello,'),
+      t('Hello, bbbbbbbbbbb'),
       t('A new FOIA request was submitted to your agency component:'),
       $this->formatSubmissionContentsAsList($submissionContents),
       $this->formatSubmissionContentsAsTable($submissionContents),
@@ -97,7 +97,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $dompdf->render();
     $attachment = $dompdf->output();
     file_put_contents('/sites/default/files/Brochure.pdf', $attachment);
-    \Drupal::logger('my_module')->notice($message);
+    
+    \Drupal::logger('foia_webform')->notice('$message = xxxxxx');
     // Attach PDF to email.
     $message['attachments'][] = [
       'filecontent' => $attachment,
