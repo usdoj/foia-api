@@ -83,25 +83,25 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // Build the message body.
     $bodySections = [
-      t('Hello, bbbbbbbbbbb'),
+      t('Hello,'),
       t('A new FOIA request was submitted to your agency component:'),
       $this->formatSubmissionContentsAsList($submissionContents),
       $this->formatSubmissionContentsAsTable($submissionContents),
     ];
+    $header = '<div><img style="width:70px;height:70px;"src="/img/foia-doj-logo.svg"/>FOIA Request ' . $foiaRequestI . '</div>';
     $message['body'] = implode('<br /><br />', $bodySections);
-    $message['body'] .= '<div>MESSAGE BODY MESSAGE BODY MESSAGE BODY MESSAGE BODY </div>';
     // Create PDF file.
     $dompdf = new Dompdf();
     $dompdf->loadHtml($this->formatSubmissionContentsAsList($submissionContents));
-    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->setPaper('letter', 'portrait');
     $dompdf->render();
     $attachment = $dompdf->output();
-    file_put_contents('/sites/default/files/Brochure.pdf', $attachment);
-    \Drupal::logger('foia_webform')->notice('$message = xxxxxx');
+    // file_put_contents('/sites/default/files/Brochure.pdf', $attachment);
+    // Drupal::logger('foia_webform')->notice('$message = xxxxxx');
     // Attach PDF to email.
     $message['attachments'][] = [
       'filecontent' => $attachment,
-      'filename' => 'CharlesTestattachment.pdf',
+      'filename' => 'FOIA Request ' . $foiaRequestId . '.pdf',
       'filemime' => 'application/pdf',
     ];
     return $message;
