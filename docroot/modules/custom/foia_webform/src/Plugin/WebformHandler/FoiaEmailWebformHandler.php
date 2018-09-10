@@ -88,20 +88,19 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $this->formatSubmissionContentsAsList($submissionContents),
       $this->formatSubmissionContentsAsTable($submissionContents),
     ];
-    $header = '<div><img style="width:70px;height:70px;"src="/img/foia-doj-logo.svg"/>FOIA Request ' . $foiaRequestI . '</div>';
     $message['body'] = implode('<br /><br />', $bodySections);
+    
     // Create PDF file.
+    $header = '<div><img style="width:70px;height:70px;"src="/img/foia-doj-logo.svg"/>FOIA Request ' . $foiaRequestI . '</div><br /><br />';
     $dompdf = new Dompdf();
-    $dompdf->loadHtml($this->formatSubmissionContentsAsList($submissionContents));
+    $dompdf->loadHtml($header . $this->formatSubmissionContentsAsList($submissionContents));
     $dompdf->setPaper('letter', 'portrait');
     $dompdf->render();
     $attachment = $dompdf->output();
-    // file_put_contents('/sites/default/files/Brochure.pdf', $attachment);
-    // Drupal::logger('foia_webform')->notice('$message = xxxxxx');
     // Attach PDF to email.
     $message['attachments'][] = [
       'filecontent' => $attachment,
-      'filename' => 'FOIA Request ' . $foiaRequestId . '.pdf',
+      'filename' => 'FOIA Request confirmation #' . $webformSubmission->id() . '.pdf',
       'filemime' => 'application/pdf',
     ];
     return $message;
@@ -242,6 +241,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     ];
     $rows = [];
     foreach ($submissionContents as $key => $value) {
+      str_replace("_"," ", $key);  
+      $key = ucfirst($key);  
       $rows[] = [
         ['data' => ['#markup' => "<strong>$key</strong>"]],
         ['data' => $value],
