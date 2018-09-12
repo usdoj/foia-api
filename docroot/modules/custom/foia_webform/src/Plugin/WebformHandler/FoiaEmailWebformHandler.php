@@ -242,7 +242,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $rows = [];
     foreach ($submissionContents as $key => $value) {
       $key_human = str_replace("_", " ", $key);
-//      $key_ucfirst = ucfirst($key_human);
+      // $key_ucfirst = ucfirst($key_human);
       $rows[] = [
         ['data' => ['#markup' => "<strong>$key_human</strong>"]],
         ['data' => $value],
