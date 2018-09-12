@@ -91,7 +91,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $message['body'] = implode('<br /><br />', $bodySections);
 
     // Create PDF file.
-    $header = '<div><img style="width:70px;height:70px;"src="/img/foia-doj-logo.svg"/>FOIA Request ' . $foiaRequestI . '</div><br /><br />';
+    $header = '<div><img style="width:70px;height:70px;"src="foia-doj-logo.svg"/>FOIA Request ' . $foiaRequestI . '</div><br /><br />';
     $dompdf = new Dompdf();
     $dompdf->loadHtml($header . $this->formatSubmissionContentsAsList($submissionContents));
     $dompdf->setPaper('letter', 'portrait');
@@ -241,10 +241,10 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     ];
     $rows = [];
     foreach ($submissionContents as $key => $value) {
-      str_replace("_", " ", $key);
-      $key = ucfirst($key);
+      $key_human = str_replace("_", " ", $key);
+//      $key_ucfirst = ucfirst($key_human);
       $rows[] = [
-        ['data' => ['#markup' => "<strong>$key</strong>"]],
+        ['data' => ['#markup' => "<strong>$key_human</strong>"]],
         ['data' => $value],
       ];
     }
