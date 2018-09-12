@@ -91,8 +91,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $message['body'] = implode('<br /><br />', $bodySections);
 
     // Create PDF file.
-    $image = $_SERVER["DOCUMENT_ROOT"] . '/modules/custom/foia_webform/src/Plugin/WebformHandler/foia-doj-logo.svg';
-    $header = '<div><img style="width:70px;height:70px;"src="' . $image . '"/>FOIA Request ' . $foiaRequestId . '</div><br /><br />';
+    $header = '<div>FOIA Request ' . $foiaRequestId . '</div><br /><br />';
     $dompdf = new Dompdf();
     $dompdf->loadHtml($header . $this->formatSubmissionContentsAsList($submissionContents));
     $dompdf->setPaper('letter', 'portrait');
