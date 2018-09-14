@@ -248,24 +248,22 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
         'address_country',
         'phone_number',
         'fax_number',
-        'email',
         'company_organization',
+        'email',
       ],
       'Request' => [
         'request_id',
         'confirmation_id',
-        'request_category',
         'request_description',
+      ],
+        'Additional information' => [
         'attachments_supporting_documentation',
       ],
       'Fees' => [
+        'request_category',
         'fee_waiver',
         'fee_waiver_explanation',
         'fee_amount_willing',
-      ],
-      'Expedited processing' => [
-        'expedited_processing',
-        'expedited_processing_explanation',
       ],
       'Expedited processing' => [
         'expedited_processing',
@@ -289,12 +287,31 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
           $display = [
             'name_first' => 'First name',
             'name_last' => 'Last name',
+            'address_line1' => 'Mailing Address',
+            'address_line2' => '',
+            'address_city' => '',
+            'address_state_province' => '',
+            'address_zip_postal_code' => '',
+            'address_country' => '',
+            'phone_number' => 'Phone',
+            'fax_number' => 'Fax',
+            'email' => 'Email',
+            'company_organization' => 'Company/Organization',
+            'request_id' => 'Request ID',
+            'confirmation_id' => 'Confirmation ID',
+            'request_category' => 'Request category ID',
+            'request_description' => 'Request description',
+            'attachments_supporting_documentation' => 'Additional Information',
+            'fee_waiver' => 'Fee waiver',
+            'fee_waiver_explanation' => 'Explanation',
+            'fee_amount_willing' => 'Willing to pay',
+            'expedited_processing' => 'Expedited Processing',
+            'expedited_processing_explanation' => 'Explanation',
           ];
           if (array_key_exists($key, $display)) {
             $label = strtr($key, $display);
           }
           $rows[] = [
-            // Check if ($key == 'fax_number')
             ['data' => ['#markup' => "<strong>$label</strong>"]],
             ['data' => $submissionContents[$key]],
           ];
