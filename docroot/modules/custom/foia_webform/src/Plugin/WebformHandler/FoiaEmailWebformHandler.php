@@ -240,15 +240,15 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       'Contact information' => [
         'name_first',
         'name_last',
-        'address_line_1',
-        'address_line_2',
+        'address_line1',
+        'address_line2',
+        'address_city',
         'address_state_province',
         'address_zip_postal_code',
         'address_country',
         'phone_number',
         'fax_number',
-      ],
-      'Company/Organization' => [
+        'email',
         'company_organization',
       ],
       'Request' => [
@@ -256,11 +256,16 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
         'confirmation_id',
         'request_category',
         'request_description',
+        'attachments_supporting_documentation',
       ],
       'Fees' => [
         'fee_waiver',
         'fee_waiver_explanation',
         'fee_amount_willing',
+      ],
+      'Expedited processing' => [
+        'expedited_processing',
+        'expedited_processing_explanation',
       ],
       'Expedited processing' => [
         'expedited_processing',
@@ -280,9 +285,17 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $rows = [];
       foreach ($keys as $key) {
         if (!empty($submissionContents[$key])) {
+          $label = $key;
+          $display = [
+            'name_first' => 'First name',
+            'name_last' => 'Last name',
+          ];
+          if (array_key_exists($key, $display)) {
+            $label = strtr($key, $display);
+          }
           $rows[] = [
             // Check if ($key == 'fax_number')
-            ['data' => ['#markup' => "<strong>$key</strong>"]],
+            ['data' => ['#markup' => "<strong>$label</strong>"]],
             ['data' => $submissionContents[$key]],
           ];
           // Remember which keys we displayed.
