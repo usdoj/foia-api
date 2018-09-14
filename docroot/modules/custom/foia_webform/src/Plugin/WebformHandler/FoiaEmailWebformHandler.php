@@ -279,7 +279,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // First output all the hardcoded sections.
     foreach ($keys_by_section as $section => $keys) {
-      $output .= '<h3>' . $section . '</h3>';
+      $output .= '<hr><h3>' . $section . '</h3>';
       $rows = [];
       foreach ($keys as $key) {
         if (!empty($submissionContents[$key])) {
@@ -289,10 +289,10 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
             'name_last' => 'Last name',
             'address_line1' => 'Mailing Address',
             'address_line2' => '',
-            'address_city' => '',
-            'address_state_province' => '',
-            'address_zip_postal_code' => '',
-            'address_country' => '',
+            'address_city' => 'City',
+            'address_state_province' => 'State/Province',
+            'address_zip_postal_code' => 'Postal Code',
+            'address_country' => 'Country',
             'phone_number' => 'Phone',
             'fax_number' => 'Fax',
             'email' => 'Email',
@@ -308,9 +308,9 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
             'expedited_processing' => 'Expedited Processing',
             'expedited_processing_explanation' => 'Explanation',
           ];
-          if (array_key_exists($key, $display)) {
-            $label = strtr($key, $display);
-          }
+          // C if (array_key_exists($key, $display)) {.
+          $label = strtr($key, $display);
+          // }.
           $rows[] = [
             ['data' => ['#markup' => "<strong>$label</strong>"]],
             ['data' => $submissionContents[$key]],
@@ -322,7 +322,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $table = [
         '#theme' => 'table',
         '#rows' => $rows,
-        '#attributes' => ['width' => '500'],
+        '#attributes' => ['width' => '500', 'font-family' => 'sans-serif'],
       ];
       $output .= \Drupal::service('renderer')->renderPlain($table);
     }
