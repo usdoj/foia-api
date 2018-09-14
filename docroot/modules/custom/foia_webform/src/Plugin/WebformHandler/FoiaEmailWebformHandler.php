@@ -248,8 +248,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
         'phone_number',
         'fax_number',
       ],
-      'Company/Organization' => [ 
-         'company_organization' 
+      'Company/Organization' => [
+        'company_organization',
       ],
       'Request' => [
         'request_id',
@@ -281,7 +281,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       foreach ($keys as $key) {
         if (!empty($submissionContents[$key])) {
           $rows[] = [
-            // if ($key == 'fax_number')   
+            // Check if ($key == 'fax_number')
             ['data' => ['#markup' => "<strong>$key</strong>"]],
             ['data' => $submissionContents[$key]],
           ];
