@@ -256,7 +256,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
         'confirmation_id',
         'request_description',
       ],
-        'Additional information' => [
+      'Additional information' => [
         'attachments_supporting_documentation',
       ],
       'Fees' => [
@@ -279,7 +279,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // First output all the hardcoded sections.
     foreach ($keys_by_section as $section => $keys) {
-      $output .= '<h2>' . $section . '</h2>';
+      $output .= '<h3>' . $section . '</h3>';
       $rows = [];
       foreach ($keys as $key) {
         if (!empty($submissionContents[$key])) {
