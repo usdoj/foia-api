@@ -235,26 +235,90 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    *   Returns the submission contents as a human-readable list.
    */
   protected function formatSubmissionContentsAsList(array $submissionContents) {
-
-    $table = [
-      '#markup' => t('The following list contains the entire submission, and is formatted for ease of viewing and printing.') . '<br/>',
+    // Associative array of sections to groups of fields.
+    $keys_by_section = [
+      'Contact information' => [
+        'name_first',
+        'name_last',
+        'address_line_1',
+        'address_line_2',
+        'address_state_province',
+        'address_zip_postal_code',
+        'address_country',
+        'phone_number',
+        'fax_number',
+      ],
+      'Company/Organization' => [ 
+         'company_organization' 
+      ],
+      'Request' => [
+        'request_id',
+        'confirmation_id',
+        'request_category',
+        'request_description',
+      ],
+      'Fees' => [
+        'fee_waiver',
+        'fee_waiver_explanation',
+        'fee_amount_willing',
+      ],
+      'Expedited processing' => [
+        'expedited_processing',
+        'expedited_processing_explanation',
+      ],
     ];
+
+    // Variable to keep track of which fields we've displayed.
+    $keys_displayed = [];
+
+    // Start with some basic text?
+    $output = '<p>The following list contains the entire submission, and is formatted for ease of viewing and printing.</p>';
+
+    // First output all the hardcoded sections.
+    foreach ($keys_by_section as $section => $keys) {
+      $output .= '<h2>' . $section . '</h2>';
+      $rows = [];
+      foreach ($keys as $key) {
+        if (!empty($submissionContents[$key])) {
+          $rows[] = [
+            // if ($key == 'fax_number')   
+            ['data' => ['#markup' => "<strong>$key</strong>"]],
+            ['data' => $submissionContents[$key]],
+          ];
+          // Remember which keys we displayed.
+          $keys_displayed[] = $key;
+        }
+      }
+      $table = [
+        '#theme' => 'table',
+        '#rows' => $rows,
+        '#attributes' => ['width' => '500'],
+      ];
+      $output .= \Drupal::service('renderer')->renderPlain($table);
+    }
+
+    // Next output the remaining fields.
     $rows = [];
     foreach ($submissionContents as $key => $value) {
-      // $key_human = str_replace("_", " ", $key);
-      // $key_uc = strtoupper($key_human);
-      $rows[] = [
-        ['data' => ['#markup' => "<strong>$key</strong>"]],
-        ['data' => $value],
-      ];
+      if (!in_array($key, $keys_displayed)) {
+        $rows[] = [
+          ['data' => ['#markup' => "<strong>$key</strong>"]],
+          ['data' => $value],
+        ];
+      }
     }
-    $table['values'] = [
-      '#theme' => 'table',
-      '#rows' => $rows,
-      '#attributes' => ['width' => '500'],
-    ];
+    // Only output if there are actually additional fields.
+    if (!empty($rows)) {
+      $output .= '<h2>Additional information</h2>';
+      $table = [
+        '#theme' => 'table',
+        '#rows' => $rows,
+        '#attributes' => ['width' => '500'],
+      ];
+      $output .= \Drupal::service('renderer')->renderPlain($table);
+    }
 
-    return \Drupal::service('renderer')->renderPlain($table);
+    return $output;
   }
 
   /**
