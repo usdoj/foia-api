@@ -237,14 +237,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
   protected function formatSubmissionContentsAsList(array $submissionContents) {
 
     $table = [
-      '#markup' => t('The following list contains the entire submission, and is formatted for ease of viewing and printing.'),
+      '#markup' => t('The following list contains the entire submission, and is formatted for ease of viewing and printing.') . '<br/>',
     ];
     $rows = [];
     foreach ($submissionContents as $key => $value) {
-      $key_human = str_replace("_", " ", $key);
-      $key_uc = strtoupper($key_human);
+      // $key_human = str_replace("_", " ", $key);
+      // $key_uc = strtoupper($key_human);
       $rows[] = [
-        ['data' => ['#markup' => "<strong>$key_uc</strong>"]],
+        ['data' => ['#markup' => "<strong>$key</strong>"]],
         ['data' => $value],
       ];
     }
