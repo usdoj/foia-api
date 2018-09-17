@@ -15,12 +15,8 @@ dependencies:
     - field.field.foia_request.foia_request.field_tracking_number
     - field.field.foia_request.foia_request.field_webform_submission_id
   module:
-    - entity_print
     - foia_request
     - options
-third_party_settings:
-  entity_print:
-    pdf_label: 'View PDF'
 _core:
   default_config_hash: mZ_veoEUmvyaWJ9zMbhczvJzVGx637GTZNjy62epjUw
 id: foia_request.foia_request.default
@@ -28,11 +24,6 @@ targetEntityType: foia_request
 bundle: foia_request
 mode: default
 content:
-  entity_print_view_pdf:
-    weight: 12
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_agency_component:
     weight: 1
     label: above
@@ -129,6 +120,4 @@ content:
     third_party_settings: {  }
     weight: 2
 hidden:
-  entity_print_view_epub: true
-  entity_print_view_word_docx: true
   user_id: true
