@@ -7,6 +7,7 @@ use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
+use Dompdf\Dompdf;
 
 /**
  * Emails a webform submission.
@@ -89,6 +90,19 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     ];
     $message['body'] = implode('<br /><br />', $bodySections);
 
+    // Create PDF file.
+    $header = '<div>FOIA Request ' . $foiaRequestId . '</div><br /><br />';
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml($header . $this->formatSubmissionContentsAsList($submissionContents));
+    $dompdf->setPaper('letter', 'portrait');
+    $dompdf->render();
+    $attachment = $dompdf->output();
+    // Attach PDF to email.
+    $message['attachments'][] = [
+      'filecontent' => $attachment,
+      'filename' => 'FOIA Request confirmation #' . $webformSubmission->id() . '.pdf',
+      'filemime' => 'application/pdf',
+    ];
     return $message;
   }
 
@@ -221,24 +235,92 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    *   Returns the submission contents as a human-readable list.
    */
   protected function formatSubmissionContentsAsList(array $submissionContents) {
-
-    $table = [
-      '#markup' => t('The following list contains the entire submission, and is formatted for ease of viewing and printing.'),
+    // Associative array of sections to groups of fields.
+    $keys_by_section = [
+      'Contact information' => [
+        'name_first' => 'First name',
+        'name_last' => 'Last name',
+        'address_line1' => 'Mailing Address',
+        'address_line2' => '',
+        'address_city' => 'City',
+        'address_state_province' => 'State/Province',
+        'address_zip_postal_code' => 'Postal Code',
+        'address_country' => 'Country',
+        'phone_number' => 'Phone',
+        'fax_number' => 'Fax',
+        'company_organization' => 'Company/Organization',
+        'email' => 'Email',
+      ],
+      'Request' => [
+        'request_id' => 'Request ID',
+        'confirmation_id' => 'Confirmation ID',
+        'request_description' => 'Request description',
+      ],
+      'Supporting documentation' => [
+        'attachments_supporting_documentation' => 'Additional Information',
+      ],
+      'Fees' => [
+        'request_category' => 'Request category ID',
+        'fee_waiver' => 'Fee waiver',
+        'fee_waiver_explanation' => 'Explanation',
+        'fee_amount_willing' => 'Willing to pay',
+      ],
+      'Expedited processing' => [
+        'expedited_processing' => 'Expedited Processing',
+        'expedited_processing_explanation' => 'Explanation',
+      ],
     ];
+
+    // Variable to keep track of which fields we've displayed.
+    $keys_displayed = [];
+
+    // Start with some basic text?
+    $output = '<p>The following list contains the entire submission, and is formatted for ease of viewing and printing.</p>';
+
+    // First output all the hardcoded sections.
+    foreach ($keys_by_section as $section => $keys) {
+      $output .= '<hr><h3>' . $section . '</h3>';
+      $rows = [];
+      foreach ($keys as $key => $label) {
+        if (!empty($submissionContents[$key])) {
+          $rows[] = [
+            ['data' => ['#markup' => "<strong>$label</strong>"]],
+            ['data' => $submissionContents[$key]],
+          ];
+          // Remember which keys we displayed.
+          $keys_displayed[] = $key;
+        }
+      }
+      $table = [
+        '#theme' => 'table',
+        '#rows' => $rows,
+        '#attributes' => ['width' => '500', 'font-family' => 'Helvetica'],
+      ];
+      $output .= \Drupal::service('renderer')->renderPlain($table);
+    }
+
+    // Next output the remaining fields.
     $rows = [];
     foreach ($submissionContents as $key => $value) {
-      $rows[] = [
-        ['data' => ['#markup' => "<strong>$key</strong>"]],
-        ['data' => $value],
-      ];
+      if (!in_array($key, $keys_displayed)) {
+        $rows[] = [
+          ['data' => ['#markup' => "<strong>$key</strong>"]],
+          ['data' => $value],
+        ];
+      }
     }
-    $table['values'] = [
-      '#theme' => 'table',
-      '#rows' => $rows,
-      '#attributes' => ['width' => '500'],
-    ];
+    // Only output if there are actually additional fields.
+    if (!empty($rows)) {
+      $output .= '<h2>Additional information</h2>';
+      $table = [
+        '#theme' => 'table',
+        '#rows' => $rows,
+        '#attributes' => ['width' => '500', 'font-family' => 'Helvetica'],
+      ];
+      $output .= \Drupal::service('renderer')->renderPlain($table);
+    }
 
-    return \Drupal::service('renderer')->renderPlain($table);
+    return $output;
   }
 
   /**
