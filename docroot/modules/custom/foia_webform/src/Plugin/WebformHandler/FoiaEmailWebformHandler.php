@@ -294,7 +294,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $table = [
         '#theme' => 'table',
         '#rows' => $rows,
-        '#attributes' => ['width' => '500', 'font-family' => 'sans-serif'],
+        '#attributes' => ['width' => '500', 'font-family' => 'Helvetica'],
       ];
       $output .= \Drupal::service('renderer')->renderPlain($table);
     }
@@ -315,7 +315,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       $table = [
         '#theme' => 'table',
         '#rows' => $rows,
-        '#attributes' => ['width' => '500', 'font-family' => 'sans-serif'],
+        '#attributes' => ['width' => '500', 'font-family' => 'Helvetica'],
       ];
       $output .= \Drupal::service('renderer')->renderPlain($table);
     }
