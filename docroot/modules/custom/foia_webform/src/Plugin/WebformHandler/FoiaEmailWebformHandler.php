@@ -281,16 +281,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     foreach ($keys_by_section as $section => $keys) {
       $output .= '<hr><h3>' . $section . '</h3>';
       $rows = [];
-      foreach ($keys as $key) {
-        foreach ($key as $label) {
-          if (!empty($submissionContents[$key])) {
-            $rows[] = [
-              ['data' => ['#markup' => "<strong>$label</strong>"]],
-              ['data' => $submissionContents[$key]],
-            ];
-            // Remember which keys we displayed.
-            $keys_displayed[] = $key;
-          }
+      foreach ($keys as $key => $label) {
+        if (!empty($submissionContents[$key])) {
+          $rows[] = [
+            ['data' => ['#markup' => "<strong>$label</strong>"]],
+            ['data' => $submissionContents[$key]],
+          ];
+          // Remember which keys we displayed.
+          $keys_displayed[] = $key;
         }
       }
       $table = [
