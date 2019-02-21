@@ -40,3 +40,7 @@ config.vm.provision :ansible_local do |ansible|
   ansible.galaxy_role_file = "#{guest_config_dir}/doj/local.requirements.yml"
 end
 ```
+
+### Running tests
+
+Note that running the Behat tests (`blt tests:behat`) will fail if VM has the proxy enabled. To run local tests, first disable the proxy in Vagrantfile.local and reload the VM.
