@@ -5,6 +5,7 @@ dependencies:
   module:
     - content_moderation
     - node
+    - options
     - user
 _core:
   default_config_hash: tS8PbpJX90aRFC3-UTgXzdqkq7_2frk2pz4TMijEebM
@@ -636,3 +637,246 @@ display:
       max-age: 0
       tags:
         - 'config:workflow_list'
+  page_2:
+    display_plugin: page
+    id: page_2
+    display_title: 'Page 2'
+    position: 2
+    display_options:
+      display_extenders: {  }
+      path: admin/content/summary
+      menu:
+        type: tab
+        title: Summary
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 10
+        context: '0'
+        menu_name: main
+      fields:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
+      defaults:
+        fields: false
+        style: false
+        row: false
+        filters: false
+        filter_groups: false
+        header: false
+      style:
+        type: grid
+        options:
+          grouping: {  }
+          columns: 4
+          automatic_width: true
+          alignment: horizontal
+          col_class_default: true
+          col_class_custom: ''
+          row_class_default: true
+          row_class_custom: ''
+      row:
+        type: fields
+        options: {  }
+      filters:
+        field_request_submission_form_target_id:
+          id: field_request_submission_form_target_id
+          table: node__field_request_submission_form
+          field: field_request_submission_form_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: empty
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_request_submission_form_target_id_op
+            label: 'Request Submission Form (field_request_submission_form:target_id)'
+            description: ''
+            use_operator: false
+            operator: field_request_submission_form_target_id_op
+            identifier: field_request_submission_form_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+            placeholder: ''
+          is_grouped: true
+          group_info:
+            label: 'Redirect or integrated?'
+            description: ''
+            identifier: field_request_submission_form_target_id
+            optional: false
+            widget: radios
+            multiple: false
+            remember: false
+            default_group: '1'
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Integrated
+                operator: 'not empty'
+                value: ''
+              2:
+                title: Redirect
+                operator: empty
+                value: ''
+          plugin_id: string
+        field_portal_submission_format_value:
+          id: field_portal_submission_format_value
+          table: node__field_portal_submission_format
+          field: field_portal_submission_format_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            email: email
+            api: api
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_portal_submission_format_value_op
+            label: 'Submission Format'
+            description: 'Provide the method forward FOIA content to agencies/components'
+            use_operator: false
+            operator: field_portal_submission_format_value_op
+            identifier: field_portal_submission_format_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+            reduce: true
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          content: 'Total records are @total'
+          plugin_id: result
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
