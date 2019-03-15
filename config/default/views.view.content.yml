@@ -867,7 +867,7 @@ display:
             placeholder: ''
           is_grouped: true
           group_info:
-            label: 'Redirect or integrated?'
+            label: 'Redirect or Interoperable?'
             description: ''
             identifier: field_request_submission_form_target_id
             optional: false
@@ -878,7 +878,7 @@ display:
             default_group_multiple: {  }
             group_items:
               1:
-                title: Integrated
+                title: Interoperable
                 operator: 'not empty'
                 value: ''
               2:
@@ -902,7 +902,7 @@ display:
           expose:
             operator_id: field_portal_submission_format_value_op
             label: 'Submission Format'
-            description: 'Provide the method forward FOIA content to agencies/components'
+            description: 'The format interoperable FOIA content to agencies/components'
             use_operator: false
             operator: field_portal_submission_format_value_op
             identifier: field_portal_submission_format_value
