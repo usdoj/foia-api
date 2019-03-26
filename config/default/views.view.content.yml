@@ -45,11 +45,23 @@ display:
         type: full
         options:
           items_per_page: 50
+          offset: 0
+          id: 0
+          total_pages: null
           tags:
             previous: '‹ Previous'
             next: 'Next ›'
             first: '« First'
             last: 'Last »'
+          expose:
+            items_per_page: true
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: true
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       style:
         type: table
         options:
@@ -902,7 +914,7 @@ display:
           expose:
             operator_id: field_portal_submission_format_value_op
             label: 'Submission Format'
-            description: 'The format interoperable FOIA content to agencies/components'
+            description: 'If you are searching for redirects, set this to "Any"'
             use_operator: false
             operator: field_portal_submission_format_value_op
             identifier: field_portal_submission_format_value
