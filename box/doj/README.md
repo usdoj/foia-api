@@ -16,6 +16,7 @@ for local development. Local installation will consist of these steps:
 4. Copy the `local.config.yml` file in this folder into the /box folder:<br/>
    `cp /path/to/repo/box/doj/local.config.yml /path/to/repo/box/local.config.yml`
 5. Ensure unrestricted internet access (no proxy) and run:  
+   `cd /path/to/repo`  
    `vagrant up`
 6. SSH into the VM:<br/>
    `vagrant ssh`
