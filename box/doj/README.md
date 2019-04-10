@@ -7,11 +7,12 @@ for local development. Local installation will consist of these steps:
 
 1. Clone the foia-api repository in Windows:  
    `git clone https://github.com/usdoj/foia-api.git`
+   `cd foia-api`
 2. Manually create a `vendor` folder, and a `geerlingguy` folder:  
-   `mkdir -p /path/to/repo/vendor`  
-   `mkdir -p /path/to/repo/vendor/geerlingguy`
+   `mkdir -p vendor`  
+   `mkdir -p vendor/geerlingguy`
 3. Go into the `geerlingguy` folder and clone DrupalVM:  
-   `cd /path/to/repo/vendor/geerlingguy`  
+   `cd vendor/geerlingguy`  
    `git clone https://github.com/geerlingguy/drupal-vm.git`
 4. Copy the `local.config.yml` file in this folder into the /box folder:<br/>
    `cp /path/to/repo/box/doj/local.config.yml /path/to/repo/box/local.config.yml`
