@@ -14,16 +14,17 @@ for local development. Local installation will consist of these steps:
 3. Go into the `geerlingguy` folder and clone DrupalVM:  
    `cd vendor/geerlingguy`  
    `git clone https://github.com/geerlingguy/drupal-vm.git`
-4. Copy the `local.config.yml` file in this folder into the /box folder:<br/>
-   `cp /path/to/repo/box/doj/local.config.yml /path/to/repo/box/local.config.yml`
-5. Ensure unrestricted internet access (no proxy) and run:  
-   `cd /path/to/repo`  
+4. return to the root of the foia-api repository:  
+   `cd ../../`  
+5. Copy the `local.config.yml` file in this folder into the /box folder:<br/>
+   `cp box/doj/local.config.yml box/local.config.yml`
+6. Ensure unrestricted internet access (no proxy) and run:  
    `vagrant up`
-6. SSH into the VM:<br/>
+7. SSH into the VM:<br/>
    `vagrant ssh`
-7. Run the Bash script to complete the setup, inside the VM:  
+8. Run the Bash script to complete the setup, inside the VM:  
    `bash /vagrant/box/doj/vm-setup.sh`
-8. Use drush to setup your local database:<br/>
+9. Use drush to setup your local database:<br/>
    `drush sql-sync @foia.test @dojfoia.local`
 
 ## Working within the DOJ network
