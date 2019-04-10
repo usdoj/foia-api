@@ -6,7 +6,7 @@ Internal DOJ developers are not able to run BLT, so will need a different setup
 for local development. Local installation will consist of these steps:
 
 1. Clone the foia-api repository in Windows:  
-   `git clone https://github.com/usdoj/foia-api.git`
+   `git clone https://github.com/usdoj/foia-api.git`  
    `cd foia-api`
 2. Manually create a `vendor` folder, and a `geerlingguy` folder:  
    `mkdir -p vendor`  
