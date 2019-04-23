@@ -49,3 +49,9 @@ end
 ### Running tests
 
 Note that running the Behat tests (`blt tests:behat`) will fail if VM has the proxy enabled. To run local tests, first disable the proxy in Vagrantfile.local and reload the VM.
+
+### Updating core and contrib
+
+The simplest way to update core and contrib is: `composer update`. It may be necessary to disable the proxy.
+
+**NOTE**: After updating Drupal core, you may need to re-run the SimpleSAML config placement. To do this, run `blt simplesamlphp:build:config`.
