@@ -275,15 +275,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $keys_displayed = [];
 
     // Setup a timestamp variable to use below.
-    $timestamp = time(); 
+    $timestamp = time();
 
     // Start with some basic text and a timestamp.
     $output = '<p>The following list contains the entire submission sent at '
-	echo(date("h:i:s A", $timestamp));'
+        echo(date("h:i:s A", $timestamp));'
 	ET, on '
-	echo(date("F d, Y", $timestamp));'
+        echo(date("F d, Y", $timestamp));'
 	, and is formatted for ease of viewing and printing.</p>';
-
 
     // First output all the hardcoded sections.
     foreach ($keys_by_section as $section => $keys) {
