@@ -276,13 +276,21 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // Setup a timestamp variable to use below.
     $timestamp = time();
+    $formatted_time = \Drupal::service('date.formatter')->format(
+      $timestamp->getTimestamp(),
+      'custom',
+      'H:i:s P'
+    );
+    // Setup a date variable to use below.
+    $formatted_date = \Drupal::service('date.formatter')->format(
+      $timestamp->getTimestamp(),
+      'custom',
+      'Y-m-d'
+    );
 
     // Start with some basic text and a timestamp.
-    $output = '<p>The following list contains the entire submission sent at '
-        echo(date("h:i:s A", $timestamp));'
-	ET, on '
-        echo(date("F d, Y", $timestamp));'
-	, and is formatted for ease of viewing and printing.</p>';
+    $output = '<p>The following list contains the entire submission sent at ' . $formatted_time'
+	    ET, on ' . $formatted_date . ', and is formatted for ease of viewing and printing.</p>';
 
     // First output all the hardcoded sections.
     foreach ($keys_by_section as $section => $keys) {
