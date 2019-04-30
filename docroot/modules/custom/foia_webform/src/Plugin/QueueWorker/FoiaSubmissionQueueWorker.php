@@ -130,7 +130,6 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   An array of failed submission response info.
    */
   protected function handleFailedSubmission(FoiaRequestInterface $foiaRequest, array $failedSubmissionInfo) {
-    $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
 
     $errorCode = isset($failedSubmissionInfo['code']) ? $failedSubmissionInfo['code'] : '';
     $errorMessage = isset($failedSubmissionInfo['message']) ? $failedSubmissionInfo['message'] : '';
@@ -143,6 +142,22 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     }
     if ($errorDescription) {
       $foiaRequest->set('field_error_description', $errorDescription);
+    }
+
+    // Increment the number of failures.
+    $foiaRequest->addSubmissionFailure();
+
+    // Check to see if we should try again.
+    $numFailures = $foiaRequest->getSubmissionFailures();
+    if ($numFailures < FoiaRequestInterface::MAX_SUBMISSION_FAILURES) {
+      // Yes, we should try again, so re-queue it.
+      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_QUEUED);
+      $foiaRequest->save();
+      \Drupal::service("foia_webform.foia_submission_queueing_service")->enqueue($foiaRequest);
+    }
+    else {
+      // No, just set this to failed.
+      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
     }
   }
 
