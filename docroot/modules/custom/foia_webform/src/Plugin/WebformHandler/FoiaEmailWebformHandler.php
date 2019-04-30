@@ -276,21 +276,10 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
 
     // Setup a timestamp variable to use below.
     $timestamp = time();
-    $formatted_time = \Drupal::service('date.formatter')->format(
-      $timestamp->getTimestamp(),
-      'custom',
-      'H:i:s P'
-    );
-    // Setup a date variable to use below.
-    $formatted_date = \Drupal::service('date.formatter')->format(
-      $timestamp->getTimestamp(),
-      'custom',
-      'Y-m-d'
-    );
+    date_default_timezone_set('US/Eastern');
 
-    // Start with some basic text and a timestamp.
-    $output = '<p>The following list contains the entire submission sent at ' . $formatted_time'
-	    ET, on ' . $formatted_date . ', and is formatted for ease of viewing and printing.</p>';
+    // Display a message with a timestamp announcing the FOIA Request contents.
+    print "<p>The following list contains the entire submission submitted " . date("F d, Y h:i:sa", $timestamp) . " ET, and is formatted for ease of viewing and printing.</p>";
 
     // First output all the hardcoded sections.
     foreach ($keys_by_section as $section => $keys) {
