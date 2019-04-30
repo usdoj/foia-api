@@ -274,8 +274,11 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     // Variable to keep track of which fields we've displayed.
     $keys_displayed = [];
 
-    // Start with some basic text?
-    $output = '<p>The following list contains the entire submission, and is formatted for ease of viewing and printing.</p>';
+    // Setup a timestamp variable to use below.
+    $timestamp = new DateTime('now', new DateTimezone('US/Eastern'));
+
+    // Display a message with a timestamp announcing the FOIA Request contents.
+    $output = '<p>The following list contains the entire submission submitted ' . date('F d, Y h:i:sa', $timestamp) . ' ET, and is formatted for ease of viewing and printing.</p>';
 
     // First output all the hardcoded sections.
     foreach ($keys_by_section as $section => $keys) {
