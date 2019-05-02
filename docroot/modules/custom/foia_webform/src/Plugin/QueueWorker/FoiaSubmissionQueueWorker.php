@@ -46,6 +46,37 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
   }
 
   /**
+   * Determine in we should force the site to treat all requests as failures.
+   *
+   * This is purely for testing purposes.
+   */
+  public function forceFailures() {
+    // We check for the existance of a config variable.
+    // NOTE: This variable is not versioned or set in the database.
+    // So the only way this would be set is in an unversioned file
+    // that gets included into settings.php, on the server.
+    $config = \Drupal::config('foia_webform_server_config');
+    if ($config && $config->get('force_failures')) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Provide mock values for a forced failure.
+   */
+  public function mockFailedSubmissionResponse() {
+    $code = '503';
+    $message = 'Forcing a failure according to foia_webform_server_config.force_failures.';
+    return [
+      'response_code' => $code,
+      'code' => $code,
+      'message' => $message,
+      'description' => $message,
+    ];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function processItem($data) {
@@ -74,11 +105,12 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   The submission service used to submit the request.
    */
   protected function handleSubmissionResponse(FoiaRequestInterface $foiaRequest, $submissionResponse, FoiaSubmissionServiceInterface $submissionService) {
-    if ($submissionResponse) {
+    $forceFailures = $this->forceFailures();
+    if ($submissionResponse && !$forceFailures) {
       $this->handleValidSubmission($foiaRequest, $submissionResponse);
     }
     else {
-      $submissionResponse = $submissionService->getSubmissionErrors();
+      $submissionResponse = ($forceFailures) ? $this->mockFailedSubmissionResponse() : $submissionService->getSubmissionErrors();
       $this->handleFailedSubmission($foiaRequest, $submissionResponse);
     }
     $submissionMethod = isset($submissionResponse['type']) ? $submissionResponse['type'] : '';
