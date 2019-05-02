@@ -66,13 +66,11 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    * Provide mock values for a forced failure.
    */
   public function mockFailedSubmissionResponse() {
-    $code = '503';
-    $message = 'Forcing a failure according to foia_webform_server_config.force_failures.';
     return [
-      'response_code' => $code,
-      'code' => $code,
-      'message' => $message,
-      'description' => $message,
+      'response_code' => '503',
+      'code' => '503',
+      'message' => 'Forced failure',
+      'description' => 'Forcing a failure, according to the "foia_webform_server_config.force_failures" config variable.',
     ];
   }
 
@@ -184,7 +182,9 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     if ($numFailures < FoiaRequestInterface::MAX_SUBMISSION_FAILURES) {
       // Yes, we should try again, so re-queue it.
       $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_QUEUED);
-      \Drupal::service("foia_webform.foia_submission_queueing_service")->enqueue($foiaRequest);
+      $foiaRequest->save();
+      // Throwing a normal exception tells the queue worker to try again later.
+      throw new \Exception('Failed submission ' . $foiaRequest->id() . '. Will re-queue.');
     }
     else {
       // No, just set this to failed.
