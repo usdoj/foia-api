@@ -55,6 +55,8 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     // NOTE: This variable is not versioned or set in the database.
     // So the only way this would be set is in an unversioned file
     // that gets included into settings.php, on the server.
+    // $config['foia_webform_server_config']['force_failures'] = TRUE;
+    // Example above.
     $config = \Drupal::config('foia_webform_server_config');
     if ($config && $config->get('force_failures')) {
       return TRUE;
