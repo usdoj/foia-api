@@ -790,3 +790,9 @@ $settings['install_profile'] = 'lightning';
 
 // Suppress display of error messages.
 ini_set('display_errors', '0');
+#
+# IMPORTANT
+# Do not include additional settings here. Instead, add them to settings included
+# by `blt.settings.php`. See [BLT's documentation](http://blt.readthedocs.io)
+# for more detail.
+#

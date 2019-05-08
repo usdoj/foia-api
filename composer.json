@@ -6,7 +6,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.1",
-        "acquia/blt": "^8.9.14",
+        "acquia/blt": "~9.0",
         "drupal/webform": "5.0.0-beta19",
         "drupal/address": "~1.0",
         "drupal/field_group": "^1.0@RC",
@@ -21,7 +21,7 @@
         "drupal/restui": "^1.15",
         "drupal/roleassign": "^1.0@alpha",
         "acquia/lightning": "~3.2.0",
-        "drush/drush": "^8.1.16",
+        "drush/drush": "~9.0",
         "drupal/mailsystem": "^4.1",
         "drupal/swiftmailer": "1.0.0-beta1",
         "drupal/rules": "^3.0@alpha",
@@ -65,14 +65,15 @@
                 "type:bower-asset",
                 "type:npm-asset"
             ],
-            "drush/contrib/{$name}": [
+            "drush/Commands/{$name}": [
+                "type:drupal-drush",
                 "type:drupal-drush"
             ]
         },
         "merge-plugin": {
             "require": [
-                "vendor/acquia/blt/composer.required.json",
-                "vendor/acquia/blt/composer.suggested.json"
+                "blt/composer.required.json",
+                "blt/composer.suggested.json"
             ],
             "include": [
                 "blt/composer.overrides.json"
@@ -91,9 +92,9 @@
                 "Config install issues": "https://www.drupal.org/files/issues/password-policy-config-import-field-error-2771129-49-D8.patch",
                 "Fix inconsistent date format issues": "https://www.drupal.org/files/issues/password_policy-inconsistent-datetime-formats-2860671-13-D8.patch"
             },
-           "drupal/views_data_export": {
-               "Views Data export format path": "https://www.drupal.org/files/issues/2018-04-20/views_data_export_format_path-2957085-19.patch",
-               "Generate a batch": "https://www.drupal.org/files/issues/2789531-116.patch"
+            "drupal/views_data_export": {
+                "Views Data export format path": "https://www.drupal.org/files/issues/2018-04-20/views_data_export_format_path-2957085-19.patch",
+                "Generate a batch": "https://www.drupal.org/files/issues/2789531-116.patch"
             },
             "drupal/simplesamlphp_auth": {
                 "Fix local dev problem": "https://www.drupal.org/files/issues/2019-03-28/1.17.0-plus-conflict.patch"
@@ -113,5 +114,8 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }

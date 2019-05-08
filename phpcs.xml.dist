@@ -12,7 +12,7 @@
 
   <!-- Set ignore extensions. -->
   <!-- @see https://www.drupal.org/node/2867601#comment-12075633 -->
-  <arg name="ignore" value="*.css,*.md,*.txt"/>
+  <arg name="ignore" value="*.css,*.md,*.txt,*.png,*.gif,*.jpeg,*.jpg,*.svg"/>
 
   <!-- Use colors in output. -->
   <arg name="colors"/>
@@ -23,10 +23,10 @@
   <rule ref="Drupal"/>
   <rule ref="DrupalPractice">
     <!-- Ignore specific sniffs. -->
-    <!-- <exclude name="DrupalPractice.CodeAnalysis.VariableAnalysis.UnusedVariable"/> -->
+    <exclude name="DrupalPractice.InfoFiles.NamespacedDependency"/>
   </rule>
 
-  <file>blt</file>
+  <file>blt/src</file>
   <file>docroot/modules/custom</file>
   <file>docroot/themes/custom</file>
   <file>tests</file>
@@ -34,5 +34,9 @@
   <exclude-pattern>*/behat</exclude-pattern>
   <exclude-pattern>*/node_modules</exclude-pattern>
   <exclude-pattern>*/vendor</exclude-pattern>
+  <!-- Exclude files provided by ACSF that fail code sniffing. -->
+  <exclude-pattern>factory-hooks</exclude-pattern>
+  <exclude-pattern>hooks</exclude-pattern>
+  <exclude-pattern>docroot/sites/g</exclude-pattern>
 
 </ruleset>
