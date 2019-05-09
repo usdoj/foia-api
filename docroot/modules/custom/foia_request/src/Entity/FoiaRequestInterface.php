@@ -54,11 +54,6 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   const ASSUME_DELIVERED_AFTER = 604800;
 
   /**
-   * The max number of times to requeue failed submissions.
-   */
-  const MAX_SUBMISSION_FAILURES = 5;
-
-  /**
    * Gets the status of the foia_request entity.
    *
    * @return int
@@ -91,22 +86,6 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
    *   Valid statuses for a FOIA request.
    */
   public static function getValidRequestStatuses();
-
-  /**
-   * Gets the number of times a foia_request entity has failed.
-   *
-   * @return int
-   *   Number of times the request has failed.
-   */
-  public function getSubmissionFailures();
-
-  /**
-   * Increments the number of times a foia_request entity has failed.
-   *
-   * @return \Drupal\foia_request\Entity\FoiaRequestInterface
-   *   The called foia_request entity.
-   */
-  public function addSubmissionFailure();
 
   /**
    * Gets the method by which the request was submitted to the component.
