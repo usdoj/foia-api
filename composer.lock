@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "280be8be371cb865ad7dfaf9a8c4266c",
+    "content-hash": "e4979ab6d98c1ccb8c09c0730c07c72e",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3087,6 +3087,7 @@
                 },
                 "patches_applied": {
                     "Account for null triggering element when validating managed file elements": "https://www.drupal.org/files/issues/validating_managed-2910320-2.patch",
+                    "Needed to jump to 8.6 from 8.5 - can be removed at any point after": "https://www.drupal.org/files/issues/2019-03-07/2997982_truncate_taxonomy_term__parent_table_2.patch",
                     "2998335 - [regression] \\Drupal\\user\\ContextProvider\\CurrentUserContext broken for anonymous users": "https://www.drupal.org/files/issues/2018-10-04/2998335-currentusercontext-16.patch",
                     "3032548 - ContentModerationRouteSubscriber assumes all parameters in an entity form route contain a 'type' key": "https://www.drupal.org/files/issues/2019-02-13/3032548-2.patch",
                     "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2869592-remove-update-warning-7.patch",
@@ -4724,24 +4725,24 @@
         },
         {
             "name": "drupal/lightning_core",
-            "version": "3.10.0",
+            "version": "3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/lightning_core.git",
-                "reference": "8.x-3.10"
+                "reference": "8.x-3.11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/lightning_core-8.x-3.10.zip",
-                "reference": "8.x-3.10",
-                "shasum": "f8dedb0db2710c5ba26f2ee6eb62b062b63a1e61"
+                "url": "https://ftp.drupal.org/files/projects/lightning_core-8.x-3.11.zip",
+                "reference": "8.x-3.11",
+                "shasum": "5622d2160fb038d64d87dbdc6084de9f5fd3a578"
             },
             "require": {
                 "cweagans/composer-patches": "^1.6.4",
                 "drupal-composer/drupal-scaffold": "^2.0.0",
                 "drupal/acquia_connector": "^1.1",
                 "drupal/contact_storage": "^1.0",
-                "drupal/core": "~8.6.15",
+                "drupal/core": "~8.6.16",
                 "drupal/metatag": "^1.8",
                 "drupal/pathauto": "^1.3",
                 "drupal/search_api": "^1.0",
@@ -4766,8 +4767,8 @@
                     "dev-8.x-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.10",
-                    "datestamp": "1555537081",
+                    "version": "8.x-3.11",
+                    "datestamp": "1557341581",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4819,7 +4820,7 @@
                     "Drupal\\Tests\\lightning_core\\": "tests/src"
                 },
                 "classmap": [
-                    "tests/contexts/AwaitTrait.inc"
+                    "tests/contexts"
                 ]
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
