@@ -11,3 +11,8 @@ drush:
     include:
       - '${env.home}/.drush'
       - /usr/share/drush/commands
+command:
+  sql:
+    sync:
+      options:
+        source-dump: /tmp/tmp.sql
