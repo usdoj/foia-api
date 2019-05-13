@@ -6,32 +6,32 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.1",
-        "acquia/blt": "~9.0",
-        "drupal/webform": "5.0.0-beta19",
+        "acquia/blt": "^9.0.3",
+        "acquia/lightning": "~3.2.0",
+        "consolidation/robo": "~1.2.4",
+        "dompdf/dompdf": "^0.8.2",
         "drupal/address": "~1.0",
-        "drupal/field_group": "^1.0@RC",
-        "drupal/cors": "~1.0",
-        "drupal/field_permissions": "~1.0",
+        "drupal/autologout": "^1.0",
         "drupal/cog": "^1.8",
-        "drupal/migrate_plus": "^4.0",
-        "drupal/migrate_tools": "^4.0",
-        "drupal/simplesamlphp_auth": "^3.0",
+        "drupal/cors": "~1.0",
+        "drupal/field_group": "^1.0@RC",
+        "drupal/field_permissions": "~1.0",
+        "drupal/file_entity": "^2.0@beta",
+        "drupal/hsts": "^1.0",
         "drupal/jsonapi_extras": "2.9",
         "drupal/maillog": "1.x-dev#14fd24cd89e299ad271608cd52706c60b753c26d",
+        "drupal/mailsystem": "^4.1",
+        "drupal/migrate_plus": "^4.0",
+        "drupal/migrate_tools": "^4.0",
+        "drupal/password_policy": "^3.0@alpha",
         "drupal/restui": "^1.15",
         "drupal/roleassign": "^1.0@alpha",
-        "acquia/lightning": "~3.2.0",
-        "drush/drush": "~9.0",
-        "drupal/mailsystem": "^4.1",
-        "drupal/swiftmailer": "1.0.0-beta1",
         "drupal/rules": "^3.0@alpha",
-        "drupal/autologout": "^1.0",
-        "drupal/file_entity": "^2.0@beta",
-        "drupal/password_policy": "^3.0@alpha",
+        "drupal/simplesamlphp_auth": "^3.0",
+        "drupal/swiftmailer": "1.0.0-beta1",
         "drupal/views_data_export": "^1.0",
-        "drupal/hsts": "^1.0",
-        "consolidation/robo": "~1.2.4",
-        "dompdf/dompdf": "^0.8.2"
+        "drupal/webform": "5.0.0-beta19",
+        "drush/drush": "~9.0"
     },
     "require-dev": {
         "geerlingguy/drupal-vm": "~4.3"
@@ -99,6 +99,9 @@
             },
             "drupal/simplesamlphp_auth": {
                 "Fix local dev problem": "https://www.drupal.org/files/issues/2019-03-28/1.17.0-plus-conflict.patch"
+            },
+            "acquia/blt": {
+                "Dependency fix for BLT 9": "https://patch-diff.githubusercontent.com/raw/acquia/blt/pull/3621.patch"
             }
         },
         "installer-types": [
