@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.user.user.field_agency
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
   module:
     - user
 id: user.user.default
@@ -22,4 +24,9 @@ content:
   member_for:
     weight: 5
     region: content
-hidden: {  }
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_last_password_reset: true
+  field_password_expiration: true
+  name: true
