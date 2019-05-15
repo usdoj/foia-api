@@ -1,0 +1,5 @@
+services:
+  foia_request.commands:
+    class: \Drupal\foia_request\Commands\FoiaRequestCommands
+    tags:
+      - { name: drush.command }
