@@ -3,6 +3,7 @@
 namespace Drupal\foia_file\Commands;
 
 use Drush\Commands\DrushCommands;
+use Drupal\file\Entity\File;
 
 /**
  * A Drush commandfile.

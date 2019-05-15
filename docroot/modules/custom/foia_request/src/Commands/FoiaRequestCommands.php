@@ -3,6 +3,10 @@
 namespace Drupal\foia_request\Commands;
 
 use Drush\Commands\DrushCommands;
+use Drupal\webform\Entity\WebformSubmission;
+use Drupal\file_entity\Entity\FileEntity;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
+use Drupal\foia_request\Entity\FoiaRequest;
 
 /**
  * A Drush commandfile.
