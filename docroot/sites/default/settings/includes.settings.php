@@ -11,7 +11,7 @@ if (file_exists(DRUPAL_ROOT . '/sites/acquia.inc')) {
 }
 
 $additionalSettingsFiles = [
-  '/mnt/gfs/foia.test/secrets.settings.php',
+  '/mnt/gfs/home/' . $ah_group . '/' . $ah_env . '/secrets.settings.php',
 ];
 
 foreach ($additionalSettingsFiles as $settingsFile) {
