@@ -9,3 +9,13 @@ if (file_exists(DRUPAL_ROOT . '/sites/acquia.inc')) {
   require DRUPAL_ROOT . '/sites/acquia.inc';
   ac_protect_this_site();
 }
+
+$additionalSettingsFiles = [
+  '/mnt/gfs/foia.test/secrets.settings.php',
+];
+
+foreach ($additionalSettingsFiles as $settingsFile) {
+  if (file_exists($settingsFile)) {
+    require $settingsFile;
+  }
+}
