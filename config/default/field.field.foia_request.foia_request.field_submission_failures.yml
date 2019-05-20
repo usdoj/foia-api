@@ -1,0 +1,26 @@
+uuid: b7dbb488-c793-45c2-b337-a83be253ee57
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.foia_request.field_submission_failures
+  module:
+    - foia_request
+id: foia_request.foia_request.field_submission_failures
+field_name: field_submission_failures
+entity_type: foia_request
+bundle: foia_request
+label: 'Submission Failures'
+description: 'The number of times the submission has failed.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
