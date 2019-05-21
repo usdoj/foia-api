@@ -191,6 +191,8 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     else {
       // No, just set this to failed.
       $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
+      // Log a unique message that this happened.
+      \Drupal::logger('foia_webform')->error('FOIA request failed too many times. Attention needed. Id: ' . $foiaRequest->id());
     }
   }
 
