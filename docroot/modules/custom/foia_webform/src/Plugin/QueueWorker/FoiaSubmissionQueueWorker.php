@@ -46,37 +46,6 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
   }
 
   /**
-   * Determine in we should force the site to treat all requests as failures.
-   *
-   * This is purely for testing purposes.
-   */
-  public function forceFailures() {
-    // We check for the existance of a config variable.
-    // NOTE: This variable is not versioned or set in the database.
-    // So the only way this would be set is in an unversioned file
-    // that gets included into settings.php, on the server.
-    // $config['foia_webform_server_config']['force_failures'] = TRUE;
-    // Example above.
-    $config = \Drupal::config('foia_webform_server_config');
-    if ($config && $config->get('force_failures')) {
-      return TRUE;
-    }
-    return FALSE;
-  }
-
-  /**
-   * Provide mock values for a forced failure.
-   */
-  public function mockFailedSubmissionResponse() {
-    return [
-      'response_code' => '503',
-      'code' => '503',
-      'message' => 'Forced failure',
-      'description' => 'Forcing a failure, according to the "foia_webform_server_config.force_failures" config variable.',
-    ];
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function processItem($data) {
@@ -105,12 +74,11 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   The submission service used to submit the request.
    */
   protected function handleSubmissionResponse(FoiaRequestInterface $foiaRequest, $submissionResponse, FoiaSubmissionServiceInterface $submissionService) {
-    $forceFailures = $this->forceFailures();
-    if ($submissionResponse && !$forceFailures) {
+    if ($submissionResponse) {
       $this->handleValidSubmission($foiaRequest, $submissionResponse);
     }
     else {
-      $submissionResponse = ($forceFailures) ? $this->mockFailedSubmissionResponse() : $submissionService->getSubmissionErrors();
+      $submissionResponse = $submissionService->getSubmissionErrors();
       $this->handleFailedSubmission($foiaRequest, $submissionResponse);
     }
     $submissionMethod = isset($submissionResponse['type']) ? $submissionResponse['type'] : '';
@@ -162,6 +130,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   An array of failed submission response info.
    */
   protected function handleFailedSubmission(FoiaRequestInterface $foiaRequest, array $failedSubmissionInfo) {
+    $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
 
     $errorCode = isset($failedSubmissionInfo['code']) ? $failedSubmissionInfo['code'] : '';
     $errorMessage = isset($failedSubmissionInfo['message']) ? $failedSubmissionInfo['message'] : '';
@@ -174,25 +143,6 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     }
     if ($errorDescription) {
       $foiaRequest->set('field_error_description', $errorDescription);
-    }
-
-    // Increment the number of failures.
-    $foiaRequest->addSubmissionFailure();
-
-    // Check to see if we should try again.
-    $numFailures = $foiaRequest->getSubmissionFailures();
-    if ($numFailures < FoiaRequestInterface::MAX_SUBMISSION_FAILURES) {
-      // Yes, we should try again, so re-queue it.
-      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_QUEUED);
-      $foiaRequest->save();
-      // Throwing a normal exception tells the queue worker to try again later.
-      throw new \Exception('Failed submission ' . $foiaRequest->id() . '. Scheduling re-queue #' . $numFailures . '.');
-    }
-    else {
-      // No, just set this to failed.
-      $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
-      // Log a unique message that this happened.
-      \Drupal::logger('foia_webform')->error('FOIA request failed too many times. Attention needed. Id: ' . $foiaRequest->id());
     }
   }
 
