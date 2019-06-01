@@ -179,7 +179,7 @@ class WebformSubmissionResource extends ResourceBase {
     $values['data'] = $data;
 
     // Validate submission.
-    $submissionErrors = WebformSubmissionForm::validateValues($values);
+    $submissionErrors = WebformSubmissionForm::validateFormValues($values);
     $errors = $fileErrors ? array_merge((array) $submissionErrors, $fileErrors) : $submissionErrors;
     if (!empty($errors)) {
       // Delete any created attachments on invalid submissions.
@@ -193,7 +193,7 @@ class WebformSubmissionResource extends ResourceBase {
     }
 
     // Perform submission.
-    $webformSubmission = WebformSubmissionForm::submitValues($values);
+    $webformSubmission = WebformSubmissionForm::submitFormValues($values);
     $submissionId = $webformSubmission->id();
 
     // If attachments were submitted, move them out of temporary storage.
