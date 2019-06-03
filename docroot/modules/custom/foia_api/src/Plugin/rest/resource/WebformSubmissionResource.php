@@ -431,7 +431,7 @@ class WebformSubmissionResource extends ResourceBase {
       if (isset($element['#max_filesize'])) {
         $maxFileSize = $element['#max_filesize'];
       }
-      else {
+      if (empty($maxFileSize)) {
         $maxFileSize = \Drupal::config('webform.settings')->get('file.default_max_filesize') ?: file_upload_max_size();
       }
       $maxFileSize = Bytes::toInt("{maxFileSize}MB");
