@@ -121,6 +121,14 @@ function drush_foia_file_virus_scan($path_to_executable, $path_to_webform_attach
     else {
       $file = NULL;
     }
+    \Drupal::logger('foia_file')->warning(
+      "File scan debugging: scanStatus: @scanStatus -- fid: @fid -- filename: @filename -- field: @field",
+      [
+        '@scanStatus' => $scanStatus,
+        '@fid' => $fid,
+        '@filename' => $absoluteFileName,
+        '@field' => ($file) ? $file->get('field_virus_scan_status')->getString() : 'null',
+      ]);
     if ($file && !in_array($file->get('field_virus_scan_status')->getString(), $doNotScanEntityStatuses)) {
       if (in_array($scanStatus, $cleanScanStatuses)) {
         if ($file->hasField('field_virus_scan_status')) {
