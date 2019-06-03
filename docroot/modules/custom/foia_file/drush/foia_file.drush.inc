@@ -48,7 +48,17 @@ function drush_foia_file_virus_scan($path_to_executable, $path_to_webform_attach
   $scan_options = '-r --remove --no-summary';
   $scan_command = "${path_to_executable} ${scan_options} ${path_to_webform_attachments}";
   $startTime = microtime(TRUE);
+  \Drupal::logger('foia_file')->warning(
+    "About to run scan: @command",
+    [
+      '@command' => $scan_command,
+    ]);
   $scanOutput = shell_exec($scan_command);
+  \Drupal::logger('foia_file')->warning(
+    "Results of scan: @scan",
+    [
+      '@scan' => $scanOutput,
+    ]);
 
   // Get webform directory on the server.
   $fileDir = explode('/webform/', $scanOutput, 2);
