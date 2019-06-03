@@ -125,6 +125,12 @@ function drush_foia_file_virus_scan($path_to_executable, $path_to_webform_attach
       if (in_array($scanStatus, $cleanScanStatuses)) {
         if ($file->hasField('field_virus_scan_status')) {
           $file->set('field_virus_scan_status', 'clean');
+          \Drupal::logger('foia_file')->warning(
+            "The file @absoluteFileName with the ID @fid was scanned and updated.",
+            [
+              '@absoluteFileName' => $absoluteFileName,
+              '@fid' => $fid,
+            ]);
         }
         else {
           \Drupal::logger('foia_file')->warning(
