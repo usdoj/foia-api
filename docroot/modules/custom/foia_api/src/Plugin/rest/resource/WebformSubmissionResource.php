@@ -166,12 +166,18 @@ class WebformSubmissionResource extends ResourceBase {
     }
 
     // Check for file attachments.
+    $this->logger->warning('About to getSubmittedFileAttachments');
     $fileAttachmentsOnSubmission = $this->getSubmittedFileAttachments($webform, $data);
+    $this->logger->warning('Finished getSubmittedFileAttachments');
     if ($fileAttachmentsOnSubmission) {
+      $this->logger->warning('About to validateAttachmentsContainRequiredInfo');
       $fileErrors = $this->validateAttachmentsContainRequiredInfo($fileAttachmentsOnSubmission);
       if (!$fileErrors) {
+        $this->logger->warning('About to createFileEntities');
         $fileEntities = $this->createFileEntities($fileAttachmentsOnSubmission);
+        $this->logger->warning('About to validateFileEntities');
         $fileErrors = $this->validateFileEntities($webform, $fileEntities);
+        $this->logger->warning('About to attachFileEntitiesToSubmission');
         $this->attachFileEntitiesToSubmission($fileEntities, $data);
       }
     }
