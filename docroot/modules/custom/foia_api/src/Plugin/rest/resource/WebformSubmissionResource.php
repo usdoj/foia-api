@@ -204,6 +204,7 @@ class WebformSubmissionResource extends ResourceBase {
 
     // If attachments were submitted, move them out of temporary storage.
     if ($fileAttachmentsOnSubmission && $fileEntities) {
+      $this->logger->warning('About to moveFilesToFinalDestination');
       $this->moveFilesToFinalDestination($webform, $webformSubmission, $fileEntities);
     }
 
@@ -398,6 +399,7 @@ class WebformSubmissionResource extends ResourceBase {
     $fileSize = isset($fileAttachment['filesize']) ? $fileAttachment['filesize'] : '';
     $fileName = isset($fileAttachment['filename']) ? $fileAttachment['filename'] : '';
     $fileUri = file_unmanaged_save_data($fileContents);
+    $this->logger->warning('Created file entity in temp storage: ' . $fileUri);
     if ($fileUri) {
       $file = FileEntity::create([
         'type' => 'attachment_support_document',
@@ -580,6 +582,7 @@ class WebformSubmissionResource extends ResourceBase {
         $destinationUri = "{$uriScheme}://webform/{$webform->id()}/{$webformSubmission->id()}/{$file->getFilename()}";
         $destinationDirectory = $this->fileSystem->dirname($destinationUri);
         file_prepare_directory($destinationDirectory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+        $this->logger->warning('About to move file from ' . $sourceUri . ' to ' . $destinationUri);
         $destinationUri = file_unmanaged_move($sourceUri, $destinationUri);
         // Update the file's uri and save.
         $file->setFileUri($destinationUri);
