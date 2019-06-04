@@ -411,6 +411,7 @@ class WebformSubmissionResource extends ResourceBase {
         'field_virus_scan_status' => 'scan',
       ]);
       $file->save();
+      $this->logger->warning('Saved file at ' . $file->getFileUri());
       return $file;
     }
   }
@@ -587,6 +588,7 @@ class WebformSubmissionResource extends ResourceBase {
         // Update the file's uri and save.
         $file->setFileUri($destinationUri);
         $file->save();
+        $this->logger->warning('Moved the file from ' . $sourceUri . ' to ' . $destinationUri);
 
         // Set file usage which will also make the file's status permanent.
         $this->fileUsage->delete($file, 'webform', 'webform_submission', $webformSubmission->id(), 0);
