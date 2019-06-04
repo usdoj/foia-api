@@ -38,7 +38,19 @@ class FoiaFileCommands extends DrushCommands {
     $scan_options = '-r --remove --no-summary';
     $scan_command = "${path_to_executable} ${scan_options} ${path_to_webform_attachments}";
     $startTime = microtime(TRUE);
+    \Drupal::logger('foia_file')->warning(
+      "About to run scan: @command",
+      [
+        '@command' => $scan_command,
+      ]
+    );
     $scanOutput = shell_exec($scan_command);
+    \Drupal::logger('foia_file')->warning(
+      "Results of scan: @scan",
+      [
+        '@scan' => $scanOutput,
+      ]
+    );
 
     // Get webform directory on the server.
     $fileDir = explode('/webform/', $scanOutput, 2);
@@ -111,10 +123,26 @@ class FoiaFileCommands extends DrushCommands {
       else {
         $file = NULL;
       }
+      \Drupal::logger('foia_file')->warning(
+        "File scan debugging: scanStatus: @scanStatus -- fid: @fid -- filename: @filename -- field: @field",
+        [
+          '@scanStatus' => $scanStatus,
+          '@fid' => $fid,
+          '@filename' => $absoluteFileName,
+          '@field' => ($file) ? $file->get('field_virus_scan_status')->getString() : 'null',
+        ]
+      );
       if ($file && !in_array($file->get('field_virus_scan_status')->getString(), $doNotScanEntityStatuses)) {
         if (in_array($scanStatus, $cleanScanStatuses)) {
           if ($file->hasField('field_virus_scan_status')) {
             $file->set('field_virus_scan_status', 'clean');
+            \Drupal::logger('foia_file')->warning(
+              "The file @absoluteFileName with the ID @fid was scanned and updated.",
+              [
+                '@absoluteFileName' => $absoluteFileName,
+                '@fid' => $fid,
+              ]
+            );
           }
           else {
             \Drupal::logger('foia_file')->warning(
