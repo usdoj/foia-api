@@ -580,6 +580,9 @@ class WebformSubmissionResource extends ResourceBase {
 
       /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {
+        // Reload the file since it has been saved by other modules and may
+        // have changed.
+        $file = FileEntity::load($file->id());
         $sourceUri = $file->getFileUri();
         $destinationUri = "{$uriScheme}://webform/{$webform->id()}/{$webformSubmission->id()}/{$file->getFilename()}";
         $destinationDirectory = $this->fileSystem->dirname($destinationUri);
