@@ -398,7 +398,8 @@ class WebformSubmissionResource extends ResourceBase {
     $mimeType = isset($fileAttachment['content_type']) ? $fileAttachment['content_type'] : '';
     $fileSize = isset($fileAttachment['filesize']) ? $fileAttachment['filesize'] : '';
     $fileName = isset($fileAttachment['filename']) ? $fileAttachment['filename'] : '';
-    $fileUri = file_unmanaged_save_data($fileContents);
+    $destination = \Drupal::service('file_system')->tempnam('temporary://', 'foiaAttach');
+    $fileUri = file_unmanaged_save_data($fileContents, $destination);
     $this->logger->warning('Created file entity in temp storage: ' . $fileUri);
     if ($fileUri) {
       $file = FileEntity::create([
