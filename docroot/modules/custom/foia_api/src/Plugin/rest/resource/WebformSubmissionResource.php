@@ -179,7 +179,7 @@ class WebformSubmissionResource extends ResourceBase {
     $values['data'] = $data;
 
     // Validate submission.
-    $submissionErrors = WebformSubmissionForm::validateValues($values);
+    $submissionErrors = WebformSubmissionForm::validateFormValues($values);
     $errors = $fileErrors ? array_merge((array) $submissionErrors, $fileErrors) : $submissionErrors;
     if (!empty($errors)) {
       // Delete any created attachments on invalid submissions.
@@ -193,7 +193,7 @@ class WebformSubmissionResource extends ResourceBase {
     }
 
     // Perform submission.
-    $webformSubmission = WebformSubmissionForm::submitValues($values);
+    $webformSubmission = WebformSubmissionForm::submitFormValues($values);
     $submissionId = $webformSubmission->id();
 
     // If attachments were submitted, move them out of temporary storage.
@@ -391,7 +391,8 @@ class WebformSubmissionResource extends ResourceBase {
     $mimeType = isset($fileAttachment['content_type']) ? $fileAttachment['content_type'] : '';
     $fileSize = isset($fileAttachment['filesize']) ? $fileAttachment['filesize'] : '';
     $fileName = isset($fileAttachment['filename']) ? $fileAttachment['filename'] : '';
-    $fileUri = file_unmanaged_save_data($fileContents);
+    $destination = \Drupal::service('file_system')->tempnam('temporary://', 'foiaAttach');
+    $fileUri = file_unmanaged_save_data($fileContents, $destination);
     if ($fileUri) {
       $file = FileEntity::create([
         'type' => 'attachment_support_document',
@@ -425,8 +426,25 @@ class WebformSubmissionResource extends ResourceBase {
     foreach ($filesByFieldName as $fieldName => $files) {
       $element = $webform->getElementInitialized($fieldName);
       $defaultProperties = $this->getDefaultWebformElementProperties($element);
-      $maxFileSize = isset($element['#max_filesize']) ? $element['#max_filesize'] : $defaultProperties['max_filesize'];
-      $maxFileSize = Bytes::toInt("{$maxFileSize}MB");
+
+      // Figure out the max file size.
+      $maxFileSize = '';
+      if (isset($element['#max_filesize'])) {
+        $maxFileSize = $element['#max_filesize'];
+        if (!empty($maxFileSize)) {
+          $maxFileSize = Bytes::toInt("{$maxFileSize}MB");
+        }
+      }
+      if (empty($maxFileSize)) {
+        $maxFileSize = \Drupal::config('webform.settings')->get('file.default_max_filesize');
+        if (!empty($maxFileSize)) {
+          $maxFileSize = Bytes::toInt($maxFileSize);
+        }
+      }
+      if (empty($maxFileSize)) {
+        $maxFileSize = file_upload_max_size();
+      }
+
       $fileExtensions = isset($element['#file_extensions']) ? $element['#file_extensions'] : $defaultProperties['file_extensions'];
       $validators['file_validate_size'] = [$maxFileSize];
       $validators['file_validate_extensions'] = [$fileExtensions];
@@ -553,6 +571,9 @@ class WebformSubmissionResource extends ResourceBase {
 
       /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {
+        // Reload the file since it has been saved by other modules and may
+        // have changed.
+        $file = FileEntity::load($file->id());
         $sourceUri = $file->getFileUri();
         $destinationUri = "{$uriScheme}://webform/{$webform->id()}/{$webformSubmission->id()}/{$file->getFilename()}";
         $destinationDirectory = $this->fileSystem->dirname($destinationUri);

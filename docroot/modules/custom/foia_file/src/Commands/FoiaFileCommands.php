@@ -115,6 +115,13 @@ class FoiaFileCommands extends DrushCommands {
         if (in_array($scanStatus, $cleanScanStatuses)) {
           if ($file->hasField('field_virus_scan_status')) {
             $file->set('field_virus_scan_status', 'clean');
+            \Drupal::logger('foia_file')->warning(
+              "The file @absoluteFileName with the ID @fid was scanned and updated.",
+              [
+                '@absoluteFileName' => $absoluteFileName,
+                '@fid' => $fid,
+              ]
+            );
           }
           else {
             \Drupal::logger('foia_file')->warning(
