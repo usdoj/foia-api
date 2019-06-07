@@ -1,48 +1,39 @@
-uuid: d1a197af-1e5c-45f6-98c1-1c51c9762c8c
+uuid: d310aaf7-bb9e-41dc-a3ae-5d8f425518f0
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.media_library
+    - core.entity_form_mode.media.media_library
     - field.field.media.image.field_media_in_library
     - field.field.media.image.image
     - image.style.thumbnail
     - media.type.image
   module:
     - image
-    - user
 id: media.image.media_library
 targetEntityType: media
 bundle: image
 mode: media_library
 content:
-  created:
-    label: hidden
-    type: timestamp
-    weight: 0
-    region: content
+  image:
+    weight: 5
     settings:
-      date_format: medium
-      custom_date_format: ''
-      timezone: ''
+      progress_indicator: throbber
+      preview_image_style: thumbnail
     third_party_settings: {  }
-  thumbnail:
-    type: image
+    type: image_image
     region: content
-    label: hidden
+  name:
+    type: string_textfield
     settings:
-      image_style: thumbnail
-      image_link: ''
+      size: 60
+      placeholder: ''
     weight: 0
     third_party_settings: {  }
-  uid:
-    label: hidden
-    type: author
-    weight: 0
     region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  created: true
   field_media_in_library: true
-  image: true
-  name: true
+  path: true
+  status: true
+  uid: true
