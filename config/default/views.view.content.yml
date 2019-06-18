@@ -539,47 +539,6 @@ display:
           plugin_id: language
           entity_type: node
           entity_field: langcode
-        moderation_state:
-          id: moderation_state
-          table: node_field_data
-          field: moderation_state
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: in
-          value:
-            all: all
-          group: 1
-          exposed: true
-          expose:
-            operator_id: moderation_state_op
-            label: Status
-            description: ''
-            use_operator: false
-            operator: moderation_state_op
-            identifier: moderation_state
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: node
-          plugin_id: moderation_state_filter
       sorts: {  }
       title: Content
       empty:
@@ -618,8 +577,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       max-age: 0
-      tags:
-        - 'config:workflow_list'
+      tags: {  }
   page_1:
     display_options:
       path: admin/content/node
@@ -650,8 +608,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       max-age: 0
-      tags:
-        - 'config:workflow_list'
+      tags: {  }
   page_2:
     display_plugin: page
     id: page_2

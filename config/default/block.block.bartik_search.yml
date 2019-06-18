@@ -2,11 +2,8 @@ uuid: e2d8b329-864f-47df-8fef-7c10e7d30fc3
 langcode: en
 status: true
 dependencies:
-  config:
-    - views.view.search
   module:
     - system
-    - views
   theme:
     - bartik
 _core:
@@ -21,7 +18,7 @@ settings:
   id: 'views_exposed_filter_block:search-page'
   label: ''
   provider: views
-  label_display: visible
+  label_display: '0'
   views_label: ''
 visibility:
   request_path:
