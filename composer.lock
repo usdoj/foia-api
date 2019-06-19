@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af2cd23f70b4203b656e665b3b9bbc24",
+    "content-hash": "9d3d0a7344b701cdfb59b37363ed11b1",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3534,17 +3534,17 @@
         },
         {
             "name": "drupal/coder",
-            "version": "8.3.4",
+            "version": "8.3.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
-                "reference": "0a274321f4930f186d9f246783f0b4d743501cf8"
+                "reference": "35277fc8675b6a2cbb194f8880145a9c85c845c4"
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=5.5.9",
                 "squizlabs/php_codesniffer": "^3.4.1",
-                "symfony/yaml": ">=2.0.0"
+                "symfony/yaml": ">=2.0.5"
             },
             "require-dev": {
                 "phpunit/phpunit": ">=3.7 <6"
@@ -3567,7 +3567,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-05-24T11:44:05+00:00"
+            "time": "2019-06-14T15:06:06+00:00"
         },
         {
             "name": "drupal/cog",
@@ -15524,60 +15524,6 @@
             "time": "2019-03-17T17:37:11+00:00"
         },
         {
-            "name": "drupal/security_review",
-            "version": "dev-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/security_review.git",
-                "reference": "9b8a34a21cac85913845df4eebb9a05c69de82d8"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1532659087",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "banviktor",
-                    "homepage": "https://www.drupal.org/user/3176333"
-                },
-                {
-                    "name": "coltrane",
-                    "homepage": "https://www.drupal.org/user/91990"
-                },
-                {
-                    "name": "dsnopek",
-                    "homepage": "https://www.drupal.org/user/266527"
-                },
-                {
-                    "name": "greggles",
-                    "homepage": "https://www.drupal.org/user/36762"
-                }
-            ],
-            "description": "Site security and configuration review module.",
-            "homepage": "https://www.drupal.org/project/security_review",
-            "support": {
-                "source": "https://git.drupalcode.org/project/security_review"
-            },
-            "time": "2018-07-27T02:32:58+00:00"
-        },
-        {
             "name": "geerlingguy/drupal-vm",
             "version": "4.9.2",
             "source": {
@@ -15615,56 +15561,6 @@
                 "vm"
             ],
             "time": "2019-01-03T16:19:18+00:00"
-        },
-        {
-            "name": "jakoch/phantomjs-installer",
-            "version": "2.1.1-p07",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jakoch/phantomjs-installer.git",
-                "reference": "4d0e994f110a79738b73083c2c3086d162547bd6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jakoch/phantomjs-installer/zipball/4d0e994f110a79738b73083c2c3086d162547bd6",
-                "reference": "4d0e994f110a79738b73083c2c3086d162547bd6",
-                "shasum": ""
-            },
-            "require": {
-                "ext-bz2": "*",
-                "ext-openssl": "*",
-                "php": ">5.3"
-            },
-            "require-dev": {
-                "composer/composer": "^1.2",
-                "phpunit/phpunit": "^4.8"
-            },
-            "type": "custom-installer",
-            "autoload": {
-                "psr-4": {
-                    "PhantomInstaller\\Test\\": "tests/"
-                },
-                "psr-0": {
-                    "PhantomInstaller\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jens-André Koch",
-                    "email": "jakoch@web.de"
-                }
-            ],
-            "description": "A Composer package which installs the PhantomJS binary (Linux, Windows, Mac) into `/bin` of your project.",
-            "keywords": [
-                "binaries",
-                "headless",
-                "phantomjs"
-            ],
-            "time": "2016-10-12T01:52:42+00:00"
         },
         {
             "name": "jarnaiz/behat-junit-formatter",
@@ -17214,7 +17110,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1"
+        "php": ">=7.2"
     },
     "platform-dev": []
 }
