@@ -63,18 +63,18 @@ resourceFields:
     publicName: status
     enhancer:
       id: ''
-  title:
-    fieldName: title
-    publicName: title
-    enhancer:
-      id: ''
-    disabled: false
   uid:
     disabled: true
     fieldName: uid
     publicName: uid
     enhancer:
       id: ''
+  title:
+    fieldName: title
+    publicName: title
+    enhancer:
+      id: ''
+    disabled: false
   created:
     disabled: true
     fieldName: created
@@ -105,10 +105,40 @@ resourceFields:
     publicName: default_langcode
     enhancer:
       id: ''
+  revision_default:
+    disabled: true
+    fieldName: revision_default
+    publicName: revision_default
+    enhancer:
+      id: ''
   revision_translation_affected:
     disabled: true
     fieldName: revision_translation_affected
     publicName: revision_translation_affected
+    enhancer:
+      id: ''
+  scheduled_transition_date:
+    disabled: true
+    fieldName: scheduled_transition_date
+    publicName: scheduled_transition_date
+    enhancer:
+      id: ''
+  scheduled_transition_state:
+    disabled: true
+    fieldName: scheduled_transition_state
+    publicName: scheduled_transition_state
+    enhancer:
+      id: ''
+  scheduled_publication:
+    disabled: true
+    fieldName: scheduled_publication
+    publicName: scheduled_publication
+    enhancer:
+      id: ''
+  scheduled_moderation_state:
+    disabled: true
+    fieldName: scheduled_moderation_state
+    publicName: scheduled_moderation_state
     enhancer:
       id: ''
   metatag:
@@ -127,12 +157,6 @@ resourceFields:
     disabled: true
     fieldName: menu_link
     publicName: menu_link
-    enhancer:
-      id: ''
-  moderation_state:
-    disabled: true
-    fieldName: moderation_state
-    publicName: moderation_state
     enhancer:
       id: ''
   body:
@@ -316,11 +340,11 @@ resourceFields:
     enhancer:
       id: ''
   field_submission_email:
+    disabled: true
     fieldName: field_submission_email
     publicName: submission_email
     enhancer:
       id: ''
-    disabled: false
   field_submission_fax:
     fieldName: field_submission_fax
     publicName: submission_fax
