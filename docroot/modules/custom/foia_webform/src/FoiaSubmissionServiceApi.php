@@ -161,7 +161,13 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
 
     // Attach a PDF version.
     $formatter = new FoiaSubmissionPrettyFormatter($foiaRequest->id(), $webformSubmission);
-    $submissionValues['pdf'] = $formatter->formatSubmissionContentsAsPdf();
+    $pdf = $formatter->formatSubmissionContentsAsPdf();
+    $submissionValues['pdf'] = [
+      'content_type' => 'application/pdf',
+      'filedata' => base64_encode($pdf),
+      'filename' => 'FOIA Request confirmation #' . $webformSubmission->id() . '.pdf',
+      'filesize' => strlen($pdf),
+    ];
 
     return $submissionValues;
   }
