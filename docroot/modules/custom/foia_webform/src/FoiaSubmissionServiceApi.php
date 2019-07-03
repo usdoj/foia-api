@@ -159,6 +159,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $confirmationId = ['confirmation_id' => $webformSubmissionId];
     $submissionValues = array_merge($confirmationId, $submissionValues);
 
+    // Attach a PDF version.
+    $formatter = new FoiaSubmissionPrettyFormatter($foiaRequest->id(), $webformSubmission);
+    $submissionValues['pdf'] = $formatter->formatSubmissionContentsAsPdf();
+
     return $submissionValues;
   }
 
