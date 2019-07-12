@@ -10,11 +10,20 @@ Please see the [BLT documentation](http://blt.readthedocs.io/en/latest/) for inf
 
 ### Local setup
 
-Follow steps 1-6 from the [initial setup section](https://blt.readthedocs.io/en/8.x/readme/onboarding/#initial-setup) in BLT's docs, as well as 1-3 from the VM steps. Note that you do not need to follow the steps to install npm/nvm on your host machine. If we end up working frontend tasks, these steps can take place within the VM.
+Follow steps 1-5 from the [initial setup section](https://docs.acquia.com/blt/developer/onboarding/#initial-set-up) in BLT's docs, as well as 1-3 from the VM steps. Note that you do not need to follow the steps to install npm/nvm on your host machine. If we end up working frontend tasks, these steps can take place within the VM.
+
 VM-related software version suggestions:
-Virtualbox - 5.1.24
-Vagrant - 1.9.7
-Ansible - 2.2.3
+- Virtualbox - 6.0.8
+- Vagrant - 2.2.2
+- Ansible - 2.8.1
+
+Also, be sure to have Vagrant plugins installed:
+- vagrant-auto_network (1.0.3, global)
+- vagrant-exec (0.5.3, global)
+- vagrant-hostmanager (1.8.9, global)
+- vagrant-hostsupdater (1.1.1.160, global)
+- vagrant-share (1.1.9, global)
+- vagrant-vbguest (0.19.0, global)
 
 ## Resources
 
