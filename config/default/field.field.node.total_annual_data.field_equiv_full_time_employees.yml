@@ -1,0 +1,24 @@
+uuid: 55a3f689-0c36-41b9-af00-ce1509aa19c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_equiv_full_time_employees
+    - node.type.total_annual_data
+id: node.total_annual_data.field_equiv_full_time_employees
+field_name: field_equiv_full_time_employees
+entity_type: node
+bundle: total_annual_data
+label: 'Equivalent Full-Time Employees'
+description: 'Provide the number of equivalent full-time FOIA employees.  This includes employees performing less than full-time FOIA duties that are either: (1) part-time employees who perform FOIA duties all, or part, of the time, or (2) full-time employees who perform FOIA duties less than 100% of the time.   An "equivalent full-time FOIA employee" is created by adding together the percentages of time dedicated to FOIA duties by employees performing less than fulltime FOIA work.  Each time 100% is reached, the time expended is counted as one "equivalent full-time FOIA employee."'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
+

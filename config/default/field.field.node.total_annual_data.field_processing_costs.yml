@@ -1,0 +1,24 @@
+uuid: 100055a8-0952-4339-aa68-fa4e3bd7b21c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_processing_costs
+    - node.type.total_annual_data
+id: node.total_annual_data.field_processing_costs
+field_name: field_processing_costs
+entity_type: node
+bundle: total_annual_data
+label: 'Processing Costs'
+description: 'Provide the sum of all costs expended by the agency for processing FOIA requests at the initial request and administrative appeal levels. Include salaries of FOIA personnel, overhead, and any other FOIA-related expenses. (A component’s budget will often be a useful resource for this information.)'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal
+

@@ -1,0 +1,24 @@
+uuid: effd4ca6-1853-4430-a7c9-aa8730757b0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_full_time_employees
+    - node.type.total_annual_data
+id: node.total_annual_data.field_full_time_employees
+field_name: field_full_time_employees
+entity_type: node
+bundle: total_annual_data
+label: 'Full-Time Employees'
+description: 'Provide the number of full-time FOIA employees.  A "full-time FOIA employee" is a full-time employee who performs FOIA duties 100% of the time.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
+
