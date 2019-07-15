@@ -1,36 +1,40 @@
 dev:
-  host: foiadev.ssh.prod.acquia-sites.com
-  options:
-    ac-env: dev
-    ac-realm: prod
-    ac-site: foia
-  paths:
-    drush-script: drush9
-  root: /var/www/html/foia.dev/docroot
-  uri: foiadev.prod.acquia-sites.com
-  user: foia.dev
-test:
-  host: foiastg.ssh.prod.acquia-sites.com
-  options:
-    ac-env: test
-    ac-realm: prod
-    ac-site: foia
-  paths:
-    drush-script: drush9
-  root: /var/www/html/foia.test/docroot
-  uri: foiastg.prod.acquia-sites.com
-  user: foia.test
+    uri: foiadev.prod.acquia-sites.com
+    host: staging-27300.prod.hosting.acquia.com
+    options: {  }
+    paths: { dump-dir: /mnt/tmp }
+    root: /var/www/html/foia.dev/docroot
+    user: foia.dev
+    ssh: { options: '-p 22' }
 prod:
-  host: foia.ssh.prod.acquia-sites.com
-  options:
-    ac-env: prod
-    ac-realm: prod
-    ac-site: foia
-  paths:
-    drush-script: drush9
-  root: /var/www/html/foia.prod/docroot
-  uri: foia.prod.acquia-sites.com
-  user: foia.prod
-local:
-  root: /var/www/dojfoia/docroot
-  uri: 'http://local-api.foia.doj.gov'
+    uri: foia.prod.acquia-sites.com
+    host: web-27294.prod.hosting.acquia.com
+    options: {  }
+    paths: { dump-dir: /mnt/tmp }
+    root: /var/www/html/foia.prod/docroot
+    user: foia.prod
+    ssh: { options: '-p 22' }
+ra:
+    uri: foiara.prod.acquia-sites.com
+    host: staging-16628.prod.hosting.acquia.com
+    options: {  }
+    paths: { dump-dir: /mnt/tmp }
+    root: /var/www/html/foia.ra/docroot
+    user: foia.ra
+    ssh: { options: '-p 22' }
+test:
+    uri: foiastg.prod.acquia-sites.com
+    host: staging-27300.prod.hosting.acquia.com
+    options: {  }
+    paths: { dump-dir: /mnt/tmp }
+    root: /var/www/html/foia.test/docroot
+    user: foia.test
+    ssh: { options: '-p 22' }
+uat:
+    uri: foiauat.prod.acquia-sites.com
+    host: staging-27300.prod.hosting.acquia.com
+    options: {  }
+    paths: { dump-dir: /mnt/tmp }
+    root: /var/www/html/foia.uat/docroot
+    user: foia.uat
+    ssh: { options: '-p 22' }
