@@ -38,3 +38,9 @@ uat:
     root: /var/www/html/foia.uat/docroot
     user: foia.uat
     ssh: { options: '-p 22' }
+local:
+  root: /var/www/foia/docroot
+  uri: 'http://local-api.foia.doj.gov'
+  host: local-api.foia.doj.gov
+  user: vagrant
+  ssh: { options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key' }
