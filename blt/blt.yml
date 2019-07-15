@@ -1,6 +1,6 @@
 project:
   machine_name: dojfoia
-  prefix: DOJ
+  prefix: FOIA
   human_name: FOIA.gov
   profile:
     name: lightning
@@ -15,7 +15,7 @@ deploy:
   tag_source: true
 drush:
   aliases:
-    remote: foia.test
+    remote: foia.uat
     local: self
     ci: self
   default_alias: '${drush.aliases.local}'
