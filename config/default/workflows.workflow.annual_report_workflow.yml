@@ -1,0 +1,82 @@
+uuid: 78cc591d-4459-4ee8-ab5e-3eb0c541c2d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.total_annual_data
+  module:
+    - content_moderation
+id: annual_report_workflow
+label: 'Annual Report Workflow'
+type: content_moderation
+type_settings:
+  states:
+    back_with_agency:
+      published: false
+      default_revision: false
+      label: 'Back with Agency'
+      weight: -1
+    cleared:
+      published: false
+      default_revision: false
+      label: Cleared
+      weight: 0
+    draft:
+      label: Draft
+      published: false
+      default_revision: false
+      weight: -3
+    published:
+      published: true
+      default_revision: true
+      label: Published
+      weight: 1
+    submitted_to_oip:
+      published: false
+      default_revision: false
+      label: 'Submitted to OIP'
+      weight: -2
+  transitions:
+    cleared:
+      label: Clear
+      from:
+        - cleared
+        - submitted_to_oip
+      to: cleared
+      weight: 0
+    create_new_draft:
+      label: 'Create New Draft'
+      to: draft
+      weight: -3
+      from:
+        - back_with_agency
+        - draft
+    publish:
+      label: Publish
+      to: published
+      weight: 1
+      from:
+        - cleared
+        - published
+    reject:
+      label: 'Send Back to Agency'
+      from:
+        - back_with_agency
+        - cleared
+        - published
+        - submitted_to_oip
+      to: back_with_agency
+      weight: -1
+    submit_to_oip:
+      label: 'Submit to OIP'
+      from:
+        - cleared
+        - draft
+        - published
+        - submitted_to_oip
+      to: submitted_to_oip
+      weight: -2
+  entity_types:
+    node:
+      - total_annual_data
+  default_moderation_state: draft
