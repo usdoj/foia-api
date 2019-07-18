@@ -163,6 +163,22 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
   /**
    * {@inheritdoc}
    */
+  public function getSubmissionFailures() {
+    return $this->get('field_submission_failures')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addSubmissionFailure() {
+    $numFailures = $this->getSubmissionFailures();
+    $this->set('field_submission_failures', $numFailures + 1);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function getValidSubmissionMethods() {
     return [
       FoiaRequestInterface::METHOD_EMAIL,
