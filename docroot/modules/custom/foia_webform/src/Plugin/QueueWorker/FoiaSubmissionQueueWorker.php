@@ -186,7 +186,10 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
       $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_QUEUED);
       $foiaRequest->save();
       // Throwing a normal exception tells the queue worker to try again later.
-      throw new \Exception('Failed submission ' . $foiaRequest->id() . '. Scheduling re-queue #' . $numFailures . '.');
+      // Log as well.
+      $requeueMessage = 'Failed submission ' . $foiaRequest->id() . '. Scheduling re-queue #' . $numFailures . '.';
+      \Drupal::logger('foia_webform')->error($requeueMessage);
+      throw new \Exception($requeueMessage);
     }
     else {
       // No, just set this to failed.

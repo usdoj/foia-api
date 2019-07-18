@@ -172,6 +172,7 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
    */
   public function addSubmissionFailure() {
     $numFailures = $this->getSubmissionFailures();
+    \Drupal::logger('foia_webform')->notice('Changing number of submission failures from ' . $numFailures . ' to ' . $numFailures + 1);
     $this->set('field_submission_failures', $numFailures + 1);
     return $this;
   }
