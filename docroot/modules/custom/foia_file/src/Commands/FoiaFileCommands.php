@@ -101,9 +101,7 @@ class FoiaFileCommands extends DrushCommands {
       }
 
       // @todo Validate that only one item in fids array.
-
       // @todo Nice to have >> verify that submission id is same as file path.
-
       // Update file entity based upon scanStatus.
       if ($fid) {
         $file = File::load($fid);
