@@ -19,6 +19,7 @@ drush:
     local: self
     ci: self
   default_alias: '${drush.aliases.local}'
+  sanitize: false
 modules:
   local:
     enable: [dblog, devel, seckit, views_ui]
