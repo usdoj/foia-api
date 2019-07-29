@@ -10,6 +10,7 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_message
     - field.field.foia_request.foia_request.field_requester_email
     - field.field.foia_request.foia_request.field_response_code
+    - field.field.foia_request.foia_request.field_submission_failures
     - field.field.foia_request.foia_request.field_submission_method
     - field.field.foia_request.foia_request.field_submission_time
     - field.field.foia_request.foia_request.field_tracking_number
@@ -74,6 +75,13 @@ content:
     region: content
   field_response_code:
     weight: 13
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_submission_failures:
+    weight: 15
     settings:
       placeholder: ''
     third_party_settings: {  }

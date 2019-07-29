@@ -6,6 +6,7 @@
  */
 
 use Drupal\webform\WebformInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Programmatically add the foia_submission_queue handler to new webforms.
@@ -50,4 +51,15 @@ function foia_webform_webform_insert(WebformInterface $webform) {
 
   // Add handle to the webform, which triggers another save().
   $webform->addWebformHandler($webform_handler);
+}
+
+/**
+ * Implements hook_webform_submission_form_alter().
+ */
+function foia_webform_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $user = \Drupal::currentUser();
+  if (!$user->hasPermission('use webforms in backstage')) {
+    $form['#access'] = FALSE;
+    $form['#markup'] = '<p>This form is only available via API.</p>';
+  }
 }
