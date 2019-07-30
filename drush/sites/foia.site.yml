@@ -31,6 +31,22 @@ uat:
   root: /var/www/html/foia.uat/docroot
   uri: foiauat.prod.acquia-sites.com
   user: foia.uat
+prod:
+  uri: foia.prod.acquia-sites.com
+  host: web-27294.prod.hosting.acquia.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/foia.prod/docroot
+  user: foia.prod
+  ssh: { options: '-p 22' }
+ra:
+  uri: foiara.prod.acquia-sites.com
+  host: staging-16628.prod.hosting.acquia.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/foia.ra/docroot
+  user: foia.ra
+  ssh: { options: '-p 22' }
 local:
   root: /var/www/foia/docroot
   uri: 'http://local-api.foia.doj.gov'
