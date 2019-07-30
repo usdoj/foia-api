@@ -59,7 +59,7 @@ target-hooks:
     command: 'echo ''No post-deploy build configured.'''
 behat:
   web-driver: chrome
-simplesamlphp: 'TRUE'
+simplesamlphp: true
 tests:
   phpunit:
     - { config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/webform_template' }
