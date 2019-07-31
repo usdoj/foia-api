@@ -1,4 +1,4 @@
-@manager
+@manager @experimental
 Feature: Agency Manager role
   In order to keep my agency components up to date
   As an Agency Manager
