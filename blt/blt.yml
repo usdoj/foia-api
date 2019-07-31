@@ -26,7 +26,7 @@ modules:
     uninstall: [acquia_connector, shield]
   ci:
     enable: {  }
-    uninstall: [acquia_connector, shield]
+    uninstall: [acquia_connector, shield, simplesamlphp_auth]
   dev:
     enable: [acquia_connector, shield]
     uninstall: {  }
@@ -60,12 +60,12 @@ target-hooks:
     command: 'echo ''No post-deploy build configured.'''
 behat:
   web-driver: chrome
-simplesamlphp: 'TRUE'
+simplesamlphp: true
 tests:
   phpunit:
-    - { config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/webform_template' }
-    - { config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/foia_webform' }
-    - { config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/webform_serialization' }
-    - { config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/foia_request' }
+    - { bootstrap: '${docroot}/core/tests/bootstrap.php', config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/webform_template' }
+    - { bootstrap: '${docroot}/core/tests/bootstrap.php', config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/foia_webform' }
+    - { bootstrap: '${docroot}/core/tests/bootstrap.php', config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/webform_serialization' }
+    - { bootstrap: '${docroot}/core/tests/bootstrap.php', config: '${repo.root}/tests/phpunit/phpunit.xml', path: '${docroot}/modules/custom/foia_request' }
 cloud:
   appId: a85801b3-4eb8-447f-bc76-6b5c6a980105

@@ -41,18 +41,3 @@ events:
           type: script
           script:
             - source ${BLT_DIR}/scripts/pipelines/build_artifact
-  post-deploy:
-    steps:
-      - deploy:
-          script:
-            - pipelines-deploy
-  pr-merged:
-    steps:
-      - deploy:
-          script:
-            - pipelines-deploy
-  pr-closed:
-    steps:
-      - deploy:
-          script:
-            - pipelines-deploy
