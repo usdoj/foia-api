@@ -32,7 +32,7 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   git config --global alias.st status
 
   # Back-stage installation.
-  cd /var/www/dojfoia
+  cd /var/www/foia
   git remote add fork https://github.com/$github_user/foia-api.git
   composer install
   composer run-script blt-alias
@@ -53,11 +53,11 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
 
   echo "****"
   echo "Local codebase installed."
-  echo "Please run 'drush sql-sync @foia.test @dojfoia.local' to set up your local database."
+  echo "Please run 'drush sql-sync @foia.test @foia.local' to set up your local database."
   echo "****"
 
   # Make the vendor/bin/drush command global.
-  echo 'alias drush="/var/www/dojfoia/vendor/bin/drush"' >> ~/.bashrc
+  echo 'alias drush="/var/www/foia/vendor/bin/drush"' >> ~/.bashrc
 
   echo "Attempting to run BLT commands. If these fail, they need to be run manually."
   source ~/.bashrc

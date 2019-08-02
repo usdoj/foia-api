@@ -21,14 +21,14 @@ vagrant_synced_folders:
   # Set the local_path for the first synced folder to `.`.
   - local_path: .
     # Set the destination to the Acquia Cloud subscription machine name.
-    destination: /var/www/dojfoia
+    destination: /var/www/foia
     type: nfs
 
 drupal_build_composer_project: false
 drupal_composer_path: false
-drupal_composer_install_dir: "/var/www/dojfoia"
-drupal_core_path: "/var/www/dojfoia/docroot"
-ssh_home: /var/www/dojfoia
+drupal_composer_install_dir: "/var/www/foia"
+drupal_core_path: "/var/www/foia/docroot"
+ssh_home: /var/www/foia
 
 # Multisite installations should configure additional domains here.
 apache_vhosts:
