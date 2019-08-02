@@ -1,0 +1,23 @@
+uuid: a0687109-793f-4e01-9806-d06353045968
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.feeds_item
+    - node.type.total_annual_data
+  module:
+    - feeds
+id: node.total_annual_data.feeds_item
+field_name: feeds_item
+entity_type: node
+bundle: total_annual_data
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

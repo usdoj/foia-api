@@ -21,6 +21,11 @@ targetEntityType: node
 bundle: total_annual_data
 mode: default
 content:
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_equiv_full_time_employees:
     type: number_integer
     weight: 1
@@ -55,4 +60,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  feeds_item: true
