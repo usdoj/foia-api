@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="textFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addText>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">New text</pdx:data>
+                        </pdx:textRun>
+                    </pdx:addText>
+                </pdx:content>
+                <pdx:content>
+                    <pdx:addTable>
+                        <pdx:data pdx:dataId="" pdx:type="table">
+                            <pdx:row>
+                                <pdx:data pdx:dataId="" pdx:type="row">
+                                    <pdx:cell>
+                                        <pdx:data pdx:dataId="" pdx:dataType="text">AAA</pdx:data>
+                                    </pdx:cell>
+                                    <pdx:cell>
+                                        <pdx:data pdx:dataId="" pdx:dataType="text">BBB</pdx:data>
+                                    </pdx:cell>
+                                </pdx:data>
+                            </pdx:row>
+                            <pdx:row>
+                                <pdx:data pdx:dataId="" pdx:type="row">
+                                    <pdx:cell>
+                                        <pdx:data pdx:dataId="" pdx:dataType="text">Text</pdx:data>
+                                    </pdx:cell>
+                                    <pdx:cell>
+                                        <pdx:data pdx:dataId="" pdx:dataType="text">Text: More text</pdx:data>
+                                    </pdx:cell>
+                                </pdx:data>
+                            </pdx:row>
+                        </pdx:data>
+                        <pdx:tableProperties>
+                            <pdx:border pdx:color="B70000" pdx:width="10" pdx:style="single" />
+                            <pdx:tableAlign pdx:value="center" />
+                            <pdx:paragraphStyle>
+                                <pdx:bold pdx:value="true" />
+                            </pdx:paragraphStyle>
+                        </pdx:tableProperties>
+                    </pdx:addTable>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:insertWordFragment pdx:wordFragmentName="textFragment" pdx:location="after">
+            <pdx:referenceNode pdx:type="paragraph" pdx:occurrence="4" pdx:parent="/w:tc/" />
+        </pdx:insertWordFragment>
+    </pdx:content>
+</pdx:document>

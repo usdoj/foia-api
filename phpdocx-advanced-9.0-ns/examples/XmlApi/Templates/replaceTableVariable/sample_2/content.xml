@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="imageFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addImage pdx:scaling="50">
+                        <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/img/image.png</pdx:data>
+                    </pdx:addImage>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="linkFragmentA" pdx:target="document">
+                <pdx:content>
+                    <pdx:addLink>
+                        <pdx:linkText>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Link to product A</pdx:data>
+                        </pdx:linkText>
+                        <pdx:linkURL>
+                            <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+                        </pdx:linkURL>
+                        <pdx:paragraphStyle>
+                            <pdx:color pdx:value="0000FF" />
+                            <pdx:underline pdx:value="single" />
+                        </pdx:paragraphStyle>
+                    </pdx:addLink>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="linkFragmentB" pdx:target="document">
+                <pdx:content>
+                    <pdx:addLink>
+                        <pdx:linkText>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Link to product B</pdx:data>
+                        </pdx:linkText>
+                        <pdx:linkURL>
+                            <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+                        </pdx:linkURL>
+                        <pdx:paragraphStyle>
+                            <pdx:color pdx:value="0000FF" />
+                            <pdx:underline pdx:value="single" />
+                        </pdx:paragraphStyle>
+                    </pdx:addLink>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="linkFragmentC" pdx:target="document">
+                <pdx:content>
+                    <pdx:addLink>
+                        <pdx:linkText>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Link to product C</pdx:data>
+                        </pdx:linkText>
+                        <pdx:linkURL>
+                            <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+                        </pdx:linkURL>
+                        <pdx:paragraphStyle>
+                            <pdx:color pdx:value="0000FF" />
+                            <pdx:underline pdx:value="single" />
+                        </pdx:paragraphStyle>
+                    </pdx:addLink>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+    </pdx:content>
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:replaceTableVariable>
+            <pdx:data pdx:dataId="" pdx:type="table">
+                <pdx:row>
+                    <pdx:item pdx:variableName="ITEM" pdx:wordFragmentName="linkFragmentA" />
+                    <pdx:item pdx:variableName="REFERENCE" pdx:wordFragmentName="imageFragment" />
+                </pdx:row>
+                <pdx:row>
+                    <pdx:item pdx:variableName="ITEM" pdx:wordFragmentName="linkFragmentB" />
+                    <pdx:item pdx:variableName="REFERENCE" pdx:wordFragmentName="imageFragment" />
+                </pdx:row>
+                <pdx:row>
+                    <pdx:item pdx:variableName="ITEM" pdx:wordFragmentName="linkFragmentC" />
+                    <pdx:item pdx:variableName="REFERENCE" pdx:wordFragmentName="imageFragment" />
+                </pdx:row>
+            </pdx:data>
+        </pdx:replaceTableVariable>
+    </pdx:templateVariables>
+</pdx:document>

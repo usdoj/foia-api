@@ -1,0 +1,64 @@
+<?php
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
+/**
+ *  Implements hook_theme_suggestions_alter().
+ *
+ *  @param array $suggestions
+ *   The current suggestions.
+ *  @param array $variables
+ *   Drupal variables.
+ *  @param string $hook
+ *   The hook executed.
+ *  @return array
+ */
+function node_to_docx_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  if ($hook == 'node_to_docx' && $variables['elements']['#view_mode'] == 'node_to_docx') {
+    $node = $variables['elements']['#node'];
+    $suggestions = array();
+    $suggestions[] = 'node__node_to_docx';
+    $suggestions[] = 'node__' . $node->getType() . '__node_to_docx';
+    $suggestions[] = 'node__' . $node->id() . '__node_to_docx';
+  }
+}
+
+/**
+ *  Implements hook_help().
+ *
+ *  @param string $route_name
+ *   The name of the route.
+ *  @return array
+ */
+function node_to_docx_help($route_name) {
+  $output = null;
+  // render template when page is node to docx help page
+  if ($route_name == 'help.page.node_to_docx') {
+    $help_template = array(
+      '#theme' => 'node_to_docx_help_admin',
+    );
+    $output = drupal_render($help_template);
+  }
+  return $output;
+}
+
+/**
+ *  Implements hook_theme().
+ *
+ *  @param string $existing
+ *  @param string $type
+ *  @param string $theme
+ *  @param string $path
+ *  @return array
+ */
+function node_to_docx_theme($existing, $type, $theme, $path) {
+  return array(
+    'node_to_docx_help_admin' => array(
+      'template' => 'help-admin',
+    ),
+    'node_to_docx' => array(
+      'template' => 'node--node-to-docx',
+      'render element' => 'elements',
+      'file' => 'node_to_docx.theme.inc',
+    ),
+  );
+}

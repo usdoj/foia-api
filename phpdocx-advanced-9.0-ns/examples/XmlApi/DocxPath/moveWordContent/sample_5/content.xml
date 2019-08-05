@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="textFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addText>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">New text to avoid empty cell</pdx:data>
+                        </pdx:textRun>
+                    </pdx:addText>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:moveWordContent pdx:location="after">
+            <pdx:referenceNodeFrom pdx:type="paragraph" pdx:occurrence="4" pdx:parent="/w:tc/" />
+            <pdx:referenceNodeTo pdx:type="paragraph" pdx:occurrence="8" pdx:parent="/w:tc/" />
+        </pdx:moveWordContent>
+        <pdx:insertWordFragment pdx:wordFragmentName="textFragment" pdx:location="after">
+            <pdx:referenceNode pdx:parent="/w:tc/" pdx:occurrence="7" />
+        </pdx:insertWordFragment>
+    </pdx:content>
+</pdx:document>

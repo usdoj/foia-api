@@ -1,0 +1,24 @@
+Sub SaveToPdfToc(cFile)
+
+  Dim oPropertyValue As new com.sun.star.beans.PropertyValue
+
+  cURL = convertToURL(cFile)
+
+  oPropertyValue.Name = &quot;Hidden&quot;
+  oPropertyValue.Value =  True
+  oDoc = StarDesktop.loadComponentFromURL(cURL, &quot;_blank&quot;, 0, Array(oPropertyValue))
+
+  dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+  dispatcher.executeDispatch(oDoc.CurrentController.Frame, &quot;.uno:UpdateAllIndexes&quot;, &quot;&quot;, 0, Array())
+
+  GlobalScope.BasicLibraries.LoadLibrary(&quot;Tools&quot;)
+  cFileNew = Tools.Strings.GetFileNameWithoutExtension(cFile) + &quot;.pdf&quot;
+  cURL = ConvertToURL(cFileNew)
+
+  oPropertyValue.Name = &quot;FilterName&quot;
+  oPropertyValue.Value =  &quot;writer_pdf_Export&quot;
+  oDoc.storeToURL(cURL, Array(oPropertyValue))
+
+  oDoc.close(True)
+
+End Sub

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="textFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addText>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">New text</pdx:data>
+                        </pdx:textRun>
+                    </pdx:addText>
+                </pdx:content>
+                <pdx:content>
+                    <pdx:addImage pdx:scaling="50">
+                        <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/img/image.png</pdx:data>
+                    </pdx:addImage>
+                </pdx:content>
+                <pdx:content>
+                    <pdx:addTable>
+                        <pdx:data pdx:dataId="" pdx:type="table">
+                            <pdx:row>
+                                <pdx:data pdx:dataId="" pdx:type="row">
+                                    <pdx:cell>
+                                        <pdx:data pdx:dataId="" pdx:dataType="text">AAA</pdx:data>
+                                    </pdx:cell>
+                                    <pdx:cell>
+                                        <pdx:data pdx:dataId="" pdx:dataType="text">BBB</pdx:data>
+                                    </pdx:cell>
+                                </pdx:data>
+                            </pdx:row>
+                            <pdx:row>
+                                <pdx:data pdx:dataId="" pdx:type="row">
+                                    <pdx:cell>
+                                        <pdx:data pdx:dataId="" pdx:dataType="text">Text</pdx:data>
+                                    </pdx:cell>
+                                    <pdx:cell>
+                                        <pdx:data pdx:dataId="" pdx:dataType="text">Text: More text</pdx:data>
+                                    </pdx:cell>
+                                </pdx:data>
+                            </pdx:row>
+                        </pdx:data>
+                        <pdx:tableProperties>
+                            <pdx:border pdx:color="B70000" pdx:width="10" pdx:style="single" />
+                            <pdx:tableAlign pdx:value="center" />
+                            <pdx:paragraphStyle>
+                                <pdx:bold pdx:value="true" />
+                            </pdx:paragraphStyle>
+                        </pdx:tableProperties>
+                    </pdx:addTable>
+                </pdx:content>
+                <pdx:content>
+                    <pdx:addChart pdx:chartType="pie3DChart">
+                        <pdx:data pdx:dataId="" pdx:type="chart">
+                            <pdx:legend>
+                                <pdx:seriesLegend pdx:value="Legend 1" />
+                                <pdx:seriesLegend pdx:value="Legend 2" />
+                                <pdx:seriesLegend pdx:value="Legend 3" />
+                            </pdx:legend>
+                            <pdx:chartData>
+                                <pdx:series>
+                                    <pdx:dataValue pdx:value="20" />
+                                </pdx:series>
+                                <pdx:series>
+                                    <pdx:dataValue pdx:value="30" />
+                                </pdx:series>
+                                <pdx:series>
+                                    <pdx:dataValue pdx:value="40" />
+                                </pdx:series>
+                            </pdx:chartData>
+                        </pdx:data>
+                        <pdx:rotX pdx:value="20" />
+                        <pdx:rotY pdx:value="20" />
+                        <pdx:perspective pdx:value="30" />
+                        <pdx:chartAlign pdx:value="center" />
+                        <pdx:color pdx:value="2" />
+                        <pdx:showPercent pdx:value="1" />
+                        <pdx:sizeX pdx:value="10"/>
+                        <pdx:sizeY pdx:value="5"/>
+                        <pdx:chartAlign pdx:value="center"/>
+                    </pdx:addChart>
+                </pdx:content>
+                <pdx:content>
+                    <pdx:addLink>
+                        <pdx:linkText>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Link to Google in red color and not underlined</pdx:data>
+                        </pdx:linkText>
+                        <pdx:linkURL>
+                            <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+                        </pdx:linkURL>
+                        <pdx:paragraphStyle>
+                            <pdx:color pdx:value="B70000" />
+                            <pdx:underline pdx:value="none" />
+                        </pdx:paragraphStyle>
+                    </pdx:addLink>
+                </pdx:content>
+                <pdx:content>
+                    <pdx:addList pdx:listType="1">
+                        <pdx:data pdx:type="list">
+                            <pdx:item>Line 1</pdx:item>
+                            <pdx:item>Line 2</pdx:item>
+                            <pdx:item>Line 3</pdx:item>
+                            <pdx:item>Line 4</pdx:item>
+                            <pdx:item>Line 5</pdx:item>
+                        </pdx:data>
+                    </pdx:addList>
+                </pdx:content>
+                <pdx:content>
+                    <pdx:embedHTML>
+                        <pdx:data pdx:dataId="" pdx:type="HTML"><![CDATA[<h1 style="color: #b70000">An embedHTML() example</h1><p>We draw a table with border and rawspans and colspans:</p><table border="1" style="border-collapse: collapse"><tbody><tr><td style="background-color: yellow">1_1</td><td rowspan="3" colspan="2">1_2</td></tr><tr><td>Some random text.</td></tr><tr><td><ul><li>One</li><li>Two <b>and a half</b></li></ul></td></tr><tr><td>3_2</td><td>3_3</td><td>3_3</td></tr></tbody></table>]]></pdx:data>
+                    </pdx:embedHTML>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:insertWordFragment pdx:wordFragmentName="textFragment" pdx:location="after">
+            <pdx:referenceNode pdx:type="paragraph" pdx:contains="Another heading" pdx:occurrence="1" />
+        </pdx:insertWordFragment>
+    </pdx:content>
+</pdx:document>

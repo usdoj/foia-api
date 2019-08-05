@@ -1,0 +1,63 @@
+How to use macros with the libreoffice conversion plugin
+--------------------------------------------------------
+
+1. It is necessary to use the LibreOffice plugin to make the conversion.
+
+2. Open with a text editor the macros file.
+
+This file is located in the home directory of the user that is going to make the conversion.
+For example with the default configuration for the apache web server, it is located in the path /var/www/.config/libreoffice/4/user/basic/Standard/Module1.xba.
+Or using FastCGI as PHP handler, this file is located at .config/libreoffice/4/user/basic/Standard/Module1.xba of ther user's folder.
+If the directory .config/libreoffice, doesn’t exists, make a first conversion so LibreOffice generates this path structure.
+
+3. In the opened file, add the new macro. You may find the available macros in the macros folder.
+
+4. You can now use the new macro.
+
+These are the available method:
+
+Generate TOC when transforming to PDF:
+
+$docx->transformDocument('document.docx', 'document.pdf', 'libreoffice', array('toc' => true));
+
+Generate PDF/A-1:
+
+$docx->transformDocument('document.docx', 'document.pdf', 'libreoffice', array('pdfa1' => true));
+
+Generate TOC when transforming to PDF/A-1:
+
+$docx->transformDocument('document.docx', 'document.pdf', 'libreoffice', array('toc' => true, 'pdfa1' => true));
+
+Generate TOC of a DOCX document:
+
+$docx->transformDocument('document.docx', 'document.docx', 'libreoffice', array('toc' => true));
+
+Export the notes/comments:
+
+$docx->transformDocument('document.docx', 'document.docx', 'libreoffice', array('comments' => true));
+
+Lossless compression:
+
+$docx->transformDocument('document.docx', 'document.docx', 'libreoffice', array('losslesscompression' => true));
+
+Lossless compression:
+
+$docx->transformDocument('document.docx', 'document.docx', 'libreoffice', array('formsfields' => true));
+
+Get the document statistics:
+
+$docx->getStatistics('document.docx');
+
+
+How to add the comments in the margins
+--------------------------------------------------------
+
+1. Edit the configuration file properties of LibreOffice. This file is available in the HOME folder in the following path: .config/libreoffice/4/user/registrymodifications.xcu
+
+2. Find the following line:
+
+<item oor:path="/org.openoffice.Office.Writer/Print/Content"><prop oor:name="Note" oor:op="fuse"><value>0</value></prop></item>
+
+And set '4' as value:
+
+<item oor:path="/org.openoffice.Office.Writer/Print/Content"><prop oor:name="Note" oor:op="fuse"><value>4</value></prop></item>

@@ -1,0 +1,35 @@
+Sub GetStatistics(cFile, cFileStats)
+
+  cUrl = ConvertToURL(cFile)
+  Dim oPropertyValue As New com.sun.star.beans.PropertyValue
+  oPropertyValue.Name = "Hidden"
+  oPropertyValue.Value = True
+  oDoc = StarDesktop.loadComponentFromURL(cUrl, "_blank", 0, Array(oPropertyValue))
+
+  Dim FileNo As Integer 
+  Dim Filename As String
+  Filename = cFileStats
+  FileNo = FreeFile()
+  Open Filename For Output As #FileNo
+
+  oTables = oDoc.getTextTables()
+  Print #FileNo, "Tables: " + oTables.getCount()
+
+  oImages = oDoc.getGraphicObjects()
+  Print #FileNo, "Images: " + oImages.getCount()
+
+  Print #FileNo, "Pages: " + oDoc.CurrentController.PageCount
+
+  Print #FileNo, "Characters: " + oDoc.CharacterCount
+
+  Print #FileNo, "Words: " + oDoc.WordCount
+
+  Print #FileNo, "Paragraphs: " + oDoc.ParagraphCount
+
+  Print #FileNo, "Lines: " + oDoc.CurrentController.LineCount
+
+  Close #FileNo
+
+  oDoc.close(True)
+  
+End Sub
