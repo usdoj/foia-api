@@ -36,12 +36,11 @@ $config['auth.adminpassword'] = 'mysupersecret';
  * This is a requirement in SimpleSAML when providing a redirect path.
  *
  * @link https://github.com/simplesamlphp/simplesamlphp/issues/450
- *
  */
-/* $_SERVER['SERVER_PORT'] = 443;
+$_SERVER['SERVER_PORT'] = 443;
 $_SERVER['HTTPS'] = 'true';
 $protocol = 'https://';
-$port = ':' . $_SERVER['SERVER_PORT'];*/
+$port = ':' . $_SERVER['SERVER_PORT'];
 
 /**
  * Cookies No Cache.
@@ -76,7 +75,7 @@ if (!getenv('AH_SITE_ENVIRONMENT')) {
 
 }
 elseif (getenv('AH_SITE_ENVIRONMENT')) {
-  /**
+  /*
    * Support multi-site and single site installations at different base URLs.
    *
    * Overide $config['baseurlpath'] = "https://{yourdomain}/simplesaml/"
