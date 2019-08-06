@@ -43,7 +43,7 @@ type_settings:
         - cleared
         - submitted_to_oip
       to: cleared
-      weight: 0
+      weight: 1
     create_new_draft:
       label: 'Create New Draft'
       to: draft
@@ -54,7 +54,7 @@ type_settings:
     publish:
       label: Publish
       to: published
-      weight: 1
+      weight: -1
       from:
         - cleared
         - published
@@ -66,7 +66,7 @@ type_settings:
         - published
         - submitted_to_oip
       to: back_with_agency
-      weight: -1
+      weight: 0
     submit_to_oip:
       label: 'Submit to OIP'
       from:

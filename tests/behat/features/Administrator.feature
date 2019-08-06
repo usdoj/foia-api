@@ -193,7 +193,7 @@ Feature: Agency Administrator role
     And I go to "/admin/structure/foia_request/add"
     Then I should see "Access Denied"
 
-  @api
+  @api @experimental
   Scenario: Agency Administrator can view custom FOIA request view
     Given I am logged in as a user with the 'Administrator' role
     And I am on "/admin/structure/foia_request/add"
@@ -204,3 +204,9 @@ Feature: Agency Administrator role
     Then I should see "FOIA Requests"
     And I go to saved URL
     Then I should see "Request Status"
+
+  @api
+  Scenario: Agency Administrator can add Total Annual Data reports
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add"
+    Then I should see the link "Total Annual Data"

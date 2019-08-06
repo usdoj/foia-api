@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * FOIA Workflow module.
+ */
+
+use Drupal\core\Access\AccessResult;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Session\AccountProxy;
+
+/**
+ * Implements hook_node_access().
+ */
+function foia_workflow_node_access(NodeInterface $node, $op, AccountProxy $account) {
+  $type = $node->bundle();
+  $workflow_state = $node->get('moderation_state')->getString();
+  $is_report_type = (bool) ($type == 'total_annual_data');
+  $is_agency_admin = (bool) in_array('agency_administrator', $account->getRoles());
+  $is_draft = (bool) (bool) ($workflow_state == 'draft');
+  // Do not allow Agency Administrators to edit draft Annual Reports.
+  if ($is_report_type && $is_agency_admin && $is_draft && $op == 'update') {
+    return AccessResult::forbidden();
+  }
+}
