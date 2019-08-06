@@ -23,6 +23,8 @@ dependencies:
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
     - field.field.node.agency_component.field_receiver
+    - field.field.node.agency_component.field_rep_exp
+    - field.field.node.agency_component.field_rep_start
     - field.field.node.agency_component.field_request_data_year
     - field.field.node.agency_component.field_request_submission_form
     - field.field.node.agency_component.field_service_centers
@@ -40,6 +42,7 @@ dependencies:
     - node.type.agency_component
   module:
     - address
+    - datetime
     - link
     - options
     - panelizer
@@ -220,6 +223,24 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_rep_exp:
+    weight: 36
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_rep_start:
+    weight: 35
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
     region: content
   field_request_data_year:
     weight: 22

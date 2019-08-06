@@ -1,0 +1,21 @@
+uuid: 18c7dea9-2b1b-4084-b8d2-bd46f9faf1e8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_rep_start
+    - node.type.agency_component
+  module:
+    - datetime
+id: node.agency_component.field_rep_start
+field_name: field_rep_start
+entity_type: node
+bundle: agency_component
+label: 'Report Start Date'
+description: 'Please enter the first day of the FY that this agency/component began reporting in the Annual FOIA Report. All agencies that have submitted or are submitting Annual FOIA Reports must have a Reporting Start Date.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime
