@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e27b870918f7b8f1910eb0e9917e39e1",
+    "content-hash": "52cdb21b75f212589368cce6fd36f707",
     "packages": [
         {
             "name": "acquia/blt",
@@ -838,8 +838,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/fengyuanchen/cropper/zipball/30c58b29ee21010e17e58ebab165fbd84285c685",
-                "reference": "30c58b29ee21010e17e58ebab165fbd84285c685",
-                "shasum": null
+                "reference": "30c58b29ee21010e17e58ebab165fbd84285c685"
             },
             "type": "bower-asset",
             "license": [
@@ -857,8 +856,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/enyo/dropzone/zipball/08b9e0a763b54a685404dea523a9c54242fbe1b9",
-                "reference": "08b9e0a763b54a685404dea523a9c54242fbe1b9",
-                "shasum": null
+                "reference": "08b9e0a763b54a685404dea523a9c54242fbe1b9"
             },
             "type": "bower-asset"
         },
@@ -873,8 +871,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/15bc73803f76bc53b654b9fdbbbc096f56d7c03d",
-                "reference": "15bc73803f76bc53b654b9fdbbbc096f56d7c03d",
-                "shasum": null
+                "reference": "15bc73803f76bc53b654b9fdbbbc096f56d7c03d"
             },
             "type": "bower-asset",
             "license": [
@@ -892,8 +889,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/kenwheeler/slick/zipball/0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee",
-                "reference": "0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee",
-                "shasum": null
+                "reference": "0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee"
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
@@ -5515,7 +5511,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.0-beta6",
-                    "datestamp": "1562796485",
+                    "datestamp": "1522617782",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -8806,22 +8802,16 @@
         },
         {
             "name": "drupal/simplesamlphp_auth",
-            "version": "3.0.0",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simplesamlphp_auth.git",
-                "reference": "8.x-3.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/simplesamlphp_auth-8.x-3.0.zip",
-                "reference": "8.x-3.0",
-                "shasum": "2ee230173df2128edb5d72953222d229dabf27e7"
+                "reference": "4cb6fb8"
             },
             "require": {
                 "drupal/core": "*",
-                "drupal/externalauth": "*",
-                "simplesamlphp/simplesamlphp": "~1.15"
+                "drupal/externalauth": "^1.1",
+                "simplesamlphp/simplesamlphp": "~1.17.2"
             },
             "type": "drupal-module",
             "extra": {
@@ -8829,15 +8819,12 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0",
-                    "datestamp": "1521252787",
+                    "version": "8.x-3.0+16-dev",
+                    "datestamp": "1561731784",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Fix local dev problem": "https://www.drupal.org/files/issues/2019-03-28/1.17.0-plus-conflict.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8874,7 +8861,8 @@
             "homepage": "https://www.drupal.org/project/simplesamlphp_auth",
             "support": {
                 "source": "https://git.drupalcode.org/project/simplesamlphp_auth"
-            }
+            },
+            "time": "2019-08-04T12:28:05+00:00"
         },
         {
             "name": "drupal/slick",
@@ -17110,7 +17098,8 @@
         "drupal/maillog": 20,
         "drupal/password_policy": 15,
         "drupal/roleassign": 15,
-        "drupal/rules": 15
+        "drupal/rules": 15,
+        "drupal/simplesamlphp_auth": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
