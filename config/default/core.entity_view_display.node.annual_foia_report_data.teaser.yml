@@ -1,0 +1,21 @@
+uuid: b593c262-d20a-4074-867a-9dffb4b7d6de
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - node.type.annual_foia_report_data
+  module:
+    - user
+id: node.annual_foia_report_data.teaser
+targetEntityType: node
+bundle: annual_foia_report_data
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true

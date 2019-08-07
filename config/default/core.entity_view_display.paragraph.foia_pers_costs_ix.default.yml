@@ -1,0 +1,25 @@
+uuid: f857dc48-ea7f-407e-8dee-f5f4e4073a40
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_pers_costs_ix.field_agency_component
+    - paragraphs.paragraphs_type.foia_pers_costs_ix
+  module:
+    - entity_reference_revisions
+id: paragraph.foia_pers_costs_ix.default
+targetEntityType: paragraph
+bundle: foia_pers_costs_ix
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+hidden:
+  search_api_excerpt: true

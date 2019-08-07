@@ -1,0 +1,22 @@
+uuid: b0ace82d-6239-4b04-8c32-f6598efdf769
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.annual_foia_report_data
+id: node.annual_foia_report_data.promote
+field_name: promote
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

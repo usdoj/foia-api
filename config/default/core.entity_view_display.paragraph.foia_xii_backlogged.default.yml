@@ -1,0 +1,45 @@
+uuid: d04a28a1-b28d-46be-bbe8-9f0c0deb33d5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_xii_backlogged.field_agency_component
+    - field.field.paragraph.foia_xii_backlogged.field_back_cur_yr
+    - field.field.paragraph.foia_xii_backlogged.field_back_prev_yr
+    - paragraphs.paragraphs_type.foia_xii_backlogged
+  module:
+    - entity_reference_revisions
+id: paragraph.foia_xii_backlogged.default
+targetEntityType: paragraph
+bundle: foia_xii_backlogged
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  field_back_cur_yr:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_back_prev_yr:
+    weight: 1
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+hidden:
+  search_api_excerpt: true

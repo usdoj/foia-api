@@ -1,0 +1,33 @@
+uuid: f5790982-6432-4aab-919c-ebf75ddb831a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admin_app_vic3_oth_details.field_desc_oth_reasons
+    - field.field.paragraph.admin_app_vic3_oth_details.field_num_relied_upon
+    - paragraphs.paragraphs_type.admin_app_vic3_oth_details
+  module:
+    - text
+id: paragraph.admin_app_vic3_oth_details.default
+targetEntityType: paragraph
+bundle: admin_app_vic3_oth_details
+mode: default
+content:
+  field_desc_oth_reasons:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_num_relied_upon:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

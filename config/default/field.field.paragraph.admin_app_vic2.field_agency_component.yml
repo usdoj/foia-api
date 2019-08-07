@@ -1,0 +1,30 @@
+uuid: 9d62e595-471f-4dac-b836-a8b9aa847d9f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_agency_component
+    - node.type.agency_component
+    - paragraphs.paragraphs_type.admin_app_vic2
+  module:
+    - entity_reference_revisions
+id: paragraph.admin_app_vic2.field_agency_component
+field_name: field_agency_component
+entity_type: paragraph
+bundle: admin_app_vic2
+label: 'Agency Component'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      agency_component: agency_component
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference_revisions

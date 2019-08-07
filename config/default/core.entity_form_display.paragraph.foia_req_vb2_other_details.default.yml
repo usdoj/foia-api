@@ -1,0 +1,33 @@
+uuid: b9d9d27a-b909-4349-93d5-48d1c9bd7804
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_req_vb2_other_details.field_desc_oth_reasons
+    - field.field.paragraph.foia_req_vb2_other_details.field_num_relied_upon
+    - paragraphs.paragraphs_type.foia_req_vb2_other_details
+  module:
+    - text
+id: paragraph.foia_req_vb2_other_details.default
+targetEntityType: paragraph
+bundle: foia_req_vb2_other_details
+mode: default
+content:
+  field_desc_oth_reasons:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_num_relied_upon:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

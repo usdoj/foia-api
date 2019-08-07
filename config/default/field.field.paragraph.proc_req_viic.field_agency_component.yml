@@ -1,0 +1,30 @@
+uuid: 9e29b6e8-261f-4938-a80a-d4e67a0bab8e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_agency_component
+    - node.type.agency_component
+    - paragraphs.paragraphs_type.proc_req_viic
+  module:
+    - entity_reference_revisions
+id: paragraph.proc_req_viic.field_agency_component
+field_name: field_agency_component
+entity_type: paragraph
+bundle: proc_req_viic
+label: 'Agency Component'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      agency_component: agency_component
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference_revisions

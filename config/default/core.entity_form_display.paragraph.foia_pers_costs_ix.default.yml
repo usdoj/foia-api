@@ -1,0 +1,26 @@
+uuid: b9bf3096-8575-4116-a7c1-0e0379612607
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_pers_costs_ix.field_agency_component
+    - paragraphs.paragraphs_type.foia_pers_costs_ix
+  module:
+    - entity_reference_revisions
+id: paragraph.foia_pers_costs_ix.default
+targetEntityType: paragraph
+bundle: foia_pers_costs_ix
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_autocomplete
+    region: content
+hidden:
+  created: true
+  status: true

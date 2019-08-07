@@ -1,0 +1,58 @@
+uuid: 39627b32-9d66-485d-8c3d-4c5320e23181
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admin_app_via.field_agency_component
+    - field.field.paragraph.admin_app_via.field_app_pend_end_yr
+    - field.field.paragraph.admin_app_via.field_app_pend_start_yr
+    - field.field.paragraph.admin_app_via.field_app_processed_yr
+    - field.field.paragraph.admin_app_via.field_app_received_yr
+    - paragraphs.paragraphs_type.admin_app_via
+  module:
+    - entity_reference_revisions
+id: paragraph.admin_app_via.default
+targetEntityType: paragraph
+bundle: admin_app_via
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_autocomplete
+    region: content
+  field_app_pend_end_yr:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_app_pend_start_yr:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_app_processed_yr:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_app_received_yr:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

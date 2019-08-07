@@ -1,0 +1,30 @@
+uuid: 56540512-4a4d-4262-89d2-332ab6cd1bf9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_agency_component
+    - node.type.agency_component
+    - paragraphs.paragraphs_type.foia_req_va
+  module:
+    - entity_reference_revisions
+id: paragraph.foia_req_va.field_agency_component
+field_name: field_agency_component
+entity_type: paragraph
+bundle: foia_req_va
+label: 'Agency Component'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      agency_component: agency_component
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference_revisions

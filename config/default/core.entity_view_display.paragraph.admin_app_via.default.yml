@@ -1,0 +1,65 @@
+uuid: 63e3dd40-ed8e-43be-a965-b6b0ba39f6da
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admin_app_via.field_agency_component
+    - field.field.paragraph.admin_app_via.field_app_pend_end_yr
+    - field.field.paragraph.admin_app_via.field_app_pend_start_yr
+    - field.field.paragraph.admin_app_via.field_app_processed_yr
+    - field.field.paragraph.admin_app_via.field_app_received_yr
+    - paragraphs.paragraphs_type.admin_app_via
+  module:
+    - entity_reference_revisions
+id: paragraph.admin_app_via.default
+targetEntityType: paragraph
+bundle: admin_app_via
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  field_app_pend_end_yr:
+    weight: 4
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_app_pend_start_yr:
+    weight: 1
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_app_processed_yr:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_app_received_yr:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+hidden:
+  search_api_excerpt: true

@@ -1,0 +1,48 @@
+uuid: 194ea8b3-af39-4daf-bf47-9eb240ed6f01
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admin_app_vic3.field_admin_app_vic3_info
+    - field.field.paragraph.admin_app_vic3.field_agency_component
+    - field.field.paragraph.admin_app_vic3.field_total
+    - paragraphs.paragraphs_type.admin_app_vic3
+  module:
+    - entity_reference_revisions
+    - paragraphs
+id: paragraph.admin_app_vic3.default
+targetEntityType: paragraph
+bundle: admin_app_vic3
+mode: default
+content:
+  field_admin_app_vic3_info:
+    type: entity_reference_paragraphs
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_agency_component:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_autocomplete
+    region: content
+  field_total:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

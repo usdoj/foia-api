@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.total_annual_data
+    - node.type.annual_foia_report_data
   module:
     - content_moderation
 id: annual_report_workflow
@@ -78,5 +78,5 @@ type_settings:
       weight: -2
   entity_types:
     node:
-      - total_annual_data
+      - annual_foia_report_data
   default_moderation_state: draft

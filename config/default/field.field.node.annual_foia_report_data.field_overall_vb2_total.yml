@@ -1,0 +1,23 @@
+uuid: 3154d3ad-41df-4911-b280-1dea7269fec8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vb2_total
+    - node.type.annual_foia_report_data
+id: node.annual_foia_report_data.field_overall_vb2_total
+field_name: field_overall_vb2_total
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Total'
+description: 'Must match the number entered in the V.A. section, field ''Number of Requests Processed in Fiscal Year'' for the component'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

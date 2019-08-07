@@ -1,0 +1,124 @@
+uuid: cb7ae56e-8353-4b41-b3d4-afe1d602111d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_admin_app_vic3_info
+    - paragraphs.paragraphs_type.admin_app_via
+    - paragraphs.paragraphs_type.admin_app_vib
+    - paragraphs.paragraphs_type.admin_app_vic1
+    - paragraphs.paragraphs_type.admin_app_vic2
+    - paragraphs.paragraphs_type.admin_app_vic3
+    - paragraphs.paragraphs_type.admin_app_vic4
+  module:
+    - entity_reference_revisions
+id: paragraph.admin_app_vic3.field_admin_app_vic3_info
+field_name: field_admin_app_vic3_info
+entity_type: paragraph
+bundle: admin_app_vic3
+label: 'Administrative Appeal VI.C.3 Information'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      admin_app_via: admin_app_via
+      admin_app_vib: admin_app_vib
+      admin_app_vic1: admin_app_vic1
+      admin_app_vic2: admin_app_vic2
+      admin_app_vic3: admin_app_vic3
+      admin_app_vic4: admin_app_vic4
+    target_bundles_drag_drop:
+      foia_xii_backlogged:
+        weight: 30
+        enabled: false
+      admin_app_via:
+        enabled: true
+        weight: 31
+      admin_app_vib:
+        enabled: true
+        weight: 32
+      admin_app_vic1:
+        enabled: true
+        weight: 33
+      admin_app_vic2:
+        enabled: true
+        weight: 34
+      admin_app_vic3:
+        enabled: true
+        weight: 35
+      admin_app_vic3_oth_details:
+        weight: 36
+        enabled: false
+      admin_app_vic4:
+        enabled: true
+        weight: 37
+      component_details:
+        weight: 38
+        enabled: false
+      fees_x:
+        weight: 39
+        enabled: false
+      foia_pers_costs_ix:
+        weight: 40
+        enabled: false
+      foia_req_va:
+        weight: 41
+        enabled: false
+      foia_req_vb1:
+        weight: 42
+        enabled: false
+      foia_req_vb2:
+        weight: 43
+        enabled: false
+      foia_req_vb2_other_details:
+        weight: 44
+        enabled: false
+      foia_req_vb3:
+        weight: 45
+        enabled: false
+      foia_xiia:
+        weight: 46
+        enabled: false
+      foia_xiib:
+        weight: 47
+        enabled: false
+      foia_xii_received_proc:
+        weight: 48
+        enabled: false
+      oldest_days:
+        weight: 49
+        enabled: false
+      pending_requests_viid:
+        weight: 50
+        enabled: false
+      processed_requests_vii:
+        weight: 51
+        enabled: false
+      proc_req_viic:
+        weight: 52
+        enabled: false
+      req_viiia:
+        weight: 53
+        enabled: false
+      req_viiib:
+        weight: 54
+        enabled: false
+      statute:
+        weight: 55
+        enabled: false
+      statute_agency_details:
+        weight: 56
+        enabled: false
+      sub_xia:
+        weight: 57
+        enabled: false
+      sub_xib:
+        weight: 58
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,23 @@
+uuid: 66313c36-183d-4a89-8357-aaa3f2a6e48e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_total
+    - paragraphs.paragraphs_type.foia_req_vb1
+id: paragraph.foia_req_vb1.field_total
+field_name: field_total
+entity_type: paragraph
+bundle: foia_req_vb1
+label: Total
+description: 'The total must match the number entered in the V.A. section, field ''Number of Requests Processed in Fiscal Year'' for the component.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

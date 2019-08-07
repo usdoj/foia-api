@@ -1,0 +1,21 @@
+uuid: c885c307-a2cd-4c74-a0a8-1887d7e09534
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_num_jud_w10
+    - paragraphs.paragraphs_type.req_viiia
+  module:
+    - text
+id: paragraph.req_viiia.field_num_jud_w10
+field_name: field_num_jud_w10
+entity_type: paragraph
+bundle: req_viiia
+label: 'Number Adjudicated Within Ten Calendar Days'
+description: 'Must contain non-negative decimal numbers, or the special value "N/A".'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

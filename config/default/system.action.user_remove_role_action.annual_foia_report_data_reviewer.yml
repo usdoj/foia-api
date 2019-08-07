@@ -1,0 +1,14 @@
+uuid: f8543370-30ee-4063-8e44-33c8351d7894
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.annual_foia_report_data_reviewer
+  module:
+    - user
+id: user_remove_role_action.annual_foia_report_data_reviewer
+label: 'Remove the Annual FOIA Report Data reviewer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: annual_foia_report_data_reviewer

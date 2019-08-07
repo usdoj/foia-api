@@ -1,0 +1,21 @@
+uuid: 36ac8557-a118-4a21-bcb5-62de4a64f502
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_med_days_jud
+    - paragraphs.paragraphs_type.req_viiib
+  module:
+    - text
+id: paragraph.req_viiib.field_med_days_jud
+field_name: field_med_days_jud
+entity_type: paragraph
+bundle: req_viiib
+label: 'Median Number of Days to Adjudicate'
+description: 'Must contain non-negative decimal numbers, or the special value "N/A".'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

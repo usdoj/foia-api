@@ -1,0 +1,14 @@
+uuid: 656d00fa-c17e-4f77-bea1-0dfe90f93e19
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.annual_foia_report_data_reviewer
+  module:
+    - user
+id: user_add_role_action.annual_foia_report_data_reviewer
+label: 'Add the Annual FOIA Report Data reviewer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: annual_foia_report_data_reviewer

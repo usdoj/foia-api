@@ -1,0 +1,114 @@
+uuid: 0b2f6886-a1d7-4a48-be4b-1f09db932066
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admin_app_vic2.field_agency_component
+    - field.field.paragraph.admin_app_vic2.field_app_denial_exp
+    - field.field.paragraph.admin_app_vic2.field_dup_req
+    - field.field.paragraph.admin_app_vic2.field_fee_related_reason
+    - field.field.paragraph.admin_app_vic2.field_imp_req_oth_reason
+    - field.field.paragraph.admin_app_vic2.field_no_rec
+    - field.field.paragraph.admin_app_vic2.field_not_agency_record
+    - field.field.paragraph.admin_app_vic2.field_oth
+    - field.field.paragraph.admin_app_vic2.field_rec_not_desc
+    - field.field.paragraph.admin_app_vic2.field_rec_refer_initial
+    - field.field.paragraph.admin_app_vic2.field_req_in_lit
+    - field.field.paragraph.admin_app_vic2.field_req_withdrawn
+    - paragraphs.paragraphs_type.admin_app_vic2
+  module:
+    - entity_reference_revisions
+id: paragraph.admin_app_vic2.default
+targetEntityType: paragraph
+bundle: admin_app_vic2
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_autocomplete
+    region: content
+  field_app_denial_exp:
+    weight: 10
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_dup_req:
+    weight: 8
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_fee_related_reason:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_imp_req_oth_reason:
+    weight: 6
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_no_rec:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_not_agency_record:
+    weight: 7
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_oth:
+    weight: 11
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_rec_not_desc:
+    weight: 5
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_rec_refer_initial:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_req_in_lit:
+    weight: 9
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_req_withdrawn:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

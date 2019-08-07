@@ -1,0 +1,115 @@
+uuid: 2ab57c9d-c282-4fbe-a0d0-eb1308cefd81
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_admin_app_vic2
+    - node.type.annual_foia_report_data
+    - paragraphs.paragraphs_type.admin_app_vic2
+  module:
+    - entity_reference_revisions
+id: node.annual_foia_report_data.field_admin_app_vic2
+field_name: field_admin_app_vic2
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Administrative Appeals VI. C. (2)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      admin_app_vic2: admin_app_vic2
+    target_bundles_drag_drop:
+      foia_xii_backlogged:
+        weight: 30
+        enabled: false
+      admin_app_via:
+        weight: 31
+        enabled: false
+      admin_app_vib:
+        weight: 32
+        enabled: false
+      admin_app_vic1:
+        weight: 33
+        enabled: false
+      admin_app_vic2:
+        enabled: true
+        weight: 34
+      admin_app_vic3:
+        weight: 35
+        enabled: false
+      admin_app_vic3_oth_details:
+        weight: 36
+        enabled: false
+      admin_app_vic4:
+        weight: 37
+        enabled: false
+      component_details:
+        weight: 38
+        enabled: false
+      fees_x:
+        weight: 39
+        enabled: false
+      foia_pers_costs_ix:
+        weight: 40
+        enabled: false
+      foia_req_va:
+        weight: 41
+        enabled: false
+      foia_req_vb1:
+        weight: 42
+        enabled: false
+      foia_req_vb2:
+        weight: 43
+        enabled: false
+      foia_req_vb2_other_details:
+        weight: 44
+        enabled: false
+      foia_req_vb3:
+        weight: 45
+        enabled: false
+      foia_xiia:
+        weight: 46
+        enabled: false
+      foia_xiib:
+        weight: 47
+        enabled: false
+      foia_xii_received_proc:
+        weight: 48
+        enabled: false
+      oldest_days:
+        weight: 49
+        enabled: false
+      pending_requests_viid:
+        weight: 50
+        enabled: false
+      processed_requests_vii:
+        weight: 51
+        enabled: false
+      proc_req_viic:
+        weight: 52
+        enabled: false
+      req_viiia:
+        weight: 53
+        enabled: false
+      req_viiib:
+        weight: 54
+        enabled: false
+      statute:
+        weight: 55
+        enabled: false
+      statute_agency_details:
+        weight: 56
+        enabled: false
+      sub_xia:
+        weight: 57
+        enabled: false
+      sub_xib:
+        weight: 58
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,48 @@
+uuid: 17f7bdb4-7d6d-40c2-8e66-204c66eed982
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_req_vb2.field_agency_component
+    - field.field.paragraph.foia_req_vb2.field_foia_req_vb2_info
+    - field.field.paragraph.foia_req_vb2.field_total
+    - paragraphs.paragraphs_type.foia_req_vb2
+  module:
+    - entity_reference_revisions
+    - paragraphs
+id: paragraph.foia_req_vb2.default
+targetEntityType: paragraph
+bundle: foia_req_vb2
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_autocomplete
+    region: content
+  field_foia_req_vb2_info:
+    type: entity_reference_paragraphs
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_total:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

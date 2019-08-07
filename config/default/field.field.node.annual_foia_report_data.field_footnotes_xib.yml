@@ -1,0 +1,21 @@
+uuid: 29e14102-a4b1-4b90-8a93-3a3d132be83a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_footnotes_xib
+    - node.type.annual_foia_report_data
+  module:
+    - text
+id: node.annual_foia_report_data.field_footnotes_xib
+field_name: field_footnotes_xib
+entity_type: node
+bundle: annual_foia_report_data
+label: Footnotes
+description: 'Allows entry of any free-format notes associated with this section of the report.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

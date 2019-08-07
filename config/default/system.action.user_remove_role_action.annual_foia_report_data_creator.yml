@@ -1,0 +1,14 @@
+uuid: 19bd76a5-3f0c-4ec5-a215-065e769fa22c
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.annual_foia_report_data_creator
+  module:
+    - user
+id: user_remove_role_action.annual_foia_report_data_creator
+label: 'Remove the Annual FOIA Report Data creator role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: annual_foia_report_data_creator

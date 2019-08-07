@@ -1,0 +1,23 @@
+uuid: c38b06f5-0a20-462e-9fe0-ed7210f3e8a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_num_denied
+    - paragraphs.paragraphs_type.req_viiib
+id: paragraph.req_viiib.field_num_denied
+field_name: field_num_denied
+entity_type: paragraph
+bundle: req_viiib
+label: 'Number Denied'
+description: 'Must contain non-negative integers.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

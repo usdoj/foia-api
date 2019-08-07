@@ -1,0 +1,21 @@
+uuid: 19d07766-41c4-4e78-acad-43a37bd0540a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_avg_days_jud
+    - paragraphs.paragraphs_type.req_viiia
+  module:
+    - text
+id: paragraph.req_viiia.field_avg_days_jud
+field_name: field_avg_days_jud
+entity_type: paragraph
+bundle: req_viiia
+label: 'Average Number of Days to Adjudicate'
+description: 'Must contain non-negative decimal numbers, or the special value "N/A".'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

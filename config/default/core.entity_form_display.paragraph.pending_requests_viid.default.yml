@@ -1,0 +1,157 @@
+uuid: d84a9701-9b4f-47cd-874c-61ad781e1c5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.pending_requests_viid.field_comp_avg
+    - field.field.paragraph.pending_requests_viid.field_comp_med
+    - field.field.paragraph.pending_requests_viid.field_comp_pend
+    - field.field.paragraph.pending_requests_viid.field_exp_avg
+    - field.field.paragraph.pending_requests_viid.field_exp_med
+    - field.field.paragraph.pending_requests_viid.field_exp_pend
+    - field.field.paragraph.pending_requests_viid.field_sim_avg
+    - field.field.paragraph.pending_requests_viid.field_sim_med
+    - field.field.paragraph.pending_requests_viid.field_sim_pend
+    - paragraphs.paragraphs_type.pending_requests_viid
+  module:
+    - field_group
+    - text
+third_party_settings:
+  field_group:
+    group_pending_requests_vii_d:
+      children:
+        - group_simple
+        - group_complex
+        - group_expedited_processing
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: horizontal
+      label: 'Pending Requests VII. D.'
+    group_simple:
+      children:
+        - field_sim_pend
+        - field_sim_med
+        - field_sim_avg
+      parent_name: group_pending_requests_vii_d
+      weight: 20
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Simple
+    group_complex:
+      children:
+        - field_comp_pend
+        - field_comp_med
+        - field_comp_avg
+      parent_name: group_pending_requests_vii_d
+      weight: 21
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Complex
+    group_expedited_processing:
+      children:
+        - field_exp_pend
+        - field_exp_med
+        - field_exp_avg
+      parent_name: group_pending_requests_vii_d
+      weight: 22
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Expedited Processing'
+id: paragraph.pending_requests_viid.default
+targetEntityType: paragraph
+bundle: pending_requests_viid
+mode: default
+content:
+  field_comp_avg:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_comp_med:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_comp_pend:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_exp_avg:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_exp_med:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_exp_pend:
+    weight: 7
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_sim_avg:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_sim_med:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_sim_pend:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+hidden:
+  created: true
+  status: true

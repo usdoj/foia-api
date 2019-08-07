@@ -1,0 +1,21 @@
+uuid: a4923d76-0be4-4779-8f75-76814b542b80
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_back_app_end_yr
+    - paragraphs.paragraphs_type.foia_xiia
+  module:
+    - text
+id: paragraph.foia_xiia.field_back_app_end_yr
+field_name: field_back_app_end_yr
+entity_type: paragraph
+bundle: foia_xiia
+label: 'Number of Backlogged Appeals as of End of Fiscal Year'
+description: 'Must contain non-negative integers, or the special value "N/A".'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

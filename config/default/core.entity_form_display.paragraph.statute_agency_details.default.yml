@@ -1,0 +1,37 @@
+uuid: 8f8c36f0-6ed0-4045-8c65-596d5bedf724
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.statute_agency_details.field_agency_component
+    - field.field.paragraph.statute_agency_details.field_num_relied_by_agency_comp
+    - paragraphs.paragraphs_type.statute_agency_details
+  module:
+    - paragraphs
+id: paragraph.statute_agency_details.default
+targetEntityType: paragraph
+bundle: statute_agency_details
+mode: default
+content:
+  field_agency_component:
+    type: entity_reference_paragraphs
+    weight: 0
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_num_relied_by_agency_comp:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

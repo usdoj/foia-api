@@ -1,0 +1,89 @@
+uuid: 72388712-4a43-4d36-9f5e-99a5c6fc91b8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.pending_requests_viid.field_comp_avg
+    - field.field.paragraph.pending_requests_viid.field_comp_med
+    - field.field.paragraph.pending_requests_viid.field_comp_pend
+    - field.field.paragraph.pending_requests_viid.field_exp_avg
+    - field.field.paragraph.pending_requests_viid.field_exp_med
+    - field.field.paragraph.pending_requests_viid.field_exp_pend
+    - field.field.paragraph.pending_requests_viid.field_sim_avg
+    - field.field.paragraph.pending_requests_viid.field_sim_med
+    - field.field.paragraph.pending_requests_viid.field_sim_pend
+    - paragraphs.paragraphs_type.pending_requests_viid
+  module:
+    - text
+id: paragraph.pending_requests_viid.default
+targetEntityType: paragraph
+bundle: pending_requests_viid
+mode: default
+content:
+  field_comp_avg:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_comp_med:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_comp_pend:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_exp_avg:
+    weight: 8
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_exp_med:
+    weight: 7
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_exp_pend:
+    weight: 6
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_sim_avg:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_sim_med:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_sim_pend:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden:
+  search_api_excerpt: true
