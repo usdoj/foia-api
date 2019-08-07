@@ -206,7 +206,7 @@ Feature: Agency Administrator role
     Then I should see "Request Status"
 
   @api
-  Scenario: Agency Administrator can add Total Annual Data reports
+  Scenario: Agency Administrator can add Annual FOIA Reports
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add"
-    Then I should see the link "Total Annual Data"
+    Then I should see the link "Annual FOIA Report Data"
