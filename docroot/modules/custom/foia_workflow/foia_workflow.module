@@ -15,11 +15,15 @@ use Drupal\Core\Session\AccountProxy;
 function foia_workflow_node_access(NodeInterface $node, $op, AccountProxy $account) {
   $type = $node->bundle();
   $workflow_state = $node->get('moderation_state')->getString();
-  $is_report_type = (bool) ($type == 'total_annual_data');
+  $author = $node->getOwner()->id();
+  $user = $account->id();
+  $is_report_type = (bool) ($type == 'annual_foia_report_data');
   $is_agency_admin = (bool) in_array('agency_administrator', $account->getRoles());
   $is_draft = (bool) (bool) ($workflow_state == 'draft');
+  $is_not_author = (bool) ($author != $user);
   // Do not allow Agency Administrators to edit draft Annual Reports.
-  if ($is_report_type && $is_agency_admin && $is_draft && $op == 'update') {
+  if ($is_report_type && $is_agency_admin && $is_draft && $is_not_author && $op ==
+    'update') {
     return AccessResult::forbidden();
   }
 }
