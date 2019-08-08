@@ -4,9 +4,9 @@
 3. Navigate to this module's `src` directory: `cd src`
 4. Run the `data-groomer.php` script to prep the new data files for migration: `php data-groomer.php`
 5. `git add` and `git commit` the modified data
-6. Enable the module in the environment you'd like to run the migration in: `drush en foia_migrate migrate_tools -y`
+6. Enable the module in the environment you'd like to run the migration in: `drush en foia_migrate -y`
 7. Import any new agencies: `drush mim agency`
 8. Import any new FOIA personnel: `drush mim foia_personnel`
 9. Import any new agency components: `drush mim agency_component`
 10. Import new processing data, while updating data for existing components: `drush mi processing_data --update`
-11. Uninstall the modules: `drush pmu foia_migrate migrate_tools migrate_plus migrate`
+11. Uninstall the module: `drush pmu foia_migrate`
