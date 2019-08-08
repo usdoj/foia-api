@@ -1,4 +1,4 @@
-uuid: 73efd038-d7c2-4705-bdd4-62e14b1df5c8
+uuid: 82f6549e-d39a-4ee7-80cc-a60ceacf9e1a
 langcode: en
 status: true
 dependencies:
@@ -72,591 +72,201 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_8
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_9
     - node.type.annual_foia_report_data
+    - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
     - field_group
     - paragraphs
-    - path
     - text
+third_party_settings:
+  field_group:
+    group_iv_exemption_3_statutes:
+      children:
+        - field_footnotes_iv
+      parent_name: ''
+      weight: 1
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'IV. Exemption 3 Statutes'
+    group_v_a_foia_requests_received:
+      children:
+        - field_foia_requests_va
+        - field_overall_req_pend_start_yr
+        - field_overall_req_received_yr
+        - field_overall_req_processed_yr
+        - field_overall_req_pend_end_yr
+        - field_footnotes_va
+      parent_name: ''
+      weight: 2
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS '
+    group_vb1_disp_foia_proc_reqs:
+      children:
+        - group_overall_vb1_main
+        - group_overall_vb1_num_full_deny
+      parent_name: ''
+      weight: 3
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: horizontal
+      label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
+    group_overall_vb1_main:
+      children:
+        - field_overall_vb1_part_grants_de
+        - field_overall_vb1_full_denials_e
+        - field_overall_vb1_full_grants
+        - field_footnotes_vb1
+      parent_name: group_vb1_disp_foia_proc_reqs
+      weight: 1
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Main
+    group_overall_vb1_num_full_deny:
+      children:
+        - field_overall_vb1_no_rec
+        - field_overall_vb1_rec_ref_to_an_
+      parent_name: group_vb1_disp_foia_proc_reqs
+      weight: 2
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Number of Full Denials Based on Reasons Other than Exemptions'
 id: node.annual_foia_report_data.default
 targetEntityType: node
 bundle: annual_foia_report_data
 mode: default
 content:
-  created:
-    type: datetime_timestamp
+  field_foia_requests_va:
+    type: paragraphs
+    weight: 48
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+    third_party_settings: {  }
+  field_footnotes_iv:
+    type: text_textarea
+    weight: 44
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_footnotes_va:
+    type: text_textarea
+    weight: 53
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_footnotes_vb1:
+    type: text_textarea
+    weight: 4
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_pend_end_yr:
+    type: number
+    weight: 52
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_pend_start_yr:
+    type: number
+    weight: 49
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_processed_yr:
+    type: number
+    weight: 51
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_received_yr:
+    type: number
+    weight: 50
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb1_full_denials_e:
+    type: number
     weight: 2
     region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_admin_app_vic1:
-    type: entity_reference_paragraphs
-    weight: 72
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_admin_app_vic2:
-    type: entity_reference_paragraphs
-    weight: 73
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_admin_app_vic3:
-    type: entity_reference_paragraphs
-    weight: 74
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_admin_app_vic5:
-    type: entity_reference_paragraphs
-    weight: 75
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_foia_requests_va:
-    type: entity_reference_paragraphs
-    weight: 10
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_foia_requests_vb1:
-    type: entity_reference_paragraphs
-    weight: 17
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_foia_requests_vb2:
-    type: entity_reference_paragraphs
-    weight: 32
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_foia_requests_vb3:
-    type: entity_reference_paragraphs
-    weight: 36
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_footnotes_iv:
-    weight: 9
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_ix:
-    weight: 62
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_va:
-    weight: 16
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vb1:
-    weight: 31
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vb2:
-    weight: 35
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vb3:
-    weight: 46
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_via:
-    weight: 47
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vib:
-    weight: 48
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vic1:
-    weight: 49
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vic2:
-    weight: 50
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vic3:
-    weight: 51
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vic4:
-    weight: 52
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_vic5:
-    weight: 53
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_viia:
-    weight: 54
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_viib:
-    weight: 55
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_viic1:
-    weight: 56
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_viic2:
-    weight: 57
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_viid:
-    weight: 58
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_viie:
-    weight: 59
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_viiia:
-    weight: 60
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_viiib:
-    weight: 61
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_x:
-    weight: 63
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_xia:
-    weight: 64
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_xib:
-    weight: 65
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_xiia:
-    weight: 66
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_xiic:
-    weight: 67
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_xiid1:
-    weight: 68
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_xiid2:
-    weight: 69
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_xiie1:
-    weight: 70
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_footnotes_xiie2:
-    weight: 71
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_overall_req_pend_end_yr:
-    weight: 15
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_req_pend_start_yr:
-    weight: 12
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_req_processed_yr:
-    weight: 14
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_req_received_yr:
-    weight: 13
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_dup_request:
-    weight: 28
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_fee_related_re:
-    weight: 24
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_full_denials_e:
-    weight: 20
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   field_overall_vb1_full_grants:
-    weight: 18
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
     type: number
-    region: content
-  field_overall_vb1_imp_req_oth_re:
-    weight: 26
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_no_rec:
-    weight: 21
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_not_agency_rec:
-    weight: 27
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_oth:
-    weight: 29
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_part_grants_de:
-    weight: 19
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_rec_not_desc:
-    weight: 25
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_rec_ref_to_an_:
-    weight: 22
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_req_withdrawn:
-    weight: 23
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb1_total:
-    weight: 30
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb2:
-    type: entity_reference_paragraphs
-    weight: 33
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
-    region: content
-  field_overall_vb2_total:
-    weight: 34
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_1:
-    weight: 37
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_2:
-    weight: 38
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_3:
-    weight: 39
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_4:
-    weight: 40
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_5:
-    weight: 41
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_6:
-    weight: 42
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_7:
-    weight: 43
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_8:
-    weight: 44
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_vb3_ex_9:
-    weight: 45
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  moderation_state:
-    type: moderation_state_default
-    weight: 7
-    settings: {  }
-    region: content
-    third_party_settings: {  }
-  path:
-    type: path
-    weight: 6
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 3
     region: content
-    third_party_settings: {  }
-  status:
-    type: boolean_checkbox
     settings:
-      display_label: true
-    weight: 8
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb1_no_rec:
+    type: number
+    weight: 0
     region: content
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
     settings:
-      display_label: true
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb1_part_grants_de:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb1_rec_ref_to_an_:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
     weight: 4
+    settings: {  }
     region: content
     third_party_settings: {  }
   title:
@@ -667,15 +277,65 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  uid:
-    type: entity_reference_autocomplete
-    weight: 1
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    region: content
-    third_party_settings: {  }
 hidden:
+  created: true
+  field_admin_app_vic1: true
+  field_admin_app_vic2: true
+  field_admin_app_vic3: true
+  field_admin_app_vic5: true
+  field_foia_requests_vb1: true
+  field_foia_requests_vb2: true
+  field_foia_requests_vb3: true
+  field_footnotes_ix: true
+  field_footnotes_vb2: true
+  field_footnotes_vb3: true
+  field_footnotes_via: true
+  field_footnotes_vib: true
+  field_footnotes_vic1: true
+  field_footnotes_vic2: true
+  field_footnotes_vic3: true
+  field_footnotes_vic4: true
+  field_footnotes_vic5: true
+  field_footnotes_viia: true
+  field_footnotes_viib: true
+  field_footnotes_viic1: true
+  field_footnotes_viic2: true
   field_footnotes_viic3: true
+  field_footnotes_viid: true
+  field_footnotes_viie: true
+  field_footnotes_viiia: true
+  field_footnotes_viiib: true
+  field_footnotes_x: true
+  field_footnotes_xia: true
+  field_footnotes_xib: true
+  field_footnotes_xiia: true
   field_footnotes_xiib: true
+  field_footnotes_xiic: true
+  field_footnotes_xiid1: true
+  field_footnotes_xiid2: true
+  field_footnotes_xiie1: true
+  field_footnotes_xiie2: true
+  field_overall_vb1_dup_request: true
+  field_overall_vb1_fee_related_re: true
+  field_overall_vb1_imp_req_oth_re: true
+  field_overall_vb1_not_agency_rec: true
+  field_overall_vb1_oth: true
+  field_overall_vb1_rec_not_desc: true
+  field_overall_vb1_req_withdrawn: true
+  field_overall_vb1_total: true
+  field_overall_vb2: true
+  field_overall_vb2_total: true
+  field_overall_vb3_ex_1: true
+  field_overall_vb3_ex_2: true
+  field_overall_vb3_ex_3: true
+  field_overall_vb3_ex_4: true
+  field_overall_vb3_ex_5: true
+  field_overall_vb3_ex_6: true
+  field_overall_vb3_ex_7: true
+  field_overall_vb3_ex_8: true
+  field_overall_vb3_ex_9: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true
