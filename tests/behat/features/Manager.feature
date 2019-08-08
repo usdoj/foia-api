@@ -77,3 +77,19 @@ Feature: Agency Manager role
     When I am logged in as a user with the 'Agency Manager' role
     And I go to saved URL
     Then I should see "Access Denied"
+
+  @api
+  Scenario: Agency Manager can add Annual FOIA Reports
+    Given I am logged in as a user with the 'Agency Manager' role
+    And I am on "/node/add"
+    Then I should see the link "Annual FOIA Report Data"
+
+  @api
+  Scenario: Agency Manager can save Annual FOIA Reports as Draft
+    Given I am logged in as a user with the 'Agency Manager' role
+    And I am on "/node/add/annual_foia_report_data"
+    And for 'Title' I enter 'A Test Report'
+    And for 'Save as' I select 'Draft'
+    When I press the 'Save' button
+    Then I should see the following success messages:
+      | Annual FOIA Report Data A Test Report has been created. |
