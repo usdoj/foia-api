@@ -1,0 +1,83 @@
+id: foia_agency_report
+label: 'Create a node from an annual report in NIEM-XML format.'
+migration_group: foia_xml
+migration_tags:
+  - Content
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  urls:
+    - 'temporary://foia-xml/report.xml'
+  data_parser_plugin: xml
+  namespaces:
+    atom: 'http://www.w3.org/2005/Atom'
+    iepd: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03'
+    foia: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03'
+    i: 'http://niem.gov/niem/appinfo/2.0'
+    j: 'http://niem.gov/niem/domains/jxdm/4.1'
+    nc: 'http://niem.gov/niem/niem-core/2.0'
+    s: 'http://niem.gov/niem/structures/2.0'
+    xsi: 'http://www.w3.org/2001/XMLSchema-instance'
+  item_selector: '/iepd:FoiaAnnualReport'
+  # Does shared_configuration get included with a deep merge? If not, then we
+  # will have to repeat these fields in every migration.
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: 'foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: 'nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: 'footnotes_va'
+      label: 'V.A Footnotes'
+      selector: 'foia:ProcessedRequestSection/foia:FootnoteText'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+  constants:
+    base_title: 'Annual FOIA Report for'
+process:
+  type:
+    plugin: default_value
+    default_value: annual_foia_report_data
+  langcode:
+    plugin: default_value
+    default_value: en
+  title:
+    plugin: concat
+    delimiter: ' '
+    source:
+      - report_year
+      - constants/base_title
+      - agency
+  uid:
+    plugin: default_value
+    default_value: 1
+  status:
+    plugin: default_value
+    default_value: false
+  # @todo Handle workflow status.
+  promote:
+    plugin: default_value
+    default_value: false
+  sticky:
+    plugin: default_value
+    default_value: false
+  revision_uid:
+    plugin: default_value
+    default_value: 1
+  revision_log:
+    plugin: default_value
+    default_value: 'Import from NIEM-XML data'
+  # Section V.A
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_footnotes_va: footnotes_va
+destination:
+  plugin: entity:node
+migration_dependencies:
+  required: {}
