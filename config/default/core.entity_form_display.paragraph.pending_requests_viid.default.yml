@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.pending_requests_viid.field_agency_component
     - field.field.paragraph.pending_requests_viid.field_comp_avg
     - field.field.paragraph.pending_requests_viid.field_comp_med
     - field.field.paragraph.pending_requests_viid.field_comp_pend
@@ -14,6 +15,7 @@ dependencies:
     - field.field.paragraph.pending_requests_viid.field_sim_pend
     - paragraphs.paragraphs_type.pending_requests_viid
   module:
+    - entity_reference_revisions
     - field_group
     - text
 third_party_settings:
@@ -81,6 +83,15 @@ targetEntityType: paragraph
 bundle: pending_requests_viid
 mode: default
 content:
+  field_agency_component:
+    weight: 23
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_autocomplete
+    region: content
   field_comp_avg:
     weight: 6
     settings:

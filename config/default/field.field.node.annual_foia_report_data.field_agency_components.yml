@@ -1,0 +1,28 @@
+uuid: 3eff4ea6-6e76-48cc-a09d-226de1ecff46
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_agency_components
+    - node.type.agency_component
+    - node.type.annual_foia_report_data
+id: node.annual_foia_report_data.field_agency_components
+field_name: field_agency_components
+entity_type: node
+bundle: annual_foia_report_data
+label: Components
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      agency_component: agency_component
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
