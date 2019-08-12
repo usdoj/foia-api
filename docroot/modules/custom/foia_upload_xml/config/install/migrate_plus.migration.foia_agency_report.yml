@@ -45,6 +45,11 @@ process:
   type:
     plugin: default_value
     default_value: annual_foia_report_data
+  field_foia_annual_report_yr: report_year
+  field_agency:
+    plugin: entity_lookup
+    source: agency
+    value_key: field_agency_abbreviation
   langcode:
     plugin: default_value
     default_value: en
