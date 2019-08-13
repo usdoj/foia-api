@@ -1,0 +1,7 @@
+node_to_docx.convert_node_to_docx:
+  path: '/node/{node}/convert-node-to-docx'
+  defaults:
+    _controller: '\Drupal\node_to_docx\Controller\NodeToDocxController::convertNodeToDocx'
+    _title: 'Hello'
+  requirements:
+    _access_check_node_to_docx: 'TRUE'

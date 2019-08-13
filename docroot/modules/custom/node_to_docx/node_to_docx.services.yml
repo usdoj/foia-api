@@ -1,0 +1,13 @@
+services:
+  node_to_docx.access_check:
+    class: Drupal\node_to_docx\Access\NodeToDocxAccessCheck
+    tags:
+      - { name: access_check }
+
+  node_to_docx.handler:
+    class: Drupal\node_to_docx\NodeToDocxHandler
+
+  node_to_docx.autoload_subscriber:
+    class: Drupal\node_to_docx\EventSubscriber\AutoloaderSubscriber
+    tags:
+      - { name: event_subscriber }
