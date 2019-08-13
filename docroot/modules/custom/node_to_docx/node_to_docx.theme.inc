@@ -2,17 +2,15 @@
 
 /**
  * @file
- * 
  * Preprocessors and theme functions of Node to docx module.
  */
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Render\Element;
 
 /**
- * Set variables
+ * Set variables.
  *
- * Default template: node--node-to-docx.html.twig
+ * Default template: node--node-to-docx.html.twig.
  *
  * @param array $variables
  *   An associative array containing:
