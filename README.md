@@ -25,6 +25,10 @@ Also, be sure to have Vagrant plugins installed:
 - vagrant-share (1.1.9, global)
 - vagrant-vbguest (0.19.0, global)
 
+To export to Word docs via PHPDocX locally:
+- Copy vendor/phpdocx/config/phpdocxconfig.ini to /phpdocxconfig.ini
+- Enter the license key documented in FOIA-21
+
 ## Resources
 
 * [Issue queue](https://github.com/18F/beta.foia.gov/issues)
