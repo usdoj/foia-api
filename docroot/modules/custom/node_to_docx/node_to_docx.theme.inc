@@ -16,7 +16,7 @@ use Drupal\Core\Render\Element;
  *   An associative array containing:
  *   - elements: An array of elements to display in view mode.
  */
-function template_preprocess_node_to_docx(&$variables) {
+function template_preprocess_node_to_docx(array &$variables) {
   $node = $variables['elements']['#node'];
   // $content variable used in the template
   foreach (Element::children($variables['elements']) as $key) {

@@ -9,7 +9,7 @@ use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\Routing\Route;
 
 /**
- *
+ * Class NodeToDocxAccessCheck.
  */
 class NodeToDocxAccessCheck implements AccessCheckInterface {
 
@@ -20,6 +20,7 @@ class NodeToDocxAccessCheck implements AccessCheckInterface {
    *   The route to be checked.
    *
    * @return string
+   *   The machine name.
    */
   public function applies(Route $route) {
     return '_access_check_node_to_docx';

@@ -10,13 +10,15 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- *
+ * Class AutoloaderSubscriber.
  */
 class AutoloaderSubscriber implements EventSubscriberInterface {
   /**
+   * Checks if autoloader is registered.
+   *
    * @var bool
    */
-  protected $autoloader_registered = FALSE;
+  protected $autoloaderRegistered = FALSE;
 
   /**
    * Implements \Symfony\Component\EventDispatcher\EventSubscriberInterface::getSubscribedEvents().
@@ -48,10 +50,10 @@ class AutoloaderSubscriber implements EventSubscriberInterface {
    * @throws \RuntimeException
    */
   public function registerAutoloader() {
-    if (!$this->autoloader_registered) {
+    if (!$this->autoloaderRegistered) {
       // If the class can already be loaded, do nothing.
       if (class_exists('Phpdocx\\Create\\CreateDocx')) {
-        $this->autoloader_registered = TRUE;
+        $this->autoloaderRegistered = TRUE;
         return;
       }
       $filepath = $this->getAutoloadFilepath();
@@ -59,7 +61,7 @@ class AutoloaderSubscriber implements EventSubscriberInterface {
         throw new \RuntimeException(SafeMarkup::format('Autoloader not found: @filepath', ['@filepath' => $filepath]));
       }
       if (($filepath != DRUPAL_ROOT . '/core/vendor/autoload.php')) {
-        $this->autoloader_registered = TRUE;
+        $this->autoloaderRegistered = TRUE;
         require $filepath;
         AutoLoader::load();
       }
@@ -67,9 +69,12 @@ class AutoloaderSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Returns the absolute path to the AutoLoad.php file. If AutoLoad.php does not exist return false.
+   * Returns the absolute path to the AutoLoad.php file.
+   *
+   * If AutoLoad.php does not exist return false.
    *
    * @return string
+   *   The path to AutoLoad.php file.
    */
   public function getAutoloadFilepath() {
     $module_path = DRUPAL_ROOT . '/' . drupal_get_path('module', 'node_to_docx') . '/phpdocx/Classes/Phpdocx/AutoLoader.php';

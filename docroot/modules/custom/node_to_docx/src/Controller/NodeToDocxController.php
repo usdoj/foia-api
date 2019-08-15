@@ -6,7 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\NodeInterface;
 
 /**
- *
+ * Class NodeToDocxController.
  */
 class NodeToDocxController extends ControllerBase {
 
@@ -16,7 +16,8 @@ class NodeToDocxController extends ControllerBase {
    * @param \Drupal\node\NodeInterface $node
    *   The node to be processed.
    *
-   * @return docx file response
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   docx file response
    */
   public function convertNodeToDocx(NodeInterface $node) {
     // Get node to docx handler to generate docx.

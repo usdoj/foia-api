@@ -2,19 +2,14 @@
 
 /**
  * @file
+ * PHPDocX Drupal 8 Plugin.
+ *
+ * This plugin allows to easily export Drupal nodes to DOCX, converting the HTML
+ * of the nodes content, as well as working as a base to generate other plugins.
  */
 
 /**
  * Implements hook_theme_suggestions_alter().
- *
- * @param array $suggestions
- *   The current suggestions.
- * @param array $variables
- *   Drupal variables.
- * @param string $hook
- *   The hook executed.
- *
- * @return array
  */
 function node_to_docx_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
   if ($hook == 'node_to_docx' && $variables['elements']['#view_mode'] == 'node_to_docx') {
@@ -28,11 +23,6 @@ function node_to_docx_theme_suggestions_alter(array &$suggestions, array $variab
 
 /**
  * Implements hook_help().
- *
- * @param string $route_name
- *   The name of the route.
- *
- * @return array
  */
 function node_to_docx_help($route_name) {
   $output = NULL;
@@ -48,13 +38,6 @@ function node_to_docx_help($route_name) {
 
 /**
  * Implements hook_theme().
- *
- * @param string $existing
- * @param string $type
- * @param string $theme
- * @param string $path
- *
- * @return array
  */
 function node_to_docx_theme($existing, $type, $theme, $path) {
   return [

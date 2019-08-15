@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- *
+ * Class NodeToDocxHandler.
  */
 class NodeToDocxHandler implements ContainerAwareInterface {
   use ContainerAwareTrait;
@@ -21,6 +21,7 @@ class NodeToDocxHandler implements ContainerAwareInterface {
    *   The node to be processed.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   The docx file response.
    */
   public function convertToDocx(NodeInterface $node) {
     // Check if phpdocx library is available.
@@ -44,6 +45,7 @@ class NodeToDocxHandler implements ContainerAwareInterface {
    * Checks if phpdocx library is available.
    *
    * @return bool
+   *   Returns true if phpdox library is available.
    */
   public function isPhpdocxLibraryAvailable() {
     // Check if CreateDocx class can be instantiated.
@@ -56,12 +58,10 @@ class NodeToDocxHandler implements ContainerAwareInterface {
   /**
    * Generates a docx file from the html code.
    *
-   * @param string $node
+   * @param string $html
    *   The html code to be processed.
-   * @param string $node
+   * @param string $file_name_output
    *   The file name to the output.
-   *
-   * @return docx file response
    */
   private function generateDocxFromHtml($html, $file_name_output) {
     $docx = new CreateDocx();
