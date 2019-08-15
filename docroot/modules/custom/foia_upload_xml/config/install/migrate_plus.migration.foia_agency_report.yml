@@ -30,8 +30,31 @@ source:
       name: agency
       label: 'Standard abbreviation of the agency submitting the report'
       selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+  # Section V.A
+  # @todo Find something more reliable than using @s:id="PS0" for the overall
+  # numbers.
     -
-      name: 'footnotes_va'
+      name: component_va
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics/@s:id'
+    -
+      name: overall_req_pend_start_yr
+      label: 'Overall requests pending at the start of the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
+    -
+      name: overall_req_received_yr
+      label: 'Overall requests received during the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsReceivedQuantity'
+    -
+      name: overall_req_processed_yr
+      label: 'Overall requests processed during the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsProcessedQuantity'
+    -
+      name: overall_req_pend_end_yr
+      label: 'Overall requests pending at the end of the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtEndQuantity'
+    -
+      name: footnotes_va
       label: 'V.A Footnotes'
       selector: 'foia:ProcessedRequestSection/foia:FootnoteText'
   ids:
@@ -81,8 +104,21 @@ process:
     default_value: 'Import from NIEM-XML data'
   # Section V.A
   # FOIA requests -- received, processed and pending FOIA requests
+  field_foia_requests_va:
+    plugin: migration_lookup
+    source:
+      - report_year
+      - agency
+      - component_va
+    migration:
+      - foia_requests_va
+    overall_req_pend_start_yr: overall_req_pend_start_yr
+    overall_req_received_yr: overall_req_received_yr
+    overall_req_processed_yr: overall_req_processed_yr
+    overall_req_pend_end_yr: overall_req_pend_end_yr
   field_footnotes_va: footnotes_va
 destination:
   plugin: entity:node
 migration_dependencies:
-  required: {}
+  required:
+    - foia_requests_va
