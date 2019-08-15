@@ -1,4 +1,4 @@
-uuid: 70bc7b8a-20cb-4beb-a16c-70401bc4ca30
+uuid: c4b77635-cc1b-4d5d-b51c-d7f0636faf6c
 langcode: en
 status: true
 dependencies:
@@ -6,13 +6,11 @@ dependencies:
     - field.storage.paragraph.field_agency_component
     - node.type.agency_component
     - paragraphs.paragraphs_type.foia_pers_costs_ix
-  module:
-    - entity_reference_revisions
 id: paragraph.foia_pers_costs_ix.field_agency_component
 field_name: field_agency_component
 entity_type: paragraph
 bundle: foia_pers_costs_ix
-label: 'Agency Component'
+label: Agency/Component
 description: ''
 required: false
 translatable: true
@@ -24,7 +22,8 @@ settings:
     target_bundles:
       agency_component: agency_component
     sort:
-      field: _none
+      field: title
+      direction: ASC
     auto_create: false
     auto_create_bundle: ''
-field_type: entity_reference_revisions
+field_type: entity_reference

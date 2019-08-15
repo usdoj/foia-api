@@ -18,13 +18,13 @@ dependencies:
     - field.field.paragraph.processed_requests_vii.field_sim_med
     - paragraphs.paragraphs_type.processed_requests_vii
   module:
-    - entity_reference_revisions
     - field_group
     - text
 third_party_settings:
   field_group:
     group_processed_requests_vii:
       children:
+        - field_agency_component
         - group_simple
         - group_complex
         - group_expedited_processing
@@ -43,7 +43,7 @@ third_party_settings:
         - field_sim_low
         - field_sim_high
       parent_name: group_processed_requests_vii
-      weight: 20
+      weight: 1
       format_type: tab
       format_settings:
         label: Simple
@@ -60,7 +60,7 @@ third_party_settings:
         - field_comp_low
         - field_comp_high
       parent_name: group_processed_requests_vii
-      weight: 21
+      weight: 2
       format_type: tab
       format_settings:
         id: ''
@@ -76,7 +76,7 @@ third_party_settings:
         - field_exp_low
         - field_exp_high
       parent_name: group_processed_requests_vii
-      weight: 22
+      weight: 3
       format_type: tab
       format_settings:
         id: ''
@@ -97,7 +97,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_comp_avg:
     weight: 14
@@ -164,7 +164,7 @@ content:
     type: text_textfield
     region: content
   field_sim_avg:
-    weight: 3
+    weight: 25
     settings:
       size: 60
       placeholder: ''
@@ -172,7 +172,7 @@ content:
     type: text_textfield
     region: content
   field_sim_high:
-    weight: 5
+    weight: 27
     settings:
       size: 60
       placeholder: ''
@@ -180,7 +180,7 @@ content:
     type: text_textfield
     region: content
   field_sim_low:
-    weight: 4
+    weight: 26
     settings:
       size: 60
       placeholder: ''
@@ -188,7 +188,7 @@ content:
     type: text_textfield
     region: content
   field_sim_med:
-    weight: 2
+    weight: 24
     settings:
       size: 60
       placeholder: ''

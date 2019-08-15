@@ -4,22 +4,89 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.foia_pers_costs_ix.field_agency_component
+    - field.field.paragraph.foia_pers_costs_ix.field_eq_full_emp
+    - field.field.paragraph.foia_pers_costs_ix.field_full_emp
+    - field.field.paragraph.foia_pers_costs_ix.field_lit_costs
+    - field.field.paragraph.foia_pers_costs_ix.field_proc_costs
+    - field.field.paragraph.foia_pers_costs_ix.field_total_costs
+    - field.field.paragraph.foia_pers_costs_ix.field_total_staff
     - paragraphs.paragraphs_type.foia_pers_costs_ix
-  module:
-    - entity_reference_revisions
 id: paragraph.foia_pers_costs_ix.default
 targetEntityType: paragraph
 bundle: foia_pers_costs_ix
 mode: default
 content:
   field_agency_component:
+    weight: 6
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_eq_full_emp:
+    weight: 1
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_full_emp:
     weight: 0
     label: above
     settings:
-      view_mode: default
-      link: ''
+      thousand_separator: ''
+      prefix_suffix: true
     third_party_settings: {  }
-    type: entity_reference_revisions_entity_view
+    type: number_integer
+    region: content
+  field_lit_costs:
+    weight: 4
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_proc_costs:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_total_costs:
+    weight: 5
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_total_staff:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
     region: content
 hidden:
   search_api_excerpt: true

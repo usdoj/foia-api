@@ -1,4 +1,4 @@
-uuid: 9387fd6f-4458-4dc0-93ed-33235de11f2c
+uuid: 3d32db0a-ff46-478a-95a4-00b13f287eba
 langcode: en
 status: true
 dependencies:
@@ -6,13 +6,11 @@ dependencies:
     - field.storage.paragraph.field_agency_component
     - node.type.agency_component
     - paragraphs.paragraphs_type.pending_requests_viid
-  module:
-    - entity_reference_revisions
 id: paragraph.pending_requests_viid.field_agency_component
 field_name: field_agency_component
 entity_type: paragraph
 bundle: pending_requests_viid
-label: 'Agency Component'
+label: Agency/Component
 description: ''
 required: false
 translatable: true
@@ -24,7 +22,8 @@ settings:
     target_bundles:
       agency_component: agency_component
     sort:
-      field: _none
+      field: title
+      direction: ASC
     auto_create: false
     auto_create_bundle: ''
-field_type: entity_reference_revisions
+field_type: entity_reference

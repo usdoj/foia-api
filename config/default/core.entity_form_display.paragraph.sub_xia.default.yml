@@ -6,8 +6,6 @@ dependencies:
     - field.field.paragraph.sub_xia.field_agency_component
     - field.field.paragraph.sub_xia.field_sub_used
     - paragraphs.paragraphs_type.sub_xia
-  module:
-    - entity_reference_revisions
 id: paragraph.sub_xia.default
 targetEntityType: paragraph
 bundle: sub_xia
@@ -20,7 +18,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_sub_used:
     weight: 1

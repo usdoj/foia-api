@@ -1,20 +1,20 @@
-uuid: c0b0db84-0fee-4d6c-b9fe-b27ece3effa5
+uuid: 842cce0f-388c-4b85-a3f5-da771c516ba1
 langcode: en
 status: true
 dependencies:
   module:
     - field_permissions
-    - node
     - paragraphs
 third_party_settings:
   field_permissions:
     permission_type: public
-id: paragraph.field_agency_component
-field_name: field_agency_component
+id: paragraph.field_total_costs
+field_name: field_total_costs
 entity_type: paragraph
-type: entity_reference
+type: decimal
 settings:
-  target_type: node
+  precision: 10
+  scale: 2
 module: core
 locked: false
 cardinality: 1

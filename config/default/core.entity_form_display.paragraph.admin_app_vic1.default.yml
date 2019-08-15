@@ -19,8 +19,6 @@ dependencies:
     - field.field.paragraph.admin_app_vic1.field_ex_8
     - field.field.paragraph.admin_app_vic1.field_ex_9
     - paragraphs.paragraphs_type.admin_app_vic1
-  module:
-    - entity_reference_revisions
 id: paragraph.admin_app_vic1.default
 targetEntityType: paragraph
 bundle: admin_app_vic1
@@ -33,7 +31,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_ex_1:
     weight: 1

@@ -19,8 +19,6 @@ dependencies:
     - field.field.paragraph.proc_req_viic.field_agency_component
     - field.field.paragraph.proc_req_viic.field_total
     - paragraphs.paragraphs_type.proc_req_viic
-  module:
-    - entity_reference_revisions
 id: paragraph.proc_req_viic.default
 targetEntityType: paragraph
 bundle: proc_req_viic
@@ -124,7 +122,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_total:
     weight: 14

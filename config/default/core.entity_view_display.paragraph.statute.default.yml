@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.statute.field_agency_component_info
+    - field.field.paragraph.statute.field_agency_component_inf
     - field.field.paragraph.statute.field_case_citation
     - field.field.paragraph.statute.field_statute
     - field.field.paragraph.statute.field_total_num_relied_by_agency
@@ -17,9 +17,9 @@ targetEntityType: paragraph
 bundle: statute
 mode: default
 content:
-  field_agency_component_info:
+  field_agency_component_inf:
     type: entity_reference_revisions_entity_view
-    weight: 7
+    weight: 9
     label: above
     settings:
       view_mode: default

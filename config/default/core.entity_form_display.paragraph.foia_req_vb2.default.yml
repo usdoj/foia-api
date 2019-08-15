@@ -8,7 +8,6 @@ dependencies:
     - field.field.paragraph.foia_req_vb2.field_total
     - paragraphs.paragraphs_type.foia_req_vb2
   module:
-    - entity_reference_revisions
     - paragraphs
 id: paragraph.foia_req_vb2.default
 targetEntityType: paragraph
@@ -22,7 +21,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_foia_req_vb2_info:
     type: entity_reference_paragraphs

@@ -18,7 +18,6 @@ dependencies:
     - field.field.paragraph.processed_requests_vii.field_sim_med
     - paragraphs.paragraphs_type.processed_requests_vii
   module:
-    - entity_reference_revisions
     - text
 id: paragraph.processed_requests_vii.default
 targetEntityType: paragraph
@@ -26,13 +25,12 @@ bundle: processed_requests_vii
 mode: default
 content:
   field_agency_component:
-    weight: 0
+    weight: 14
     label: above
     settings:
-      view_mode: default
-      link: ''
+      link: true
     third_party_settings: {  }
-    type: entity_reference_revisions_entity_view
+    type: entity_reference_label
     region: content
   field_comp_avg:
     weight: 6

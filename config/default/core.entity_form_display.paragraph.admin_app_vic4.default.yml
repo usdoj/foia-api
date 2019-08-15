@@ -9,8 +9,6 @@ dependencies:
     - field.field.paragraph.admin_app_vic4.field_low_num_days
     - field.field.paragraph.admin_app_vic4.field_med_num_days
     - paragraphs.paragraphs_type.admin_app_vic4
-  module:
-    - entity_reference_revisions
 id: paragraph.admin_app_vic4.default
 targetEntityType: paragraph
 bundle: admin_app_vic4
@@ -23,7 +21,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_avg_num_days:
     weight: 2

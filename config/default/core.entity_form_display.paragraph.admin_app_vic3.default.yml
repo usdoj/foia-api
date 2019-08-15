@@ -8,7 +8,6 @@ dependencies:
     - field.field.paragraph.admin_app_vic3.field_total
     - paragraphs.paragraphs_type.admin_app_vic3
   module:
-    - entity_reference_revisions
     - paragraphs
 id: paragraph.admin_app_vic3.default
 targetEntityType: paragraph
@@ -34,7 +33,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_total:
     weight: 2

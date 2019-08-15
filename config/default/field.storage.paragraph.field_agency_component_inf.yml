@@ -1,23 +1,23 @@
-uuid: c0b0db84-0fee-4d6c-b9fe-b27ece3effa5
+uuid: 00042100-2546-422d-a556-d24d140fc872
 langcode: en
 status: true
 dependencies:
   module:
+    - entity_reference_revisions
     - field_permissions
-    - node
     - paragraphs
 third_party_settings:
   field_permissions:
     permission_type: public
-id: paragraph.field_agency_component
-field_name: field_agency_component
+id: paragraph.field_agency_component_inf
+field_name: field_agency_component_inf
 entity_type: paragraph
-type: entity_reference
+type: entity_reference_revisions
 settings:
-  target_type: node
-module: core
+  target_type: paragraph
+module: entity_reference_revisions
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

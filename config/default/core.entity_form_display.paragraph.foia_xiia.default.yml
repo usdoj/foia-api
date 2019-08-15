@@ -8,7 +8,6 @@ dependencies:
     - field.field.paragraph.foia_xiia.field_back_req_end_yr
     - paragraphs.paragraphs_type.foia_xiia
   module:
-    - entity_reference_revisions
     - text
 id: paragraph.foia_xiia.default
 targetEntityType: paragraph
@@ -22,7 +21,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_back_app_end_yr:
     weight: 2

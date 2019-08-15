@@ -19,8 +19,6 @@ dependencies:
     - field.field.paragraph.proc_req_viic.field_agency_component
     - field.field.paragraph.proc_req_viic.field_total
     - paragraphs.paragraphs_type.proc_req_viic
-  module:
-    - entity_reference_revisions
 id: paragraph.proc_req_viic.default
 targetEntityType: paragraph
 bundle: proc_req_viic
@@ -144,13 +142,12 @@ content:
     type: number_integer
     region: content
   field_agency_component:
-    weight: 0
+    weight: 15
     label: above
     settings:
-      view_mode: default
-      link: ''
+      link: true
     third_party_settings: {  }
-    type: entity_reference_revisions_entity_view
+    type: entity_reference_label
     region: content
   field_total:
     weight: 14

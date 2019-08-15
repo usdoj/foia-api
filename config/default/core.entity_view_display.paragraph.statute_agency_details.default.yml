@@ -6,21 +6,18 @@ dependencies:
     - field.field.paragraph.statute_agency_details.field_agency_component
     - field.field.paragraph.statute_agency_details.field_num_relied_by_agency_comp
     - paragraphs.paragraphs_type.statute_agency_details
-  module:
-    - entity_reference_revisions
 id: paragraph.statute_agency_details.default
 targetEntityType: paragraph
 bundle: statute_agency_details
 mode: default
 content:
   field_agency_component:
-    type: entity_reference_revisions_entity_view
-    weight: 0
+    weight: 2
     label: above
     settings:
-      view_mode: default
-      link: ''
+      link: true
     third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_num_relied_by_agency_comp:
     weight: 1

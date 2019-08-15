@@ -1,4 +1,4 @@
-uuid: 981b45d7-d945-4244-84ef-d25cd245a20e
+uuid: 4cc765e6-6679-4f40-a2df-f3fb2a08234b
 langcode: en
 status: true
 dependencies:
@@ -6,13 +6,11 @@ dependencies:
     - field.storage.paragraph.field_agency_component
     - node.type.agency_component
     - paragraphs.paragraphs_type.foia_req_vb2
-  module:
-    - entity_reference_revisions
 id: paragraph.foia_req_vb2.field_agency_component
 field_name: field_agency_component
 entity_type: paragraph
 bundle: foia_req_vb2
-label: 'Agency Component'
+label: Agency/Component
 description: ''
 required: false
 translatable: true
@@ -24,7 +22,8 @@ settings:
     target_bundles:
       agency_component: agency_component
     sort:
-      field: _none
+      field: title
+      direction: ASC
     auto_create: false
     auto_create_bundle: ''
-field_type: entity_reference_revisions
+field_type: entity_reference

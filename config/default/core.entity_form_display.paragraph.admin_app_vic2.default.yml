@@ -16,8 +16,6 @@ dependencies:
     - field.field.paragraph.admin_app_vic2.field_req_in_lit
     - field.field.paragraph.admin_app_vic2.field_req_withdrawn
     - paragraphs.paragraphs_type.admin_app_vic2
-  module:
-    - entity_reference_revisions
 id: paragraph.admin_app_vic2.default
 targetEntityType: paragraph
 bundle: admin_app_vic2
@@ -30,7 +28,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_app_denial_exp:
     weight: 10

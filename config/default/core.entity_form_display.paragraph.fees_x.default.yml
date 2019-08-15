@@ -7,8 +7,6 @@ dependencies:
     - field.field.paragraph.fees_x.field_perc_costs
     - field.field.paragraph.fees_x.field_total_fees
     - paragraphs.paragraphs_type.fees_x
-  module:
-    - entity_reference_revisions
 id: paragraph.fees_x.default
 targetEntityType: paragraph
 bundle: fees_x
@@ -21,7 +19,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_perc_costs:
     weight: 1

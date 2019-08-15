@@ -26,7 +26,6 @@ dependencies:
     - field.field.paragraph.oldest_days.field_num_days_9
     - paragraphs.paragraphs_type.oldest_days
   module:
-    - entity_reference_revisions
     - field_group
     - text
 third_party_settings:
@@ -47,9 +46,10 @@ third_party_settings:
       weight: 1
       format_type: tabs
       format_settings:
+        label: 'Oldest Days'
+        direction: vertical
         id: ''
         classes: ''
-        direction: horizontal
       label: 'Oldest Days'
     group_oldest:
       children:
@@ -203,7 +203,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_date_1:
     weight: 1

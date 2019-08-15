@@ -19,7 +19,6 @@ dependencies:
     - field.field.paragraph.foia_req_vb1.field_total
     - paragraphs.paragraphs_type.foia_req_vb1
   module:
-    - entity_reference_revisions
     - field_group
 third_party_settings:
   field_group:
@@ -79,13 +78,13 @@ bundle: foia_req_vb1
 mode: default
 content:
   field_agency_component:
-    weight: 1
+    weight: 18
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_dup_request:
     weight: 16
@@ -102,14 +101,14 @@ content:
     type: number
     region: content
   field_full_denials_ex:
-    weight: 4
+    weight: 21
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_full_grants:
-    weight: 2
+    weight: 19
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -144,7 +143,7 @@ content:
     type: number
     region: content
   field_part_grants_denials:
-    weight: 3
+    weight: 20
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -172,7 +171,7 @@ content:
     type: number
     region: content
   field_total:
-    weight: 5
+    weight: 22
     settings:
       placeholder: ''
     third_party_settings: {  }

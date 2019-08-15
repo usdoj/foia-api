@@ -7,8 +7,6 @@ dependencies:
     - field.field.paragraph.foia_xii_backlogged.field_back_cur_yr
     - field.field.paragraph.foia_xii_backlogged.field_back_prev_yr
     - paragraphs.paragraphs_type.foia_xii_backlogged
-  module:
-    - entity_reference_revisions
 id: paragraph.foia_xii_backlogged.default
 targetEntityType: paragraph
 bundle: foia_xii_backlogged
@@ -21,7 +19,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_back_cur_yr:
     weight: 2

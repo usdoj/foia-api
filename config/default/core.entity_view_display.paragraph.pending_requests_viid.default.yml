@@ -15,7 +15,6 @@ dependencies:
     - field.field.paragraph.pending_requests_viid.field_sim_pend
     - paragraphs.paragraphs_type.pending_requests_viid
   module:
-    - entity_reference_revisions
     - text
 id: paragraph.pending_requests_viid.default
 targetEntityType: paragraph
@@ -26,10 +25,9 @@ content:
     weight: 9
     label: above
     settings:
-      view_mode: default
-      link: ''
+      link: true
     third_party_settings: {  }
-    type: entity_reference_revisions_entity_view
+    type: entity_reference_label
     region: content
   field_comp_avg:
     weight: 5

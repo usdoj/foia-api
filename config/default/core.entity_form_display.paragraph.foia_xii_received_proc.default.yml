@@ -10,15 +10,15 @@ dependencies:
     - field.field.paragraph.foia_xii_received_proc.field_received_last_yr
     - paragraphs.paragraphs_type.foia_xii_received_proc
   module:
-    - entity_reference_revisions
     - field_group
 third_party_settings:
   field_group:
     group_req_adm_app_rec_proc:
       children:
         - group_number_received
+        - group_agency_component
       parent_name: ''
-      weight: 20
+      weight: 1
       format_type: tabs
       format_settings:
         id: ''
@@ -29,8 +29,6 @@ third_party_settings:
       children:
         - field_received_last_yr
         - field_received_cur_yr
-        - field_proc_last_yr
-        - field_proc_cur_yr
       parent_name: group_req_adm_app_rec_proc
       weight: 20
       format_type: tab
@@ -41,6 +39,20 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'NUMBER RECEIVED'
+    group_agency_component:
+      children:
+        - field_proc_last_yr
+        - field_proc_cur_yr
+      parent_name: group_req_adm_app_rec_proc
+      weight: 21
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'NUMBER PROCESSED'
 id: paragraph.foia_xii_received_proc.default
 targetEntityType: paragraph
 bundle: foia_xii_received_proc
@@ -53,17 +65,17 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_proc_cur_yr:
-    weight: 4
+    weight: 5
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_proc_last_yr:
-    weight: 3
+    weight: 4
     settings:
       placeholder: ''
     third_party_settings: {  }

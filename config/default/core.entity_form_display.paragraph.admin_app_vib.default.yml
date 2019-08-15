@@ -10,8 +10,6 @@ dependencies:
     - field.field.paragraph.admin_app_vib.field_part_on_app
     - field.field.paragraph.admin_app_vib.field_total
     - paragraphs.paragraphs_type.admin_app_vib
-  module:
-    - entity_reference_revisions
 id: paragraph.admin_app_vib.default
 targetEntityType: paragraph
 bundle: admin_app_vib
@@ -31,7 +29,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_revisions_autocomplete
+    type: entity_reference_autocomplete
     region: content
   field_closed_oth_app:
     weight: 4
