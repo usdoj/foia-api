@@ -15,9 +15,8 @@ source:
   data_fetcher_plugin: file
   urls:
     - 'temporary://foia-xml/report.xml'
-  data_parser_plugin: xml
+  data_parser_plugin: simple_xml
   namespaces:
-    atom: 'http://www.w3.org/2005/Atom'
     iepd: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03'
     foia: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03'
     i: 'http://niem.gov/niem/appinfo/2.0'
@@ -30,11 +29,31 @@ source:
     -
       name: report_year
       label: 'Fiscal year for the current report'
-      selector: 'foia:DocumentFiscalYearDate'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
     -
       name: agency
       label: 'Standard abbreviation of the agency submitting the report'
-      selector: 'nc:Organization/nc:OrganizationAbbreviationText'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component_va
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics/@s:id'
+    -
+      name: overall_req_pend_start_yr
+      label: 'Overall requests pending at the start of the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
+    -
+      name: overall_req_received_yr
+      label: 'Overall requests received during the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsReceivedQuantity'
+    -
+      name: overall_req_processed_yr
+      label: 'Overall requests processed during the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsProcessedQuantity'
+    -
+      name: overall_req_pend_end_yr
+      label: 'Overall requests pending at the end of the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtEndQuantity'
     -
       name: footnotes_va
       label: 'V.A Footnotes'
@@ -50,6 +69,11 @@ process:
   type:
     plugin: default_value
     default_value: annual_foia_report_data
+  field_foia_annual_report_yr: report_year
+  field_agency:
+    plugin: entity_lookup
+    source: agency
+    value_key: field_agency_abbreviation
   langcode:
     plugin: default_value
     default_value: en
@@ -78,8 +102,42 @@ process:
   revision_log:
     plugin: default_value
     default_value: 'Import from NIEM-XML data'
+  field_foia_requests_va:
+    -
+      plugin: foia_array_pad
+      source: component_va
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_requests_va
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_req_pend_start_yr: overall_req_pend_start_yr
+  field_overall_req_received_yr: overall_req_received_yr
+  field_overall_req_processed_yr: overall_req_processed_yr
+  field_overall_req_pend_end_yr: overall_req_pend_end_yr
   field_footnotes_va: footnotes_va
 destination:
   plugin: 'entity:node'
 migration_dependencies:
-  required: {  }
+  required:
+    - foia_requests_va
