@@ -105,13 +105,34 @@ process:
   # Section V.A
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_requests_va:
-    plugin: migration_lookup
-    source:
-      - report_year
-      - agency
-      - component_va
-    migration:
-      - foia_requests_va
+    -
+      plugin: foia_array_pad
+      source: component_va
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_requests_va
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
   field_overall_req_pend_start_yr: overall_req_pend_start_yr
   field_overall_req_received_yr: overall_req_received_yr
   field_overall_req_processed_yr: overall_req_processed_yr
