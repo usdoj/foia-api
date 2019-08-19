@@ -26,7 +26,7 @@ Also, be sure to have Vagrant plugins installed:
 - vagrant-vbguest (0.19.0, global)
 
 To export to Word docs via PHPDocX locally:
-- Copy vendor/phpdocx/config/phpdocxconfig.ini to /phpdocxconfig.ini
+- Copy library/phpdocx/config/phpdocxconfig.ini to /phpdocxconfig.ini
 - Enter the license key documented in FOIA-21
 - You may also need to reprovision your environment to ensure that the ZipArchive and Tidy PHP extensions are enabled  
   `vagrant reload --provision`
