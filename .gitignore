@@ -1,4 +1,5 @@
 # Ignore configuration files that may contain sensitive information.
+/phpdocxconfig.ini
 local.settings.php
 local.drushrc.php
 local.aliases.drushrc.php
@@ -108,6 +109,9 @@ xhprof_*
 #Composer vendor
 vendor/
 vendor/.git
+
+# Include PHPDocX library
+!vendor/phpdocx
 
 #Sass
 .sass-cache
