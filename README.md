@@ -28,6 +28,8 @@ Also, be sure to have Vagrant plugins installed:
 To export to Word docs via PHPDocX locally:
 - Copy vendor/phpdocx/config/phpdocxconfig.ini to /phpdocxconfig.ini
 - Enter the license key documented in FOIA-21
+- You may also need to reprovision your environment to ensure that the ZipArchive and Tidy PHP extensions are enabled  
+  `vagrant reload --provision`
 
 ## Resources
 
