@@ -313,7 +313,9 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_sub_xia
     - field.field.node.annual_foia_report_data.field_sub_xib
     - node.type.annual_foia_report_data
+    - workflows.workflow.annual_report_workflow
   module:
+    - content_moderation
     - datetime
     - field_group
     - paragraphs
@@ -4083,12 +4085,10 @@ content:
     third_party_settings: {  }
     region: content
   moderation_state:
-    type: string_textfield
+    type: moderation_state_default
     weight: 35
     region: content
-    settings:
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield
