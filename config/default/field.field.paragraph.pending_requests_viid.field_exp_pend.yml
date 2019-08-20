@@ -1,10 +1,12 @@
-uuid: 07ab4e65-de98-4ec4-839c-31661ff7d59e
+uuid: c01fd469-2c0b-487d-a5c5-f7bba4906331
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_exp_pend
     - paragraphs.paragraphs_type.pending_requests_viid
+  module:
+    - text
 id: paragraph.pending_requests_viid.field_exp_pend
 field_name: field_exp_pend
 entity_type: paragraph
@@ -15,9 +17,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  min: null
-  max: null
-  prefix: ''
-  suffix: ''
-field_type: integer
+settings: {  }
+field_type: text

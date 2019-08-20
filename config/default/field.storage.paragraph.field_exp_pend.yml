@@ -1,21 +1,21 @@
-uuid: 0cf0dd78-c721-402f-b957-f8a59b1e7221
+uuid: c640775c-6cbb-470c-9b23-32cb3d0e5b51
 langcode: en
 status: true
 dependencies:
   module:
     - field_permissions
     - paragraphs
+    - text
 third_party_settings:
   field_permissions:
     permission_type: public
 id: paragraph.field_exp_pend
 field_name: field_exp_pend
 entity_type: paragraph
-type: integer
+type: text
 settings:
-  unsigned: false
-  size: normal
-module: core
+  max_length: 255
+module: text
 locked: false
 cardinality: 1
 translatable: true

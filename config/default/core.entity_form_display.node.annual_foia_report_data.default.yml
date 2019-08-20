@@ -361,7 +361,7 @@ third_party_settings:
         - field_foia_requests_vb1
         - group_agency_overall_v_b_1_
       parent_name: group_tabs
-      weight: 5
+      weight: 6
       format_type: tab
       format_settings:
         label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
@@ -373,8 +373,8 @@ third_party_settings:
       label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
     group_overall_vb1_num_full_deny:
       children: {  }
-      parent_name: ''
-      weight: 22
+      parent_name: group_tabs
+      weight: 5
       format_type: tab
       format_settings:
         label: 'V.B.(1). --- Number of Full Denials Based on Reasons Other than Exemptions'
@@ -409,7 +409,7 @@ third_party_settings:
         - field_overall_vb2_total
         - field_footnotes_vb2
       parent_name: ''
-      weight: 6
+      weight: 2
       format_type: tab
       format_settings:
         id: ''
@@ -432,7 +432,7 @@ third_party_settings:
         - field_overall_vb3_ex_9
         - field_footnotes_vb3
       parent_name: ''
-      weight: 7
+      weight: 3
       format_type: tab
       format_settings:
         id: ''
@@ -450,7 +450,7 @@ third_party_settings:
         - field_overall_via_app_pend_endyr
         - field_footnotes_via
       parent_name: ''
-      weight: 8
+      weight: 4
       format_type: tab
       format_settings:
         id: ''
@@ -475,7 +475,7 @@ third_party_settings:
         - field_overall_vic2_oth
         - field_footnotes_vic2
       parent_name: ''
-      weight: 11
+      weight: 7
       format_type: tab
       format_settings:
         id: ''
@@ -503,7 +503,7 @@ third_party_settings:
         - field_overall_vic1_ex_9
         - field_footnotes_vic1
       parent_name: ''
-      weight: 10
+      weight: 6
       format_type: tab
       format_settings:
         id: ''
@@ -522,7 +522,7 @@ third_party_settings:
         - field_overall_vib_total
         - field_footnotes_vib
       parent_name: ''
-      weight: 9
+      weight: 5
       format_type: tab
       format_settings:
         id: ''
@@ -539,7 +539,7 @@ third_party_settings:
         - field_overall_vic3_total
         - field_footnotes_vic3
       parent_name: ''
-      weight: 12
+      weight: 8
       format_type: tab
       format_settings:
         id: ''
@@ -557,7 +557,7 @@ third_party_settings:
         - field_overall_vic4_high_num_days
         - field_footnotes_vic4
       parent_name: ''
-      weight: 13
+      weight: 9
       format_type: tab
       format_settings:
         id: ''
@@ -568,20 +568,19 @@ third_party_settings:
       label: 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS'
     group_vi_c_5_ten_oldest_pending_:
       children:
-        - field_admin_app_vic5
-        - group_vi_c_5_10th
-        - group_vi_c_5_9th
-        - group_vi_c_5_8th
-        - group_vi_c_5_7th
-        - group_vi_c_5_6th
-        - group_vi_c_5_5th
-        - group_vi_c_5_4th
-        - group_vi_c_5_3rd
-        - group_vi_c_5_2nd
         - group_vi_c_5_oldest_appeal
+        - group_vi_c_5_2nd
+        - group_vi_c_5_3rd
+        - group_vi_c_5_4th
+        - group_vi_c_5_5th
+        - group_vi_c_5_6th
+        - group_vi_c_5_7th
+        - group_vi_c_5_8th
+        - group_vi_c_5_9th
+        - group_vi_c_5_10th
         - field_footnotes_vic5
       parent_name: ''
-      weight: 14
+      weight: 11
       format_type: tabs
       format_settings:
         id: ''
@@ -593,7 +592,7 @@ third_party_settings:
         - field_overall_vic5_date_10
         - field_overall_vic5_num_day_10
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 34
+      weight: 44
       format_type: tab
       format_settings:
         id: ''
@@ -607,7 +606,7 @@ third_party_settings:
         - field_overall_vic5_date_9
         - field_overall_vic5_num_day_9
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 35
+      weight: 43
       format_type: tab
       format_settings:
         id: ''
@@ -621,7 +620,7 @@ third_party_settings:
         - field_overall_vic5_date_8
         - field_overall_vic5_num_day_8
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 36
+      weight: 42
       format_type: tab
       format_settings:
         id: ''
@@ -635,7 +634,7 @@ third_party_settings:
         - field_overall_vic5_date_7
         - field_overall_vic5_num_day_7
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 37
+      weight: 41
       format_type: tab
       format_settings:
         id: ''
@@ -649,7 +648,7 @@ third_party_settings:
         - field_overall_vic5_date_6
         - field_overall_vic5_num_day_6
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 38
+      weight: 40
       format_type: tab
       format_settings:
         id: ''
@@ -677,7 +676,7 @@ third_party_settings:
         - field_overall_vic5_date_4
         - field_overall_vic5_num_day_4
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 40
+      weight: 38
       format_type: tab
       format_settings:
         id: ''
@@ -691,7 +690,7 @@ third_party_settings:
         - field_overall_vic5_date_3
         - field_overall_vic5_num_day_3
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 41
+      weight: 37
       format_type: tab
       format_settings:
         id: ''
@@ -705,7 +704,7 @@ third_party_settings:
         - field_overall_vic5_date_2
         - field_overall_vic5_num_day_2
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 42
+      weight: 36
       format_type: tab
       format_settings:
         id: ''
@@ -719,7 +718,7 @@ third_party_settings:
         - field_overall_vic5_date_1
         - field_overall_vic5_num_day_1
       parent_name: group_vi_c_5_ten_oldest_pending_
-      weight: 43
+      weight: 35
       format_type: tab
       format_settings:
         id: ''
@@ -730,13 +729,12 @@ third_party_settings:
       label: 'VI.C.(5). -- Oldest Appeal'
     group_vii_a_foia_requests_respon:
       children:
-        - field_proc_req_viia
         - group_vii_a_foia_requests_simple
         - group_vii_a_foia_requests_comple
         - group_vii_a_foia_requests_expedi
         - field_footnotes_viia
       parent_name: ''
-      weight: 15
+      weight: 13
       format_type: tabs
       format_settings:
         id: ''
@@ -793,13 +791,12 @@ third_party_settings:
       label: 'VII.A. FOIA REQUESTS -- Expedited Processing'
     group_vii_b_processed_requests_r:
       children:
-        - field_proc_req_viib
         - group_vii_b_processed_requests_s
         - group_vii_b_processed_requests_c
         - group_vii_b_processed_requests_e
         - field_footnotes_viib
       parent_name: ''
-      weight: 16
+      weight: 15
       format_type: tabs
       format_settings:
         id: ''
@@ -940,13 +937,12 @@ third_party_settings:
       label: 'VII.C.3 PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS '
     group_vii_d_pending_requests_all:
       children:
-        - field_pending_requests_vii_d_
         - group_vii_d_pending_requests_sim
         - group_vii_d_pending_requests_com
         - group_vii_d_pending_requests_exp
         - field_footnotes_viid
       parent_name: ''
-      weight: 20
+      weight: 21
       format_type: tabs
       format_settings:
         id: ''
@@ -1000,20 +996,19 @@ third_party_settings:
       label: 'VII.D. PENDING REQUESTS -- Complex'
     group_vii_e_pending_requests_ten:
       children:
-        - field_admin_app_viie
-        - group_vii_e_pending_requests_10t
-        - group_vii_e_pending_requests_9th
-        - group_vii_e_pending_requests_8th
-        - group_vii_e_pending_requests_7th
-        - group_vii_e_pending_requests_6th
-        - group_vii_e_pending_requests_5th
-        - group_vii_e_pending_requests_4th
-        - group_vii_e_pending_requests_3rd
-        - group_vii_e_pending_requests_2nd
         - group_vii_e_pending_requests_old
+        - group_vii_e_pending_requests_2nd
+        - group_vii_e_pending_requests_3rd
+        - group_vii_e_pending_requests_4th
+        - group_vii_e_pending_requests_5th
+        - group_vii_e_pending_requests_6th
+        - group_vii_e_pending_requests_7th
+        - group_vii_e_pending_requests_8th
+        - group_vii_e_pending_requests_9th
+        - group_vii_e_pending_requests_10t
         - field_footnotes_viie
       parent_name: ''
-      weight: 21
+      weight: 23
       format_type: tabs
       format_settings:
         id: ''
@@ -1025,7 +1020,7 @@ third_party_settings:
         - field_overall_viie_date_10
         - field_overall_viie_num_days_10
       parent_name: group_vii_e_pending_requests_ten
-      weight: 34
+      weight: 44
       format_type: tab
       format_settings:
         id: ''
@@ -1039,7 +1034,7 @@ third_party_settings:
         - field_overall_viie_date_9
         - field_overall_viie_num_days_9
       parent_name: group_vii_e_pending_requests_ten
-      weight: 35
+      weight: 43
       format_type: tab
       format_settings:
         id: ''
@@ -1053,7 +1048,7 @@ third_party_settings:
         - field_overall_viie_date_8
         - field_overall_viie_num_days_8
       parent_name: group_vii_e_pending_requests_ten
-      weight: 36
+      weight: 42
       format_type: tab
       format_settings:
         id: ''
@@ -1067,7 +1062,7 @@ third_party_settings:
         - field_overall_viie_date_7
         - field_overall_viie_num_days_7
       parent_name: group_vii_e_pending_requests_ten
-      weight: 37
+      weight: 41
       format_type: tab
       format_settings:
         id: ''
@@ -1081,7 +1076,7 @@ third_party_settings:
         - field_overall_viie_date_6
         - field_overall_viie_num_days_6
       parent_name: group_vii_e_pending_requests_ten
-      weight: 38
+      weight: 40
       format_type: tab
       format_settings:
         id: ''
@@ -1109,7 +1104,7 @@ third_party_settings:
         - field_overall_viie_date_4
         - field_overall_viie_num_days_4
       parent_name: group_vii_e_pending_requests_ten
-      weight: 40
+      weight: 38
       format_type: tab
       format_settings:
         id: ''
@@ -1123,7 +1118,7 @@ third_party_settings:
         - field_overall_viie_date_3
         - field_overall_viie_num_days_3
       parent_name: group_vii_e_pending_requests_ten
-      weight: 41
+      weight: 37
       format_type: tab
       format_settings:
         id: ''
@@ -1137,7 +1132,7 @@ third_party_settings:
         - field_overall_viie_date_2
         - field_overall_viie_num_days_2
       parent_name: group_vii_e_pending_requests_ten
-      weight: 42
+      weight: 36
       format_type: tab
       format_settings:
         id: ''
@@ -1151,7 +1146,7 @@ third_party_settings:
         - field_overall_viie_date_1
         - field_overall_viie_num_days_1
       parent_name: group_vii_e_pending_requests_ten
-      weight: 43
+      weight: 35
       format_type: tab
       format_settings:
         id: ''
@@ -1170,7 +1165,7 @@ third_party_settings:
         - field_overall_viiia_num_jud_w10
         - field_footnotes_viiia
       parent_name: ''
-      weight: 22
+      weight: 24
       format_type: tab
       format_settings:
         id: ''
@@ -1188,7 +1183,7 @@ third_party_settings:
         - field_overall_viiib_avg_days_jud
         - field_footnotes_viiib
       parent_name: ''
-      weight: 23
+      weight: 25
       format_type: tab
       format_settings:
         id: ''
@@ -1199,12 +1194,11 @@ third_party_settings:
       label: 'VIII.B. Requests for Fee Waiver'
     group_ix_foia_personnel_and_cost:
       children:
-        - field_foia_pers_costs_ix
         - group_ix_personnel
         - group_ix_costs
         - field_footnotes_ix
       parent_name: ''
-      weight: 24
+      weight: 28
       format_type: tabs
       format_settings:
         id: ''
@@ -1247,7 +1241,7 @@ third_party_settings:
         - field_overall_x_total_fees
         - field_overall_x_perc_costs
         - field_footnotes_x
-      weight: 25
+      weight: 29
       format_type: tab
       format_settings:
         id: ''
@@ -1263,7 +1257,7 @@ third_party_settings:
         - field_overall_xia_sub_used
         - field_footnotes_xia
       parent_name: ''
-      weight: 26
+      weight: 30
       format_type: tab
       format_settings:
         id: ''
@@ -1279,7 +1273,7 @@ third_party_settings:
         - field_overall_xib_rec_post_prog
         - field_footnotes_xib
       parent_name: ''
-      weight: 27
+      weight: 31
       format_type: tab
       format_settings:
         id: ''
@@ -1295,7 +1289,7 @@ third_party_settings:
         - field_overall_xiia_back_app_end_
         - field_footnotes_xiia
       parent_name: ''
-      weight: 28
+      weight: 32
       format_type: tab
       format_settings:
         id: ''
@@ -1313,7 +1307,7 @@ third_party_settings:
         - field_overall_xiib_pend_end_yr
         - field_footnotes_xiib
       parent_name: ''
-      weight: 29
+      weight: 33
       format_type: tab
       format_settings:
         id: ''
@@ -1324,20 +1318,19 @@ third_party_settings:
       label: 'XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS'
     group_xii_c_consultations_on_foi:
       children:
-        - field_foia_xiic
-        - group_xii_c_10th
-        - group_xii_c_8th
-        - group_xii_c_7th
-        - group_xii_c_6th
-        - group_xii_c_5th
-        - group_xii_c_4th
-        - group_xii_c_9th
-        - group_xii_c_3rd
-        - group_xii_c_2nd
         - group_xii_c_oldest_consultation
+        - group_xii_c_2nd
+        - group_xii_c_3rd
+        - group_xii_c_4th
+        - group_xii_c_5th
+        - group_xii_c_6th
+        - group_xii_c_7th
+        - group_xii_c_8th
+        - group_xii_c_9th
+        - group_xii_c_10th
         - field_footnotes_xiic
       parent_name: ''
-      weight: 30
+      weight: 35
       format_type: tabs
       format_settings:
         id: ''
@@ -1349,7 +1342,7 @@ third_party_settings:
         - field_overall_xiic_date_10
         - field_overall_xiic_num_days_10
       parent_name: group_xii_c_consultations_on_foi
-      weight: 133
+      weight: 143
       format_type: tab
       format_settings:
         id: ''
@@ -1363,7 +1356,7 @@ third_party_settings:
         - field_overall_xiic_date_9
         - field_overall_xiic_num_days_9
       parent_name: group_xii_c_consultations_on_foi
-      weight: 139
+      weight: 142
       format_type: tab
       format_settings:
         id: ''
@@ -1377,7 +1370,7 @@ third_party_settings:
         - field_overall_xiic_date_8
         - field_overall_xiic_num_days_8
       parent_name: group_xii_c_consultations_on_foi
-      weight: 134
+      weight: 141
       format_type: tab
       format_settings:
         id: ''
@@ -1391,7 +1384,7 @@ third_party_settings:
         - field_overall_xiic_date_7
         - field_overall_xiic_num_days_7
       parent_name: group_xii_c_consultations_on_foi
-      weight: 135
+      weight: 140
       format_type: tab
       format_settings:
         id: ''
@@ -1405,7 +1398,7 @@ third_party_settings:
         - field_overall_xiic_date_6
         - field_overall_xiic_num_days_6
       parent_name: group_xii_c_consultations_on_foi
-      weight: 136
+      weight: 139
       format_type: tab
       format_settings:
         id: ''
@@ -1419,7 +1412,7 @@ third_party_settings:
         - field_overall_xiic_date_5
         - field_overall_xiic_num_days_5
       parent_name: group_xii_c_consultations_on_foi
-      weight: 137
+      weight: 138
       format_type: tab
       format_settings:
         id: ''
@@ -1433,7 +1426,7 @@ third_party_settings:
         - field_overall_xiic_date_4
         - field_overall_xiic_num_days_4
       parent_name: group_xii_c_consultations_on_foi
-      weight: 138
+      weight: 137
       format_type: tab
       format_settings:
         id: ''
@@ -1447,7 +1440,7 @@ third_party_settings:
         - field_overall_xiic_date_3
         - field_overall_xiic_num_days_3
       parent_name: group_xii_c_consultations_on_foi
-      weight: 140
+      weight: 136
       format_type: tab
       format_settings:
         id: ''
@@ -1461,7 +1454,7 @@ third_party_settings:
         - field_overall_xiic_date_2
         - field_overall_xiic_num_days_2
       parent_name: group_xii_c_consultations_on_foi
-      weight: 141
+      weight: 135
       format_type: tab
       format_settings:
         id: ''
@@ -1475,7 +1468,7 @@ third_party_settings:
         - field_overall_xiic_date_1
         - field_overall_xiic_num_days_1
       parent_name: group_xii_c_consultations_on_foi
-      weight: 142
+      weight: 134
       format_type: tab
       format_settings:
         id: ''
@@ -1486,12 +1479,11 @@ third_party_settings:
       label: 'XII.C. -- Oldest Consultation'
     group_xii_d_1_comparison_of_numb:
       children:
-        - field_foia_xiid1
         - group_xiid1_num_reqs_proc
         - group_xiid1_num_reqs_recd
         - field_footnotes_xiid1
       parent_name: ''
-      weight: 31
+      weight: 37
       format_type: tabs
       format_settings:
         id: ''
@@ -1529,11 +1521,11 @@ third_party_settings:
     group_xii_d_2_comparison_of_numb:
       children:
         - field_foia_xiid2
-        - field_overall_xiid2_back_cur_yr
         - field_overall_xiid2_back_prev_yr
+        - field_overall_xiid2_back_cur_yr
         - field_footnotes_xiid2
       parent_name: ''
-      weight: 32
+      weight: 38
       format_type: tab
       format_settings:
         id: ''
@@ -1544,12 +1536,11 @@ third_party_settings:
       label: 'XII.D.(2). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED REQUESTS'
     group_xii_e_1_comparison_of_numb:
       children:
-        - field_foia_xiie1
         - group_xiie1_num_appeals_recd
         - group_xiie1_num_appeals_proc
         - field_footnotes_xiie1
       parent_name: ''
-      weight: 33
+      weight: 40
       format_type: tabs
       format_settings:
         id: ''
@@ -1563,7 +1554,7 @@ third_party_settings:
         - field_overall_xiie2_back_cur_yr
         - field_footnotes_xiie2
       parent_name: ''
-      weight: 34
+      weight: 41
       format_type: tab
       format_settings:
         id: ''
@@ -1574,8 +1565,8 @@ third_party_settings:
       label: 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
     group_xiie1_num_appeals_recd:
       children:
+        - field_overall_xiie1_received_las
         - field_overall_xiie1_received_cur
-        - field_overall_xiie1_proc_last_yr
       parent_name: group_xii_e_1_comparison_of_numb
       weight: 36
       format_type: tab
@@ -1588,7 +1579,7 @@ third_party_settings:
       label: 'XII.E.(1). -- NUMBER OF APPEALS RECEIVED'
     group_xiie1_num_appeals_proc:
       children:
-        - field_overall_xiie1_received_las
+        - field_overall_xiie1_proc_last_yr
         - field_overall_xiie1_proc_cur_yr
       parent_name: group_xii_e_1_comparison_of_numb
       weight: 37
@@ -1605,6 +1596,7 @@ third_party_settings:
         - group_agency_info
         - group_iv_exemption_3_statutes
         - group_v_a_foia_requests_received
+        - group_overall_vb1_num_full_deny
         - group_overall_vb1_main
       parent_name: ''
       weight: 1
@@ -1742,7 +1734,7 @@ content:
     region: content
   field_admin_app_vic5:
     type: entity_reference_paragraphs
-    weight: 33
+    weight: 10
     region: content
     settings:
       title: Paragraph
@@ -1754,7 +1746,7 @@ content:
     third_party_settings: {  }
   field_admin_app_viie:
     type: entity_reference_paragraphs
-    weight: 33
+    weight: 22
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -1817,7 +1809,7 @@ content:
     region: content
   field_foia_pers_costs_ix:
     type: entity_reference_paragraphs
-    weight: 42
+    weight: 27
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -1901,7 +1893,7 @@ content:
     region: content
   field_foia_xiic:
     type: entity_reference_paragraphs
-    weight: 132
+    weight: 34
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -1913,7 +1905,7 @@ content:
     region: content
   field_foia_xiid1:
     type: entity_reference_paragraphs
-    weight: 35
+    weight: 36
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -1937,7 +1929,7 @@ content:
     region: content
   field_foia_xiie1:
     type: entity_reference_paragraphs
-    weight: 35
+    weight: 39
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -1985,7 +1977,7 @@ content:
     third_party_settings: {  }
   field_footnotes_vb1:
     type: text_textarea
-    weight: 24
+    weight: 26
     region: content
     settings:
       rows: 5
@@ -2049,7 +2041,7 @@ content:
     third_party_settings: {  }
   field_footnotes_vic4:
     type: text_textarea
-    weight: 29
+    weight: 28
     region: content
     settings:
       rows: 5
@@ -2113,7 +2105,7 @@ content:
     third_party_settings: {  }
   field_footnotes_viie:
     type: text_textarea
-    weight: 44
+    weight: 45
     region: content
     settings:
       rows: 5
@@ -2177,7 +2169,7 @@ content:
     third_party_settings: {  }
   field_footnotes_xiic:
     type: text_textarea
-    weight: 143
+    weight: 144
     region: content
     settings:
       rows: 5
@@ -2726,7 +2718,7 @@ content:
     type: number
     region: content
   field_overall_vic4_high_num_days:
-    weight: 28
+    weight: 27
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -3771,7 +3763,7 @@ content:
     type: number
     region: content
   field_overall_xiic_date_1:
-    weight: 28
+    weight: 143
     settings:
       size: 60
       placeholder: ''
@@ -3851,7 +3843,7 @@ content:
     type: text_textfield
     region: content
   field_overall_xiic_num_days_1:
-    weight: 29
+    weight: 144
     settings:
       size: 60
       placeholder: ''
@@ -3891,7 +3883,7 @@ content:
     type: text_textfield
     region: content
   field_overall_xiic_num_days_5:
-    weight: 141
+    weight: 142
     settings:
       size: 60
       placeholder: ''
@@ -3959,35 +3951,35 @@ content:
     type: number
     region: content
   field_overall_xiid2_back_cur_yr:
-    weight: 38
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_overall_xiid2_back_prev_yr:
     weight: 39
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
+  field_overall_xiid2_back_prev_yr:
+    weight: 38
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
   field_overall_xiie1_proc_cur_yr:
-    weight: 46
+    weight: 47
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_xiie1_proc_last_yr:
-    weight: 45
+    weight: 46
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_xiie1_received_cur:
-    weight: 44
+    weight: 46
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -4016,7 +4008,7 @@ content:
     region: content
   field_pending_requests_vii_d_:
     type: entity_reference_paragraphs
-    weight: 32
+    weight: 20
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -4028,7 +4020,7 @@ content:
     region: content
   field_proc_req_viia:
     type: entity_reference_paragraphs
-    weight: 52
+    weight: 12
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -4040,7 +4032,7 @@ content:
     region: content
   field_proc_req_viib:
     type: entity_reference_paragraphs
-    weight: 51
+    weight: 14
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -4148,7 +4140,7 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 35
+    weight: 42
     region: content
     settings: {  }
     third_party_settings: {  }

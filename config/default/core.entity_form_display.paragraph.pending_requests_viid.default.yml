@@ -28,9 +28,10 @@ third_party_settings:
       weight: 1
       format_type: tabs
       format_settings:
+        label: 'Pending Requests VII. D.'
+        direction: vertical
         id: ''
         classes: ''
-        direction: horizontal
       label: 'Pending Requests VII. D.'
     group_simple:
       children:
@@ -116,7 +117,7 @@ content:
     type: text_textfield
     region: content
   field_exp_avg:
-    weight: 9
+    weight: 25
     settings:
       size: 60
       placeholder: ''
@@ -124,7 +125,7 @@ content:
     type: text_textfield
     region: content
   field_exp_med:
-    weight: 8
+    weight: 24
     settings:
       size: 60
       placeholder: ''
@@ -132,11 +133,12 @@ content:
     type: text_textfield
     region: content
   field_exp_pend:
-    weight: 7
+    weight: 23
     settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: number
+    type: text_textfield
     region: content
   field_sim_avg:
     weight: 3
