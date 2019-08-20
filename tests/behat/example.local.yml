@@ -31,15 +31,9 @@ local:
       # set default command for "Show last response" step.
       show_cmd: "open %s"
       # use the following lines to disable SSL authentication for goutte.
-      # goutte:
-      #   guzzle_parameters:
-      #     redirect.disable: true
-      #     ssl.certificate_authority: system
-      #     curl.options:
-      #       CURLOPT_SSL_VERIFYPEER: false
-      #       CURLOPT_SSL_VERIFYHOST: false
-      #       CURLOPT_CERTINFO: false
-      #       CURLOPT_TIMEOUT: 120
+      goutte:
+        guzzle_parameters:
+          verify: false
       selenium2:
         wd_host: ${behat.selenium.url}
         browser: chrome
