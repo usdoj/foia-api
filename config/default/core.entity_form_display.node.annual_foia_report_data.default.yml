@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_admin_app_vic5
     - field.field.node.annual_foia_report_data.field_admin_app_viie
     - field.field.node.annual_foia_report_data.field_agency
+    - field.field.node.annual_foia_report_data.field_agency_abbr
     - field.field.node.annual_foia_report_data.field_agency_components
     - field.field.node.annual_foia_report_data.field_date_prepared
     - field.field.node.annual_foia_report_data.field_fees_x
@@ -310,6 +311,7 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_proc_req_viic3
     - field.field.node.annual_foia_report_data.field_req_viiia
     - field.field.node.annual_foia_report_data.field_req_viiib
+    - field.field.node.annual_foia_report_data.field_statute_iv
     - field.field.node.annual_foia_report_data.field_sub_xia
     - field.field.node.annual_foia_report_data.field_sub_xib
     - node.type.annual_foia_report_data
@@ -324,9 +326,10 @@ third_party_settings:
   field_group:
     group_iv_exemption_3_statutes:
       children:
+        - field_statute_iv
         - field_footnotes_iv
-      parent_name: ''
-      weight: 2
+      parent_name: group_tabs
+      weight: 3
       format_type: tab
       format_settings:
         id: ''
@@ -343,8 +346,8 @@ third_party_settings:
         - field_overall_req_processed_yr
         - field_overall_req_pend_end_yr
         - field_footnotes_va
-      parent_name: ''
-      weight: 3
+      parent_name: group_tabs
+      weight: 4
       format_type: tab
       format_settings:
         id: ''
@@ -353,51 +356,25 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS '
-    group_vb1_disp_foia_proc_reqs:
-      children:
-        - field_foia_requests_vb1
-        - group_overall_vb1_main
-        - group_overall_vb1_num_full_deny
-        - field_overall_vb1_total
-        - field_footnotes_vb1
-      parent_name: ''
-      weight: 4
-      format_type: tabs
-      format_settings:
-        label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
-        direction: vertical
-        id: ''
-        classes: ''
-      label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
     group_overall_vb1_main:
       children:
-        - field_overall_vb1_full_grants
-        - field_overall_vb1_part_grants_de
-        - field_overall_vb1_full_denials_e
-      parent_name: group_vb1_disp_foia_proc_reqs
+        - field_foia_requests_vb1
+        - group_agency_overall_v_b_1_
+      parent_name: group_tabs
       weight: 5
       format_type: tab
       format_settings:
-        label: 'V.B.(1). --- Main'
+        label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
-      label: 'V.B.(1). --- Main'
+      label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
     group_overall_vb1_num_full_deny:
-      children:
-        - field_overall_vb1_no_rec
-        - field_overall_vb1_rec_ref_to_an_
-        - field_overall_vb1_req_withdrawn
-        - field_overall_vb1_fee_related_re
-        - field_overall_vb1_rec_not_desc
-        - field_overall_vb1_imp_req_oth_re
-        - field_overall_vb1_not_agency_rec
-        - field_overall_vb1_dup_request
-        - field_overall_vb1_oth
-      parent_name: group_vb1_disp_foia_proc_reqs
-      weight: 6
+      children: {  }
+      parent_name: ''
+      weight: 22
       format_type: tab
       format_settings:
         label: 'V.B.(1). --- Number of Full Denials Based on Reasons Other than Exemptions'
@@ -410,18 +387,20 @@ third_party_settings:
     group_agency_info:
       children:
         - field_agency
+        - field_agency_abbr
         - field_agency_components
         - field_foia_annual_report_yr
         - field_date_prepared
-      parent_name: ''
-      weight: 1
+      parent_name: group_tabs
+      weight: 2
       format_type: tab
       format_settings:
-        id: ''
-        classes: ''
+        label: 'Agency Info'
         formatter: open
         description: ''
         required_fields: true
+        id: ''
+        classes: ''
       label: 'Agency Info'
     group_v_b_2_disposition_of_foia_:
       children:
@@ -430,7 +409,7 @@ third_party_settings:
         - field_overall_vb2_total
         - field_footnotes_vb2
       parent_name: ''
-      weight: 5
+      weight: 6
       format_type: tab
       format_settings:
         id: ''
@@ -453,7 +432,7 @@ third_party_settings:
         - field_overall_vb3_ex_9
         - field_footnotes_vb3
       parent_name: ''
-      weight: 6
+      weight: 7
       format_type: tab
       format_settings:
         id: ''
@@ -471,7 +450,7 @@ third_party_settings:
         - field_overall_via_app_pend_endyr
         - field_footnotes_via
       parent_name: ''
-      weight: 7
+      weight: 8
       format_type: tab
       format_settings:
         id: ''
@@ -496,7 +475,7 @@ third_party_settings:
         - field_overall_vic2_oth
         - field_footnotes_vic2
       parent_name: ''
-      weight: 10
+      weight: 11
       format_type: tab
       format_settings:
         id: ''
@@ -524,7 +503,7 @@ third_party_settings:
         - field_overall_vic1_ex_9
         - field_footnotes_vic1
       parent_name: ''
-      weight: 9
+      weight: 10
       format_type: tab
       format_settings:
         id: ''
@@ -543,7 +522,7 @@ third_party_settings:
         - field_overall_vib_total
         - field_footnotes_vib
       parent_name: ''
-      weight: 8
+      weight: 9
       format_type: tab
       format_settings:
         id: ''
@@ -560,7 +539,7 @@ third_party_settings:
         - field_overall_vic3_total
         - field_footnotes_vic3
       parent_name: ''
-      weight: 11
+      weight: 12
       format_type: tab
       format_settings:
         id: ''
@@ -578,7 +557,7 @@ third_party_settings:
         - field_overall_vic4_high_num_days
         - field_footnotes_vic4
       parent_name: ''
-      weight: 12
+      weight: 13
       format_type: tab
       format_settings:
         id: ''
@@ -602,7 +581,7 @@ third_party_settings:
         - group_vi_c_5_oldest_appeal
         - field_footnotes_vic5
       parent_name: ''
-      weight: 13
+      weight: 14
       format_type: tabs
       format_settings:
         id: ''
@@ -757,7 +736,7 @@ third_party_settings:
         - group_vii_a_foia_requests_expedi
         - field_footnotes_viia
       parent_name: ''
-      weight: 14
+      weight: 15
       format_type: tabs
       format_settings:
         id: ''
@@ -820,7 +799,7 @@ third_party_settings:
         - group_vii_b_processed_requests_e
         - field_footnotes_viib
       parent_name: ''
-      weight: 15
+      weight: 16
       format_type: tabs
       format_settings:
         id: ''
@@ -894,7 +873,7 @@ third_party_settings:
         - field_overall_viic1_total
         - field_footnotes_viic1
       parent_name: ''
-      weight: 16
+      weight: 17
       format_type: tab
       format_settings:
         id: ''
@@ -922,7 +901,7 @@ third_party_settings:
         - field_overall_viic2_total
         - field_footnotes_viic2
       parent_name: ''
-      weight: 17
+      weight: 18
       format_type: tab
       format_settings:
         id: ''
@@ -950,7 +929,7 @@ third_party_settings:
         - field_overall_viic3_total
         - field_footnotes_viic3
       parent_name: ''
-      weight: 18
+      weight: 19
       format_type: tab
       format_settings:
         id: ''
@@ -967,7 +946,7 @@ third_party_settings:
         - group_vii_d_pending_requests_exp
         - field_footnotes_viid
       parent_name: ''
-      weight: 19
+      weight: 20
       format_type: tabs
       format_settings:
         id: ''
@@ -1034,7 +1013,7 @@ third_party_settings:
         - group_vii_e_pending_requests_old
         - field_footnotes_viie
       parent_name: ''
-      weight: 20
+      weight: 21
       format_type: tabs
       format_settings:
         id: ''
@@ -1191,7 +1170,7 @@ third_party_settings:
         - field_overall_viiia_num_jud_w10
         - field_footnotes_viiia
       parent_name: ''
-      weight: 21
+      weight: 22
       format_type: tab
       format_settings:
         id: ''
@@ -1209,7 +1188,7 @@ third_party_settings:
         - field_overall_viiib_avg_days_jud
         - field_footnotes_viiib
       parent_name: ''
-      weight: 22
+      weight: 23
       format_type: tab
       format_settings:
         id: ''
@@ -1225,7 +1204,7 @@ third_party_settings:
         - group_ix_costs
         - field_footnotes_ix
       parent_name: ''
-      weight: 23
+      weight: 24
       format_type: tabs
       format_settings:
         id: ''
@@ -1268,7 +1247,7 @@ third_party_settings:
         - field_overall_x_total_fees
         - field_overall_x_perc_costs
         - field_footnotes_x
-      weight: 24
+      weight: 25
       format_type: tab
       format_settings:
         id: ''
@@ -1284,7 +1263,7 @@ third_party_settings:
         - field_overall_xia_sub_used
         - field_footnotes_xia
       parent_name: ''
-      weight: 25
+      weight: 26
       format_type: tab
       format_settings:
         id: ''
@@ -1300,7 +1279,7 @@ third_party_settings:
         - field_overall_xib_rec_post_prog
         - field_footnotes_xib
       parent_name: ''
-      weight: 26
+      weight: 27
       format_type: tab
       format_settings:
         id: ''
@@ -1316,7 +1295,7 @@ third_party_settings:
         - field_overall_xiia_back_app_end_
         - field_footnotes_xiia
       parent_name: ''
-      weight: 27
+      weight: 28
       format_type: tab
       format_settings:
         id: ''
@@ -1334,7 +1313,7 @@ third_party_settings:
         - field_overall_xiib_pend_end_yr
         - field_footnotes_xiib
       parent_name: ''
-      weight: 28
+      weight: 29
       format_type: tab
       format_settings:
         id: ''
@@ -1358,7 +1337,7 @@ third_party_settings:
         - group_xii_c_oldest_consultation
         - field_footnotes_xiic
       parent_name: ''
-      weight: 29
+      weight: 30
       format_type: tabs
       format_settings:
         id: ''
@@ -1512,7 +1491,7 @@ third_party_settings:
         - group_xiid1_num_reqs_recd
         - field_footnotes_xiid1
       parent_name: ''
-      weight: 30
+      weight: 31
       format_type: tabs
       format_settings:
         id: ''
@@ -1554,7 +1533,7 @@ third_party_settings:
         - field_overall_xiid2_back_prev_yr
         - field_footnotes_xiid2
       parent_name: ''
-      weight: 31
+      weight: 32
       format_type: tab
       format_settings:
         id: ''
@@ -1570,7 +1549,7 @@ third_party_settings:
         - group_xiie1_num_appeals_proc
         - field_footnotes_xiie1
       parent_name: ''
-      weight: 32
+      weight: 33
       format_type: tabs
       format_settings:
         id: ''
@@ -1584,7 +1563,7 @@ third_party_settings:
         - field_overall_xiie2_back_cur_yr
         - field_footnotes_xiie2
       parent_name: ''
-      weight: 33
+      weight: 34
       format_type: tab
       format_settings:
         id: ''
@@ -1595,8 +1574,8 @@ third_party_settings:
       label: 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
     group_xiie1_num_appeals_recd:
       children:
-        - field_overall_xiie1_proc_last_yr
         - field_overall_xiie1_received_cur
+        - field_overall_xiie1_proc_last_yr
       parent_name: group_xii_e_1_comparison_of_numb
       weight: 36
       format_type: tab
@@ -1621,6 +1600,69 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'XII.E.(1). -- NUMBER OF APPEALS PROCESSED'
+    group_tabs:
+      children:
+        - group_agency_info
+        - group_iv_exemption_3_statutes
+        - group_v_a_foia_requests_received
+        - group_overall_vb1_main
+      parent_name: ''
+      weight: 1
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: Tabs
+    group_agency_overall_v_b_1_:
+      children:
+        - group_agency_overall_main
+        - group_agency_overall_number_of_f
+      parent_name: group_overall_vb1_main
+      weight: 10
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Agency Overall V. B. (1).'
+    group_agency_overall_main:
+      children:
+        - field_overall_vb1_full_grants
+        - field_overall_vb1_part_grants_de
+        - field_overall_vb1_full_denials_e
+        - field_overall_vb1_total
+      parent_name: group_agency_overall_v_b_1_
+      weight: 20
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Agency Overall Main'
+    group_agency_overall_number_of_f:
+      children:
+        - field_overall_vb1_no_rec
+        - field_overall_vb1_rec_ref_to_an_
+        - field_overall_vb1_req_withdrawn
+        - field_overall_vb1_fee_related_re
+        - field_overall_vb1_rec_not_desc
+        - field_overall_vb1_imp_req_oth_re
+        - field_overall_vb1_not_agency_rec
+        - field_overall_vb1_dup_request
+        - field_overall_vb1_oth
+      parent_name: group_agency_overall_v_b_1_
+      weight: 21
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Agency Overall Number of Full Denials Based on Reasons Other than Exemptions'
 id: node.annual_foia_report_data.default
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -1731,8 +1773,16 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  field_agency_components:
+  field_agency_abbr:
     weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_agency_components:
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60
@@ -1741,7 +1791,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_date_prepared:
-    weight: 5
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
@@ -1759,7 +1809,7 @@ content:
     third_party_settings: {  }
     region: content
   field_foia_annual_report_yr:
-    weight: 4
+    weight: 5
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -1779,19 +1829,19 @@ content:
     region: content
   field_foia_requests_va:
     type: entity_reference_paragraphs
-    weight: 48
+    weight: 152
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: Agency
+      title_plural: Agencies
       edit_mode: open
       add_mode: dropdown
       form_display_mode: default
-      default_paragraph_type: ''
+      default_paragraph_type: foia_req_va
     third_party_settings: {  }
   field_foia_requests_vb1:
     type: entity_reference_paragraphs
-    weight: 4
+    weight: 9
     region: content
     settings:
       title: Paragraph
@@ -1911,7 +1961,7 @@ content:
     region: content
   field_footnotes_iv:
     type: text_textarea
-    weight: 44
+    weight: 9
     region: content
     settings:
       rows: 5
@@ -1927,7 +1977,7 @@ content:
     third_party_settings: {  }
   field_footnotes_va:
     type: text_textarea
-    weight: 54
+    weight: 157
     region: content
     settings:
       rows: 5
@@ -1935,7 +1985,7 @@ content:
     third_party_settings: {  }
   field_footnotes_vb1:
     type: text_textarea
-    weight: 9
+    weight: 24
     region: content
     settings:
       rows: 5
@@ -2039,7 +2089,7 @@ content:
     third_party_settings: {  }
   field_footnotes_viic2:
     type: text_textarea
-    weight: 95
+    weight: 64
     region: content
     settings:
       rows: 5
@@ -2047,7 +2097,7 @@ content:
     third_party_settings: {  }
   field_footnotes_viic3:
     type: text_textarea
-    weight: 111
+    weight: 64
     region: content
     settings:
       rows: 5
@@ -2209,119 +2259,119 @@ content:
     region: content
   field_overall_req_pend_end_yr:
     type: number
-    weight: 53
+    weight: 156
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_req_pend_start_yr:
     type: number
-    weight: 49
+    weight: 153
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_req_processed_yr:
     type: number
-    weight: 52
+    weight: 155
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_req_received_yr:
     type: number
-    weight: 50
+    weight: 154
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_dup_request:
     type: number
-    weight: 12
+    weight: 21
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_fee_related_re:
     type: number
-    weight: 8
+    weight: 17
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_full_denials_e:
     type: number
-    weight: 5
+    weight: 13
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_full_grants:
     type: number
-    weight: 3
+    weight: 11
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_imp_req_oth_re:
     type: number
-    weight: 10
+    weight: 19
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_no_rec:
     type: number
-    weight: 5
+    weight: 14
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_not_agency_rec:
     type: number
-    weight: 11
+    weight: 20
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_oth:
     type: number
-    weight: 13
+    weight: 22
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_part_grants_de:
     type: number
-    weight: 4
+    weight: 12
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_rec_not_desc:
     type: number
-    weight: 9
+    weight: 18
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_rec_ref_to_an_:
     type: number
-    weight: 6
+    weight: 15
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_req_withdrawn:
     type: number
-    weight: 7
+    weight: 16
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_total:
     type: number
-    weight: 7
+    weight: 14
     region: content
     settings:
       placeholder: ''
@@ -3147,196 +3197,196 @@ content:
     type: number
     region: content
   field_overall_viic2_101_120_days:
-    weight: 86
+    weight: 55
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_121_140_days:
-    weight: 87
+    weight: 56
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_141_160_days:
-    weight: 88
+    weight: 57
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_161_180_days:
-    weight: 89
+    weight: 58
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_181_200_days:
-    weight: 90
+    weight: 59
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_1_20_days:
-    weight: 81
+    weight: 50
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_201_300_days:
-    weight: 91
+    weight: 60
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_21_40_days:
-    weight: 82
+    weight: 51
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_301_400_days:
-    weight: 92
+    weight: 61
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_400_up_days:
-    weight: 93
+    weight: 62
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_41_60_days:
-    weight: 83
+    weight: 52
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_61_80_days:
-    weight: 84
+    weight: 53
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_81_100_days:
-    weight: 85
+    weight: 54
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic2_total:
-    weight: 94
+    weight: 63
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_101_120_days:
-    weight: 101
+    weight: 55
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_121_140_days:
-    weight: 102
+    weight: 56
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_141_160_days:
-    weight: 103
+    weight: 57
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_161_180_days:
-    weight: 104
+    weight: 58
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_181_200_days:
-    weight: 105
+    weight: 59
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_1_20_days:
-    weight: 96
+    weight: 49
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_201_300_days:
-    weight: 106
+    weight: 60
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_21_40_days:
-    weight: 97
+    weight: 50
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_301_400_days:
-    weight: 107
+    weight: 61
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_400_up_days:
-    weight: 108
+    weight: 62
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_41_60_days:
-    weight: 98
+    weight: 52
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_61_80_days:
-    weight: 99
+    weight: 53
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_81_100_days:
-    weight: 100
+    weight: 54
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_viic3_total:
-    weight: 109
+    weight: 63
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -3930,7 +3980,7 @@ content:
     type: number
     region: content
   field_overall_xiie1_proc_last_yr:
-    weight: 43
+    weight: 45
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -4051,6 +4101,18 @@ content:
   field_req_viiib:
     type: entity_reference_paragraphs
     weight: 43
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_statute_iv:
+    type: entity_reference_paragraphs
+    weight: 8
     settings:
       title: Paragraph
       title_plural: Paragraphs

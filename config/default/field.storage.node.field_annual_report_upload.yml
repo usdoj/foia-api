@@ -1,21 +1,24 @@
-uuid: d9d66402-1480-43a2-aafa-7e9cabf04ed6
+uuid: c7c5b7f2-0029-46d5-840a-770894dc1179
 langcode: en
 status: true
 dependencies:
   module:
     - field_permissions
+    - file
     - node
 third_party_settings:
   field_permissions:
     permission_type: public
-id: node.field_equiv_full_time_employees
-field_name: field_equiv_full_time_employees
+id: node.field_annual_report_upload
+field_name: field_annual_report_upload
 entity_type: node
-type: integer
+type: file
 settings:
-  unsigned: false
-  size: normal
-module: core
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  target_type: file
+module: file
 locked: false
 cardinality: 1
 translatable: true

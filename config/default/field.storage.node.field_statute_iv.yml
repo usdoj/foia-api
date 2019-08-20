@@ -1,23 +1,24 @@
-uuid: 12f9412f-a799-4f80-9fe9-45968af7d5a2
+uuid: ec92911b-a123-4bc1-9f3d-b7176e0db5ce
 langcode: en
 status: true
 dependencies:
   module:
+    - entity_reference_revisions
     - field_permissions
     - node
+    - paragraphs
 third_party_settings:
   field_permissions:
     permission_type: public
-id: node.field_processing_costs
-field_name: field_processing_costs
+id: node.field_statute_iv
+field_name: field_statute_iv
 entity_type: node
-type: decimal
+type: entity_reference_revisions
 settings:
-  precision: 14
-  scale: 2
-module: core
+  target_type: paragraph
+module: entity_reference_revisions
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
