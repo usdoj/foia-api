@@ -41,7 +41,7 @@ class NodeToDocxAccessCheck implements AccessCheckInterface {
    */
   public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
     // Check permissions if path is "convert-to-docx".
-    if ($route_match->getRouteName() == 'node_to_docx.convert') {
+    if ($route_match->getRouteName() == 'node_to_docx.convert_node_to_docx') {
       $node = $route_match->getParameters()->get('node');
       if ($account->hasPermission('generate docx using node to docx')) {
         return AccessResult::allowed();
