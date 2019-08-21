@@ -1,0 +1,4 @@
+services:
+  autocalc.config:
+    class: Drupal\foia_autocalc\AutocalcConfig
+    arguments: ['@entity_field.manager', '@entity_type.bundle.info', '@uuid']

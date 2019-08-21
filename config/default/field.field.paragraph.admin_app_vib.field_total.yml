@@ -5,6 +5,29 @@ dependencies:
   config:
     - field.storage.paragraph.field_total
     - paragraphs.paragraphs_type.admin_app_vib
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        0288434a-f08e-4561-9f62-8e57f15e93a8:
+          field: field_affirmed_on_app
+          this_entity: '1'
+          weight: '99'
+        2aad7e26-7569-4a81-889f-0430814a7b32:
+          field: field_part_on_app
+          this_entity: '1'
+          weight: '100'
+        b2605bff-03c9-4cdd-84b6-2303466ee832:
+          field: field_complete_on_app
+          this_entity: '1'
+          weight: '101'
+        33956c57-9cb3-40b8-9c01-1ccc8d7937c5:
+          field: field_closed_oth_app
+          this_entity: '1'
+          weight: '102'
 id: paragraph.admin_app_vib.field_total
 field_name: field_total
 entity_type: paragraph

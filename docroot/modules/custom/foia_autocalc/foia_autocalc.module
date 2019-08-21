@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ * FOI Autocalc module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter() for field_config_edit_form.
+ */
+function foia_autocalc_form_field_config_edit_form_alter(&$form, FormStateInterface $form_state) {
+  $field_config = $form_state->getFormObject()->getEntity();
+  if (in_array($field_config->getTargetEntityTypeId(), ['node', 'paragraph'])) {
+    $form['third_party_settings']['foia_autocalc']['autocalc_settings'] = [
+      '#type' => 'details',
+      '#title' => t('Automatically Calculated Value'),
+      '#weight' => 10,
+    ];
+    $autocalc_config_form = \Drupal::service('autocalc.config')->buildConfigForm($form_state, $field_config);
+    $form['third_party_settings']['foia_autocalc']['autocalc_settings'] += $autocalc_config_form;
+    $form['actions']['submit']['#submit'][] = '_foia_autocalc_config_submit';
+  }
+}
+
+/**
+ * Implements hook_form_node_form_alter().
+ */
+function foia_autocalc_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $autocalc_config = \Drupal::service('autocalc.config');
+  $field_definitions = $form_state->getFormObject()->getEntity()->getFieldDefinitions();
+  $autocalc_settings = $autocalc_config->getAutocalcSettings($field_definitions);
+
+  if ($autocalc_settings) {
+    $form['#attached']['library'][] = 'foia_autocalc/autocalc_field';
+    $form['#attached']['drupalSettings']['foiaAutocalc']['autocalcSettings'] = $autocalc_settings;
+  }
+}
+
+/**
+ * Submit handler for field_config_edit_form. Removes empty fields.
+ */
+function _foia_autocalc_config_submit(&$form, FormStateInterface $form_state) {
+  $field_config = $form_state->getFormObject()->getEntity();
+  $third_party_settings = $field_config->getThirdPartySettings('foia_autocalc');
+  if (isset($third_party_settings['autocalc_settings']['autocalc_config']) && $third_party_settings['autocalc_settings']['autocalc_config']) {
+    $autocalc_config = $third_party_settings['autocalc_settings']['autocalc_config'];
+    foreach ($autocalc_config as $uuid => $autocalc_field) {
+      if (!trim($autocalc_field['field'])) {
+        unset($autocalc_config[$uuid]);
+      }
+    }
+    $third_party_settings['autocalc_settings']['autocalc_config'] = $autocalc_config;
+    $field_config->setThirdPartySetting('foia_autocalc', 'autocalc_settings', $third_party_settings['autocalc_settings']);
+    $field_config->save();
+  }
+}
+
+/**
+ * Ajax submit for adding an autocalc row to an autocalc form.
+ */
+function _foia_autocalc_config_add_row(&$form, FormStateInterface $form_state) {
+  $form_state->set('num_autocalc_rows', $form_state->get('num_autocalc_rows') + 1);
+  $form_state->setRebuild();
+}
+
+/**
+ * Ajax callback for adding an autocalc row to an autocalc form.
+ */
+function _foia_autocalc_config_add_row_ajax_callback($form, FormStateInterface $form_state) {
+  $form_state->setRebuild();
+  return $form['third_party_settings']['foia_autocalc']['autocalc_settings']['autocalc_config'];
+}
