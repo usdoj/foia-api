@@ -6,11 +6,11 @@ Feature: Annual FOIA Report Data Feature
 
   Background:
     Given agency terms:
-      | name                       | field_agency_abbreviation |
-      | Federal Testing Agency     | FTA                       |
+      | name                    | field_agency_abbreviation | description |format    | language |
+      | Federal Testing Agency  | FTA                       | description |plain_text| en       |
     Given agency_component content:
-      | title                   | field_agency               |
-      | Test Agency Component 1 | Federal Testing Agency     |
+      | title                   | field_agency              |
+      | Test Agency Component 1 | Federal Testing Agency    |
 
   @api
   Scenario: Create an Annual FOIA Report Data node.
@@ -33,8 +33,7 @@ Feature: Annual FOIA Report Data Feature
     And I press the 'Save' button
     Then I should see the following success messages:
       | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-
+    
 
   @api
   Scenario: Edit an Annual FOIA Report Data node Section V.A. FOIA REQUESTS.

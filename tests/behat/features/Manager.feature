@@ -86,9 +86,13 @@ Feature: Agency Manager role
 
   @api
   Scenario: Agency Manager can save Annual FOIA Reports as Draft
-    Given I am logged in as a user with the 'Agency Manager' role
+    Given "agency" terms:
+      | name  |field_agency_abbreviation| description |format    | language |
+      | test  |DOJ                      | description |plain_text| en       |
+    When I am logged in as a user with the 'Agency Manager' role
     And I am on "/node/add/annual_foia_report_data"
     And for 'Title' I enter 'A Test Report'
+    And for 'Agency' I enter 'test'
     And I select "Draft" from "Save as"
     When I press the 'Save' button
     Then I should see the following success messages:
@@ -96,9 +100,13 @@ Feature: Agency Manager role
 
   @api
   Scenario: Agency Manager can save Annual FOIA Reports as Submitted to OIP
-    Given I am logged in as a user with the 'Agency Manager' role
+    Given "agency" terms:
+      | name  |field_agency_abbreviation| description |format    | language |
+      | test  |DOJ                      | description |plain_text| en       |
+    When I am logged in as a user with the 'Agency Manager' role
     And I am on "/node/add/annual_foia_report_data"
     And for 'Title' I enter 'A Test Report'
+    And for 'Agency' I enter 'test'
     And I select "Submitted to OIP" from "Save as"
     When I press the 'Save' button
     Then I should see the following success messages:
