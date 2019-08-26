@@ -5,11 +5,18 @@ dependencies:
   config:
     - field.storage.paragraph.field_proc_last_yr
     - paragraphs.paragraphs_type.foia_xii_received_proc
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.foia_xii_received_proc.field_proc_last_yr
 field_name: field_proc_last_yr
 entity_type: paragraph
 bundle: foia_xii_received_proc
-label: 'Number Received During Fiscal Year from Last Year''s Annual Report'
+label: 'Number Processed During Fiscal Year from Last Year''s Annual Report'
 description: ''
 required: false
 translatable: false

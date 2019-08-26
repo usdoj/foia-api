@@ -8,14 +8,57 @@ dependencies:
     - field.field.paragraph.foia_req_vb2.field_total
     - paragraphs.paragraphs_type.foia_req_vb2
   module:
+    - field_group
     - paragraphs
+third_party_settings:
+  field_group:
+    group_tabs_wrapper:
+      children:
+        - group_agency_component
+        - group__other_reasons
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Tabs Wrapper'
+    group__other_reasons:
+      children:
+        - field_foia_req_vb2_info
+      parent_name: group_tabs_wrapper
+      weight: 23
+      format_type: tab
+      format_settings:
+        label: '"Other" Reasons for Denials'
+        formatter: closed
+        description: ''
+        required_fields: true
+        id: ''
+        classes: ''
+      label: '"Other" Reasons for Denials'
+    group_agency_component:
+      children:
+        - field_agency_component
+        - field_total
+      parent_name: group_tabs_wrapper
+      weight: 20
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Agency/Component
 id: paragraph.foia_req_vb2.default
 targetEntityType: paragraph
 bundle: foia_req_vb2
 mode: default
 content:
   field_agency_component:
-    weight: 0
+    weight: 21
     settings:
       match_operator: CONTAINS
       size: 60
@@ -25,18 +68,18 @@ content:
     region: content
   field_foia_req_vb2_info:
     type: entity_reference_paragraphs
-    weight: 1
+    weight: 3
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: 'Other Denial'
+      title_plural: 'Other Denials'
       edit_mode: open
       add_mode: dropdown
       form_display_mode: default
-      default_paragraph_type: ''
+      default_paragraph_type: foia_req_vb2_other_details
     third_party_settings: {  }
     region: content
   field_total:
-    weight: 2
+    weight: 22
     settings:
       placeholder: ''
     third_party_settings: {  }

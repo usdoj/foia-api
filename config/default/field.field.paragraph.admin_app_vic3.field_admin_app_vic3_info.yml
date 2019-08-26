@@ -4,14 +4,16 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_admin_app_vic3_info
-    - paragraphs.paragraphs_type.admin_app_via
-    - paragraphs.paragraphs_type.admin_app_vib
-    - paragraphs.paragraphs_type.admin_app_vic1
-    - paragraphs.paragraphs_type.admin_app_vic2
     - paragraphs.paragraphs_type.admin_app_vic3
-    - paragraphs.paragraphs_type.admin_app_vic4
+    - paragraphs.paragraphs_type.admin_app_vic3_oth_details
   module:
     - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.admin_app_vic3.field_admin_app_vic3_info
 field_name: field_admin_app_vic3_info
 entity_type: paragraph
@@ -27,37 +29,32 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      admin_app_via: admin_app_via
-      admin_app_vib: admin_app_vib
-      admin_app_vic1: admin_app_vic1
-      admin_app_vic2: admin_app_vic2
-      admin_app_vic3: admin_app_vic3
-      admin_app_vic4: admin_app_vic4
+      admin_app_vic3_oth_details: admin_app_vic3_oth_details
     target_bundles_drag_drop:
       foia_xii_backlogged:
         weight: 30
         enabled: false
       admin_app_via:
-        enabled: true
         weight: 31
-      admin_app_vib:
-        enabled: true
-        weight: 32
-      admin_app_vic1:
-        enabled: true
-        weight: 33
-      admin_app_vic2:
-        enabled: true
-        weight: 34
-      admin_app_vic3:
-        enabled: true
-        weight: 35
-      admin_app_vic3_oth_details:
-        weight: 36
         enabled: false
-      admin_app_vic4:
+      admin_app_vib:
+        weight: 32
+        enabled: false
+      admin_app_vic1:
+        weight: 33
+        enabled: false
+      admin_app_vic2:
+        weight: 34
+        enabled: false
+      admin_app_vic3:
+        weight: 35
+        enabled: false
+      admin_app_vic3_oth_details:
         enabled: true
+        weight: 36
+      admin_app_vic4:
         weight: 37
+        enabled: false
       component_details:
         weight: 38
         enabled: false

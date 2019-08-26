@@ -371,19 +371,6 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
-    group_overall_vb1_num_full_deny:
-      children: {  }
-      parent_name: group_tabs
-      weight: 5
-      format_type: tab
-      format_settings:
-        label: 'V.B.(1). --- Number of Full Denials Based on Reasons Other than Exemptions'
-        formatter: closed
-        description: ''
-        required_fields: true
-        id: ''
-        classes: ''
-      label: 'V.B.(1). --- Number of Full Denials Based on Reasons Other than Exemptions'
     group_agency_info:
       children:
         - field_agency
@@ -405,11 +392,10 @@ third_party_settings:
     group_v_b_2_disposition_of_foia_:
       children:
         - field_foia_requests_vb2
-        - field_overall_vb2
-        - field_overall_vb2_total
+        - group_tabs_wrapper
         - field_footnotes_vb2
-      parent_name: ''
-      weight: 2
+      parent_name: group_tabs
+      weight: 7
       format_type: tab
       format_settings:
         id: ''
@@ -1492,8 +1478,8 @@ third_party_settings:
       label: 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED'
     group_xiid1_num_reqs_proc:
       children:
-        - field_overall_xiid1_received_las
-        - field_overall_xiid1_received_cur
+        - field_overall_xiid1_proc_last_yr
+        - field_overall_xiid1_proc_cur_yr
       parent_name: group_xii_d_1_comparison_of_numb
       weight: 36
       format_type: tab
@@ -1506,8 +1492,8 @@ third_party_settings:
       label: 'XII.D.(1). -- NUMBER OF REQUESTS PROCESSED'
     group_xiid1_num_reqs_recd:
       children:
-        - field_overall_xiid1_proc_last_yr
-        - field_overall_xiid1_proc_cur_yr
+        - field_overall_xiid1_received_las
+        - field_overall_xiid1_received_cur
       parent_name: group_xii_d_1_comparison_of_numb
       weight: 37
       format_type: tab
@@ -1596,8 +1582,8 @@ third_party_settings:
         - group_agency_info
         - group_iv_exemption_3_statutes
         - group_v_a_foia_requests_received
-        - group_overall_vb1_num_full_deny
         - group_overall_vb1_main
+        - group_v_b_2_disposition_of_foia_
       parent_name: ''
       weight: 1
       format_type: tabs
@@ -1625,15 +1611,16 @@ third_party_settings:
         - field_overall_vb1_full_denials_e
         - field_overall_vb1_total
       parent_name: group_agency_overall_v_b_1_
-      weight: 20
+      weight: 21
       format_type: tab
       format_settings:
-        id: ''
-        classes: ''
+        label: 'Agency Overall'
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall Main'
+        id: ''
+        classes: ''
+      label: 'Agency Overall'
     group_agency_overall_number_of_f:
       children:
         - field_overall_vb1_no_rec
@@ -1646,7 +1633,7 @@ third_party_settings:
         - field_overall_vb1_dup_request
         - field_overall_vb1_oth
       parent_name: group_agency_overall_v_b_1_
-      weight: 21
+      weight: 22
       format_type: tab
       format_settings:
         id: ''
@@ -1655,6 +1642,32 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall Number of Full Denials Based on Reasons Other than Exemptions'
+    group_tabs_wrapper:
+      children:
+        - group_agency_overall
+      parent_name: group_v_b_2_disposition_of_foia_
+      weight: 23
+      format_type: tabs
+      format_settings:
+        label: 'Agency Overall'
+        direction: vertical
+        id: ''
+        classes: ''
+      label: 'Agency Overall'
+    group_agency_overall:
+      children:
+        - field_overall_vb2
+        - field_overall_vb2_total
+      parent_name: group_tabs_wrapper
+      weight: 20
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Agency Overall'
 id: node.annual_foia_report_data.default
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -1845,7 +1858,7 @@ content:
     third_party_settings: {  }
   field_foia_requests_vb2:
     type: entity_reference_paragraphs
-    weight: 15
+    weight: 21
     region: content
     settings:
       title: Paragraph
@@ -1985,7 +1998,7 @@ content:
     third_party_settings: {  }
   field_footnotes_vb2:
     type: text_textarea
-    weight: 19
+    weight: 24
     region: content
     settings:
       rows: 5
@@ -2293,7 +2306,7 @@ content:
     third_party_settings: {  }
   field_overall_vb1_full_denials_e:
     type: number
-    weight: 13
+    weight: 14
     region: content
     settings:
       placeholder: ''
@@ -2335,7 +2348,7 @@ content:
     third_party_settings: {  }
   field_overall_vb1_part_grants_de:
     type: number
-    weight: 12
+    weight: 13
     region: content
     settings:
       placeholder: ''
@@ -2363,14 +2376,14 @@ content:
     third_party_settings: {  }
   field_overall_vb1_total:
     type: number
-    weight: 14
+    weight: 15
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb2:
     type: entity_reference_paragraphs
-    weight: 16
+    weight: 21
     region: content
     settings:
       title: Paragraph
@@ -2382,7 +2395,7 @@ content:
     third_party_settings: {  }
   field_overall_vb2_total:
     type: number
-    weight: 18
+    weight: 22
     region: content
     settings:
       placeholder: ''
@@ -3601,7 +3614,7 @@ content:
     type: text_textfield
     region: content
   field_overall_viie_num_days_8:
-    weight: 41
+    weight: 40
     settings:
       size: 60
       placeholder: ''
@@ -3937,14 +3950,14 @@ content:
     type: number
     region: content
   field_overall_xiid1_received_cur:
-    weight: 35
+    weight: 40
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_overall_xiid1_received_las:
-    weight: 34
+    weight: 39
     settings:
       placeholder: ''
     third_party_settings: {  }
