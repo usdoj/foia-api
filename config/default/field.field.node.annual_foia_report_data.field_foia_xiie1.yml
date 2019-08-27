@@ -5,9 +5,15 @@ dependencies:
   config:
     - field.storage.node.field_foia_xiie1
     - node.type.annual_foia_report_data
-    - paragraphs.paragraphs_type.foia_xii_backlogged
+    - paragraphs.paragraphs_type.foia_xii_received_proc
   module:
     - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_foia_xiie1
 field_name: field_foia_xiie1
 entity_type: node
@@ -23,7 +29,7 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      foia_xii_backlogged: foia_xii_backlogged
+      foia_xii_received_proc: foia_xii_received_proc
     target_bundles_drag_drop:
       admin_app_via:
         weight: 30
@@ -71,11 +77,11 @@ settings:
         weight: 44
         enabled: false
       foia_xii_backlogged:
-        enabled: true
         weight: 45
-      foia_xii_received_proc:
-        weight: 46
         enabled: false
+      foia_xii_received_proc:
+        enabled: true
+        weight: 46
       foia_xiia:
         weight: 47
         enabled: false

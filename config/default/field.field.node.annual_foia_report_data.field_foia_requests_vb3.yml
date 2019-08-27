@@ -5,9 +5,15 @@ dependencies:
   config:
     - field.storage.node.field_foia_requests_vb3
     - node.type.annual_foia_report_data
-    - paragraphs.paragraphs_type.foia_req_vb3
+    - paragraphs.paragraphs_type.admin_app_vic1
   module:
     - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_foia_requests_vb3
 field_name: field_foia_requests_vb3
 entity_type: node
@@ -23,7 +29,7 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      foia_req_vb3: foia_req_vb3
+      admin_app_vic1: admin_app_vic1
     target_bundles_drag_drop:
       foia_xii_backlogged:
         weight: 30
@@ -35,8 +41,8 @@ settings:
         weight: 32
         enabled: false
       admin_app_vic1:
+        enabled: true
         weight: 33
-        enabled: false
       admin_app_vic2:
         weight: 34
         enabled: false
@@ -71,8 +77,8 @@ settings:
         weight: 44
         enabled: false
       foia_req_vb3:
-        enabled: true
         weight: 45
+        enabled: false
       foia_xiia:
         weight: 46
         enabled: false

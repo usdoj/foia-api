@@ -10,8 +10,52 @@ dependencies:
     - field.field.paragraph.statute.field_type_of_info_withheld
     - paragraphs.paragraphs_type.statute
   module:
+    - field_group
     - paragraphs
     - text
+third_party_settings:
+  field_group:
+    group_statute_:
+      children:
+        - group_statute
+        - group_agency_component
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Statute Wrapper'
+    group_statute:
+      children:
+        - field_statute
+        - field_type_of_info_withheld
+        - field_case_citation
+        - field_total_num_relied_by_agency
+      parent_name: group_statute_
+      weight: 20
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Statute
+    group_agency_component:
+      children:
+        - field_agency_component_inf
+      parent_name: group_statute_
+      weight: 22
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Agency/Component
 id: paragraph.statute.default
 targetEntityType: paragraph
 bundle: statute
@@ -19,7 +63,7 @@ mode: default
 content:
   field_agency_component_inf:
     type: entity_reference_paragraphs
-    weight: 4
+    weight: 22
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -46,7 +90,7 @@ content:
     type: string_textfield
     region: content
   field_total_num_relied_by_agency:
-    weight: 5
+    weight: 4
     settings:
       placeholder: ''
     third_party_settings: {  }

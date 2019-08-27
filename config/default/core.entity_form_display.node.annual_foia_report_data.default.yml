@@ -92,7 +92,12 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_4
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_5
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_6
-    - field.field.node.annual_foia_report_data.field_overall_vb3_ex_7
+    - field.field.node.annual_foia_report_data.field_overall_vb3_ex_7_a
+    - field.field.node.annual_foia_report_data.field_overall_vb3_ex_7_b
+    - field.field.node.annual_foia_report_data.field_overall_vb3_ex_7_c
+    - field.field.node.annual_foia_report_data.field_overall_vb3_ex_7_d
+    - field.field.node.annual_foia_report_data.field_overall_vb3_ex_7_e
+    - field.field.node.annual_foia_report_data.field_overall_vb3_ex_7_f
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_8
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_9
     - field.field.node.annual_foia_report_data.field_overall_via_app_pend_endyr
@@ -341,11 +346,8 @@ third_party_settings:
       label: 'IV. Exemption 3 Statutes'
     group_v_a_foia_requests_received:
       children:
-        - field_foia_requests_va
-        - field_overall_req_pend_start_yr
-        - field_overall_req_received_yr
-        - field_overall_req_processed_yr
-        - field_overall_req_pend_end_yr
+        - group_agency_component_wrapper_v
+        - group_agency_overall_v_a_wrapper
         - field_footnotes_va
       parent_name: group_tabs
       weight: 4
@@ -414,7 +416,12 @@ third_party_settings:
         - field_overall_vb3_ex_4
         - field_overall_vb3_ex_5
         - field_overall_vb3_ex_6
-        - field_overall_vb3_ex_7
+        - field_overall_vb3_ex_7_a
+        - field_overall_vb3_ex_7_b
+        - field_overall_vb3_ex_7_c
+        - field_overall_vb3_ex_7_d
+        - field_overall_vb3_ex_7_e
+        - field_overall_vb3_ex_7_f
         - field_overall_vb3_ex_8
         - field_overall_vb3_ex_9
         - field_footnotes_vb3
@@ -1466,8 +1473,8 @@ third_party_settings:
       label: 'XII.C. -- Oldest Consultation'
     group_xii_d_1_comparison_of_numb:
       children:
-        - group_xiid1_num_reqs_proc
         - group_xiid1_num_reqs_recd
+        - group_xiid1_num_reqs_proc
         - field_footnotes_xiid1
       parent_name: ''
       weight: 37
@@ -1482,7 +1489,7 @@ third_party_settings:
         - field_overall_xiid1_proc_last_yr
         - field_overall_xiid1_proc_cur_yr
       parent_name: group_xii_d_1_comparison_of_numb
-      weight: 36
+      weight: 38
       format_type: tab
       format_settings:
         id: ''
@@ -1669,6 +1676,57 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall'
+    group_agency_component_wrapper_v:
+      children:
+        - group_agency_component_v_a_
+      parent_name: group_v_a_foia_requests_received
+      weight: 154
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Agency/Component Wrapper V.A.'
+    group_agency_overall_v_a_:
+      children:
+        - field_overall_req_pend_start_yr
+        - field_overall_req_received_yr
+        - field_overall_req_processed_yr
+        - field_overall_req_pend_end_yr
+      parent_name: group_agency_overall_v_a_wrapper
+      weight: 156
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Agency Overall V. A.'
+    group_agency_component_v_a_:
+      children:
+        - field_foia_requests_va
+      parent_name: group_agency_component_wrapper_v
+      weight: 156
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Agency/Component V. A.'
+    group_agency_overall_v_a_wrapper:
+      children:
+        - group_agency_overall_v_a_
+      parent_name: group_v_a_foia_requests_received
+      weight: 155
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Agency Overall V. A. Wrapper'
 id: node.annual_foia_report_data.default
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -1835,7 +1893,7 @@ content:
     region: content
   field_foia_requests_va:
     type: entity_reference_paragraphs
-    weight: 152
+    weight: 157
     region: content
     settings:
       title: Agency
@@ -1983,7 +2041,7 @@ content:
     third_party_settings: {  }
   field_footnotes_va:
     type: text_textarea
-    weight: 157
+    weight: 161
     region: content
     settings:
       rows: 5
@@ -2007,7 +2065,7 @@ content:
     third_party_settings: {  }
   field_footnotes_vb3:
     type: text_textarea
-    weight: 31
+    weight: 35
     region: content
     settings:
       rows: 5
@@ -2191,7 +2249,7 @@ content:
     third_party_settings: {  }
   field_footnotes_xiid1:
     type: text_textarea
-    weight: 38
+    weight: 39
     region: content
     settings:
       rows: 5
@@ -2265,28 +2323,28 @@ content:
     region: content
   field_overall_req_pend_end_yr:
     type: number
-    weight: 156
+    weight: 160
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_req_pend_start_yr:
     type: number
-    weight: 153
+    weight: 157
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_req_processed_yr:
     type: number
-    weight: 155
+    weight: 159
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_req_received_yr:
     type: number
-    weight: 154
+    weight: 158
     region: content
     settings:
       placeholder: ''
@@ -2443,23 +2501,58 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
-  field_overall_vb3_ex_7:
-    type: number
-    weight: 28
-    region: content
+  field_overall_vb3_ex_7_a:
+    weight: 27
     settings:
       placeholder: ''
     third_party_settings: {  }
+    type: number
+    region: content
+  field_overall_vb3_ex_7_b:
+    weight: 28
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_overall_vb3_ex_7_c:
+    weight: 29
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_overall_vb3_ex_7_d:
+    weight: 30
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_overall_vb3_ex_7_e:
+    weight: 31
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_overall_vb3_ex_7_f:
+    weight: 32
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
   field_overall_vb3_ex_8:
     type: number
-    weight: 29
+    weight: 33
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb3_ex_9:
     type: number
-    weight: 30
+    weight: 34
     region: content
     settings:
       placeholder: ''
