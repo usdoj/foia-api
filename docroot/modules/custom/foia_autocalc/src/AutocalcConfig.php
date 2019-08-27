@@ -209,7 +209,7 @@ class AutocalcConfig implements AutocalcConfigInterface {
   protected function autocalcFieldSettings($field_name, FieldConfigInterface $field_config) {
     $autocalc_settings = [];
     $settings = $field_config->getThirdPartySettings('foia_autocalc', 'autocalc_settings');
-    if ($settings && isset($settings['autocalc_settings']['autocalc_config']) && count($settings['autocalc_settings']['autocalc_config'])) {
+    if ($settings && !empty($settings['autocalc_settings']['autocalc_config']) && count($settings['autocalc_settings']['autocalc_config'])) {
       $autocalc_settings[$field_name] = $settings['autocalc_settings']['autocalc_config'];
       usort($autocalc_settings[$field_name], function ($item1, $item2) {
         return $item1['weight'] <=> $item2['weight'];
