@@ -23,6 +23,11 @@
 
     fieldSettings.forEach(function (fieldSetting) {
       $(convertToFieldSelector(fieldSetting) + ' input').each(function() {
+        var selectedValue = 0;
+        if (isNumeric($(this).val())) {
+          selectedValue = Number($(this).val());
+        }
+
         // Get the selector for this field.
         if (fieldSetting.hasOwnProperty('this_entity') && fieldSetting.this_entity) {
           var index = $(this).attr('name').match(/\[(.*?)\]/)[1];
@@ -34,10 +39,10 @@
 
         // Add value to the selector.
         if (totalValues.hasOwnProperty(idSelector)) {
-          totalValues[idSelector] += Number($(this).val());
+          totalValues[idSelector] += selectedValue;
         }
         else {
-          totalValues[idSelector] = Number($(this).val());
+          totalValues[idSelector] = selectedValue;
         }
       });
     });
@@ -59,6 +64,10 @@
       selector += ' ' + convertToFieldSelector(fieldSetting.subfield);
     }
     return selector;
+  }
+
+  function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
   }
 
 })(jQuery, drupalSettings, Drupal);
