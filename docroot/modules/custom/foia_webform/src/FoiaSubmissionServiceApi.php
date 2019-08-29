@@ -169,6 +169,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       'filesize' => strlen($pdf),
     ];
 
+    // Indicate whether this is a non-production ("testing") submission.
+    $is_prod = (isset($_ENV['AH_SITE_ENVIRONMENT']) && 'prod' == $_ENV['AH_SITE_ENVIRONMENT']);
+    $submissionValues['testing'] = !$is_prod;
+
     return $submissionValues;
   }
 
