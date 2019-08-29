@@ -12,18 +12,49 @@ use Drupal\node\Entity\Node;
 class ExportXml {
 
   /**
-   * Export node as an XML string.
+   * The DOMDocument object.
    *
-   * @param Drupal\node\Entity\Node $node
-   *   A node of type annual_foia_report_data.
+   * @var \DOMDocument
+   */
+  protected $document;
+
+  /**
+   * Construct an ExportXml object with root element and header information.
+   */
+  public function __construct() {
+    $date = date('Y-m-d');
+    $snippet = <<<EOS
+<?xml version="1.0"?>
+<iepd:FoiaAnnualReport xmlns:iepd="http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03" xsi:schemaLocation="http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03 ../schema/exchange/FoiaAnnualReport.xsd" xmlns:foia="http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03" xmlns:i="http://niem.gov/niem/appinfo/2.0" xmlns:j="http://niem.gov/niem/domains/jxdm/4.1" xmlns:nc="http://niem.gov/niem/niem-core/2.0" xmlns:s="http://niem.gov/niem/structures/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <nc:DocumentApplicationName nc:applicationVersionText="1.1">FOIA Annual Report Workbook</nc:DocumentApplicationName>
+  <nc:DocumentCreationDate>
+    <nc:Date>$date</nc:Date>
+  </nc:DocumentCreationDate>
+  <nc:DocumentDescriptionText>FOIA Annual Report</nc:DocumentDescriptionText>
+</iepd:FoiaAnnualReport>
+EOS;
+    $this->document = new \DOMDocument('1.0');
+    $this->document->loadXML($snippet);
+  }
+
+  /**
+   * Cast an ExportXml object to string.
    *
    * @return string
    *   An XML representation of the annual report.
    */
-  public static function export(Node $node) {
-    $title = $node->getTitle();
-    $xml = '<?xml version="1.0"?>' . "\n<item>\n<nid>{$node->id()}</nid>\n<title>$title</title>\n</item>";
-    return $xml;
+  public function __toString() {
+    return $this->document->saveXML();
+  }
+
+  /**
+   * Load a node and create XML.
+   *
+   * @param Drupal\node\Entity\Node $node
+   *   A node of type annual_foia_report_data.
+   */
+  public function load(Node $node) {
+    return $this;
   }
 
 }
