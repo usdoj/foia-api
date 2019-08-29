@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_ix_proc_costs
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        281c4305-8ebd-472b-ba72-250c23685877:
+          field: 'field_foia_pers_costs_ix:field_proc_costs'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_ix_proc_costs
 field_name: field_overall_ix_proc_costs
 entity_type: node

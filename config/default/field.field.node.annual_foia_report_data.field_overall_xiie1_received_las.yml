@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_xiie1_received_las
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        5f8f99c4-5381-40ce-9de3-e761c30923de:
+          field: 'field_foia_xiie1:field_received_last_yr'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_xiie1_received_las
 field_name: field_overall_xiie1_received_las
 entity_type: node

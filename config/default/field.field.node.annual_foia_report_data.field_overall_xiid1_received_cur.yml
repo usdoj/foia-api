@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_xiid1_received_cur
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        b6d80e15-835e-45e2-bc1e-904641f2afb7:
+          field: 'field_foia_xiid1:field_received_cur_yr'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_xiid1_received_cur
 field_name: field_overall_xiid1_received_cur
 entity_type: node

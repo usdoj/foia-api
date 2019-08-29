@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_vic3_num_relied_up
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        57889af4-9e67-4dea-8e3f-78722c321ad5:
+          field: 'field_admin_app_vic3:field_num_relied_upon'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_vic3_num_relied_up
 field_name: field_overall_vic3_num_relied_up
 entity_type: node

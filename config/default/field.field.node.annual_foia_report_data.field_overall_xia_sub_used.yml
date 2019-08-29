@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_xia_sub_used
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        b6203860-0d30-4ed0-aff4-57cb8c8f6b27:
+          field: 'field_sub_xia:field_sub_used'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_xia_sub_used
 field_name: field_overall_xia_sub_used
 entity_type: node

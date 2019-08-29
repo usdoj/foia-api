@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_xiib_pend_end_yr
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        f8a238d6-1d19-446b-a402-5d88f257be42:
+          field: 'field_foia_xiib:field_pend_end_yr'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_xiib_pend_end_yr
 field_name: field_overall_xiib_pend_end_yr
 entity_type: node

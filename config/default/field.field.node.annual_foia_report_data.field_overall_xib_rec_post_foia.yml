@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_xib_rec_post_foia
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        2b8031c2-9757-4704-8e1b-adf927699d72:
+          field: 'field_sub_xib:field_rec_post_foia'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_xib_rec_post_foia
 field_name: field_overall_xib_rec_post_foia
 entity_type: node

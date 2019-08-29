@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_xiib_proc_start_yr
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        b3e6f3d4-5f58-4f4e-8153-86d393ad75a1:
+          field: 'field_foia_xiib:field_proc_start_yr'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_xiib_proc_start_yr
 field_name: field_overall_xiib_proc_start_yr
 entity_type: node

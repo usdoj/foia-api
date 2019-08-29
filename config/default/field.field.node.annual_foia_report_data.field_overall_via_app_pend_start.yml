@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_via_app_pend_start
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        0d9c588a-6a2e-4cea-9251-5fd6ebc4b525:
+          field: 'field_admin_app_via:field_app_pend_start_yr'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_via_app_pend_start
 field_name: field_overall_via_app_pend_start
 entity_type: node

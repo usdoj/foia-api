@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_viic3_21_40_days
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        f09b34c4-9571-4f1c-9434-2efb257514e3:
+          field: 'field_proc_req_viic3:field_21_40_days'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_viic3_21_40_days
 field_name: field_overall_viic3_21_40_days
 entity_type: node

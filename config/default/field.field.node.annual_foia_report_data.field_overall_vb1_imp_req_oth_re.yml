@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_vb1_imp_req_oth_re
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        0dee678e-82d2-4bdd-8e64-102c30fe941c:
+          field: 'field_foia_requests_vb1:field_imp_req_oth_reason'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_vb1_imp_req_oth_re
 field_name: field_overall_vb1_imp_req_oth_re
 entity_type: node

@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_vb1_full_denials_e
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        43f440a8-984d-4033-98fb-0478289aecbf:
+          field: 'field_foia_requests_vb1:field_full_denials_ex'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_vb1_full_denials_e
 field_name: field_overall_vb1_full_denials_e
 entity_type: node

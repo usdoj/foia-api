@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_vic2_app_denial_ex
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        552c96e3-a69c-4440-ae11-3c90adfefe39:
+          field: 'field_admin_app_vic2:field_app_denial_exp'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_vic2_app_denial_ex
 field_name: field_overall_vic2_app_denial_ex
 entity_type: node

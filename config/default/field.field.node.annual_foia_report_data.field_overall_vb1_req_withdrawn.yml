@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_vb1_req_withdrawn
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        8f7eb1f6-1b68-48e4-961c-e7b06f90af90:
+          field: 'field_foia_requests_vb1:field_req_withdrawn'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_vb1_req_withdrawn
 field_name: field_overall_vb1_req_withdrawn
 entity_type: node

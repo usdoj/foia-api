@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_vib_comp_on_app
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        cf7299e6-44a4-4468-8f9e-21bbdb35cc6e:
+          field: 'field_admin_app_vib:field_complete_on_app'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_vib_comp_on_app
 field_name: field_overall_vib_comp_on_app
 entity_type: node

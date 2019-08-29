@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_xiie1_proc_cur_yr
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        25f6e033-a862-4f06-aa04-237a3c573069:
+          field: 'field_foia_xiie1:field_proc_cur_yr'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_xiie1_proc_cur_yr
 field_name: field_overall_xiie1_proc_cur_yr
 entity_type: node

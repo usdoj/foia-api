@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_x_total_fees
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        86ad5082-8557-46b4-8501-c87bf5d4cf1f:
+          field: 'field_fees_x:field_total_fees'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_x_total_fees
 field_name: field_overall_x_total_fees
 entity_type: node
