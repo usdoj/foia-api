@@ -19,9 +19,30 @@ class ExportXml {
   protected $document;
 
   /**
-   * Construct an ExportXml object with root element and header information.
+   * The node being processed.
+   *
+   * @var Drupal\node\Entity\Node
    */
-  public function __construct() {
+  protected $node;
+
+  /**
+   * Cast an ExportXml object to string.
+   *
+   * @return string
+   *   An XML representation of the annual report.
+   */
+  public function __toString() {
+    return $this->document->saveXML();
+  }
+
+  /**
+   * Construct an ExportXml object with root element and header information.
+   *
+   * @param Drupal\node\Entity\Node $node
+   *   A node of type annual_foia_report_data.
+   */
+  public function __construct(Node $node) {
+    $this->node = $node;
     $date = date('Y-m-d');
     $snippet = <<<EOS
 <?xml version="1.0"?>
@@ -35,26 +56,6 @@ class ExportXml {
 EOS;
     $this->document = new \DOMDocument('1.0');
     $this->document->loadXML($snippet);
-  }
-
-  /**
-   * Cast an ExportXml object to string.
-   *
-   * @return string
-   *   An XML representation of the annual report.
-   */
-  public function __toString() {
-    return $this->document->saveXML();
-  }
-
-  /**
-   * Load a node and create XML.
-   *
-   * @param Drupal\node\Entity\Node $node
-   *   A node of type annual_foia_report_data.
-   */
-  public function load(Node $node) {
-    return $this;
   }
 
 }

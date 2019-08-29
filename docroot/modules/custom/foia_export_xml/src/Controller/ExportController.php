@@ -33,8 +33,8 @@ class ExportController extends ControllerBase {
    *   Return Hello string.
    */
   public function exportXml(Node $node) {
-    $export = new ExportXml();
-    $response = new Response((string) $export->load($node));
+    $export = new ExportXml($node);
+    $response = new Response((string) $export);
     $response->headers->set('Content-Type', 'text/xml; charset=UTF-8');
     $response->headers->set('Content-Disposition', 'attachment; filename="annual-report.xml"');
     return $response;
