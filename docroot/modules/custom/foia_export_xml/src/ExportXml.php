@@ -69,6 +69,38 @@ EOS;
   }
 
   /**
+   * Add an element to the DOMDocument object.
+   *
+   * @param string $tag
+   *   The tag name, in the format "prefix:localName".
+   * @param \DOMElement $parent
+   *   The parent of the new element.
+   * @param string $value
+   *   (optional) The text value of the new element.
+   *
+   * @return \DOMElement
+   *   The newly added element.
+   */
+  protected function addElementNs($tag, \DOMElement $parent, $value = NULL) {
+    $namespaces = [
+      'iepd' => 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03',
+      'foia' => 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03',
+      'i' => 'http://niem.gov/niem/appinfo/2.0',
+      'j' => 'http://niem.gov/niem/domains/jxdm/4.1',
+      'nc' => 'http://niem.gov/niem/niem-core/2.0',
+      's' => 'http://niem.gov/niem/structures/2.0',
+      'xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+    ];
+    list($prefix, $local_name) = explode(':', $tag, 2);
+    if (empty($namespaces[$prefix])) {
+      throw new \Exception("Unrecognized prefix: $prefix");
+    }
+    $element = $this->document->createElementNS($namespaces[$prefix], $local_name, $value);
+    $parent->appendChild($element);
+    return $element;
+  }
+
+  /**
    * Extract agency and component information from the node.
    *
    * This corresponds to the Agency Information section of the annual report.
