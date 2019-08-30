@@ -19,6 +19,13 @@ class ExportXml {
   protected $document;
 
   /**
+   * The root element of the DOMDocument object.
+   *
+   * @var \DOMElement
+   */
+  protected $root;
+
+  /**
    * The node being processed.
    *
    * @var Drupal\node\Entity\Node
@@ -56,6 +63,7 @@ class ExportXml {
 EOS;
     $this->document = new \DOMDocument('1.0');
     $this->document->loadXML($snippet);
+    $this->root = $this->document->getElementsByTagNameNS('http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03', 'FoiaAnnualReport')[0];
   }
 
 }
