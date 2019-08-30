@@ -2,12 +2,12 @@
   Drupal.behaviors.autocalcFields = {
     attach: function attach() {
       var autocalcSettings = drupalSettings.foiaAutocalc.autocalcSettings;
-      Object.keys(autocalcSettings).forEach(function(fieldName) {
+      Object.keys(autocalcSettings).forEach(function(fieldName, fieldIndex) {
         var fieldSettings = autocalcSettings[fieldName];
         fieldSettings.forEach(function(fieldSetting) {
           var fieldSelector = convertToFieldSelector(fieldSetting);
           $(fieldSelector + ' input').each(function(index) {
-            $(this).once(fieldSelector + '_' + index).on('change', function() {
+            $(this).once(fieldSelector + '_' + fieldIndex + '_' + index).on('change', function() {
               calculateField(fieldName, fieldSettings);
             });
           });
@@ -49,10 +49,10 @@
 
     Object.keys(totalValues).forEach(function (selector) {
       if (selector == 'all') {
-        $(convertToFieldSelector({ field: fieldName }) + ' input').val(totalValues[selector]);
+        $(convertToFieldSelector({ field: fieldName }) + ' input').val(totalValues[selector]).trigger('change');
       }
       else {
-        $("div[data-drupal-selector='" + selector + "'] " + convertToFieldSelector({ field: fieldName }) + ' input').val(totalValues[selector]);
+        $("div[data-drupal-selector='" + selector + "'] " + convertToFieldSelector({ field: fieldName }) + ' input').val(totalValues[selector]).trigger('change');
       }
     });
   }
