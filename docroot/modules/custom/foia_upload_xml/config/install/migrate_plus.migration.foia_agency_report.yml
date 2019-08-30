@@ -56,6 +56,25 @@ source:
       name: footnotes_va
       label: 'V.A Footnotes'
       selector: 'foia:ProcessedRequestSection/foia:FootnoteText'
+  # Section XII.E.2
+  # @todo Find something more reliable than using @s:id="ABC0" for the overall
+  # numbers.
+    -
+      name: component_xiie2
+      label: 'Internal index of the agency component'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison/@s:id'
+    -
+      name: overall_xiie2_back_prev_yr
+      label: 'Overall requests pending at the start of the year'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id="ABC0"]/foia:BacklogLastYearQuantity'
+    -
+      name: overall_xiie2_back_cur_yr
+      label: 'Overall requests received during the year'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id="ABC0"]/foia:BacklogCurrentYearQuantity'
+    -
+      name: footnotes_xiie2
+      label: 'XII.E 2 Footnotes'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:FootnoteText'
   ids:
     report_year:
       type: integer
@@ -137,8 +156,43 @@ process:
   field_overall_req_processed_yr: overall_req_processed_yr
   field_overall_req_pend_end_yr: overall_req_pend_end_yr
   field_footnotes_va: footnotes_va
+  # Section XII.E.2
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_foia_xiie2:
+    -
+      plugin: foia_array_pad
+      source: component_xiie2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiie2
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiie2_back_prev_yr: overall_xiie2_back_cur_yr
+  field_overall_xiie2_back_cur_yr: overall_xiie2_back_cur_yr
+  field_footnotes_xiie2: footnotes_xiie2
 destination:
   plugin: entity:node
 migration_dependencies:
   required:
     - foia_requests_va
+    - foia_xiie2
