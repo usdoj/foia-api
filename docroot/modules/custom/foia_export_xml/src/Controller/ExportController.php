@@ -14,13 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 class ExportController extends ControllerBase {
 
   /**
-   * Only provide a route for published nodes of type annual_foia_report_data.
+   * Only provide a route for nodes of type annual_foia_report_data.
    *
    * @param Drupal\node\Entity\Node $node
    *   A node object.
    */
   public function checkAccess(Node $node) {
-    return AccessResult::allowedif($node->isPublished() && $node->bundle() === 'annual_foia_report_data');
+    return AccessResult::allowedif($node->bundle() === 'annual_foia_report_data');
   }
 
   /**
