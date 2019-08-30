@@ -107,32 +107,23 @@ EOS;
    */
   protected function organization() {
     $agency = $this->node->field_agency->referencedEntities()[0];
-    $namespace_nc = 'http://niem.gov/niem/niem-core/2.0';
 
     // Add abbreviation and name for the agency.
-    $org = $this->document->createElementNS($namespace_nc, 'nc:Organization');
+    $org = $this->addElementNs('nc:Organization', $this->root);
     $org->setAttribute('s:id', 'ORG0');
-    $this->root->appendChild($org);
-    $item = $this->document->createElementNS($namespace_nc, 'nc:OrganizationAbbreviationText', $agency->field_agency_abbreviation->value);
-    $org->appendChild($item);
-    $item = $this->document->createElementNS($namespace_nc, 'nc:OrganizationName', $agency->label());
-    $org->appendChild($item);
+    $item = $this->addElementNs('nc:OrganizationAbbreviationText', $org, $agency->field_agency_abbreviation->value);
+    $item = $this->addElementNs('nc:OrganizationName', $org, $agency->label());
 
     // Add abbreviation and name for each component.
     foreach ($this->node->field_agency_components->referencedEntities() as $delta => $component) {
-      $suborg = $this->document->createElementNS($namespace_nc, 'nc:OrganizationSubUnit');
+      $suborg = $this->addElementNs('nc:OrganizationSubUnit', $org);
       $suborg->setAttribute('s:id', 'ORG' . ($delta + 1));
-      $org->appendChild($suborg);
-      $item = $this->document->createElementNS($namespace_nc, 'nc:OrganizationAbbreviationText', $component->field_agency_comp_abbreviation->value);
-      $suborg->appendChild($item);
-      $item = $this->document->createElementNS($namespace_nc, 'nc:OrganizationName', $component->label());
-      $suborg->appendChild($item);
+      $item = $this->addElementNs('nc:OrganizationAbbreviationText', $suborg, $component->field_agency_comp_abbreviation->value);
+      $item = $this->addElementNs('nc:OrganizationName', $suborg, $component->label());
     }
 
     // Add the fiscal year.
-    $namespace_foia = 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03';
-    $year = $this->document->createElementNS($namespace_foia, 'foia:DocumentFiscalYearDate', $this->node->field_foia_annual_report_yr->value);
-    $this->root->appendChild($year);
+    $this->addElementNs('foia:DocumentFiscalYearDate', $this->root, $this->node->field_foia_annual_report_yr->value);
   }
 
 }
