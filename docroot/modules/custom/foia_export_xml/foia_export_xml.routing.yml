@@ -1,0 +1,8 @@
+foia_export_xml.export:
+  path: '/node/{node}/xml'
+  defaults:
+    _controller: '\Drupal\foia_export_xml\Controller\ExportController::exportXml'
+    _title: 'XML Annual Report'
+  requirements:
+    _custom_access: '\Drupal\foia_export_xml\Controller\ExportController::checkAccess'
+    _entity_access: node.view
