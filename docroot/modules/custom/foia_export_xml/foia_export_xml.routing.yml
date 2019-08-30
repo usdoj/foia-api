@@ -4,5 +4,5 @@ foia_export_xml.export:
     _controller: '\Drupal\foia_export_xml\Controller\ExportController::exportXml'
     _title: 'XML Annual Report'
   requirements:
-    _permission: 'access content'
     _custom_access: '\Drupal\foia_export_xml\Controller\ExportController::checkAccess'
+    _entity_access: node.view
