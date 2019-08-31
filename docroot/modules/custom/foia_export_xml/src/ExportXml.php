@@ -76,6 +76,7 @@ EOS;
     $this->root = $this->document->getElementsByTagNameNS('http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03', 'FoiaAnnualReport')[0];
 
     $this->organization();
+    $this->processedRequestSection();
   }
 
   /**
@@ -138,6 +139,65 @@ EOS;
 
     // Add the fiscal year.
     $this->addElementNs('foia:DocumentFiscalYearDate', $this->root, $this->node->field_foia_annual_report_yr->value);
+  }
+
+  /**
+   * Received, Processed and Pending FOIA Requests.
+   *
+   * This corresponds to Section V.A of the annual report.
+   */
+  protected function processedRequestSection() {
+    $component_data = $this->node->field_foia_requests_va->referencedEntities();
+    $map = [
+      'field_req_pend_start_yr' => 'foia:ProcessingStatisticsPendingAtStartQuantity',
+      'field_req_received_yr' => 'foia:ProcessingStatisticsReceivedQuantity',
+      'field_req_processed_yr' => 'foia:ProcessingStatisticsProcessedQuantity',
+      'field_req_pend_end_yr' => 'foia:ProcessingStatisticsPendingAtEndQuantity',
+    ];
+    $overall_map = [
+      'field_overall_req_pend_start_yr' => 'foia:ProcessingStatisticsPendingAtStartQuantity',
+      'field_overall_req_received_yr' => 'foia:ProcessingStatisticsReceivedQuantity',
+      'field_overall_req_processed_yr' => 'foia:ProcessingStatisticsProcessedQuantity',
+      'field_overall_req_pend_end_yr' => 'foia:ProcessingStatisticsPendingAtEndQuantity',
+    ];
+    $section = $this->addElementNs('foia:ProcessedRequestSection', $this->root);
+
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ProcessingStatistics', $section);
+      $item->setAttribute('s:id', 'PS' . ($delta + 1));
+      foreach ($map as $field => $tag) {
+        $this->addElementNs($tag, $item, $component->get($field)->value);
+      }
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:ProcessingStatistics', $section);
+    $item->setAttribute('s:id', 'PS0');
+    foreach ($overall_map as $field => $tag) {
+      $this->addElementNs($tag, $item, $this->node->get($field)->value);
+    }
+
+    // Add processing association for each component.
+    foreach ($component_data as $delta => $component) {
+      $matchup = $this->addElementNs('foia:ProcessingStatisticsOrganizationAssociation', $section);
+      $local_name = $this->addElementNs('foia:ComponentDataReference', $matchup);
+      $local_name->setAttribute('s:ref', 'PS' . ($delta + 1));
+      $org_name = $this->addElementNs('nc:OrganizationReference', $matchup);
+      $agency_component = $component->field_agency_component->referencedEntities()[0];
+      $org_name->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
+    }
+
+    // Add processing association for the agency overall.
+    $matchup = $this->addElementNs('foia:ProcessingStatisticsOrganizationAssociation', $section);
+    $local_name = $this->addElementNs('foia:ComponentDataReference', $matchup);
+    $local_name->setAttribute('s:ref', 'PS' . 0);
+    $org_name = $this->addElementNs('nc:OrganizationReference', $matchup);
+    $org_name->setAttribute('s:ref', 'ORG' . 0);
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_va->value));
+    $this->addElementNs('foia:FootnoteText', $section, $footnote);
   }
 
 }
