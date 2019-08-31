@@ -33,6 +33,16 @@ class ExportXml {
   protected $node;
 
   /**
+   * A map of component IDs to local identifiers.
+   *
+   * Keys are node IDs for agency_component nodes. Values are identifiers used
+   * in the XML: "ORG1", "ORG2", etc.
+   *
+   * @var string
+   */
+  protected $componentMap = [];
+
+  /**
    * Cast an ExportXml object to string.
    *
    * @return string
@@ -101,7 +111,7 @@ EOS;
   }
 
   /**
-   * Extract agency and component information from the node.
+   * Agency Information.
    *
    * This corresponds to the Agency Information section of the annual report.
    */
@@ -114,10 +124,14 @@ EOS;
     $item = $this->addElementNs('nc:OrganizationAbbreviationText', $org, $agency->field_agency_abbreviation->value);
     $item = $this->addElementNs('nc:OrganizationName', $org, $agency->label());
 
-    // Add abbreviation and name for each component.
+    // Add abbreviation and name for each component and populate
+    // $this->componentMap.
     foreach ($this->node->field_agency_components->referencedEntities() as $delta => $component) {
+      $local_id = 'ORG' . ($delta + 1);
+      $this->componentMap[$component->id()] = $local_id;
+
       $suborg = $this->addElementNs('nc:OrganizationSubUnit', $org);
-      $suborg->setAttribute('s:id', 'ORG' . ($delta + 1));
+      $suborg->setAttribute('s:id', $local_id);
       $item = $this->addElementNs('nc:OrganizationAbbreviationText', $suborg, $component->field_agency_comp_abbreviation->value);
       $item = $this->addElementNs('nc:OrganizationName', $suborg, $component->label());
     }
