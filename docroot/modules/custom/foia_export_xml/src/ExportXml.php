@@ -295,7 +295,85 @@ EOS;
    * This corresponds to Section V.B(1) of the annual report.
    */
   protected function requestDispositionSection() {
-    // @todo
+    $component_data = $this->node->field_foia_requests_vb1->referencedEntities();
+    $map = [
+      'field_full_grants' => 'foia:foia:RequestDispositionFullGrantQuantity',
+      'field_part_grants_denials' => 'foia:RequestDispositionPartialGrantQuantity',
+      'field_full_denials_ex' => 'foia:RequestDispositionFullExemptionDenialQuantity',
+      'field_total' => 'foia:RequestDispositionTotalQuantity',
+    ];
+    $overall_map = [
+      'field_overall_vb1_full_grants' => 'foia:RequestDispositionFullGrantQuantity',
+      'field_overall_vb1_part_grants_de' => 'foia:RequestDispositionPartialGrantQuantity',
+      'field_overall_vb1_full_denials_e' => 'foia:RequestDispositionFullExemptionDenialQuantity',
+      'field_overall_vb1_total' => 'foia:RequestDispositionTotalQuantity',
+    ];
+    $reason_map = [
+      'field_no_rec' => 'NoRecords',
+      'field_rec_ref_to_an_comp' => 'Referred',
+      'field_req_withdrawn' => 'Withdrawn',
+      'field_fee_related_reason' => 'FeeRelated',
+      'field_rec_not_desc' => 'NotDescribed',
+      'field_imp_req_oth_reason' => 'ImproperRequest',
+      'field_not_agency_record' => 'NotAgency',
+      'field_dup_request' => 'Duplicate',
+      'field_oth' => 'Other',
+    ];
+    $overall_reason_map = [
+      'field_overall_vb1_no_rec' => 'NoRecords',
+      'field_overall_vb1_rec_ref_to_an_' => 'Referred',
+      'field_overall_vb1_req_withdrawn' => 'Withdrawn',
+      'field_overall_vb1_fee_related_re' => 'FeeRelated',
+      'field_overall_vb1_rec_not_desc' => 'NotDescribed',
+      'field_overall_vb1_imp_req_oth_re' => 'ImproperRequest',
+      'field_overall_vb1_not_agency_rec' => 'NotAgency',
+      'field_overall_vb1_dup_request' => 'Duplicate',
+      'field_overall_vb1_oth' => 'Other',
+    ];
+
+    $section = $this->addElementNs('foia:RequestDispositionSection', $this->root);
+
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:RequestDisposition', $section);
+      $item->setAttribute('s:id', 'RD' . ($delta + 1));
+      foreach ($map as $field => $tag) {
+        $this->addElementNs($tag, $item, $component->get($field)->value);
+      }
+      // Add quantity for each denial reason.
+      foreach ($reason_map as $field => $reason) {
+        if (empty($component->get($field)->value)) {
+          continue;
+        }
+        $subitem = $this->addElementNs('foia:NonExemptionDenial', $item);
+        $this->addElementNs('foia:NonExemptionDenialReasonCode', $subitem, $reason);
+        $this->addElementNs('foia:NonExemptionDenialQuantity', $subitem, $component->get($field)->value);
+      }
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:RequestDisposition', $section);
+    $item->setAttribute('s:id', 'RD' . 0);
+    foreach ($overall_map as $field => $tag) {
+      $this->addElementNs($tag, $item, $this->node->get($field)->value);
+    }
+    // Add quantity for each denial reason.
+    foreach ($overall_reason_map as $field => $reason) {
+      if (empty($this->node->get($field)->value)) {
+        continue;
+      }
+      $subitem = $this->addElementNs('foia:NonExemptionDenial', $item);
+      $this->addElementNs('foia:NonExemptionDenialReasonCode', $subitem, $reason);
+      $this->addElementNs('foia:NonExemptionDenialQuantity', $subitem, $this->node->get($field)->value);
+    }
+
+    $this->addProcessingAssociations($component_data, $section, 'foia:RequestDispositionOrganizationAssociation', 'RD');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vb1->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
