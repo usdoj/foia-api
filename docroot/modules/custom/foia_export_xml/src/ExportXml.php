@@ -279,24 +279,9 @@ EOS;
       'field_overall_req_processed_yr' => 'foia:ProcessingStatisticsProcessedQuantity',
       'field_overall_req_pend_end_yr' => 'foia:ProcessingStatisticsPendingAtEndQuantity',
     ];
+
     $section = $this->addElementNs('foia:ProcessedRequestSection', $this->root);
-
-    // Add data for each component.
-    foreach ($component_data as $delta => $component) {
-      $item = $this->addElementNs('foia:ProcessingStatistics', $section);
-      $item->setAttribute('s:id', 'PS' . ($delta + 1));
-      foreach ($map as $field => $tag) {
-        $this->addElementNs($tag, $item, $component->get($field)->value);
-      }
-    }
-
-    // Add overall data.
-    $item = $this->addElementNs('foia:ProcessingStatistics', $section);
-    $item->setAttribute('s:id', 'PS0');
-    foreach ($overall_map as $field => $tag) {
-      $this->addElementNs($tag, $item, $this->node->get($field)->value);
-    }
-
+    $this->addComponentData($component_data, $section, 'foia:ProcessingStatistics', 'PS', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PS');
 
     // Add footnote.
