@@ -165,18 +165,16 @@ EOS;
   protected function addComponentData(array $component_data, \DOMElement $parent, $data_tag, $prefix, array $map, array $overall_map) {
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
-      $item = $this
-        ->addElementNs($data_tag, $parent)
-        ->setAttribute('s:id', $prefix . ($delta + 1));
+      $item = $this->addElementNs($data_tag, $parent);
+      $item->setAttribute('s:id', $prefix . ($delta + 1));
       foreach ($map as $field => $tag) {
         $this->addElementNs($tag, $item, $component->get($field)->value);
       }
     }
 
     // Add overall data.
-    $item = $this
-      ->addElementNs($data_tag, $parent)
-      ->setAttribute('s:id', $prefix . '0');
+    $item = $this->addElementNs($data_tag, $parent);
+    $item->setAttribute('s:id', $prefix . '0');
     foreach ($overall_map as $field => $tag) {
       $this->addElementNs($tag, $item, $this->node->get($field)->value);
     }
