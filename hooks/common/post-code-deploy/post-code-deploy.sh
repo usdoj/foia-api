@@ -26,6 +26,12 @@ cd $repo_root
 
 blt artifact:ac-hooks:post-code-deploy $site $target_env $source_branch $deployed_tag $repo_url $repo_type --environment=$target_env -v --no-interaction -D drush.ansi=false
 
+# Copy the PHPDocX library into the files directory so we can symlink it to
+# docroot/libraries
 cp -r ~/phpdocx "$repo_root/docroot/sites/default/files/"
+
+# Copy the .htaccess from private files into the phpdocx directory so the
+# library files can't be downloaded.
+cp "$repo_root/acquia-files/files-private/.htaccess" "$repo_root/docroot/sites/default/files/phpdocx/.htaccess"
 
 set +v
