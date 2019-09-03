@@ -143,6 +143,45 @@ EOS;
   }
 
   /**
+   * Add processing associations.
+   *
+   * Add associations between per-section identifiers and per-report identifiers
+   * for components.
+   *
+   * @param EntityInterface[] $component_data
+   *   An array of paragraphs with per-component data, each with
+   *   field_agency_component referencing an Agency Component node.
+   * @param \DOMElement $parent
+   *   The parent element to which new nodes will be added.
+   * @param string $tag
+   *   The XML tag of the association section.
+   * @param string $prefix
+   *   The base string used in the s:ref attribute.
+   */
+  protected function addProcessingAssociations(array $component_data, \DOMElement $parent, $tag, $prefix) {
+    // Add processing association for each component.
+    foreach ($component_data as $delta => $component) {
+      $agency_component = $component->field_agency_component->referencedEntities()[0];
+      $matchup = $this->addElementNs($tag, $parent);
+      $this
+        ->addElementNs('foia:ComponentDataReference', $matchup)
+        ->setAttribute('s:ref', $prefix . ($delta + 1));
+      $this
+        ->addElementNs('nc:OrganizationReference', $matchup)
+        ->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
+    }
+
+    // Add processing association for the agency overall.
+    $matchup = $this->addElementNs($tag, $parent);
+    $this
+      ->addElementNs('foia:ComponentDataReference', $matchup)
+      ->setAttribute('s:ref', $prefix . 0);
+    $this
+      ->addElementNs('nc:OrganizationReference', $matchup)
+      ->setAttribute('s:ref', 'ORG' . 0);
+  }
+
+  /**
    * Agency Information.
    *
    * This corresponds to the Agency Information section of the annual report.
