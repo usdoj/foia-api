@@ -1,0 +1,82 @@
+langcode: en
+status: true
+dependencies: {  }
+id: foia_xiie2
+label: 'Import FOIA XII. E. 2. paragraphs from NIEM-XML data.'
+migration_group: foia_xml
+migration_tags:
+  - Paragraph
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  urls:
+    - 'temporary://foia-xml/report.xml'
+  data_parser_plugin: simple_xml
+  namespaces:
+    iepd: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03'
+    foia: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03'
+    i: 'http://niem.gov/niem/appinfo/2.0'
+    j: 'http://niem.gov/niem/domains/jxdm/4.1'
+    nc: 'http://niem.gov/niem/niem-core/2.0'
+    s: 'http://niem.gov/niem/structures/2.0'
+    xsi: 'http://www.w3.org/2001/XMLSchema-instance'
+  item_selector: '/iepd:FoiaAnnualReport/foia:BackloggedAppealComparisonSection/foia:BacklogComparison'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_back_prev_yr
+      label: 'Backlogged requests from previous year'
+      selector: 'foia:BacklogLastYearQuantity'
+    -
+      name: field_back_cur_yr
+      label: 'Backlogged requests from current year'
+      selector: 'foia:BacklogCurrentYearQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: foia_xiie2
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_xiie2
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_back_prev_yr: field_back_prev_yr
+  field_back_cur_yr: field_back_cur_yr
+destination:
+  plugin: entity_reference_revisions:paragraph
+migration_dependencies:
+  required:
+    - component_xiie2

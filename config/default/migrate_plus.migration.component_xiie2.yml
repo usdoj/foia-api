@@ -1,0 +1,69 @@
+langcode: en
+status: true
+dependencies: {  }
+id: component_xiie2
+label: 'Map internal identifiers for processed requests to Agency Component node IDs.'
+migration_group: foia_xml
+migration_tags:
+  - Content
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  urls:
+    - 'temporary://foia-xml/report.xml'
+  data_parser_plugin: simple_xml
+  namespaces:
+    iepd: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03'
+    foia: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03'
+    i: 'http://niem.gov/niem/appinfo/2.0'
+    j: 'http://niem.gov/niem/domains/jxdm/4.1'
+    nc: 'http://niem.gov/niem/niem-core/2.0'
+    s: 'http://niem.gov/niem/structures/2.0'
+    xsi: 'http://www.w3.org/2001/XMLSchema-instance'
+  item_selector: '/iepd:FoiaAnnualReport/foia:BackloggedAppealComparisonSection/foia:BacklogComparisonOrganizationAssociation'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: identifier
+      label: 'Identifier used in this section of the XML report'
+      selector: 'foia:ComponentDataReference/@s:ref'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: 'nc:OrganizationReference/@s:ref'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    identifier:
+      type: string
+process:
+  # Do not create new nodes. We just need the migration-map table so that we can
+  # use the migration_lookup process plugin.
+  nid:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Component node with the given abbreviation.'
+destination:
+  plugin: entity:node
+migration_dependencies:
+  required:
+    - component
