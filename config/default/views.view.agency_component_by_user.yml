@@ -1,21 +1,22 @@
-uuid: f3108342-5ec8-4035-acb8-42a1ab9a58a7
+uuid: 7142015c-ed77-499f-b242-fe0d31b0d8a7
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_agency_comp_abbreviation
     - node.type.agency_component
+    - taxonomy.vocabulary.agency
   module:
     - node
     - taxonomy
     - user
-id: agency_components_by_user
-label: 'Agency Components By User'
+id: agency_component_by_user
+label: 'Agency Component by User'
 module: views
 description: ''
 tag: ''
-base_table: users_field_data
-base_field: uid
+base_table: node_field_data
+base_field: nid
 core: 8.x
 display:
   default:
@@ -27,7 +28,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'create annual_foia_report_data content'
+          perm: 'access content'
       cache:
         type: tag
         options: {  }
@@ -86,7 +87,7 @@ display:
           id: field_agency_comp_abbreviation
           table: node__field_agency_comp_abbreviation
           field: field_agency_comp_abbreviation
-          relationship: reverse__node__field_agency
+          relationship: none
           group_type: group
           admin_label: ''
           label: ''
@@ -133,7 +134,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: false
+            link_to_entity: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -146,27 +147,53 @@ display:
           field_api_classes: false
           plugin_id: field
       filters:
-        status:
-          value: '1'
+        status_1:
+          id: status_1
           table: users_field_data
           field: status
-          plugin_id: boolean
-          entity_type: user
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-          group: 1
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          relationship: reverse__node__field_agency
+          relationship: uid
           group_type: group
           admin_label: ''
-          operator: in
-          value:
-            agency_component: agency_component
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: user
+          entity_field: status
+          plugin_id: boolean
+        field_agency_target_id_1:
+          id: field_agency_target_id_1
+          table: user__field_agency
+          field: field_agency_target_id
+          relationship: uid
+          group_type: group
+          admin_label: ''
+          operator: 'not empty'
+          value: {  }
           group: 1
           exposed: false
           expose:
@@ -182,7 +209,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            argument: null
           is_grouped: false
           group_info:
             label: ''
@@ -195,14 +221,39 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: agency
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            agency_component: agency_component
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          group: 1
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+          group: 1
         title:
           id: title
           table: node_field_data
           field: title
-          relationship: reverse__node__field_agency
+          relationship: none
           group_type: group
           admin_label: ''
           operator: 'not empty'
@@ -237,54 +288,39 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: string
-        status_1:
-          id: status_1
-          table: node_field_data
-          field: status
-          relationship: reverse__node__field_agency
+      sorts:
+        field_agency_comp_abbreviation_value:
+          id: field_agency_comp_abbreviation_value
+          table: node__field_agency_comp_abbreviation
+          field: field_agency_comp_abbreviation_value
+          relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
-          value: '1'
-          group: 1
+          order: ASC
           exposed: false
           expose:
-            operator_id: ''
             label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: node
-          entity_field: status
-          plugin_id: boolean
-      sorts: {  }
+          plugin_id: standard
       header: {  }
       footer: {  }
       empty: {  }
       relationships:
+        uid:
+          id: uid
+          table: node_field_data
+          field: uid
+          relationship: none
+          group_type: group
+          admin_label: author
+          required: true
+          entity_type: node
+          entity_field: uid
+          plugin_id: standard
         field_agency:
           id: field_agency
           table: user__field_agency
           field: field_agency
-          relationship: none
+          relationship: uid
           group_type: group
           admin_label: 'field_agency: Taxonomy term'
           required: true
@@ -304,7 +340,7 @@ display:
           id: uid
           table: users_field_data
           field: uid
-          relationship: none
+          relationship: uid
           group_type: group
           admin_label: ''
           default_action: default
@@ -337,6 +373,11 @@ display:
           entity_field: uid
           plugin_id: user_uid
       display_extenders: {  }
+      filter_groups:
+        operator: OR
+        groups:
+          1: AND
+      group_by: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -345,12 +386,13 @@ display:
         - url
         - url.query_args
         - user
+        - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.node.field_agency_comp_abbreviation'
-  entity_reference_1:
+  component_by_user:
     display_plugin: entity_reference
-    id: entity_reference_1
+    id: component_by_user
     display_title: 'Entity Reference'
     position: 1
     display_options:
@@ -360,6 +402,13 @@ display:
         options:
           search_fields:
             field_agency_comp_abbreviation: field_agency_comp_abbreviation
+      row:
+        type: entity_reference
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: '-'
+          hide_empty: false
       pager:
         type: none
         options:
@@ -371,6 +420,7 @@ display:
         - 'languages:language_interface'
         - url
         - user
+        - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.node.field_agency_comp_abbreviation'
