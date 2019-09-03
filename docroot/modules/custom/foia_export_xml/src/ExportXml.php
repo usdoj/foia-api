@@ -257,22 +257,7 @@ EOS;
       $this->addElementNs($tag, $item, $this->node->get($field)->value);
     }
 
-    // Add processing association for each component.
-    foreach ($component_data as $delta => $component) {
-      $matchup = $this->addElementNs('foia:ProcessingStatisticsOrganizationAssociation', $section);
-      $local_name = $this->addElementNs('foia:ComponentDataReference', $matchup);
-      $local_name->setAttribute('s:ref', 'PS' . ($delta + 1));
-      $org_name = $this->addElementNs('nc:OrganizationReference', $matchup);
-      $agency_component = $component->field_agency_component->referencedEntities()[0];
-      $org_name->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
-    }
-
-    // Add processing association for the agency overall.
-    $matchup = $this->addElementNs('foia:ProcessingStatisticsOrganizationAssociation', $section);
-    $local_name = $this->addElementNs('foia:ComponentDataReference', $matchup);
-    $local_name->setAttribute('s:ref', 'PS' . 0);
-    $org_name = $this->addElementNs('nc:OrganizationReference', $matchup);
-    $org_name->setAttribute('s:ref', 'ORG' . 0);
+    $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PS');
 
     // Add footnote.
     $footnote = trim(strip_tags($this->node->field_footnotes_va->value));
