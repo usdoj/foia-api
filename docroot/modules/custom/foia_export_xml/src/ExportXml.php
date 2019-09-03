@@ -76,7 +76,38 @@ EOS;
     $this->root = $this->document->getElementsByTagNameNS('http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03', 'FoiaAnnualReport')[0];
 
     $this->organization();
+    $this->exemption3StatuteSection();
     $this->processedRequestSection();
+    $this->requestDispositionSection();
+    $this->requestDenialOtherReasonSection();
+    $this->requestDispositionAppliedExemptionsSection();
+    $this->processedAppealSection();
+    $this->appealDispositionSection();
+    $this->appealDispositionAppliedExemptionsSection();
+    $this->appealNonExemptionDenialSection();
+    $this->appealDenialOtherReasonSection();
+    $this->appealResponseTimeSection();
+    $this->oldestPendingAppealSection();
+    $this->processedResponseTimeSection();
+    $this->informationGrantedResponseTimeSection();
+    $this->simpleResponseTimeIncrementsSection();
+    $this->complexResponseTimeIncrementsSection();
+    $this->expeditedResponseTimeIncrementsSection();
+    $this->pendingPerfectedRequestsSection();
+    $this->oldestPendingRequestSection();
+    $this->expeditedProcessingSection();
+    $this->feeWaiverSection();
+    $this->personnelAndCostSection();
+    $this->feesCollectedSection();
+    $this->subsectionUsedSection();
+    $this->subsectionPostSection();
+    $this->backlogSection();
+    $this->processedConsultationSection();
+    $this->oldestPendingConsultationSection();
+    $this->processedRequestComparisonSection();
+    $this->backloggedRequestComparisonSection();
+    $this->processedAppealComparisonSection();
+    $this->backloggedAppealComparisonSection();
   }
 
   /**
@@ -142,6 +173,15 @@ EOS;
   }
 
   /**
+   * Exemption 3 Statutes.
+   *
+   * This corresponds to Section IV of the annual report.
+   */
+  protected function exemption3StatuteSection() {
+    // @todo
+  }
+
+  /**
    * Received, Processed and Pending FOIA Requests.
    *
    * This corresponds to Section V.A of the annual report.
@@ -198,6 +238,274 @@ EOS;
     // Add footnote.
     $footnote = trim(strip_tags($this->node->field_footnotes_va->value));
     $this->addElementNs('foia:FootnoteText', $section, $footnote);
+  }
+
+  /**
+   * Request Disposition Section.
+   *
+   * This corresponds to Section V.B(1) of the annual report.
+   */
+  protected function requestDispositionSection() {
+    // @todo
+  }
+
+  /**
+   * Request Denial Other Reason Section.
+   *
+   * This corresponds to Section V.B(2) of the annual report.
+   */
+  protected function requestDenialOtherReasonSection() {
+  }
+
+  /**
+   * Request Disposition Applied Exemptions Section.
+   *
+   * This corresponds to Section V.B(3) of the annual report.
+   */
+  protected function requestDispositionAppliedExemptionsSection() {
+  }
+
+  /**
+   * Processed Appeal Section.
+   *
+   * This corresponds to Section VI.A of the annual report.
+   */
+  protected function processedAppealSection() {
+    // @todo
+  }
+
+  /**
+   * Appeal Disposition Section.
+   *
+   * This corresponds to Section VI.B of the annual report.
+   */
+  protected function appealDispositionSection() {
+    // @todo
+  }
+
+  /**
+   * Appeal Disposition Applied Exemptions Section.
+   *
+   * This corresponds to Section VI.C(1) of the annual report.
+   */
+  protected function appealDispositionAppliedExemptionsSection() {
+    // @todo
+  }
+
+  /**
+   * Appeal Non Exemption Denial Section.
+   *
+   * This corresponds to Section VI.C(2) of the annual report.
+   */
+  protected function appealNonExemptionDenialSection() {
+    // @todo
+  }
+
+  /**
+   * Appeal Denial Other Reason Section.
+   *
+   * This corresponds to Section VI.C(3) of the annual report.
+   */
+  protected function appealDenialOtherReasonSection() {
+    // @todo
+  }
+
+  /**
+   * Appeal Response Time Section.
+   *
+   * This corresponds to Section VI.C(4) of the annual report.
+   */
+  protected function appealResponseTimeSection() {
+    // @todo
+  }
+
+  /**
+   * Oldest Pending Appeal Section.
+   *
+   * This corresponds to Section VI.C(5) of the annual report.
+   */
+  protected function oldestPendingAppealSection() {
+    // @todo
+  }
+
+  /**
+   * Processed Response Time Section.
+   *
+   * This corresponds to Section VII.A of the annual report.
+   */
+  protected function processedResponseTimeSection() {
+    // @todo
+  }
+
+  /**
+   * Information Granted Response Time Section.
+   *
+   * This corresponds to Section VII.B of the annual report.
+   */
+  protected function informationGrantedResponseTimeSection() {
+    // @todo
+  }
+
+  /**
+   * Simple Response Time Increments Section.
+   *
+   * This corresponds to Section VII.C(1) of the annual report.
+   */
+  protected function simpleResponseTimeIncrementsSection() {
+    // @todo
+  }
+
+  /**
+   * Complex Response Time Increments Section.
+   *
+   * This corresponds to Section VII.C(2) of the annual report.
+   */
+  protected function complexResponseTimeIncrementsSection() {
+    // @todo
+  }
+
+  /**
+   * Expedited Response Time Increments Section.
+   *
+   * This corresponds to Section VII.C(3) of the annual report.
+   */
+  protected function expeditedResponseTimeIncrementsSection() {
+    // @todo
+  }
+
+  /**
+   * Pending Perfected Requests Section.
+   *
+   * This corresponds to Section VII.D of the annual report.
+   */
+  protected function pendingPerfectedRequestsSection() {
+    // @todo
+  }
+
+  /**
+   * Oldest Pending Request Section.
+   *
+   * This corresponds to Section VII.E of the annual report.
+   */
+  protected function oldestPendingRequestSection() {
+    // @todo
+  }
+
+  /**
+   * Expedited Processing Section.
+   *
+   * This corresponds to Section VIII.A of the annual report.
+   */
+  protected function expeditedProcessingSection() {
+    // @todo
+  }
+
+  /**
+   * Fee Waiver Section.
+   *
+   * This corresponds to Section VIII.B of the annual report.
+   */
+  protected function feeWaiverSection() {
+    // @todo
+  }
+
+  /**
+   * Personnel And Cost Section.
+   *
+   * This corresponds to Section IX of the annual report.
+   */
+  protected function personnelAndCostSection() {
+    // @todo
+  }
+
+  /**
+   * Fees Collected Section.
+   *
+   * This corresponds to Section X of the annual report.
+   */
+  protected function feesCollectedSection() {
+    // @todo
+  }
+
+  /**
+   * Subsection Used Section.
+   *
+   * This corresponds to Section XI.A of the annual report.
+   */
+  protected function subsectionUsedSection() {
+    // @todo
+  }
+
+  /**
+   * Subsection Post Section.
+   *
+   * This corresponds to Section XI.B of the annual report.
+   */
+  protected function subsectionPostSection() {
+    // @todo
+  }
+
+  /**
+   * Backlog Section.
+   *
+   * This corresponds to Section XII.A of the annual report.
+   */
+  protected function backlogSection() {
+    // @todo
+  }
+
+  /**
+   * Processed Consultation Section.
+   *
+   * This corresponds to Section XII.B of the annual report.
+   */
+  protected function processedConsultationSection() {
+    // @todo
+  }
+
+  /**
+   * Oldest Pending Consultation Section.
+   *
+   * This corresponds to Section XII.C of the annual report.
+   */
+  protected function oldestPendingConsultationSection() {
+    // @todo
+  }
+
+  /**
+   * Processed Request Comparison Section.
+   *
+   * This corresponds to Section XII.D(1) of the annual report.
+   */
+  protected function processedRequestComparisonSection() {
+    // @todo
+  }
+
+  /**
+   * Backlogged Request Comparison Section.
+   *
+   * This corresponds to Section XII.D(2) of the annual report.
+   */
+  protected function backloggedRequestComparisonSection() {
+    // @todo
+  }
+
+  /**
+   * Processed Appeal Comparison Section.
+   *
+   * This corresponds to Section XII.E(1) of the annual report.
+   */
+  protected function processedAppealComparisonSection() {
+    // @todo
+  }
+
+  /**
+   * Backlogged Appeal Comparison Section.
+   *
+   * This corresponds to Section XII.E(2) of the annual report.
+   */
+  protected function backloggedAppealComparisonSection() {
+    // @todo
   }
 
 }
