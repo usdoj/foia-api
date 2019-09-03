@@ -261,7 +261,9 @@ EOS;
 
     // Add footnote.
     $footnote = trim(strip_tags($this->node->field_footnotes_va->value));
-    $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
