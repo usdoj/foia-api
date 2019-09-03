@@ -143,6 +143,46 @@ EOS;
   }
 
   /**
+   * Add component data.
+   *
+   * Add data from an array of paragraphs with per-component data and
+   * corresponding overall data from the node.
+   *
+   * @param EntityInterface[] $component_data
+   *   An array of paragraphs with per-component data, each with
+   *   field_agency_component referencing an Agency Component node.
+   * @param \DOMElement $parent
+   *   The parent element to which new nodes will be added.
+   * @param string $data_tag
+   *   The XML tag of the data section.
+   * @param string $prefix
+   *   The base string used in the s:id attribute.
+   * @param string[] $map
+   *   An array mapping fields on the paragraphs to XML tags.
+   * @param string[] $overall_map
+   *   An array mapping fields on the node to XML tags.
+   */
+  protected function addComponentData(array $component_data, \DOMElement $parent, $data_tag, $prefix, array $map, array $overall_map) {
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this
+        ->addElementNs($data_tag, $parent)
+        ->setAttribute('s:id', $prefix . ($delta + 1));
+      foreach ($map as $field => $tag) {
+        $this->addElementNs($tag, $item, $component->get($field)->value);
+      }
+    }
+
+    // Add overall data.
+    $item = $this
+      ->addElementNs($data_tag, $parent)
+      ->setAttribute('s:id', $prefix . '0');
+    foreach ($overall_map as $field => $tag) {
+      $this->addElementNs($tag, $item, $this->node->get($field)->value);
+    }
+  }
+
+  /**
    * Add processing associations.
    *
    * Add associations between per-section identifiers and per-report identifiers
