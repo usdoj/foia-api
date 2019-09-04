@@ -6,16 +6,16 @@
         success: "valid"
       });
 
-      var scrollHeight = $('.layout-region-node-main').height() + 'px';
-      $('.layout-region-node-secondary').css('position', 'relative').css('height', scrollHeight);
-      $('.layout-region-node-secondary').append('<div class="error" style="position: -webkit-sticky; position: sticky; top: 100px;"><span>jQuery Validation</span></div>');
+      var regionHeight = ($('.layout-region-node-main').height() + 1600) + 'px';
+      $('.layout-region-node-secondary').css('position', 'relative').css('height', regionHeight);
+      $('.layout-region-node-secondary').append('<div class="error" style="position: -webkit-sticky; position: sticky; top: 100px;"><span></span></div>');
 
       $('#node-annual-foia-report-data-form').validate({
 
-        invalidHandler: function() {
+        invalidHandler: function(event, validator) {
           var errors = validator.numberOfInvalids();
           if (errors) {
-            var message = errors == 1 ? 'You missed 1 field. It has been highlighted below' : 'You missed ' + errors + ' fields.  They have been highlighted below';
+            var message = errors == 1 ? 'You missed 1 field. It has been highlighted.' : 'You missed ' + errors + ' fields.  They have been highlighted.';
             $("div.error span").html(message);
             $("div.error").show();
           }
@@ -37,9 +37,10 @@
       });
       $('input#edit-submit').prop('disabled', true);
       $('input#edit-validate-button').on('click', function(event) {
-          $('input#edit-submit').prop('disabled', false);
-          event.preventDefault();        }
-      );
+        $('#node-annual-foia-report-data-form').valid();
+        $('input#edit-submit').prop('disabled', false);
+        event.preventDefault();
+      });
     }
   };
 
