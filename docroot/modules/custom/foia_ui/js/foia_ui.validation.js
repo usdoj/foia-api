@@ -25,14 +25,29 @@
         },
 
         rules: {
+          // FOIA Requests V. A.
           "field_foia_requests_va[0][subform][field_req_processed_yr][0][value]" : {
-            equalTo: "#edit-field-foia-requests-vb1-0-subform-field-total-0-value",
-
+            equalTo: "#edit-field-foia-requests-vb1-0-subform-field-total-0-value"
+          },
+          // Agency Overall Number of Requests Processed in Fiscal Year
+          "field_overall_req_processed_yr[0][value]" : {
+            equalTo: "#edit-field-overall-vb1-total-0-value"
           },
           "field_overall_xiie1_received_cur[0][value]": {
             min: 2,
             max: 4
           }
+        },
+
+        messages: {
+          // FOIA Requests V. A.
+          "field_foia_requests_va[0][subform][field_req_processed_yr][0][value]": {
+              equalTo: "Must match corresponding agency V.B.(1) Total"
+          },
+          // Agency Overall Number of Requests Processed in Fiscal Year
+          "field_overall_req_processed_yr[0][value]" : {
+            equalTo: "Must match V.B.(1) Agency Overall Total"
+          },
         }
       });
       $('input#edit-submit').prop('disabled', true);
