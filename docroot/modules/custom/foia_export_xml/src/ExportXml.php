@@ -470,7 +470,29 @@ EOS;
    * This corresponds to Section VI.A of the annual report.
    */
   protected function processedAppealSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_via->referencedEntities();
+    $map = [
+      'field_app_pend_start_yr' => 'foia:ProcessingStatisticsPendingAtStartQuantity',
+      'field_app_received_yr' => 'foia:ProcessingStatisticsReceivedQuantity',
+      'field_app_processed_yr' => 'foia:ProcessingStatisticsProcessedQuantity',
+      'field_app_pend_end_yr' => 'foia:ProcessingStatisticsPendingAtEndQuantity',
+    ];
+    $overall_map = [
+      'field_overall_via_app_pend_start' => 'foia:ProcessingStatisticsPendingAtStartQuantity',
+      'field_overall_via_app_recd_yr' => 'foia:ProcessingStatisticsReceivedQuantity',
+      'field_overall_via_app_proc_yr' => 'foia:ProcessingStatisticsProcessedQuantity',
+      'field_overall_via_app_pend_endyr' => 'foia:ProcessingStatisticsPendingAtEndQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:ProcessedAppealSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:ProcessingStatistics', 'PA', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PA');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_via->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
