@@ -11,6 +11,7 @@ dependencies:
     - field.field.paragraph.req_viiia.field_num_jud_w10
     - paragraphs.paragraphs_type.req_viiia
   module:
+    - entity_reference_views_select
     - text
 id: paragraph.req_viiia.default
 targetEntityType: paragraph
@@ -19,12 +20,9 @@ mode: default
 content:
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_avg_days_jud:
     weight: 5

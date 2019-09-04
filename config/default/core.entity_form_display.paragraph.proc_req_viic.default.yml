@@ -19,6 +19,8 @@ dependencies:
     - field.field.paragraph.proc_req_viic.field_agency_component
     - field.field.paragraph.proc_req_viic.field_total
     - paragraphs.paragraphs_type.proc_req_viic
+  module:
+    - entity_reference_views_select
 id: paragraph.proc_req_viic.default
 targetEntityType: paragraph
 bundle: proc_req_viic
@@ -117,12 +119,9 @@ content:
     region: content
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_total:
     weight: 14

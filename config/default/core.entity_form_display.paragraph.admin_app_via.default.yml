@@ -9,6 +9,8 @@ dependencies:
     - field.field.paragraph.admin_app_via.field_app_processed_yr
     - field.field.paragraph.admin_app_via.field_app_received_yr
     - paragraphs.paragraphs_type.admin_app_via
+  module:
+    - entity_reference_views_select
 id: paragraph.admin_app_via.default
 targetEntityType: paragraph
 bundle: admin_app_via
@@ -16,12 +18,9 @@ mode: default
 content:
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_app_pend_end_yr:
     weight: 4

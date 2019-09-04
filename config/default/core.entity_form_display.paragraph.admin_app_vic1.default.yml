@@ -19,6 +19,8 @@ dependencies:
     - field.field.paragraph.admin_app_vic1.field_ex_8
     - field.field.paragraph.admin_app_vic1.field_ex_9
     - paragraphs.paragraphs_type.admin_app_vic1
+  module:
+    - entity_reference_views_select
 id: paragraph.admin_app_vic1.default
 targetEntityType: paragraph
 bundle: admin_app_vic1
@@ -26,12 +28,9 @@ mode: default
 content:
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_ex_1:
     weight: 1

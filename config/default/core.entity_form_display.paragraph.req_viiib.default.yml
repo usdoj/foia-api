@@ -10,6 +10,7 @@ dependencies:
     - field.field.paragraph.req_viiib.field_num_grant
     - paragraphs.paragraphs_type.req_viiib
   module:
+    - entity_reference_views_select
     - text
 id: paragraph.req_viiib.default
 targetEntityType: paragraph
@@ -18,12 +19,9 @@ mode: default
 content:
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_avg_days_jud:
     weight: 4

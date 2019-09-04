@@ -9,6 +9,8 @@ dependencies:
     - field.field.paragraph.foia_req_va.field_req_processed_yr
     - field.field.paragraph.foia_req_va.field_req_received_yr
     - paragraphs.paragraphs_type.foia_req_va
+  module:
+    - entity_reference_views_select
 id: paragraph.foia_req_va.default
 targetEntityType: paragraph
 bundle: foia_req_va
@@ -16,12 +18,9 @@ mode: default
 content:
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_req_pend_end_yr:
     weight: 1

@@ -10,6 +10,7 @@ dependencies:
     - field.field.paragraph.foia_xii_received_proc.field_received_last_yr
     - paragraphs.paragraphs_type.foia_xii_received_proc
   module:
+    - entity_reference_views_select
     - field_group
 third_party_settings:
   field_group:
@@ -60,12 +61,9 @@ mode: default
 content:
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_proc_cur_yr:
     weight: 5

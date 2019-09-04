@@ -4,25 +4,29 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_agency_components
-    - node.type.agency_component
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_agency_components
 field_name: field_agency_components
 entity_type: node
 bundle: annual_foia_report_data
 label: Components
-description: ''
+description: 'Select all active components.'
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: views
   handler_settings:
-    target_bundles:
-      agency_component: agency_component
-    sort:
-      field: _none
-    auto_create: false
-    auto_create_bundle: ''
+    view:
+      view_name: agency_component_by_user
+      display_name: component_by_user
+      arguments: {  }
 field_type: entity_reference

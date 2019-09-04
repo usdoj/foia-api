@@ -7,6 +7,8 @@ dependencies:
     - field.field.paragraph.fees_x.field_perc_costs
     - field.field.paragraph.fees_x.field_total_fees
     - paragraphs.paragraphs_type.fees_x
+  module:
+    - entity_reference_views_select
 id: paragraph.fees_x.default
 targetEntityType: paragraph
 bundle: fees_x
@@ -14,12 +16,9 @@ mode: default
 content:
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_perc_costs:
     weight: 1

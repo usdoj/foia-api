@@ -18,7 +18,6 @@ Feature: Annual FOIA Report Data Feature
     And I am at 'node/add/annual_foia_report_data'
     And for 'Title' I enter '2019 Test Agency 1 Annual FOIA Report'
     And for 'Agency' I enter 'Federal Testing Agency'
-    And for 'Components' I enter 'Test Agency Component 1'
     And for 'FOIA Annual Report Year' I enter '2019'
     And for 'field_date_prepared[0][value][date]' I enter '08/22/2019'
     When I press the 'Save' button

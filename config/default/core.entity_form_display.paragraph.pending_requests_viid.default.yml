@@ -15,6 +15,7 @@ dependencies:
     - field.field.paragraph.pending_requests_viid.field_sim_pend
     - paragraphs.paragraphs_type.pending_requests_viid
   module:
+    - entity_reference_views_select
     - field_group
     - text
 third_party_settings:
@@ -85,12 +86,9 @@ mode: default
 content:
   field_agency_component:
     weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_select
     region: content
   field_comp_avg:
     weight: 6

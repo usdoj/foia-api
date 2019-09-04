@@ -4,8 +4,14 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_agency_component
-    - node.type.agency_component
     - paragraphs.paragraphs_type.processed_requests_vii
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.processed_requests_vii.field_agency_component
 field_name: field_agency_component
 entity_type: paragraph
@@ -17,13 +23,10 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: views
   handler_settings:
-    target_bundles:
-      agency_component: agency_component
-    sort:
-      field: title
-      direction: ASC
-    auto_create: false
-    auto_create_bundle: ''
+    view:
+      view_name: agency_component_by_user
+      display_name: component_by_user
+      arguments: {  }
 field_type: entity_reference

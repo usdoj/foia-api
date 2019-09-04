@@ -325,6 +325,7 @@ dependencies:
   module:
     - content_moderation
     - datetime
+    - entity_reference_views_select
     - field_group
     - paragraphs
     - text
@@ -1847,12 +1848,9 @@ content:
     region: content
   field_agency_components:
     weight: 4
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: erviews_options_buttons
     region: content
   field_date_prepared:
     weight: 6
