@@ -382,6 +382,7 @@ EOS;
    * This corresponds to Section V.B(2) of the annual report.
    */
   protected function requestDenialOtherReasonSection() {
+    // @todo
   }
 
   /**
@@ -390,6 +391,77 @@ EOS;
    * This corresponds to Section V.B(3) of the annual report.
    */
   protected function requestDispositionAppliedExemptionsSection() {
+    $component_data = $this->node->field_foia_requests_vb3->referencedEntities();
+    $exemption_map = [
+      'field_ex_1' => 'Ex. 1',
+      'field_ex_2' => 'Ex. 2',
+      'field_ex_3' => 'Ex. 3',
+      'field_ex_4' => 'Ex. 4',
+      'field_ex_5' => 'Ex. 5',
+      'field_ex_6' => 'Ex. 6',
+      'field_ex_7_a' => 'Ex. 7(A)',
+      'field_ex_7_b' => 'Ex. 7(B)',
+      'field_ex_7_c' => 'Ex. 7(C)',
+      'field_ex_7_d' => 'Ex. 7(D)',
+      'field_ex_7_e' => 'Ex. 7(E)',
+      'field_ex_7_f' => 'Ex. 7(F)',
+      'field_ex_8' => 'Ex. 8',
+      'field_ex_9' => 'Ex. 9',
+    ];
+    $overall_exemption_map = [
+      'field_overall_vb3_ex_1' => 'Ex. 1',
+      'field_overall_vb3_ex_2' => 'Ex. 2',
+      'field_overall_vb3_ex_3' => 'Ex. 3',
+      'field_overall_vb3_ex_4' => 'Ex. 4',
+      'field_overall_vb3_ex_5' => 'Ex. 5',
+      'field_overall_vb3_ex_6' => 'Ex. 6',
+      'field_overall_vb3_ex_7_a' => 'Ex. 7(A)',
+      'field_overall_vb3_ex_7_b' => 'Ex. 7(B)',
+      'field_overall_vb3_ex_7_c' => 'Ex. 7(C)',
+      'field_overall_vb3_ex_7_d' => 'Ex. 7(D)',
+      'field_overall_vb3_ex_7_e' => 'Ex. 7(E)',
+      'field_overall_vb3_ex_7_f' => 'Ex. 7(F)',
+      'field_overall_vb3_ex_8' => 'Ex. 8',
+      'field_overall_vb3_ex_9' => 'Ex. 9',
+    ];
+
+    $section = $this->addElementNs('foia:RequestDispositionAppliedExemptionsSection', $this->root);
+
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
+      $item->setAttribute('s:id', 'RDE' . ($delta + 1));
+      // Add quantity for each exemption code.
+      foreach ($exemption_map as $field => $exemption) {
+        if (empty($component->get($field)->value)) {
+          continue;
+        }
+        $subitem = $this->addElementNs('foia:AppliedExemption', $item);
+        $this->addElementNs('foia:AppliedExemptionCode', $subitem, $exemption);
+        $this->addElementNs('foia:AppliedExemptionQuantity', $subitem, $component->get($field)->value);
+      }
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
+    $item->setAttribute('s:id', 'RDE' . 0);
+    // Add quantity for each exemption code.
+    foreach ($overall_exemption_map as $field => $exemption) {
+      if (empty($this->node->get($field)->value)) {
+        continue;
+      }
+      $subitem = $this->addElementNs('foia:AppliedExemption', $item);
+      $this->addElementNs('foia:AppliedExemptionCode', $subitem, $exemption);
+      $this->addElementNs('foia:AppliedExemptionQuantity', $subitem, $this->node->get($field)->value);
+    }
+
+    $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'RDE');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vb3->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
