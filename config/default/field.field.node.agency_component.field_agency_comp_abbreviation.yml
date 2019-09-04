@@ -5,13 +5,20 @@ dependencies:
   config:
     - field.storage.node.field_agency_comp_abbreviation
     - node.type.agency_component
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.agency_component.field_agency_comp_abbreviation
 field_name: field_agency_comp_abbreviation
 entity_type: node
 bundle: agency_component
 label: Abbreviation
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

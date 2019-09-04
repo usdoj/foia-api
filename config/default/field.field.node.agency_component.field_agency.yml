@@ -6,13 +6,20 @@ dependencies:
     - field.storage.node.field_agency
     - node.type.agency_component
     - taxonomy.vocabulary.agency
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.agency_component.field_agency
 field_name: field_agency
 entity_type: node
 bundle: agency_component
 label: Agency
 description: 'The name of the Agency with which this Agency Component is affiliated.'
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

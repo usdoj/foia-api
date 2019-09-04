@@ -48,7 +48,7 @@ Feature: Request information from an agency
 #    When I am at 'admin/reports/dblog'
 #    Then I should see the text 'No Submission Email: Unable to send email for Test…'
 
-  @api
+  @api @experimental
   Scenario: Send request email
     Given I am at 'admin/modules'
     And I check the box 'Maillog / Mail Developer'
