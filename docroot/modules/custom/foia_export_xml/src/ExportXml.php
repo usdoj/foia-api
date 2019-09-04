@@ -501,7 +501,31 @@ EOS;
    * This corresponds to Section VI.B of the annual report.
    */
   protected function appealDispositionSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vib->referencedEntities();
+    $map = [
+      'field_affirmed_on_app' => 'foia:AppealDispositionAffirmedQuantity',
+      'field_part_on_app' => 'foia:AppealDispositionPartialQuantity',
+      'field_complete_on_app' => 'foia:AppealDispositionReversedQuantity',
+      'field_closed_oth_app' => 'foia:AppealDispositionOtherQuantity',
+      'field_total' => 'foia:AppealDispositionTotalQuantity',
+    ];
+    $overall_map = [
+      'field_overall_vib_affirm_on_app' => 'foia:AppealDispositionAffirmedQuantity',
+      'field_overall_vib_part_on_app' => 'foia:AppealDispositionPartialQuantity',
+      'field_overall_vib_comp_on_app' => 'foia:AppealDispositionReversedQuantity',
+      'field_overall_vib_closed_oth_app' => 'foia:AppealDispositionOtherQuantity',
+      'field_overall_vib_total' => 'foia:AppealDispositionTotalQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:AppealDispositionSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:AppealDisposition', 'AD', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:AppealDispositionOrganizationAssociation', 'AD');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vib->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
