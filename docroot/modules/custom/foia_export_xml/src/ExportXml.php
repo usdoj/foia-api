@@ -534,7 +534,63 @@ EOS;
    * This corresponds to Section VI.C(1) of the annual report.
    */
   protected function appealDispositionAppliedExemptionsSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vic1->referencedEntities();
+    $exemption_map = [
+      'field_ex_1' => 'Ex. 1',
+      'field_ex_2' => 'Ex. 2',
+      'field_ex_3' => 'Ex. 3',
+      'field_ex_4' => 'Ex. 4',
+      'field_ex_5' => 'Ex. 5',
+      'field_ex_6' => 'Ex. 6',
+      'field_ex_7_a' => 'Ex. 7(A)',
+      'field_ex_7_b' => 'Ex. 7(B)',
+      'field_ex_7_c' => 'Ex. 7(C)',
+      'field_ex_7_d' => 'Ex. 7(D)',
+      'field_ex_7_e' => 'Ex. 7(E)',
+      'field_ex_7_f' => 'Ex. 7(F)',
+      'field_ex_8' => 'Ex. 8',
+      'field_ex_9' => 'Ex. 9',
+    ];
+    $overall_exemption_map = [
+      'field_overall_vic1_ex_1' => 'Ex. 1',
+      'field_overall_vic1_ex_2' => 'Ex. 2',
+      'field_overall_vic1_ex_3' => 'Ex. 3',
+      'field_overall_vic1_ex_4' => 'Ex. 4',
+      'field_overall_vic1_ex_5' => 'Ex. 5',
+      'field_overall_vic1_ex_6' => 'Ex. 6',
+      'field_overall_vic1_ex_7_a' => 'Ex. 7(A)',
+      'field_overall_vic1_ex_7_b' => 'Ex. 7(B)',
+      'field_overall_vic1_ex_7_c' => 'Ex. 7(C)',
+      'field_overall_vic1_ex_7_d' => 'Ex. 7(D)',
+      'field_overall_vic1_ex_7_e' => 'Ex. 7(E)',
+      'field_overall_vic1_ex_7_f' => 'Ex. 7(F)',
+      'field_overall_vic1_ex_8' => 'Ex. 8',
+      'field_overall_vic1_ex_9' => 'Ex. 9',
+    ];
+
+    $section = $this->addElementNs('foia:AppealDispositionAppliedExemptionsSection', $this->root);
+
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
+      $item->setAttribute('s:id', 'ADE' . ($delta + 1));
+      // Add quantity for each exemption code.
+      $this->addLabeledQuantity($component, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $exemption_map);
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
+    $item->setAttribute('s:id', 'ADE' . 0);
+    // Add quantity for each exemption code.
+    $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
+
+    $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'ADE');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vic1->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
