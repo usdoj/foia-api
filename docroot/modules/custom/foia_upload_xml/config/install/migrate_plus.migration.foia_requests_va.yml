@@ -1,22 +1,7 @@
 id: foia_requests_va
 label: 'Import FOIA Requests A. paragraphs from NIEM-XML data.'
-migration_group: foia_xml
-migration_tags:
-  - Paragraph
+migration_group: foia_component_data_import
 source:
-  plugin: url
-  data_fetcher_plugin: file
-  urls:
-    - 'temporary://foia-xml/report.xml'
-  data_parser_plugin: simple_xml
-  namespaces:
-    iepd: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03'
-    foia: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03'
-    i: 'http://niem.gov/niem/appinfo/2.0'
-    j: 'http://niem.gov/niem/domains/jxdm/4.1'
-    nc: 'http://niem.gov/niem/niem-core/2.0'
-    s: 'http://niem.gov/niem/structures/2.0'
-    xsi: 'http://www.w3.org/2001/XMLSchema-instance'
   item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedRequestSection/foia:ProcessingStatistics'
   fields:
     -
@@ -82,8 +67,6 @@ process:
   field_req_received_yr: field_req_received_yr
   field_req_processed_yr: field_req_processed_yr
   field_req_pend_end_yr: field_req_pend_end_yr
-destination:
-  plugin: entity_reference_revisions:paragraph
 migration_dependencies:
   required:
     - component_requests_va
