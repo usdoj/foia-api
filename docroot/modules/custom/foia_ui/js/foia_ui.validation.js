@@ -19,14 +19,12 @@
         highlight: function(element, errorClass, validClass) {
           $(element).addClass(errorClass).removeClass(validClass);
           var parentVerticalTabs = $(element).parents("details.vertical-tabs__pane");
-          var elementPaneID = parentVerticalTabs.eq(0).attr('id');
           var containerPaneID = parentVerticalTabs.eq(1).attr('id');
           var parentVerticalTabMenu = $(element).parents(".vertical-tabs").last();
-          var parentVerticalTabMenuItem = parentVerticalTabMenu.children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]');
-          parentVerticalTabMenuItem.css('background-color', 'green');
-          var paneMenuItem = $(element.form).find('a[href="#' + elementPaneID + '"]');
-          paneMenuItem.css('background-color', 'blue');
+          var parentVerticalTabMenuItem = parentVerticalTabMenu.children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
+          parentVerticalTabMenuItem.addClass('has-validation-error');
         },
+
         unhighlight: function(element, errorClass, validClass) {
           $(element).removeClass(errorClass).addClass(validClass);
           var test = $(element).closest("details.vertical-tabs__pane");
