@@ -1,4 +1,4 @@
-id: foia_requests_va
+id: foia_vb2_requests
 label: 'Import FOIA Requests A. paragraphs from NIEM-XML data.'
 migration_group: foia_component_data_import
 source:
@@ -57,7 +57,7 @@ process:
         - agency
         - component
       migration:
-        - component_requests_va
+        - component_vb2_requests
       no_stub: true
     -
       plugin: skip_on_empty
@@ -69,4 +69,4 @@ process:
   field_req_pend_end_yr: field_req_pend_end_yr
 migration_dependencies:
   required:
-    - component_requests_va
+    - component_vb2_requests
