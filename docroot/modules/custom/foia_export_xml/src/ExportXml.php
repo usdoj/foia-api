@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_export_xml;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Entity\Node;
 
 /**
@@ -140,6 +141,33 @@ EOS;
     $element = $this->document->createElementNS($namespaces[$prefix], $local_name, $value);
     $parent->appendChild($element);
     return $element;
+  }
+
+  /**
+   * Add data from several fields on an entity, each with a corresponding label.
+   *
+   * @param Drupal\Core\Entity\EntityInterface $entity
+   *   A Drupal entity, such as a node or a paragraph.
+   * @param \DOMElement $parent
+   *   The parent element to which new nodes will be added.
+   * @param string $tag
+   *   The XML tag of the element to be added.
+   * @param string $label_tag
+   *   The XML tag of the label element.
+   * @param string $quantity_tag
+   *   The XML tag of the quantity element.
+   * @param string[] $map
+   *   An array mapping some fields on $entity to labels.
+   */
+  protected function addLabeledQuantity(EntityInterface $entity, \DOMElement $parent, $tag, $label_tag, $quantity_tag, array $map) {
+    foreach ($map as $field => $label) {
+      if (empty($entity->get($field)->value)) {
+        continue;
+      }
+      $item = $this->addElementNs($tag, $parent);
+      $this->addElementNs($label_tag, $item, $label);
+      $this->addElementNs($quantity_tag, $item, $entity->get($field)->value);
+    }
   }
 
   /**
