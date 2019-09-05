@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_export_xml;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Entity\Node;
 
 /**
@@ -143,12 +144,39 @@ EOS;
   }
 
   /**
+   * Add data from several fields on an entity, each with a corresponding label.
+   *
+   * @param Drupal\Core\Entity\EntityInterface $entity
+   *   A Drupal entity, such as a node or a paragraph.
+   * @param \DOMElement $parent
+   *   The parent element to which new nodes will be added.
+   * @param string $tag
+   *   The XML tag of the element to be added.
+   * @param string $label_tag
+   *   The XML tag of the label element.
+   * @param string $quantity_tag
+   *   The XML tag of the quantity element.
+   * @param string[] $map
+   *   An array mapping some fields on $entity to labels.
+   */
+  protected function addLabeledQuantity(EntityInterface $entity, \DOMElement $parent, $tag, $label_tag, $quantity_tag, array $map) {
+    foreach ($map as $field => $label) {
+      if (empty($entity->get($field)->value)) {
+        continue;
+      }
+      $item = $this->addElementNs($tag, $parent);
+      $this->addElementNs($label_tag, $item, $label);
+      $this->addElementNs($quantity_tag, $item, $entity->get($field)->value);
+    }
+  }
+
+  /**
    * Add component data.
    *
    * Add data from an array of paragraphs with per-component data and
    * corresponding overall data from the node.
    *
-   * @param EntityInterface[] $component_data
+   * @param Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
    * @param \DOMElement $parent
@@ -186,7 +214,7 @@ EOS;
    * Add associations between per-section identifiers and per-report identifiers
    * for components.
    *
-   * @param EntityInterface[] $component_data
+   * @param Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
    * @param \DOMElement $parent
@@ -341,14 +369,7 @@ EOS;
         $this->addElementNs($tag, $item, $component->get($field)->value);
       }
       // Add quantity for each denial reason.
-      foreach ($reason_map as $field => $reason) {
-        if (empty($component->get($field)->value)) {
-          continue;
-        }
-        $subitem = $this->addElementNs('foia:NonExemptionDenial', $item);
-        $this->addElementNs('foia:NonExemptionDenialReasonCode', $subitem, $reason);
-        $this->addElementNs('foia:NonExemptionDenialQuantity', $subitem, $component->get($field)->value);
-      }
+      $this->addLabeledQuantity($component, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $reason_map);
     }
 
     // Add overall data.
@@ -358,14 +379,7 @@ EOS;
       $this->addElementNs($tag, $item, $this->node->get($field)->value);
     }
     // Add quantity for each denial reason.
-    foreach ($overall_reason_map as $field => $reason) {
-      if (empty($this->node->get($field)->value)) {
-        continue;
-      }
-      $subitem = $this->addElementNs('foia:NonExemptionDenial', $item);
-      $this->addElementNs('foia:NonExemptionDenialReasonCode', $subitem, $reason);
-      $this->addElementNs('foia:NonExemptionDenialQuantity', $subitem, $this->node->get($field)->value);
-    }
+    $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:RequestDispositionOrganizationAssociation', 'RD');
 
@@ -432,28 +446,14 @@ EOS;
       $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
       $item->setAttribute('s:id', 'RDE' . ($delta + 1));
       // Add quantity for each exemption code.
-      foreach ($exemption_map as $field => $exemption) {
-        if (empty($component->get($field)->value)) {
-          continue;
-        }
-        $subitem = $this->addElementNs('foia:AppliedExemption', $item);
-        $this->addElementNs('foia:AppliedExemptionCode', $subitem, $exemption);
-        $this->addElementNs('foia:AppliedExemptionQuantity', $subitem, $component->get($field)->value);
-      }
+      $this->addLabeledQuantity($component, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $exemption_map);
     }
 
     // Add overall data.
     $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
     $item->setAttribute('s:id', 'RDE' . 0);
     // Add quantity for each exemption code.
-    foreach ($overall_exemption_map as $field => $exemption) {
-      if (empty($this->node->get($field)->value)) {
-        continue;
-      }
-      $subitem = $this->addElementNs('foia:AppliedExemption', $item);
-      $this->addElementNs('foia:AppliedExemptionCode', $subitem, $exemption);
-      $this->addElementNs('foia:AppliedExemptionQuantity', $subitem, $this->node->get($field)->value);
-    }
+    $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'RDE');
 
@@ -534,7 +534,63 @@ EOS;
    * This corresponds to Section VI.C(1) of the annual report.
    */
   protected function appealDispositionAppliedExemptionsSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vic1->referencedEntities();
+    $exemption_map = [
+      'field_ex_1' => 'Ex. 1',
+      'field_ex_2' => 'Ex. 2',
+      'field_ex_3' => 'Ex. 3',
+      'field_ex_4' => 'Ex. 4',
+      'field_ex_5' => 'Ex. 5',
+      'field_ex_6' => 'Ex. 6',
+      'field_ex_7_a' => 'Ex. 7(A)',
+      'field_ex_7_b' => 'Ex. 7(B)',
+      'field_ex_7_c' => 'Ex. 7(C)',
+      'field_ex_7_d' => 'Ex. 7(D)',
+      'field_ex_7_e' => 'Ex. 7(E)',
+      'field_ex_7_f' => 'Ex. 7(F)',
+      'field_ex_8' => 'Ex. 8',
+      'field_ex_9' => 'Ex. 9',
+    ];
+    $overall_exemption_map = [
+      'field_overall_vic1_ex_1' => 'Ex. 1',
+      'field_overall_vic1_ex_2' => 'Ex. 2',
+      'field_overall_vic1_ex_3' => 'Ex. 3',
+      'field_overall_vic1_ex_4' => 'Ex. 4',
+      'field_overall_vic1_ex_5' => 'Ex. 5',
+      'field_overall_vic1_ex_6' => 'Ex. 6',
+      'field_overall_vic1_ex_7_a' => 'Ex. 7(A)',
+      'field_overall_vic1_ex_7_b' => 'Ex. 7(B)',
+      'field_overall_vic1_ex_7_c' => 'Ex. 7(C)',
+      'field_overall_vic1_ex_7_d' => 'Ex. 7(D)',
+      'field_overall_vic1_ex_7_e' => 'Ex. 7(E)',
+      'field_overall_vic1_ex_7_f' => 'Ex. 7(F)',
+      'field_overall_vic1_ex_8' => 'Ex. 8',
+      'field_overall_vic1_ex_9' => 'Ex. 9',
+    ];
+
+    $section = $this->addElementNs('foia:AppealDispositionAppliedExemptionsSection', $this->root);
+
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
+      $item->setAttribute('s:id', 'ADE' . ($delta + 1));
+      // Add quantity for each exemption code.
+      $this->addLabeledQuantity($component, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $exemption_map);
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
+    $item->setAttribute('s:id', 'ADE' . 0);
+    // Add quantity for each exemption code.
+    $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
+
+    $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'ADE');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vic1->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
@@ -543,7 +599,55 @@ EOS;
    * This corresponds to Section VI.C(2) of the annual report.
    */
   protected function appealNonExemptionDenialSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vic2->referencedEntities();
+    $reason_map = [
+      'field_no_rec' => 'NoRecords',
+      'field_rec_refer_initial' => 'Referred',
+      'field_req_withdrawn' => 'Withdrawn',
+      'field_fee_related_reason' => 'FeeRelated',
+      'field_rec_not_desc' => 'NotDescribed',
+      'field_imp_req_oth_reason' => 'ImproperRequest',
+      'field_not_agency_record' => 'NotAgency',
+      'field_dup_req' => 'Duplicate',
+      'field_req_in_lit' => 'InLitigation',
+      'field_app_denial_exp' => 'ExpeditedDenial',
+      'field_oth' => 'Other',
+    ];
+    $overall_reason_map = [
+      'field_overall_vic2_no_rec' => 'NoRecords',
+      'field_overall_vic2_rec_refer_ini' => 'Referred',
+      'field_overall_vic2_req_withdrawn' => 'Withdrawn',
+      'field_overall_vic2_fee_rel_reas' => 'FeeRelated',
+      'field_overall_vic2_rec_not_desc' => 'NotDescribed',
+      'field_overall_vic2_imp_req_oth' => 'ImproperRequest',
+      'field_overall_vic2_not_agency_re' => 'NotAgency',
+      'field_overall_vic2_dup_req' => 'Duplicate',
+      'field_overall_vic2_req_in_lit' => 'InLitigation',
+      'field_overall_vic2_app_denial_ex' => 'ExpeditedDenial',
+      'field_overall_vic2_oth' => 'Other',
+    ];
+
+    $section = $this->addElementNs('foia:AppealNonExemptionDenialSection', $this->root);
+
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:AppealNonExemptionDenial', $section);
+      $item->setAttribute('s:id', 'ANE' . ($delta + 1));
+      $this->addLabeledQuantity($component, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $reason_map);
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:AppealNonExemptionDenial', $section);
+    $item->setAttribute('s:id', 'ANE' . 0);
+    $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
+
+    $this->addProcessingAssociations($component_data, $section, 'foia:AppealNonExemptionDenialOrganizationAssociation', 'ANE');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vic2->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
@@ -561,7 +665,29 @@ EOS;
    * This corresponds to Section VI.C(4) of the annual report.
    */
   protected function appealResponseTimeSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vic4->referencedEntities();
+    $map = [
+      'field_med_num_days' => 'foia:ResponseTimeMedianDaysValue',
+      'field_avg_num_days' => 'foia:ResponseTimeAverageDaysValue',
+      'field_low_num_days' => 'foia:ResponseTimeLowestDaysValue',
+      'field_high_num_days' => 'foia:ResponseTimeHighestDaysValue',
+    ];
+    $overall_map = [
+      'field_overall_vic4_med_num_days' => 'foia:ResponseTimeMedianDaysValue',
+      'field_overall_vic4_avg_num_days' => 'foia:ResponseTimeAverageDaysValue',
+      'field_overall_vic4_low_num_days' => 'foia:ResponseTimeLowestDaysValue',
+      'field_overall_vic4_high_num_days' => 'foia:ResponseTimeHighestDaysValue',
+    ];
+
+    $section = $this->addElementNs('foia:AppealResponseTimeSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:ResponseTime', 'ART', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeOrganizationAssociation', 'ART');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vic4->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
