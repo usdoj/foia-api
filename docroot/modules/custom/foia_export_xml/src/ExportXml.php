@@ -369,14 +369,7 @@ EOS;
         $this->addElementNs($tag, $item, $component->get($field)->value);
       }
       // Add quantity for each denial reason.
-      foreach ($reason_map as $field => $reason) {
-        if (empty($component->get($field)->value)) {
-          continue;
-        }
-        $subitem = $this->addElementNs('foia:NonExemptionDenial', $item);
-        $this->addElementNs('foia:NonExemptionDenialReasonCode', $subitem, $reason);
-        $this->addElementNs('foia:NonExemptionDenialQuantity', $subitem, $component->get($field)->value);
-      }
+      $this->addLabeledQuantity($component, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $reason_map);
     }
 
     // Add overall data.
@@ -386,14 +379,7 @@ EOS;
       $this->addElementNs($tag, $item, $this->node->get($field)->value);
     }
     // Add quantity for each denial reason.
-    foreach ($overall_reason_map as $field => $reason) {
-      if (empty($this->node->get($field)->value)) {
-        continue;
-      }
-      $subitem = $this->addElementNs('foia:NonExemptionDenial', $item);
-      $this->addElementNs('foia:NonExemptionDenialReasonCode', $subitem, $reason);
-      $this->addElementNs('foia:NonExemptionDenialQuantity', $subitem, $this->node->get($field)->value);
-    }
+    $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:RequestDispositionOrganizationAssociation', 'RD');
 
@@ -460,28 +446,14 @@ EOS;
       $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
       $item->setAttribute('s:id', 'RDE' . ($delta + 1));
       // Add quantity for each exemption code.
-      foreach ($exemption_map as $field => $exemption) {
-        if (empty($component->get($field)->value)) {
-          continue;
-        }
-        $subitem = $this->addElementNs('foia:AppliedExemption', $item);
-        $this->addElementNs('foia:AppliedExemptionCode', $subitem, $exemption);
-        $this->addElementNs('foia:AppliedExemptionQuantity', $subitem, $component->get($field)->value);
-      }
+      $this->addLabeledQuantity($component, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $exemption_map);
     }
 
     // Add overall data.
     $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
     $item->setAttribute('s:id', 'RDE' . 0);
     // Add quantity for each exemption code.
-    foreach ($overall_exemption_map as $field => $exemption) {
-      if (empty($this->node->get($field)->value)) {
-        continue;
-      }
-      $subitem = $this->addElementNs('foia:AppliedExemption', $item);
-      $this->addElementNs('foia:AppliedExemptionCode', $subitem, $exemption);
-      $this->addElementNs('foia:AppliedExemptionQuantity', $subitem, $this->node->get($field)->value);
-    }
+    $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'RDE');
 
