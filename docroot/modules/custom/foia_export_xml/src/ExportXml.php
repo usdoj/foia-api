@@ -599,7 +599,55 @@ EOS;
    * This corresponds to Section VI.C(2) of the annual report.
    */
   protected function appealNonExemptionDenialSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vic2->referencedEntities();
+    $reason_map = [
+      'field_no_rec' => 'NoRecords',
+      'field_rec_refer_initial' => 'Referred',
+      'field_req_withdrawn' => 'Withdrawn',
+      'field_fee_related_reason' => 'FeeRelated',
+      'field_rec_not_desc' => 'NotDescribed',
+      'field_imp_req_oth_reason' => 'ImproperRequest',
+      'field_not_agency_record' => 'NotAgency',
+      'field_dup_req' => 'Duplicate',
+      'field_req_in_lit' => 'InLitigation',
+      'field_app_denial_exp' => 'ExpeditedDenial',
+      'field_oth' => 'Other',
+    ];
+    $overall_reason_map = [
+      'field_overall_vic2_no_rec' => 'NoRecords',
+      'field_overall_vic2_rec_refer_ini' => 'Referred',
+      'field_overall_vic2_req_withdrawn' => 'Withdrawn',
+      'field_overall_vic2_fee_rel_reas' => 'FeeRelated',
+      'field_overall_vic2_rec_not_desc' => 'NotDescribed',
+      'field_overall_vic2_imp_req_oth' => 'ImproperRequest',
+      'field_overall_vic2_not_agency_re' => 'NotAgency',
+      'field_overall_vic2_dup_req' => 'Duplicate',
+      'field_overall_vic2_req_in_lit' => 'InLitigation',
+      'field_overall_vic2_app_denial_ex' => 'ExpeditedDenial',
+      'field_overall_vic2_oth' => 'Other',
+    ];
+
+    $section = $this->addElementNs('foia:AppealNonExemptionDenialSection', $this->root);
+
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:AppealNonExemptionDenial', $section);
+      $item->setAttribute('s:id', 'ANE' . ($delta + 1));
+      $this->addLabeledQuantity($component, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $reason_map);
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:AppealNonExemptionDenial', $section);
+    $item->setAttribute('s:id', 'ANE' . 0);
+    $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
+
+    $this->addProcessingAssociations($component_data, $section, 'foia:AppealNonExemptionDenialOrganizationAssociation', 'ANE');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vic2->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
