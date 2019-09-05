@@ -665,7 +665,29 @@ EOS;
    * This corresponds to Section VI.C(4) of the annual report.
    */
   protected function appealResponseTimeSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vic4->referencedEntities();
+    $map = [
+      'field_med_num_days' => 'foia:ResponseTimeMedianDaysValue',
+      'field_avg_num_days' => 'foia:ResponseTimeAverageDaysValue',
+      'field_low_num_days' => 'foia:ResponseTimeLowestDaysValue',
+      'field_high_num_days' => 'foia:ResponseTimeHighestDaysValue',
+    ];
+    $overall_map = [
+      'field_overall_vic4_med_num_days' => 'foia:ResponseTimeMedianDaysValue',
+      'field_overall_vic4_avg_num_days' => 'foia:ResponseTimeAverageDaysValue',
+      'field_overall_vic4_low_num_days' => 'foia:ResponseTimeLowestDaysValue',
+      'field_overall_vic4_high_num_days' => 'foia:ResponseTimeHighestDaysValue',
+    ];
+
+    $section = $this->addElementNs('foia:AppealResponseTimeSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:ResponseTime', 'ART', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeOrganizationAssociation', 'ART');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_vic4->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
