@@ -57,7 +57,7 @@ process:
         - agency
         - component
       migration:
-        - component_va_requests
+        - component_requests_va
       no_stub: true
     -
       plugin: skip_on_empty
@@ -69,4 +69,4 @@ process:
   field_req_pend_end_yr: field_req_pend_end_yr
 migration_dependencies:
   required:
-    - component_va_requests
+    - component_requests_va
