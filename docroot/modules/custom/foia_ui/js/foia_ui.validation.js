@@ -16,6 +16,23 @@
           }
         },
 
+        highlight: function(element, errorClass, validClass) {
+          $(element).addClass(errorClass).removeClass(validClass);
+          var parentVerticalTabs = $(element).parents("details.vertical-tabs__pane");
+          var elementPaneID = parentVerticalTabs.eq(0).attr('id');
+          var containerPaneID = parentVerticalTabs.eq(1).attr('id');
+          var parentVerticalTabMenu = $(element).parents(".vertical-tabs").last();
+          var parentVerticalTabMenuItem = parentVerticalTabMenu.children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]');
+          parentVerticalTabMenuItem.css('background-color', 'green');
+          var paneMenuItem = $(element.form).find('a[href="#' + elementPaneID + '"]');
+          paneMenuItem.css('background-color', 'blue');
+        },
+        unhighlight: function(element, errorClass, validClass) {
+          $(element).removeClass(errorClass).addClass(validClass);
+          var test = $(element).closest("details.vertical-tabs__pane");
+          test.css('background-color', '');
+        },
+
         rules: {
           // V.A. FOIA Requests V. A.
           "field_foia_requests_va[0][subform][field_req_processed_yr][0][value]" : {
