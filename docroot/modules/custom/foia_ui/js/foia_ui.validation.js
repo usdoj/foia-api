@@ -28,6 +28,15 @@
           $(element).addClass(errorClass).removeClass(validClass);
           var containerPaneID = $(element).parents("details.vertical-tabs__pane").eq(1).attr('id');
           var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
+          if(parentVerticalTabMenuItem.attr('data-invalid')) {
+            if(parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) === -1) {
+              parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid') + ',' + $(element).attr('id');
+            }
+          }
+          else {
+            parentVerticalTabMenuItemDataInvalid = $(element).attr('id');
+          }
+          parentVerticalTabMenuItem.attr('data-invalid', parentVerticalTabMenuItemDataInvalid);
           parentVerticalTabMenuItem.addClass('has-validation-error');
         },
 
@@ -35,7 +44,17 @@
           $(element).removeClass(errorClass).addClass(validClass);
           var containerPaneID = $(element).parents("details.vertical-tabs__pane").eq(1).attr('id');
           var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
-          parentVerticalTabMenuItem.removeClass('has-validation-error');
+          parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
+          if( parentVerticalTabMenuItemDataInvalid && parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) > -1) {
+            var dataInvalidArr = parentVerticalTabMenuItem.attr('data-invalid').split(',');
+            var index = dataInvalidArr.indexOf($(element).attr('id'));
+            if (index > -1) {
+              dataInvalidArr.splice(index, 1);
+            }
+            var dataInvalid = dataInvalidArr.join();
+            parentVerticalTabMenuItem.attr('data-invalid', dataInvalid);
+            parentVerticalTabMenuItem.removeClass('has-validation-error');
+          }
         },
 
         rules: {
