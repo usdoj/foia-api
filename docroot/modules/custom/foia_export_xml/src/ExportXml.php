@@ -176,7 +176,7 @@ EOS;
    * Add data from an array of paragraphs with per-component data and
    * corresponding overall data from the node.
    *
-   * @param EntityInterface[] $component_data
+   * @param Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
    * @param \DOMElement $parent
@@ -214,7 +214,7 @@ EOS;
    * Add associations between per-section identifiers and per-report identifiers
    * for components.
    *
-   * @param EntityInterface[] $component_data
+   * @param Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
    * @param \DOMElement $parent
