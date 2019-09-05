@@ -256,3 +256,18 @@ Feature: Agency Administrator role
     And I press the 'Save' button
     Then I should see the following success messages:
       | Annual FOIA Report Data test from manager has been updated. |
+
+  @api
+  Scenario: Non Agency Administrator cannot see Report Start and Expiration
+  Dates
+    When I am logged in as a user with the 'Agency Component creator' role
+    And I am on "/node/add/agency_component"
+    Then I should not see "Report Start Date"
+    And I should not see "Report Expiration Date"
+
+  @api
+  Scenario: Agency Administrator can update Report Start and Expiration Dates
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/agency_component"
+    Then I should see "Report Start Date"
+    And I should see "Report Expiration Date"

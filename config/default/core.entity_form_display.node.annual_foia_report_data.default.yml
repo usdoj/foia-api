@@ -351,7 +351,7 @@ third_party_settings:
         - group_agency_overall_v_a_wrapper
         - field_footnotes_va
       parent_name: group_tabs
-      weight: 4
+      weight: 5
       format_type: tab
       format_settings:
         id: ''
@@ -366,7 +366,7 @@ third_party_settings:
         - group_agency_overall_v_b_1_
         - field_footnotes_vb1
       parent_name: group_tabs
-      weight: 5
+      weight: 6
       format_type: tab
       format_settings:
         label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
@@ -400,7 +400,7 @@ third_party_settings:
         - group_tabs_wrapper
         - field_footnotes_vb2
       parent_name: group_tabs
-      weight: 6
+      weight: 9
       format_type: tab
       format_settings:
         id: ''
@@ -415,7 +415,7 @@ third_party_settings:
         - group_agency_overall_v_b_3_wrapp
         - field_footnotes_vb3
       parent_name: group_tabs
-      weight: 7
+      weight: 11
       format_type: tab
       format_settings:
         id: ''
@@ -458,7 +458,7 @@ third_party_settings:
         - field_overall_vic2_oth
         - field_footnotes_vic2
       parent_name: group_tabs
-      weight: 7
+      weight: 10
       format_type: tab
       format_settings:
         id: ''
@@ -486,7 +486,7 @@ third_party_settings:
         - field_overall_vic1_ex_9
         - field_footnotes_vic1
       parent_name: group_tabs
-      weight: 6
+      weight: 8
       format_type: tab
       format_settings:
         id: ''
@@ -505,7 +505,7 @@ third_party_settings:
         - field_overall_vib_total
         - field_footnotes_vib
       parent_name: group_tabs
-      weight: 5
+      weight: 7
       format_type: tab
       format_settings:
         id: ''
@@ -522,7 +522,7 @@ third_party_settings:
         - field_overall_vic3_total
         - field_footnotes_vic3
       parent_name: group_tabs
-      weight: 8
+      weight: 12
       format_type: tab
       format_settings:
         id: ''
@@ -540,7 +540,7 @@ third_party_settings:
         - field_overall_vic4_high_num_days
         - field_footnotes_vic4
       parent_name: group_tabs
-      weight: 9
+      weight: 13
       format_type: tab
       format_settings:
         id: ''
@@ -561,9 +561,8 @@ third_party_settings:
         - group_vi_c_5_8th
         - group_vi_c_5_9th
         - group_vi_c_5_10th
-        - field_footnotes_vic5
-      parent_name: group_tabs
-      weight: 11
+      parent_name: group_vi_c_5_ten_oldest_pend_tab
+      weight: 22
       format_type: tabs
       format_settings:
         id: ''
@@ -716,7 +715,7 @@ third_party_settings:
         - group_vii_a_foia_requests_comple
         - group_vii_a_foia_requests_expedi
         - field_footnotes_viia
-      parent_name: group_tabs
+      parent_name: ''
       weight: 13
       format_type: tabs
       format_settings:
@@ -853,7 +852,7 @@ third_party_settings:
         - field_overall_viic1_total
         - field_footnotes_viic1
       parent_name: group_tabs
-      weight: 17
+      weight: 16
       format_type: tab
       format_settings:
         id: ''
@@ -881,7 +880,7 @@ third_party_settings:
         - field_overall_viic2_total
         - field_footnotes_viic2
       parent_name: group_tabs
-      weight: 18
+      weight: 17
       format_type: tab
       format_settings:
         id: ''
@@ -909,7 +908,7 @@ third_party_settings:
         - field_overall_viic3_total
         - field_footnotes_viic3
       parent_name: group_tabs
-      weight: 19
+      weight: 18
       format_type: tab
       format_settings:
         id: ''
@@ -1148,7 +1147,7 @@ third_party_settings:
         - field_overall_viiia_num_jud_w10
         - field_footnotes_viiia
       parent_name: group_tabs
-      weight: 24
+      weight: 19
       format_type: tab
       format_settings:
         id: ''
@@ -1166,7 +1165,7 @@ third_party_settings:
         - field_overall_viiib_avg_days_jud
         - field_footnotes_viiib
       parent_name: group_tabs
-      weight: 25
+      weight: 20
       format_type: tab
       format_settings:
         id: ''
@@ -1578,16 +1577,18 @@ third_party_settings:
       children:
         - group_agency_info
         - group_iv_exemption_3_statutes
+        - group_vi_a_administrative_appeal
         - group_v_a_foia_requests_received
         - group_overall_vb1_main
-        - group_v_b_2_disposition_of_foia_
-        - group_v_b_3_disposition_of_foia_
-        - group_vi_a_administrative_appeal
-        - group_vi_c_2_reasons_for_denial_
-        - group_vi_c_1_reasons_for_denial_
         - group_vi_b_disposition_of_admini
+        - group_vi_c_1_reasons_for_denial_
+        - group_v_b_2_disposition_of_foia_
+        - group_vi_c_2_reasons_for_denial_
+        - group_v_b_3_disposition_of_foia_
         - group_vi_c_3_reasons_for_denial_
         - group_vi_c_4_response_time_for_a
+        - group_vi_c_5_ten_oldest_pend_tab
+        - group_vi_c_5_ten_oldest_pend
         - group_vii_c_1_processed_simple_r
         - group_vii_c_2_processed_complex_
         - group_vii_c_3_processed_requests
@@ -1789,6 +1790,31 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: 'Agency/Component V. B. (3) wrapper'
+    group_vi_c_5_ten_oldest_pend:
+      children: {  }
+      parent_name: group_tabs
+      weight: 15
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
+    group_vi_c_5_ten_oldest_pend_tab:
+      children:
+        - field_admin_app_vic5
+        - group_vi_c_5_ten_oldest_pending_
+        - field_footnotes_vic5
+      parent_name: group_tabs
+      weight: 14
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
 id: node.annual_foia_report_data.default
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -1868,7 +1894,7 @@ content:
     region: content
   field_admin_app_vic5:
     type: entity_reference_paragraphs
-    weight: 10
+    weight: 21
     region: content
     settings:
       title: Paragraph
@@ -2180,7 +2206,7 @@ content:
     third_party_settings: {  }
   field_footnotes_vic5:
     type: string_textarea
-    weight: 45
+    weight: 23
     region: content
     settings:
       rows: 5

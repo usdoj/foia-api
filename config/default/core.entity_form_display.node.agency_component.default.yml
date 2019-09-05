@@ -42,6 +42,8 @@ dependencies:
     - node.type.agency_component
   module:
     - address
+    - content_moderation
+    - datetime
     - field_group
     - inline_entity_form
     - link
@@ -151,6 +153,19 @@ third_party_settings:
         open: true
         required_fields: true
       label: 'Processing Data'
+    group_annual_foia_report_dates:
+      children:
+        - field_rep_start
+        - field_rep_exp
+      parent_name: ''
+      weight: 24
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: 'Annual FOIA Report Start/Expiration Dates'
 id: node.agency_component.default
 targetEntityType: node
 bundle: agency_component
@@ -277,6 +292,9 @@ content:
       allow_existing: true
       match_operator: CONTAINS
       override_labels: false
+      collapsible: false
+      collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -297,6 +315,9 @@ content:
       allow_existing: true
       match_operator: CONTAINS
       override_labels: false
+      collapsible: false
+      collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -316,6 +337,9 @@ content:
       allow_existing: true
       match_operator: CONTAINS
       override_labels: false
+      collapsible: false
+      collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -337,17 +361,20 @@ content:
       allow_existing: true
       match_operator: CONTAINS
       override_labels: false
+      collapsible: false
+      collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
   field_rep_exp:
-    weight: 102
+    weight: 28
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
     region: content
   field_rep_start:
-    weight: 101
+    weight: 27
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
@@ -362,7 +389,8 @@ content:
     region: content
   field_request_submission_form:
     weight: 22
-    settings: {  }
+    settings:
+      default_data: true
     third_party_settings: {  }
     type: webform_entity_reference_select
     region: content
@@ -376,6 +404,9 @@ content:
       allow_existing: true
       match_operator: CONTAINS
       override_labels: false
+      collapsible: false
+      collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -413,8 +444,7 @@ content:
     region: content
   field_submission_address:
     weight: 7
-    settings:
-      default_country: null
+    settings: {  }
     third_party_settings: {  }
     type: address_default
     region: content
@@ -467,7 +497,7 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 26
     settings: {  }
     region: content
     third_party_settings: {  }
@@ -488,7 +518,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 24
+    weight: 25
     third_party_settings: {  }
     region: content
   sticky:
