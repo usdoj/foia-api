@@ -6,6 +6,9 @@
         success: "valid"
       });
 
+      /**
+       * Custom validation methods
+       */
       jQuery.validator.addMethod("lessThanEqualSum", function(value, element, params) {
         var sum = 0;
         params.forEach(function(param) {
@@ -14,6 +17,9 @@
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
+      /**
+       * Form validation call
+       */
       $('#node-annual-foia-report-data-form').validate({
 
         // Display aggregate field validation popup message.
