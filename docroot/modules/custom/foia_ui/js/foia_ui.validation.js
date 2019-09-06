@@ -64,50 +64,6 @@
             parentVerticalTabMenuItem.attr('data-invalid', dataInvalid);
             parentVerticalTabMenuItem.removeClass('has-validation-error');
           }
-        },
-
-        rules: {
-          // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions
-          "field_foia_requests_vb1[0][subform][field_full_denials_ex][0][value]": {
-            lessThanEqualSum: [
-              "#edit-field-overall-vb3-ex-1-0-value",
-              "#edit-field-overall-vb3-ex-2-0-value",
-              "#edit-field-overall-vb3-ex-3-0-value",
-              "#edit-field-overall-vb3-ex-4-0-value",
-              "#edit-field-overall-vb3-ex-5-0-value",
-              "#edit-field-overall-vb3-ex-6-0-value",
-              "#edit-field-overall-vb3-ex-7-a-0-value",
-              "#edit-field-overall-vb3-ex-7-b-0-value",
-              "#edit-field-overall-vb3-ex-7-c-0-value",
-              "#edit-field-overall-vb3-ex-7-d-0-value",
-              "#edit-field-overall-vb3-ex-7-e-0-value",
-              "#edit-field-overall-vb3-ex-7-f-0-value",
-              "#edit-field-overall-vb3-ex-8-0-value",
-              "#edit-field-overall-vb3-ex-9-0-value"
-            ]
-          },
-          // V.B.(1) Agency Overall Other*
-          "field_overall_vb1_oth[0][value]": {
-            equalTo: "#edit-field-overall-vb2-total-0-value"
-          },
-          // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
-          "field_overall_via_app_proc_yr[0][value]": {
-            equalTo: "#edit-field-overall-vib-total-0-value"
-          }
-        },
-
-        messages: {
-          "field_foia_requests_vb1[0][subform][field_full_denials_ex][0][value]": {
-            lessThanEqualSum: "This field should be no more than the sum of the fields overall_vb3_ex_1 through overall_vb3_ex_9."
-          },
-          // V.B.(1) Agency Overall Other*
-          "field_overall_vb1_oth[0][value]": {
-            equalTo: "Must match V.B.(2) Agency Overall Total"
-          },
-          // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
-          "field_overall_via_app_proc_yr[0][value]": {
-            equalTo: "Must match VI.B. Agency Overall Total"
-          }
         }
       });
 
@@ -122,7 +78,6 @@
       /**
        * Validation rules
        */
-
       // V.A. FOIA Requests V. A.
       $( "#edit-field-foia-requests-va-0-subform-field-req-processed-yr-0-value").rules( "add", {
         required: true,
@@ -138,6 +93,48 @@
         equalTo: "#edit-field-overall-vb1-total-0-value",
         messages: {
           equalTo: "Must match V.B.(1) Agency Overall Total"
+        }
+      });
+
+      // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions
+      $( "#edit-field-overall-vb1-full-denials-e-0-value").rules( "add", {
+        required: true,
+        lessThanEqualSum: [
+          "#edit-field-overall-vb3-ex-1-0-value",
+          "#edit-field-overall-vb3-ex-2-0-value",
+          "#edit-field-overall-vb3-ex-3-0-value",
+          "#edit-field-overall-vb3-ex-4-0-value",
+          "#edit-field-overall-vb3-ex-5-0-value",
+          "#edit-field-overall-vb3-ex-6-0-value",
+          "#edit-field-overall-vb3-ex-7-a-0-value",
+          "#edit-field-overall-vb3-ex-7-b-0-value",
+          "#edit-field-overall-vb3-ex-7-c-0-value",
+          "#edit-field-overall-vb3-ex-7-d-0-value",
+          "#edit-field-overall-vb3-ex-7-e-0-value",
+          "#edit-field-overall-vb3-ex-7-f-0-value",
+          "#edit-field-overall-vb3-ex-8-0-value",
+          "#edit-field-overall-vb3-ex-9-0-value"
+        ],
+        messages: {
+          lessThanEqualSum: "This field should be no more than the sum of the fields Overal V.B.(3) Ex.1 through V.B.(3) Ex.9."
+        }
+      });
+
+      // V.B.(1) Agency Overall Other*
+      $( "#edit-field-overall-vb1-oth-0-value").rules( "add", {
+        required: true,
+        equalTo: "#edit-field-overall-vb2-total-0-value",
+        messages: {
+          equalTo: "Must match V.B.(2) Agency Overall Total"
+        }
+      });
+
+      // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
+      $( "#edit-field-overall-via-app-proc-yr-0-value").rules( "add", {
+        required: true,
+        equalTo: "#edit-field-overall-vib-total-0-value",
+        messages: {
+          equalTo: "Must match VI.B. Agency Overall Total"
         }
       });
     }
