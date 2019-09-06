@@ -61,14 +61,6 @@
         },
 
         rules: {
-          // V.A. FOIA Requests V. A.
-          "field_foia_requests_va[0][subform][field_req_processed_yr][0][value]" : {
-            equalTo: "#edit-field-foia-requests-vb1-0-subform-field-total-0-value"
-          },
-          // V.A. Agency Overall Number of Requests Processed in Fiscal Year
-          "field_overall_req_processed_yr[0][value]" : {
-            equalTo: "#edit-field-overall-vb1-total-0-value"
-          },
           // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions
           "field_foia_requests_vb1[0][subform][field_full_denials_ex][0][value]": {
             lessThanEqualSum: [
@@ -99,14 +91,6 @@
         },
 
         messages: {
-          // V.A. FOIA Requests V. A.
-          "field_foia_requests_va[0][subform][field_req_processed_yr][0][value]": {
-              equalTo: "Must match corresponding agency V.B.(1) Total"
-          },
-          // V.A. Agency Overall Number of Requests Processed in Fiscal Year
-          "field_overall_req_processed_yr[0][value]" : {
-            equalTo: "Must match V.B.(1) Agency Overall Total"
-          },
           "field_foia_requests_vb1[0][subform][field_full_denials_ex][0][value]": {
             lessThanEqualSum: "This field should be no more than the sum of the fields overall_vb3_ex_1 through overall_vb3_ex_9."
           },
@@ -127,6 +111,28 @@
         $('#node-annual-foia-report-data-form').valid();
         $('input#edit-submit').prop('disabled', false);
         event.preventDefault();
+      });
+
+      /**
+       * Validation rules
+       */
+
+      // V.A. FOIA Requests V. A.
+      $( "#edit-field-foia-requests-va-0-subform-field-req-processed-yr-0-value").rules( "add", {
+        required: true,
+        equalTo: "#edit-field-foia-requests-vb1-0-subform-field-total-0-value",
+        messages: {
+          equalTo: "Must match corresponding agency V.B.(1) Total"
+        }
+      });
+
+      // V.A. Agency Overall Number of Requests Processed in Fiscal Year
+      $( "#edit-field-overall-req-processed-yr-0-value").rules( "add", {
+        required: true,
+        equalTo: "#edit-field-overall-vb1-total-0-value",
+        messages: {
+          equalTo: "Must match V.B.(1) Agency Overall Total"
+        }
       });
     }
   };
