@@ -28,7 +28,7 @@
         // Highlight vertical tabs that contain invalid fields
         highlight: function(element, errorClass, validClass) {
           $(element).addClass(errorClass).removeClass(validClass);
-          var containerPaneID = $(element).parents("details.vertical-tabs__pane").eq(1).attr('id');
+          var containerPaneID = $(element).parents("details.vertical-tabs__pane").last().attr('id');
           var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
           if(parentVerticalTabMenuItem.attr('data-invalid')) {
             if(parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) === -1) {
@@ -45,7 +45,7 @@
         // Remove highlighting from vertical tabs when field validation passes
         unhighlight: function(element, errorClass, validClass) {
           $(element).removeClass(errorClass).addClass(validClass);
-          var containerPaneID = $(element).parents("details.vertical-tabs__pane").eq(1).attr('id');
+          var containerPaneID = $(element).parents("details.vertical-tabs__pane").last().attr('id');
           var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
           parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
           if( parentVerticalTabMenuItemDataInvalid && parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) > -1) {
