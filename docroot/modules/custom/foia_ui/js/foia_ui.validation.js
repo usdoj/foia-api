@@ -87,6 +87,11 @@
               "#edit-field-overall-vb3-ex-8-0-value",
               "#edit-field-overall-vb3-ex-9-0-value"
             ]
+          },
+          // V.B.(1) Agency Overall Other*
+          "field_overall_vb1_oth[0][value]": {
+            equalTo: "#edit-field-overall-vb2-total-0-value"
+          }
           }
         },
 
@@ -101,6 +106,11 @@
           },
           "field_foia_requests_vb1[0][subform][field_full_denials_ex][0][value]": {
             lessThanEqualSum: "This field should be no more than the sum of the fields overall_vb3_ex_1 through overall_vb3_ex_9."
+          },
+          // V.B.(1) Agency Overall Other*
+          "field_overall_vb1_oth[0][value]": {
+            equalTo: "Must match V.B.(2) Agency Overall Total"
+          }
           }
         }
       });
