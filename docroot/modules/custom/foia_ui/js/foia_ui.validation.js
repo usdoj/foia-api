@@ -91,7 +91,10 @@
           // V.B.(1) Agency Overall Other*
           "field_overall_vb1_oth[0][value]": {
             equalTo: "#edit-field-overall-vb2-total-0-value"
-          }
+          },
+          // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
+          "field_overall_via_app_proc_yr[0][value]": {
+            equalTo: "#edit-field-overall-vib-total-0-value"
           }
         },
 
@@ -110,7 +113,10 @@
           // V.B.(1) Agency Overall Other*
           "field_overall_vb1_oth[0][value]": {
             equalTo: "Must match V.B.(2) Agency Overall Total"
-          }
+          },
+          // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
+          "field_overall_via_app_proc_yr[0][value]": {
+            equalTo: "Must match VI.B. Agency Overall Total"
           }
         }
       });
