@@ -16,14 +16,16 @@
 
       $('#node-annual-foia-report-data-form').validate({
 
+        // Display aggregate field validation popup message.
         invalidHandler: function(event, validator) {
           var errors = validator.numberOfInvalids();
           if (errors) {
-            var message = errors == 1 ? 'You missed 1 field. It has been highlighted.' : 'You missed ' + errors + ' fields.  They have been highlighted.';
+            var message = errors == 1 ? '1 field is invalid and has been highlighted.' : '' + errors + ' fields are invalid and have been highlighted.';
             alert(message);
           }
         },
 
+        // Highlight vertical tabs that contain invalid fields
         highlight: function(element, errorClass, validClass) {
           $(element).addClass(errorClass).removeClass(validClass);
           var containerPaneID = $(element).parents("details.vertical-tabs__pane").eq(1).attr('id');
@@ -40,6 +42,7 @@
           parentVerticalTabMenuItem.addClass('has-validation-error');
         },
 
+        // Remove highlighting from vertical tabs when field validation passes
         unhighlight: function(element, errorClass, validClass) {
           $(element).removeClass(errorClass).addClass(validClass);
           var containerPaneID = $(element).parents("details.vertical-tabs__pane").eq(1).attr('id');
@@ -101,6 +104,8 @@
           }
         }
       });
+
+      // Disable Submit button until Validate button is clicked.
       $('input#edit-submit').prop('disabled', true);
       $('input#edit-validate-button').on('click', function(event) {
         $('#node-annual-foia-report-data-form').valid();
