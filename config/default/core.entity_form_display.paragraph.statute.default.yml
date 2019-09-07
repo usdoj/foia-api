@@ -18,7 +18,7 @@ third_party_settings:
     group_statute_:
       children:
         - group_statute
-        - group_agency_component
+        - group_statute_agency_component_w
       parent_name: ''
       weight: 0
       format_type: tabs
@@ -43,11 +43,11 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Statute
-    group_agency_component:
+    group_statute_agency_component_w:
       children:
         - field_agency_component_inf
       parent_name: group_statute_
-      weight: 22
+      weight: 21
       format_type: tab
       format_settings:
         id: ''
@@ -65,12 +65,12 @@ content:
     type: entity_reference_paragraphs
     weight: 22
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: 'Agency Component'
+      title_plural: 'Agency Components'
       edit_mode: open
-      add_mode: dropdown
+      add_mode: button
       form_display_mode: default
-      default_paragraph_type: ''
+      default_paragraph_type: statute_agency_details
     third_party_settings: {  }
     region: content
   field_case_citation:

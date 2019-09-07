@@ -84,7 +84,6 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_overall_vb1_rec_ref_to_an_
     - field.field.node.annual_foia_report_data.field_overall_vb1_req_withdrawn
     - field.field.node.annual_foia_report_data.field_overall_vb1_total
-    - field.field.node.annual_foia_report_data.field_overall_vb2
     - field.field.node.annual_foia_report_data.field_overall_vb2_total
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_1
     - field.field.node.annual_foia_report_data.field_overall_vb3_ex_2
@@ -134,7 +133,6 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_overall_vic2_rec_refer_ini
     - field.field.node.annual_foia_report_data.field_overall_vic2_req_in_lit
     - field.field.node.annual_foia_report_data.field_overall_vic2_req_withdrawn
-    - field.field.node.annual_foia_report_data.field_overall_vic3_desc_oth_reas
     - field.field.node.annual_foia_report_data.field_overall_vic3_num_relied_up
     - field.field.node.annual_foia_report_data.field_overall_vic3_total
     - field.field.node.annual_foia_report_data.field_overall_vic4_avg_num_days
@@ -1015,15 +1013,6 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-  field_overall_vb2:
-    type: entity_reference_revisions_entity_view
-    weight: 33
-    region: content
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
   field_overall_vb2_total:
     type: number_integer
     weight: 32
@@ -1464,13 +1453,6 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     type: number_integer
-    region: content
-  field_overall_vic3_desc_oth_reas:
-    weight: 112
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
     region: content
   field_overall_vic3_num_relied_up:
     weight: 113

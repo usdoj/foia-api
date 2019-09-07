@@ -5,12 +5,19 @@ dependencies:
   config:
     - field.storage.paragraph.field_oth
     - paragraphs.paragraphs_type.foia_req_vb1
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.foia_req_vb1.field_oth
 field_name: field_oth
 entity_type: paragraph
 bundle: foia_req_vb1
 label: 'Other*'
-description: '*Explain in footnotes below'
+description: '*Explain in chart V.B.(2).'
 required: false
 translatable: false
 default_value: {  }

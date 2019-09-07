@@ -8,11 +8,17 @@ dependencies:
     - paragraphs.paragraphs_type.req_viiib
   module:
     - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_req_viiib
 field_name: field_req_viiib
 entity_type: node
 bundle: annual_foia_report_data
-label: 'Requests VIII. B.'
+label: 'Requests For Fee Waiver VIII. B.'
 description: ''
 required: false
 translatable: false
@@ -45,9 +51,6 @@ settings:
         enabled: false
       admin_app_vic4:
         weight: 36
-        enabled: false
-      component_details:
-        weight: 37
         enabled: false
       fees_x:
         weight: 38

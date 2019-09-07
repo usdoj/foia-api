@@ -6,16 +6,21 @@ dependencies:
     - field.storage.node.field_overall_viid_exp_pend
     - node.type.annual_foia_report_data
   module:
-    - text
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_overall_viid_exp_pend
 field_name: field_overall_viid_exp_pend
 entity_type: node
 bundle: annual_foia_report_data
-label: 'Number Pending'
+label: 'Agency Overall Number Pending'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: text
+field_type: string

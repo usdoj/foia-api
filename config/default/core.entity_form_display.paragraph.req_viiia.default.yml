@@ -12,7 +12,6 @@ dependencies:
     - paragraphs.paragraphs_type.req_viiia
   module:
     - entity_reference_views_select
-    - text
 id: paragraph.req_viiia.default
 targetEntityType: paragraph
 bundle: req_viiia
@@ -25,20 +24,20 @@ content:
     type: erviews_options_select
     region: content
   field_avg_days_jud:
-    weight: 5
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textfield
-    region: content
-  field_med_days_jud:
     weight: 4
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
+    type: string_textfield
+    region: content
+  field_med_days_jud:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_num_denied:
     weight: 2
@@ -55,12 +54,12 @@ content:
     type: number
     region: content
   field_num_jud_w10:
-    weight: 3
+    weight: 5
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
+    type: string_textfield
     region: content
 hidden:
   created: true
