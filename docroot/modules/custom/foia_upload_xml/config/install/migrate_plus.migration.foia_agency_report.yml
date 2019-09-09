@@ -146,52 +146,115 @@ source:
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime/@s:id'
     -
       name: field_overall_viia_sim_med
-      label: 'Overall median number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Simple - Median Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_sim_avg
-      label: 'Overall average number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Simple - Average Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_sim_low
-      label: 'Overall lowest number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Simple - Lowest Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_sim_high
-      label: 'Overall highest number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Simple - Highest Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viia_comp_med
-      label: 'Overall median number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Complex - Median Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_comp_avg
-      label: 'Overall average number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Complex - Average Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_comp_low
-      label: 'Overall lowest number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Complex - Lowest Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_comp_high
-      label: 'Overall highest number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Complex - Highest Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viia_exp_med
-      label: 'Overall median number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Expedited - Median Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_exp_avg
-      label: 'Overall average number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Expedited - Average Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_exp_low
-      label: 'Overall lowest number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Expedited - Lowest Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_exp_high
-      label: 'Overall highest number of days response time for admin appeals'
+      label: 'Overall Processed Requests - Expedited - Highest Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: footnotes_viia
+      label: 'VII.A Footnotes'
+      selector: 'foia:ProcessedResponseTimeSection/foia:FootnoteText'
+  # Section VII.B
+  # @todo Find something more reliable than using @s:id="IGR0" for the overall
+  # numbers.
+    -
+      name: component_viib
+      label: 'Internal index of the agency component'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime/@s:id'
+    -
+      name: field_overall_viib_sim_med
+      label: 'Information Granted Requests - Simple - Median Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viib_sim_avg
+      label: 'Information Granted Requests - Simple - Average Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viib_sim_low
+      label: 'Information Granted Requests - Simple - Lowest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viib_sim_high
+      label: 'Information Granted Requests - Simple - Highest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_overall_viib_comp_med
+      label: 'Information Granted Requests - Complex - Median Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viib_comp_avg
+      label: 'Information Granted Requests - Complex - Average Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viib_comp_low
+      label: 'Information Granted Requests - Complext - Lowest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viib_comp_high
+      label: 'Information Granted Requests - Complex - Highest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_overall_viib_exp_med
+      label: 'Information Granted Requests - Expedited - Median Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viib_exp_avg
+      label: 'Information Granted Requests - Expedited - Average Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viib_exp_low
+      label: 'Information Granted Requests - Expedited - Lowest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viib_exp_high
+      label: 'Information Granted Requests - Expedited - Highest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: footnotes_viib
+      label: 'VII.B Footnotes'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -443,6 +506,51 @@ process:
   field_overall_viia_exp_avg: field_overall_viia_exp_avg
   field_overall_viia_exp_low: field_overall_viia_exp_low
   field_overall_viia_exp_high: field_overall_viia_exp_high
+  field_footnotes_viia: field_footnotes_viia
+  # Section VII.B
+  # Processed Requests - Response Time for All Processed Perfected Requests and for Perfected Requests in Which Information Was Granted.
+  field_proc_req_viib:
+    -
+      plugin: foia_array_pad
+      source: component_viib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viib_processed_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viib_sim_med: field_overall_viib_sim_med
+  field_overall_viib_sim_avg: field_overall_viib_sim_avg
+  field_overall_viib_sim_low: field_overall_viib_sim_low
+  field_overall_viib_sim_high: field_overall_viib_sim_high
+  field_overall_viib_comp_med: field_overall_viib_comp_med
+  field_overall_viib_comp_avg: field_overall_viib_comp_avg
+  field_overall_viib_comp_low: field_overall_viib_comp_low
+  field_overall_viib_comp_high: field_overall_viib_comp_high
+  field_overall_viib_exp_med: field_overall_viib_exp_med
+  field_overall_viib_exp_avg: field_overall_viib_exp_avg
+  field_overall_viib_exp_low: field_overall_viib_exp_low
+  field_overall_viib_exp_high: field_overall_viib_exp_high
+  field_footnotes_viib: field_footnotes_viib
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -487,3 +595,4 @@ migration_dependencies:
     - foia_vib_disposition
     - foia_vic4_response_time
     - foia_viia_processed_requests
+    - foia_viib_processed_requests
