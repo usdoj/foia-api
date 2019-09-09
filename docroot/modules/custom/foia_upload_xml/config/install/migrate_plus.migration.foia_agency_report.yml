@@ -56,6 +56,33 @@ source:
       name: footnotes_va
       label: 'V.A Footnotes'
       selector: 'foia:ProcessedRequestSection/foia:FootnoteText'
+  # Section VI.A
+  # @todo Find something more reliable than using @s:id="PA0" for the overall
+  # numbers.
+    -
+      name: component_via
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics/@s:id'
+    -
+      name: overall_app_pend_start_yr
+      label: 'Overall appeals pending at the start of the year'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id="PA0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
+    -
+      name: overall_app_received_yr
+      label: 'Overall appeals received during the year'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id="PA0"]/foia:ProcessingStatisticsReceivedQuantity'
+    -
+      name: overall_app_processed_yr
+      label: 'Overall appeals processed during the year'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id="PA0"]/foia:ProcessingStatisticsProcessedQuantity'
+    -
+      name: overall_app_pend_end_yr
+      label: 'Overall appeals pending at the end of the year'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id="PA0"]/foia:ProcessingStatisticsPendingAtEndQuantity'
+    -
+      name: footnotes_via
+      label: 'V.A Footnotes'
+      selector: 'foia:ProcessedAppealSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -156,6 +183,42 @@ process:
   field_overall_req_processed_yr: overall_req_processed_yr
   field_overall_req_pend_end_yr: overall_req_pend_end_yr
   field_footnotes_va: footnotes_va
+  # Section VI.A
+  # ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEALS
+  field_admin_app_via:
+    -
+      plugin: foia_array_pad
+      source: component_via
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_via_disposition
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_via_app_pend_start: overall_app_pend_start_yr
+  field_overall_via_app_recd_yr: overall_app_received_yr
+  field_overall_via_app_proc_yr: overall_app_processed_yr
+  field_overall_via_app_pend_endyr: overall_app_pend_end_yr
+  field_footnotes_va: footnotes_via
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -196,3 +259,4 @@ migration_dependencies:
   required:
     - foia_va_requests
     - foia_xiie2
+    - foia_via_disposition
