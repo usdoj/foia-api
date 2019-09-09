@@ -232,9 +232,11 @@ EOS;
       $this
         ->addElementNs('foia:ComponentDataReference', $matchup)
         ->setAttribute('s:ref', $prefix . ($delta + 1));
+        if($agency_component){
       $this
         ->addElementNs('nc:OrganizationReference', $matchup)
         ->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
+        }
     }
 
     // Add processing association for the agency overall.
@@ -284,6 +286,69 @@ EOS;
    */
   protected function exemption3StatuteSection() {
     // @todo
+    //field_statute_iv
+    //field_footnotes_iv
+   
+    $statute = $this->node->field_statute_iv->referencedEntities();    
+    $statuteSection = $this->addElementNs('foia:Exemption3StatuteSection', $this->root);
+
+    foreach ($statute as $delta => $component) {
+      $local_id = 'ES' . ($delta + 1);
+
+      $suborg = $this->addElementNs('foia:ReliedUponStatute', $statuteSection);
+      $suborg->setAttribute('s:id', $local_id);
+      $item = $this->addElementNs('j:StatuteDescriptionText', $suborg, $component->field_statute->value);
+      $info_withheld = \Drupal\Component\Utility\SafeMarkup::checkPlain($component->field_type_of_info_withheld->value);
+      $item = $this->addElementNs('foia:ReliedUponStatuteInformationWithheldText', $suborg, $info_withheld);
+      $itemCase = $this->addElementNs('nc:Case', $suborg);
+      $itemCaseItem = $this->addElementNs('nc:CaseTitleText', $itemCase, $component->field_case_citation->value);
+    }
+    
+    //field_agency_component_inf
+    //Adding foia:ReliedUponStatuteOrganizationAssociation tag
+    /** Debuging code should be clean *****************************
+    foreach ($statute as $delta => $agency_component) {
+      if ($agency_component->field_agency_component_inf){
+        $local_id = 'ES' . ($delta + 1);
+        $suborg = $this->addElementNs('foia:ReliedUponStatuteOrganizationAssociation', $statuteSection);
+      //foia:ComponentDataReference  field_agency_component_inf
+        $field_target = $agency_component->get('field_agency_component_inf')->first()->getValue();
+        $target_id = $field_target['target_id'];
+        //print_r($field_target);
+        //$field_target = $agency_component->id();
+       // echo $entity_type = $agency_component->getType();
+        $agency = \Drupal::entityManager()->getStorage('paragraph')->load($target_id);
+        //$agency = $agency_component->get('field_agency_component_inf')->first()->value;
+        //print_r($paragraph_field);
+        dump($agency);
+        //$f =  $agency_component->get('field_agency_component_inf')->first()->getValue();
+        //print_r($f);
+        $agency2 = $agency->get('field_num_relied_by_agency_comp');
+        //echo $agency->id();
+        //dump( $agency2);
+        echo $agency->field_num_relied_by_agency_comp->value; 
+        die();
+       // $item1 = $this->addElementNs('foia:ComponentDataReference ', $suborg, 'sdsds');
+        //$item1->setAttribute('s:ref', $local_id);
+       // $item2 = $this->addElementNs('foia:ReliedUponStatuteQuantity ', $suborg, $agency->field_num_relied_by_agency_comp->value);
+        //field_num_relied_by_agency_comp
+        
+      }
+    }
+    
+    //$this->addComponentData($component_data, $section, 'foia:ReliedUponStatute', 'ES', $map);
+    //$this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'ES');
+    ******************************/
+    // Add footnote.
+    if ($this->node->field_footnotes_iv->value){
+      foreach($this->node->field_footnotes_iv as $footnote){
+        $footnote = \Drupal\Component\Utility\SafeMarkup::checkPlain($footnote->value);
+        if ($footnote) {
+          $this->addElementNs('foia:FootnoteText', $statuteSection, $footnote);
+        }
+      }
+    }
+    
   }
 
   /**
