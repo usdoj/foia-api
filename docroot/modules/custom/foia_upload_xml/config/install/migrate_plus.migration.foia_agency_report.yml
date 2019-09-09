@@ -139,7 +139,7 @@ process:
             - '1'
             - '2'
           migration:
-            - foia_requests_va
+            - foia_va_requests
           no_stub: true
         target_id:
           plugin: extract
@@ -194,5 +194,5 @@ destination:
   plugin: entity:node
 migration_dependencies:
   required:
-    - foia_requests_va
+    - foia_va_requests
     - foia_xiie2
