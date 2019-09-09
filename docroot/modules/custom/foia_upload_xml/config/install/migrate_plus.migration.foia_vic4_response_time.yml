@@ -1,8 +1,8 @@
 id: foia_vic4_response_time
-label: 'Import FOIA Requests A. paragraphs from NIEM-XML data.'
+label: 'Import VI. ADMINISTRATIVE APPEALS / C. (4) paragraphs from NIEM-XML data.'
 migration_group: foia_component_data_import
 source:
-  item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedRequestSection/foia:ProcessingStatistics'
+  item_selector: '/iepd:FoiaAnnualReport/foia:AppealResponseTimeSection/foia:ResponseTime'
   fields:
     -
       name: report_year
@@ -17,21 +17,21 @@ source:
       label: 'Internal index of the agency component'
       selector: '@s:id'
     -
-      name: field_req_pend_start_yr
-      label: 'Requests pending at the start of the year'
-      selector: 'foia:ProcessingStatisticsPendingAtStartQuantity'
+      name: field_med_num_days
+      label: 'Administrative appeals median number of days response time'
+      selector: 'foia:ResponseTimeMedianDaysValue'
     -
-      name: field_req_received_yr
-      label: 'Requests received during the year'
-      selector: 'foia:ProcessingStatisticsReceivedQuantity'
+      name: field_avg_num_days
+      label: 'Administrative appeals average number of days response time'
+      selector: 'foia:ResponseTimeAverageDaysValue'
     -
-      name: field_req_processed_yr
-      label: 'Requests processed during the year'
-      selector: 'foia:ProcessingStatisticsProcessedQuantity'
+      name: field_low_num_days
+      label: 'Administrative appeals lowest number of days response time'
+      selector: 'foia:ResponseTimeLowestDaysValue'
     -
-      name: field_req_pend_end_yr
-      label: 'Requests pending at the end of the year'
-      selector: 'foia:ProcessingStatisticsPendingAtEndQuantity'
+      name: field_high_num_days
+      label: 'Administrative appeals highest number of days response time'
+      selector: 'foia:ResponseTimeHighestDaysValue'
   ids:
     report_year:
       type: integer
@@ -42,7 +42,7 @@ source:
 process:
   type:
     plugin: default_value
-    default_value: foia_req_va
+    default_value: admin_app_vic4
   langcode:
     plugin: default_value
     default_value: en
@@ -57,16 +57,16 @@ process:
         - agency
         - component
       migration:
-        - component_requests_va
+        - component_vic4_response_time
       no_stub: true
     -
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_req_pend_start_yr: field_req_pend_start_yr
-  field_req_received_yr: field_req_received_yr
-  field_req_processed_yr: field_req_processed_yr
-  field_req_pend_end_yr: field_req_pend_end_yr
+  field_med_num_days: field_med_num_days
+  field_avg_num_days: field_avg_num_days
+  field_low_num_days: field_low_num_days
+  field_high_num_days: field_high_num_days
 migration_dependencies:
   required:
     - component_vic4_response_time

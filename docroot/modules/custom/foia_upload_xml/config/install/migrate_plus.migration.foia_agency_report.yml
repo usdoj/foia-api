@@ -110,6 +110,33 @@ source:
       name: field_overall_vib_total
       label: 'Agency Overall Total'
       selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionTotalQuantity'
+  # Section VI.C.4
+  # @todo Find something more reliable than using @s:id="ART0" for the overall
+  # numbers.
+    -
+      name: component_vic4
+      label: 'Internal index of the agency component'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime/@s:id'
+    -
+      name: field_overall_vic4_med_num_days
+      label: 'Overall median number of days response time for admin appeals'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_vic4_avg_num_days
+      label: 'Overall average number of days response time for admin appeals'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_vic4_low_num_days
+      label: 'Overall lowest number of days response time for admin appeals'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_vic4_high_num_days
+      label: 'Overall highest number of days response time for admin appeals'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_footnotes_vic4
+      label: 'Response Time for Administrative Appeals Footnote'
+      selector: 'foia:AppealResponseTimeSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -246,7 +273,7 @@ process:
   field_overall_via_app_proc_yr: overall_app_processed_yr
   field_overall_via_app_pend_endyr: overall_app_pend_end_yr
   field_footnotes_va: footnotes_via
-  # Section VI.A
+  # Section VI.B
   # ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEALS
   field_admin_app_vib:
     -
@@ -282,6 +309,42 @@ process:
   field_overall_vib_comp_on_app: field_overall_vib_comp_on_app
   field_overall_vib_closed_oth_app: field_overall_vib_closed_oth_app
   field_overall_vib_total: field_overall_vib_total
+  # Section VI.C.4
+  # ADMINISTRATIVE APPEALS / C. (4) Response Time for Administrative Appeals
+  field_admin_app_vic4:
+    -
+      plugin: foia_array_pad
+      source: component_vic4
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vic4_response_time
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vic4_avg_num_days: field_overall_vic4_avg_num_days
+  field_overall_vic4_high_num_days: field_overall_vic4_high_num_days
+  field_overall_vic4_low_num_days: field_overall_vic4_low_num_days
+  field_overall_vic4_med_num_days: field_overall_vic4_med_num_days
+  field_footnotes_vic4: field_footnotes_vic4
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -324,3 +387,4 @@ migration_dependencies:
     - foia_xiie2
     - foia_via_disposition
     - foia_vib_disposition
+    - foia_vic4_response_time
