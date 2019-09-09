@@ -1,8 +1,8 @@
 id: foia_vib_disposition
-label: 'Import FOIA Requests A. paragraphs from NIEM-XML data.'
+label: 'Import VI. ADMINISTRATIVE APPEALS / B. paragraphs from NIEM-XML data.'
 migration_group: foia_component_data_import
 source:
-  item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedRequestSection/foia:ProcessingStatistics'
+  item_selector: '/iepd:FoiaAnnualReport/foia:AppealDispositionSection/foia:AppealDisposition'
   fields:
     -
       name: report_year
@@ -17,21 +17,25 @@ source:
       label: 'Internal index of the agency component'
       selector: '@s:id'
     -
-      name: field_req_pend_start_yr
-      label: 'Requests pending at the start of the year'
-      selector: 'foia:ProcessingStatisticsPendingAtStartQuantity'
+      name: field_affirmed_on_app
+      label: 'Appeals affirmed'
+      selector: 'foia:AppealDispositionAffirmedQuantity'
     -
-      name: field_req_received_yr
-      label: 'Requests received during the year'
-      selector: 'foia:ProcessingStatisticsReceivedQuantity'
+      name: field_part_on_app
+      label: 'Appeals partial'
+      selector: 'foia:AppealDispositionPartialQuantity'
     -
-      name: field_req_processed_yr
-      label: 'Requests processed during the year'
-      selector: 'foia:ProcessingStatisticsProcessedQuantity'
+      name: field_complete_on_app
+      label: 'Appeals reversed'
+      selector: 'foia:AppealDispositionReversedQuantity'
     -
-      name: field_req_pend_end_yr
-      label: 'Requests pending at the end of the year'
-      selector: 'foia:ProcessingStatisticsPendingAtEndQuantity'
+      name: field_closed_oth_app
+      label: 'Appeals other dispositions'
+      selector: 'foia:AppealDispositionOtherQuantity'
+    -
+      name: field_total
+      label: 'Appeals total'
+      selector: 'foia:AppealDispositionTotalQuantity'
   ids:
     report_year:
       type: integer
@@ -42,7 +46,7 @@ source:
 process:
   type:
     plugin: default_value
-    default_value: foia_req_va
+    default_value: admin_app_vib
   langcode:
     plugin: default_value
     default_value: en
@@ -63,10 +67,11 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_req_pend_start_yr: field_req_pend_start_yr
-  field_req_received_yr: field_req_received_yr
-  field_req_processed_yr: field_req_processed_yr
-  field_req_pend_end_yr: field_req_pend_end_yr
+  field_affirmed_on_app: field_affirmed_on_app
+  field_part_on_app: field_part_on_app
+  field_complete_on_app: field_complete_on_app
+  field_closed_oth_app: field_closed_oth_app
+  field_total: field_total
 migration_dependencies:
   required:
     - component_vib_disposition

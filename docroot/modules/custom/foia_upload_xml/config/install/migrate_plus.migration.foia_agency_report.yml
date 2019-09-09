@@ -83,6 +83,33 @@ source:
       name: footnotes_via
       label: 'V.A Footnotes'
       selector: 'foia:ProcessedAppealSection/foia:FootnoteText'
+  # Section VI.B
+  # @todo Find something more reliable than using @s:id="AD0" for the overall
+  # numbers.
+    -
+      name: component_vib
+      label: 'Internal index of the agency component'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition/@s:id'
+    -
+      name: field_overall_vib_affirm_on_app
+      label: 'Agency Overall Number Affirmed on Appeal'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionAffirmedQuantity'
+    -
+      name: field_overall_vib_part_on_app
+      label: 'Agency Overall Number Partially Affirmed & Partially Reversed/Remanded on Appeal'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionPartialQuantity'
+    -
+      name: field_overall_vib_comp_on_app
+      label: 'Agency Overall Number Completely Reversed/Remanded on Appeal'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionReversedQuantity'
+    -
+      name: field_overall_vib_closed_oth_app
+      label: 'Agency Overall Number of Appeals Closed for Other Reasons'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionOtherQuantity'
+    -
+      name: field_overall_vib_total
+      label: 'Agency Overall Total'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionTotalQuantity'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -219,6 +246,42 @@ process:
   field_overall_via_app_proc_yr: overall_app_processed_yr
   field_overall_via_app_pend_endyr: overall_app_pend_end_yr
   field_footnotes_va: footnotes_via
+  # Section VI.A
+  # ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEALS
+  field_admin_app_vib:
+    -
+      plugin: foia_array_pad
+      source: component_vib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vib_disposition
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vib_affirm_on_app: field_overall_vib_affirm_on_app
+  field_overall_vib_part_on_app: field_overall_vib_part_on_app
+  field_overall_vib_comp_on_app: field_overall_vib_comp_on_app
+  field_overall_vib_closed_oth_app: field_overall_vib_closed_oth_app
+  field_overall_vib_total: field_overall_vib_total
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -260,3 +323,4 @@ migration_dependencies:
     - foia_va_requests
     - foia_xiie2
     - foia_via_disposition
+    - foia_vib_disposition
