@@ -360,6 +360,41 @@ source:
       name: footnotes_viiib
       label: 'VIII.B Footnotes'
       selector: 'foia:FeeWaiverSection/foia:FootnoteText'
+  # Section IX
+  # @todo Find something more reliable than using @s:id="PC0" for the overall
+  # numbers.
+    -
+      name: component_ix
+      label: 'Internal index of the agency component'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost/@s:id'
+    -
+      name: field_overall_ix_full_emp
+      label: 'Placeholder Label - IX - field_overall_ix_full_emp'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:FullTimeEmployeeQuantity'
+    -
+      name: field_overall_ix_eq_full_emp
+      label: 'Placeholder Label - IX - field_overall_ix_eq_full_emp'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:EquivalentFullTimeEmployeeQuantity'
+    -
+      name: field_overall_ix_total_staff
+      label: 'Pending Requests - Simple Number of Days - field_overall_ix_total_staff'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:TotalFullTimeStaffQuantity'
+    -
+      name: field_overall_ix_proc_costs
+      label: 'Placeholder Label - IX - field_overall_ix_proc_costs'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:ProcessingCostAmount'
+    -
+      name: field_overall_ix_lit_costs
+      label: 'Placeholder Label - IX - field_overall_ix_lit_costs'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:LitigationCostAmount'
+    -
+      name: field_overall_ix_total_costs
+      label: 'Placeholder Label - IX - field_overall_ix_total_costs'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:TotalCostAmount'
+    -
+      name: footnotes_ix
+      label: 'IX Footnotes'
+      selector: 'foia:PersonnelAndCostSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -770,6 +805,44 @@ process:
   field_overall_viiib_num_denied: field_overall_viiib_num_denied
   field_overall_viiib_avg_days_jud: field_overall_viiib_avg_days_jud
   field_footnotes_viiib: field_footnotes_viiib
+  # Section IX
+  # Placeholder section description.
+  field_foia_pers_costs_ix:
+    -
+      plugin: foia_array_pad
+      source: component_ix
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_ix_personnel
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_ix_full_emp: field_overall_ix_full_emp
+  field_overall_ix_eq_full_emp: field_overall_ix_eq_full_emp
+  field_overall_ix_total_staff: field_overall_ix_total_staff
+  field_overall_ix_proc_costs: field_overall_ix_proc_costs
+  field_overall_ix_lit_costs: field_overall_ix_lit_costs
+  field_overall_ix_total_costs: field_overall_ix_total_costs
+  field_footnotes_viiib: field_footnotes_viiib
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -817,4 +890,5 @@ migration_dependencies:
     - foia_viid_pending_requests
     - foia_viiia_expedited_processing
     - foia_viiib_fee_waiver
+    - foia_ix_personnel
     - foia_xiie2
