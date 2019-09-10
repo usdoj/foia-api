@@ -840,7 +840,46 @@ EOS;
    * This corresponds to Section XII.C of the annual report.
    */
   protected function oldestPendingConsultationSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiic->referencedEntities();
+    $prefix = 'OPC';
+
+    $section = $this->addElementNs('foia:OldestPendingConsultationSection', $this->root);
+
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:OldestPendingItems', $section);
+      $item->setAttribute('s:id', $prefix . ($delta + 1));
+      foreach (range(1, 10) as $index) {
+        $date = $component->get("field_date_$index")->value;
+        $days = $component->get("field_num_days_$index")->value;
+        if (preg_match('/^\<1|\d+/', $days)) {
+          $old_item = $this->addElementNs('foia:OldItem', $item);
+          $old_item = $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
+          $old_item = $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
+        }
+      }
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:OldestPendingItems', $section);
+    $item->setAttribute('s:id', $prefix . 0);
+    foreach (range(1, 10) as $index) {
+      $date = $this->node->get("field_overall_xiic_date_$index")->value;
+      $days = $this->node->get("field_overall_xiic_num_days_$index")->value;
+      if (preg_match('/^\<1|\d+/', $days)) {
+        $old_item = $this->addElementNs('foia:OldItem', $item);
+        $old_item = $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
+        $old_item = $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
+      }
+    }
+
+    $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', $prefix);
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xiic->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
