@@ -80,7 +80,6 @@
        */
       // V.A. FOIA Requests V. A.
       $( "#edit-field-foia-requests-va-0-subform-field-req-processed-yr-0-value").rules( "add", {
-        required: true,
         equalTo: "#edit-field-foia-requests-vb1-0-subform-field-total-0-value",
         messages: {
           equalTo: "Must match corresponding agency V.B.(1) Total"
@@ -89,7 +88,6 @@
 
       // V.A. Agency Overall Number of Requests Processed in Fiscal Year
       $( "#edit-field-overall-req-processed-yr-0-value").rules( "add", {
-        required: true,
         equalTo: "#edit-field-overall-vb1-total-0-value",
         messages: {
           equalTo: "Must match V.B.(1) Agency Overall Total"
@@ -98,7 +96,6 @@
 
       // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions
       $( "#edit-field-overall-vb1-full-denials-e-0-value").rules( "add", {
-        required: true,
         lessThanEqualSum: [
           "#edit-field-overall-vb3-ex-1-0-value",
           "#edit-field-overall-vb3-ex-2-0-value",
@@ -122,7 +119,6 @@
 
       // V.B.(1) Agency Overall Other*
       $( "#edit-field-overall-vb1-oth-0-value").rules( "add", {
-        required: true,
         equalTo: "#edit-field-overall-vb2-total-0-value",
         messages: {
           equalTo: "Must match V.B.(2) Agency Overall Total"
@@ -131,7 +127,6 @@
 
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
       $( "#edit-field-overall-via-app-proc-yr-0-value").rules( "add", {
-        required: true,
         equalTo: "#edit-field-overall-vib-total-0-value",
         messages: {
           equalTo: "Must match VI.B. Agency Overall Total"
