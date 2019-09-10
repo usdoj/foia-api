@@ -849,7 +849,29 @@ EOS;
    * This corresponds to Section XII.B of the annual report.
    */
   protected function processedConsultationSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiib->referencedEntities();
+    $map = [
+      'field_pend_start_yr' => 'foia:ProcessingStatisticsPendingAtStartQuantity',
+      'field_con_during_yr' => 'foia:ProcessingStatisticsReceivedQuantity',
+      'field_proc_start_yr' => 'foia:ProcessingStatisticsProcessedQuantity',
+      'field_pend_end_yr' => 'foia:ProcessingStatisticsPendingAtEndQuantity',
+    ];
+    $overall_map = [
+      'field_overall_xiib_pend_start_yr' => 'foia:ProcessingStatisticsPendingAtStartQuantity',
+      'field_overall_xiib_con_during_yr' => 'foia:ProcessingStatisticsReceivedQuantity',
+      'field_overall_xiib_proc_start_yr' => 'foia:ProcessingStatisticsProcessedQuantity',
+      'field_overall_xiib_pend_end_yr' => 'foia:ProcessingStatisticsPendingAtEndQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:ProcessedConsultationSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:ProcessingStatistics', 'PCN', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PCN');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xiib->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
