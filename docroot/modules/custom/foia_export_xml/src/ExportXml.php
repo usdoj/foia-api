@@ -919,7 +919,25 @@ EOS;
    * This corresponds to Section XII.D(2) of the annual report.
    */
   protected function backloggedRequestComparisonSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiid2->referencedEntities();
+    $map = [
+      'field_back_prev_yr' => 'foia:BacklogLastYearQuantity',
+      'field_back_cur_yr' => 'foia:BacklogCurrentYearQuantity',
+    ];
+    $overall_map = [
+      'field_overall_xiid2_back_prev_yr' => 'foia:BacklogLastYearQuantity',
+      'field_overall_xiid2_back_cur_yr' => 'foia:BacklogCurrentYearQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:BackloggedRequestComparisonSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:BacklogComparison', 'RBC', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:BacklogComparisonOrganizationAssociation', 'RBC');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xiid2->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
