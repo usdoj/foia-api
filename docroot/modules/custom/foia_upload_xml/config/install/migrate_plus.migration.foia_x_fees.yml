@@ -1,0 +1,62 @@
+id: foia_x_fees
+label: 'Import 	X. Fees paragraphs from NIEM-XML data.'
+migration_group: foia_component_data_import
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:FeesCollectedSection/foia:FeesCollected'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_total_fees
+      label: 'Placeholder Label - X - field_total_fees'
+      selector: 'foia:FeesCollectedAmount'
+    -
+      name: field_perc_costs
+      label: 'Placeholder Label - X - field_perc_costs'
+      selector: 'foia:FeesCollectedCostPercent'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: fees_x
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_x_fees
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_total_fees: field_total_fees
+  field_perc_costs: field_perc_costs
+migration_dependencies:
+  required:
+    - component_x_fees

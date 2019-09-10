@@ -395,6 +395,25 @@ source:
       name: footnotes_ix
       label: 'IX Footnotes'
       selector: 'foia:PersonnelAndCostSection/foia:FootnoteText'
+  # Section X
+  # @todo Find something more reliable than using @s:id="FC0" for the overall
+  # numbers.
+    -
+      name: component_x
+      label: 'Internal index of the agency component'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected/@s:id'
+    -
+      name: field_overall_x_total_fees
+      label: 'Placeholder Label - X - field_overall_x_total_fees'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id="FC0"]/foia:FeesCollectedAmount'
+    -
+      name: field_overall_x_perc_costs
+      label: 'Placeholder Label - X - field_overall_x_perc_costs'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id="FC0"]/foia:FeesCollectedCostPercent'
+    -
+      name: footnotes_x
+      label: 'X Footnotes'
+      selector: 'foia:FeesCollectedSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -843,6 +862,40 @@ process:
   field_overall_ix_lit_costs: field_overall_ix_lit_costs
   field_overall_ix_total_costs: field_overall_ix_total_costs
   field_footnotes_viiib: field_footnotes_viiib
+  # Section X
+  # Placeholder section description.
+  field_fees_x:
+    -
+      plugin: foia_array_pad
+      source: component_x
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_x_fees
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_x_total_fees: field_overall_x_total_fees
+  field_overall_x_perc_costs: field_overall_x_perc_costs
+  field_footnotes_x: field_footnotes_x
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -891,4 +944,5 @@ migration_dependencies:
     - foia_viiia_expedited_processing
     - foia_viiib_fee_waiver
     - foia_ix_personnel
+    - foia_x_fees
     - foia_xiie2
