@@ -721,7 +721,48 @@ EOS;
    * This corresponds to Section VI.C(3) of the annual report.
    */
   protected function appealDenialOtherReasonSection() {
-    // @todo
+    $vic3 = $this->node->field_admin_app_vic3->referencedEntities();
+    
+    //die();
+    $section = $this->addElementNs('foia:AppealDenialOtherReasonSection', $this->root);
+    if ( $vic3 ){
+      foreach ($vic3 as $delta => $vic3_field){
+        //foia:ComponentOtherDenialReason 
+        $sec_item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+        $sec_item->setAttribute('s:id', 'ADOR' . ($delta + 1));
+        //dump($vic3_field->get('field_admin_app_vic3_info'));
+        //die();
+        $item = $this->addElementNs('foia:OtherDenialReason', $sec_item);
+        $item_value = $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item, "nested paragraph field date");
+        $item1_value = $this->addElementNs('foia:OtherDenialReasonQuantity', $item, "Nested paragraph data");
+        
+        //$sec_item = $this->addElementNs('foia:AppealDenialOtherReasonSection', $item);
+      }
+    }
+    /*$vic3_desc_oth_reas = $this->node->field_overall_vic3_desc_oth_reas->value;
+    if (!empty($vic3_desc_oth_reas)){
+      $vic3_desc_oth_reas = \Drupal\Component\Utility\SafeMarkup::checkPlain($vic3_desc_oth_reas);
+      $this->addElementNs('foia:OtherDenialReasonDescriptionText', $section, $vic3_desc_oth_reas);
+    }
+    $vic3_num_relied_up = $this->node->field_overall_vic3_num_relied_up->value;
+    if (!empty($vic3_num_relied_up)){
+      $vic3_num_relied_up = \Drupal\Component\Utility\SafeMarkup::checkPlain($vic3_num_relied_up);
+      $this->addElementNs('foia:OtherDenialReasonDescriptionText', $section, $vic3_num_relied_up);
+    }
+    $vic3_overall_vic3_total = $this->node->field_overall_vic3_total->value;
+    */
+   
+    $sec2 = $this->addElementNs('foia:OtherDenialReasonOrganizationAssociation', $section);
+    $sec2_item = $this->addElementNs('foia:ComponentDataReference', $sec2);
+    $sec2_item->setAttribute('s:ref', 'ADOR8');
+    $sec2_item1 = $this->addElementNs('nc:OrganizationReference', $sec2);
+    $sec2_item1->setAttribute('s:ref', 'ORG2');
+    // Add footnote.
+    $footnote = \Drupal\Component\Utility\SafeMarkup::checkPlain($this->node->field_footnotes_vic3->value);
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
+    
   }
 
   /**
@@ -761,7 +802,65 @@ EOS;
    * This corresponds to Section VI.C(5) of the annual report.
    */
   protected function oldestPendingAppealSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vic5->referencedEntities();
+   // dump($component_data->oldest_days);
+    //echo count($component_data);
+    //die('as');
+    $map = [
+      'field_date_1' => 'foia:OldItemReceiptDate',
+      'field_num_days_1' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_2' => 'foia:OldItemReceiptDate',
+      'field_num_days_2' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_3' => 'foia:OldItemReceiptDate',
+      'field_num_days_3' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_4' => 'foia:OldItemReceiptDate',
+      'field_num_days_4' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_5' => 'foia:OldItemReceiptDate',
+      'field_num_days_5' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_6' => 'foia:OldItemReceiptDate',
+      'field_num_days_6' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_7' => 'foia:OldItemReceiptDate',
+      'field_num_days_7' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_8' => 'foia:OldItemReceiptDate',
+      'field_num_days_8' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_9' => 'foia:OldItemReceiptDate',
+      'field_num_days_9' => 'foia:OldItemPendingDaysQuantity',
+      'field_date_10' => 'foia:OldItemReceiptDate',
+      'field_num_days_10' => 'foia:OldItemPendingDaysQuantity',
+    ];
+    $overall_map = [
+      'field_overall_vic5_date_1' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_1' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_2' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_2' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_3' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_3' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_4' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_4' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_5' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_5' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_6' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_6' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_7' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_7' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_8' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_8' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_9' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_9' => 'nc:OrganizationReference',
+      'field_overall_vic5_date_10' => 'foia:ComponentDataReference',
+      'field_overall_vic5_num_day_10' => 'nc:OrganizationReference',
+    ];
+
+    $section = $this->addElementNs('foia:OldestPendingItems', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:OldItem', 'OPA', $map, $overall_map);
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      //$item = $this->addElementNs('foia:OldItem', $section);
+      //$item->setAttribute('s:id', 'OPA' . ($delta + 1));
+      // Add quantity for each exemption code.
+     // $this->addLabeledQuantity($component, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:OldestPendingItemsOrganizationAssociation', $exemption_map);
+    }
+    $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', 'OPA');
   }
 
   /**
