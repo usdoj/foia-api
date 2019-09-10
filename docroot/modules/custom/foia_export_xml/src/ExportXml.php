@@ -822,7 +822,25 @@ EOS;
    * This corresponds to Section XII.A of the annual report.
    */
   protected function backlogSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiia->referencedEntities();
+    $map = [
+      'field_back_req_end_yr' => 'foia:BackloggedRequestQuantity',
+      'field_back_app_end_yr' => 'foia:BackloggedAppealQuantity',
+    ];
+    $overall_map = [
+      'field_overall_xiia_back_app_end_' => 'foia:BackloggedRequestQuantity',
+      'field_overall_xiia_back_req_end_' => 'foia:BackloggedAppealQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:BacklogSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:Backlog', 'BK', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:BacklogOrganizationAssociation', 'BK');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xiia->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
