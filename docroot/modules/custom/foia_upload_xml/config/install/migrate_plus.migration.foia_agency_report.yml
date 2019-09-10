@@ -303,7 +303,7 @@ source:
       label: 'VII.D Footnotes'
       selector: 'foia:PendingPerfectedRequestsSection/foia:FootnoteText'
   # Section VIII.A
-  # @todo Find something more reliable than using @s:id="EP0" for the overall
+  # @todo Find something more reliable than using @s:id="FW0" for the overall
   # numbers.
     -
       name: component_viiia
@@ -312,27 +312,54 @@ source:
     -
       name: field_overall_viiia_num_grant
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_grant'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:RequestGrantedQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="FW0"]/foia:RequestGrantedQuantity'
     -
       name: field_overall_viiia_num_denied
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_deniedage'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:RequestDeniedQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="FW0"]/foia:RequestDeniedQuantity'
     -
       name: field_overall_viiia_med_days_jud
       label: 'Pending Requests - Simple Number of Days - Pending'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationMedianDaysValue'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="FW0"]/foia:AdjudicationMedianDaysValue'
     -
       name: field_overall_viiia_avg_days_jud
       label: 'Placeholder Label - VIIIA - field_overall_viiia_avg_days_jud'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationAverageDaysValue'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="FW0"]/foia:AdjudicationAverageDaysValue'
     -
       name: field_overall_viiia_num_jud_w10
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_jud_w10'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationWithinTenDaysQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="FW0"]/foia:AdjudicationWithinTenDaysQuantity'
     -
       name: footnotes_viiia
       label: 'VIII.A Footnotes'
       selector: 'foia:ExpeditedProcessingSection/foia:FootnoteText'
+  # Section VIII.B
+  # @todo Find something more reliable than using @s:id="FW0" for the overall
+  # numbers.
+    -
+      name: component_viiib
+      label: 'Internal index of the agency component'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver/@s:id'
+    -
+      name: field_overall_viiib_num_grant
+      label: 'Placeholder Label - VIIIB - field_overall_viiib_num_grant'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:RequestGrantedQuantity'
+    -
+      name: field_overall_viiib_num_denied
+      label: 'Placeholder Label - VIIIB - field_overall_viiib_num_deniedage'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:RequestDeniedQuantity'
+    -
+      name: field_overall_viiib_med_days_jud
+      label: 'Pending Requests - Simple Number of Days - field_overall_viiib_med_days_jud'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:AdjudicationMedianDaysValue'
+    -
+      name: field_overall_viiib_avg_days_jud
+      label: 'Placeholder Label - VIIIB - field_overall_viiib_avg_days_jud'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:AdjudicationAverageDaysValue'
+    -
+      name: footnotes_viiib
+      label: 'VIII.B Footnotes'
+      selector: 'foia:FeeWaiverSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -707,6 +734,42 @@ process:
   field_overall_viiia_avg_days_jud: field_overall_viiia_avg_days_jud
   field_overall_viiia_num_jud_w10: field_overall_viiia_num_jud_w10
   field_footnotes_viiia: field_footnotes_viiia
+  # Section VIII.B
+  # Placeholder section description.
+  field_req_viiib:
+    -
+      plugin: foia_array_pad
+      source: component_viiib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viiib_fee_waiver
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viiib_num_grant: field_overall_viiib_num_grant
+  field_overall_viiib_num_denied: field_overall_viiib_num_denied
+  field_overall_viiib_num_denied: field_overall_viiib_num_denied
+  field_overall_viiib_avg_days_jud: field_overall_viiib_avg_days_jud
+  field_footnotes_viiib: field_footnotes_viiib
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -753,4 +816,5 @@ migration_dependencies:
     - foia_viib_processed_requests
     - foia_viid_pending_requests
     - foia_viiia_expedited_processing
+    - foia_viiib_fee_waiver
     - foia_xiie2
