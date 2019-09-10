@@ -255,6 +255,53 @@ source:
       name: footnotes_viib
       label: 'VII.B Footnotes'
       selector: 'foia:InformationGrantedResponseTimeSection/foia:FootnoteText'
+  # Section VII.D
+  # @todo Find something more reliable than using @s:id="PPR0" for the overall
+  # numbers.
+    -
+      name: component_viid
+      label: 'Internal index of the agency component'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests/@s:id'
+    -
+      name: field_overall_viid_sim_med
+      label: 'Pending Requests - Simple Number of Days - Median'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_overall_viid_sim_avg
+      label: 'Pending Requests - Simple Number of Days - Average'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_overall_viid_sim_pend
+      label: 'Pending Requests - Simple Number of Days - Pending'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestQuantity'
+    -
+      name: field_overall_viid_comp_med
+      label: 'Pending Requests - Complex Number of Days - Median'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_overall_viid_comp_avg
+      label: 'Pending Requests - Complex Number of Days - Average'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_overall_viid_comp_pend
+      label: 'Pending Requests - Complex Number of Days - Pending'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestQuantity'
+    -
+      name: field_overall_viid_exp_med
+      label: 'Pending Requests - Expedited Number of Days - Median'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_overall_viid_exp_avg
+      label: 'Pending Requests - Expedited Number of Days - Average'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_overall_viid_exp_pend
+      label: 'Pending Requests - Expedited Number of Days - Pending'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestQuantity'
+    -
+      name: footnotes_viid
+      label: 'VII.D Footnotes'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -551,6 +598,47 @@ process:
   field_overall_viib_exp_low: field_overall_viib_exp_low
   field_overall_viib_exp_high: field_overall_viib_exp_high
   field_footnotes_viib: field_footnotes_viib
+  # Section VII.D
+  # Pending Requests - All Pending Perfected Requests.
+  field_pending_requests_vii_d_:
+    -
+      plugin: foia_array_pad
+      source: component_viid
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viid_pending_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viid_sim_med: field_overall_viid_sim_med
+  field_overall_viid_sim_avg: field_overall_viid_sim_avg
+  field_overall_viid_sim_pend: field_overall_viid_sim_pend
+  field_overall_viid_comp_med: field_overall_viid_comp_med
+  field_overall_viid_comp_avg: field_overall_viid_comp_avg
+  field_overall_viid_comp_pend: field_overall_viid_comp_pend
+  field_overall_viid_exp_med: field_overall_viid_exp_med
+  field_overall_viid_exp_avg: field_overall_viid_exp_avg
+  field_overall_viid_exp_pend: field_overall_viid_exp_pend
+  field_footnotes_viid: field_footnotes_viid
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -596,3 +684,4 @@ migration_dependencies:
     - foia_vic4_response_time
     - foia_viia_processed_requests
     - foia_viib_processed_requests
+    - foia_viid_pending_requests
