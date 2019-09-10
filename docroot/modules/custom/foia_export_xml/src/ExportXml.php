@@ -946,7 +946,29 @@ EOS;
    * This corresponds to Section XII.E(1) of the annual report.
    */
   protected function processedAppealComparisonSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiie1->referencedEntities();
+    $map = [
+      'field_received_last_yr' => 'foia:ItemsReceivedLastYearQuantity',
+      'field_received_cur_yr' => 'foia:ItemsReceivedCurrentYearQuantity',
+      'field_proc_last_yr' => 'foia:ItemsProcessedLastYearQuantity',
+      'field_proc_cur_yr' => 'foia:ItemsProcessedCurrentYearQuantity',
+    ];
+    $overall_map = [
+      'field_overall_xiie1_received_las' => 'foia:ItemsReceivedLastYearQuantity',
+      'field_overall_xiie1_received_cur' => 'foia:ItemsReceivedCurrentYearQuantity',
+      'field_overall_xiie1_proc_last_yr' => 'foia:ItemsProcessedLastYearQuantity',
+      'field_overall_xiie1_proc_cur_yr' => 'foia:ItemsProcessedCurrentYearQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:ProcessedAppealComparisonSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:ProcessingComparison', 'APC', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingComparisonOrganizationAssociation', 'APC');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xiie1->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
