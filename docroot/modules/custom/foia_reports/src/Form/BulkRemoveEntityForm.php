@@ -2,12 +2,14 @@
 
 namespace Drupal\foia_reports\Form;
 
+use Drupal;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Form\FormBase ;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\node\Entity\Node;
 
@@ -16,31 +18,35 @@ use Drupal\node\Entity\Node;
  *
  * Provide a form to upload agency annual reports in NIEM-XML format.
  */
-class BulkRemoveEntityForm extends FormBase {
+class BulkRemoveEntityForm extends FormBase
+{
 
   /**
    * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-  
+
   protected $id;
   protected $step = 1;
+
   /**
    * BulkRemoveEntityForm constructor.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager)
+  {
     $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container)
+  {
     return new static(
       $container->get('entity_type.manager')
     );
@@ -49,7 +55,8 @@ class BulkRemoveEntityForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId()
+  {
     return 'foia_remove_revision_form';
   }
 
@@ -57,7 +64,8 @@ class BulkRemoveEntityForm extends FormBase {
    * {@inheritdoc}
    * @params : (int) $node, node ID.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $node = null) {
+  public function buildForm(array $form, FormStateInterface $form_state, $node = null)
+  {
     $limit = 20;
     $nid = $node;
     $this->id = $nid;
@@ -71,19 +79,22 @@ class BulkRemoveEntityForm extends FormBase {
     $langcode = $node_obj->language()->getId();
     $langname = $node_obj->language()->getName();
     $languages = $node_obj->getTranslationLanguages();
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    try {
+      $node_storage = Drupal::entityTypeManager()->getStorage('node');
+    } catch (Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException $e) {
+    } catch (Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+    }
     if ($this->step === 2) {
       $values = $form_state->getValue('revisions');
       $selected_vids = [];
-      foreach($values as $vid){
-        if ($vid){
+      foreach ($values as $vid) {
+        if ($vid) {
           $selected_vids[] = $vid;
         }
       }
       $vids = $selected_vids;
       unset($header['status']);
-    }
-    else {      
+    } else {
       $result = $node_storage->getQuery()
         ->allRevisions()
         ->condition('nid', $nid)
@@ -91,24 +102,23 @@ class BulkRemoveEntityForm extends FormBase {
         ->pager($limit)
         ->execute();
       $vids = array_keys($result);
-    }    
+    }
     $rows = [];
-    $page = \Drupal::request()->query->get('page');
+    $page = Drupal::request()->query->get('page');
     $default_revision = $node_obj->getRevisionId();
     $current_revision_displayed = FALSE;
-    $start = $page*$limit+1;
-    if ($vids){
-      foreach ($vids as $vid){        
-        /** @var \Drupal\node\NodeInterface $revision */
+    $start = $page * $limit + 1;
+    if ($vids) {
+      foreach ($vids as $vid) {
+        /** @var NodeInterface $revision */
         $revision = $node_storage->loadRevision($vid);
         // Only show revisions that are affected by the language that is being
         // displayed.
         $row = [
-         // 'sno' => $start,
           'vid' => $vid,
-          'nid' => $revision->get('nid')->value, 
+          'nid' => $revision->get('nid')->value,
         ];
-        
+
         if ($revision->hasTranslation($langcode) && $revision->getTranslation($langcode)->isRevisionTranslationAffected()) {
           $username = [
             '#theme' => 'username',
@@ -116,7 +126,7 @@ class BulkRemoveEntityForm extends FormBase {
           ];
 
           // Use revision link to link to revisions that are not active.
-          $date = \Drupal::service('date.formatter')->format($revision->revision_timestamp->value, 'short');
+          $date = Drupal::service('date.formatter')->format($revision->revision_timestamp->value, 'short');
 
           // We treat also the latest translation-affecting revision as current
           // revision, if it was the default revision, as its values for the
@@ -125,26 +135,28 @@ class BulkRemoveEntityForm extends FormBase {
           $is_current_revision = ($vid == $default_revision);
           if (!$is_current_revision) {
             $link = $this->l($date, new Url('entity.node.revision', ['node' => $node_obj->id(), 'node_revision' => $vid]));
-          }
-          else {
-            $link = $node_obj->toLink($date)->toString();
+          } else {
+            try {
+              $link = $node_obj->toLink($date)->toString();
+            } catch (Drupal\Core\Entity\EntityMalformedException $e) {
+            }
             $current_revision_displayed = TRUE;
           }
 
-         
+
           $column = [
             'data' => [
               '#type' => 'inline_template',
               '#template' => '{% trans %}{{ date }} by {{ username }}{% endtrans %}{% if message %}<p class="revision-log">{{ message }}</p>{% endif %}',
               '#context' => [
                 'date' => $link,
-                'username' => \Drupal::service('renderer')->renderPlain($username),
+                'username' => Drupal::service('renderer')->renderPlain($username),
                 'message' => ['#markup' => $revision->revision_log->value, '#allowed_tags' => Xss::getHtmlTagList()],
               ],
             ],
           ];
-   
-          \Drupal::service('renderer')->addCacheableDependency($column['data'], $username);
+
+          Drupal::service('renderer')->addCacheableDependency($column['data'], $username);
           $row['column'] = $column;
           //$row['#disabled'] = TRUE;
         }
@@ -157,29 +169,28 @@ class BulkRemoveEntityForm extends FormBase {
             ],
           ];
           $row['#disabled'] = TRUE;
-          $row['#attributes'] = ['disable'=>TRUE];
+          $row['#attributes'] = ['disable' => TRUE];
           $option_value = 0;
-        }
-        else {
+        } else {
           $row['status']['data'] = '';
           $option_value = $vid;
         }
         if ($this->step === 2) {
           unset($row['status']);
         }
-        $rows[$option_value] = $row;        
+        $rows[$option_value] = $row;
         $start++;
       }
     }
     if ($this->step === 2) {
       $values = $form_state->getValue('revisions');
       $selected_vids = [];
-      foreach($values as $vid){
-        if ($vid){
+      foreach ($values as $vid) {
+        if ($vid) {
           $selected_vids[] = $vid;
         }
       }
-      
+
       $form['confirm_revisions'] = [
         '#type' => 'hidden',
         '#default_value' => implode(',', $selected_vids),
@@ -200,10 +211,9 @@ class BulkRemoveEntityForm extends FormBase {
       $form['actions']['cancel'] = [
         '#title' => $this->t('Cancel'),
         '#type' => 'link',
-        '#url' => Url::fromRoute('foia_reports.revisions', ['node' => $nid]),      
+        '#url' => Url::fromRoute('foia_reports.revisions', ['node' => $nid]),
       ];
-    }
-    else {
+    } else {
       $form['revisions'] = [
         '#type' => 'tableselect',
         '#header' => $header,
@@ -222,42 +232,47 @@ class BulkRemoveEntityForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state)
+  {
     // The confirmation step needs no additional validation.
     if ($this->step === 2) {
       return;
     }
     $values = $form_state->getValue('revisions');
     $selected_vids = [];
-    foreach($values as $vid){
-      if ($vid){
+    foreach ($values as $vid) {
+      if ($vid) {
         $selected_vids[] = $vid;
       }
     }
-    if (empty($selected_vids)){
-       $form_state->setErrorByName('revisions', $this->t('Please select atleast one revision to be delete! Please make sure the revision version should not be a <em>Current revision</em>.'));
+    if (empty($selected_vids)) {
+      $form_state->setErrorByName('revisions', $this->t('Please select atleast one revision to be delete! Please make sure the revision version should not be a <em>Current revision</em>.'));
     }
   }
-  
+
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state)
+  {
     if ($this->step === 1) {
       $form_state->setRebuild();
       $this->step = 2;
       return;
-    }
-    else{
+    } else {
       $vids = $form_state->getValue('confirm_revisions');
       $vids_arr = explode(',', $vids);
-      foreach($vids_arr as $vid){
-        \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($vid);
+      foreach ($vids_arr as $vid) {
+        try {
+          Drupal::entityTypeManager()->getStorage('node')->deleteRevision($vid);
+        } catch (Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException $e) {
+        } catch (Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+        }
       }
       drupal_set_message(t('Selected revisions has been deleted'), 'status', TRUE);
       $url = Url::fromRoute('foia_reports.revisions', ['node' => $this->id]);
       $form_state->setRedirectUrl($url);
     }
   }
-  
+
 }

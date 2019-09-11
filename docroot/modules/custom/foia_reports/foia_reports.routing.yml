@@ -15,7 +15,7 @@ foia_reports.entity-revisions:
     _permission: 'access foia entities reports'
   options:
     _admin_route: TRUE
-    
+
 foia_reports.revisions:
   path: '/node/{node}/bulk-remove-revision'
   defaults:
@@ -25,4 +25,4 @@ foia_reports.revisions:
     _permission: 'bulk remove entities'
   options:
     node: \d+
-    _admin_route: TRUE    
+    _admin_route: TRUE
