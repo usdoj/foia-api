@@ -41,6 +41,16 @@
         return this.optional(element) || (value > min) && (value < max);
       }, "Must be between the smallest and largest values."),
 
+      // notAverageComp
+      jQuery.validator.addMethod("notAverageComp", function(value, element, params) {
+        var sum = 0;
+        for (var i = 0; i < params.length; i++){
+          sum += Number($( params[i] ).val());
+        }
+        var average = sum/params.length;
+        return this.optional(element) || !(value == average);
+      }, "Must not be equal to the average."),
+
       /**
        * Form validation call
        */
@@ -169,8 +179,10 @@
       // VI.C.(4) Agency Overall Median Number of Days
       $( "#edit-field-overall-vic4-med-num-days-0-value").rules( "add", {
         betweenMinMaxComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
+        notAverageComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
         messages: {
-          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days"
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
         }
       });
     }
