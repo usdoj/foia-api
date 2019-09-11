@@ -193,7 +193,7 @@ source:
       label: 'Overall Processed Requests - Expedited - Highest Response Time'
       selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
     -
-      name: footnotes_viia
+      name: field_footnotes_viia
       label: 'VII.A Footnotes'
       selector: 'foia:ProcessedResponseTimeSection/foia:FootnoteText'
   # Section VII.B
@@ -252,7 +252,7 @@ source:
       label: 'Information Granted Requests - Expedited - Highest Response Time'
       selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
     -
-      name: footnotes_viib
+      name: field_footnotes_viib
       label: 'VII.B Footnotes'
       selector: 'foia:InformationGrantedResponseTimeSection/foia:FootnoteText'
   # Section VII.D
@@ -299,7 +299,7 @@ source:
       label: 'Pending Requests - Expedited Number of Days - Pending'
       selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestQuantity'
     -
-      name: footnotes_viid
+      name: field_footnotes_viid
       label: 'VII.D Footnotes'
       selector: 'foia:PendingPerfectedRequestsSection/foia:FootnoteText'
   # Section VIII.A
@@ -330,7 +330,7 @@ source:
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_jud_w10'
       selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationWithinTenDaysQuantity'
     -
-      name: footnotes_viiia
+      name: field_footnotes_viiia
       label: 'VIII.A Footnotes'
       selector: 'foia:ExpeditedProcessingSection/foia:FootnoteText'
   # Section VIII.B
@@ -357,7 +357,7 @@ source:
       label: 'Placeholder Label - VIIIB - field_overall_viiib_avg_days_jud'
       selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:AdjudicationAverageDaysValue'
     -
-      name: footnotes_viiib
+      name: field_footnotes_viiib
       label: 'VIII.B Footnotes'
       selector: 'foia:FeeWaiverSection/foia:FootnoteText'
   # Section IX
@@ -392,7 +392,7 @@ source:
       label: 'Placeholder Label - IX - field_overall_ix_total_costs'
       selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:TotalCostAmount'
     -
-      name: footnotes_ix
+      name: field_footnotes_ix
       label: 'IX Footnotes'
       selector: 'foia:PersonnelAndCostSection/foia:FootnoteText'
   # Section X
@@ -411,9 +411,24 @@ source:
       label: 'Placeholder Label - X - field_overall_x_perc_costs'
       selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id="FC0"]/foia:FeesCollectedCostPercent'
     -
-      name: footnotes_x
+      name: field_footnotes_x
       label: 'X Footnotes'
       selector: 'foia:FeesCollectedSection/foia:FootnoteText'
+  # Section XI.A
+  # @todo Find something more reliable than using @s:id="SU0" for the overall
+  # numbers.
+    -
+      name: component_xia
+      label: 'Internal index of the agency component'
+      selector: 'foia:SubsectionUsedSection/foia:SubsectionUsed/@s:id'
+    -
+      name: field_overall_xia_sub_used
+      label: 'Placeholder Label - XI.A - field_overall_xia_sub_used'
+      selector: 'foia:SubsectionUsedSection/foia:SubsectionUsed[@s:id="SU0"]/foia:TimesUsedQuantity'
+    -
+      name: field_footnotes_xia
+      label: 'XI.A Footnotes'
+      selector: 'foia:SubsectionUsedSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -896,6 +911,39 @@ process:
   field_overall_x_total_fees: field_overall_x_total_fees
   field_overall_x_perc_costs: field_overall_x_perc_costs
   field_footnotes_x: field_footnotes_x
+  # Section XI.A
+  # Placeholder section description.
+  field_sub_xia:
+    -
+      plugin: foia_array_pad
+      source: component_xia
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xia_subsection_c
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xia_sub_used: field_overall_xia_sub_used
+  field_footnotes_xia: field_footnotes_xia
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -945,4 +993,5 @@ migration_dependencies:
     - foia_viiib_fee_waiver
     - foia_ix_personnel
     - foia_x_fees
+    - foia_xia_subsection_c
     - foia_xiie2
