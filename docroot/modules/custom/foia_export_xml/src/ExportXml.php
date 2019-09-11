@@ -937,7 +937,35 @@ EOS;
    * This corresponds to Section VII.D of the annual report.
    */
   protected function pendingPerfectedRequestsSection() {
-    // @todo
+    $component_data = $this->node->field_pending_requests_vii_d_->referencedEntities();
+    $section = $this->addElementNs('foia:PendingPerfectedRequestsSection', $this->root);
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item1 = $this->addElementNs('foia:PendingPerfectedRequests', $section);
+      $item1->setAttribute('s:id', 'PPR' . ($delta + 1));
+      $item11 = $this->addElementNs('foia:SimplePendingRequestStatistics', $item1);
+      $this->addElementNs('foia:PendingRequestQuantity', $item11, $component->get('field_sim_pend')->value);
+      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item11, $component->get('field_sim_med')->value);
+      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item11, $component->get('field_sim_avg')->value);
+
+      $item12 = $this->addElementNs('foia:ComplexPendingRequestStatistics', $item1);
+      $this->addElementNs('foia:PendingRequestQuantity', $item12, $component->get('field_comp_pend')->value);
+      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item12, $component->get('field_comp_med')->value);
+      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item12, $component->get('field_comp_avg')->value);
+
+      $item13 = $this->addElementNs('foia:ExpeditedPendingRequestStatistics', $item1);
+      $this->addElementNs('foia:PendingRequestQuantity', $item13, $component->get('field_exp_pend')->value);
+      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item13, $component->get('field_exp_med')->value);
+      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:PendingPerfectedRequestsOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'PPR' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -946,7 +974,24 @@ EOS;
    * This corresponds to Section VII.E of the annual report.
    */
   protected function oldestPendingRequestSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_viie->referencedEntities();
+    $section = $this->addElementNs('foia:OldestPendingRequestSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:OldestPendingItems', $section);
+      $item->setAttribute('s:id', 'OPR' . ($delta + 1));
+      for ($i = 1; $i <= 10; $i++) {
+        $item2 = $this->addElementNs('foia:OldItem', $item);
+        $this->addElementNs('foia:OldItemReceiptDate', $item2, $component->get('field_date_' . $i)->value);
+        $this->addElementNs('foia:OldItemPendingDaysQuantity', $item2, $component->get('field_num_days_' . $i)->value);
+      }
+    }
+    foreach ($component_data as $delta => $component) {
+      $item11 = $this->addElementNs('foia:PendingPerfectedRequestsOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item11);
+      $item21->setAttribute('s:id', 'PPR' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item11);
+      $item22->setAttribute('s:id', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
