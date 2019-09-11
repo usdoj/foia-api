@@ -4,7 +4,6 @@ namespace Drupal\foia_reports\Controller;
 
 use Drupal;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Link;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,7 +39,6 @@ class AnnualDataController extends ControllerBase
     // LoadMultiple node in $nodes variable
     $nodes = Node::loadMultiple($nids);
 
-    $path = base_path();
     $rows = [];
     $page = Drupal::request()->query->get('page');
 
@@ -73,7 +71,6 @@ class AnnualDataController extends ControllerBase
 
   public function revisions()
   {
-    $limit = 20;
     $build['pager'] = [
       '#markup' => '<h2>Coming Soon...</h2>',
     ];
