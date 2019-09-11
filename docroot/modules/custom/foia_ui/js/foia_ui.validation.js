@@ -9,7 +9,19 @@
       /**
        * Custom validation methods
        */
-       // lessThanEqualSum
+      // lessThan
+      $.validator.addMethod( "lessThan", function( value, element, param ) {
+        var target = $( param );
+        return value < Number(target.val());
+    }, "Please enter a lesser value." );
+
+       // greaterThan
+      $.validator.addMethod( "greaterThan", function( value, element, param ) {
+        var target = $( param );
+        return value > Number(target.val());
+    }, "Please enter a greater value." );
+
+    // lessThanEqualSum
       jQuery.validator.addMethod("lessThanEqualSum", function(value, element, params) {
         var sum = 0;
         params.forEach(function(param) {
@@ -176,13 +188,29 @@
         }
       });
 
-      // VI.C.(4) Agency Overall Median Number of Days
+      // VI.C.(4) - Agency Overall Median Number of Days
       $( "#edit-field-overall-vic4-med-num-days-0-value").rules( "add", {
         betweenMinMaxComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
         notAverageComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
         messages: {
           betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
           notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VI.C.(4) - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-vic4-low-num-days-0-value").rules( "add", {
+        lessThan: "#edit-field-overall-vic4-high-num-days-0-value",
+        messages: {
+          lessThan: "Must be lower than or equal to the highest number of days."
+        }
+      });
+
+      // VI.C.(4) - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-vic4-high-num-days-0-value").rules( "add", {
+        greaterThan: "#edit-field-overall-vic4-low-num-days-0-value",
+        messages: {
+          greaterThan: "Must be greater than or equal to the lowest number of days."
         }
       });
     }
