@@ -56,6 +56,71 @@ source:
       name: footnotes_va
       label: 'V.A Footnotes'
       selector: 'foia:ProcessedRequestSection/foia:FootnoteText'
+  # Section V.B(3)
+    -
+      name: component_vb3
+      label: 'Internal index of the agency component'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions/@s:id'
+    -
+      name: field_overall_vb3_ex_1
+      label: 'Overall number of times Exemption 1 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 1"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_2
+      label: 'Overall number of times Exemption 2 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 2"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_3
+      label: 'Overall number of times Exemption 3 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 3"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_4
+      label: 'Overall number of times Exemption 4 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 4"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_5
+      label: 'Overall number of times Exemption 5 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 5"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_6
+      label: 'Overall number of times Exemption 6 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 6"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_a
+      label: 'Overall number of times Exemption 7(A) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(A)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_b
+      label: 'Overall number of times Exemption 7(B) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(B)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_c
+      label: 'Overall number of times Exemption 7(C) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(C)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_d
+      label: 'Overall number of times Exemption 7(D) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(D)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_e
+      label: 'Overall number of times Exemption 7(E) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(E)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_f
+      label: 'Overall number of times Exemption 7(F) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(F)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_8
+      label: 'Overall number of times Exemption 8 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 8"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_9
+      label: 'Overall number of times Exemption 9 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 9"]/foia:AppliedExemptionQuantity'
+    -
+      name: footnotes_vb3
+      label: 'V.B(3) Footnotes'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:FootnoteText'
   # Section VI.A
   # @todo Find something more reliable than using @s:id="PA0" for the overall
   # numbers.
@@ -667,6 +732,53 @@ process:
   field_overall_req_processed_yr: overall_req_processed_yr
   field_overall_req_pend_end_yr: overall_req_pend_end_yr
   field_footnotes_va: footnotes_va
+  # Section V.B (3)
+  # V. FOIA REQUESTS / B. (3) Disposition of FOIA Requests - Number of Times
+  # Exemptions Applied.
+  field_foia_requests_vb3:
+    -
+      plugin: foia_array_pad
+      source: component_vb3
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vb3_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vb3_ex_1: field_overall_vb3_ex_1
+  field_overall_vb3_ex_2: field_overall_vb3_ex_2
+  field_overall_vb3_ex_3: field_overall_vb3_ex_3
+  field_overall_vb3_ex_4: field_overall_vb3_ex_4
+  field_overall_vb3_ex_5: field_overall_vb3_ex_5
+  field_overall_vb3_ex_6: field_overall_vb3_ex_6
+  field_overall_vb3_ex_7_a: field_overall_vb3_ex_7_a
+  field_overall_vb3_ex_7_b: field_overall_vb3_ex_7_b
+  field_overall_vb3_ex_7_c: field_overall_vb3_ex_7_c
+  field_overall_vb3_ex_7_d: field_overall_vb3_ex_7_d
+  field_overall_vb3_ex_7_e: field_overall_vb3_ex_7_e
+  field_overall_vb3_ex_7_f: field_overall_vb3_ex_7_f
+  field_overall_vb3_ex_8: field_overall_vb3_ex_8
+  field_overall_vb3_ex_9: field_overall_vb3_ex_9
+  field_footnotes_vb3: footnotes_vb3
   # Section VI.A
   # ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEALS
   field_admin_app_via:
@@ -1331,6 +1443,7 @@ destination:
 migration_dependencies:
   required:
     - foia_va_requests
+    - foia_vb3_requests
     - foia_via_disposition
     - foia_vib_disposition
     - foia_vic4_response_time
