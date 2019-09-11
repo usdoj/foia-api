@@ -129,6 +129,15 @@
         }
       });
 
+      // V.B.(1) Agency Overall Total
+      $( "#edit-field-overall-vb1-total-0-value").rules( "add", {
+        required: true,
+        equalTo: "#edit-field-overall-req-processed-yr-0-value",
+        messages: {
+          equalTo: "Must match V.A. Agency Overall Number of Requests Processed in Fiscal Year"
+        }
+      });
+
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
       $( "#edit-field-overall-via-app-proc-yr-0-value").rules( "add", {
         required: true,
