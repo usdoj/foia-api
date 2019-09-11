@@ -1,0 +1,57 @@
+id: foia_xia_subsection_c
+label: 'Import XI.A. Number of Times Subsection (C) Used paragraphs from NIEM-XML data.'
+migration_group: foia_component_data_import
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:SubsectionUsedSection/foia:SubsectionUsed'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_sub_used
+      label: 'Placeholder Label - XI.A - field_sub_used'
+      selector: 'foia:TimesUsedQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: sub_xia
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_xia_subsection_c
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_sub_used: field_sub_used
+migration_dependencies:
+  required:
+    - component_xia_subsection_c
