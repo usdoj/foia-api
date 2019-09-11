@@ -429,6 +429,25 @@ source:
       name: field_footnotes_xia
       label: 'XI.A Footnotes'
       selector: 'foia:SubsectionUsedSection/foia:FootnoteText'
+  # Section XI.B
+  # @todo Find something more reliable than using @s:id="SP0" for the overall
+  # numbers.
+    -
+      name: component_xib
+      label: 'Internal index of the agency component'
+      selector: 'foia:SubsectionPostSection/foia:Subsection/@s:id'
+    -
+      name: field_overall_xib_rec_post_foia
+      label: 'Placeholder Label - XI.B - field_overall_xib_rec_post_foia'
+      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id="SP0"]/foia:PostedbyFOIAQuantity'
+    -
+      name: field_overall_xib_rec_post_prog
+      label: 'Placeholder Label - XI.B - field_overall_xib_rec_post_prog'
+      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id="SP0"]/foia:PostedbyProgramQuantity'
+    -
+      name: field_footnotes_xib
+      label: 'XI.B Footnotes'
+      selector: 'foia:SubsectionPostSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -944,6 +963,40 @@ process:
             - '1'
   field_overall_xia_sub_used: field_overall_xia_sub_used
   field_footnotes_xia: field_footnotes_xia
+  # Section XI.B
+  # Placeholder section description.
+  field_sub_xib:
+    -
+      plugin: foia_array_pad
+      source: component_xib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xib_subsection_a2
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xib_rec_post_foia: field_overall_xib_rec_post_foia
+  field_overall_xib_rec_post_prog: field_overall_xib_rec_post_prog
+  field_footnotes_xib: field_footnotes_xib
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -994,4 +1047,5 @@ migration_dependencies:
     - foia_ix_personnel
     - foia_x_fees
     - foia_xia_subsection_c
+    - foia_xib_subsection_a2
     - foia_xiie2
