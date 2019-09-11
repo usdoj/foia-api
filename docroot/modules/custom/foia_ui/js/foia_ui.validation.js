@@ -17,6 +17,18 @@
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
+      // greaterThanEqualComp
+      jQuery.validator.addMethod("greaterThanEqualComp", function(value, element, params) {
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.length; i++){
+          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            var target = Number($( params[i] ).val());
+            return this.optional(element) || value >= target;
+          }
+        }
+      }, "Must be greater than or equal to a field."),
+
       /**
        * Form validation call
        */
@@ -130,6 +142,14 @@
         equalTo: "#edit-field-overall-vib-total-0-value",
         messages: {
           equalTo: "Must match VI.B. Agency Overall Total"
+        }
+      });
+
+      // VI.B. Administrative Appeals
+      $( "input[name*='field_admin_app_vib']").filter("input[name*='field_closed_oth_app']").rules( "add", {
+        greaterThanEqualComp: $("input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']"),
+        messages: {
+          greaterThanEqualComp: "Must be greater equal to the # of appeals closed for other reasons in VI.B."
         }
       });
     }
