@@ -867,7 +867,25 @@ EOS;
    * This corresponds to Section X of the annual report.
    */
   protected function feesCollectedSection() {
-    // @todo
+    $component_data = $this->node->field_fees_x->referencedEntities();
+    $map = [
+      'field_total_fees' => 'foia:FeesCollectedAmount',
+      'field_perc_costs' => 'foia:FeesCollectedCostPercent',
+    ];
+    $overall_map = [
+      'field_overall_x_total_fees' => 'foia:FeesCollectedAmount',
+      'field_overall_x_perc_costs' => 'foia:FeesCollectedCostPercent',
+    ];
+
+    $section = $this->addElementNs('foia:FeesCollectedSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:FeesCollected', 'FC', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:FeesCollectedOrganizationAssociation', 'FC');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_x->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
