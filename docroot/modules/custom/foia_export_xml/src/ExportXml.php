@@ -768,7 +768,31 @@ EOS;
    * This corresponds to Section VIII.A of the annual report.
    */
   protected function expeditedProcessingSection() {
-    // @todo
+    $component_data = $this->node->field_req_viiia->referencedEntities();
+    $map = [
+      'field_num_grant' => 'foia:RequestGrantedQuantity',
+      'field_num_denied' => 'foia:RequestDeniedQuantity',
+      'field_avg_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_med_days_jud' => 'foia:AdjudicationAverageDaysValue',
+      'field_num_jud_w10' => 'foia:AdjudicationWithinTenDaysQuantity',
+    ];
+    $overall_map = [
+      'field_overall_viiia_num_grant' => 'foia:RequestGrantedQuantity',
+      'field_overall_viiia_num_denied' => 'foia:RequestDeniedQuantity',
+      'field_overall_viiia_med_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_overall_viiia_avg_days_jud' => 'foia:AdjudicationAverageDaysValue',
+      'field_overall_viiia_num_jud_w10' => 'foia:AdjudicationWithinTenDaysQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:ExpeditedProcessingSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:ExpeditedProcessing', 'EP', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:ExpeditedProcessingOrganizationAssociation', 'EP');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_viiia->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
