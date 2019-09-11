@@ -919,7 +919,25 @@ EOS;
    * This corresponds to Section XI.B of the annual report.
    */
   protected function subsectionPostSection() {
-    // @todo
+    $component_data = $this->node->field_sub_xib->referencedEntities();
+    $map = [
+      'field_rec_post_foia' => 'foia:PostedbyFOIAQuantity',
+      'field_rec_post_prog' => 'foia:PostedbyProgramQuantity',
+    ];
+    $overall_map = [
+      'field_overall_xib_rec_post_foia' => 'foia:PostedbyFOIAQuantity',
+      'field_overall_xib_rec_post_prog' => 'foia:PostedbyProgramQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:SubsectionPostSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:Subsection', 'SP', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:SubsectionPostOrganizationAssociation', 'SP');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xib->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
