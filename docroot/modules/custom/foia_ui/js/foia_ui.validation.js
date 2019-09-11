@@ -160,7 +160,7 @@
           "#edit-field-overall-vb3-ex-9-0-value"
         ],
         messages: {
-          lessThanEqualSum: "This field should be no more than the sum of the fields Overal V.B.(3) Ex.1 through V.B.(3) Ex.9."
+          lessThanEqualSum: "This field should be no more than the sum of the fields Overall V.B.(3) Ex.1 through V.B.(3) Ex.9."
         }
       });
 
