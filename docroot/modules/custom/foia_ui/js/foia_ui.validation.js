@@ -37,6 +37,7 @@
           var containerPaneID = $(element).parents("details.vertical-tabs__pane").last().attr('id');
           var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
           if(parentVerticalTabMenuItem.attr('data-invalid')) {
+            var parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
             if(parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) === -1) {
               parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid') + ',' + $(element).attr('id');
             }
@@ -53,7 +54,7 @@
           $(element).removeClass(errorClass).addClass(validClass);
           var containerPaneID = $(element).parents("details.vertical-tabs__pane").last().attr('id');
           var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
-          parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
+          var parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
           if( parentVerticalTabMenuItemDataInvalid && parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) > -1) {
             var dataInvalidArr = parentVerticalTabMenuItem.attr('data-invalid').split(',');
             var index = dataInvalidArr.indexOf($(element).attr('id'));
