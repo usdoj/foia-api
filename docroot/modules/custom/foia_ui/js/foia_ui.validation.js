@@ -30,6 +30,17 @@
         }
       }, "Must be greater than or equal to a field."),
 
+      // betweenMinMaxComp
+      jQuery.validator.addMethod("betweenMinMaxComp", function(value, element, params) {
+        var valuesArray = [];
+        for (var i = 0; i < params.length; i++){
+          valuesArray.push(Number($( params[i] ).val()));
+        }
+        var min = Math.min.apply(null, valuesArray);
+        var max = Math.max.apply(null, valuesArray);
+        return this.optional(element) || (value > min) && (value < max);
+      }, "Must be between the smallest and largest values."),
+
       /**
        * Form validation call
        */
@@ -152,6 +163,14 @@
         greaterThanEqualComp: $("input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']"),
         messages: {
           greaterThanEqualComp: "Must be greater equal to the # of appeals closed for other reasons in VI.B."
+        }
+      });
+
+      // VI.C.(4) Agency Overall Median Number of Days
+      $( "#edit-field-overall-vic4-med-num-days-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days"
         }
       });
     }
