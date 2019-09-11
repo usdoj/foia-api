@@ -9,6 +9,7 @@
       /**
        * Custom validation methods
        */
+       // lessThanEqualSum
       jQuery.validator.addMethod("lessThanEqualSum", function(value, element, params) {
         var sum = 0;
         params.forEach(function(param) {
