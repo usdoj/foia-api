@@ -9,16 +9,16 @@
       /**
        * Custom validation methods
        */
-      // lessThan
-      $.validator.addMethod( "lessThan", function( value, element, param ) {
+      // lessThanEqualTo
+      $.validator.addMethod( "lessThanEqualTo", function( value, element, param ) {
         var target = $( param );
-        return value < Number(target.val());
+        return value <= Number(target.val());
     }, "Please enter a lesser value." );
 
-       // greaterThan
-      $.validator.addMethod( "greaterThan", function( value, element, param ) {
+       // greaterThanEqualTo
+      $.validator.addMethod( "greaterThanEqualTo", function( value, element, param ) {
         var target = $( param );
-        return value > Number(target.val());
+        return value >= Number(target.val());
     }, "Please enter a greater value." );
 
     // lessThanEqualSum
@@ -200,17 +200,17 @@
 
       // VI.C.(4) - Agency Overall Lowest Number of Days
       $( "#edit-field-overall-vic4-low-num-days-0-value").rules( "add", {
-        lessThan: "#edit-field-overall-vic4-high-num-days-0-value",
+        lessThanEqualTo: "#edit-field-overall-vic4-high-num-days-0-value",
         messages: {
-          lessThan: "Must be lower than or equal to the highest number of days."
+          lessThanEqualTo: "Must be lower than or equal to the highest number of days."
         }
       });
 
       // VI.C.(4) - Agency Overall Highest Number of Days
       $( "#edit-field-overall-vic4-high-num-days-0-value").rules( "add", {
-        greaterThan: "#edit-field-overall-vic4-low-num-days-0-value",
+        greaterThanEqualTo: "#edit-field-overall-vic4-low-num-days-0-value",
         messages: {
-          greaterThan: "Must be greater than or equal to the lowest number of days."
+          greaterThanEqualTo: "Must be greater than or equal to the lowest number of days."
         }
       });
     }
