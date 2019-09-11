@@ -47,6 +47,22 @@ function foia_ui_toolbar_alter(&$items) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+function foia_ui_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['validate_button'] = [
+    '#type' => 'button',
+    '#value' => t('Validate'),
+    '#attached' => [
+      'library' => [
+        'foia_ui/jquery_validation',
+        'foia_ui/foia_ui_validation',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function foia_ui_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['actions']['validate_button'] = [
     '#type' => 'button',
