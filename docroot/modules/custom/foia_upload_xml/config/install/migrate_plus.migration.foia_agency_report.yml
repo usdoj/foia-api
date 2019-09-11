@@ -56,6 +56,69 @@ source:
       name: footnotes_va
       label: 'V.A Footnotes'
       selector: 'foia:ProcessedRequestSection/foia:FootnoteText'
+  # Section V.B. (1)
+  # @todo Find something more reliable than using @s:id="RD0" for the overall
+  # numbers.
+    -
+      name: component_vb1
+      label: 'Internal index of the agency component'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition/@s:id'
+    -
+      name: overall_vb1_no_rec
+      label: 'Placeholder Label - V.B. (1) - overall_vb1_no_rec'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+    -
+      name: overall_vb1_rec_ref_to_an_comp
+      label: 'Placeholder Label - V.B. (1) - rec_ref_to_an_comp'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+    -
+      name: overall_vb1_req_withdrawn
+      label: 'Placeholder Label - V.B. (1) - req_withdrawn'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+    -
+      name: overall_vb1_fee_related_reason
+      label: 'Placeholder Label - V.B. (1) - fee_related_reason'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+    -
+      name: overall_vb1_rec_not_desc
+      label: 'Placeholder Label - V.B. (1) - rec_not_desc'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+    -
+      name: overall_vb1_imp_req_oth_reason
+      label: 'Placeholder Label - V.B. (1) - imp_req_oth_reason'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+    -
+      name: overall_vb1_not_agency_record
+      label: 'Placeholder Label - V.B. (1) - not_agency_record'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+    -
+      name: overall_vb1_dup_request
+      label: 'Placeholder Label - V.B. (1) - dup_request'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+    -
+      name: overall_vb1_oth
+      label: 'Placeholder Label - V.B. (1) - oth'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+    -
+      name: overall_vb1_full_grants
+      label: 'Placeholder Label - V.B. (1) - overall_vb1_full_grants'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionFullGrantQuantity'
+    -
+      name: overall_vb1_part_grants_denials
+      label: 'Placeholder Label - V.B. (1) - overall_vb1_part_grants_denials'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionPartialGrantQuantity'
+    -
+      name: overall_vb1_full_denials_ex
+      label: 'Placeholder Label - V.B. (1) - overall_vb1_full_denials_ex'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionFullExemptionDenialQuantity'
+    -
+      name: overall_vb1_total
+      label: 'Placeholder Label - V.B. (1) - total'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionTotalQuantity'
+    -
+      name: footnotes_vb1
+      label: 'V.B. (1) Footnotes'
+      selector: 'foia:RequestDispositionSection/foia:RequestDispositionSection/foia:FootnoteText'
   # Section V.B(3)
     -
       name: component_vb3
@@ -732,6 +795,51 @@ process:
   field_overall_req_processed_yr: overall_req_processed_yr
   field_overall_req_pend_end_yr: overall_req_pend_end_yr
   field_footnotes_va: footnotes_va
+  # Section V.B. (1)
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_foia_requests_vb1:
+    -
+      plugin: foia_array_pad
+      source: component_vb1
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vb1_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vb1_no_rec: overall_vb1_no_rec
+  field_overall_vb1_rec_ref_to_an_comp: overall_vb1_rec_ref_to_an_comp
+  field_overall_vb1_req_withdrawn: overall_vb1_req_withdrawn
+  field_overall_vb1_fee_related_reason: overall_vb1_fee_related_reason
+  field_overall_vb1_rec_not_desc: overall_vb1_rec_not_desc
+  field_overall_vb1_imp_req_oth_reason: overall_vb1_imp_req_oth_reason
+  field_overall_vb1_not_agency_record: overall_vb1_not_agency_record
+  field_overall_vb1_dup_request: overall_vb1_dup_request
+  field_overall_vb1_oth: overall_vb1_oth
+  field_overall_vb1_total: overall_vb1_total
+  field_overall_vb1_full_grants: overall_vb1_full_grants
+  field_overall_vb1_part_grants_denials: overall_vb1_part_grants_denials
+  field_overall_vb1_full_denials_ex: overall_vb1_full_denials_ex
+  field_footnotes_vb1: footnotes_vb1
   # Section V.B (3)
   # V. FOIA REQUESTS / B. (3) Disposition of FOIA Requests - Number of Times
   # Exemptions Applied.
@@ -1443,6 +1551,7 @@ destination:
 migration_dependencies:
   required:
     - foia_va_requests
+    - foia_vb1_requests
     - foia_vb3_requests
     - foia_via_disposition
     - foia_vib_disposition
