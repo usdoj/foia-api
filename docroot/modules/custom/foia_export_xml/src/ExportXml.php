@@ -801,7 +801,29 @@ EOS;
    * This corresponds to Section VIII.B of the annual report.
    */
   protected function feeWaiverSection() {
-    // @todo
+    $component_data = $this->node->field_req_viiib->referencedEntities();
+    $map = [
+      'field_num_grant' => 'foia:RequestGrantedQuantity',
+      'field_num_denied' => 'foia:RequestDeniedQuantity',
+      'field_med_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_avg_days_jud' => 'foia:AdjudicationAverageDaysValue',
+    ];
+    $overall_map = [
+      'field_overall_viiib_num_grant' => 'foia:RequestGrantedQuantity',
+      'field_overall_viiib_num_denied' => 'foia:RequestDeniedQuantity',
+      'field_overall_viiib_med_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_overall_viiib_avg_days_jud' => 'foia:AdjudicationAverageDaysValue',
+    ];
+
+    $section = $this->addElementNs('foia:FeeWaiverSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:FeeWaiver', 'FW', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:FeeWaiverOrganizationAssociation', 'FW');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_viiib->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
