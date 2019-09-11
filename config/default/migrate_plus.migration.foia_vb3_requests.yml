@@ -8,7 +8,7 @@ field_plugin_method: null
 cck_plugin_method: null
 migration_tags: null
 migration_group: foia_component_data_import
-label: 'Import foia_req_vb3 paragraphs from NIEM-XML data.'
+label: 'Import admin_app_vic1 paragraphs from NIEM-XML data.'
 source:
   item_selector: '/iepd:FoiaAnnualReport/foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions'
   fields:
@@ -90,7 +90,7 @@ source:
 process:
   type:
     plugin: default_value
-    default_value: foia_req_vb3
+    default_value: admin_app_vic1
   langcode:
     plugin: default_value
     default_value: en
