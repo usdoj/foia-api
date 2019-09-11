@@ -521,6 +521,52 @@ source:
       name: field_footnotes_xiid1
       label: 'XII.D.1 Footnotes'
       selector: 'foia:ProcessedRequestComparisonSection/foia:FootnoteText'
+  # Section XII.D.2
+  # @todo Find something more reliable than using @s:id="RBC0" for the overall
+  # numbers.
+    -
+      name: component_xiid2
+      label: 'Internal index of the agency component'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison/@s:id'
+    -
+      name: field_overall_xiid2_back_prev_yr
+      label: 'Placeholder Label - XII.D.2 - field_overall_xiid2_back_prev_yr'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id="RBC0"]/foia:ItemsReceivedLastYearQuantity'
+    -
+      name: field_overall_xiid2_back_cur_yr
+      label: 'Placeholder Label - XII.D.2 - field_overall_xiid2_back_cur_yr'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id="RBC0"]/foia:ItemsReceivedCurrentYearQuantity'
+    -
+      name: field_footnotes_xiid2
+      label: 'XII.D.2 Footnotes'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:FootnoteText'
+  # Section XII.E.1
+  # @todo Find something more reliable than using @s:id="APC0" for the overall
+  # numbers.
+    -
+      name: component_xiie1
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison/@s:id'
+    -
+      name: field_overall_xiie1_received_las
+      label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_received_las'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsReceivedLastYearQuantity'
+    -
+      name: field_overall_xiie1_received_cur
+      label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_received_cur'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsReceivedCurrentYearQuantity'
+    -
+      name: field_overall_xiie1_proc_last_yr
+      label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_proc_last_yr'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsProcessedLastYearQuantity'
+    -
+      name: field_overall_xiie1_proc_cur_yr
+      label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_proc_cur_yr'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsProcessedCurrentYearQuantity'
+    -
+      name: field_footnotes_xiie1
+      label: 'XII.E.1 Footnotes'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:FootnoteText'
   # Section XII.E.2
   # @todo Find something more reliable than using @s:id="ABC0" for the overall
   # numbers.
@@ -1159,7 +1205,7 @@ process:
             - '1'
             - '2'
           migration:
-            - foia_xiid1_received_proc
+            - foia_xiid1
           no_stub: true
         target_id:
           plugin: extract
@@ -1176,6 +1222,76 @@ process:
   field_overall_xiid1_proc_last_yr: field_overall_xiid1_proc_last_yr
   field_overall_xiid1_proc_cur_yr: field_overall_xiid1_proc_cur_yr
   field_footnotes_xiid1: field_footnotes_xiid1
+  # Section XII.D.2
+  # Placeholder section description.
+  field_foia_xiid2:
+    -
+      plugin: foia_array_pad
+      source: component_xiid2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiid2
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiid2_back_prev_yr: field_overall_xiid2_back_prev_yr
+  field_overall_xiid2_back_cur_yr: field_overall_xiid2_back_cur_yr
+  field_footnotes_xiid2: field_footnotes_xiid2
+  # Section XII.E.1
+  # Placeholder section description.
+  field_foia_xiie1:
+    -
+      plugin: foia_array_pad
+      source: component_xiie1
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiie1
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiie1_received_las: field_overall_xiie1_received_las
+  field_overall_xiie1_received_cur: field_overall_xiie1_received_cur
+  field_overall_xiie1_proc_last_yr: field_overall_xiie1_proc_last_yr
+  field_overall_xiie1_proc_cur_yr: field_overall_xiie1_proc_cur_yr
+  field_footnotes_xiie1: field_footnotes_xiie1
   # Section XII.E.2
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_xiie2:
@@ -1229,5 +1345,7 @@ migration_dependencies:
     - foia_xib_subsection_a2
     - foia_xiia
     - foia_xiib
-    - foia_xiid1_received_proc
+    - foia_xiid1
+    - foia_xiid2
+    - foia_xiie1
     - foia_xiie2

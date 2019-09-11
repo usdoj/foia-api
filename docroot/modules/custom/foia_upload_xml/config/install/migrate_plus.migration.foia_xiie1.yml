@@ -1,8 +1,8 @@
-id: foia_xiid1
-label: 'Import XII. D. (1). Comparison of Numbers of Requests from Previous and Current Annual Report paragraphs from NIEM-XML data.'
+id: foia_xiie1
+label: 'Import XII. E. (1). Comparison of Numbers of Requests from Previous and Current Annual Report paragraphs from NIEM-XML data.'
 migration_group: foia_component_data_import
 source:
-  item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedRequestComparisonSection/foia:ProcessingComparison'
+  item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedAppealComparisonSection/foia:ProcessingComparison'
   fields:
     -
       name: report_year
@@ -18,19 +18,19 @@ source:
       selector: '@s:id'
     -
       name: field_proc_cur_yr
-      label: 'Placeholder Label - XII.D.1 - field_proc_cur_yr'
+      label: 'Placeholder Label - XII.E.1 - field_proc_cur_yr'
       selector: 'foia:ItemsProcessedCurrentYearQuantity'
     -
       name: field_proc_last_yr
-      label: 'Placeholder Label - XII.D.1 - field_proc_last_yr'
+      label: 'Placeholder Label - XII.E.1 - field_proc_last_yr'
       selector: 'foia:ItemsProcessedLastYearQuantity'
     -
       name: field_received_cur_yr
-      label: 'Placeholder Label - XII.D.1 - field_received_cur_yr'
+      label: 'Placeholder Label - XII.E.1 - field_received_cur_yr'
       selector: 'foia:ItemsReceivedCurrentYearQuantity'
     -
       name: field_received_last_yr
-      label: 'Placeholder Label - XII.D.1 - field_received_last_yr'
+      label: 'Placeholder Label - XII.E.1 - field_received_last_yr'
       selector: 'foia:ItemsReceivedLastYearQuantity'
   ids:
     report_year:
@@ -57,7 +57,7 @@ process:
         - agency
         - component
       migration:
-        - component_xiid1
+        - component_xiie1
       no_stub: true
     -
       plugin: skip_on_empty
@@ -69,4 +69,4 @@ process:
   field_received_last_yr: field_received_last_yr
 migration_dependencies:
   required:
-    - component_xiid1
+    - component_xiie1
