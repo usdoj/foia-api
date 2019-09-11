@@ -7,9 +7,7 @@ use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\node\Entity\Node;
 
@@ -18,6 +16,7 @@ use Drupal\node\Entity\Node;
  *
  * Provide a form to upload agency annual reports in NIEM-XML format.
  */
+
 class BulkRemoveEntityForm extends FormBase
 {
 
@@ -27,26 +26,29 @@ class BulkRemoveEntityForm extends FormBase
    * @var EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-
+  /**
+    * @var $id
+   */
   protected $id;
+  /**
+   * @var $step
+   */
   protected $step = 1;
 
   /**
    * BulkRemoveEntityForm constructor.
    *
-   * @param EntityTypeManagerInterface $entity_type_manager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager)
-  {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container)
-  {
+  public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager')
     );
@@ -55,8 +57,7 @@ class BulkRemoveEntityForm extends FormBase
   /**
    * {@inheritdoc}
    */
-  public function getFormId()
-  {
+  public function getFormId() {
     return 'foia_remove_revision_form';
   }
 
@@ -64,17 +65,16 @@ class BulkRemoveEntityForm extends FormBase
    * {@inheritdoc}
    * @params : (int) $node, node ID.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $node = null)
-  {
+  public function buildForm(array $form, FormStateInterface $form_state, $node = null) {
     $limit = 20;
     $nid = $node;
     $this->id = $nid;
-    $header = array(
-      'vid' => array('data' => $this->t('vid')),
-      'nid' => array('data' => $this->t('nid')),
-      'column' => array('data' => $this->t('Revision')),
-      'status' => array('data' => $this->t('Status')),
-    );
+    $header = [
+      'vid' => ['data' => $this->t('vid')],
+      'nid' => ['data' => $this->t('nid')],
+      'column' => ['data' => $this->t('Revision')],
+      'status' => ['data' => $this->t('Status')],
+    ];
     $node_obj = Node::load($nid);
     $langcode = $node_obj->language()->getId();
     $langname = $node_obj->language()->getName();
@@ -95,6 +95,7 @@ class BulkRemoveEntityForm extends FormBase
       $vids = $selected_vids;
       unset($header['status']);
     } else {
+      /** @var object $node_obj */
       $result = $node_storage->getQuery()
         ->allRevisions()
         ->condition('nid', $nid)
@@ -124,10 +125,8 @@ class BulkRemoveEntityForm extends FormBase
             '#theme' => 'username',
             '#account' => $revision->getRevisionUser(),
           ];
-
           // Use revision link to link to revisions that are not active.
           $date = Drupal::service('date.formatter')->format($revision->revision_timestamp->value, 'short');
-
           // We treat also the latest translation-affecting revision as current
           // revision, if it was the default revision, as its values for the
           // current language will be the same of the current default revision in
@@ -142,7 +141,6 @@ class BulkRemoveEntityForm extends FormBase
             }
             $current_revision_displayed = TRUE;
           }
-
 
           $column = [
             'data' => [
@@ -175,14 +173,14 @@ class BulkRemoveEntityForm extends FormBase
           $row['status']['data'] = '';
           $option_value = $vid;
         }
-        if ($this->step === 2) {
+        if (2 === $this->step) {
           unset($row['status']);
         }
         $rows[$option_value] = $row;
         $start++;
       }
     }
-    if ($this->step === 2) {
+    if (2 === $this->step) {
       $values = $form_state->getValue('revisions');
       $selected_vids = [];
       foreach ($values as $vid) {
@@ -231,10 +229,9 @@ class BulkRemoveEntityForm extends FormBase
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state)
-  {
+  public function validateForm(array &$form, FormStateInterface $form_state) {
     // The confirmation step needs no additional validation.
-    if ($this->step === 2) {
+    if (2 === $this->step) {
       return;
     }
     $values = $form_state->getValue('revisions');
@@ -252,8 +249,7 @@ class BulkRemoveEntityForm extends FormBase
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state)
-  {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
     if ($this->step === 1) {
       $form_state->setRebuild();
       $this->step = 2;
