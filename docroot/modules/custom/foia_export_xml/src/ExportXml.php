@@ -894,7 +894,23 @@ EOS;
    * This corresponds to Section XI.A of the annual report.
    */
   protected function subsectionUsedSection() {
-    // @todo
+    $component_data = $this->node->field_sub_xia->referencedEntities();
+    $map = [
+      'field_sub_used' => 'foia:TimesUsedQuantity',
+    ];
+    $overall_map = [
+      'field_overall_xia_sub_used' => 'foia:TimesUsedQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:SubsectionUsedSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:SubsectionUsed', 'SU', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:SubsectionUsedOrganizationAssociation', 'SU');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xia->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
