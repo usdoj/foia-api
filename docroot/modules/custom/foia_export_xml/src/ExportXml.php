@@ -832,7 +832,33 @@ EOS;
    * This corresponds to Section IX of the annual report.
    */
   protected function personnelAndCostSection() {
-    // @todo
+    $component_data = $this->node->field_foia_pers_costs_ix->referencedEntities();
+    $map = [
+      'field_full_emp' => 'foia:FullTimeEmployeeQuantity',
+      'field_eq_full_emp' => 'foia:EquivalentFullTimeEmployeeQuantity',
+      'field_total_staff' => 'foia:TotalFullTimeStaffQuantity',
+      'field_proc_costs' => 'foia:ProcessingCostAmount',
+      'field_lit_costs' => 'foia:LitigationCostAmount',
+      'field_total_costs' => 'foia:TotalCostAmount',
+    ];
+    $overall_map = [
+      'field_overall_ix_full_emp' => 'foia:FullTimeEmployeeQuantity',
+      'field_overall_ix_eq_full_emp' => 'foia:EquivalentFullTimeEmployeeQuantity',
+      'field_overall_ix_total_staff' => 'foia:TotalFullTimeStaffQuantity',
+      'field_overall_ix_proc_costs' => 'foia:ProcessingCostAmount',
+      'field_overall_ix_lit_costs' => 'foia:LitigationCostAmount',
+      'field_overall_ix_total_costs' => 'foia:TotalCostAmount',
+    ];
+
+    $section = $this->addElementNs('foia:PersonnelAndCostSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:PersonnelAndCost', 'PC', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:PersonnelAndCostOrganizationAssociation', 'PC');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_ix->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
