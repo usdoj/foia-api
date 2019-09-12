@@ -121,7 +121,8 @@ EOS;
    * @param string $tag
    *   The tag name, in the format "prefix:localName".
    * @param \DOMElement $parent
-   * @param
+   *   comment about this variable.
+   * @param \DOMElement $parent
    *   The parent of the new element.
    * @param string $value
    *   (optional) The text value of the new element.
@@ -319,7 +320,6 @@ EOS;
         }
       }
     }
-
   }
 
   /**
@@ -702,7 +702,6 @@ EOS;
         $item = $this->addElementNs('foia:OtherDenialReason', $sec_item);
         $item_value = $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item, "nested paragraph field date");
         $item1_value = $this->addElementNs('foia:OtherDenialReasonQuantity', $item, "Nested paragraph data");
-
       }
     }
 
@@ -716,7 +715,6 @@ EOS;
     if ($footnote) {
       $this->addElementNs('foia:FootnoteText', $section, $footnote);
     }
-
   }
 
   /**
@@ -806,7 +804,6 @@ EOS;
       $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
       $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item13, $component->get('field_exp_low')->value);
       $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item13, $component->get('field_exp_high')->value);
-
     }
 
     foreach ($component_data as $delta => $component) {
@@ -847,7 +844,6 @@ EOS;
       $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
       $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item13, $component->get('field_exp_low')->value);
       $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item13, $component->get('field_exp_high')->value);
-
     }
 
     foreach ($component_data as $delta => $component) {
@@ -868,7 +864,21 @@ EOS;
     $component_data = $this->node->field_proc_req_viic1->referencedEntities();
     $section = $this->addElementNs('foia:SimpleResponseTimeIncrementsSection', $this->root);
     /** @var array $fields */
-    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days' => '301-400', 'field_400_up_days' => '400+'];
+    $fields = [
+      'field_1_20_days' => '1-20',
+      'field_21_40_days' => '21-40',
+      'field_41_60_days' => '41-60',
+      'field_61_80_days' => '61-20',
+      'field_81_100_days' => '81-100',
+      'field_101_120_days' => '101-120',
+      'field_121_140_days' => '121-140',
+      'field_141_160_days' => '141-160',
+      'field_161_180_days' => '161-180',
+      'field_181_200_days' => '181-200',
+      'field_201_300_days' => '201-300',
+      'field_301_400_days' => '301-400',
+      'field_400_up_days' => '400+',
+    ];
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
@@ -891,7 +901,21 @@ EOS;
     $component_data = $this->node->field_proc_req_viic2->referencedEntities();
     $section = $this->addElementNs('foia:ComplexResponseTimeIncrementsSection', $this->root);
     /** @var array $fields */
-    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days' => '301-400', 'field_400_up_days' => '400+'];
+    $fields = [
+      'field_1_20_days' => '1-20',
+      'field_21_40_days' => '21-40',
+      'field_41_60_days' => '41-60',
+      'field_61_80_days' => '61-20',
+      'field_81_100_days' => '81-100',
+      'field_101_120_days' => '101-120',
+      'field_121_140_days' => '121-140',
+      'field_141_160_days' => '141-160',
+      'field_161_180_days' => '161-180',
+      'field_181_200_days' => '181-200',
+      'field_201_300_days' => '201-300',
+      'field_301_400_days' => '301-400',
+      'field_400_up_days' => '400+',
+    ];
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
@@ -914,7 +938,21 @@ EOS;
     $component_data = $this->node->field_proc_req_viic3->referencedEntities();
     $section = $this->addElementNs('foia:ExpeditedResponseTimeIncrementsSection', $this->root);
     /** @var array $fields */
-    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days' => '301-400', 'field_400_up_days' => '400+'];
+    $fields = [
+      'field_1_20_days' => '1-20',
+      'field_21_40_days' => '21-40',
+      'field_41_60_days' => '41-60',
+      'field_61_80_days' => '61-20',
+      'field_81_100_days' => '81-100',
+      'field_101_120_days' => '101-120',
+      'field_121_140_days' => '121-140',
+      'field_141_160_days' => '141-160',
+      'field_161_180_days' => '161-180',
+      'field_181_200_days' => '181-200',
+      'field_201_300_days' => '201-300',
+      'field_301_400_days' => '301-400',
+      'field_400_up_days' => '400+',
+    ];
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
@@ -1196,7 +1234,6 @@ EOS;
       $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
       $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
     }
-
   }
 
   /**
