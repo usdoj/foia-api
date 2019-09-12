@@ -250,6 +250,16 @@
           greaterThanEqualTo: "Must be greater than or equal to the lowest number of days."
         }
       });
+
+      // VII.A. - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viia-sim-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_med']"),
+        notAverageComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
     }
   };
 
