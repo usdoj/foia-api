@@ -564,6 +564,136 @@ source:
       name: footnotes_viic1
       label: 'VII.C(1) Footnotes'
       selector: 'foia:SimpleResponseTimeIncrementsSection/foia:FootnoteText'
+  # Section VII.C(2)
+    -
+      name: component_viic2
+      label: 'Internal index of the agency component'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements/@s:id'
+    -
+      name: field_overall_viic2_1_20_days
+      label: 'Simple Requests response times - 1-20 days.'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="1-20"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_21_40_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="21-40"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_41_60_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="41-60"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_61_80_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="61-80"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_81_100_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="81-100"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_101_120_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="101-120"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_121_140_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="121-140"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_141_160_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="141-160"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_161_180_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="161-180"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_181_200_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="181-200"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_201_300_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="201-300"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_301_400_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="301-400"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_400_up_days
+      label: 'Simple Requests response times - 401 plus'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="401+"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_total
+      label: 'Simple Requests response times - total'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrementTotalQuantity'
+    -
+      name: footnotes_viic2
+      label: 'VII.C(2) Footnotes'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:FootnoteText'
+  # Section VII.C(3)
+    -
+      name: component_viic3
+      label: 'Internal index of the agency component'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements/@s:id'
+    -
+      name: field_overall_viic3_1_20_days
+      label: 'Simple Requests response times - 1-20 days.'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="1-20"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_21_40_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="21-40"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_41_60_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="41-60"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_61_80_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="61-80"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_81_100_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="81-100"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_101_120_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="101-120"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_121_140_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="121-140"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_141_160_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="141-160"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_161_180_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="161-180"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_181_200_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="181-200"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_201_300_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="201-300"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_301_400_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="301-400"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_400_up_days
+      label: 'Simple Requests response times - 401 plus'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="401+"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_total
+      label: 'Simple Requests response times - total'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrementTotalQuantity'
+    -
+      name: footnotes_viic3
+      label: 'VII.C(1) Footnotes'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:FootnoteText'
   # Section VII.D
   # @todo Find something more reliable than using @s:id="PPR0" for the overall
   # numbers.
@@ -1396,6 +1526,96 @@ process:
   field_overall_viic1_400_up_days: field_overall_viic1_400_up_days
   field_overall_viic1_total: field_overall_viic1_total
   field_footnotes_vic1: footnotes_vic1
+  # Section VII.C. (2)
+  field_proc_req_viic2:
+    -
+      plugin: foia_array_pad
+      source: component_viic2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viic2_complex_response
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viic2_1_20_days: field_overall_viic2_1_20_days
+  field_overall_viic2_21_40_days: field_overall_viic2_21_40_days
+  field_overall_viic2_41_60_days: field_overall_viic2_41_60_days
+  field_overall_viic2_61_80_days: field_overall_viic2_61_80_days
+  field_overall_viic2_81_100_days: field_overall_viic2_81_100_days
+  field_overall_viic2_101_120_days: field_overall_viic2_101_120_days
+  field_overall_viic2_121_140_days: field_overall_viic2_121_140_days
+  field_overall_viic2_141_160_days: field_overall_viic2_141_160_days
+  field_overall_viic2_161_180_days: field_overall_viic2_161_180_days
+  field_overall_viic2_181_200_days: field_overall_viic2_181_200_days
+  field_overall_viic2_201_300_days: field_overall_viic2_201_300_days
+  field_overall_viic2_301_400_days: field_overall_viic2_301_400_days
+  field_overall_viic2_400_up_days: field_overall_viic2_400_up_days
+  field_overall_viic2_total: field_overall_viic2_total
+  field_footnotes_vic2: footnotes_vic2
+  # Section VII.C. (3)
+  field_proc_req_viic3:
+    -
+      plugin: foia_array_pad
+      source: component_viic3
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viic3_expedited_response
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viic3_1_20_days: field_overall_viic3_1_20_days
+  field_overall_viic3_21_40_days: field_overall_viic3_21_40_days
+  field_overall_viic3_41_60_days: field_overall_viic3_41_60_days
+  field_overall_viic3_61_80_days: field_overall_viic3_61_80_days
+  field_overall_viic3_81_100_days: field_overall_viic3_81_100_days
+  field_overall_viic3_101_120_days: field_overall_viic3_101_120_days
+  field_overall_viic3_121_140_days: field_overall_viic3_121_140_days
+  field_overall_viic3_141_160_days: field_overall_viic3_141_160_days
+  field_overall_viic3_161_180_days: field_overall_viic3_161_180_days
+  field_overall_viic3_181_200_days: field_overall_viic3_181_200_days
+  field_overall_viic3_201_300_days: field_overall_viic3_201_300_days
+  field_overall_viic3_301_400_days: field_overall_viic3_301_400_days
+  field_overall_viic3_400_up_days: field_overall_viic3_400_up_days
+  field_overall_viic3_total: field_overall_viic3_total
+  field_footnotes_viic3: footnotes_viic3
   # Section VII.D
   # Pending Requests - All Pending Perfected Requests.
   field_pending_requests_vii_d_:
@@ -1874,6 +2094,8 @@ migration_dependencies:
     - foia_viia_processed_requests
     - foia_viib_processed_requests
     - foia_viic1_simple_response
+    - foia_viic2_complex_response
+    - foia_viic3_expedited_response
     - foia_viid_pending_requests
     - foia_viiia_expedited_processing
     - foia_viiib_fee_waiver
