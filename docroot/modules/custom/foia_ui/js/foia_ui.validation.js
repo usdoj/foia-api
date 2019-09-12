@@ -45,7 +45,7 @@
             return this.optional(element) || value <= target;
           }
         }
-      }, "Must be less than or equal to a field."),
+      }, "Must be less than or equal to a field.");
 
       // greaterThanEqualComp
       jQuery.validator.addMethod("greaterThanEqualComp", function(value, element, params) {
@@ -57,7 +57,7 @@
             return this.optional(element) || value >= target;
           }
         }
-      }, "Must be greater than or equal to a field."),
+      }, "Must be greater than or equal to a field.");
 
       // betweenMinMaxComp
       jQuery.validator.addMethod("betweenMinMaxComp", function(value, element, params) {
@@ -68,7 +68,7 @@
         var min = Math.min.apply(null, valuesArray);
         var max = Math.max.apply(null, valuesArray);
         return this.optional(element) || (value > min) && (value < max);
-      }, "Must be between the smallest and largest values."),
+      }, "Must be between the smallest and largest values.");
 
       // equalToLowestComp
       jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
@@ -77,7 +77,7 @@
           valuesArray.push(Number($( params[i] ).val()));
         }
         return this.optional(element) || (value == Math.min.apply(null, valuesArray));
-      }, "Must equal the lowest value."),
+      }, "Must equal the lowest value.");
 
       // equalToHighestComp
       jQuery.validator.addMethod("equalToHighestComp", function(value, element, params) {
@@ -86,7 +86,7 @@
           valuesArray.push(Number($( params[i] ).val()));
         }
         return this.optional(element) || (value == Math.max.apply(null, valuesArray));
-      }, "Must equal the highest value."),
+      }, "Must equal the highest value.");
 
       // notAverageComp
       jQuery.validator.addMethod("notAverageComp", function(value, element, params) {
@@ -96,7 +96,7 @@
         }
         var average = sum/params.length;
         return this.optional(element) || !(value == average);
-      }, "Must not be equal to the average."),
+      }, "Must not be equal to the average.");
 
       /**
        * Form validation call
