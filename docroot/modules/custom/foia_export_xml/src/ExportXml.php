@@ -768,7 +768,31 @@ EOS;
    * This corresponds to Section VIII.A of the annual report.
    */
   protected function expeditedProcessingSection() {
-    // @todo
+    $component_data = $this->node->field_req_viiia->referencedEntities();
+    $map = [
+      'field_num_grant' => 'foia:RequestGrantedQuantity',
+      'field_num_denied' => 'foia:RequestDeniedQuantity',
+      'field_avg_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_med_days_jud' => 'foia:AdjudicationAverageDaysValue',
+      'field_num_jud_w10' => 'foia:AdjudicationWithinTenDaysQuantity',
+    ];
+    $overall_map = [
+      'field_overall_viiia_num_grant' => 'foia:RequestGrantedQuantity',
+      'field_overall_viiia_num_denied' => 'foia:RequestDeniedQuantity',
+      'field_overall_viiia_med_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_overall_viiia_avg_days_jud' => 'foia:AdjudicationAverageDaysValue',
+      'field_overall_viiia_num_jud_w10' => 'foia:AdjudicationWithinTenDaysQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:ExpeditedProcessingSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:ExpeditedProcessing', 'EP', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:ExpeditedProcessingOrganizationAssociation', 'EP');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_viiia->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
@@ -777,7 +801,29 @@ EOS;
    * This corresponds to Section VIII.B of the annual report.
    */
   protected function feeWaiverSection() {
-    // @todo
+    $component_data = $this->node->field_req_viiib->referencedEntities();
+    $map = [
+      'field_num_grant' => 'foia:RequestGrantedQuantity',
+      'field_num_denied' => 'foia:RequestDeniedQuantity',
+      'field_med_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_avg_days_jud' => 'foia:AdjudicationAverageDaysValue',
+    ];
+    $overall_map = [
+      'field_overall_viiib_num_grant' => 'foia:RequestGrantedQuantity',
+      'field_overall_viiib_num_denied' => 'foia:RequestDeniedQuantity',
+      'field_overall_viiib_med_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_overall_viiib_avg_days_jud' => 'foia:AdjudicationAverageDaysValue',
+    ];
+
+    $section = $this->addElementNs('foia:FeeWaiverSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:FeeWaiver', 'FW', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:FeeWaiverOrganizationAssociation', 'FW');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_viiib->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
@@ -786,7 +832,33 @@ EOS;
    * This corresponds to Section IX of the annual report.
    */
   protected function personnelAndCostSection() {
-    // @todo
+    $component_data = $this->node->field_foia_pers_costs_ix->referencedEntities();
+    $map = [
+      'field_full_emp' => 'foia:FullTimeEmployeeQuantity',
+      'field_eq_full_emp' => 'foia:EquivalentFullTimeEmployeeQuantity',
+      'field_total_staff' => 'foia:TotalFullTimeStaffQuantity',
+      'field_proc_costs' => 'foia:ProcessingCostAmount',
+      'field_lit_costs' => 'foia:LitigationCostAmount',
+      'field_total_costs' => 'foia:TotalCostAmount',
+    ];
+    $overall_map = [
+      'field_overall_ix_full_emp' => 'foia:FullTimeEmployeeQuantity',
+      'field_overall_ix_eq_full_emp' => 'foia:EquivalentFullTimeEmployeeQuantity',
+      'field_overall_ix_total_staff' => 'foia:TotalFullTimeStaffQuantity',
+      'field_overall_ix_proc_costs' => 'foia:ProcessingCostAmount',
+      'field_overall_ix_lit_costs' => 'foia:LitigationCostAmount',
+      'field_overall_ix_total_costs' => 'foia:TotalCostAmount',
+    ];
+
+    $section = $this->addElementNs('foia:PersonnelAndCostSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:PersonnelAndCost', 'PC', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:PersonnelAndCostOrganizationAssociation', 'PC');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_ix->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
@@ -795,7 +867,25 @@ EOS;
    * This corresponds to Section X of the annual report.
    */
   protected function feesCollectedSection() {
-    // @todo
+    $component_data = $this->node->field_fees_x->referencedEntities();
+    $map = [
+      'field_total_fees' => 'foia:FeesCollectedAmount',
+      'field_perc_costs' => 'foia:FeesCollectedCostPercent',
+    ];
+    $overall_map = [
+      'field_overall_x_total_fees' => 'foia:FeesCollectedAmount',
+      'field_overall_x_perc_costs' => 'foia:FeesCollectedCostPercent',
+    ];
+
+    $section = $this->addElementNs('foia:FeesCollectedSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:FeesCollected', 'FC', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:FeesCollectedOrganizationAssociation', 'FC');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_x->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
@@ -804,7 +894,23 @@ EOS;
    * This corresponds to Section XI.A of the annual report.
    */
   protected function subsectionUsedSection() {
-    // @todo
+    $component_data = $this->node->field_sub_xia->referencedEntities();
+    $map = [
+      'field_sub_used' => 'foia:TimesUsedQuantity',
+    ];
+    $overall_map = [
+      'field_overall_xia_sub_used' => 'foia:TimesUsedQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:SubsectionUsedSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:SubsectionUsed', 'SU', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:SubsectionUsedOrganizationAssociation', 'SU');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xia->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
@@ -813,7 +919,25 @@ EOS;
    * This corresponds to Section XI.B of the annual report.
    */
   protected function subsectionPostSection() {
-    // @todo
+    $component_data = $this->node->field_sub_xib->referencedEntities();
+    $map = [
+      'field_rec_post_foia' => 'foia:PostedbyFOIAQuantity',
+      'field_rec_post_prog' => 'foia:PostedbyProgramQuantity',
+    ];
+    $overall_map = [
+      'field_overall_xib_rec_post_foia' => 'foia:PostedbyFOIAQuantity',
+      'field_overall_xib_rec_post_prog' => 'foia:PostedbyProgramQuantity',
+    ];
+
+    $section = $this->addElementNs('foia:SubsectionPostSection', $this->root);
+    $this->addComponentData($component_data, $section, 'foia:Subsection', 'SP', $map, $overall_map);
+    $this->addProcessingAssociations($component_data, $section, 'foia:SubsectionPostOrganizationAssociation', 'SP');
+
+    // Add footnote.
+    $footnote = trim(strip_tags($this->node->field_footnotes_xib->value));
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
