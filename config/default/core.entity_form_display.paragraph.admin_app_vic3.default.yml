@@ -9,7 +9,49 @@ dependencies:
     - paragraphs.paragraphs_type.admin_app_vic3
   module:
     - entity_reference_views_select
+    - field_group
     - paragraphs
+third_party_settings:
+  field_group:
+    group_admin_appeals_vi_wrapper_p:
+      children:
+        - group_vic3_agency_component_p_wr
+        - group__other_reasons_info_p_wrap
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Administrative Appeals VI. C (3)'
+    group_vic3_agency_component_p_wr:
+      children:
+        - field_agency_component
+        - field_total
+      parent_name: group_admin_appeals_vi_wrapper_p
+      weight: 4
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Agency/Component
+    group__other_reasons_info_p_wrap:
+      children:
+        - field_admin_app_vic3_info
+      parent_name: group_admin_appeals_vi_wrapper_p
+      weight: 5
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: '"Other" Reasons Information'
 id: paragraph.admin_app_vic3.default
 targetEntityType: paragraph
 bundle: admin_app_vic3
@@ -17,7 +59,7 @@ mode: default
 content:
   field_admin_app_vic3_info:
     type: entity_reference_paragraphs
-    weight: 1
+    weight: 2
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -28,7 +70,7 @@ content:
     third_party_settings: {  }
     region: content
   field_agency_component:
-    weight: 0
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     type: erviews_options_select

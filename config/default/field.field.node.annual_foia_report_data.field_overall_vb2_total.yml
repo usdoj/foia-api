@@ -13,15 +13,23 @@ third_party_settings:
       description: ''
       autocalc_config:
         5ed4b0f5-0d3b-4d7b-9c88-e1a99ecde2ec:
-          field: 'field_foia_requests_vb2:field_total'
+          field: 'field_foia_requests_vb2:field_full_denials_ex'
           weight: '99'
+          this_entity: 0
+        872a97d3-b1d9-497d-af47-a6c273681f0f:
+          field: 'field_foia_requests_vb2:field_full_grants'
+          weight: '100'
+          this_entity: 0
+        e9fe857e-42f5-44a7-a3e7-ce8f4f701f27:
+          field: 'field_foia_requests_vb2:field_part_grants_denials'
+          weight: '101'
           this_entity: 0
 id: node.annual_foia_report_data.field_overall_vb2_total
 field_name: field_overall_vb2_total
 entity_type: node
 bundle: annual_foia_report_data
 label: 'Agency Overall Total'
-description: 'Must match the number entered in the V.A. section, field ''Number of Requests Processed in Fiscal Year'' for the component'
+description: 'Must match the number entered in the V. B. (1) section, field ''Agency Overall Other*'' for the agency.'
 required: false
 translatable: false
 default_value: {  }

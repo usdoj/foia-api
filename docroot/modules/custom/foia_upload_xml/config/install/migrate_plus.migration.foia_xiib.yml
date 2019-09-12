@@ -1,0 +1,72 @@
+id: foia_xiib
+label: 'Import XII. B. Consultations on FOIA Requests paragraphs from NIEM-XML data.'
+migration_group: foia_component_data_import
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedConsultationSection/foia:ProcessingStatistics'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_con_during_yr
+      label: 'Placeholder Label - XII.B - field_con_during_yr'
+      selector: 'foia:ProcessingStatisticsProcessedQuantity'
+    -
+      name: field_pend_end_yr
+      label: 'Placeholder Label - XII.B - field_pend_end_yr'
+      selector: 'foia:ProcessingStatisticsPendingAtEndQuantity'
+    -
+      name: field_pend_start_yr
+      label: 'Placeholder Label - XII.B - field_pend_start_yr'
+      selector: 'foia:ProcessingStatisticsReceivedQuantity'
+    -
+      name: field_proc_start_yr
+      label: 'Placeholder Label - XII.B - field_proc_start_yr'
+      selector: 'foia:ProcessingStatisticsReceivedQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: foia_xiib
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_xiib
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_con_during_yr: field_con_during_yr
+  field_pend_end_yr: field_pend_end_yr
+  field_pend_start_yr: field_pend_start_yr
+  field_proc_start_yr: field_proc_start_yr
+migration_dependencies:
+  required:
+    - component_xiib

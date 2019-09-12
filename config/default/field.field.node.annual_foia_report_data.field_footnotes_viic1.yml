@@ -6,13 +6,18 @@ dependencies:
     - field.storage.node.field_footnotes_viic1
     - node.type.annual_foia_report_data
   module:
-    - text
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_footnotes_viic1
 field_name: field_footnotes_viic1
 entity_type: node
 bundle: annual_foia_report_data
-label: 'Footnotes (viic1)'
-description: ''
+label: 'Footnotes (VII.C.(1).)'
+description: 'Allows entry of any free-format notes associated with this section of the report.'
 required: false
 translatable: false
 default_value: {  }

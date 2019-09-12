@@ -1,0 +1,77 @@
+id: foia_via_disposition
+label: 'Import VI. ADMINISTRATIVE APPEALS / A. paragraphs from NIEM-XML data.'
+migration_group: foia_component_data_import
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedAppealSection/foia:ProcessingStatistics'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_app_pend_start_yr
+      label: 'Appeals pending at the start of the year'
+      selector: 'foia:ProcessingStatisticsPendingAtStartQuantity'
+    -
+      name: field_app_received_yr
+      label: 'Appeals received during the year'
+      selector: 'foia:ProcessingStatisticsReceivedQuantity'
+    -
+      name: field_app_processed_yr
+      label: 'Appeals processed during the year'
+      selector: 'foia:ProcessingStatisticsProcessedQuantity'
+    -
+      name: field_app_pend_end_yr
+      label: 'Appeals pending at the end of the year'
+      selector: 'foia:ProcessingStatisticsPendingAtEndQuantity'
+    -
+      name: field_footnotes_via
+      label: 'Footnotes for VI A'
+      selector: '/iepd:FoiaAnnualReport/foia:ProcessedAppealSection/foia:FootnoteText'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: admin_app_via
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_via_disposition
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_app_pend_start_yr: field_app_pend_start_yr
+  field_app_received_yr: field_app_received_yr
+  field_app_processed_yr: field_app_processed_yr
+  field_app_pend_end_yr: field_app_pend_end_yr
+  field_footnotes_via: field_footnotes_via
+migration_dependencies:
+  required:
+    - component_via_disposition

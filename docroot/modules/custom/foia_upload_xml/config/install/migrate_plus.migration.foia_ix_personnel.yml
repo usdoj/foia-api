@@ -1,0 +1,82 @@
+id: foia_ix_personnel
+label: 'Import 	IX. FOIA Personnel and Costs paragraphs from NIEM-XML data.'
+migration_group: foia_component_data_import
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:PersonnelAndCostSection/foia:PersonnelAndCost'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_lit_costs
+      label: 'Placeholder Label - IX - field_lit_costs'
+      selector: 'foia:LitigationCostAmount'
+    -
+      name: field_eq_full_emp
+      label: 'Placeholder Label - IX - field_eq_full_emp'
+      selector: 'foia:EquivalentFullTimeEmployeeQuantity'
+    -
+      name: field_full_emp
+      label: 'Placeholder Label - IX - field_full_emp'
+      selector: 'foia:FullTimeEmployeeQuantity'
+    -
+      name: field_proc_costs
+      label: 'Placeholder Label - IX - field_proc_costs'
+      selector: 'foia:ProcessingCostAmount'
+    -
+      name: field_total_costs
+      label: 'Placeholder Label - IX - field_total_costs'
+      selector: 'foia:TotalCostAmount'
+    -
+      name: field_total_staff
+      label: 'Placeholder Label - IX - field_total_staff'
+      selector: 'foia:TotalFullTimeStaffQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: foia_pers_costs_ix
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_ix_personnel
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_lit_costs: field_lit_costs
+  field_eq_full_emp: field_eq_full_emp
+  field_full_emp: field_full_emp
+  field_proc_costs: field_proc_costs
+  field_total_costs: field_total_costs
+  field_total_staff: field_total_staff
+migration_dependencies:
+  required:
+    - component_ix_personnel

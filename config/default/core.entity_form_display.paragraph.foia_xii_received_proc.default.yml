@@ -17,6 +17,7 @@ third_party_settings:
     group_req_adm_app_rec_proc:
       children:
         - group_number_received
+        - group_number_processed_p_wrap
         - group_agency_component
       parent_name: ''
       weight: 1
@@ -40,7 +41,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'NUMBER RECEIVED'
-    group_agency_component:
+    group_number_processed_p_wrap:
       children:
         - field_proc_last_yr
         - field_proc_cur_yr
