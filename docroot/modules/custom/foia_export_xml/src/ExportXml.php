@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_export_xml;
 
+use Drupal\paragraphs\Entity\Paragraph;
 use DOMDocument;
 use DOMElement;
 use Drupal\Component\Utility\SafeMarkup;
@@ -293,9 +294,6 @@ EOS;
    * This corresponds to Section IV of the annual report.
    */
   protected function exemption3StatuteSection() {
-    // @todo
-    // field_statute_iv
-    // field_footnotes_iv
     $statute = $this->node->field_statute_iv->referencedEntities();
     $statuteSection = $this->addElementNs('foia:Exemption3StatuteSection', $this->root);
 
@@ -432,7 +430,31 @@ EOS;
    * This corresponds to Section V.B(2) of the annual report.
    */
   protected function requestDenialOtherReasonSection() {
-    // @todo
+    $component_data = $this->node->field_foia_requests_vb2->referencedEntities();
+    $section = $this->addElementNs('foia:RequestDenialOtherReasonSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+      $item->setAttribute('s:id', 'CODR' . ($delta + 1));
+      $field_foia_req_vb2_info = $component->get('field_foia_req_vb2_info')->getValue();
+      if (!empty($field_foia_req_vb2_info)) {
+        foreach ($field_foia_req_vb2_info as $field_value) {
+          $item12 = $this->addElementNs('foia:OtherDenialReason', $item);
+          $target_id = $field_value['target_id'];
+          $p = Paragraph::load($target_id);
+          $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item12, $p->get('field_desc_oth_reasons')->value);
+          $this->addElementNs('foia:OtherDenialReasonQuantity', $item12, $p->get('field_num_relied_upon')->value);
+        }
+      }
+      $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $component->get('field_total')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:OtherDenialReasonOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'CODR' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
