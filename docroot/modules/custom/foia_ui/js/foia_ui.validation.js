@@ -243,17 +243,17 @@
       // VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS
       $( "#edit-field-overall-vib-closed-oth-app-0-value").rules( "add", {
         lessThanEqualSum: [
-          "#edit-field-admin-app-vic2-0-subform-field-no-rec-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-rec-refer-initial-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-req-withdrawn-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-fee-related-reason-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-rec-not-desc-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-imp-req-oth-reason-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-not-agency-record-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-dup-req-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-req-in-lit-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-app-denial-exp-0-value",
-          "#edit-field-admin-app-vic2-0-subform-field-oth-0-value"
+          "#edit-field-overall-vic2-no-rec-0-value",
+          "#edit-field-overall-vic2-rec-refer-ini-0-value",
+          "#edit-field-overall-vic2-req-withdrawn-0-value",
+          "#edit-field-overall-vic2-fee-rel-reas-0-value",
+          "#edit-field-overall-vic2-rec-not-desc-0-value",
+          "#edit-field-overall-vic2-imp-req-oth-0-value",
+          "#edit-field-overall-vic2-not-agency-re-0-value",
+          "#edit-field-overall-vic2-dup-req-0-value",
+          "#edit-field-overall-vic2-req-in-lit-0-value",
+          "#edit-field-overall-vic2-app-denial-ex-0-value",
+          "#edit-field-overall-vic2-oth-0-value"
         ],
         messages: {
           lessThanEqualSum: "This field should be no more than the sum of the fields in VI.C.(2)."
