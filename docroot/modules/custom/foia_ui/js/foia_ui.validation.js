@@ -79,6 +79,15 @@
         return this.optional(element) || (value == Math.min.apply(null, valuesArray));
       }, "Must equal the lowest value."),
 
+      // equalToHighestComp
+      jQuery.validator.addMethod("equalToHighestComp", function(value, element, params) {
+        var valuesArray = [];
+        for (var i = 0; i < params.length; i++){
+          valuesArray.push(Number($( params[i] ).val()));
+        }
+        return this.optional(element) || (value == Math.max.apply(null, valuesArray));
+      }, "Must equal the highest value."),
+
       // notAverageComp
       jQuery.validator.addMethod("notAverageComp", function(value, element, params) {
         var sum = 0;
@@ -275,6 +284,14 @@
         equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_low']"),
         messages: {
           equalToLowestComp: "Must equal smallest value of Lowest number of days."
+        }
+      });
+
+      // VII.A. - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-viia-sim-high-0-value").rules( "add", {
+        equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_high']"),
+        messages: {
+          equalToHighestComp: "Must equal largest value of Highest number of days."
         }
       });
     }
