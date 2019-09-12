@@ -121,14 +121,13 @@ EOS;
    * @param string $tag
    *   The tag name, in the format "prefix:localName".
    * @param \DOMElement $parent
-   *   comment about this variable.
-   * @param \DOMElement $parent
-   *   The parent of the new element.
+   *  Parent tags of a element
    * @param string $value
    *   (optional) The text value of the new element.
    *
    * @return \DOMElement
    *   The newly added element.
+   * @throws \Exception
    */
   protected function addElementNs($tag, DOMElement $parent, $value = NULL) {
     $namespaces = [
