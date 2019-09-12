@@ -70,6 +70,24 @@
         return this.optional(element) || (value > min) && (value < max);
       }, "Must be between the smallest and largest values."),
 
+      // equalToLowestComp
+      jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
+        var valuesArray = [];
+        for (var i = 0; i < params.length; i++){
+          valuesArray.push(Number($( params[i] ).val()));
+        }
+        return this.optional(element) || (value == Math.min.apply(null, valuesArray));
+      }, "Must equal the lowest value."),
+
+      // equalToHighestComp
+      jQuery.validator.addMethod("equalToHighestComp", function(value, element, params) {
+        var valuesArray = [];
+        for (var i = 0; i < params.length; i++){
+          valuesArray.push(Number($( params[i] ).val()));
+        }
+        return this.optional(element) || (value == Math.max.apply(null, valuesArray));
+      }, "Must equal the highest value."),
+
       // notAverageComp
       jQuery.validator.addMethod("notAverageComp", function(value, element, params) {
         var sum = 0;
@@ -248,6 +266,32 @@
         greaterThanZero: true,
         messages: {
           greaterThanEqualTo: "Must be greater than or equal to the lowest number of days."
+        }
+      });
+
+      // VII.A. - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viia-sim-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_med']"),
+        notAverageComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VII.A. - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-viia-sim-low-0-value").rules( "add", {
+        equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_low']"),
+        messages: {
+          equalToLowestComp: "Must equal smallest value of Lowest number of days."
+        }
+      });
+
+      // VII.A. - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-viia-sim-high-0-value").rules( "add", {
+        equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_high']"),
+        messages: {
+          equalToHighestComp: "Must equal largest value of Highest number of days."
         }
       });
     }
