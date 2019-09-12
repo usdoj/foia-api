@@ -9,7 +9,24 @@
       /**
        * Custom validation methods
        */
-       // lessThanEqualSum
+      // lessThanEqualTo
+      $.validator.addMethod( "lessThanEqualTo", function( value, element, param ) {
+        var target = $( param );
+        return value <= Number(target.val());
+    }, "Please enter a lesser value." );
+
+       // greaterThanEqualTo
+      $.validator.addMethod( "greaterThanEqualTo", function( value, element, param ) {
+        var target = $( param );
+        return value >= Number(target.val());
+    }, "Please enter a greater value." );
+
+       // greaterThanZero
+       $.validator.addMethod( "greaterThanZero", function( value, element, param ) {
+        return value > 0;
+    }, "Please enter a value greater than zero." );
+
+    // lessThanEqualSum
       jQuery.validator.addMethod("lessThanEqualSum", function(value, element, params) {
         var sum = 0;
         params.forEach(function(param) {
@@ -17,6 +34,18 @@
         });
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
+
+      // lessThanEqualComp
+      jQuery.validator.addMethod("lessThanEqualComp", function(value, element, params) {
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.length; i++){
+          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            var target = Number($( params[i] ).val());
+            return this.optional(element) || value <= target;
+          }
+        }
+      }, "Must be less than or equal to a field."),
 
       // greaterThanEqualComp
       jQuery.validator.addMethod("greaterThanEqualComp", function(value, element, params) {
@@ -29,6 +58,27 @@
           }
         }
       }, "Must be greater than or equal to a field."),
+
+      // betweenMinMaxComp
+      jQuery.validator.addMethod("betweenMinMaxComp", function(value, element, params) {
+        var valuesArray = [];
+        for (var i = 0; i < params.length; i++){
+          valuesArray.push(Number($( params[i] ).val()));
+        }
+        var min = Math.min.apply(null, valuesArray);
+        var max = Math.max.apply(null, valuesArray);
+        return this.optional(element) || (value > min) && (value < max);
+      }, "Must be between the smallest and largest values."),
+
+      // notAverageComp
+      jQuery.validator.addMethod("notAverageComp", function(value, element, params) {
+        var sum = 0;
+        for (var i = 0; i < params.length; i++){
+          sum += Number($( params[i] ).val());
+        }
+        var average = sum/params.length;
+        return this.optional(element) || !(value == average);
+      }, "Must not be equal to the average."),
 
       /**
        * Form validation call
@@ -127,7 +177,7 @@
           "#edit-field-overall-vb3-ex-9-0-value"
         ],
         messages: {
-          lessThanEqualSum: "This field should be no more than the sum of the fields Overal V.B.(3) Ex.1 through V.B.(3) Ex.9."
+          lessThanEqualSum: "This field should be no more than the sum of the fields Overall V.B.(3) Ex.1 through V.B.(3) Ex.9."
         }
       });
 
@@ -192,6 +242,42 @@
         }
       });
 
+      // VI.C.(4) - Administrative Appeals
+      $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_low_num_days']").rules( "add", {
+        lessThanEqualComp: $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
+        greaterThanZero: true,
+        messages: {
+          lessThanEqualComp: "Must be lower than or equal to the highest number of days."
+        }
+      });
+
+      // VI.C.(4) - Agency Overall Median Number of Days
+      $( "#edit-field-overall-vic4-med-num-days-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
+        notAverageComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VI.C.(4) - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-vic4-low-num-days-0-value").rules( "add", {
+        lessThanEqualTo: "#edit-field-overall-vic4-high-num-days-0-value",
+        greaterThanZero: true,
+        messages: {
+          lessThanEqualTo: "Must be lower than or equal to the highest number of days."
+        }
+      });
+
+      // VI.C.(4) - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-vic4-high-num-days-0-value").rules( "add", {
+        greaterThanEqualTo: "#edit-field-overall-vic4-low-num-days-0-value",
+        greaterThanZero: true,
+        messages: {
+          greaterThanEqualTo: "Must be greater than or equal to the lowest number of days."
+        }
+      });
     }
   };
 
