@@ -10,13 +10,12 @@ use Drupal\Core\Link;
 /**
  * Class AnnualDataController.
  */
-class AnnualDataController extends ControllerBase
-{
+class AnnualDataController extends ControllerBase {
 
   /**
    * From the content of a node.
    *
-   * Docx file response
+   * Docx file response.
    */
   public function report() {
     $limit = 20;
@@ -25,9 +24,13 @@ class AnnualDataController extends ControllerBase
       ['data' => $this->t('S. No.')],
       ['data' => $this->t('Title'), 'field1' => 'title'],
       ['data' => $this->t('Created On'), 'field1' => 'created'],
-      ['data' => $this->t('Updated On'), 'field1' => 'changed', 'sort' => 'desc'],
+      [
+        'data' => $this->t('Updated On'),
+        'field1' => 'changed',
+        'sort' => 'desc',
+      ],
       '',
-      ''
+      '',
     ];
     $query = Drupal::entityQuery('node')
       ->condition('type', 'annual_foia_report_data')
@@ -77,10 +80,10 @@ class AnnualDataController extends ControllerBase
   }
 
   /**
-   * @return mixed
+   * To shoe all revisions.
+   * @return mixed.
    */
-  public function revisions()
-  {
+  public function revisions() {
     $build['pager'] = [
       '#markup' => '<h2>Coming Soon...</h2>',
     ];

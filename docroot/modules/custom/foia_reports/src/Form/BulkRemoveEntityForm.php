@@ -10,28 +10,31 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\node\Entity\Node;
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 
 /**
  * Class BulkRemoveEntityForm.
  *
  * Provide a form to upload agency annual reports in NIEM-XML format.
  */
-
-class BulkRemoveEntityForm extends FormBase
-{
+class BulkRemoveEntityForm extends FormBase {
 
   /**
    * The entity type manager.
    *
-   * @var EntityTypeManagerInterface
+   * @var Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
   /**
-    * @var $id
+   * The enitty id.
+   *
+   * @var id
    */
   protected $id;
   /**
-   * @var $step
+   * The form step number.
+   * @var step
    */
   protected $step = 1;
 
@@ -41,7 +44,7 @@ class BulkRemoveEntityForm extends FormBase
    * @param Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(Drupal\Core\Entity\EntityTypeManagerInterface ity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
   }
 
@@ -65,7 +68,7 @@ class BulkRemoveEntityForm extends FormBase
    * {@inheritdoc}
    * @params : (int) $node, node ID.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $node = null) {
+  public function buildForm(array $form, FormStateInterface $form_state, $node = NULL) {
     $limit = 20;
     $nid = $node;
     $this->id = $nid;
@@ -81,8 +84,10 @@ class BulkRemoveEntityForm extends FormBase
     $languages = $node_obj->getTranslationLanguages();
     try {
       $node_storage = Drupal::entityTypeManager()->getStorage('node');
-    } catch (Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException $e) {
-    } catch (Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+    }
+    catch (InvalidPluginDefinitionException $e) {
+    }
+    catch (PluginNotFoundException $e) {
     }
     if ($this->step === 2) {
       $values = $form_state->getValue('revisions');
@@ -134,10 +139,12 @@ class BulkRemoveEntityForm extends FormBase
           $is_current_revision = ($vid == $default_revision);
           if (!$is_current_revision) {
             $link = $this->l($date, new Url('entity.node.revision', ['node' => $node_obj->id(), 'node_revision' => $vid]));
-          } else {
+          } else
+            {
             try {
               $link = $node_obj->toLink($date)->toString();
-            } catch (Drupal\Core\Entity\EntityMalformedException $e) {
+            }
+            catch (Drupal\Core\Entity\EntityMalformedException $e) {
             }
             $current_revision_displayed = TRUE;
           }
@@ -156,7 +163,6 @@ class BulkRemoveEntityForm extends FormBase
 
           Drupal::service('renderer')->addCacheableDependency($column['data'], $username);
           $row['column'] = $column;
-          //$row['#disabled'] = TRUE;
         }
         if ($is_current_revision) {
           $row['status'] = [
@@ -169,7 +175,8 @@ class BulkRemoveEntityForm extends FormBase
           $row['#disabled'] = TRUE;
           $row['#attributes'] = ['disable' => TRUE];
           $option_value = 0;
-        } else {
+        }
+        else {
           $row['status']['data'] = '';
           $option_value = $vid;
         }
@@ -195,12 +202,12 @@ class BulkRemoveEntityForm extends FormBase
       ];
       $form['selected_item'] = [
         '#type' => 'item',
-        '#markup' => '<h2>' . $this->t('Are you sure you want to remove these selected revisions? This action can\'t be undone.') . '</h2>',
+        '#markup' => '<h2>' . $this->t("Are you sure you want to remove these selected revisions? This action can't be undone.") . '</h2>',
       ];
       $form['revisions'] = [
         '#type' => 'table',
         '#header' => $header,
-        '#rows' => $rows
+        '#rows' => $rows,
       ];
       $form['actions']['submit'] = [
         '#type' => 'submit',
@@ -211,11 +218,12 @@ class BulkRemoveEntityForm extends FormBase
         '#type' => 'link',
         '#url' => Url::fromRoute('foia_reports.revisions', ['node' => $nid]),
       ];
-    } else {
+    }
+    else {
       $form['revisions'] = [
         '#type' => 'tableselect',
         '#header' => $header,
-        '#options' => $rows
+        '#options' => $rows,
       ];
 
       $form['actions']['submit'] = [
@@ -254,14 +262,17 @@ class BulkRemoveEntityForm extends FormBase
       $form_state->setRebuild();
       $this->step = 2;
       return;
-    } else {
+    }
+    else {
       $vids = $form_state->getValue('confirm_revisions');
       $vids_arr = explode(',', $vids);
       foreach ($vids_arr as $vid) {
         try {
           Drupal::entityTypeManager()->getStorage('node')->deleteRevision($vid);
-        } catch (Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException $e) {
-        } catch (Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+        }
+        catch (InvalidPluginDefinitionException $e) {
+        }
+        catch (PluginNotFoundException $e) {
         }
       }
       drupal_set_message(t('Selected revisions has been deleted'), 'status', TRUE);
