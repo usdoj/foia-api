@@ -269,7 +269,7 @@
         }
       });
 
-      // VII.A. - Agency Overall Median Number of Days
+      // VII.A. Simple - Agency Overall Median Number of Days
       $( "#edit-field-overall-viia-sim-med-0-value").rules( "add", {
         betweenMinMaxComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_med']"),
         notAverageComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_med']"),
@@ -279,7 +279,7 @@
         }
       });
 
-      // VII.A. - Agency Overall Lowest Number of Days
+      // VII.A. Simple - Agency Overall Lowest Number of Days
       $( "#edit-field-overall-viia-sim-low-0-value").rules( "add", {
         equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_low']"),
         messages: {
@@ -287,7 +287,7 @@
         }
       });
 
-      // VII.A. - Agency Overall Highest Number of Days
+      // VII.A. Simple - Agency Overall Highest Number of Days
       $( "#edit-field-overall-viia-sim-high-0-value").rules( "add", {
         equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_high']"),
         messages: {
