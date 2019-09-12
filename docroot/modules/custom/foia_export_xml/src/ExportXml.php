@@ -19,14 +19,14 @@ class ExportXml {
   /**
    * The DOMDocument object.
    *
-   * @var DOMDocument
+   * @var \DOMDocument
    */
   protected $document;
 
   /**
    * The root element of the DOMDocument object.
    *
-   * @var DOMElement
+   * @var \DOMElement
    */
   protected $root;
 
@@ -120,16 +120,16 @@ EOS;
    *
    * @param string $tag
    *   The tag name, in the format "prefix:localName".
-   * @param DOMElement $parent @param
+   * @param \DOMElement $parent
+   * @param
    *   The parent of the new element.
    * @param string $value
    *   (optional) The text value of the new element.
    *
-   * @return DOMElement
+   * @return \DOMElement
    *   The newly added element.
    */
-  protected function addElementNs($tag, DOMElement $parent, $value = NULL)
-  {
+  protected function addElementNs($tag, DOMElement $parent, $value = NULL) {
     $namespaces = [
       'iepd' => 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03',
       'foia' => 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03',
@@ -153,7 +153,7 @@ EOS;
    *
    * @param Drupal\Core\Entity\EntityInterface $entity
    *   A Drupal entity, such as a node or a paragraph.
-   * @param DOMElement $parent
+   * @param \DOMElement $parent
    *   The parent element to which new nodes will be added.
    * @param string $tag
    *   The XML tag of the element to be added.
@@ -164,8 +164,7 @@ EOS;
    * @param string[] $map
    *   An array mapping some fields on $entity to labels.
    */
-  protected function addLabeledQuantity(EntityInterface $entity, DOMElement $parent, $tag, $label_tag, $quantity_tag, array $map)
-  {
+  protected function addLabeledQuantity(EntityInterface $entity, DOMElement $parent, $tag, $label_tag, $quantity_tag, array $map) {
     foreach ($map as $field => $label) {
       if (empty($entity->get($field)->value)) {
         continue;
@@ -185,7 +184,7 @@ EOS;
    * @param Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
-   * @param DOMElement $parent
+   * @param \DOMElement $parent
    *   The parent element to which new nodes will be added.
    * @param string $data_tag
    *   The XML tag of the data section.
@@ -196,8 +195,7 @@ EOS;
    * @param string[] $overall_map
    *   An array mapping fields on the node to XML tags.
    */
-  protected function addComponentData(array $component_data, DOMElement $parent, $data_tag, $prefix, array $map, array $overall_map)
-  {
+  protected function addComponentData(array $component_data, DOMElement $parent, $data_tag, $prefix, array $map, array $overall_map) {
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs($data_tag, $parent);
@@ -224,16 +222,16 @@ EOS;
    * @param Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
-   * @param DOMElement $parent
+   * @param \DOMElement $parent
    *   The parent element to which new nodes will be added.
    * @param string $tag
    *   The XML tag of the association section.
    * @param string $prefix
    *   The base string used in the s:ref attribute.
-   * @throws Exception
+   *
+   * @throws \Exception
    */
-  protected function addProcessingAssociations(array $component_data, DOMElement $parent, $tag, $prefix)
-  {
+  protected function addProcessingAssociations(array $component_data, DOMElement $parent, $tag, $prefix) {
     // Add processing association for each component.
     foreach ($component_data as $delta => $component) {
       $agency_component = $component->field_agency_component->referencedEntities()[0];
@@ -295,9 +293,8 @@ EOS;
    */
   protected function exemption3StatuteSection() {
     // @todo
-    //field_statute_iv
-    //field_footnotes_iv
-
+    // field_statute_iv
+    // field_footnotes_iv
     $statute = $this->node->field_statute_iv->referencedEntities();
     $statuteSection = $this->addElementNs('foia:Exemption3StatuteSection', $this->root);
 
@@ -871,7 +868,7 @@ EOS;
     $component_data = $this->node->field_proc_req_viic1->referencedEntities();
     $section = $this->addElementNs('foia:SimpleResponseTimeIncrementsSection', $this->root);
     /** @var array $fields */
-    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days'=> '301-400', 'field_400_up_days' => '400+'];
+    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days' => '301-400', 'field_400_up_days' => '400+'];
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
@@ -894,7 +891,7 @@ EOS;
     $component_data = $this->node->field_proc_req_viic2->referencedEntities();
     $section = $this->addElementNs('foia:ComplexResponseTimeIncrementsSection', $this->root);
     /** @var array $fields */
-    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days'=> '301-400', 'field_400_up_days' => '400+'];
+    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days' => '301-400', 'field_400_up_days' => '400+'];
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
@@ -917,7 +914,7 @@ EOS;
     $component_data = $this->node->field_proc_req_viic3->referencedEntities();
     $section = $this->addElementNs('foia:ExpeditedResponseTimeIncrementsSection', $this->root);
     /** @var array $fields */
-    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days'=> '301-400', 'field_400_up_days' => '400+'];
+    $fields = ['field_1_20_days' => '1-20', 'field_21_40_days' => '21-40', 'field_41_60_days' => '41-60', 'field_61_80_days' => '61-20', 'field_81_100_days' => '81-100', 'field_101_120_days' => '101-120', 'field_121_140_days' => '121-140', 'field_141_160_days' => '141-160', 'field_161_180_days' => '161-180', 'field_181_200_days' => '181-200', 'field_201_300_days' => '201-300', 'field_301_400_days' => '301-400', 'field_400_up_days' => '400+'];
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
