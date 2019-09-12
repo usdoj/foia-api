@@ -1,0 +1,131 @@
+uuid: 6a0b77d9-22c8-4bcd-b7d0-9fda4521b1fe
+langcode: en
+status: true
+dependencies: {  }
+id: foia_viic1_simple_response
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import proc_req_viic paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_1_20_days
+      label: 'Requests by response time - 1-20 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="1-20"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_21_40_days
+      label: 'Requests by response time - 21-40 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="21-40"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_41_60_days
+      label: 'Requests by response time - 41-60 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="41-60"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_61_80_days
+      label: 'Requests by response time - 61-80 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="61-80"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_81_100_days
+      label: 'Requests by response time - 81-100 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="81-100"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_101_120_days
+      label: 'Requests by response time - 101-120 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="101-120"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_121_140_days
+      label: 'Requests by response time - 121-140 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="121-140"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_141_160_days
+      label: 'Requests by response time - 141-160 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="141-160"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_161_180_days
+      label: 'Requests by response time - 161-180 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="161-180"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_181_200_days
+      label: 'Requests by response time - 181-200 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="181-200"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_201_300_days
+      label: 'Requests by response time - 201-300 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="201-300"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_301_400_days
+      label: 'Requests by response time - 301-400 Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="301-400"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_400_up_days
+      label: 'Requests by response time - 400 Up Days'
+      selector: 'foia:TimeIncrement[foia:TimeIncrementCode="401+"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_total
+      label: 'Response times total'
+      selector: 'foia:TimeIncrementTotalQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: proc_req_viic
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_viic1_simple_response
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_1_20_days: field_1_20_days
+  field_21_40_days: field_21_40_days
+  field_41_60_days: field_41_60_days
+  field_61_80_days: field_61_80_days
+  field_81_100_days: field_81_100_days
+  field_101_120_days: field_101_120_days
+  field_121_140_days: field_121_140_days
+  field_141_160_days: field_141_160_days
+  field_161_180_days: field_161_180_days
+  field_181_200_days: field_181_200_days
+  field_201_300_days: field_201_300_days
+  field_301_400_days: field_301_400_days
+  field_400_up_days: field_400_up_days
+  field_total: field_total
+destination: null
+migration_dependencies:
+  required:
+    - component_viic1_simple_response

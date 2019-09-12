@@ -1,0 +1,71 @@
+uuid: 8eb5a0e5-5583-43e3-b3e5-3708c872c40d
+langcode: en
+status: true
+dependencies: {  }
+id: foia_xiie2
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import FOIA XII. E. 2. paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:BackloggedAppealComparisonSection/foia:BacklogComparison'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_back_prev_yr
+      label: 'Backlogged requests from previous year'
+      selector: 'foia:BacklogLastYearQuantity'
+    -
+      name: field_back_cur_yr
+      label: 'Backlogged requests from current year'
+      selector: 'foia:BacklogCurrentYearQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: foia_xii_backlogged
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_xiie2
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_back_prev_yr: field_back_prev_yr
+  field_back_cur_yr: field_back_cur_yr
+destination: null
+migration_dependencies:
+  required:
+    - component_xiie2

@@ -1,0 +1,86 @@
+uuid: 28f563c5-5ba8-46ba-98b2-0c6f9d42dfeb
+langcode: en
+status: true
+dependencies: {  }
+id: foia_viiia_expedited_processing
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import VIII. A. Requests for Expedited Processing paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:ExpeditedProcessingSection/foia:ExpeditedProcessing'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_avg_days_jud
+      label: 'Placeholder Label - VIIIA - field_avg_days_jud'
+      selector: 'foia:AdjudicationAverageDaysValue'
+    -
+      name: field_med_days_jud
+      label: 'Placeholder Label - VIIIA - field_med_days_jud'
+      selector: 'foia:AdjudicationMedianDaysValue'
+    -
+      name: field_num_jud_w10
+      label: 'Placeholder Label - VIIIA - field_num_jud_w10'
+      selector: 'foia:AdjudicationWithinTenDaysQuantity'
+    -
+      name: field_num_denied
+      label: 'Placeholder Label - VIIIA - field_num_denied'
+      selector: 'foia:RequestDeniedQuantity'
+    -
+      name: field_num_grant
+      label: 'Placeholder Label - VIIIA - field_num_grant'
+      selector: 'foia:RequestGrantedQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: req_viiia
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_viiia_expedited_processing
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_avg_days_jud: field_avg_days_jud
+  field_med_days_jud: field_med_days_jud
+  field_num_jud_w10: field_num_jud_w10
+  field_num_denied: field_num_denied
+  field_num_grant: field_num_grant
+destination: null
+migration_dependencies:
+  required:
+    - component_viiia_expedited_processing

@@ -1,0 +1,106 @@
+uuid: aa2fdeb6-36a4-49c9-8dc6-f412f7d58a1f
+langcode: en
+status: true
+dependencies: {  }
+id: foia_viid_pending_requests
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import VII.D. ALL PENDING PERFECTED REQUESTS paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_sim_med
+      label: 'Pending Requests - Simple Number of Days - Median'
+      selector: 'foia:SimplePendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_sim_avg
+      label: 'Pending Requests - Simple Number of Days - Average'
+      selector: 'foia:SimplePendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_sim_pend
+      label: 'Pending Requests - Simple Number of Days - Quantity'
+      selector: 'foia:SimplePendingRequestStatistics/foia:PendingRequestQuantity'
+    -
+      name: field_comp_med
+      label: 'Pending Requests - Complex Number of Days - Median'
+      selector: 'foia:ComplexPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_comp_avg
+      label: 'Pending Requests - Complex Number of Days - Average'
+      selector: 'foia:ComplexPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_comp_pend
+      label: 'Pending Requests - Complex Number of Days - Quantity'
+      selector: 'foia:ComplexPendingRequestStatistics/foia:PendingRequestQuantity'
+    -
+      name: field_exp_med
+      label: 'Pending Requests - Expedited Number of Days - Median'
+      selector: 'foia:ExpeditedPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_exp_avg
+      label: 'Pending Requests - Expedited Number of Days - Average'
+      selector: 'foia:ExpeditedPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_exp_pend
+      label: 'Pending Requests - Expedited Number of Days - Quantity'
+      selector: 'foia:ExpeditedPendingRequestStatistics/foia:PendingRequestQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: pending_requests_viid
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_viid_pending_requests
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_sim_med: field_sim_med
+  field_sim_avg: field_sim_avg
+  field_sim_pend: field_sim_pend
+  field_comp_med: field_comp_med
+  field_comp_avg: field_comp_avg
+  field_comp_pend: field_comp_pend
+  field_exp_med: field_exp_med
+  field_exp_avg: field_exp_avg
+  field_exp_pend: field_exp_pend
+destination: null
+migration_dependencies:
+  required:
+    - component_viid_pending_requests

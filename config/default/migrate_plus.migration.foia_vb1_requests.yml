@@ -1,0 +1,126 @@
+uuid: c25a75d1-9d03-48a1-9066-98f38dc421bb
+langcode: en
+status: true
+dependencies: {  }
+id: foia_vb1_requests
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import V. B. (1) Disposition of FOIA Requests - All Processed Requests paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:RequestDispositionSection/foia:RequestDisposition'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: no_rec
+      label: 'Placeholder Label - V.B. (1) - no_rec'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+    -
+      name: rec_ref_to_an_comp
+      label: 'Placeholder Label - V.B. (1) - rec_ref_to_an_comp'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+    -
+      name: req_withdrawn
+      label: 'Placeholder Label - V.B. (1) - req_withdrawn'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+    -
+      name: fee_related_reason
+      label: 'Placeholder Label - V.B. (1) - fee_related_reason'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+    -
+      name: rec_not_desc
+      label: 'Placeholder Label - V.B. (1) - rec_not_desc'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+    -
+      name: imp_req_oth_reason
+      label: 'Placeholder Label - V.B. (1) - imp_req_oth_reason'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+    -
+      name: not_agency_record
+      label: 'Placeholder Label - V.B. (1) - not_agency_record'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+    -
+      name: dup_request
+      label: 'Placeholder Label - V.B. (1) - dup_request'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+    -
+      name: oth
+      label: 'Placeholder Label - V.B. (1) - oth'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+    -
+      name: full_grants
+      label: 'Placeholder Label - V.B. (1) - full_grants'
+      selector: 'foia:RequestDispositionFullGrantQuantity'
+    -
+      name: part_grants_denials
+      label: 'Placeholder Label - V.B. (1) - part_grants_denials'
+      selector: 'foia:RequestDispositionPartialGrantQuantity'
+    -
+      name: full_denials_ex
+      label: 'Placeholder Label - V.B. (1) - full_denials_ex'
+      selector: 'foia:RequestDispositionFullExemptionDenialQuantity'
+    -
+      name: total
+      label: 'Placeholder Label - V.B. (1) - total'
+      selector: 'foia:RequestDispositionTotalQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: foia_req_vb1
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_vb1_requests
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_no_rec: no_rec
+  field_rec_ref_to_an_comp: rec_ref_to_an_comp
+  field_req_withdrawn: req_withdrawn
+  field_fee_related_reason: fee_related_reason
+  field_rec_not_desc: rec_not_desc
+  field_imp_req_oth_reason: imp_req_oth_reason
+  field_not_agency_record: not_agency_record
+  field_dup_request: dup_request
+  field_oth: oth
+  field_full_grants: full_grants
+  field_part_grants_denials: part_grants_denials
+  field_full_denials_ex: full_denials_ex
+  field_total: total
+destination: null
+migration_dependencies:
+  required:
+    - component_vb1_requests
