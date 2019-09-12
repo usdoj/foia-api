@@ -1054,7 +1054,22 @@ EOS;
    * This corresponds to Section XII.A of the annual report.
    */
   protected function backlogSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiia->referencedEntities();
+    $section = $this->addElementNs('foia:BacklogSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:Backlog', $section);
+      $item->setAttribute('s:id', 'BK' . ($delta + 1));
+      $this->addElementNs('foia:BackloggedRequestQuantity', $item, $component->get('field_back_req_end_yr')->value);
+      $this->addElementNs('foia:BackloggedAppealQuantity', $item, $component->get('field_back_app_end_yr')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:BacklogOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'BK' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -1063,7 +1078,24 @@ EOS;
    * This corresponds to Section XII.B of the annual report.
    */
   protected function processedConsultationSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiib->referencedEntities();
+    $section = $this->addElementNs('foia:ProcessedConsultationSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ProcessingStatistics', $section);
+      $item->setAttribute('s:id', 'PCN' . ($delta + 1));
+      $this->addElementNs('foia:ProcessingStatisticsPendingAtStartQuantity', $item, $component->get('field_pend_start_yr')->value);
+      $this->addElementNs('foia:ProcessingStatisticsReceivedQuantity', $item, $component->get('field_con_during_yr')->value);
+      $this->addElementNs('foia:ProcessingStatisticsProcessedQuantity', $item, $component->get('field_proc_start_yr')->value);
+      $this->addElementNs('foia:ProcessingStatisticsPendingAtEndQuantity', $item, $component->get('field_pend_end_yr')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:ProcessingStatisticsOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'PCN' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -1072,7 +1104,25 @@ EOS;
    * This corresponds to Section XII.C of the annual report.
    */
   protected function oldestPendingConsultationSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiic->referencedEntities();
+    $section = $this->addElementNs('foia:OldestPendingConsultationSection', $this->root);
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:OldestPendingItems', $section);
+      $item->setAttribute('s:id', 'OPA' . ($delta + 1));
+      for ($i = 1; $i <= 10; $i++) {
+        $item2 = $this->addElementNs('foia:OldItem', $item);
+        $this->addElementNs('foia:OldItemReceiptDate', $item2, $component->get('field_date_' . $i)->value);
+        $this->addElementNs('foia:OldItemPendingDaysQuantity', $item2, $component->get('field_num_days_' . $i)->value);
+      }
+    }
+    foreach ($component_data as $delta => $component) {
+      $item11 = $this->addElementNs('foia:OldestPendingItemsOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item11);
+      $item21->setAttribute('s:id', 'OPA' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item11);
+      $item22->setAttribute('s:id', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -1081,7 +1131,24 @@ EOS;
    * This corresponds to Section XII.D(1) of the annual report.
    */
   protected function processedRequestComparisonSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiid1->referencedEntities();
+    $section = $this->addElementNs('foia:ProcessedRequestComparisonSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ProcessingComparison', $section);
+      $item->setAttribute('s:id', 'RPC' . ($delta + 1));
+      $this->addElementNs('foia:ItemsReceivedLastYearQuantity', $item, $component->get('field_proc_last_yr')->value);
+      $this->addElementNs('foia:ItemsReceivedCurrentYearQuantity', $item, $component->get('field_received_cur_yr')->value);
+      $this->addElementNs('foia:ItemsProcessedLastYearQuantity', $item, $component->get('field_proc_last_yr')->value);
+      $this->addElementNs('foia:ItemsProcessedCurrentYearQuantity', $item, $component->get('field_proc_cur_yr')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:ProcessingComparisonOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'RPC' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -1090,7 +1157,22 @@ EOS;
    * This corresponds to Section XII.D(2) of the annual report.
    */
   protected function backloggedRequestComparisonSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiid2->referencedEntities();
+    $section = $this->addElementNs('foia:BackloggedRequestComparisonSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:BacklogComparison', $section);
+      $item->setAttribute('s:id', 'RBC' . ($delta + 1));
+      $this->addElementNs('foia:BacklogLastYearQuantity', $item, $component->get('field_back_prev_yr')->value);
+      $this->addElementNs('foia:BacklogCurrentYearQuantity', $item, $component->get('field_back_cur_yr')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:BacklogComparisonOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'RBC' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -1099,7 +1181,25 @@ EOS;
    * This corresponds to Section XII.E(1) of the annual report.
    */
   protected function processedAppealComparisonSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiie1->referencedEntities();
+    $section = $this->addElementNs('foia:ProcessedAppealComparisonSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ProcessingComparison', $section);
+      $item->setAttribute('s:id', 'APC' . ($delta + 1));
+      $this->addElementNs('foia:ItemsReceivedLastYearQuantity', $item, $component->get('field_proc_last_yr')->value);
+      $this->addElementNs('foia:ItemsReceivedCurrentYearQuantity', $item, $component->get('field_received_cur_yr')->value);
+      $this->addElementNs('foia:ItemsProcessedLastYearQuantity', $item, $component->get('field_proc_last_yr')->value);
+      $this->addElementNs('foia:ItemsProcessedCurrentYearQuantity', $item, $component->get('field_proc_cur_yr')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:ProcessingComparisonOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'APC' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
+
   }
 
   /**
@@ -1108,7 +1208,22 @@ EOS;
    * This corresponds to Section XII.E(2) of the annual report.
    */
   protected function backloggedAppealComparisonSection() {
-    // @todo
+    $component_data = $this->node->field_foia_xiie2->referencedEntities();
+    $section = $this->addElementNs('foia:BackloggedAppealComparisonSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:BacklogComparison', $section);
+      $item->setAttribute('s:id', 'ABC' . ($delta + 1));
+      $this->addElementNs('foia:BacklogLastYearQuantity', $item, $component->get('field_back_prev_yr')->value);
+      $this->addElementNs('foia:BacklogCurrentYearQuantity', $item, $component->get('field_back_cur_yr')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:BacklogComparisonOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'ABC' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
 }
