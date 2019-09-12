@@ -741,6 +741,97 @@ source:
       name: field_footnotes_viid
       label: 'VII.D Footnotes'
       selector: 'foia:PendingPerfectedRequestsSection/foia:FootnoteText'
+  # Section VII.E
+  # @todo Find something more reliable than using @s:id="OPR0" for the overall
+  # numbers.
+    -
+      name: component_viie
+      label: 'Internal index of the agency component'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems/@s:id'
+    -
+      name: field_overall_viie_num_days_1
+      label: 'Overall number days pending 1'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_2
+      label: 'Overall number days pending 2'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_3
+      label: 'Overall number days pending 3'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_4
+      label: 'Overall number days pending 4'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_5
+      label: 'Overall number days pending 5'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_6
+      label: 'Overall number days pending 6'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_7
+      label: 'Overall number days pending 7'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_8
+      label: 'Overall number days pending 8'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_9
+      label: 'Overall number days pending 9'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_10
+      label: 'Overall number days pending 10'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_date_1
+      label: 'Overall date of receipt 1'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_2
+      label: 'Overall date of receipt 2'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_3
+      label: 'Overall date of receipt 3'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_4
+      label: 'Overall date of receipt 4'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_5
+      label: 'Overall date of receipt 5'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_6
+      label: 'Overall date of receipt 6'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_7
+      label: 'Overall date of receipt 7'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_8
+      label: 'Overall date of receipt 8'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_9
+      label: 'Overall date of receipt 9'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_10
+      label: 'Overall date of receipt 10'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemReceiptDate'
+    -
+      name: field_footnotes_viie
+      label: 'VII.E Footnotes'
+      selector: 'foia:OldestPendingRequestSection/foia:FootnoteText'
   # Section VIII.A
   # @todo Find something more reliable than using @s:id="EP0" for the overall
   # numbers.
@@ -933,6 +1024,97 @@ source:
       name: field_footnotes_xiib
       label: 'XII.B Footnotes'
       selector: 'foia:ProcessedConsultationSection/foia:FootnoteText'
+  # Section XII.C
+  # @todo Find something more reliable than using @s:id="OPR0" for the overall
+  # numbers.
+    -
+      name: component_xiic
+      label: 'Internal index of the agency component'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems/@s:id'
+    -
+      name: field_overall_xiic_num_days_1
+      label: 'Overall number days pending 1'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_2
+      label: 'Overall number days pending 2'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_3
+      label: 'Overall number days pending 3'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_4
+      label: 'Overall number days pending 4'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_5
+      label: 'Overall number days pending 5'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_6
+      label: 'Overall number days pending 6'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_7
+      label: 'Overall number days pending 7'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_8
+      label: 'Overall number days pending 8'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_9
+      label: 'Overall number days pending 9'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_10
+      label: 'Overall number days pending 10'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_date_1
+      label: 'Overall date of receipt 1'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_2
+      label: 'Overall date of receipt 2'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_3
+      label: 'Overall date of receipt 3'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_4
+      label: 'Overall date of receipt 4'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_5
+      label: 'Overall date of receipt 5'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_6
+      label: 'Overall date of receipt 6'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_7
+      label: 'Overall date of receipt 7'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_8
+      label: 'Overall date of receipt 8'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_9
+      label: 'Overall date of receipt 9'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_10
+      label: 'Overall date of receipt 10'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemReceiptDate'
+    -
+      name: field_footnotes_xiic
+      label: 'VII.E Footnotes'
+      selector: 'foia:OldestPendingConsultationSection/foia:FootnoteText'
   # Section XII.D.1
   # @todo Find something more reliable than using @s:id="RPC0" for the overall
   # numbers.
@@ -1657,6 +1839,58 @@ process:
   field_overall_viid_exp_avg: field_overall_viid_exp_avg
   field_overall_viid_exp_pend: field_overall_viid_exp_pend
   field_footnotes_viid: field_footnotes_viid
+  # Section VII.E
+  # Pending Requests - All Pending Perfected Requests.
+  field_admin_app_viie:
+    -
+      plugin: foia_array_pad
+      source: component_viie
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viie_oldest_pending
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viie_num_days_1: field_overall_viie_num_days_1
+  field_overall_viie_num_days_2: field_overall_viie_num_days_2
+  field_overall_viie_num_days_3: field_overall_viie_num_days_3
+  field_overall_viie_num_days_4: field_overall_viie_num_days_4
+  field_overall_viie_num_days_5: field_overall_viie_num_days_5
+  field_overall_viie_num_days_6: field_overall_viie_num_days_6
+  field_overall_viie_num_days_7: field_overall_viie_num_days_7
+  field_overall_viie_num_days_8: field_overall_viie_num_days_8
+  field_overall_viie_num_days_9: field_overall_viie_num_days_9
+  field_overall_viie_num_days_10: field_overall_viie_num_days_10
+  field_overall_viie_date_1: field_overall_viie_date_1
+  field_overall_viie_date_2: field_overall_viie_date_2
+  field_overall_viie_date_3: field_overall_viie_date_3
+  field_overall_viie_date_4: field_overall_viie_date_4
+  field_overall_viie_date_5: field_overall_viie_date_5
+  field_overall_viie_date_6: field_overall_viie_date_6
+  field_overall_viie_date_7: field_overall_viie_date_7
+  field_overall_viie_date_8: field_overall_viie_date_8
+  field_overall_viie_date_9: field_overall_viie_date_9
+  field_overall_viie_date_10: field_overall_viie_date_10
+  field_footnotes_viie: field_footnotes_viie
   # Section VIII.A
   # Placeholder section description.
   field_req_viiia:
@@ -1939,6 +2173,58 @@ process:
   field_overall_xiib_con_during_yr: field_overall_xiib_con_during_yr
   field_overall_xiib_pend_end_yr: field_overall_xiib_pend_end_yr
   field_footnotes_xiib: field_footnotes_xiib
+  # Section XII.C
+  # Pending Requests - All Pending Perfected Requests.
+  field_foia_xiic:
+    -
+      plugin: foia_array_pad
+      source: component_xiic
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiic
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiic_num_days_1: field_overall_xiic_num_days_1
+  field_overall_xiic_num_days_2: field_overall_xiic_num_days_2
+  field_overall_xiic_num_days_3: field_overall_xiic_num_days_3
+  field_overall_xiic_num_days_4: field_overall_xiic_num_days_4
+  field_overall_xiic_num_days_5: field_overall_xiic_num_days_5
+  field_overall_xiic_num_days_6: field_overall_xiic_num_days_6
+  field_overall_xiic_num_days_7: field_overall_xiic_num_days_7
+  field_overall_xiic_num_days_8: field_overall_xiic_num_days_8
+  field_overall_xiic_num_days_9: field_overall_xiic_num_days_9
+  field_overall_xiic_num_days_10: field_overall_xiic_num_days_10
+  field_overall_xiic_date_1: field_overall_xiic_date_1
+  field_overall_xiic_date_2: field_overall_xiic_date_2
+  field_overall_xiic_date_3: field_overall_xiic_date_3
+  field_overall_xiic_date_4: field_overall_xiic_date_4
+  field_overall_xiic_date_5: field_overall_xiic_date_5
+  field_overall_xiic_date_6: field_overall_xiic_date_6
+  field_overall_xiic_date_7: field_overall_xiic_date_7
+  field_overall_xiic_date_8: field_overall_xiic_date_8
+  field_overall_xiic_date_9: field_overall_xiic_date_9
+  field_overall_xiic_date_10: field_overall_xiic_date_10
+  field_footnotes_xiic: field_footnotes_xiic
   # Section XII.D.1
   # Placeholder section description.
   field_foia_xiid1:
@@ -2097,6 +2383,7 @@ migration_dependencies:
     - foia_viic2_complex_response
     - foia_viic3_expedited_response
     - foia_viid_pending_requests
+    - foia_viie_oldest_pending
     - foia_viiia_expedited_processing
     - foia_viiib_fee_waiver
     - foia_ix_personnel
@@ -2105,6 +2392,7 @@ migration_dependencies:
     - foia_xib_subsection_a2
     - foia_xiia
     - foia_xiib
+    - foia_xiic
     - foia_xiid1
     - foia_xiid2
     - foia_xiie1
