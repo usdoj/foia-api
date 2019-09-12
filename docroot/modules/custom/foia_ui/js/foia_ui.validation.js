@@ -70,6 +70,15 @@
         return this.optional(element) || (value > min) && (value < max);
       }, "Must be between the smallest and largest values."),
 
+      // equalToLowestComp
+      jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
+        var valuesArray = [];
+        for (var i = 0; i < params.length; i++){
+          valuesArray.push(Number($( params[i] ).val()));
+        }
+        return this.optional(element) || (value == Math.min.apply(null, valuesArray));
+      }, "Must equal the lowest value."),
+
       // notAverageComp
       jQuery.validator.addMethod("notAverageComp", function(value, element, params) {
         var sum = 0;
@@ -258,6 +267,14 @@
         messages: {
           betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
           notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VII.A. - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-viia-sim-low-0-value").rules( "add", {
+        equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_low']"),
+        messages: {
+          equalToLowestComp: "Must equal smallest value of Lowest number of days."
         }
       });
     }
