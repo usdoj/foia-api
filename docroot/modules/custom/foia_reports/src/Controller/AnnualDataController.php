@@ -2,7 +2,6 @@
 
 namespace Drupal\foia_reports\Controller;
 
-use Drupal;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Link;
@@ -32,7 +31,7 @@ class AnnualDataController extends ControllerBase {
       '',
       '',
     ];
-    $query = Drupal::entityQuery('node')
+    $query = \Drupal::entityQuery('node')
       ->condition('type', 'annual_foia_report_data')
       ->pager($limit);
     $nids = $query->execute();
@@ -40,7 +39,7 @@ class AnnualDataController extends ControllerBase {
     $nodes = Node::loadMultiple($nids);
 
     $rows = [];
-    $page = Drupal::request()->query->get('page');
+    $page = \Drupal::request()->query->get('page');
 
     $start = $page * $limit + 1;
     if ($nodes) {
@@ -49,9 +48,9 @@ class AnnualDataController extends ControllerBase {
           'sno' => $start,
           'title' => Link::createFromRoute($node->getTitle(), 'entity.node.canonical', ['node' => $node->id()])
             ->toString(),
-          'created' => Drupal::service('date.formatter')
+          'created' => \Drupal::service('date.formatter')
             ->format($node->getCreatedTime(), 'short'),
-          'changed' => Drupal::service('date.formatter')
+          'changed' => \Drupal::service('date.formatter')
             ->format($node->getChangedTime(), 'short'),
           'remove_revisions' => Link::createFromRoute('Remove Revision', 'foia_reports.revisions', ['node' => $node->id()])
             ->toString(),
@@ -59,9 +58,9 @@ class AnnualDataController extends ControllerBase {
             'Revisions',
             'entity.node.version_history',
             [
-              'node' => $node->id()
+              'node' => $node->id(),
             ])
-            ->toString()
+            ->toString(),
         ];
         $start++;
       }
@@ -81,7 +80,8 @@ class AnnualDataController extends ControllerBase {
 
   /**
    * To shoe all revisions.
-   * @return mixed.
+   *
+   * @return mixed
    */
   public function revisions() {
     $build['pager'] = [

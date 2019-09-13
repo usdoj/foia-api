@@ -2,9 +2,9 @@
 
 namespace Drupal\foia_reports\Form;
 
-use Drupal;
-use Drupal\Component\Utility\Xss;
+use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -23,7 +23,7 @@ class BulkRemoveEntityForm extends FormBase {
   /**
    * The entity type manager.
    *
-   * @var Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
   /**
@@ -34,6 +34,7 @@ class BulkRemoveEntityForm extends FormBase {
   protected $id;
   /**
    * The form step number.
+   *
    * @var step
    */
   protected $step = 1;
@@ -41,10 +42,10 @@ class BulkRemoveEntityForm extends FormBase {
   /**
    * BulkRemoveEntityForm constructor.
    *
-   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    */
-  public function __construct(Drupal\Core\Entity\EntityTypeManagerInterface ity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
   }
 
@@ -66,6 +67,7 @@ class BulkRemoveEntityForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   *
    * @params : (int) $node, node ID.
    */
   public function buildForm(array $form, FormStateInterface $form_state, $node = NULL) {
@@ -83,7 +85,7 @@ class BulkRemoveEntityForm extends FormBase {
     $langname = $node_obj->language()->getName();
     $languages = $node_obj->getTranslationLanguages();
     try {
-      $node_storage = Drupal::entityTypeManager()->getStorage('node');
+      $node_storage = \Drupal::entityTypeManager()->getStorage('node');
     }
     catch (InvalidPluginDefinitionException $e) {
     }
@@ -99,7 +101,8 @@ class BulkRemoveEntityForm extends FormBase {
       }
       $vids = $selected_vids;
       unset($header['status']);
-    } else {
+    }
+    else {
       /** @var object $node_obj */
       $result = $node_storage->getQuery()
         ->allRevisions()
@@ -110,13 +113,13 @@ class BulkRemoveEntityForm extends FormBase {
       $vids = array_keys($result);
     }
     $rows = [];
-    $page = Drupal::request()->query->get('page');
+    $page = \Drupal::request()->query->get('page');
     $default_revision = $node_obj->getRevisionId();
     $current_revision_displayed = FALSE;
     $start = $page * $limit + 1;
     if ($vids) {
       foreach ($vids as $vid) {
-        /** @var NodeInterface $revision */
+        /** @var \Drupal\node\Entity\NodeInterface $revision */
         $revision = $node_storage->loadRevision($vid);
         // Only show revisions that are affected by the language that is being
         // displayed.
@@ -131,7 +134,7 @@ class BulkRemoveEntityForm extends FormBase {
             '#account' => $revision->getRevisionUser(),
           ];
           // Use revision link to link to revisions that are not active.
-          $date = Drupal::service('date.formatter')->format($revision->revision_timestamp->value, 'short');
+          $date = \Drupal::service('date.formatter')->format($revision->revision_timestamp->value, 'short');
           // We treat also the latest translation-affecting revision as current
           // revision, if it was the default revision, as its values for the
           // current language will be the same of the current default revision in
@@ -139,12 +142,12 @@ class BulkRemoveEntityForm extends FormBase {
           $is_current_revision = ($vid == $default_revision);
           if (!$is_current_revision) {
             $link = $this->l($date, new Url('entity.node.revision', ['node' => $node_obj->id(), 'node_revision' => $vid]));
-          } else
-            {
+          }
+          else {
             try {
               $link = $node_obj->toLink($date)->toString();
             }
-            catch (Drupal\Core\Entity\EntityMalformedException $e) {
+            catch (EntityMalformedException $e) {
             }
             $current_revision_displayed = TRUE;
           }
@@ -155,13 +158,13 @@ class BulkRemoveEntityForm extends FormBase {
               '#template' => '{% trans %}{{ date }} by {{ username }}{% endtrans %}{% if message %}<p class="revision-log">{{ message }}</p>{% endif %}',
               '#context' => [
                 'date' => $link,
-                'username' => Drupal::service('renderer')->renderPlain($username),
+                'username' => \Drupal::service('renderer')->renderPlain($username),
                 'message' => ['#markup' => $revision->revision_log->value, '#allowed_tags' => Xss::getHtmlTagList()],
               ],
             ],
           ];
 
-          Drupal::service('renderer')->addCacheableDependency($column['data'], $username);
+          \Drupal::service('renderer')->addCacheableDependency($column['data'], $username);
           $row['column'] = $column;
         }
         if ($is_current_revision) {
@@ -268,7 +271,7 @@ class BulkRemoveEntityForm extends FormBase {
       $vids_arr = explode(',', $vids);
       foreach ($vids_arr as $vid) {
         try {
-          Drupal::entityTypeManager()->getStorage('node')->deleteRevision($vid);
+          \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($vid);
         }
         catch (InvalidPluginDefinitionException $e) {
         }
