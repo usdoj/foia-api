@@ -76,7 +76,7 @@
         }
         var min = Math.min.apply(null, valuesArray);
         var max = Math.max.apply(null, valuesArray);
-        return this.optional(element) || (value > min) && (value < max);
+        return this.optional(element) || (value >= min) && (value <= max);
       }, "Must be between the smallest and largest values.");
 
       // equalToLowestComp
