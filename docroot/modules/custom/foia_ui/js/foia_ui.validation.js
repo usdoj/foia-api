@@ -470,6 +470,16 @@
         }
       });
 
+      // VII.D. Simple - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viid-sim-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_med']"),
+        notAverageComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
       // VII.D. Complex - Number Pending
       $( "#edit-field-overall-viid-comp-pend-0-value").rules( "add", {
         equalSumComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_comp_pend']"),
@@ -478,11 +488,31 @@
         }
       });
 
+      // VII.D. Complex - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viid-comp-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_comp_med']"),
+        notAverageComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_comp_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
       // VII.D. Expedited Processing - Number Pending
       $( "#edit-field-overall-viid-exp-pend-0-value").rules( "add", {
         equalSumComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_exp_pend']"),
         messages: {
           equalSumComp: "Must equal sum of Number Pending."
+        }
+      });
+
+      // VII.D. Expedited - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viid-exp-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_exp_med']"),
+        notAverageComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_exp_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
         }
       });
     }
