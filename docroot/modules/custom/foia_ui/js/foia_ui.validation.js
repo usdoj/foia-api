@@ -515,6 +515,16 @@
           notAverageComp: "Warning: should not equal to the average Median Number of Days."
         }
       });
+
+      // VIII.A. Agency Overall Median Number of Days to Adjudicate
+      $( "#edit-field-overall-viiia-med-days-jud-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_req_viiia']").filter("input[name*='field_med_days_jud']"),
+        notAverageComp: $("input[name*='field_req_viiia']").filter("input[name*='field_med_days_jud']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
     }
   };
 
