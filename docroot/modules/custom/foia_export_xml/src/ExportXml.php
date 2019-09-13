@@ -2,8 +2,10 @@
 
 namespace Drupal\foia_export_xml;
 
+use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Class ExportXml.
@@ -227,14 +229,20 @@ EOS;
   protected function addProcessingAssociations(array $component_data, \DOMElement $parent, $tag, $prefix) {
     // Add processing association for each component.
     foreach ($component_data as $delta => $component) {
+      if (empty($component->field_agency_component)) {
+        continue;
+      }
+
       $agency_component = $component->field_agency_component->referencedEntities()[0];
       $matchup = $this->addElementNs($tag, $parent);
       $this
         ->addElementNs('foia:ComponentDataReference', $matchup)
         ->setAttribute('s:ref', $prefix . ($delta + 1));
-      $this
-        ->addElementNs('nc:OrganizationReference', $matchup)
-        ->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
+      if ($agency_component) {
+        $this
+          ->addElementNs('nc:OrganizationReference', $matchup)
+          ->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
+      }
     }
 
     // Add processing association for the agency overall.
@@ -283,7 +291,30 @@ EOS;
    * This corresponds to Section IV of the annual report.
    */
   protected function exemption3StatuteSection() {
-    // @todo
+    $statute = $this->node->field_statute_iv->referencedEntities();
+    $statuteSection = $this->addElementNs('foia:Exemption3StatuteSection', $this->root);
+
+    foreach ($statute as $delta => $component) {
+      $local_id = 'ES' . ($delta + 1);
+
+      $suborg = $this->addElementNs('foia:ReliedUponStatute', $statuteSection);
+      $suborg->setAttribute('s:id', $local_id);
+      $item = $this->addElementNs('j:StatuteDescriptionText', $suborg, $component->field_statute->value);
+      $info_withheld = SafeMarkup::checkPlain($component->field_type_of_info_withheld->value);
+      $item = $this->addElementNs('foia:ReliedUponStatuteInformationWithheldText', $suborg, $info_withheld);
+      $itemCase = $this->addElementNs('nc:Case', $suborg);
+      $itemCaseItem = $this->addElementNs('nc:CaseTitleText', $itemCase, $component->field_case_citation->value);
+    }
+
+    // Add footnote.
+    if ($this->node->field_footnotes_iv->value) {
+      foreach ($this->node->field_footnotes_iv as $footnote) {
+        $footnote = SafeMarkup::checkPlain($footnote->value);
+        if ($footnote) {
+          $this->addElementNs('foia:FootnoteText', $statuteSection, $footnote);
+        }
+      }
+    }
   }
 
   /**
@@ -396,7 +427,31 @@ EOS;
    * This corresponds to Section V.B(2) of the annual report.
    */
   protected function requestDenialOtherReasonSection() {
-    // @todo
+    $component_data = $this->node->field_foia_requests_vb2->referencedEntities();
+    $section = $this->addElementNs('foia:RequestDenialOtherReasonSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+      $item->setAttribute('s:id', 'CODR' . ($delta + 1));
+      $field_foia_req_vb2_info = $component->get('field_foia_req_vb2_info')->getValue();
+      if (!empty($field_foia_req_vb2_info)) {
+        foreach ($field_foia_req_vb2_info as $field_value) {
+          $item12 = $this->addElementNs('foia:OtherDenialReason', $item);
+          $target_id = $field_value['target_id'];
+          $p = Paragraph::load($target_id);
+          $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item12, $p->get('field_desc_oth_reasons')->value);
+          $this->addElementNs('foia:OtherDenialReasonQuantity', $item12, $p->get('field_num_relied_upon')->value);
+        }
+      }
+      $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $component->get('field_total')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:OtherDenialReasonOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'CODR' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -656,7 +711,29 @@ EOS;
    * This corresponds to Section VI.C(3) of the annual report.
    */
   protected function appealDenialOtherReasonSection() {
-    // @todo
+    $vic3 = $this->node->field_admin_app_vic3->referencedEntities();
+
+    $section = $this->addElementNs('foia:AppealDenialOtherReasonSection', $this->root);
+    if ($vic3) {
+      foreach ($vic3 as $delta => $vic3_field) {
+        $sec_item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+        $sec_item->setAttribute('s:id', 'ADOR' . ($delta + 1));
+        $item = $this->addElementNs('foia:OtherDenialReason', $sec_item);
+        $item_value = $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item, "nested paragraph field date");
+        $item1_value = $this->addElementNs('foia:OtherDenialReasonQuantity', $item, "Nested paragraph data");
+      }
+    }
+
+    $sec2 = $this->addElementNs('foia:OtherDenialReasonOrganizationAssociation', $section);
+    $sec2_item = $this->addElementNs('foia:ComponentDataReference', $sec2);
+    $sec2_item->setAttribute('s:ref', 'ADOR8');
+    $sec2_item1 = $this->addElementNs('nc:OrganizationReference', $sec2);
+    $sec2_item1->setAttribute('s:ref', 'ORG2');
+    // Add footnote.
+    $footnote = SafeMarkup::checkPlain($this->node->field_footnotes_vic3->value);
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $section, $footnote);
+    }
   }
 
   /**
@@ -696,7 +773,25 @@ EOS;
    * This corresponds to Section VI.C(5) of the annual report.
    */
   protected function oldestPendingAppealSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_vic5->referencedEntities();
+    $section = $this->addElementNs('foia:OldestPendingAppealSection', $this->root);
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:OldestPendingItems', $section);
+      $item->setAttribute('s:id', 'OPA' . ($delta + 1));
+      for ($i = 1; $i <= 10; $i++) {
+        $item2 = $this->addElementNs('foia:OldItem', $item);
+        $this->addElementNs('foia:OldItemReceiptDate', $item2, $component->get('field_date_' . $i)->value);
+        $this->addElementNs('foia:OldItemPendingDaysQuantity', $item2, $component->get('field_num_days_' . $i)->value);
+      }
+    }
+    foreach ($component_data as $delta => $component) {
+      $item11 = $this->addElementNs('foia:OldestPendingItemsOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item11);
+      $item21->setAttribute('s:id', 'OPA' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item11);
+      $item22->setAttribute('s:id', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -705,7 +800,38 @@ EOS;
    * This corresponds to Section VII.A of the annual report.
    */
   protected function processedResponseTimeSection() {
-    // @todo
+    $component_data = $this->node->field_proc_req_viia->referencedEntities();
+    $section = $this->addElementNs('foia:ProcessedResponseTimeSection', $this->root);
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item1 = $this->addElementNs('foia:ProcessedResponseTime', $section);
+      $item1->setAttribute('s:id', 'PRT' . ($delta + 1));
+      $item11 = $this->addElementNs('foia:SimpleResponseTime', $item1);
+      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item11, $component->get('field_sim_med')->value);
+      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item11, $component->get('field_sim_avg')->value);
+      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item11, $component->get('field_sim_low')->value);
+      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item11, $component->get('field_sim_high')->value);
+
+      $item12 = $this->addElementNs('foia:ComplexResponseTime', $item1);
+      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item12, $component->get('field_comp_med')->value);
+      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item12, $component->get('field_comp_avg')->value);
+      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item12, $component->get('field_comp_low')->value);
+      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item12, $component->get('field_comp_high')->value);
+
+      $item13 = $this->addElementNs('foia:ExpeditedResponseTime', $item1);
+      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item13, $component->get('field_exp_med')->value);
+      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
+      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item13, $component->get('field_exp_low')->value);
+      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item13, $component->get('field_exp_high')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:ProcessedResponseTimeOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'PRT' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -714,7 +840,38 @@ EOS;
    * This corresponds to Section VII.B of the annual report.
    */
   protected function informationGrantedResponseTimeSection() {
-    // @todo
+    $component_data = $this->node->field_proc_req_viib->referencedEntities();
+    $section = $this->addElementNs('foia:InformationGrantedResponseTimeSection', $this->root);
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item1 = $this->addElementNs('foia:ProcessedResponseTime', $section);
+      $item1->setAttribute('s:id', 'IGR' . ($delta + 1));
+      $item11 = $this->addElementNs('foia:SimpleResponseTime', $item1);
+      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item11, $component->get('field_sim_med')->value);
+      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item11, $component->get('field_sim_avg')->value);
+      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item11, $component->get('field_sim_low')->value);
+      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item11, $component->get('field_sim_high')->value);
+
+      $item12 = $this->addElementNs('foia:ComplexResponseTime', $item1);
+      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item12, $component->get('field_comp_med')->value);
+      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item12, $component->get('field_comp_avg')->value);
+      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item12, $component->get('field_comp_low')->value);
+      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item12, $component->get('field_comp_high')->value);
+
+      $item13 = $this->addElementNs('foia:ExpeditedResponseTime', $item1);
+      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item13, $component->get('field_exp_med')->value);
+      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
+      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item13, $component->get('field_exp_low')->value);
+      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item13, $component->get('field_exp_high')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:ProcessedResponseTimeOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'IGR' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -723,7 +880,35 @@ EOS;
    * This corresponds to Section VII.C(1) of the annual report.
    */
   protected function simpleResponseTimeIncrementsSection() {
-    // @todo
+    $component_data = $this->node->field_proc_req_viic1->referencedEntities();
+    $section = $this->addElementNs('foia:SimpleResponseTimeIncrementsSection', $this->root);
+    /** @var array $fields */
+    $fields = [
+      'field_1_20_days' => '1-20',
+      'field_21_40_days' => '21-40',
+      'field_41_60_days' => '41-60',
+      'field_61_80_days' => '61-20',
+      'field_81_100_days' => '81-100',
+      'field_101_120_days' => '101-120',
+      'field_121_140_days' => '121-140',
+      'field_141_160_days' => '141-160',
+      'field_161_180_days' => '161-180',
+      'field_181_200_days' => '181-200',
+      'field_201_300_days' => '201-300',
+      'field_301_400_days' => '301-400',
+      'field_400_up_days' => '400+',
+    ];
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+      $item->setAttribute('s:id', 'CRT' . ($delta + 1));
+      foreach ($fields as $field => $value) {
+        $item_field = $this->addElementNs('foia:TimeIncrement', $item);
+        $this->addElementNs('foia:TimeIncrementCode', $item_field, $value);
+        $this->addElementNs('foia:TimeIncrementProcessedQuantity', $item_field, $component->get($field)->value);
+      }
+      $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
+    }
   }
 
   /**
@@ -732,7 +917,35 @@ EOS;
    * This corresponds to Section VII.C(2) of the annual report.
    */
   protected function complexResponseTimeIncrementsSection() {
-    // @todo
+    $component_data = $this->node->field_proc_req_viic2->referencedEntities();
+    $section = $this->addElementNs('foia:ComplexResponseTimeIncrementsSection', $this->root);
+    /** @var array $fields */
+    $fields = [
+      'field_1_20_days' => '1-20',
+      'field_21_40_days' => '21-40',
+      'field_41_60_days' => '41-60',
+      'field_61_80_days' => '61-20',
+      'field_81_100_days' => '81-100',
+      'field_101_120_days' => '101-120',
+      'field_121_140_days' => '121-140',
+      'field_141_160_days' => '141-160',
+      'field_161_180_days' => '161-180',
+      'field_181_200_days' => '181-200',
+      'field_201_300_days' => '201-300',
+      'field_301_400_days' => '301-400',
+      'field_400_up_days' => '400+',
+    ];
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+      $item->setAttribute('s:id', 'CRT' . ($delta + 1));
+      foreach ($fields as $field => $value) {
+        $item_field = $this->addElementNs('foia:TimeIncrement', $item);
+        $this->addElementNs('foia:TimeIncrementCode', $item_field, $value);
+        $this->addElementNs('foia:TimeIncrementProcessedQuantity', $item_field, $component->get($field)->value);
+      }
+      $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
+    }
   }
 
   /**
@@ -741,7 +954,35 @@ EOS;
    * This corresponds to Section VII.C(3) of the annual report.
    */
   protected function expeditedResponseTimeIncrementsSection() {
-    // @todo
+    $component_data = $this->node->field_proc_req_viic3->referencedEntities();
+    $section = $this->addElementNs('foia:ExpeditedResponseTimeIncrementsSection', $this->root);
+    /** @var array $fields */
+    $fields = [
+      'field_1_20_days' => '1-20',
+      'field_21_40_days' => '21-40',
+      'field_41_60_days' => '41-60',
+      'field_61_80_days' => '61-20',
+      'field_81_100_days' => '81-100',
+      'field_101_120_days' => '101-120',
+      'field_121_140_days' => '121-140',
+      'field_141_160_days' => '141-160',
+      'field_161_180_days' => '161-180',
+      'field_181_200_days' => '181-200',
+      'field_201_300_days' => '201-300',
+      'field_301_400_days' => '301-400',
+      'field_400_up_days' => '400+',
+    ];
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+      $item->setAttribute('s:id', 'ERT' . ($delta + 1));
+      foreach ($fields as $field => $value) {
+        $item_field = $this->addElementNs('foia:TimeIncrement', $item);
+        $this->addElementNs('foia:TimeIncrementCode', $item_field, $value);
+        $this->addElementNs('foia:TimeIncrementProcessedQuantity', $item_field, $component->get($field)->value);
+      }
+      $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
+    }
   }
 
   /**
@@ -750,7 +991,35 @@ EOS;
    * This corresponds to Section VII.D of the annual report.
    */
   protected function pendingPerfectedRequestsSection() {
-    // @todo
+    $component_data = $this->node->field_pending_requests_vii_d_->referencedEntities();
+    $section = $this->addElementNs('foia:PendingPerfectedRequestsSection', $this->root);
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item1 = $this->addElementNs('foia:PendingPerfectedRequests', $section);
+      $item1->setAttribute('s:id', 'PPR' . ($delta + 1));
+      $item11 = $this->addElementNs('foia:SimplePendingRequestStatistics', $item1);
+      $this->addElementNs('foia:PendingRequestQuantity', $item11, $component->get('field_sim_pend')->value);
+      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item11, $component->get('field_sim_med')->value);
+      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item11, $component->get('field_sim_avg')->value);
+
+      $item12 = $this->addElementNs('foia:ComplexPendingRequestStatistics', $item1);
+      $this->addElementNs('foia:PendingRequestQuantity', $item12, $component->get('field_comp_pend')->value);
+      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item12, $component->get('field_comp_med')->value);
+      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item12, $component->get('field_comp_avg')->value);
+
+      $item13 = $this->addElementNs('foia:ExpeditedPendingRequestStatistics', $item1);
+      $this->addElementNs('foia:PendingRequestQuantity', $item13, $component->get('field_exp_pend')->value);
+      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item13, $component->get('field_exp_med')->value);
+      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
+    }
+
+    foreach ($component_data as $delta => $component) {
+      $item2 = $this->addElementNs('foia:PendingPerfectedRequestsOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item2);
+      $item21->setAttribute('s:ref', 'PPR' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item2);
+      $item22->setAttribute('s:ref', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
@@ -759,7 +1028,24 @@ EOS;
    * This corresponds to Section VII.E of the annual report.
    */
   protected function oldestPendingRequestSection() {
-    // @todo
+    $component_data = $this->node->field_admin_app_viie->referencedEntities();
+    $section = $this->addElementNs('foia:OldestPendingRequestSection', $this->root);
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:OldestPendingItems', $section);
+      $item->setAttribute('s:id', 'OPR' . ($delta + 1));
+      for ($i = 1; $i <= 10; $i++) {
+        $item2 = $this->addElementNs('foia:OldItem', $item);
+        $this->addElementNs('foia:OldItemReceiptDate', $item2, $component->get('field_date_' . $i)->value);
+        $this->addElementNs('foia:OldItemPendingDaysQuantity', $item2, $component->get('field_num_days_' . $i)->value);
+      }
+    }
+    foreach ($component_data as $delta => $component) {
+      $item11 = $this->addElementNs('foia:PendingPerfectedRequestsOrganizationAssociation', $section);
+      $item21 = $this->addElementNs('foia:ComponentDataReference', $item11);
+      $item21->setAttribute('s:id', 'PPR' . ($delta + 1));
+      $item22 = $this->addElementNs('nc:OrganizationReference', $item11);
+      $item22->setAttribute('s:id', 'ORG' . ($delta + 1));
+    }
   }
 
   /**
