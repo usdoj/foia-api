@@ -232,6 +232,34 @@
         }
       });
 
+      // VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS
+      $( "#edit-field-overall-vic3-num-relied-up-0-value").rules( "add", {
+        equalTo: "#edit-field-overall-vic2-oth-0-value",
+        messages: {
+          equalTo: "Must match VI. C. (2) \"Agency Overall Other\""
+        }
+      });
+
+      // VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS
+      $( "#edit-field-overall-vib-closed-oth-app-0-value").rules( "add", {
+        lessThanEqualSum: [
+          "#edit-field-overall-vic2-no-rec-0-value",
+          "#edit-field-overall-vic2-rec-refer-ini-0-value",
+          "#edit-field-overall-vic2-req-withdrawn-0-value",
+          "#edit-field-overall-vic2-fee-rel-reas-0-value",
+          "#edit-field-overall-vic2-rec-not-desc-0-value",
+          "#edit-field-overall-vic2-imp-req-oth-0-value",
+          "#edit-field-overall-vic2-not-agency-re-0-value",
+          "#edit-field-overall-vic2-dup-req-0-value",
+          "#edit-field-overall-vic2-req-in-lit-0-value",
+          "#edit-field-overall-vic2-app-denial-ex-0-value",
+          "#edit-field-overall-vic2-oth-0-value"
+        ],
+        messages: {
+          lessThanEqualSum: "This field should be no more than the sum of the fields in VI.C.(2)."
+        }
+      });
+
       // VI.C.(4) - Administrative Appeals
       $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_low_num_days']").rules( "add", {
         lessThanEqualComp: $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
