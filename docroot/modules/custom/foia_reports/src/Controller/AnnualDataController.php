@@ -82,6 +82,7 @@ class AnnualDataController extends ControllerBase {
    * To shoe all revisions.
    *
    * @return mixed
+   * Render content for this custom page.
    */
   public function revisions() {
     $build['pager'] = [
