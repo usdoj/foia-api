@@ -45,7 +45,7 @@
             return this.optional(element) || value <= target;
           }
         }
-      }, "Must be less than or equal to a field."),
+      }, "Must be less than or equal to a field.");
 
       // greaterThanEqualComp
       jQuery.validator.addMethod("greaterThanEqualComp", function(value, element, params) {
@@ -57,7 +57,7 @@
             return this.optional(element) || value >= target;
           }
         }
-      }, "Must be greater than or equal to a field."),
+      }, "Must be greater than or equal to a field.");
 
       // betweenMinMaxComp
       jQuery.validator.addMethod("betweenMinMaxComp", function(value, element, params) {
@@ -68,7 +68,7 @@
         var min = Math.min.apply(null, valuesArray);
         var max = Math.max.apply(null, valuesArray);
         return this.optional(element) || (value > min) && (value < max);
-      }, "Must be between the smallest and largest values."),
+      }, "Must be between the smallest and largest values.");
 
       // equalToLowestComp
       jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
@@ -77,7 +77,7 @@
           valuesArray.push(Number($( params[i] ).val()));
         }
         return this.optional(element) || (value == Math.min.apply(null, valuesArray));
-      }, "Must equal the lowest value."),
+      }, "Must equal the lowest value.");
 
       // equalToHighestComp
       jQuery.validator.addMethod("equalToHighestComp", function(value, element, params) {
@@ -86,7 +86,7 @@
           valuesArray.push(Number($( params[i] ).val()));
         }
         return this.optional(element) || (value == Math.max.apply(null, valuesArray));
-      }, "Must equal the highest value."),
+      }, "Must equal the highest value.");
 
       // notAverageComp
       jQuery.validator.addMethod("notAverageComp", function(value, element, params) {
@@ -96,7 +96,7 @@
         }
         var average = sum/params.length;
         return this.optional(element) || !(value == average);
-      }, "Must not be equal to the average."),
+      }, "Must not be equal to the average.");
 
       /**
        * Form validation call
@@ -232,6 +232,34 @@
         }
       });
 
+      // VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS
+      $( "#edit-field-overall-vic3-num-relied-up-0-value").rules( "add", {
+        equalTo: "#edit-field-overall-vic2-oth-0-value",
+        messages: {
+          equalTo: "Must match VI. C. (2) \"Agency Overall Other\""
+        }
+      });
+
+      // VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS
+      $( "#edit-field-overall-vib-closed-oth-app-0-value").rules( "add", {
+        lessThanEqualSum: [
+          "#edit-field-overall-vic2-no-rec-0-value",
+          "#edit-field-overall-vic2-rec-refer-ini-0-value",
+          "#edit-field-overall-vic2-req-withdrawn-0-value",
+          "#edit-field-overall-vic2-fee-rel-reas-0-value",
+          "#edit-field-overall-vic2-rec-not-desc-0-value",
+          "#edit-field-overall-vic2-imp-req-oth-0-value",
+          "#edit-field-overall-vic2-not-agency-re-0-value",
+          "#edit-field-overall-vic2-dup-req-0-value",
+          "#edit-field-overall-vic2-req-in-lit-0-value",
+          "#edit-field-overall-vic2-app-denial-ex-0-value",
+          "#edit-field-overall-vic2-oth-0-value"
+        ],
+        messages: {
+          lessThanEqualSum: "This field should be no more than the sum of the fields in VI.C.(2)."
+        }
+      });
+
       // VI.C.(4) - Administrative Appeals
       $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_low_num_days']").rules( "add", {
         lessThanEqualComp: $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
@@ -269,7 +297,7 @@
         }
       });
 
-      // VII.A. - Agency Overall Median Number of Days
+      // VII.A. Simple - Agency Overall Median Number of Days
       $( "#edit-field-overall-viia-sim-med-0-value").rules( "add", {
         betweenMinMaxComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_med']"),
         notAverageComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_med']"),
@@ -279,7 +307,7 @@
         }
       });
 
-      // VII.A. - Agency Overall Lowest Number of Days
+      // VII.A. Simple - Agency Overall Lowest Number of Days
       $( "#edit-field-overall-viia-sim-low-0-value").rules( "add", {
         equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_low']"),
         messages: {
@@ -287,9 +315,139 @@
         }
       });
 
-      // VII.A. - Agency Overall Highest Number of Days
+      // VII.A. Simple - Agency Overall Highest Number of Days
       $( "#edit-field-overall-viia-sim-high-0-value").rules( "add", {
         equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_sim_high']"),
+        messages: {
+          equalToHighestComp: "Must equal largest value of Highest number of days."
+        }
+      });
+
+      // VII.A. Complex - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viia-comp-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_comp_med']"),
+        notAverageComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_comp_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VII.A. Complex - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-viia-comp-low-0-value").rules( "add", {
+        equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_comp_low']"),
+        messages: {
+          equalToLowestComp: "Must equal smallest value of Lowest number of days."
+        }
+      });
+
+      // VII.A. Complex - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-viia-comp-high-0-value").rules( "add", {
+        equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_comp_high']"),
+        messages: {
+          equalToHighestComp: "Must equal largest value of Highest number of days."
+        }
+      });
+
+      // VII.A. Expedited Processing - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viia-exp-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_exp_med']"),
+        notAverageComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_exp_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VII.A. Expedited Processing - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-viia-exp-low-0-value").rules( "add", {
+        equalToLowestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_exp_low']"),
+        messages: {
+          equalToLowestComp: "Must equal smallest value of Lowest number of days."
+        }
+      });
+
+      // VII.A. Expedited Processing - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-viia-exp-high-0-value").rules( "add", {
+        equalToHighestComp: $("input[name*='field_proc_req_viia']").filter("input[name*='field_exp_high']"),
+        messages: {
+          equalToHighestComp: "Must equal largest value of Highest number of days."
+        }
+      });
+
+      // VII.B. Simple - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viib-sim-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_sim_med']"),
+        notAverageComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_sim_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VII.B. Simple - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-viib-sim-low-0-value").rules( "add", {
+        equalToLowestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_sim_low']"),
+        messages: {
+          equalToLowestComp: "Must equal smallest value of Lowest number of days."
+        }
+      });
+
+      // VII.B. Simple - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-viib-sim-high-0-value").rules( "add", {
+        equalToHighestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_sim_high']"),
+        messages: {
+          equalToHighestComp: "Must equal largest value of Highest number of days."
+        }
+      });
+
+      // VII.B. Complex - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viib-comp-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_comp_med']"),
+        notAverageComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_comp_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VII.B. Complex - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-viib-comp-low-0-value").rules( "add", {
+        equalToLowestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_comp_low']"),
+        messages: {
+          equalToLowestComp: "Must equal smallest value of Lowest number of days."
+        }
+      });
+
+      // VII.B. Complex - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-viib-comp-high-0-value").rules( "add", {
+        equalToHighestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_comp_high']"),
+        messages: {
+          equalToHighestComp: "Must equal largest value of Highest number of days."
+        }
+      });
+
+      // VII.B. Expedited Processing - Agency Overall Median Number of Days
+      $( "#edit-field-overall-viib-exp-med-0-value").rules( "add", {
+        betweenMinMaxComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_exp_med']"),
+        notAverageComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_exp_med']"),
+        messages: {
+          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+        }
+      });
+
+      // VII.B. Expedited Processing - Agency Overall Lowest Number of Days
+      $( "#edit-field-overall-viib-exp-low-0-value").rules( "add", {
+        equalToLowestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_exp_low']"),
+        messages: {
+          equalToLowestComp: "Must equal smallest value of Lowest number of days."
+        }
+      });
+
+      // VII.B. Expedited Processing - Agency Overall Highest Number of Days
+      $( "#edit-field-overall-viib-exp-high-0-value").rules( "add", {
+        equalToHighestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_exp_high']"),
         messages: {
           equalToHighestComp: "Must equal largest value of Highest number of days."
         }
