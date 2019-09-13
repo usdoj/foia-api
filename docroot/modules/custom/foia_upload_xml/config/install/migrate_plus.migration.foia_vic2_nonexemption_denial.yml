@@ -1,0 +1,102 @@
+id: foia_vic2_nonexemption_denial
+label: 'Import VI. ADMINISTRATIVE APPEALS / C. (2) Reasons for Denial on Appeal - Other paragraphs from NIEM-XML data.'
+migration_group: foia_component_data_import
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_no_rec
+      label: 'Placeholder Label - VI.C. (2) - no_rec'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+    -
+      name: field_rec_refer_initial
+      label: 'Placeholder Label - VI.C. (2) - rec_refer_initial'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+    -
+      name: field_req_withdrawn
+      label: 'Placeholder Label - VI.C. (2) - req_withdrawn'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+    -
+      name: field_fee_related_reason
+      label: 'Placeholder Label - VI.C. (2) - fee_related_reason'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+    -
+      name: field_rec_not_desc
+      label: 'Placeholder Label - VI.C. (2) - rec_not_desc'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+    -
+      name: field_imp_req_oth_reason
+      label: 'Placeholder Label - VI.C. (2) - imp_req_oth_reason'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+    -
+      name: field_not_agency_record
+      label: 'Placeholder Label - VI.C. (2) - not_agency_record'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+    -
+      name: field_dup_req
+      label: 'Placeholder Label - VI.C. (2) - dup_req'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+    -
+      name: field_oth
+      label: 'Placeholder Label - VI.C. (2) - oth'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+    -
+      name: field_req_in_lit
+      label: 'Placeholder Label - VI.C. (2) - req_in_lit'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "InLitigation"]'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: admin_app_vic2
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_vic2_nonexemption_denial
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_no_rec: field_no_rec
+  field_rec_ref_to_an_comp: field_rec_ref_to_an_comp
+  field_req_withdrawn: field_req_withdrawn
+  field_fee_related_reason: field_fee_related_reason
+  field_rec_not_desc: field_rec_not_desc
+  field_imp_req_oth_reason: field_imp_req_oth_reason
+  field_not_agency_record: field_not_agency_record
+  field_dup_req: field_dup_req
+  field_oth: field_oth
+  field_req_in_lit: field_req_in_lit
+migration_dependencies:
+  required:
+    - component_vic2_nonexemption_denial

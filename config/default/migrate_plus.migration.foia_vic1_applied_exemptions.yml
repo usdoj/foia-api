@@ -1,0 +1,131 @@
+uuid: 159ac16d-dca1-4872-81ca-07fc5eff0705
+langcode: en
+status: true
+dependencies: {  }
+id: foia_vic1_applied_exemptions
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import admin_app_vic1 paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_ex_1
+      label: 'Number of times Exemption 1 is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 1"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_2
+      label: 'Number of times Exemption 2 is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 2"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_3
+      label: 'Number of times Exemption 3 is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 3"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_4
+      label: 'Number of times Exemption 4 is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 4"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_5
+      label: 'Number of times Exemption 5 is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 5"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_6
+      label: 'Number of times Exemption 6 is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 6"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_7_a
+      label: 'Number of times Exemption 7(A) is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(A)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_7_b
+      label: 'Number of times Exemption 7(B) is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(B)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_7_c
+      label: 'Number of times Exemption 7(C) is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(C)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_7_d
+      label: 'Number of times Exemption 7(D) is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(D)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_7_e
+      label: 'Number of times Exemption 7(E) is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(E)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_7_f
+      label: 'Number of times Exemption 7(F) is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(F)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_8
+      label: 'Number of times Exemption 8 is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 8"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_ex_9
+      label: 'Number of times Exemption 9 is used'
+      selector: 'foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 9"]/foia:AppliedExemptionQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: admin_app_vic1
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_vic1_applied_exemptions
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_ex_1: field_ex_1
+  field_ex_2: field_ex_2
+  field_ex_3: field_ex_3
+  field_ex_4: field_ex_4
+  field_ex_5: field_ex_5
+  field_ex_6: field_ex_6
+  field_ex_7_a: field_ex_7_a
+  field_ex_7_b: field_ex_7_b
+  field_ex_7_c: field_ex_7_c
+  field_ex_7_d: field_ex_7_d
+  field_ex_7_e: field_ex_7_e
+  field_ex_7_f: field_ex_7_f
+  field_ex_8: field_ex_8
+  field_ex_9: field_ex_9
+destination: null
+migration_dependencies:
+  required:
+    - component_vic1_applied_exemptions
