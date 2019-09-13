@@ -1,0 +1,28 @@
+foia_reports.report:
+  path: '/foia/reports/annual-data'
+  defaults:
+    _controller: '\Drupal\foia_reports\Controller\AnnualDataController::report'
+    _title: 'Annual FOIA Report'
+  requirements:
+    _permission: 'access foia entities reports'
+
+foia_reports.entity-revisions:
+  path: '/foia/reports/entity-revisions'
+  defaults:
+    _controller: '\Drupal\foia_reports\Controller\AnnualDataController::revisions'
+    _title: 'Annual FOIA Entity Revisions Report'
+  requirements:
+    _permission: 'access foia entities reports'
+  options:
+    _admin_route: TRUE
+
+foia_reports.revisions:
+  path: '/node/{node}/bulk-remove-revision'
+  defaults:
+    _form: '\Drupal\foia_reports\Form\BulkRemoveEntityForm'
+    _title: 'Annual FOIA Report'
+  requirements:
+    _permission: 'bulk remove entities'
+  options:
+    node: \d+
+    _admin_route: TRUE
