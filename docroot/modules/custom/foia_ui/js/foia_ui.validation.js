@@ -26,6 +26,15 @@
         return value > 0;
     }, "Please enter a value greater than zero." );
 
+      // equalSum
+      jQuery.validator.addMethod("equalSumComp", function(value, element, params) {
+        var sum = 0;
+        for (var i = 0; i < params.length; i++){
+          sum += Number($( params[i] ).val());
+        }
+        return this.optional(element) || value == sum;
+      }, "Must equal sum of fields.");
+
     // lessThanEqualSum
       jQuery.validator.addMethod("lessThanEqualSum", function(value, element, params) {
         var sum = 0;
@@ -450,6 +459,30 @@
         equalToHighestComp: $("input[name*='field_proc_req_viib']").filter("input[name*='field_exp_high']"),
         messages: {
           equalToHighestComp: "Must equal largest value of Highest number of days."
+        }
+      });
+
+      // VII.D. Simple - Number Pending
+      $( "#edit-field-overall-viid-sim-pend-0-value").rules( "add", {
+        equalSumComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_pend']"),
+        messages: {
+          equalSumComp: "Must equal sum of Number Pending."
+        }
+      });
+
+      // VII.D. Complex - Number Pending
+      $( "#edit-field-overall-viid-comp-pend-0-value").rules( "add", {
+        equalSumComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_comp_pend']"),
+        messages: {
+          equalSumComp: "Must equal sum of Number Pending."
+        }
+      });
+
+      // VII.D. Expedited Processing - Number Pending
+      $( "#edit-field-overall-viid-exp-pend-0-value").rules( "add", {
+        equalSumComp: $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_exp_pend']"),
+        messages: {
+          equalSumComp: "Must equal sum of Number Pending."
         }
       });
     }
