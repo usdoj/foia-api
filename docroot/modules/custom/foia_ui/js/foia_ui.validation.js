@@ -26,7 +26,7 @@
         return value > 0;
     }, "Please enter a value greater than zero." );
 
-      // equalSum
+      // equalSumComp
       jQuery.validator.addMethod("equalSumComp", function(value, element, params) {
         var sum = 0;
         for (var i = 0; i < params.length; i++){
