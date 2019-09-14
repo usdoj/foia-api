@@ -10,7 +10,7 @@ migration_tags: null
 migration_group: foia_component_data_import_subs
 label: 'Import V. B. (2) Other Denials DETAILS paragraphs from NIEM-XML data.'
 source:
-  item_selector: '/iepd:FoiaAnnualReport/foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason'
+  item_selector: '/iepd:FoiaAnnualReport/foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason/foia:OtherDenialReason'
   fields:
     -
       name: report_year
@@ -23,19 +23,15 @@ source:
     -
       name: component
       label: 'Internal index of the agency component'
-      selector: '@s:id'
-    -
-      name: denial_reason
-      label: 'Internal index of the agency component'
-      selector: '/iepd:FoiaAnnualReport/foia:RequestDenialOtherReasonSection/foia:OtherDenialReasonOrganizationAssociation/foia:ComponentDataReference/@s:ref'
+      selector: '../@s:id'
     -
       name: field_desc_oth_reasons
       label: 'Placeholder Label - V.B.2 Other - field_desc_oth_reasons'
-      selector: 'foia:OtherDenialReason/foia:ComponentOtherDenialReasonQuantity'
+      selector: 'foia:OtherDenialReasonDescriptionText'
     -
       name: field_num_relied_upon
       label: 'Placeholder Label - V.B.2 Other - field_num_relied_upon'
-      selector: 'foia:OtherDenialReason/foia:ComponentOtherDenialReasonQuantity'
+      selector: 'foia:OtherDenialReasonQuantity'
   ids:
     report_year:
       type: integer
@@ -43,7 +39,7 @@ source:
       type: string
     component:
       type: string
-    denial_reason:
+    field_desc_oth_reasons:
       type: string
 process:
   type:
@@ -55,23 +51,7 @@ process:
   status:
     plugin: default_value
     default_value: true
-  field_agency_component:
-    -
-      plugin: migration_lookup
-      source:
-        - report_year
-        - agency
-        - component
-      migration:
-        - component_vb2_requests
-      no_stub: true
-    -
-      plugin: debug
-      label: 'VB2-other: Importing sub-paragraphs for VB2 Other Reasons'
-      multiple: true
   field_desc_oth_reasons: field_desc_oth_reasons
   field_num_relied_upon: field_num_relied_upon
 destination: null
-migration_dependencies:
-  required:
-    - component_vb2_requests
+migration_dependencies: {  }
