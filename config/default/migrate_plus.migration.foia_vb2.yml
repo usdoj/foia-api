@@ -1,0 +1,101 @@
+uuid: 084ee0f3-7900-4814-9591-286612887421
+langcode: en
+status: true
+dependencies: {  }
+id: foia_vb2
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS..." paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_total
+      label: 'Placeholder Label - V.B.2 - field_total'
+      selector: 'foia:ComponentOtherDenialReasonQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: foia_req_vb2
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_vb2_requests
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_foia_req_vb2_info:
+    -
+      plugin: foia_array_pad
+      source: component_vb2_requests
+      prefix:
+        - report_year
+        - agency
+        - component
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vb2_other
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+    -
+      plugin: debug
+      label: 'VB2: Importing vb2 paragraphs (post VB2 other reasons)'
+      multiple: true
+  field_total: field_total
+destination: null
+migration_dependencies:
+  required:
+    - component_vb2_requests
+    - foia_vb2_other
