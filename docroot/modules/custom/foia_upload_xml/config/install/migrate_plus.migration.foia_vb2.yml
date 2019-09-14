@@ -12,14 +12,14 @@ source:
       name: agency
       label: 'Standard abbreviation of the agency submitting the report'
       selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
-#    -
-#      name: component
-#      label: 'Internal index of the agency component'
-#      selector: '@s:id'
     -
-      name: denial_reason
+      name: component
       label: 'Internal index of the agency component'
-      selector: 'foia:ComponentDataReference/@s:ref'
+      selector: '@s:id'
+    -
+      name: field_desc_oth_reasons
+      label: 'Placeholder Label - V.B.2 Other - field_desc_oth_reasons'
+      selector: 'foia:OtherDenialReason/foia:OtherDenialReasonDescriptionText'
     -
       name: field_total
       label: 'Placeholder Label - V.B.2 - field_total'
@@ -29,9 +29,7 @@ source:
       type: integer
     agency:
       type: string
-#    component:
-#      type: string
-    denial_reason:
+    component:
       type: string
 process:
   type:
@@ -60,7 +58,7 @@ process:
   field_foia_req_vb2_info:
     -
       plugin: foia_array_pad
-      source: component_vb2_requests
+      source: field_desc_oth_reasons
       prefix:
         - report_year
         - agency
@@ -74,6 +72,7 @@ process:
             - '0'
             - '1'
             - '2'
+            - '3'
           migration:
             - foia_vb2_other
           no_stub: true
@@ -87,10 +86,6 @@ process:
           source: '@combined'
           index:
             - '1'
-    -
-      plugin: debug
-      label: 'VB2: Importing vb2 paragraphs (post VB2 other reasons)'
-      multiple: true
   field_total: field_total
 migration_dependencies:
   required:
