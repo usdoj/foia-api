@@ -21,9 +21,9 @@ source:
       label: 'Standard abbreviation of the agency submitting the report'
       selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
     -
-      name: component
+      name: denial_reason
       label: 'Internal index of the agency component'
-      selector: '@s:id'
+      selector: 'foia:ComponentDataReference/@s:ref'
     -
       name: field_total
       label: 'Placeholder Label - V.B.2 - field_total'
@@ -33,7 +33,7 @@ source:
       type: integer
     agency:
       type: string
-    component:
+    denial_reason:
       type: string
 process:
   type:

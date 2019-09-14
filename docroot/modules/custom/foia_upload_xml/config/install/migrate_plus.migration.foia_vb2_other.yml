@@ -17,6 +17,10 @@ source:
       label: 'Internal index of the agency component'
       selector: '@s:id'
     -
+      name: denial_reason
+      label: 'Internal index of the agency component'
+      selector: '/iepd:FoiaAnnualReport/foia:RequestDenialOtherReasonSection/foia:OtherDenialReasonOrganizationAssociation/foia:ComponentDataReference/@s:ref'
+    -
       name: field_desc_oth_reasons
       label: 'Placeholder Label - V.B.2 Other - field_desc_oth_reasons'
       selector: 'foia:OtherDenialReason/foia:ComponentOtherDenialReasonQuantity'
@@ -30,6 +34,8 @@ source:
     agency:
       type: string
     component:
+      type: string
+    denial_reason:
       type: string
 process:
   type:
