@@ -128,6 +128,19 @@ source:
       name: footnotes_vb1
       label: 'V.B. (1) Footnotes'
       selector: 'foia:RequestDispositionSection/foia:FootnoteText'
+  # Section V.B(2)
+    -
+      name: component_vb2
+      label: 'Internal index of the agency component'
+      selector: 'foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason/@s:id'
+    -
+      name: field_overall_vb2_total
+      label: 'Overall number of times Exemption 1 is used'
+      selector: 'foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason/foia:ComponentOtherDenialReasonQuantity'
+    -
+      name: field_footnotes_vb2
+      label: 'V.B. (2) Footnotes'
+      selector: 'foia:RequestDenialOtherReasonSection/foia:FootnoteText'
   # Section V.B(3)
     -
       name: component_vb3
@@ -363,6 +376,19 @@ source:
       name: footnotes_vic2
       label: 'VI.C. (2) Footnotes'
       selector: 'foia:AppealNonExemptionDenialSection/foia:FootnoteText'
+  # Section VI.C(3)
+    -
+      name: component_vic3
+      label: 'Internal index of the agency component'
+      selector: 'foia:AppealDenialOtherReasonSection/foia:ComponentOtherDenialReason/@s:id'
+    -
+      name: field_overall_vic3_total
+      label: 'Overall number of times Exemption 1 is used'
+      selector: 'foia:AppealDenialOtherReasonSection/foia:ComponentOtherDenialReason/foia:ComponentOtherDenialReasonQuantity'
+    -
+      name: field_footnotes_vic3
+      label: 'VI.C. (3) Footnotes'
+      selector: 'foia:AppealDenialOtherReasonSection/foia:FootnoteText'
   # Section VI.C.4
   # @todo Find something more reliable than using @s:id="ART0" for the overall
   # numbers.
@@ -1373,6 +1399,39 @@ process:
   field_overall_vb1_part_grants_denials: overall_vb1_part_grants_denials
   field_overall_vb1_full_denials_ex: overall_vb1_full_denials_ex
   field_footnotes_vb1: footnotes_vb1
+  # Section V.B.2
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_foia_requests_vb2:
+    -
+      plugin: foia_array_pad
+      source: component_vb2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vb2
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vb2_total: field_overall_vb2_total
+  field_footnotes_vb2: field_footnotes_vb2
   # Section V.B (3)
   # V. FOIA REQUESTS / B. (3) Disposition of FOIA Requests - Number of Times
   # Exemptions Applied.
@@ -1579,6 +1638,39 @@ process:
   field_overall_vic2_oth: overall_vic2_oth
   field_overall_vic2_req_in_lit: overall_vic2_req_in_lit
   field_footnotes_vic2: footnotes_vic2
+  # Section VI.C.3
+  # Administrative Appeals VI. C (3) Other Denials Details
+  field_admin_app_vic3:
+    -
+      plugin: foia_array_pad
+      source: component_vic3
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vic3
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vic3_total: field_overall_vic3_total
+  field_footnotes_vic3: field_footnotes_vic3
   # Section VI.C.4
   # ADMINISTRATIVE APPEALS / C. (4) Response Time for Administrative Appeals
   field_admin_app_vic4:
@@ -2412,11 +2504,13 @@ migration_dependencies:
     - foia_iv_statute
     - foia_va_requests
     - foia_vb1_requests
+    - foia_vb2
     - foia_vb3_requests
     - foia_via_disposition
     - foia_vib_disposition
     - foia_vic1_applied_exemptions
     - foia_vic2_nonexemption_denial
+    - foia_vic3
     - foia_vic4_response_time
     - foia_viia_processed_requests
     - foia_viib_processed_requests
