@@ -1,0 +1,127 @@
+uuid: 1a4f73d3-bf98-47b2-8fc2-5200e6921d96
+langcode: en
+status: true
+dependencies: {  }
+id: foia_iv_statute
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import statute paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:Exemption3StatuteSection/foia:ReliedUponStatute'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: statute
+      label: 'Internal index of the statute being cited'
+      selector: '@s:id'
+    -
+      name: field_num_relied_by_agency_comp
+      label: 'Number of times the statute is used'
+      selector: 'foia:ReliedUponStatuteQuantity'
+    -
+      name: field_agency_component_inf
+      label: 'Agency/Component Information'
+      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref!="ORG0"]/nc:OrganizationReference/@s:ref'
+    -
+      name: field_agency_component_inf_filter
+      label: 'Filter for Agency/Component Information'
+      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref!="ORG0"]/foia:ComponentDataReference/@s:ref'
+    -
+      name: field_case_citation
+      label: 'Case citation'
+      selector: 'nc:Case/nc:CaseTitleText'
+    -
+      name: field_statute
+      label: Statute
+      selector: 'j:StatuteDescriptionText'
+    -
+      name: field_total_num_relied_by_agency
+      label: 'Total Number of Times Relied upon by Agency Overall'
+      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ReliedUponStatuteQuantity'
+    -
+      name: field_total_num_relied_by_agency_filter
+      label: 'Filter for Total Number of Times Relied upon by Agency Overall'
+      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref'
+    -
+      name: field_type_of_info_withheld
+      label: 'Type of Information Withheld'
+      selector: 'foia:ReliedUponStatuteInformationWithheldText'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    statute:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: statute
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component_inf:
+    -
+      plugin: foia_filter_values
+      source:
+        - field_agency_component_inf
+        - field_agency_component_inf_filter
+        - statute
+    -
+      plugin: foia_array_pad
+      prefix:
+        - report_year
+        - agency
+        - statute
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+            - '3'
+          migration:
+            - foia_iv_details
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_case_citation: field_case_citation
+  field_statute: field_statute
+  field_total_num_relied_by_agency:
+    -
+      plugin: foia_filter_values
+      source:
+        - field_total_num_relied_by_agency
+        - field_total_num_relied_by_agency_filter
+        - statute
+    -
+      plugin: array_pop
+  field_type_of_info_withheld: field_type_of_info_withheld
+destination: null
+migration_dependencies:
+  required:
+    - foia_iv_details

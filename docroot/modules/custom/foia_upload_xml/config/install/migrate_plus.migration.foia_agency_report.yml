@@ -29,6 +29,15 @@ source:
       name: agency
       label: 'Standard abbreviation of the agency submitting the report'
       selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+  # Section IV
+    -
+      name: field_statute_iv
+      label: 'Statute'
+      selector: 'foia:Exemption3StatuteSection/foia:ReliedUponStatute/@s:id'
+    -
+      name: field_footnotes_iv
+      label: 'IV Footnotes'
+      selector: 'foia:Exemption3StatuteSection/foia:FootnoteText'
   # Section V.A
   # @todo Find something more reliable than using @s:id="PS0" for the overall
   # numbers.
@@ -1252,6 +1261,37 @@ process:
   revision_log:
     plugin: default_value
     default_value: 'Import from NIEM-XML data'
+  # Section IV
+  field_statute_iv:
+    -
+      plugin: foia_array_pad
+      source: field_statute_iv
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_iv_statute
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_footnotes_iv: field_footnotes_iv
   # Section V.A
   # FOIA requests -- received, processed and pending FOIA requests
   field_foia_requests_va:
@@ -2369,6 +2409,7 @@ destination:
   plugin: entity:node
 migration_dependencies:
   required:
+    - foia_iv_statute
     - foia_va_requests
     - foia_vb1_requests
     - foia_vb3_requests
