@@ -1,6 +1,11 @@
 (function ($, drupalSettings, Drupal) {
   Drupal.behaviors.foia_ui_validation = {
     attach: function attach() {
+      jQuery.validator.setDefaults({
+        ignore: ".ignore-validation",
+        onsubmit: false
+      });
+
       /**
        * Custom validation methods
        */
