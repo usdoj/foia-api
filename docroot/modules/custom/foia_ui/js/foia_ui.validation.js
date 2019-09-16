@@ -1,11 +1,6 @@
 (function ($, drupalSettings, Drupal) {
   Drupal.behaviors.foia_ui_validation = {
     attach: function attach() {
-      jQuery.validator.setDefaults({
-        debug: true,
-        success: "valid"
-      });
-
       /**
        * Custom validation methods
        */
