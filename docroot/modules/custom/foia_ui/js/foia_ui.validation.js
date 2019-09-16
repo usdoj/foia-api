@@ -117,7 +117,7 @@
           var errors = validator.numberOfInvalids();
           if (errors) {
             var message = errors == 1 ? '1 field is invalid and has been highlighted.' : '' + errors + ' fields are invalid and have been highlighted.';
-            alert(message);
+            // alert(message);
           }
         },
 
