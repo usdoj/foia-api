@@ -110,7 +110,7 @@
       /**
        * Form validation call
        */
-      $('#node-annual-foia-report-data-form').validate({
+      $(drupalSettings.foiaUI.foiaUISettings.formID).validate({
 
         // Display aggregate field validation popup message.
         invalidHandler: function(event, validator) {
@@ -161,7 +161,7 @@
       // Disable Submit button until Validate button is clicked.
       $('input#edit-submit').prop('disabled', true);
       $('input#edit-validate-button').on('click', function(event) {
-        $('#node-annual-foia-report-data-form').valid();
+        $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
         $('input#edit-submit').prop('disabled', false);
         event.preventDefault();
       });
