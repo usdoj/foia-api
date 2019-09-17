@@ -4,10 +4,15 @@ status: true
 dependencies:
   module:
     - menu_ui
+    - node_revision_delete
 third_party_settings:
   menu_ui:
     available_menus: {  }
     parent: ''
+  node_revision_delete:
+    minimum_revisions_to_keep: 5
+    minimum_age_to_delete: 3
+    when_to_delete: 12
 name: 'Annual FOIA Report Data'
 type: annual_foia_report_data
 description: 'Annual total data report given by an agency.'
