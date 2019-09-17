@@ -26,6 +26,23 @@
         return value > 0;
     }, "Please enter a value greater than zero." );
 
+      // ifGreaterThanZeroComp
+      jQuery.validator.addMethod("ifGreaterThanZeroComp", function(value, element, params) {
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.length; i++){
+          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            var target = Number($( params[i] ).val());
+          }
+        }
+        if (target > 0 ) {
+          return this.optional(element) || value > 0;
+        }
+        else {
+          return  this.optional(element) || true;
+        }
+      }, "Must be greater than or equal to a field.");
+
       // equalSumComp
       jQuery.validator.addMethod("equalSumComp", function(value, element, params) {
         var sum = 0;
@@ -536,6 +553,30 @@
         }
       });
 
+      // IX. Total Number of "Full-Time FOIA Staff"
+      $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_total_staff']").each(function() {
+        $(this).rules( "add", {
+          ifGreaterThanZeroComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
+          messages: {
+            ifGreaterThanZeroComp: "If requests were processed in V.B.(1), the total number of full-time FOIA staff must be greater than 0",
+          }
+        });
+      });
+
+      // IX. Agency Overall Total Number of "Full-Time FOIA Staff"
+      // IX. Agency Overall Processing Costs
+      $( "#edit-field-overall-ix-total-staff-0-value, #edit-field-overall-ix-total-costs-0-value").each(function() {
+        $(this).rules( "add", {
+          greaterThanZero: {
+            depends: function() {
+              return Number($("#edit-field-overall-vb1-total-0-value").val()) > 0;
+            }
+          },
+          messages: {
+            greaterThanZero: "Should be greater than zero, if requests were processed in V.B.(1).",
+          }
+        });
+      });
     }
   };
 
