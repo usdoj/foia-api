@@ -251,11 +251,13 @@
       });
 
       // VI.B. Administrative Appeals
-      $( "input[name*='field_admin_app_vib']").filter("input[name*='field_closed_oth_app']").rules( "add", {
-        greaterThanEqualComp: $("input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']"),
-        messages: {
-          greaterThanEqualComp: "Must be greater equal to the # of appeals closed for other reasons in VI.B."
-        }
+      $( "input[name*='field_admin_app_vib']").filter("input[name*='field_closed_oth_app']").each(function() {
+        $(this).rules( "add", {
+          lessThanEqualComp: $("input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']"),
+          messages: {
+            lessThanEqualComp: "Must be less than or equal to the total # of reasons for denial in VI.C.(2)"
+          }
+        });
       });
 
       // VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS
