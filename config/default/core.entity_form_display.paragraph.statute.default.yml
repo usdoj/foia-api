@@ -12,7 +12,6 @@ dependencies:
   module:
     - field_group
     - paragraphs
-    - text
 third_party_settings:
   field_group:
     group_statute_:
@@ -76,10 +75,10 @@ content:
   field_case_citation:
     weight: 3
     settings:
-      size: 60
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
+    type: string_textarea
     region: content
   field_statute:
     weight: 1
@@ -102,7 +101,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
+    type: string_textarea
     region: content
 hidden:
   created: true
