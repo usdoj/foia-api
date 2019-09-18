@@ -5,6 +5,13 @@ dependencies:
   config:
     - field.storage.paragraph.field_perc_costs
     - paragraphs.paragraphs_type.fees_x
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.fees_x.field_perc_costs
 field_name: field_perc_costs
 entity_type: paragraph
@@ -19,5 +26,5 @@ settings:
   min: null
   max: null
   prefix: ''
-  suffix: ''
+  suffix: '%'
 field_type: decimal
