@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_viiia_num_denied
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        08a118ab-fb95-4bd1-a5eb-78a0710accc0:
+          field: 'field_req_viiia:field_num_denied'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_viiia_num_denied
 field_name: field_overall_viiia_num_denied
 entity_type: node

@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_overall_viiia_num_grant
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        5f7d8632-77bb-4c65-b817-371905768e32:
+          field: 'field_req_viiia:field_num_grant'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_viiia_num_grant
 field_name: field_overall_viiia_num_grant
 entity_type: node
