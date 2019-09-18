@@ -28,9 +28,9 @@ class BatchUploadForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // TODO: Implement buildForm() method.
-    $form['submit_button'] = [
-      '#type' => 'button',
-      '#value' => $this->t('Start Batch Import'),
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Execute Batch Import'),
     ];
 
     return $form;
