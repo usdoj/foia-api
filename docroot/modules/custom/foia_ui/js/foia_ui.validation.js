@@ -13,18 +13,18 @@
       $.validator.addMethod( "lessThanEqualTo", function( value, element, param ) {
         var target = $( param );
         return value <= Number(target.val());
-    }, "Please enter a lesser value." );
+      }, "Please enter a lesser value." );
 
        // greaterThanEqualTo
       $.validator.addMethod( "greaterThanEqualTo", function( value, element, param ) {
         var target = $( param );
         return value >= Number(target.val());
-    }, "Please enter a greater value." );
+      }, "Please enter a greater value." );
 
        // greaterThanZero
        $.validator.addMethod( "greaterThanZero", function( value, element, param ) {
         return value > 0;
-    }, "Please enter a value greater than zero." );
+      }, "Please enter a value greater than zero." );
 
       // ifGreaterThanZeroComp
       jQuery.validator.addMethod("ifGreaterThanZeroComp", function(value, element, params) {
@@ -52,7 +52,7 @@
         return this.optional(element) || value == sum;
       }, "Must equal sum of fields.");
 
-    // lessThanEqualSum
+      // lessThanEqualSum
       jQuery.validator.addMethod("lessThanEqualSum", function(value, element, params) {
         var sum = 0;
         params.forEach(function(param) {
