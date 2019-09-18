@@ -5,6 +5,21 @@ dependencies:
   config:
     - field.storage.paragraph.field_total_staff
     - paragraphs.paragraphs_type.foia_pers_costs_ix
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        9d393193-00e5-4d1e-a3da-1a0c0e1c4dc1:
+          field: field_eq_full_emp
+          this_entity: '1'
+          weight: '99'
+        f8218eb9-a154-450b-8537-62c88f8bd1a0:
+          field: field_full_emp
+          this_entity: '1'
+          weight: '100'
 id: paragraph.foia_pers_costs_ix.field_total_staff
 field_name: field_total_staff
 entity_type: paragraph
