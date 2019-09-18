@@ -61,6 +61,18 @@
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
+      // equalToComp
+      jQuery.validator.addMethod("equalToComp", function(value, element, params) {
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.length; i++){
+          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            var target = Number($( params[i] ).val());
+            return this.optional(element) || value == target;
+          }
+        }
+      }, "Must be equal to a field.");
+
       // lessThanEqualComp
       jQuery.validator.addMethod("lessThanEqualComp", function(value, element, params) {
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
@@ -186,12 +198,14 @@
       /**
        * Validation rules
        */
-      // V.A. FOIA Requests V. A.
-      $( "#edit-field-foia-requests-va-0-subform-field-req-processed-yr-0-value").rules( "add", {
-        equalTo: "#edit-field-foia-requests-vb1-0-subform-field-total-0-value",
-        messages: {
-          equalTo: "Must match corresponding agency V.B.(1) Total"
-        }
+      // V.A. FOIA Requests
+      $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
+          messages: {
+            equalToComp: "Must match corresponding agency V.B.(1) Total"
+          }
+        });
       });
 
       // V.A. Agency Overall Number of Requests Processed in Fiscal Year
