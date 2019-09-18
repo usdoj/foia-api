@@ -26,7 +26,7 @@ class NodeToDocxHandler implements ContainerAwareInterface {
   public function convertToDocx(NodeInterface $node) {
     // Check if phpdocx library is available.
     if ($this->isPhpdocxLibraryAvailable() === TRUE) {
-      $filename = $node->id() . '-' . $node->getTitle();
+      $filename = $node->id() . '-' . str_replace('/', '-', $node->getTitle());
       $view = node_view($node, 'node_to_docx');
       $view['#theme'] = 'node_to_docx';
       $drupalMarkup = \Drupal::service('renderer')->render($view);
