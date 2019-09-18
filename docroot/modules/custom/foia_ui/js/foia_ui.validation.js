@@ -559,6 +559,17 @@
         }
       });
 
+      // VIII.A. Agency Overall Number Adjudicated Within Ten Calendar Days
+      $( "#edit-field-overall-viiia-num-jud-w10-0-value").rules( "add", {
+        lessThanEqualSum: [
+          "#edit-field-overall-viiia-num-grant-0-value",
+          "#edit-field-overall-viiia-num-denied-0-value"
+        ],
+        messages: {
+          lessThanEqualSum: "This field should be should be equal to or less than the # granted + # denied.",
+        }
+      });
+
       // VIII.B. Agency Overall Median Number of Days to Adjudicate
       $( "#edit-field-overall-viiib-med-days-jud-0-value").rules( "add", {
         betweenMinMaxComp: $("input[name*='field_req_viiib']").filter("input[name*='field_med_days_jud']"),
