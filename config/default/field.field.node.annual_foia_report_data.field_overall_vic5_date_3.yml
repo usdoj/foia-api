@@ -5,12 +5,19 @@ dependencies:
   config:
     - field.storage.node.field_overall_vic5_date_3
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_overall_vic5_date_3
 field_name: field_overall_vic5_date_3
 entity_type: node
 bundle: annual_foia_report_data
 label: 'Agency Overall Date of Appeal'
-description: ''
+description: 'Date must be formatted as YYYY-MM-DD<br><em>E.g. 1979-01-29</em>'
 required: false
 translatable: false
 default_value: {  }

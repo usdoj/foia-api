@@ -6,13 +6,18 @@ dependencies:
     - field.storage.paragraph.field_date_7
     - paragraphs.paragraphs_type.oldest_days
   module:
-    - text
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.oldest_days.field_date_7
 field_name: field_date_7
 entity_type: paragraph
 bundle: oldest_days
 label: Date
-description: ''
+description: 'Date must be formatted as YYYY-MM-DD<br><em>E.g. 1979-01-29</em>'
 required: false
 translatable: false
 default_value: {  }
