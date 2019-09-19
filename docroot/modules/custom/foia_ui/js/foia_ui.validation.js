@@ -853,6 +853,8 @@
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-1-0-value",
         messages: {
           lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
+        }
+      });
 
       // XII.D.(1). Number Received During Fiscal Year from Current Annual Report
       $( "input[name*='field_foia_xiid1']").filter("input[name*='field_received_cur_yr']").each(function() {
