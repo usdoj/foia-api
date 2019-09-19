@@ -5,12 +5,3 @@ foia_upload_xml.agency_report:
     _form: '\Drupal\foia_upload_xml\Form\AgencyXmlUploadForm'
   requirements:
     _permission: 'create annual_foia_report_data content'
-
-# test form for executing batch import from uploaded Annual Report Data
-foia_upload_xml.batch_import:
-  path: 'report/upload/batch'
-  defaults:
-    _title: 'Batch Import Annual Report Data'
-    _form: '\Drupal\foia_upload_xml\Form\BatchUploadForm'
-  requirements:
-    _permission: 'create annual_foia_report_data content'

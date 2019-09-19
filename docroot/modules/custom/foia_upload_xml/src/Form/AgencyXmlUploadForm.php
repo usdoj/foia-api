@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\foia_upload_xml\FoiaXmlUploadBatchImport;
 
 /**
  * Class AgencyXmlUploadForm.
@@ -92,7 +93,9 @@ class AgencyXmlUploadForm extends FormBase {
       $directory = 'temporary://foia-xml';
       file_prepare_directory($directory);
       file_move($file, "$directory/report.xml", FILE_EXISTS_REPLACE);
-      $form_state->setRedirect('entity.migration.list', ['migration_group' => 'foia_xml']);
+      $batch_import = new FoiaXmlUploadBatchImport();
+      $migrations_list = $batch_import->getMigrationsList();
+      $batch_import->execMigrations($migrations_list);
     }
   }
 
