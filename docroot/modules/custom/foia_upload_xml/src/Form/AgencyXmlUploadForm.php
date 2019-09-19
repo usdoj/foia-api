@@ -7,7 +7,6 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\foia_upload_xml\FoiaUploadXmlBatchImport;
 
 /**
  * Class AgencyXmlUploadForm.
@@ -101,7 +100,7 @@ class AgencyXmlUploadForm extends FormBase {
         'init_message' => $this->t('Commencing import'),
         'progress_message' => $this->t('Imported @current out of @total'),
         'error_message' => $this->t('An error occured during import'),
-        'finished' => 'foia_upload_xml_batch_finished',
+        'finished' => 'executeMigrationFinished',
         'file' => drupal_get_path('module', 'foia_upload_xml') . '/FoiaUploadXmlBatchImport.php',
       ];
 
@@ -113,10 +112,10 @@ class AgencyXmlUploadForm extends FormBase {
   /**
    * Fetches an array of migrations to run to import the Annual Report XML.
    *
-   * @return array
+   * @return string[]
    *   List of migrations.
    */
-  public function getMigrationsList() {
+  protected function getMigrationsList() {
     $migrations_list = [
       'component',
       'component_ix_personnel',
@@ -190,13 +189,16 @@ class AgencyXmlUploadForm extends FormBase {
   }
 
   /**
+   * Operations for batch process.
+   *
    * @return array
+   *   Array of operations to execute via batch.
    */
-  public function getBatchOperations() {
+  protected function getBatchOperations() {
     $migrations_list = $this->getMigrationsList();
     $operations = [];
     foreach ($migrations_list as $migration_list_item) {
-      $operations[] = ['\Drupal\foia_upload_xml\FoiaUploadXmlBatchImport::foia_upload_xml_batch', [$migration_list_item]];
+      $operations[] = ['\Drupal\foia_upload_xml\FoiaUploadXmlBatchImport::executeMigration', [$migration_list_item]];
     }
 
     return $operations;

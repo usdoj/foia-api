@@ -5,6 +5,11 @@ namespace Drupal\foia_upload_xml;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
 
+/**
+ * Class FoiaUploadXmlBatchImport.
+ *
+ * @package Drupal\foia_upload_xml
+ */
 class FoiaUploadXmlBatchImport {
 
   /**
@@ -17,7 +22,7 @@ class FoiaUploadXmlBatchImport {
    *
    * @throws \Drupal\migrate\MigrateException
    */
-  public static function foia_upload_xml_batch($migration_list_item, array &$context) {
+  public static function executeMigration($migration_list_item, array &$context) {
     drupal_set_message($migration_list_item . ' in progress.');
     $context['sandbox']['current_migration'] = $migration_list_item;
 
@@ -34,11 +39,16 @@ class FoiaUploadXmlBatchImport {
   }
 
   /**
-   * @param $success
-   * @param $results
-   * @param $operations
+   * Finishing script for batch execution.
+   *
+   * @param bool $success
+   *   Flags success/failure of batch step.
+   * @param array $results
+   *   Results of batch step.
+   * @param array $operations
+   *   Batch step operations.
    */
-  function foia_upload_xml_batch_finished($success, $results, $operations) {
+  public function executeMigrationFinished($success, array $results, array $operations) {
     if ($success) {
       $message = \Drupal::translation()->formatPlural(count($results), 'One import step processed of @total.', '@count import steps processed of @total.');
     }
@@ -50,7 +60,7 @@ class FoiaUploadXmlBatchImport {
 
     // Providing data for the redirected page is done through $_SESSION.
     foreach ($results as $result) {
-      drupal_set_message(t('Processed @title.', array('@title' => $result)));
+      drupal_set_message(t('Processed @title.', ['@title' => $result]));
     }
   }
 
