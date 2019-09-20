@@ -23,7 +23,7 @@ class FoiaUploadXmlBatchImport {
    * @throws \Drupal\migrate\MigrateException
    */
   public static function executeMigration($migration_list_item, array &$context) {
-    \Drupal::messenger()->addMessage($migration_list_item . ' in progress.', 'self::TYPE_STATUS,');
+    \Drupal::messenger()->addStatus($migration_list_item . ' in progress.');
     $context['sandbox']['current_migration'] = $migration_list_item;
 
     $migration = \Drupal::service('plugin.manager.migration')->createInstance($migration_list_item);
@@ -32,7 +32,7 @@ class FoiaUploadXmlBatchImport {
 
     $context['message'] = $migration_list_item . ' processed.';
     $context['results'][] = $migration_list_item;
-    \Drupal::messenger()->addMessage($migration_list_item . ' execution completed.', 'self::TYPE_STATUS,');
+    \Drupal::messenger()->addStatus($migration_list_item . ' execution completed.');
 
   }
 
@@ -54,12 +54,12 @@ class FoiaUploadXmlBatchImport {
       $message = t('Finished with an error.');
     }
 
-    \Drupal::messenger()->addMessage($message, 'self::TYPE_WARNING');
+    \Drupal::messenger()->addWarning($message);
 
     // Providing data for the redirected page is done through $_SESSION.
     foreach ($results as $result) {
       $message = t('Processed @title.', ['@title' => $result]);
-      \Drupal::messenger()->addMessage($message, 'self::TYPE_STATUS,');
+      \Drupal::messenger()->addStatus($message);
     }
   }
 
