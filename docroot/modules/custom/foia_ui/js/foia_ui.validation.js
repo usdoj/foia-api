@@ -157,6 +157,18 @@
         }
       }, "Must be greater than or equal to a field.");
 
+      jQuery.validator.addMethod("greaterThanEqualSumComp", function(value, element, params) {
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var sum = 0;
+        for (var i = 0; i < params.length; i++) {
+          var paramAgencyComponent = $(params[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            sum += Number($( params[i] ).val());
+          }
+        }
+        return this.optional(element) || value >= sum;
+      }, "Must be greater than or equal to sum of the fields.");
+
       // betweenMinMaxComp
       jQuery.validator.addMethod("betweenMinMaxComp", function(value, element, params) {
         var valuesArray = [];
@@ -194,6 +206,40 @@
         }
         var average = sum/params.length;
         return this.optional(element) || !(value == average);
+      }, "Must not be equal to the average.");
+
+      // vb1matchDispositionComp: hard-coded for V.B.(1)
+      jQuery.validator.addMethod("vb1matchDispositionComp", function(value, element, params) {
+        var allReqProcessedYr = $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']");
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var reqProcessedYr = null;
+        var otherField = null;
+        var sumVIICTotals = 0;
+
+        for (var i = 0; i < allReqProcessedYr.length; i++){
+          var paramAgencyComponent = $(allReqProcessedYr[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            var reqProcessedYr = Number($( allReqProcessedYr[i] ).val());
+          }
+        }
+
+        for (var i = 0; i < params.viicn.length; i++){
+          var paramAgencyComponent = $(params.viicn[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            sumVIICTotals += Number($( params.viicn[i] ).val());
+          }
+        }
+
+        for (var i = 0; i < params.otherField.length; i++){
+          var paramAgencyComponent = $(params.otherField[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            otherField = Number($( params.otherField[i] ).val());
+          }
+        }
+
+        // reqProcessedYr == sumVIICTotals - Improper Request for Other - Records Not Reasonably Described
+        return (reqProcessedYr == sumVIICTotals - Number(value) - otherField);
+
       }, "Must not be equal to the average.");
 
       /**
@@ -262,8 +308,12 @@
       $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function() {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
+          greaterThanEqualSumComp: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
+            .add( "input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
+            .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
           messages: {
-            equalToComp: "Must match corresponding agency V.B.(1) Total"
+            equalToComp: "Must match corresponding agency V.B.(1) Total",
+            greaterThanEqualSumComp: "Must be greater than or equal to sum of all of the Totals of VII.C.1, 2, and 3 for the corresponding agency/component"
           }
         });
       });
@@ -274,6 +324,36 @@
         messages: {
           equalTo: "Must match V.B.(1) Agency Overall Total"
         }
+      });
+
+      // V.B.(1) Records Not Reasonably Described
+      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']").each(function() {
+        $(this).rules( "add", {
+          vb1matchDispositionComp: {
+            viicn: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
+              .add( "input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
+              .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
+            otherField: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']"),
+          },
+          messages: {
+            vb1matchDispositionComp: "Should equal V.A. Requests Processed less sum of Total of VII.C.1, 2, and 3. less Improper FOIA Request for Other Reason"
+          }
+        });
+      });
+
+      // V.B.(1) Improper FOIA Request for Other Reason
+      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']").each(function() {
+        $(this).rules( "add", {
+          vb1matchDispositionComp: {
+            viicn: $( "input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
+              .add( "input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
+              .add( "input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
+            otherField: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']"),
+          },
+          messages: {
+            vb1matchDispositionComp: "Should equal V.A. Requests Processed less sum of Total of VII.C.1, 2, and 3. less Records Not Reasonably Described"
+          }
+        });
       });
 
       // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions
