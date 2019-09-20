@@ -771,8 +771,6 @@ source:
       label: 'VII.D Footnotes'
       selector: 'foia:PendingPerfectedRequestsSection/foia:FootnoteText'
   # Section VII.E
-  # @todo Find something more reliable than using @s:id="OPR0" for the overall
-  # numbers.
     -
       name: component_viie
       label: 'Internal index of the agency component'
@@ -862,8 +860,6 @@ source:
       label: 'VII.E Footnotes'
       selector: 'foia:OldestPendingRequestSection/foia:FootnoteText'
   # Section VIII.A
-  # @todo Find something more reliable than using @s:id="EP0" for the overall
-  # numbers.
     -
       name: component_viiia
       label: 'Internal index of the agency component'
@@ -871,30 +867,28 @@ source:
     -
       name: field_overall_viiia_num_grant
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_grant'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:RequestGrantedQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestGrantedQuantity'
     -
       name: field_overall_viiia_num_denied
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_deniedage'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:RequestDeniedQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDeniedQuantity'
     -
       name: field_overall_viiia_med_days_jud
       label: 'Pending Requests - Simple Number of Days - Pending'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationMedianDaysValue'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationMedianDaysValue'
     -
       name: field_overall_viiia_avg_days_jud
       label: 'Placeholder Label - VIIIA - field_overall_viiia_avg_days_jud'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationAverageDaysValue'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationAverageDaysValue'
     -
       name: field_overall_viiia_num_jud_w10
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_jud_w10'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationWithinTenDaysQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationWithinTenDaysQuantity'
     -
       name: field_footnotes_viiia
       label: 'VIII.A Footnotes'
       selector: 'foia:ExpeditedProcessingSection/foia:FootnoteText'
   # Section VIII.B
-  # @todo Find something more reliable than using @s:id="FW0" for the overall
-  # numbers.
     -
       name: component_viiib
       label: 'Internal index of the agency component'
@@ -902,26 +896,24 @@ source:
     -
       name: field_overall_viiib_num_grant
       label: 'Placeholder Label - VIIIB - field_overall_viiib_num_grant'
-      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:RequestGrantedQuantity'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestGrantedQuantity'
     -
       name: field_overall_viiib_num_denied
       label: 'Placeholder Label - VIIIB - field_overall_viiib_num_deniedage'
-      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:RequestDeniedQuantity'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDeniedQuantity'
     -
       name: field_overall_viiib_med_days_jud
       label: 'Pending Requests - Simple Number of Days - field_overall_viiib_med_days_jud'
-      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:AdjudicationMedianDaysValue'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationMedianDaysValue'
     -
       name: field_overall_viiib_avg_days_jud
       label: 'Placeholder Label - VIIIB - field_overall_viiib_avg_days_jud'
-      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:AdjudicationAverageDaysValue'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationAverageDaysValue'
     -
       name: field_footnotes_viiib
       label: 'VIII.B Footnotes'
       selector: 'foia:FeeWaiverSection/foia:FootnoteText'
   # Section IX
-  # @todo Find something more reliable than using @s:id="PC0" for the overall
-  # numbers.
     -
       name: component_ix
       label: 'Internal index of the agency component'
@@ -929,27 +921,27 @@ source:
     -
       name: field_overall_ix_full_emp
       label: 'Placeholder Label - IX - field_overall_ix_full_emp'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:FullTimeEmployeeQuantity'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FullTimeEmployeeQuantity'
     -
       name: field_overall_ix_eq_full_emp
       label: 'Placeholder Label - IX - field_overall_ix_eq_full_emp'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:EquivalentFullTimeEmployeeQuantity'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:EquivalentFullTimeEmployeeQuantity'
     -
       name: field_overall_ix_total_staff
       label: 'Pending Requests - Simple Number of Days - field_overall_ix_total_staff'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:TotalFullTimeStaffQuantity'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TotalFullTimeStaffQuantity'
     -
       name: field_overall_ix_proc_costs
       label: 'Placeholder Label - IX - field_overall_ix_proc_costs'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:ProcessingCostAmount'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingCostAmount'
     -
       name: field_overall_ix_lit_costs
       label: 'Placeholder Label - IX - field_overall_ix_lit_costs'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:LitigationCostAmount'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:LitigationCostAmount'
     -
       name: field_overall_ix_total_costs
       label: 'Placeholder Label - IX - field_overall_ix_total_costs'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:TotalCostAmount'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TotalCostAmount'
     -
       name: field_footnotes_ix
       label: 'IX Footnotes'
@@ -1054,8 +1046,6 @@ source:
       label: 'XII.B Footnotes'
       selector: 'foia:ProcessedConsultationSection/foia:FootnoteText'
   # Section XII.C
-  # @todo Find something more reliable than using @s:id="OPR0" for the overall
-  # numbers.
     -
       name: component_xiic
       label: 'Internal index of the agency component'
@@ -2101,7 +2091,7 @@ process:
             - '1'
   field_overall_viiib_num_grant: field_overall_viiib_num_grant
   field_overall_viiib_num_denied: field_overall_viiib_num_denied
-  field_overall_viiib_num_denied: field_overall_viiib_num_denied
+  field_overall_viiib_med_days_jud: field_overall_viiib_med_days_jud
   field_overall_viiib_avg_days_jud: field_overall_viiib_avg_days_jud
   field_footnotes_viiib: field_footnotes_viiib
   # Section IX
