@@ -72,8 +72,6 @@ source:
       label: 'V.A Footnotes'
       selector: 'foia:ProcessedRequestSection/foia:FootnoteText'
   # Section V.B. (1)
-  # @todo Find something more reliable than using @s:id="RD0" for the overall
-  # numbers.
     -
       name: component_vb1
       label: 'Internal index of the agency component'
@@ -81,55 +79,55 @@ source:
     -
       name: overall_vb1_no_rec
       label: 'Placeholder Label - V.B. (1) - overall_vb1_no_rec'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
     -
       name: overall_vb1_rec_ref_to_an_comp
       label: 'Placeholder Label - V.B. (1) - rec_ref_to_an_comp'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
     -
       name: overall_vb1_req_withdrawn
       label: 'Placeholder Label - V.B. (1) - req_withdrawn'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
     -
       name: overall_vb1_fee_related_reason
       label: 'Placeholder Label - V.B. (1) - fee_related_reason'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
     -
       name: overall_vb1_rec_not_desc
       label: 'Placeholder Label - V.B. (1) - rec_not_desc'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
     -
       name: overall_vb1_imp_req_oth_reason
       label: 'Placeholder Label - V.B. (1) - imp_req_oth_reason'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
     -
       name: overall_vb1_not_agency_record
       label: 'Placeholder Label - V.B. (1) - not_agency_record'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
     -
       name: overall_vb1_dup_request
       label: 'Placeholder Label - V.B. (1) - dup_request'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
     -
       name: overall_vb1_oth
       label: 'Placeholder Label - V.B. (1) - oth'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
     -
       name: overall_vb1_full_grants
       label: 'Placeholder Label - V.B. (1) - overall_vb1_full_grants'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionFullGrantQuantity'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionFullGrantQuantity'
     -
       name: overall_vb1_part_grants_denials
       label: 'Placeholder Label - V.B. (1) - overall_vb1_part_grants_denials'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionPartialGrantQuantity'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionPartialGrantQuantity'
     -
       name: overall_vb1_full_denials_ex
       label: 'Placeholder Label - V.B. (1) - overall_vb1_full_denials_ex'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionFullExemptionDenialQuantity'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionFullExemptionDenialQuantity'
     -
       name: overall_vb1_total
       label: 'Placeholder Label - V.B. (1) - total'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionTotalQuantity'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionTotalQuantity'
     -
       name: footnotes_vb1
       label: 'V.B. (1) Footnotes'
