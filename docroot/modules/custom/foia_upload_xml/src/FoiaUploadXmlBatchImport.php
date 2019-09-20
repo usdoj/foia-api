@@ -2,7 +2,7 @@
 
 namespace Drupal\foia_upload_xml;
 
-use Drupal\migrate\MigrateExecutable;
+use Drupal\migrate_tools\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
 
 /**
@@ -27,13 +27,13 @@ class FoiaUploadXmlBatchImport {
     $context['sandbox']['current_migration'] = $migration_list_item;
 
     $migration = \Drupal::service('plugin.manager.migration')->createInstance($migration_list_item);
+    $migration->getIdMap()->prepareUpdate();
     $executable = new MigrateExecutable($migration, new MigrateMessage());
     $executable->import();
 
     $context['message'] = $migration_list_item . ' processed.';
     $context['results'][] = $migration_list_item;
     \Drupal::messenger()->addStatus($migration_list_item . ' execution completed.');
-
   }
 
   /**
