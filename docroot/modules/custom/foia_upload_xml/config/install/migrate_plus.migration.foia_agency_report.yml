@@ -47,8 +47,6 @@ source:
       label: 'IV Footnotes'
       selector: 'foia:Exemption3StatuteSection/foia:FootnoteText'
   # Section V.A
-  # @todo Find something more reliable than using @s:id="PS0" for the overall
-  # numbers.
     -
       name: component_va
       label: 'Internal index of the agency component'
@@ -56,19 +54,19 @@ source:
     -
       name: overall_req_pend_start_yr
       label: 'Overall requests pending at the start of the year'
-      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtStartQuantity'
     -
       name: overall_req_received_yr
       label: 'Overall requests received during the year'
-      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsReceivedQuantity'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsReceivedQuantity'
     -
       name: overall_req_processed_yr
       label: 'Overall requests processed during the year'
-      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsProcessedQuantity'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsProcessedQuantity'
     -
       name: overall_req_pend_end_yr
       label: 'Overall requests pending at the end of the year'
-      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtEndQuantity'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtEndQuantity'
     -
       name: footnotes_va
       label: 'V.A Footnotes'
