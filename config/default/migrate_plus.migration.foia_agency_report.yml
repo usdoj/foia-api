@@ -35,6 +35,10 @@ source:
       label: 'Standard abbreviation of the agency submitting the report'
       selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
     -
+      name: component
+      label: 'Index for this report of the agency component'
+      selector: 'nc:Organization/nc:OrganizationSubUnit/@s:id'
+    -
       name: field_statute_iv
       label: Statute
       selector: 'foia:Exemption3StatuteSection/foia:ReliedUponStatute/@s:id'
@@ -1214,6 +1218,25 @@ process:
   revision_log:
     plugin: default_value
     default_value: 'Import from NIEM-XML data'
+  field_agency_components:
+    -
+      plugin: foia_array_pad
+      source: component
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        target_id:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - component
+          no_stub: true
   field_statute_iv:
     -
       plugin: foia_array_pad
