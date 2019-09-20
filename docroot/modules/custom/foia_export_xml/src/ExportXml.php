@@ -291,19 +291,41 @@ EOS;
    * This corresponds to Section IV of the annual report.
    */
   protected function exemption3StatuteSection() {
-    $statute = $this->node->field_statute_iv->referencedEntities();
+    $statutes = $this->node->field_statute_iv->referencedEntities();
     $statuteSection = $this->addElementNs('foia:Exemption3StatuteSection', $this->root);
 
-    foreach ($statute as $delta => $component) {
+    // Add information about each statute.
+    foreach ($statutes as $delta => $statute) {
       $local_id = 'ES' . ($delta + 1);
-
       $suborg = $this->addElementNs('foia:ReliedUponStatute', $statuteSection);
       $suborg->setAttribute('s:id', $local_id);
-      $item = $this->addElementNs('j:StatuteDescriptionText', $suborg, $component->field_statute->value);
-      $info_withheld = SafeMarkup::checkPlain($component->field_type_of_info_withheld->value);
-      $item = $this->addElementNs('foia:ReliedUponStatuteInformationWithheldText', $suborg, $info_withheld);
+      $this->addElementNs('j:StatuteDescriptionText', $suborg, $statute->field_statute->value);
+      $info_withheld = SafeMarkup::checkPlain($statute->field_type_of_info_withheld->value);
+      $this->addElementNs('foia:ReliedUponStatuteInformationWithheldText', $suborg, $info_withheld);
       $itemCase = $this->addElementNs('nc:Case', $suborg);
-      $itemCaseItem = $this->addElementNs('nc:CaseTitleText', $itemCase, $component->field_case_citation->value);
+      $this->addElementNs('nc:CaseTitleText', $itemCase, $statute->field_case_citation->value);
+    }
+
+    // Add component data for each statute.
+    foreach ($statutes as $delta => $statute) {
+      $local_id = 'ES' . ($delta + 1);
+      $components = $statute->field_agency_component_inf->referencedEntities();
+      foreach ($components as $component_info) {
+        $agency_component = $component_info->field_agency_component->referencedEntities()[0];
+        $item = $this->addElementNs('foia:ReliedUponStatuteOrganizationAssociation', $statuteSection);
+        $this->addElementNs('foia:ComponentDataReference', $item)
+          ->setAttribute('s:ref', $local_id);
+        $this->addElementNs('nc:OrganizationReference', $item)
+          ->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
+        $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $component_info->field_num_relied_by_agency_comp->value);
+      }
+      // Add agency overall data for the statute.
+      $item = $this->addElementNs('foia:ReliedUponStatuteOrganizationAssociation', $statuteSection);
+      $this->addElementNs('foia:ComponentDataReference', $item)
+        ->setAttribute('s:ref', $local_id);
+      $this->addElementNs('nc:OrganizationReference', $item)
+        ->setAttribute('s:ref', 'ORG0');
+      $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $statute->field_total_num_relied_by_agency->value);
     }
 
     // Add footnote.
