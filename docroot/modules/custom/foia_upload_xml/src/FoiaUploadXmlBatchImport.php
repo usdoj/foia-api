@@ -15,7 +15,7 @@ use Drupal\migrate\Plugin\MigrationPluginManager;
  */
 class FoiaUploadXmlBatchImport {
 
-use StringTranslationTrait;
+  use StringTranslationTrait;
 
   /**
    * The messenger service.
@@ -55,17 +55,19 @@ use StringTranslationTrait;
    * @throws \Drupal\migrate\MigrateException
    */
   public function executeMigration($migration_list_item, array &$context) {
-    \Drupal::messenger()->addStatus($migration_list_item . ' in progress.');
+    $this->messenger->addStatus($migration_list_item . ' in progress.');
     $context['sandbox']['current_migration'] = $migration_list_item;
 
-    $migration = \Drupal::service('plugin.manager.migration')->createInstance($migration_list_item);
+    $migration = $this->migrationPluginManager
+      ->createInstance($migration_list_item);
     $migration->getIdMap()->prepareUpdate();
     $executable = new MigrateExecutable($migration, new MigrateMessage());
     $executable->import();
 
-    $context['message'] = $migration_list_item . ' processed.';
+    $strings = ['@item' => $migration_list_item];
+    $context['message'] = $this->t('@item processed.', $strings);
     $context['results'][] = $migration_list_item;
-    \Drupal::messenger()->addStatus($migration_list_item . ' execution completed.');
+    $this->messenger->addStatus($this->t('@item execution completed.', $strings));
   }
 
   /**
@@ -78,18 +80,22 @@ use StringTranslationTrait;
    */
   public function executeMigrationFinished($success, array $results) {
     if ($success) {
-      $message = \Drupal::translation()->formatPlural(count($results), 'One import step processed.', '@count import steps processed.');
-      \Drupal::messenger()->addStatus($message);
+      $message = $this->formatPlural(
+        count($results),
+        'One import step processed.',
+        '@count import steps processed.'
+      );
+      $this->messenger->addStatus($message);
     }
     else {
-      $message = t('Finished with an error.');
-      \Drupal::messenger()->addWarning($message);
+      $message = $this->t('Finished with an error.');
+      $this->messenger->addWarning($message);
     }
 
     // Providing data for the redirected page is done through $_SESSION.
     foreach ($results as $result) {
-      $message = t('Processed @title.', ['@title' => $result]);
-      \Drupal::messenger()->addStatus($message);
+      $message = $this->t('Processed @title.', ['@title' => $result]);
+      $this->messenger->addStatus($message);
     }
   }
 
