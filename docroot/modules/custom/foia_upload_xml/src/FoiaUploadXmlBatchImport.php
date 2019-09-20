@@ -58,7 +58,8 @@ class FoiaUploadXmlBatchImport {
 
     // Providing data for the redirected page is done through $_SESSION.
     foreach ($results as $result) {
-      \Drupal::messenger()->addMessage(('Processed @title.', ['@title' => $result]), 'self::TYPE_STATUS,');
+      $message = t('Processed @title.', ['@title' => $result]);
+      \Drupal::messenger()->addMessage($message, 'self::TYPE_STATUS,');
     }
   }
 
