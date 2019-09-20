@@ -30,6 +30,9 @@ source:
       label: 'Standard abbreviation of the agency submitting the report'
       selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
   # Agency information
+    - name: field_date_prepared
+      label: 'Date Prepared'
+      selector: 'nc:DocumentCreationDate/nc:Date'
     -
       name: component
       label: 'Index for this report of the agency component'
@@ -1293,6 +1296,7 @@ process:
     plugin: default_value
     default_value: 'Import from NIEM-XML data'
   # Agency information
+  field_date_prepared: field_date_prepared
   field_agency_components:
     -
       plugin: foia_array_pad
