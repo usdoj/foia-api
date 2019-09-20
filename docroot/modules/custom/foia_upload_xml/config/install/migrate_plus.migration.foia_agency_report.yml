@@ -726,8 +726,6 @@ source:
       label: 'VII.C(1) Footnotes'
       selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:FootnoteText'
   # Section VII.D
-  # @todo Find something more reliable than using @s:id="PPR0" for the overall
-  # numbers.
     -
       name: component_viid
       label: 'Internal index of the agency component'
@@ -735,39 +733,39 @@ source:
     -
       name: field_overall_viid_sim_med
       label: 'Pending Requests - Simple Number of Days - Median'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestMedianDaysValue'
     -
       name: field_overall_viid_sim_avg
       label: 'Pending Requests - Simple Number of Days - Average'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestAverageDaysValue'
     -
       name: field_overall_viid_sim_pend
       label: 'Pending Requests - Simple Number of Days - Pending'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestQuantity'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestQuantity'
     -
       name: field_overall_viid_comp_med
       label: 'Pending Requests - Complex Number of Days - Median'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
     -
       name: field_overall_viid_comp_avg
       label: 'Pending Requests - Complex Number of Days - Average'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
     -
       name: field_overall_viid_comp_pend
       label: 'Pending Requests - Complex Number of Days - Pending'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestQuantity'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestQuantity'
     -
       name: field_overall_viid_exp_med
       label: 'Pending Requests - Expedited Number of Days - Median'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
     -
       name: field_overall_viid_exp_avg
       label: 'Pending Requests - Expedited Number of Days - Average'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
     -
       name: field_overall_viid_exp_pend
       label: 'Pending Requests - Expedited Number of Days - Pending'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestQuantity'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestQuantity'
     -
       name: field_footnotes_viid
       label: 'VII.D Footnotes'
