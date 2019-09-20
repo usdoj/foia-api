@@ -236,8 +236,6 @@ source:
       label: 'V.A Footnotes'
       selector: 'foia:ProcessedAppealSection/foia:FootnoteText'
   # Section VI.B
-  # @todo Find something more reliable than using @s:id="AD0" for the overall
-  # numbers.
     -
       name: component_vib
       label: 'Internal index of the agency component'
@@ -245,23 +243,23 @@ source:
     -
       name: field_overall_vib_affirm_on_app
       label: 'Agency Overall Number Affirmed on Appeal'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionAffirmedQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionAffirmedQuantity'
     -
       name: field_overall_vib_part_on_app
       label: 'Agency Overall Number Partially Affirmed & Partially Reversed/Remanded on Appeal'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionPartialQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionPartialQuantity'
     -
       name: field_overall_vib_comp_on_app
       label: 'Agency Overall Number Completely Reversed/Remanded on Appeal'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionReversedQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionReversedQuantity'
     -
       name: field_overall_vib_closed_oth_app
       label: 'Agency Overall Number of Appeals Closed for Other Reasons'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionOtherQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionOtherQuantity'
     -
       name: field_overall_vib_total
       label: 'Agency Overall Total'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionTotalQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionTotalQuantity'
   # Section VI.C(1)
     -
       name: component_vic1
