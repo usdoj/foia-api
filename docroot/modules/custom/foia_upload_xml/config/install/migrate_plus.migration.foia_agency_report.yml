@@ -392,8 +392,6 @@ source:
       label: 'VI.C. (3) Footnotes'
       selector: 'foia:AppealDenialOtherReasonSection/foia:FootnoteText'
   # Section VI.C.4
-  # @todo Find something more reliable than using @s:id="ART0" for the overall
-  # numbers.
     -
       name: component_vic4
       label: 'Internal index of the agency component'
@@ -401,26 +399,24 @@ source:
     -
       name: field_overall_vic4_med_num_days
       label: 'Overall median number of days response time for admin appeals'
-      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_vic4_avg_num_days
       label: 'Overall average number of days response time for admin appeals'
-      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_vic4_low_num_days
       label: 'Overall lowest number of days response time for admin appeals'
-      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_vic4_high_num_days
       label: 'Overall highest number of days response time for admin appeals'
-      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeHighestDaysValue'
     -
       name: field_footnotes_vic4
       label: 'Response Time for Administrative Appeals Footnote'
       selector: 'foia:AppealResponseTimeSection/foia:FootnoteText'
   # Section VII.A
-  # @todo Find something more reliable than using @s:id="PRT0" for the overall
-  # numbers.
     -
       name: component_viia
       label: 'Internal index of the agency component'
@@ -428,58 +424,56 @@ source:
     -
       name: field_overall_viia_sim_med
       label: 'Overall Processed Requests - Simple - Median Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_sim_avg
       label: 'Overall Processed Requests - Simple - Average Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_sim_low
       label: 'Overall Processed Requests - Simple - Lowest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_sim_high
       label: 'Overall Processed Requests - Simple - Highest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viia_comp_med
       label: 'Overall Processed Requests - Complex - Median Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_comp_avg
       label: 'Overall Processed Requests - Complex - Average Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_comp_low
       label: 'Overall Processed Requests - Complex - Lowest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_comp_high
       label: 'Overall Processed Requests - Complex - Highest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viia_exp_med
       label: 'Overall Processed Requests - Expedited - Median Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_exp_avg
       label: 'Overall Processed Requests - Expedited - Average Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_exp_low
       label: 'Overall Processed Requests - Expedited - Lowest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_exp_high
       label: 'Overall Processed Requests - Expedited - Highest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_footnotes_viia
       label: 'VII.A Footnotes'
       selector: 'foia:ProcessedResponseTimeSection/foia:FootnoteText'
   # Section VII.B
-  # @todo Find something more reliable than using @s:id="IGR0" for the overall
-  # numbers.
     -
       name: component_viib
       label: 'Internal index of the agency component'
@@ -487,51 +481,51 @@ source:
     -
       name: field_overall_viib_sim_med
       label: 'Information Granted Requests - Simple - Median Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viib_sim_avg
       label: 'Information Granted Requests - Simple - Average Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viib_sim_low
       label: 'Information Granted Requests - Simple - Lowest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viib_sim_high
       label: 'Information Granted Requests - Simple - Highest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viib_comp_med
       label: 'Information Granted Requests - Complex - Median Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viib_comp_avg
       label: 'Information Granted Requests - Complex - Average Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viib_comp_low
       label: 'Information Granted Requests - Complext - Lowest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viib_comp_high
       label: 'Information Granted Requests - Complex - Highest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viib_exp_med
       label: 'Information Granted Requests - Expedited - Median Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viib_exp_avg
       label: 'Information Granted Requests - Expedited - Average Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viib_exp_low
       label: 'Information Granted Requests - Expedited - Lowest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viib_exp_high
       label: 'Information Granted Requests - Expedited - Highest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_footnotes_viib
       label: 'VII.B Footnotes'
