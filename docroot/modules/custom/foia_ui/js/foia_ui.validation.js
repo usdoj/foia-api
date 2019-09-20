@@ -1195,6 +1195,14 @@
           equalTo: "Must match XII.A. Agency Overall Number of Backlogged Requests as of End of Fiscal Year",
         }
       });
+
+      // XII.E.(2). Agency Overall Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report
+      $( "#edit-field-overall-xiie2-back-cur-yr-0-value").rules( "add", {
+        equalTo: "#edit-field-overall-xiia-back-app-end-0-value",
+        messages: {
+          equalTo: "Must match XII.A. Agency Overall Number of Backlogged Appeals as of End of Fiscal Year",
+        }
+      });
     }
   };
 
