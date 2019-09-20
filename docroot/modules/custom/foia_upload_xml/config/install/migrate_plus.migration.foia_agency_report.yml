@@ -947,8 +947,6 @@ source:
       label: 'IX Footnotes'
       selector: 'foia:PersonnelAndCostSection/foia:FootnoteText'
   # Section X
-  # @todo Find something more reliable than using @s:id="FC0" for the overall
-  # numbers.
     -
       name: component_x
       label: 'Internal index of the agency component'
@@ -956,18 +954,16 @@ source:
     -
       name: field_overall_x_total_fees
       label: 'Placeholder Label - X - field_overall_x_total_fees'
-      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id="FC0"]/foia:FeesCollectedAmount'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id=../foia:FeesCollectedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FeesCollectedAmount'
     -
       name: field_overall_x_perc_costs
       label: 'Placeholder Label - X - field_overall_x_perc_costs'
-      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id="FC0"]/foia:FeesCollectedCostPercent'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id=../foia:FeesCollectedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FeesCollectedCostPercent'
     -
       name: field_footnotes_x
       label: 'X Footnotes'
       selector: 'foia:FeesCollectedSection/foia:FootnoteText'
   # Section XI.A
-  # @todo Find something more reliable than using @s:id="SU0" for the overall
-  # numbers.
     -
       name: component_xia
       label: 'Internal index of the agency component'
@@ -975,14 +971,12 @@ source:
     -
       name: field_overall_xia_sub_used
       label: 'Placeholder Label - XI.A - field_overall_xia_sub_used'
-      selector: 'foia:SubsectionUsedSection/foia:SubsectionUsed[@s:id="SU0"]/foia:TimesUsedQuantity'
+      selector: 'foia:SubsectionUsedSection/foia:SubsectionUsed[@s:id=../foia:SubsectionUsedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimesUsedQuantity'
     -
       name: field_footnotes_xia
       label: 'XI.A Footnotes'
       selector: 'foia:SubsectionUsedSection/foia:FootnoteText'
   # Section XI.B
-  # @todo Find something more reliable than using @s:id="SP0" for the overall
-  # numbers.
     -
       name: component_xib
       label: 'Internal index of the agency component'
@@ -990,18 +984,16 @@ source:
     -
       name: field_overall_xib_rec_post_foia
       label: 'Placeholder Label - XI.B - field_overall_xib_rec_post_foia'
-      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id="SP0"]/foia:PostedbyFOIAQuantity'
+      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id=../foia:SubsectionPostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:PostedbyFOIAQuantity'
     -
       name: field_overall_xib_rec_post_prog
       label: 'Placeholder Label - XI.B - field_overall_xib_rec_post_prog'
-      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id="SP0"]/foia:PostedbyProgramQuantity'
+      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id=../foia:SubsectionPostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:PostedbyProgramQuantity'
     -
       name: field_footnotes_xib
       label: 'XI.B Footnotes'
       selector: 'foia:SubsectionPostSection/foia:FootnoteText'
   # Section XII.A
-  # @todo Find something more reliable than using @s:id="BK0" for the overall
-  # numbers.
     -
       name: component_xiia
       label: 'Internal index of the agency component'
@@ -1009,18 +1001,16 @@ source:
     -
       name: field_overall_xiia_back_req_end_
       label: 'Placeholder Label - XII.A - field_overall_xiia_back_req_end_'
-      selector: 'foia:BacklogSection/foia:Backlog[@s:id="BK0"]/foia:PostedbyFOIAQuantity'
+      selector: 'foia:BacklogSection/foia:Backlog[@s:id=../foia:BacklogOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BackloggedRequestQuantity'
     -
       name: field_overall_xiia_back_app_end_
       label: 'Placeholder Label - XII.A - field_overall_xiia_back_app_end_'
-      selector: 'foia:BacklogSection/foia:Backlog[@s:id="BK0"]/foia:PostedbyProgramQuantity'
+      selector: 'foia:BacklogSection/foia:Backlog[@s:id=../foia:BacklogOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BackloggedAppealQuantity'
     -
       name: field_footnotes_xiia
       label: 'XII.A Footnotes'
       selector: 'foia:BacklogSection/foia:FootnoteText'
   # Section XII.B
-  # @todo Find something more reliable than using @s:id="PCN0" for the overall
-  # numbers.
     -
       name: component_xiib
       label: 'Internal index of the agency component'
@@ -1028,19 +1018,19 @@ source:
     -
       name: field_overall_xiib_pend_start_yr
       label: 'Placeholder Label - XII.B - field_overall_xiib_pend_start_yr'
-      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id="PCN0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtStartQuantity'
     -
       name: field_overall_xiib_proc_start_yr
       label: 'Placeholder Label - XII.B - field_overall_xiib_proc_start_yr'
-      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id="PCN0"]/foia:ProcessingStatisticsReceivedQuantity'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsReceivedQuantity'
     -
       name: field_overall_xiib_con_during_yr
       label: 'Placeholder Label - XII.B - field_overall_xiib_con_during_yr'
-      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id="PCN0"]/foia:ProcessingStatisticsProcessedQuantity'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsProcessedQuantity'
     -
       name: field_overall_xiib_pend_end_yr
       label: 'Placeholder Label - XII.B - field_overall_xiib_pend_end_yr'
-      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id="PCN0"]/foia:ProcessingStatisticsPendingAtEndQuantity'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtEndQuantity'
     -
       name: field_footnotes_xiib
       label: 'XII.B Footnotes'
