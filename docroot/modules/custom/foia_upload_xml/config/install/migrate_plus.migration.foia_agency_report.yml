@@ -1172,8 +1172,6 @@ source:
       label: 'XII.D.1 Footnotes'
       selector: 'foia:ProcessedRequestComparisonSection/foia:FootnoteText'
   # Section XII.D.2
-  # @todo Find something more reliable than using @s:id="RBC0" for the overall
-  # numbers.
     -
       name: component_xiid2
       label: 'Internal index of the agency component'
@@ -1181,18 +1179,16 @@ source:
     -
       name: field_overall_xiid2_back_prev_yr
       label: 'Placeholder Label - XII.D.2 - field_overall_xiid2_back_prev_yr'
-      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id="RBC0"]/foia:ItemsReceivedLastYearQuantity'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogLastYearQuantity'
     -
       name: field_overall_xiid2_back_cur_yr
       label: 'Placeholder Label - XII.D.2 - field_overall_xiid2_back_cur_yr'
-      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id="RBC0"]/foia:ItemsReceivedCurrentYearQuantity'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogCurrentYearQuantity'
     -
       name: field_footnotes_xiid2
       label: 'XII.D.2 Footnotes'
       selector: 'foia:BackloggedRequestComparisonSection/foia:FootnoteText'
   # Section XII.E.1
-  # @todo Find something more reliable than using @s:id="APC0" for the overall
-  # numbers.
     -
       name: component_xiie1
       label: 'Internal index of the agency component'
@@ -1200,26 +1196,24 @@ source:
     -
       name: field_overall_xiie1_received_las
       label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_received_las'
-      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsReceivedLastYearQuantity'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedLastYearQuantity'
     -
       name: field_overall_xiie1_received_cur
       label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_received_cur'
-      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsReceivedCurrentYearQuantity'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedCurrentYearQuantity'
     -
       name: field_overall_xiie1_proc_last_yr
       label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_proc_last_yr'
-      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsProcessedLastYearQuantity'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedLastYearQuantity'
     -
       name: field_overall_xiie1_proc_cur_yr
       label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_proc_cur_yr'
-      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsProcessedCurrentYearQuantity'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedCurrentYearQuantity'
     -
       name: field_footnotes_xiie1
       label: 'XII.E.1 Footnotes'
       selector: 'foia:ProcessedAppealComparisonSection/foia:FootnoteText'
   # Section XII.E.2
-  # @todo Find something more reliable than using @s:id="ABC0" for the overall
-  # numbers.
     -
       name: component_xiie2
       label: 'Internal index of the agency component'
@@ -1227,11 +1221,11 @@ source:
     -
       name: overall_xiie2_back_prev_yr
       label: 'Overall requests pending at the start of the year'
-      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id="ABC0"]/foia:BacklogLastYearQuantity'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogLastYearQuantity'
     -
       name: overall_xiie2_back_cur_yr
       label: 'Overall requests received during the year'
-      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id="ABC0"]/foia:BacklogCurrentYearQuantity'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogCurrentYearQuantity'
     -
       name: footnotes_xiie2
       label: 'XII.E 2 Footnotes'
