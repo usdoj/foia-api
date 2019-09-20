@@ -5,7 +5,6 @@ namespace Drupal\foia_upload_xml\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -64,9 +63,7 @@ class AgencyXmlUploadForm extends FormBase {
     ];
 
     $form['next_step'] = [
-      '#markup' => $this->t('Once you upload the NIEM-XML file, you will be redirected to the @migrate page, where you will be able to complete the import.', [
-        '@migrate' => Link::createFromRoute($this->t('Migrations'), 'entity.migration.list', ['migration_group' => 'foia_xml'])->toString(),
-      ]),
+      '#markup' => $this->t('Once you upload the NIEM-XML file, the data will be imported. This may take a few minutes.'),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
