@@ -81,29 +81,29 @@ class AgencyXmlUploadForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $fid = $form_state->getValue(['agency_report_xml', 0]);
-    $file_storage = $this->entityTypeManager->getStorage('file');
-    if (!empty($fid)) {
-      $file = $file_storage->load($fid);
-      // If we do not use temporary, then we should add $file->setPermanent().
-      $file->save();
-      $directory = 'temporary://foia-xml';
-      file_prepare_directory($directory);
-      file_move($file, "$directory/report.xml", FILE_EXISTS_REPLACE);
-
-      $operations = $this->getBatchOperations();
-      $batch = [
-        'title' => $this->t('Importing Annual Report XML Data...'),
-        'operations' => $operations,
-        'init_message' => $this->t('Commencing import'),
-        'progress_message' => $this->t('Imported @current out of @total'),
-        'error_message' => $this->t('An error occured during import'),
-        'finished' => 'executeMigrationFinished',
-        'file' => drupal_get_path('module', 'foia_upload_xml') . '/FoiaUploadXmlBatchImport.php',
-      ];
-
-      batch_set($batch);
-
+    if (empty($fid)) {
+      return;
     }
+
+    $file_storage = $this->entityTypeManager->getStorage('file');
+    $file = $file_storage->load($fid);
+    // If we do not use temporary, then we should add $file->setPermanent().
+    $file->save();
+    $directory = 'temporary://foia-xml';
+    file_prepare_directory($directory);
+    file_move($file, "$directory/report.xml", FILE_EXISTS_REPLACE);
+
+    $batch = [
+      'title' => $this->t('Importing Annual Report XML Data...'),
+      'operations' => $this->getBatchOperations(),
+      'init_message' => $this->t('Commencing import'),
+      'progress_message' => $this->t('Imported @current out of @total'),
+      'error_message' => $this->t('An error occurred during import'),
+      'finished' => 'foia_upload_xml_execute_migration_finished',
+      'file' => drupal_get_path('module', 'foia_upload_xml') . '/foia_upload_xml.batch.inc',
+    ];
+
+    batch_set($batch);
   }
 
   /**
