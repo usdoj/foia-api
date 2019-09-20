@@ -1147,8 +1147,6 @@ source:
       label: 'VII.E Footnotes'
       selector: 'foia:OldestPendingConsultationSection/foia:FootnoteText'
   # Section XII.D.1
-  # @todo Find something more reliable than using @s:id="RPC0" for the overall
-  # numbers.
     -
       name: component_xiid1
       label: 'Internal index of the agency component'
@@ -1156,19 +1154,19 @@ source:
     -
       name: field_overall_xiid1_received_las
       label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_received_las'
-      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id="RPC0"]/foia:ItemsReceivedLastYearQuantity'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedLastYearQuantity'
     -
       name: field_overall_xiid1_received_cur
       label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_received_cur'
-      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id="RPC0"]/foia:ItemsReceivedCurrentYearQuantity'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedCurrentYearQuantity'
     -
       name: field_overall_xiid1_proc_last_yr
       label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_proc_last_yr'
-      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id="RPC0"]/foia:ItemsProcessedLastYearQuantity'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedLastYearQuantity'
     -
       name: field_overall_xiid1_proc_cur_yr
       label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_proc_cur_yr'
-      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id="RPC0"]/foia:ItemsProcessedCurrentYearQuantity'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedCurrentYearQuantity'
     -
       name: field_footnotes_xiid1
       label: 'XII.D.1 Footnotes'
