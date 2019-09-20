@@ -326,52 +326,54 @@ source:
       label: 'VI.C(1) Footnotes'
       selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:FootnoteText'
   # Section VI.C. (2)
-  # @todo Find something more reliable than using @s:id="ANE0" for the overall
-  # numbers.
     -
       name: component_vic2
       label: 'Internal index of the agency component'
       selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial/@s:id'
     -
+      name: overall_vic2_app_denial_ex
+      label: 'Agency Overall Appeal Based Solely on Denial of Request for Expedited Processing'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ExpeditedDenial"]'
+    -
       name: overall_vic2_no_rec
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_no_rec'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
     -
       name: overall_vic2_rec_ref_to_an_comp
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_rec_ref_to_an_comp'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
     -
       name: overall_vic2_req_withdrawn
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_req_withdrawn'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
     -
       name: overall_vic2_fee_related_reason
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_fee_related_reason'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
     -
       name: overall_vic2_rec_not_desc
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_rec_not_desc'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
     -
       name: overall_vic2_imp_req_oth_reason
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_imp_req_oth_reason'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
     -
       name: overall_vic2_not_agency_record
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_not_agency_record'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
     -
       name: overall_vic2_dup_request
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_dup_request'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
     -
       name: overall_vic2_oth
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_oth'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
     -
       name: overall_vic2_req_in_lit
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_req_in_lit'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "InLitigation"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "InLitigation"]'
     -
       name: footnotes_vic2
       label: 'VI.C. (2) Footnotes'
@@ -1648,14 +1650,15 @@ process:
           source: '@combined'
           index:
             - '1'
+  field_overall_vic2_app_denial_ex: overall_vic2_app_denial_ex
   field_overall_vic2_no_rec: overall_vic2_no_rec
-  field_overall_vic2_rec_ref_to_an_comp: overall_vic2_rec_ref_to_an_comp
+  field_overall_vic2_rec_refer_ini: overall_vic2_rec_ref_to_an_comp
   field_overall_vic2_req_withdrawn: overall_vic2_req_withdrawn
-  field_overall_vic2_fee_related_reason: overall_vic2_fee_related_reason
+  field_overall_vic2_fee_rel_reas: overall_vic2_fee_related_reason
   field_overall_vic2_rec_not_desc: overall_vic2_rec_not_desc
-  field_overall_vic2_imp_req_oth_reason: overall_vic2_imp_req_oth_reason
-  field_overall_vic2_not_agency_record: overall_vic2_not_agency_record
-  field_overall_vic2_dup_request: overall_vic2_dup_request
+  field_overall_vic2_imp_req_oth: overall_vic2_imp_req_oth_reason
+  field_overall_vic2_not_agency_re: overall_vic2_not_agency_record
+  field_overall_vic2_dup_req: overall_vic2_dup_request
   field_overall_vic2_oth: overall_vic2_oth
   field_overall_vic2_req_in_lit: overall_vic2_req_in_lit
   field_footnotes_vic2: footnotes_vic2
