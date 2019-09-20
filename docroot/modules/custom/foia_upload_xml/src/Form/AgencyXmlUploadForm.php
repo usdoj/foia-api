@@ -195,7 +195,7 @@ class AgencyXmlUploadForm extends FormBase {
     $migrations_list = $this->getMigrationsList();
     $operations = [];
     foreach ($migrations_list as $migration_list_item) {
-      $operations[] = ['\Drupal\foia_upload_xml\FoiaUploadXmlBatchImport::executeMigration', [$migration_list_item]];
+      $operations[] = ['foia_upload_xml_execute_migration', [$migration_list_item]];
     }
 
     return $operations;
