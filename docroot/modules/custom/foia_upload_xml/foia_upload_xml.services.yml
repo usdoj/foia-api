@@ -1,0 +1,4 @@
+services:
+  foia_upload_xml.batch_import:
+    class: Drupal\foia_upload_xml\FoiaUploadXmlBatchImport
+    arguments: ['@messenger', '@plugin.manager.migration']
