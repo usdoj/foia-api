@@ -43,18 +43,16 @@ class FoiaUploadXmlBatchImport {
    *   Flags success/failure of batch step.
    * @param array $results
    *   Results of batch step.
-   * @param array $operations
-   *   Batch step operations.
    */
-  public function executeMigrationFinished($success, array $results, array $operations) {
+  public static function executeMigrationFinished($success, array $results) {
     if ($success) {
-      $message = \Drupal::translation()->formatPlural(count($results), 'One import step processed of @total.', '@count import steps processed of @total.');
+      $message = \Drupal::translation()->formatPlural(count($results), 'One import step processed.', '@count import steps processed.');
+      \Drupal::messenger()->addStatus($message);
     }
     else {
       $message = t('Finished with an error.');
+      \Drupal::messenger()->addWarning($message);
     }
-
-    \Drupal::messenger()->addWarning($message);
 
     // Providing data for the redirected page is done through $_SESSION.
     foreach ($results as $result) {
