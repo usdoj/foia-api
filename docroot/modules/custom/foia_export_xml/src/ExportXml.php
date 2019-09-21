@@ -735,18 +735,28 @@ EOS;
   protected function appealDenialOtherReasonSection() {
     $component_data = $this->node->field_admin_app_vic3->referencedEntities();
 
-    // @todo This code block does not add any real data to the report.
     $section = $this->addElementNs('foia:AppealDenialOtherReasonSection', $this->root);
+
+    // Add data for each component.
     if ($component_data) {
-      foreach ($component_data as $delta => $vic3_field) {
-        $sec_item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
-        $sec_item->setAttribute('s:id', 'ADOR' . ($delta + 1));
-        $item = $this->addElementNs('foia:OtherDenialReason', $sec_item);
-        $item_value = $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item, "nested paragraph field date");
-        $item1_value = $this->addElementNs('foia:OtherDenialReasonQuantity', $item, "Nested paragraph data");
+      foreach ($component_data as $delta => $component) {
+        $reason_section = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+        $reason_section->setAttribute('s:id', 'ADOR' . ($delta + 1));
+        foreach ($component->field_admin_app_vic3_info->referencedEntities() as $reason) {
+          $item = $this->addElementNs('foia:OtherDenialReason', $reason_section);
+          $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item, $reason->field_desc_oth_reasons->value);
+          $this->addElementNs('foia:OtherDenialReasonQuantity', $item, $reason->field_num_relied_upon->value);
+        }
+        $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $reason_section, $component->field_total->value);
       }
     }
 
+    // Add data for the agency overall.
+    $reason_section = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+    $reason_section->setAttribute('s:id', 'ADOR' . 0);
+    $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $reason_section, $this->node->field_overall_vic3_total->value);
+
+    // Add processing association section.
     $this->addProcessingAssociations($component_data, $section, 'foia:OtherDenialReasonOrganizationAssociation', 'ADOR');
 
     // Add footnote.
