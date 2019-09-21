@@ -379,10 +379,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PS');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_va->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_va', $section);
   }
 
   /**
@@ -452,10 +449,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:RequestDispositionOrganizationAssociation', 'RD');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_vb1->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_vb1', $section);
   }
 
   /**
@@ -553,10 +547,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'RDE');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_vb3->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_vb3', $section);
   }
 
   /**
@@ -584,10 +575,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PA');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_via->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_via', $section);
   }
 
   /**
@@ -617,10 +605,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:AppealDispositionOrganizationAssociation', 'AD');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_vib->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_vib', $section);
   }
 
   /**
@@ -682,10 +667,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'ADE');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_vic1->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_vic1', $section);
   }
 
   /**
@@ -739,10 +721,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:AppealNonExemptionDenialOrganizationAssociation', 'ANE');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_vic2->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_vic2', $section);
   }
 
   /**
@@ -768,10 +747,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:OtherDenialReasonOrganizationAssociation', 'ADOR');
 
     // Add footnote.
-    $footnote = SafeMarkup::checkPlain($this->node->field_footnotes_vic3->value);
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_vic3', $section);
   }
 
   /**
@@ -799,10 +775,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeOrganizationAssociation', 'ART');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_vic4->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_vic4', $section);
   }
 
   /**
@@ -1085,10 +1058,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ExpeditedProcessingOrganizationAssociation', 'EP');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_viiia->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_viiia', $section);
   }
 
   /**
@@ -1116,10 +1086,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:FeeWaiverOrganizationAssociation', 'FW');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_viiib->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_viiib', $section);
   }
 
   /**
@@ -1151,10 +1118,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:PersonnelAndCostOrganizationAssociation', 'PC');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_ix->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_ix', $section);
   }
 
   /**
@@ -1178,10 +1142,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:FeesCollectedOrganizationAssociation', 'FC');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_x->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_x', $section);
   }
 
   /**
@@ -1203,10 +1164,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:SubsectionUsedOrganizationAssociation', 'SU');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xia->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xia', $section);
   }
 
   /**
@@ -1230,10 +1188,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:SubsectionPostOrganizationAssociation', 'SP');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xib->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xib', $section);
   }
 
   /**
@@ -1257,10 +1212,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:BacklogOrganizationAssociation', 'BK');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xiia->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xiia', $section);
   }
 
   /**
@@ -1288,10 +1240,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PCN');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xiib->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xiib', $section);
   }
 
   /**
@@ -1336,10 +1285,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', $prefix);
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xiic->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xiic', $section);
   }
 
   /**
@@ -1367,10 +1313,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingComparisonOrganizationAssociation', 'RPC');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xiid1->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xiid1', $section);
   }
 
   /**
@@ -1394,10 +1337,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:BacklogComparisonOrganizationAssociation', 'RBC');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xiid2->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xiid2', $section);
   }
 
   /**
@@ -1425,10 +1365,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingComparisonOrganizationAssociation', 'APC');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xiie1->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xiie1', $section);
   }
 
   /**
@@ -1452,10 +1389,7 @@ EOS;
     $this->addProcessingAssociations($component_data, $section, 'foia:BacklogComparisonOrganizationAssociation', 'ABC');
 
     // Add footnote.
-    $footnote = trim(strip_tags($this->node->field_footnotes_xiie2->value));
-    if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $section, $footnote);
-    }
+    $this->addFootnote('field_footnotes_xiie2', $section);
   }
 
 }
