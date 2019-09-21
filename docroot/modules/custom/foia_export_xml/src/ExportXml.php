@@ -274,6 +274,42 @@ EOS;
   }
 
   /**
+   * Add response-time data.
+   *
+   * Add "response time" data from a node or paragraph.
+   *
+   * @param Drupal\Core\Entity\EntityInterface $entity
+   *   A node or paragraph with response-time data.
+   * @param \DOMElement $parent
+   *   The parent element to which new nodes will be added.
+   * @param string $field_prefix
+   *   The field name for the data, without the 'sim_med' or similar suffix.
+   */
+  protected function addResponseTimes(EntityInterface $entity, \DOMElement $parent, $field_prefix) {
+    $tracks = [
+      'sim_' => 'SimpleResponseTime',
+      'comp_' => 'ComplexResponseTime',
+      'exp_' => 'ExpeditedResponseTime',
+    ];
+    $types = [
+      'med' => 'ResponseTimeMedianDaysValue',
+      'avg' => 'ResponseTimeAverageDaysValue',
+      'low' => 'ResponseTimeLowestDaysValue',
+      'high' => 'ResponseTimeHighestDaysValue',
+    ];
+
+    foreach ($tracks as $key => $local_name) {
+      $item = $this->addElementNs("foia:$local_name", $parent);
+      foreach ($types as $suffix => $tag) {
+        $value = $entity->get($field_prefix . $key . $suffix)->value;
+        if ($value) {
+          $this->addElementNs("foia:$tag", $item, $value);
+        }
+      }
+    }
+  }
+
+  /**
    * Add processing associations.
    *
    * Add associations between per-section identifiers and per-report identifiers
