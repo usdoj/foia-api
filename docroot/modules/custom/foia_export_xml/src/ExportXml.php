@@ -954,33 +954,19 @@ EOS;
   protected function simpleResponseTimeIncrementsSection() {
     $component_data = $this->node->field_proc_req_viic1->referencedEntities();
     $section = $this->addElementNs('foia:SimpleResponseTimeIncrementsSection', $this->root);
-    /** @var array $fields */
-    $fields = [
-      'field_1_20_days' => '1-20',
-      'field_21_40_days' => '21-40',
-      'field_41_60_days' => '41-60',
-      'field_61_80_days' => '61-20',
-      'field_81_100_days' => '81-100',
-      'field_101_120_days' => '101-120',
-      'field_121_140_days' => '121-140',
-      'field_141_160_days' => '141-160',
-      'field_161_180_days' => '161-180',
-      'field_181_200_days' => '181-200',
-      'field_201_300_days' => '201-300',
-      'field_301_400_days' => '301-400',
-      'field_400_up_days' => '400+',
-    ];
+
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
-      $item->setAttribute('s:id', 'CRT' . ($delta + 1));
-      foreach ($fields as $field => $value) {
-        $item_field = $this->addElementNs('foia:TimeIncrement', $item);
-        $this->addElementNs('foia:TimeIncrementCode', $item_field, $value);
-        $this->addElementNs('foia:TimeIncrementProcessedQuantity', $item_field, $component->get($field)->value);
-      }
-      $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
+      $item->setAttribute('s:id', 'SRT' . ($delta + 1));
+      $this->addResponseTimeIncrements($component, $item, 'field_');
     }
+
+    // Add data for the agency overall.
+    $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+    $item->setAttribute('s:id', 'SRT' . 0);
+    $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic1_');
+
     $this->addFootnote('field_footnotes_viic1', $section);
   }
 
@@ -992,33 +978,19 @@ EOS;
   protected function complexResponseTimeIncrementsSection() {
     $component_data = $this->node->field_proc_req_viic2->referencedEntities();
     $section = $this->addElementNs('foia:ComplexResponseTimeIncrementsSection', $this->root);
-    /** @var array $fields */
-    $fields = [
-      'field_1_20_days' => '1-20',
-      'field_21_40_days' => '21-40',
-      'field_41_60_days' => '41-60',
-      'field_61_80_days' => '61-20',
-      'field_81_100_days' => '81-100',
-      'field_101_120_days' => '101-120',
-      'field_121_140_days' => '121-140',
-      'field_141_160_days' => '141-160',
-      'field_161_180_days' => '161-180',
-      'field_181_200_days' => '181-200',
-      'field_201_300_days' => '201-300',
-      'field_301_400_days' => '301-400',
-      'field_400_up_days' => '400+',
-    ];
+
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
       $item->setAttribute('s:id', 'CRT' . ($delta + 1));
-      foreach ($fields as $field => $value) {
-        $item_field = $this->addElementNs('foia:TimeIncrement', $item);
-        $this->addElementNs('foia:TimeIncrementCode', $item_field, $value);
-        $this->addElementNs('foia:TimeIncrementProcessedQuantity', $item_field, $component->get($field)->value);
-      }
-      $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
+      $this->addResponseTimeIncrements($component, $item, 'field_');
     }
+
+    // Add data for the agency overall.
+    $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+    $item->setAttribute('s:id', 'CRT' . 0);
+    $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic2_');
+
     $this->addFootnote('field_footnotes_viic2', $section);
   }
 
@@ -1030,33 +1002,19 @@ EOS;
   protected function expeditedResponseTimeIncrementsSection() {
     $component_data = $this->node->field_proc_req_viic3->referencedEntities();
     $section = $this->addElementNs('foia:ExpeditedResponseTimeIncrementsSection', $this->root);
-    /** @var array $fields */
-    $fields = [
-      'field_1_20_days' => '1-20',
-      'field_21_40_days' => '21-40',
-      'field_41_60_days' => '41-60',
-      'field_61_80_days' => '61-20',
-      'field_81_100_days' => '81-100',
-      'field_101_120_days' => '101-120',
-      'field_121_140_days' => '121-140',
-      'field_141_160_days' => '141-160',
-      'field_161_180_days' => '161-180',
-      'field_181_200_days' => '181-200',
-      'field_201_300_days' => '201-300',
-      'field_301_400_days' => '301-400',
-      'field_400_up_days' => '400+',
-    ];
+
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
       $item->setAttribute('s:id', 'ERT' . ($delta + 1));
-      foreach ($fields as $field => $value) {
-        $item_field = $this->addElementNs('foia:TimeIncrement', $item);
-        $this->addElementNs('foia:TimeIncrementCode', $item_field, $value);
-        $this->addElementNs('foia:TimeIncrementProcessedQuantity', $item_field, $component->get($field)->value);
-      }
-      $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
+      $this->addResponseTimeIncrements($component, $item, 'field_');
     }
+
+    // Add data for each component.
+    $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+    $item->setAttribute('s:id', 'ERT' . 0);
+    $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic3_');
+
     $this->addFootnote('field_footnotes_viic3', $section);
   }
 
