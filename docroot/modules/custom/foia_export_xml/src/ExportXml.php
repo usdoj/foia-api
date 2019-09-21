@@ -486,6 +486,9 @@ EOS;
     $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $this->node->get('field_overall_vb2_total')->value);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:OtherDenialReasonOrganizationAssociation', 'CODR');
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_vb2', $section);
   }
 
   /**
@@ -798,6 +801,9 @@ EOS;
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', 'OPA');
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_vic5', $section);
   }
 
   /**
@@ -832,6 +838,9 @@ EOS;
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessedResponseTimeOrganizationAssociation', 'PRT');
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_viia', $section);
   }
 
   /**
@@ -866,6 +875,9 @@ EOS;
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessedResponseTimeOrganizationAssociation', 'IGR');
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_viib', $section);
   }
 
   /**
@@ -903,6 +915,9 @@ EOS;
       }
       $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
     }
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_viic1', $section);
   }
 
   /**
@@ -940,6 +955,9 @@ EOS;
       }
       $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
     }
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_viic2', $section);
   }
 
   /**
@@ -977,6 +995,9 @@ EOS;
       }
       $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
     }
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_viic3', $section);
   }
 
   /**
@@ -1008,6 +1029,9 @@ EOS;
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:PendingPerfectedRequestsOrganizationAssociation', 'PPR');
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_viid', $section);
   }
 
   /**
@@ -1029,6 +1053,9 @@ EOS;
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:PendingPerfectedRequestsOrganizationAssociation', 'PPR');
+
+    // Add footnote.
+    $this->addFootnote('field_footnotes_viie', $section);
   }
 
   /**
