@@ -139,7 +139,10 @@ EOS;
     if (empty($namespaces[$prefix])) {
       throw new \Exception("Unrecognized prefix: $prefix");
     }
-    $element = $this->document->createElementNS($namespaces[$prefix], $local_name, $value);
+    $element = $this->document->createElementNS($namespaces[$prefix], $local_name);
+    if (!is_null($value)) {
+      $element->appendChild($this->document->createTextNode($value));
+    }
     $parent->appendChild($element);
     return $element;
   }
