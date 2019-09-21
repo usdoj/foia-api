@@ -840,17 +840,7 @@ EOS;
   protected function oldestPendingAppealSection() {
     $component_data = $this->node->field_admin_app_vic5->referencedEntities();
     $section = $this->addElementNs('foia:OldestPendingAppealSection', $this->root);
-    // Add data for each component.
-    foreach ($component_data as $delta => $component) {
-      $item = $this->addElementNs('foia:OldestPendingItems', $section);
-      $item->setAttribute('s:id', 'OPA' . ($delta + 1));
-      for ($i = 1; $i <= 10; $i++) {
-        $item2 = $this->addElementNs('foia:OldItem', $item);
-        $this->addElementNs('foia:OldItemReceiptDate', $item2, $component->get('field_date_' . $i)->value);
-        $this->addElementNs('foia:OldItemPendingDaysQuantity', $item2, $component->get('field_num_days_' . $i)->value);
-      }
-    }
-
+    $this->addOldestDays($component_data, $section, 'OPA', 'field_overall_vic5_date_', 'field_overall_vic5_num_day_');
     $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', 'OPA');
 
     // Add footnote.
@@ -1093,16 +1083,7 @@ EOS;
   protected function oldestPendingRequestSection() {
     $component_data = $this->node->field_admin_app_viie->referencedEntities();
     $section = $this->addElementNs('foia:OldestPendingRequestSection', $this->root);
-    foreach ($component_data as $delta => $component) {
-      $item = $this->addElementNs('foia:OldestPendingItems', $section);
-      $item->setAttribute('s:id', 'OPR' . ($delta + 1));
-      for ($i = 1; $i <= 10; $i++) {
-        $item2 = $this->addElementNs('foia:OldItem', $item);
-        $this->addElementNs('foia:OldItemReceiptDate', $item2, $component->get('field_date_' . $i)->value);
-        $this->addElementNs('foia:OldItemPendingDaysQuantity', $item2, $component->get('field_num_days_' . $i)->value);
-      }
-    }
-
+    $this->addOldestDays($component_data, $section, 'OPR', 'field_overall_viie_date_', 'field_overall_viie_num_days_');
     $this->addProcessingAssociations($component_data, $section, 'foia:PendingPerfectedRequestsOrganizationAssociation', 'PPR');
 
     // Add footnote.
@@ -1328,39 +1309,9 @@ EOS;
    */
   protected function oldestPendingConsultationSection() {
     $component_data = $this->node->field_foia_xiic->referencedEntities();
-    $prefix = 'OPC';
-
     $section = $this->addElementNs('foia:OldestPendingConsultationSection', $this->root);
-
-    // Add data for each component.
-    foreach ($component_data as $delta => $component) {
-      $item = $this->addElementNs('foia:OldestPendingItems', $section);
-      $item->setAttribute('s:id', $prefix . ($delta + 1));
-      foreach (range(1, 10) as $index) {
-        $date = $component->get("field_date_$index")->value;
-        $days = $component->get("field_num_days_$index")->value;
-        if (preg_match('/^\<1|\d+/', $days)) {
-          $old_item = $this->addElementNs('foia:OldItem', $item);
-          $old_item = $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
-          $old_item = $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
-        }
-      }
-    }
-
-    // Add overall data.
-    $item = $this->addElementNs('foia:OldestPendingItems', $section);
-    $item->setAttribute('s:id', $prefix . 0);
-    foreach (range(1, 10) as $index) {
-      $date = $this->node->get("field_overall_xiic_date_$index")->value;
-      $days = $this->node->get("field_overall_xiic_num_days_$index")->value;
-      if (preg_match('/^\<1|\d+/', $days)) {
-        $old_item = $this->addElementNs('foia:OldItem', $item);
-        $old_item = $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
-        $old_item = $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
-      }
-    }
-
-    $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', $prefix);
+    $this->addOldestDays($component_data, $section, 'OPC', 'field_overall_xiic_date_', 'field_overall_xiic_num_days_');
+    $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', 'OPC');
 
     // Add footnote.
     $this->addFootnote('field_footnotes_xiic', $section);
