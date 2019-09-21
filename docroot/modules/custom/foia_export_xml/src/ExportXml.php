@@ -1102,8 +1102,8 @@ EOS;
     $map = [
       'field_num_grant' => 'foia:RequestGrantedQuantity',
       'field_num_denied' => 'foia:RequestDeniedQuantity',
-      'field_avg_days_jud' => 'foia:AdjudicationMedianDaysValue',
-      'field_med_days_jud' => 'foia:AdjudicationAverageDaysValue',
+      'field_med_days_jud' => 'foia:AdjudicationMedianDaysValue',
+      'field_avg_days_jud' => 'foia:AdjudicationAverageDaysValue',
       'field_num_jud_w10' => 'foia:AdjudicationWithinTenDaysQuantity',
     ];
     $overall_map = [
@@ -1252,8 +1252,8 @@ EOS;
       'field_back_app_end_yr' => 'foia:BackloggedAppealQuantity',
     ];
     $overall_map = [
-      'field_overall_xiia_back_app_end_' => 'foia:BackloggedRequestQuantity',
-      'field_overall_xiia_back_req_end_' => 'foia:BackloggedAppealQuantity',
+      'field_overall_xiia_back_req_end_' => 'foia:BackloggedRequestQuantity',
+      'field_overall_xiia_back_app_end_' => 'foia:BackloggedAppealQuantity',
     ];
 
     $section = $this->addElementNs('foia:BacklogSection', $this->root);
