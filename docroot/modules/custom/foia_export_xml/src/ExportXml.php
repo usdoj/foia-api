@@ -146,6 +146,21 @@ EOS;
   }
 
   /**
+   * Add a footnote to a specified section.
+   *
+   * @param string $field
+   *   The name of the footnote field, such as 'field_footnotes_iv'.
+   * @param \DOMElement $parent
+   *   The parent of the new element.
+   */
+  protected function addFootnote($field, \DOMElement $parent) {
+    $footnote = SafeMarkup::checkPlain($this->node->get($field)->value);
+    if ($footnote) {
+      $this->addElementNs('foia:FootnoteText', $parent, $footnote);
+    }
+  }
+
+  /**
    * Add data from several fields on an entity, each with a corresponding label.
    *
    * @param Drupal\Core\Entity\EntityInterface $entity
