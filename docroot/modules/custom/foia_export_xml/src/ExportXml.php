@@ -1000,6 +1000,7 @@ EOS;
     $item->setAttribute('s:id', 'SRT' . 0);
     $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic1_');
 
+    $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeIncrementsOrganizationAssociation', 'SRT');
     $this->addFootnote('field_footnotes_viic1', $section);
   }
 
@@ -1024,6 +1025,7 @@ EOS;
     $item->setAttribute('s:id', 'CRT' . 0);
     $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic2_');
 
+    $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeIncrementsOrganizationAssociation', 'CRT');
     $this->addFootnote('field_footnotes_viic2', $section);
   }
 
@@ -1048,6 +1050,7 @@ EOS;
     $item->setAttribute('s:id', 'ERT' . 0);
     $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic3_');
 
+    $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeIncrementsOrganizationAssociation', 'ERT');
     $this->addFootnote('field_footnotes_viic3', $section);
   }
 
