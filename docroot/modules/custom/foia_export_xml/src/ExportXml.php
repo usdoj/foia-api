@@ -369,10 +369,10 @@ EOS;
       $this->addElementNs('nc:CaseTitleText', $itemCase, $statute->field_case_citation->value);
     }
 
-    // Add component data for each statute.
     foreach ($statutes as $delta => $statute) {
       $local_id = 'ES' . ($delta + 1);
       $components = $statute->field_agency_component_inf->referencedEntities();
+      // Add component data for each statute.
       foreach ($components as $component_info) {
         $agency_component = $component_info->field_agency_component->referencedEntities()[0];
         $item = $this->addElementNs('foia:ReliedUponStatuteOrganizationAssociation', $statuteSection);
