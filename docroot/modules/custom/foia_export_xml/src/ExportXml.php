@@ -346,6 +346,36 @@ EOS;
   }
 
   /**
+   * Add pending-request data.
+   *
+   * Add pending-request data from a node or paragraph.
+   *
+   * @param Drupal\Core\Entity\EntityInterface $entity
+   *   A node or paragraph with pending-request data.
+   * @param \DOMElement $parent
+   *   The parent element to which new nodes will be added.
+   * @param string $field_prefix
+   *   The field name for the data, without the 'sim_pend' or similar suffix.
+   */
+  protected function addPendingRequests(EntityInterface $entity, \DOMElement $parent, $field_prefix) {
+    $tracks = [
+      'sim_' => 'SimplePendingRequestStatistics',
+      'comp_' => 'ComplexPendingRequestStatistics',
+      'exp_' => 'ExpeditedPendingRequestStatistics',
+    ];
+
+    foreach ($tracks as $key => $local_name) {
+      $item = $this->addElementNs("foia:$local_name", $parent);
+      $pending = $entity->get($field_prefix . $key . 'pend')->value;
+      $this->addElementNs('foia:PendingRequestQuantity', $item, $pending);
+      if ($pending) {
+        $this->addElementNs('foia:PendingRequestMedianDaysValue', $item, $entity->get($field_prefix . $key . 'med')->value);
+        $this->addElementNs('foia:PendingRequestAverageDaysValue', $item, $entity->get($field_prefix . $key . 'avg')->value);
+      }
+    }
+  }
+
+  /**
    * Add processing associations.
    *
    * Add associations between per-section identifiers and per-report identifiers
