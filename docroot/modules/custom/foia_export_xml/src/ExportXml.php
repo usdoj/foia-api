@@ -310,6 +310,42 @@ EOS;
   }
 
   /**
+   * Add response-time increments data.
+   *
+   * Add "response time increments" data from a node or paragraph.
+   *
+   * @param Drupal\Core\Entity\EntityInterface $entity
+   *   A node or paragraph with response-time-increments data.
+   * @param \DOMElement $parent
+   *   The parent element to which new nodes will be added.
+   * @param string $field_prefix
+   *   The field name for the data, without the '1_20_days' or similar suffix.
+   */
+  protected function addResponseTimeIncrements(EntityInterface $entity, \DOMElement $parent, $field_prefix) {
+    $fields = [
+      '1_20_days' => '1-20',
+      '21_40_days' => '21-40',
+      '41_60_days' => '41-60',
+      '61_80_days' => '61-20',
+      '81_100_days' => '81-100',
+      '101_120_days' => '101-120',
+      '121_140_days' => '121-140',
+      '141_160_days' => '141-160',
+      '161_180_days' => '161-180',
+      '181_200_days' => '181-200',
+      '201_300_days' => '201-300',
+      '301_400_days' => '301-400',
+      '400_up_days' => '400+',
+    ];
+    foreach ($fields as $suffix => $label) {
+      $item = $this->addElementNs('foia:TimeIncrement', $parent);
+      $this->addElementNs('foia:TimeIncrementCode', $item, $label);
+      $this->addElementNs('foia:TimeIncrementProcessedQuantity', $item, $entity->get($field_prefix . $suffix)->value);
+    }
+    $this->addElementNs('foia:TimeIncrementTotalQuantity', $parent, $entity->get($field_prefix . 'total')->value);
+  }
+
+  /**
    * Add processing associations.
    *
    * Add associations between per-section identifiers and per-report identifiers
