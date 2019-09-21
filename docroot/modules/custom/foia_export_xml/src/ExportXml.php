@@ -225,6 +225,55 @@ EOS;
   }
 
   /**
+   * Add oldest-days data.
+   *
+   * Add "oldest days" data from an array of paragraphs with per-component data
+   * and corresponding overall data from the node.
+   *
+   * @param Drupal\Core\Entity\EntityInterface[] $component_data
+   *   An array of paragraphs with per-component data, each with
+   *   field_agency_component referencing an Agency Component node.
+   * @param \DOMElement $parent
+   *   The parent element to which new nodes will be added.
+   * @param string $prefix
+   *   The base string used in the s:id attribute.
+   * @param string $overall_date
+   *   The field name for the overall dates, without the number at the end.
+   * @param string $overall_days
+   *   The field name for the overall number of days, without the number at the
+   *   end.
+   */
+  protected function addOldestDays(array $component_data, \DOMElement $parent, $prefix, $overall_date, $overall_days) {
+    // Add data for each component.
+    foreach ($component_data as $delta => $component) {
+      $item = $this->addElementNs('foia:OldestPendingItems', $parent);
+      $item->setAttribute('s:id', $prefix . ($delta + 1));
+      foreach (range(1, 10) as $index) {
+        $date = $component->get("field_date_$index")->value;
+        $days = $component->get("field_num_days_$index")->value;
+        if (preg_match('/^\<1|\d+/', $days)) {
+          $old_item = $this->addElementNs('foia:OldItem', $item);
+          $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
+          $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
+        }
+      }
+    }
+
+    // Add overall data.
+    $item = $this->addElementNs('foia:OldestPendingItems', $parent);
+    $item->setAttribute('s:id', $prefix . 0);
+    foreach (range(1, 10) as $index) {
+      $date = $this->node->get($overall_date . $index)->value;
+      $days = $this->node->get($overall_days . $index)->value;
+      if (preg_match('/^\<1|\d+/', $days)) {
+        $old_item = $this->addElementNs('foia:OldItem', $item);
+        $old_item = $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
+        $old_item = $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
+      }
+    }
+  }
+
+  /**
    * Add processing associations.
    *
    * Add associations between per-section identifiers and per-report identifiers
