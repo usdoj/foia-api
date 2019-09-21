@@ -868,28 +868,18 @@ EOS;
   protected function processedResponseTimeSection() {
     $component_data = $this->node->field_proc_req_viia->referencedEntities();
     $section = $this->addElementNs('foia:ProcessedResponseTimeSection', $this->root);
+
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
-      $item1 = $this->addElementNs('foia:ProcessedResponseTime', $section);
-      $item1->setAttribute('s:id', 'PRT' . ($delta + 1));
-      $item11 = $this->addElementNs('foia:SimpleResponseTime', $item1);
-      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item11, $component->get('field_sim_med')->value);
-      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item11, $component->get('field_sim_avg')->value);
-      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item11, $component->get('field_sim_low')->value);
-      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item11, $component->get('field_sim_high')->value);
-
-      $item12 = $this->addElementNs('foia:ComplexResponseTime', $item1);
-      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item12, $component->get('field_comp_med')->value);
-      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item12, $component->get('field_comp_avg')->value);
-      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item12, $component->get('field_comp_low')->value);
-      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item12, $component->get('field_comp_high')->value);
-
-      $item13 = $this->addElementNs('foia:ExpeditedResponseTime', $item1);
-      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item13, $component->get('field_exp_med')->value);
-      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
-      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item13, $component->get('field_exp_low')->value);
-      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item13, $component->get('field_exp_high')->value);
+      $item = $this->addElementNs('foia:ProcessedResponseTime', $section);
+      $item->setAttribute('s:id', 'PRT' . ($delta + 1));
+      $this->addResponseTimes($component, $item, 'field_');
     }
+
+    // Add data for the agency overall.
+    $item = $this->addElementNs('foia:ProcessedResponseTime', $section);
+    $item->setAttribute('s:id', 'PRT' . 0);
+    $this->addResponseTimes($this->node, $item, 'field_overall_viia_');
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessedResponseTimeOrganizationAssociation', 'PRT');
     $this->addFootnote('field_footnotes_viia', $section);
@@ -903,28 +893,18 @@ EOS;
   protected function informationGrantedResponseTimeSection() {
     $component_data = $this->node->field_proc_req_viib->referencedEntities();
     $section = $this->addElementNs('foia:InformationGrantedResponseTimeSection', $this->root);
+
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
-      $item1 = $this->addElementNs('foia:ProcessedResponseTime', $section);
-      $item1->setAttribute('s:id', 'IGR' . ($delta + 1));
-      $item11 = $this->addElementNs('foia:SimpleResponseTime', $item1);
-      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item11, $component->get('field_sim_med')->value);
-      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item11, $component->get('field_sim_avg')->value);
-      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item11, $component->get('field_sim_low')->value);
-      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item11, $component->get('field_sim_high')->value);
-
-      $item12 = $this->addElementNs('foia:ComplexResponseTime', $item1);
-      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item12, $component->get('field_comp_med')->value);
-      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item12, $component->get('field_comp_avg')->value);
-      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item12, $component->get('field_comp_low')->value);
-      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item12, $component->get('field_comp_high')->value);
-
-      $item13 = $this->addElementNs('foia:ExpeditedResponseTime', $item1);
-      $this->addElementNs('foia:ResponseTimeMedianDaysValue', $item13, $component->get('field_exp_med')->value);
-      $this->addElementNs('foia:ResponseTimeAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
-      $this->addElementNs('foia:ResponseTimeLowestDaysValue', $item13, $component->get('field_exp_low')->value);
-      $this->addElementNs('foia:ResponseTimeHighestDaysValue', $item13, $component->get('field_exp_high')->value);
+      $item = $this->addElementNs('foia:ProcessedResponseTime', $section);
+      $item->setAttribute('s:id', 'IGR' . ($delta + 1));
+      $this->addResponseTimes($component, $item, 'field_');
     }
+
+    // Add data for the agency overall.
+    $item = $this->addElementNs('foia:ProcessedResponseTime', $section);
+    $item->setAttribute('s:id', 'IGR' . 0);
+    $this->addResponseTimes($this->node, $item, 'field_overall_viib_');
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessedResponseTimeOrganizationAssociation', 'IGR');
     $this->addFootnote('field_footnotes_viib', $section);
