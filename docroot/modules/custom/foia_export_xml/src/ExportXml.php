@@ -425,8 +425,6 @@ EOS;
     $section = $this->addElementNs('foia:ProcessedRequestSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:ProcessingStatistics', 'PS', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PS');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_va', $section);
   }
 
@@ -495,8 +493,6 @@ EOS;
     $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:RequestDispositionOrganizationAssociation', 'RD');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vb1', $section);
   }
 
@@ -527,8 +523,6 @@ EOS;
     $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $this->node->get('field_overall_vb2_total')->value);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:OtherDenialReasonOrganizationAssociation', 'CODR');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vb2', $section);
   }
 
@@ -589,8 +583,6 @@ EOS;
     $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'RDE');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vb3', $section);
   }
 
@@ -617,8 +609,6 @@ EOS;
     $section = $this->addElementNs('foia:ProcessedAppealSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:ProcessingStatistics', 'PA', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PA');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_via', $section);
   }
 
@@ -647,8 +637,6 @@ EOS;
     $section = $this->addElementNs('foia:AppealDispositionSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:AppealDisposition', 'AD', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:AppealDispositionOrganizationAssociation', 'AD');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vib', $section);
   }
 
@@ -709,8 +697,6 @@ EOS;
     $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'ADE');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vic1', $section);
   }
 
@@ -763,8 +749,6 @@ EOS;
     $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:AppealNonExemptionDenialOrganizationAssociation', 'ANE');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vic2', $section);
   }
 
@@ -797,10 +781,7 @@ EOS;
     $reason_section->setAttribute('s:id', 'ADOR' . 0);
     $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $reason_section, $this->node->field_overall_vic3_total->value);
 
-    // Add processing association section.
     $this->addProcessingAssociations($component_data, $section, 'foia:OtherDenialReasonOrganizationAssociation', 'ADOR');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vic3', $section);
   }
 
@@ -827,8 +808,6 @@ EOS;
     $section = $this->addElementNs('foia:AppealResponseTimeSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:ResponseTime', 'ART', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeOrganizationAssociation', 'ART');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vic4', $section);
   }
 
@@ -842,8 +821,6 @@ EOS;
     $section = $this->addElementNs('foia:OldestPendingAppealSection', $this->root);
     $this->addOldestDays($component_data, $section, 'OPA', 'field_overall_vic5_date_', 'field_overall_vic5_num_day_');
     $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', 'OPA');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_vic5', $section);
   }
 
@@ -879,8 +856,6 @@ EOS;
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessedResponseTimeOrganizationAssociation', 'PRT');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viia', $section);
   }
 
@@ -916,8 +891,6 @@ EOS;
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessedResponseTimeOrganizationAssociation', 'IGR');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viib', $section);
   }
 
@@ -956,8 +929,6 @@ EOS;
       }
       $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
     }
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viic1', $section);
   }
 
@@ -996,8 +967,6 @@ EOS;
       }
       $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
     }
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viic2', $section);
   }
 
@@ -1036,8 +1005,6 @@ EOS;
       }
       $this->addElementNs('foia:TimeIncrementTotalQuantity', $item, $component->get('field_total')->value);
     }
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viic3', $section);
   }
 
@@ -1070,8 +1037,6 @@ EOS;
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:PendingPerfectedRequestsOrganizationAssociation', 'PPR');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viid', $section);
   }
 
@@ -1085,8 +1050,6 @@ EOS;
     $section = $this->addElementNs('foia:OldestPendingRequestSection', $this->root);
     $this->addOldestDays($component_data, $section, 'OPR', 'field_overall_viie_date_', 'field_overall_viie_num_days_');
     $this->addProcessingAssociations($component_data, $section, 'foia:PendingPerfectedRequestsOrganizationAssociation', 'PPR');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viie', $section);
   }
 
@@ -1115,8 +1078,6 @@ EOS;
     $section = $this->addElementNs('foia:ExpeditedProcessingSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:ExpeditedProcessing', 'EP', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:ExpeditedProcessingOrganizationAssociation', 'EP');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viiia', $section);
   }
 
@@ -1143,8 +1104,6 @@ EOS;
     $section = $this->addElementNs('foia:FeeWaiverSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:FeeWaiver', 'FW', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:FeeWaiverOrganizationAssociation', 'FW');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_viiib', $section);
   }
 
@@ -1175,8 +1134,6 @@ EOS;
     $section = $this->addElementNs('foia:PersonnelAndCostSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:PersonnelAndCost', 'PC', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:PersonnelAndCostOrganizationAssociation', 'PC');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_ix', $section);
   }
 
@@ -1199,8 +1156,6 @@ EOS;
     $section = $this->addElementNs('foia:FeesCollectedSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:FeesCollected', 'FC', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:FeesCollectedOrganizationAssociation', 'FC');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_x', $section);
   }
 
@@ -1221,8 +1176,6 @@ EOS;
     $section = $this->addElementNs('foia:SubsectionUsedSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:SubsectionUsed', 'SU', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:SubsectionUsedOrganizationAssociation', 'SU');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xia', $section);
   }
 
@@ -1245,8 +1198,6 @@ EOS;
     $section = $this->addElementNs('foia:SubsectionPostSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:Subsection', 'SP', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:SubsectionPostOrganizationAssociation', 'SP');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xib', $section);
   }
 
@@ -1269,8 +1220,6 @@ EOS;
     $section = $this->addElementNs('foia:BacklogSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:Backlog', 'BK', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:BacklogOrganizationAssociation', 'BK');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xiia', $section);
   }
 
@@ -1297,8 +1246,6 @@ EOS;
     $section = $this->addElementNs('foia:ProcessedConsultationSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:ProcessingStatistics', 'PCN', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingStatisticsOrganizationAssociation', 'PCN');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xiib', $section);
   }
 
@@ -1312,8 +1259,6 @@ EOS;
     $section = $this->addElementNs('foia:OldestPendingConsultationSection', $this->root);
     $this->addOldestDays($component_data, $section, 'OPC', 'field_overall_xiic_date_', 'field_overall_xiic_num_days_');
     $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', 'OPC');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xiic', $section);
   }
 
@@ -1340,8 +1285,6 @@ EOS;
     $section = $this->addElementNs('foia:ProcessedRequestComparisonSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:ProcessingComparison', 'RPC', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingComparisonOrganizationAssociation', 'RPC');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xiid1', $section);
   }
 
@@ -1364,8 +1307,6 @@ EOS;
     $section = $this->addElementNs('foia:BackloggedRequestComparisonSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:BacklogComparison', 'RBC', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:BacklogComparisonOrganizationAssociation', 'RBC');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xiid2', $section);
   }
 
@@ -1392,8 +1333,6 @@ EOS;
     $section = $this->addElementNs('foia:ProcessedAppealComparisonSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:ProcessingComparison', 'APC', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessingComparisonOrganizationAssociation', 'APC');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xiie1', $section);
   }
 
@@ -1416,8 +1355,6 @@ EOS;
     $section = $this->addElementNs('foia:BackloggedAppealComparisonSection', $this->root);
     $this->addComponentData($component_data, $section, 'foia:BacklogComparison', 'ABC', $map, $overall_map);
     $this->addProcessingAssociations($component_data, $section, 'foia:BacklogComparisonOrganizationAssociation', 'ABC');
-
-    // Add footnote.
     $this->addFootnote('field_footnotes_xiie2', $section);
   }
 
