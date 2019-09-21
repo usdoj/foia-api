@@ -1056,25 +1056,18 @@ EOS;
   protected function pendingPerfectedRequestsSection() {
     $component_data = $this->node->field_pending_requests_vii_d_->referencedEntities();
     $section = $this->addElementNs('foia:PendingPerfectedRequestsSection', $this->root);
+
     // Add data for each component.
     foreach ($component_data as $delta => $component) {
-      $item1 = $this->addElementNs('foia:PendingPerfectedRequests', $section);
-      $item1->setAttribute('s:id', 'PPR' . ($delta + 1));
-      $item11 = $this->addElementNs('foia:SimplePendingRequestStatistics', $item1);
-      $this->addElementNs('foia:PendingRequestQuantity', $item11, $component->get('field_sim_pend')->value);
-      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item11, $component->get('field_sim_med')->value);
-      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item11, $component->get('field_sim_avg')->value);
-
-      $item12 = $this->addElementNs('foia:ComplexPendingRequestStatistics', $item1);
-      $this->addElementNs('foia:PendingRequestQuantity', $item12, $component->get('field_comp_pend')->value);
-      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item12, $component->get('field_comp_med')->value);
-      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item12, $component->get('field_comp_avg')->value);
-
-      $item13 = $this->addElementNs('foia:ExpeditedPendingRequestStatistics', $item1);
-      $this->addElementNs('foia:PendingRequestQuantity', $item13, $component->get('field_exp_pend')->value);
-      $this->addElementNs('foia:PendingRequestMedianDaysValue', $item13, $component->get('field_exp_med')->value);
-      $this->addElementNs('foia:PendingRequestAverageDaysValue', $item13, $component->get('field_exp_avg')->value);
+      $item = $this->addElementNs('foia:PendingPerfectedRequests', $section);
+      $item->setAttribute('s:id', 'PPR' . ($delta + 1));
+      $this->addPendingRequests($component, $item, 'field_');
     }
+
+    // Add data for the agency overall.
+    $item = $this->addElementNs('foia:PendingPerfectedRequests', $section);
+    $item->setAttribute('s:id', 'PPR' . 0);
+    $this->addPendingRequests($this->node, $item, 'field_overall_viid_');
 
     $this->addProcessingAssociations($component_data, $section, 'foia:PendingPerfectedRequestsOrganizationAssociation', 'PPR');
     $this->addFootnote('field_footnotes_viid', $section);
