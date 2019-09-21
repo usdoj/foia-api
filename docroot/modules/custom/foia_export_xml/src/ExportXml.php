@@ -156,9 +156,9 @@ EOS;
    *   The parent of the new element.
    */
   protected function addFootnote($field, \DOMElement $parent) {
-    $footnote = SafeMarkup::checkPlain($this->node->get($field)->value);
+    $footnote = trim(strip_tags($this->node->get($field)->value));
     if ($footnote) {
-      $this->addElementNs('foia:FootnoteText', $parent, $footnote);
+      $this->addElementNs('foia:FootnoteText', $parent, SafeMarkup::checkPlain($footnote));
     }
   }
 
