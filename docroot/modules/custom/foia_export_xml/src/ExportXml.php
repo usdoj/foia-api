@@ -5,7 +5,6 @@ namespace Drupal\foia_export_xml;
 use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Entity\Node;
-use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Class ExportXml.
@@ -465,19 +464,12 @@ EOS;
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
       $item->setAttribute('s:id', 'CODR' . ($delta + 1));
-      $field_foia_req_vb2_info = $component->get('field_foia_req_vb2_info')->getValue();
-      if (!empty($field_foia_req_vb2_info)) {
-        // @todo Use getReferenceableEntities() here instead of loading
-        // paragraphs one by one.
-        foreach ($field_foia_req_vb2_info as $field_value) {
-          $item12 = $this->addElementNs('foia:OtherDenialReason', $item);
-          $target_id = $field_value['target_id'];
-          $p = Paragraph::load($target_id);
-          $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item12, $p->get('field_desc_oth_reasons')->value);
-          $this->addElementNs('foia:OtherDenialReasonQuantity', $item12, $p->get('field_num_relied_upon')->value);
-        }
+      foreach ($component->field_foia_req_vb2_info->referencedEntities() as $reason) {
+        $item12 = $this->addElementNs('foia:OtherDenialReason', $item);
+        $this->addElementNs('foia:OtherDenialReasonDescriptionText', $item12, $reason->field_desc_oth_reasons->value);
+        $this->addElementNs('foia:OtherDenialReasonQuantity', $item12, $reason->field_num_relied_upon->value);
       }
-      $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $component->get('field_total')->value);
+      $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $component->field_total->value);
     }
 
     // Add data for the agency overall.
