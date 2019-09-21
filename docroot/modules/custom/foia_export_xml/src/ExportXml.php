@@ -451,11 +451,15 @@ EOS;
   protected function requestDenialOtherReasonSection() {
     $component_data = $this->node->field_foia_requests_vb2->referencedEntities();
     $section = $this->addElementNs('foia:RequestDenialOtherReasonSection', $this->root);
+
+    // Add data for each component.
     foreach ($component_data as $delta => $component) {
       $item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
       $item->setAttribute('s:id', 'CODR' . ($delta + 1));
       $field_foia_req_vb2_info = $component->get('field_foia_req_vb2_info')->getValue();
       if (!empty($field_foia_req_vb2_info)) {
+        // @todo Use getReferenceableEntities() here instead of loading
+        // paragraphs one by one.
         foreach ($field_foia_req_vb2_info as $field_value) {
           $item12 = $this->addElementNs('foia:OtherDenialReason', $item);
           $target_id = $field_value['target_id'];
@@ -466,6 +470,11 @@ EOS;
       }
       $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $component->get('field_total')->value);
     }
+
+    // Add data for the agency overall.
+    $item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+    $item->setAttribute('s:id', 'CODR' . 0);
+    $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $this->node->get('field_overall_vb2_total')->value);
 
     foreach ($component_data as $delta => $component) {
       $item2 = $this->addElementNs('foia:OtherDenialReasonOrganizationAssociation', $section);
