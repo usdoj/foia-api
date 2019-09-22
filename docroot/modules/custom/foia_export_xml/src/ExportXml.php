@@ -270,8 +270,8 @@ EOS;
       $days = $this->node->get($overall_days . $index)->value;
       if (preg_match('/^\<1|\d+/', $days)) {
         $old_item = $this->addElementNs('foia:OldItem', $item);
-        $old_item = $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
-        $old_item = $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
+        $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
+        $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
       }
     }
   }
@@ -1088,7 +1088,7 @@ EOS;
     $component_data = $this->node->field_admin_app_viie->referencedEntities();
     $section = $this->addElementNs('foia:OldestPendingRequestSection', $this->root);
     $this->addOldestDays($component_data, $section, 'OPR', 'field_overall_viie_date_', 'field_overall_viie_num_days_');
-    $this->addProcessingAssociations($component_data, $section, 'foia:PendingPerfectedRequestsOrganizationAssociation', 'PPR');
+    $this->addProcessingAssociations($component_data, $section, 'foia:OldestPendingItemsOrganizationAssociation', 'OPR');
     $this->addFootnote('field_footnotes_viie', $section);
   }
 
