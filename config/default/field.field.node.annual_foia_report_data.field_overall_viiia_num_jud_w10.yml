@@ -6,7 +6,16 @@ dependencies:
     - field.storage.node.field_overall_viiia_num_jud_w10
     - node.type.annual_foia_report_data
   module:
-    - text
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        7b29b08d-f5e6-4f22-a9bd-d5ba2260224e:
+          field: 'field_req_viiia:field_num_jud_w10'
+          weight: '99'
+          this_entity: 0
 id: node.annual_foia_report_data.field_overall_viiia_num_jud_w10
 field_name: field_overall_viiia_num_jud_w10
 entity_type: node
