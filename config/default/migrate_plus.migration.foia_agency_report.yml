@@ -35,6 +35,10 @@ source:
       label: 'Standard abbreviation of the agency submitting the report'
       selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
     -
+      name: field_date_prepared
+      label: 'Date Prepared'
+      selector: 'nc:DocumentCreationDate/nc:Date'
+    -
       name: component
       label: 'Index for this report of the agency component'
       selector: 'nc:Organization/nc:OrganizationSubUnit/@s:id'
@@ -53,19 +57,19 @@ source:
     -
       name: overall_req_pend_start_yr
       label: 'Overall requests pending at the start of the year'
-      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtStartQuantity'
     -
       name: overall_req_received_yr
       label: 'Overall requests received during the year'
-      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsReceivedQuantity'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsReceivedQuantity'
     -
       name: overall_req_processed_yr
       label: 'Overall requests processed during the year'
-      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsProcessedQuantity'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsProcessedQuantity'
     -
       name: overall_req_pend_end_yr
       label: 'Overall requests pending at the end of the year'
-      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtEndQuantity'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtEndQuantity'
     -
       name: footnotes_va
       label: 'V.A Footnotes'
@@ -77,55 +81,55 @@ source:
     -
       name: overall_vb1_no_rec
       label: 'Placeholder Label - V.B. (1) - overall_vb1_no_rec'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
     -
       name: overall_vb1_rec_ref_to_an_comp
       label: 'Placeholder Label - V.B. (1) - rec_ref_to_an_comp'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
     -
       name: overall_vb1_req_withdrawn
       label: 'Placeholder Label - V.B. (1) - req_withdrawn'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
     -
       name: overall_vb1_fee_related_reason
       label: 'Placeholder Label - V.B. (1) - fee_related_reason'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
     -
       name: overall_vb1_rec_not_desc
       label: 'Placeholder Label - V.B. (1) - rec_not_desc'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
     -
       name: overall_vb1_imp_req_oth_reason
       label: 'Placeholder Label - V.B. (1) - imp_req_oth_reason'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
     -
       name: overall_vb1_not_agency_record
       label: 'Placeholder Label - V.B. (1) - not_agency_record'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
     -
       name: overall_vb1_dup_request
       label: 'Placeholder Label - V.B. (1) - dup_request'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
     -
       name: overall_vb1_oth
       label: 'Placeholder Label - V.B. (1) - oth'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
     -
       name: overall_vb1_full_grants
       label: 'Placeholder Label - V.B. (1) - overall_vb1_full_grants'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionFullGrantQuantity'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionFullGrantQuantity'
     -
       name: overall_vb1_part_grants_denials
       label: 'Placeholder Label - V.B. (1) - overall_vb1_part_grants_denials'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionPartialGrantQuantity'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionPartialGrantQuantity'
     -
       name: overall_vb1_full_denials_ex
       label: 'Placeholder Label - V.B. (1) - overall_vb1_full_denials_ex'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionFullExemptionDenialQuantity'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionFullExemptionDenialQuantity'
     -
       name: overall_vb1_total
       label: 'Placeholder Label - V.B. (1) - total'
-      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id="RD0"]/foia:RequestDispositionTotalQuantity'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionTotalQuantity'
     -
       name: footnotes_vb1
       label: 'V.B. (1) Footnotes'
@@ -213,19 +217,19 @@ source:
     -
       name: overall_app_pend_start_yr
       label: 'Overall appeals pending at the start of the year'
-      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id="PA0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtStartQuantity'
     -
       name: overall_app_received_yr
       label: 'Overall appeals received during the year'
-      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id="PA0"]/foia:ProcessingStatisticsReceivedQuantity'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsReceivedQuantity'
     -
       name: overall_app_processed_yr
       label: 'Overall appeals processed during the year'
-      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id="PA0"]/foia:ProcessingStatisticsProcessedQuantity'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsProcessedQuantity'
     -
       name: overall_app_pend_end_yr
       label: 'Overall appeals pending at the end of the year'
-      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id="PA0"]/foia:ProcessingStatisticsPendingAtEndQuantity'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtEndQuantity'
     -
       name: footnotes_via
       label: 'V.A Footnotes'
@@ -237,23 +241,23 @@ source:
     -
       name: field_overall_vib_affirm_on_app
       label: 'Agency Overall Number Affirmed on Appeal'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionAffirmedQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionAffirmedQuantity'
     -
       name: field_overall_vib_part_on_app
       label: 'Agency Overall Number Partially Affirmed & Partially Reversed/Remanded on Appeal'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionPartialQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionPartialQuantity'
     -
       name: field_overall_vib_comp_on_app
       label: 'Agency Overall Number Completely Reversed/Remanded on Appeal'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionReversedQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionReversedQuantity'
     -
       name: field_overall_vib_closed_oth_app
       label: 'Agency Overall Number of Appeals Closed for Other Reasons'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionOtherQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionOtherQuantity'
     -
       name: field_overall_vib_total
       label: 'Agency Overall Total'
-      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id="AD0"]/foia:AppealDispositionTotalQuantity'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionTotalQuantity'
     -
       name: component_vic1
       label: 'Internal index of the agency component'
@@ -323,45 +327,49 @@ source:
       label: 'Internal index of the agency component'
       selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial/@s:id'
     -
+      name: overall_vic2_app_denial_ex
+      label: 'Agency Overall Appeal Based Solely on Denial of Request for Expedited Processing'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ExpeditedDenial"]'
+    -
       name: overall_vic2_no_rec
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_no_rec'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
     -
       name: overall_vic2_rec_ref_to_an_comp
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_rec_ref_to_an_comp'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
     -
       name: overall_vic2_req_withdrawn
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_req_withdrawn'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
     -
       name: overall_vic2_fee_related_reason
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_fee_related_reason'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
     -
       name: overall_vic2_rec_not_desc
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_rec_not_desc'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
     -
       name: overall_vic2_imp_req_oth_reason
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_imp_req_oth_reason'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
     -
       name: overall_vic2_not_agency_record
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_not_agency_record'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
     -
       name: overall_vic2_dup_request
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_dup_request'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
     -
       name: overall_vic2_oth
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_oth'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
     -
       name: overall_vic2_req_in_lit
       label: 'Placeholder Label - VI.C. (2) - overall_vic2_req_in_lit'
-      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id="ANE0"]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "InLitigation"]'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "InLitigation"]'
     -
       name: footnotes_vic2
       label: 'VI.C. (2) Footnotes'
@@ -385,23 +393,111 @@ source:
     -
       name: field_overall_vic4_med_num_days
       label: 'Overall median number of days response time for admin appeals'
-      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_vic4_avg_num_days
       label: 'Overall average number of days response time for admin appeals'
-      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_vic4_low_num_days
       label: 'Overall lowest number of days response time for admin appeals'
-      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_vic4_high_num_days
       label: 'Overall highest number of days response time for admin appeals'
-      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id="ART0"]/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeHighestDaysValue'
     -
       name: field_footnotes_vic4
       label: 'Response Time for Administrative Appeals Footnote'
       selector: 'foia:AppealResponseTimeSection/foia:FootnoteText'
+    -
+      name: component_vic5
+      label: 'Internal index of the agency component'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems/@s:id'
+    -
+      name: field_overall_vic5_num_day_1
+      label: 'Overall number days pending 1'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_2
+      label: 'Overall number days pending 2'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_3
+      label: 'Overall number days pending 3'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_4
+      label: 'Overall number days pending 4'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_5
+      label: 'Overall number days pending 5'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_6
+      label: 'Overall number days pending 6'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_7
+      label: 'Overall number days pending 7'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_8
+      label: 'Overall number days pending 8'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_9
+      label: 'Overall number days pending 9'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_10
+      label: 'Overall number days pending 10'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_date_1
+      label: 'Overall date of receipt 1'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_2
+      label: 'Overall date of receipt 2'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_3
+      label: 'Overall date of receipt 3'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_4
+      label: 'Overall date of receipt 4'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_5
+      label: 'Overall date of receipt 5'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_6
+      label: 'Overall date of receipt 6'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_7
+      label: 'Overall date of receipt 7'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_8
+      label: 'Overall date of receipt 8'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_9
+      label: 'Overall date of receipt 9'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_10
+      label: 'Overall date of receipt 10'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemReceiptDate'
+    -
+      name: field_footnotes_vic5
+      label: 'VI.C(5) Footnotes'
+      selector: 'foia:OldestPendingAppealSection/foia:FootnoteText'
     -
       name: component_viia
       label: 'Internal index of the agency component'
@@ -409,51 +505,51 @@ source:
     -
       name: field_overall_viia_sim_med
       label: 'Overall Processed Requests - Simple - Median Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_sim_avg
       label: 'Overall Processed Requests - Simple - Average Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_sim_low
       label: 'Overall Processed Requests - Simple - Lowest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_sim_high
       label: 'Overall Processed Requests - Simple - Highest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viia_comp_med
       label: 'Overall Processed Requests - Complex - Median Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_comp_avg
       label: 'Overall Processed Requests - Complex - Average Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_comp_low
       label: 'Overall Processed Requests - Complex - Lowest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_comp_high
       label: 'Overall Processed Requests - Complex - Highest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viia_exp_med
       label: 'Overall Processed Requests - Expedited - Median Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viia_exp_avg
       label: 'Overall Processed Requests - Expedited - Average Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viia_exp_low
       label: 'Overall Processed Requests - Expedited - Lowest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viia_exp_high
       label: 'Overall Processed Requests - Expedited - Highest Response Time'
-      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id="PRT0"]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_footnotes_viia
       label: 'VII.A Footnotes'
@@ -465,51 +561,51 @@ source:
     -
       name: field_overall_viib_sim_med
       label: 'Information Granted Requests - Simple - Median Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viib_sim_avg
       label: 'Information Granted Requests - Simple - Average Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viib_sim_low
       label: 'Information Granted Requests - Simple - Lowest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viib_sim_high
       label: 'Information Granted Requests - Simple - Highest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viib_comp_med
       label: 'Information Granted Requests - Complex - Median Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viib_comp_avg
       label: 'Information Granted Requests - Complex - Average Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viib_comp_low
       label: 'Information Granted Requests - Complext - Lowest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viib_comp_high
       label: 'Information Granted Requests - Complex - Highest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_overall_viib_exp_med
       label: 'Information Granted Requests - Expedited - Median Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
     -
       name: field_overall_viib_exp_avg
       label: 'Information Granted Requests - Expedited - Average Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
     -
       name: field_overall_viib_exp_low
       label: 'Information Granted Requests - Expedited - Lowest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
     -
       name: field_overall_viib_exp_high
       label: 'Information Granted Requests - Expedited - Highest Response Time'
-      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id="IGR0"]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
     -
       name: field_footnotes_viib
       label: 'VII.B Footnotes'
@@ -713,39 +809,39 @@ source:
     -
       name: field_overall_viid_sim_med
       label: 'Pending Requests - Simple Number of Days - Median'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestMedianDaysValue'
     -
       name: field_overall_viid_sim_avg
       label: 'Pending Requests - Simple Number of Days - Average'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestAverageDaysValue'
     -
       name: field_overall_viid_sim_pend
       label: 'Pending Requests - Simple Number of Days - Pending'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:SimplePendingRequestStatistics/foia:PendingRequestQuantity'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestQuantity'
     -
       name: field_overall_viid_comp_med
       label: 'Pending Requests - Complex Number of Days - Median'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
     -
       name: field_overall_viid_comp_avg
       label: 'Pending Requests - Complex Number of Days - Average'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
     -
       name: field_overall_viid_comp_pend
       label: 'Pending Requests - Complex Number of Days - Pending'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ComplexPendingRequestStatistics/foia:PendingRequestQuantity'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestQuantity'
     -
       name: field_overall_viid_exp_med
       label: 'Pending Requests - Expedited Number of Days - Median'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
     -
       name: field_overall_viid_exp_avg
       label: 'Pending Requests - Expedited Number of Days - Average'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
     -
       name: field_overall_viid_exp_pend
       label: 'Pending Requests - Expedited Number of Days - Pending'
-      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id="PPR0"]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestQuantity'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestQuantity'
     -
       name: field_footnotes_viid
       label: 'VII.D Footnotes'
@@ -845,23 +941,23 @@ source:
     -
       name: field_overall_viiia_num_grant
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_grant'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:RequestGrantedQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestGrantedQuantity'
     -
       name: field_overall_viiia_num_denied
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_deniedage'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:RequestDeniedQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDeniedQuantity'
     -
       name: field_overall_viiia_med_days_jud
       label: 'Pending Requests - Simple Number of Days - Pending'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationMedianDaysValue'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationMedianDaysValue'
     -
       name: field_overall_viiia_avg_days_jud
       label: 'Placeholder Label - VIIIA - field_overall_viiia_avg_days_jud'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationAverageDaysValue'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationAverageDaysValue'
     -
       name: field_overall_viiia_num_jud_w10
       label: 'Placeholder Label - VIIIA - field_overall_viiia_num_jud_w10'
-      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id="EP0"]/foia:AdjudicationWithinTenDaysQuantity'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationWithinTenDaysQuantity'
     -
       name: field_footnotes_viiia
       label: 'VIII.A Footnotes'
@@ -873,19 +969,19 @@ source:
     -
       name: field_overall_viiib_num_grant
       label: 'Placeholder Label - VIIIB - field_overall_viiib_num_grant'
-      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:RequestGrantedQuantity'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestGrantedQuantity'
     -
       name: field_overall_viiib_num_denied
       label: 'Placeholder Label - VIIIB - field_overall_viiib_num_deniedage'
-      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:RequestDeniedQuantity'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDeniedQuantity'
     -
       name: field_overall_viiib_med_days_jud
       label: 'Pending Requests - Simple Number of Days - field_overall_viiib_med_days_jud'
-      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:AdjudicationMedianDaysValue'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationMedianDaysValue'
     -
       name: field_overall_viiib_avg_days_jud
       label: 'Placeholder Label - VIIIB - field_overall_viiib_avg_days_jud'
-      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id="FW0"]/foia:AdjudicationAverageDaysValue'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationAverageDaysValue'
     -
       name: field_footnotes_viiib
       label: 'VIII.B Footnotes'
@@ -897,27 +993,27 @@ source:
     -
       name: field_overall_ix_full_emp
       label: 'Placeholder Label - IX - field_overall_ix_full_emp'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:FullTimeEmployeeQuantity'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FullTimeEmployeeQuantity'
     -
       name: field_overall_ix_eq_full_emp
       label: 'Placeholder Label - IX - field_overall_ix_eq_full_emp'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:EquivalentFullTimeEmployeeQuantity'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:EquivalentFullTimeEmployeeQuantity'
     -
       name: field_overall_ix_total_staff
       label: 'Pending Requests - Simple Number of Days - field_overall_ix_total_staff'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:TotalFullTimeStaffQuantity'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TotalFullTimeStaffQuantity'
     -
       name: field_overall_ix_proc_costs
       label: 'Placeholder Label - IX - field_overall_ix_proc_costs'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:ProcessingCostAmount'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingCostAmount'
     -
       name: field_overall_ix_lit_costs
       label: 'Placeholder Label - IX - field_overall_ix_lit_costs'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:LitigationCostAmount'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:LitigationCostAmount'
     -
       name: field_overall_ix_total_costs
       label: 'Placeholder Label - IX - field_overall_ix_total_costs'
-      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id="PC0"]/foia:TotalCostAmount'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TotalCostAmount'
     -
       name: field_footnotes_ix
       label: 'IX Footnotes'
@@ -929,11 +1025,11 @@ source:
     -
       name: field_overall_x_total_fees
       label: 'Placeholder Label - X - field_overall_x_total_fees'
-      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id="FC0"]/foia:FeesCollectedAmount'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id=../foia:FeesCollectedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FeesCollectedAmount'
     -
       name: field_overall_x_perc_costs
       label: 'Placeholder Label - X - field_overall_x_perc_costs'
-      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id="FC0"]/foia:FeesCollectedCostPercent'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id=../foia:FeesCollectedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FeesCollectedCostPercent'
     -
       name: field_footnotes_x
       label: 'X Footnotes'
@@ -945,7 +1041,7 @@ source:
     -
       name: field_overall_xia_sub_used
       label: 'Placeholder Label - XI.A - field_overall_xia_sub_used'
-      selector: 'foia:SubsectionUsedSection/foia:SubsectionUsed[@s:id="SU0"]/foia:TimesUsedQuantity'
+      selector: 'foia:SubsectionUsedSection/foia:SubsectionUsed[@s:id=../foia:SubsectionUsedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimesUsedQuantity'
     -
       name: field_footnotes_xia
       label: 'XI.A Footnotes'
@@ -957,11 +1053,11 @@ source:
     -
       name: field_overall_xib_rec_post_foia
       label: 'Placeholder Label - XI.B - field_overall_xib_rec_post_foia'
-      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id="SP0"]/foia:PostedbyFOIAQuantity'
+      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id=../foia:SubsectionPostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:PostedbyFOIAQuantity'
     -
       name: field_overall_xib_rec_post_prog
       label: 'Placeholder Label - XI.B - field_overall_xib_rec_post_prog'
-      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id="SP0"]/foia:PostedbyProgramQuantity'
+      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id=../foia:SubsectionPostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:PostedbyProgramQuantity'
     -
       name: field_footnotes_xib
       label: 'XI.B Footnotes'
@@ -973,11 +1069,11 @@ source:
     -
       name: field_overall_xiia_back_req_end_
       label: 'Placeholder Label - XII.A - field_overall_xiia_back_req_end_'
-      selector: 'foia:BacklogSection/foia:Backlog[@s:id="BK0"]/foia:PostedbyFOIAQuantity'
+      selector: 'foia:BacklogSection/foia:Backlog[@s:id=../foia:BacklogOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BackloggedRequestQuantity'
     -
       name: field_overall_xiia_back_app_end_
       label: 'Placeholder Label - XII.A - field_overall_xiia_back_app_end_'
-      selector: 'foia:BacklogSection/foia:Backlog[@s:id="BK0"]/foia:PostedbyProgramQuantity'
+      selector: 'foia:BacklogSection/foia:Backlog[@s:id=../foia:BacklogOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BackloggedAppealQuantity'
     -
       name: field_footnotes_xiia
       label: 'XII.A Footnotes'
@@ -989,19 +1085,19 @@ source:
     -
       name: field_overall_xiib_pend_start_yr
       label: 'Placeholder Label - XII.B - field_overall_xiib_pend_start_yr'
-      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id="PCN0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtStartQuantity'
     -
       name: field_overall_xiib_proc_start_yr
       label: 'Placeholder Label - XII.B - field_overall_xiib_proc_start_yr'
-      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id="PCN0"]/foia:ProcessingStatisticsReceivedQuantity'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsProcessedQuantity'
     -
       name: field_overall_xiib_con_during_yr
       label: 'Placeholder Label - XII.B - field_overall_xiib_con_during_yr'
-      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id="PCN0"]/foia:ProcessingStatisticsProcessedQuantity'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsReceivedQuantity'
     -
       name: field_overall_xiib_pend_end_yr
       label: 'Placeholder Label - XII.B - field_overall_xiib_pend_end_yr'
-      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id="PCN0"]/foia:ProcessingStatisticsPendingAtEndQuantity'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtEndQuantity'
     -
       name: field_footnotes_xiib
       label: 'XII.B Footnotes'
@@ -1101,19 +1197,19 @@ source:
     -
       name: field_overall_xiid1_received_las
       label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_received_las'
-      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id="RPC0"]/foia:ItemsReceivedLastYearQuantity'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedLastYearQuantity'
     -
       name: field_overall_xiid1_received_cur
       label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_received_cur'
-      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id="RPC0"]/foia:ItemsReceivedCurrentYearQuantity'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedCurrentYearQuantity'
     -
       name: field_overall_xiid1_proc_last_yr
       label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_proc_last_yr'
-      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id="RPC0"]/foia:ItemsProcessedLastYearQuantity'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedLastYearQuantity'
     -
       name: field_overall_xiid1_proc_cur_yr
       label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_proc_cur_yr'
-      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id="RPC0"]/foia:ItemsProcessedCurrentYearQuantity'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedCurrentYearQuantity'
     -
       name: field_footnotes_xiid1
       label: 'XII.D.1 Footnotes'
@@ -1125,11 +1221,11 @@ source:
     -
       name: field_overall_xiid2_back_prev_yr
       label: 'Placeholder Label - XII.D.2 - field_overall_xiid2_back_prev_yr'
-      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id="RBC0"]/foia:ItemsReceivedLastYearQuantity'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogLastYearQuantity'
     -
       name: field_overall_xiid2_back_cur_yr
       label: 'Placeholder Label - XII.D.2 - field_overall_xiid2_back_cur_yr'
-      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id="RBC0"]/foia:ItemsReceivedCurrentYearQuantity'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogCurrentYearQuantity'
     -
       name: field_footnotes_xiid2
       label: 'XII.D.2 Footnotes'
@@ -1141,19 +1237,19 @@ source:
     -
       name: field_overall_xiie1_received_las
       label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_received_las'
-      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsReceivedLastYearQuantity'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedLastYearQuantity'
     -
       name: field_overall_xiie1_received_cur
       label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_received_cur'
-      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsReceivedCurrentYearQuantity'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedCurrentYearQuantity'
     -
       name: field_overall_xiie1_proc_last_yr
       label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_proc_last_yr'
-      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsProcessedLastYearQuantity'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedLastYearQuantity'
     -
       name: field_overall_xiie1_proc_cur_yr
       label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_proc_cur_yr'
-      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id="APC0"]/foia:ItemsProcessedCurrentYearQuantity'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedCurrentYearQuantity'
     -
       name: field_footnotes_xiie1
       label: 'XII.E.1 Footnotes'
@@ -1165,11 +1261,11 @@ source:
     -
       name: overall_xiie2_back_prev_yr
       label: 'Overall requests pending at the start of the year'
-      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id="ABC0"]/foia:BacklogLastYearQuantity'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogLastYearQuantity'
     -
       name: overall_xiie2_back_cur_yr
       label: 'Overall requests received during the year'
-      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id="ABC0"]/foia:BacklogCurrentYearQuantity'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogCurrentYearQuantity'
     -
       name: footnotes_xiie2
       label: 'XII.E 2 Footnotes'
@@ -1218,6 +1314,7 @@ process:
   revision_log:
     plugin: default_value
     default_value: 'Import from NIEM-XML data'
+  field_date_prepared: field_date_prepared
   field_agency_components:
     -
       plugin: foia_array_pad
@@ -1331,18 +1428,18 @@ process:
           index:
             - '1'
   field_overall_vb1_no_rec: overall_vb1_no_rec
-  field_overall_vb1_rec_ref_to_an_comp: overall_vb1_rec_ref_to_an_comp
+  field_overall_vb1_rec_ref_to_an_: overall_vb1_rec_ref_to_an_comp
   field_overall_vb1_req_withdrawn: overall_vb1_req_withdrawn
-  field_overall_vb1_fee_related_reason: overall_vb1_fee_related_reason
+  field_overall_vb1_fee_related_re: overall_vb1_fee_related_reason
   field_overall_vb1_rec_not_desc: overall_vb1_rec_not_desc
-  field_overall_vb1_imp_req_oth_reason: overall_vb1_imp_req_oth_reason
-  field_overall_vb1_not_agency_record: overall_vb1_not_agency_record
+  field_overall_vb1_imp_req_oth_re: overall_vb1_imp_req_oth_reason
+  field_overall_vb1_not_agency_rec: overall_vb1_not_agency_record
   field_overall_vb1_dup_request: overall_vb1_dup_request
   field_overall_vb1_oth: overall_vb1_oth
   field_overall_vb1_total: overall_vb1_total
   field_overall_vb1_full_grants: overall_vb1_full_grants
-  field_overall_vb1_part_grants_denials: overall_vb1_part_grants_denials
-  field_overall_vb1_full_denials_ex: overall_vb1_full_denials_ex
+  field_overall_vb1_part_grants_de: overall_vb1_part_grants_denials
+  field_overall_vb1_full_denials_e: overall_vb1_full_denials_ex
   field_footnotes_vb1: footnotes_vb1
   field_foia_requests_vb2:
     -
@@ -1560,14 +1657,15 @@ process:
           source: '@combined'
           index:
             - '1'
+  field_overall_vic2_app_denial_ex: overall_vic2_app_denial_ex
   field_overall_vic2_no_rec: overall_vic2_no_rec
-  field_overall_vic2_rec_ref_to_an_comp: overall_vic2_rec_ref_to_an_comp
+  field_overall_vic2_rec_refer_ini: overall_vic2_rec_ref_to_an_comp
   field_overall_vic2_req_withdrawn: overall_vic2_req_withdrawn
-  field_overall_vic2_fee_related_reason: overall_vic2_fee_related_reason
+  field_overall_vic2_fee_rel_reas: overall_vic2_fee_related_reason
   field_overall_vic2_rec_not_desc: overall_vic2_rec_not_desc
-  field_overall_vic2_imp_req_oth_reason: overall_vic2_imp_req_oth_reason
-  field_overall_vic2_not_agency_record: overall_vic2_not_agency_record
-  field_overall_vic2_dup_request: overall_vic2_dup_request
+  field_overall_vic2_imp_req_oth: overall_vic2_imp_req_oth_reason
+  field_overall_vic2_not_agency_re: overall_vic2_not_agency_record
+  field_overall_vic2_dup_req: overall_vic2_dup_request
   field_overall_vic2_oth: overall_vic2_oth
   field_overall_vic2_req_in_lit: overall_vic2_req_in_lit
   field_footnotes_vic2: footnotes_vic2
@@ -1636,6 +1734,56 @@ process:
   field_overall_vic4_low_num_days: field_overall_vic4_low_num_days
   field_overall_vic4_med_num_days: field_overall_vic4_med_num_days
   field_footnotes_vic4: field_footnotes_vic4
+  field_admin_app_vic5:
+    -
+      plugin: foia_array_pad
+      source: component_vic5
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vic5_oldest_pending
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vic5_num_day_1: field_overall_vic5_num_day_1
+  field_overall_vic5_num_day_2: field_overall_vic5_num_day_2
+  field_overall_vic5_num_day_3: field_overall_vic5_num_day_3
+  field_overall_vic5_num_day_4: field_overall_vic5_num_day_4
+  field_overall_vic5_num_day_5: field_overall_vic5_num_day_5
+  field_overall_vic5_num_day_6: field_overall_vic5_num_day_6
+  field_overall_vic5_num_day_7: field_overall_vic5_num_day_7
+  field_overall_vic5_num_day_8: field_overall_vic5_num_day_8
+  field_overall_vic5_num_day_9: field_overall_vic5_num_day_9
+  field_overall_vic5_num_day_10: field_overall_vic5_num_day_10
+  field_overall_vic5_date_1: field_overall_vic5_date_1
+  field_overall_vic5_date_2: field_overall_vic5_date_2
+  field_overall_vic5_date_3: field_overall_vic5_date_3
+  field_overall_vic5_date_4: field_overall_vic5_date_4
+  field_overall_vic5_date_5: field_overall_vic5_date_5
+  field_overall_vic5_date_6: field_overall_vic5_date_6
+  field_overall_vic5_date_7: field_overall_vic5_date_7
+  field_overall_vic5_date_8: field_overall_vic5_date_8
+  field_overall_vic5_date_9: field_overall_vic5_date_9
+  field_overall_vic5_date_10: field_overall_vic5_date_10
+  field_footnotes_vic5: field_footnotes_vic5
   field_proc_req_viia:
     -
       plugin: foia_array_pad
@@ -1970,6 +2118,7 @@ process:
             - '1'
   field_overall_viiia_num_grant: field_overall_viiia_num_grant
   field_overall_viiia_num_denied: field_overall_viiia_num_denied
+  field_overall_viiia_med_days_jud: field_overall_viiia_med_days_jud
   field_overall_viiia_avg_days_jud: field_overall_viiia_avg_days_jud
   field_overall_viiia_num_jud_w10: field_overall_viiia_num_jud_w10
   field_footnotes_viiia: field_footnotes_viiia
@@ -2004,6 +2153,7 @@ process:
             - '1'
   field_overall_viiib_num_grant: field_overall_viiib_num_grant
   field_overall_viiib_num_denied: field_overall_viiib_num_denied
+  field_overall_viiib_med_days_jud: field_overall_viiib_med_days_jud
   field_overall_viiib_avg_days_jud: field_overall_viiib_avg_days_jud
   field_footnotes_viiib: field_footnotes_viiib
   field_foia_pers_costs_ix:
@@ -2406,6 +2556,7 @@ migration_dependencies:
     - foia_viic2_complex_response
     - foia_viic3_expedited_response
     - foia_viid_pending_requests
+    - foia_vic5_oldest_pending
     - foia_viie_oldest_pending
     - foia_viiia_expedited_processing
     - foia_viiib_fee_waiver
