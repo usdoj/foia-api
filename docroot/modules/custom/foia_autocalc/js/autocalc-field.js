@@ -52,7 +52,7 @@
         $(convertToFieldSelector({ field: fieldName }) + ' input').val(totalValues[selector]).trigger('change');
       }
       else {
-        $("div[data-drupal-selector='" + selector + "'] " + convertToFieldSelector({ field: fieldName }) + ' input').val(totalValues[selector]).trigger('change');
+        $('div[data-drupal-selector="' + selector + '"] ' + convertToFieldSelector({ field: fieldName }) + ' input').val(totalValues[selector]).trigger('change');
       }
     });
   }
