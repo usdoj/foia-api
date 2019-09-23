@@ -89,3 +89,32 @@ function foia_ui_form_node_annual_foia_report_data_form_alter(&$form, FormStateI
     ],
   ];
 }
+
+/**
+ * Implements template_preprocess_details().
+ */
+function foia_ui_preprocess_details(&$variables) {
+  if (isset($variables['element']['#entity_type'])) {
+    $entity_type = $variables['element']['#entity_type'];
+    if (isset($variables['element']['#bundle'])) {
+      $bundle = $variables['element']['#bundle'];
+      $problem_types = [
+        'processed_requests_vii',
+        'oldest_days',
+        'foia_xii_received_proc',
+      ];
+      if ($entity_type == 'paragraph' && in_array($bundle, $problem_types)) {
+        $context_id = '';
+        foreach ($variables['element'] as $key => $value) {
+          if ('field' == substr($key, 0, 5)) {
+            $context_id = $value['#parents'][0];
+            break;
+          }
+        }
+        // Append parent form ID to generate unique fragment IDs on nested
+        // vertical tabs using paragraphs.
+        $variables['attributes']['id'] = $variables['attributes']['id'] . '--' . $context_id;
+      }
+    }
+  }
+}
