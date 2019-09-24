@@ -301,10 +301,30 @@
         event.preventDefault();
       });
 
+      // To validate select drop-downs as required, they must have an
+      // empty machine value.
+      $("select > option[value='_none']").val('');
+
+      // Empty drop-downs can still be submitted though, so restore
+      // Drupal's default empty drop-down value to avoid "An illegal
+      // choice has been detected" error in that scenario.
+      $('input#edit-submit').click(function() {
+        $("select > option[value='']").val('_none');
+      });
+
       /**
        * Validation rules
+       *
+       * Note: All validation rules can be bypassed on submit.
        */
-      // V.A. FOIA Requests
+      // Require all Annual Report fields.
+      $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-revision-log-0-value').each(function() {
+        $(this).rules( "add", {
+        required: true,
+        });
+      });
+
+       // V.A. FOIA Requests
       $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function() {
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
