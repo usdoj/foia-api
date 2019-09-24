@@ -19,7 +19,7 @@ Feature: Annual FOIA Report Data Feature
     And for 'Title' I enter '2019 Test Agency 1 Annual FOIA Report'
     And for 'Agency' I enter 'Federal Testing Agency'
     And for 'FOIA Annual Report Year' I enter '2019'
-    And for 'field_date_prepared[0][value][date]' I enter '08/22/2019'
+    And for 'Date Prepared' I enter '08/22/2019'
     When I press the 'Save' button
     Then I should see the following success messages:
       | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been created. |

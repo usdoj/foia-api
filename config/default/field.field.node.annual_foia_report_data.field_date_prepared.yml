@@ -1,4 +1,4 @@
-uuid: 7a8dd03e-1901-4d2b-bab2-494f1b70b9ec
+uuid: 0cb2fc29-473a-4448-ad2f-2e0de8a848ed
 langcode: en
 status: true
 dependencies:
@@ -6,16 +6,21 @@ dependencies:
     - field.storage.node.field_date_prepared
     - node.type.annual_foia_report_data
   module:
-    - datetime
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_date_prepared
 field_name: field_date_prepared
 entity_type: node
 bundle: annual_foia_report_data
 label: 'Date Prepared'
-description: ''
+description: 'Date must be formatted as YYYY-MM-DD<br><em>E.g. 1979-01-29</em>'
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: datetime
+field_type: string

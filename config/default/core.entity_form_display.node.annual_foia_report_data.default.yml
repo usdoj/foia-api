@@ -321,7 +321,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - datetime
     - entity_reference_views_select
     - field_group
     - paragraphs
@@ -1993,10 +1992,12 @@ content:
     type: erviews_options_buttons
     region: content
   field_date_prepared:
-    weight: 6
-    settings: {  }
+    weight: 161
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: datetime_default
+    type: string_textfield
     region: content
   field_fees_x:
     type: entity_reference_paragraphs
