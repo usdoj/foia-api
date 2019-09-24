@@ -35,6 +35,17 @@ class ExportXml {
   protected $node;
 
   /**
+   * Is this a centralized agency?
+   *
+   * A centralized agency is one with only one component, corresponding to the
+   * agency itself. For such agencies, we do not need to add agency-overall data
+   * to the report since those data are already there.
+   *
+   * @var bool
+   */
+  protected $isCentralized = FALSE;
+
+  /**
    * A map of component IDs to local identifiers.
    *
    * Keys are node IDs for agency_component nodes. Values are identifiers used
@@ -62,6 +73,13 @@ class ExportXml {
    */
   public function __construct(Node $node) {
     $this->node = $node;
+
+    // Check whether it is a centralized agency.
+    $component_data = $node->field_agency_components->referencedEntities();
+    if (count($component_data) == 1) {
+      $this->isCentralized = $component_data[0]->field_is_centralized->value;
+    }
+
     $date = $this->node->field_date_prepared->value;
     $snippet = <<<EOS
 <?xml version="1.0"?>
