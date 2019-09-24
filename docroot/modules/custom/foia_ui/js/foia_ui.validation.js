@@ -443,11 +443,11 @@
         });
       });
 
-      // VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS
-      $( "#edit-field-overall-vic3-num-relied-up-0-value").rules( "add", {
+      // VI.C.(3). Agency Overall Total
+      $( "#edit-field-overall-vic3-total-0-value").rules( "add", {
         equalTo: "#edit-field-overall-vic2-oth-0-value",
         messages: {
-          equalTo: "Must match VI. C. (2) \"Agency Overall Other\""
+          equalTo: "Must match VI.C.(2) \"Agency Overall Other\""
         }
       });
 
