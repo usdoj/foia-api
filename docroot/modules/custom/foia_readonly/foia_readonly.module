@@ -239,7 +239,7 @@ function foia_readonly_disable_node_field(&$form, FormStateInterface $form_state
 
   foreach ($fieldsToDisable as $fieldName) {
     $fullFieldName = 'field_' . $fieldName;
-    $form[$fullFieldName]['widget'][0]['value']['#attributes']['disabled'] = TRUE;
+    $form[$fullFieldName]['widget'][0]['value']['#attributes']['readonly'] = TRUE;
   }
 }
 
@@ -256,7 +256,7 @@ function foia_readonly_disable_paragraph_field(array &$elements, $field_name) {
     if (array_key_exists($delta, $elements)
       && array_key_exists('subform', $elements[$delta])
       && array_key_exists($field_name, $elements[$delta]['subform'])) {
-      $elements[$delta]['subform'][$field_name]['widget'][0]['value']['#attributes']['disabled'] = TRUE;
+      $elements[$delta]['subform'][$field_name]['widget'][0]['value']['#attributes']['readonly'] = TRUE;
     }
   }
 }
