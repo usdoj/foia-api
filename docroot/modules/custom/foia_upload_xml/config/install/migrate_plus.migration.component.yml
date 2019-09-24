@@ -17,7 +17,7 @@ source:
     nc: 'http://niem.gov/niem/niem-core/2.0'
     s: 'http://niem.gov/niem/structures/2.0'
     xsi: 'http://www.w3.org/2001/XMLSchema-instance'
-  item_selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationSubUnit'
+  item_selector: '/iepd:FoiaAnnualReport/nc:Organization|/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationSubUnit'
   fields:
     -
       name: report_year

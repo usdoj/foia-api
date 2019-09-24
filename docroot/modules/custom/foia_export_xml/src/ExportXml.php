@@ -35,6 +35,17 @@ class ExportXml {
   protected $node;
 
   /**
+   * Is this a centralized agency?
+   *
+   * A centralized agency is one with only one component, corresponding to the
+   * agency itself. For such agencies, we do not need to add agency-overall data
+   * to the report since those data are already there.
+   *
+   * @var bool
+   */
+  protected $isCentralized = FALSE;
+
+  /**
    * A map of component IDs to local identifiers.
    *
    * Keys are node IDs for agency_component nodes. Values are identifiers used
@@ -62,6 +73,13 @@ class ExportXml {
    */
   public function __construct(Node $node) {
     $this->node = $node;
+
+    // Check whether it is a centralized agency.
+    $component_data = $node->field_agency_components->referencedEntities();
+    if (count($component_data) == 1) {
+      $this->isCentralized = $component_data[0]->field_is_centralized->value;
+    }
+
     $date = $this->node->field_date_prepared->value;
     $snippet = <<<EOS
 <?xml version="1.0"?>
@@ -220,10 +238,12 @@ EOS;
     }
 
     // Add overall data.
-    $item = $this->addElementNs($data_tag, $parent);
-    $item->setAttribute('s:id', $prefix . '0');
-    foreach ($overall_map as $field => $tag) {
-      $this->addElementNs($tag, $item, $this->node->get($field)->value);
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs($data_tag, $parent);
+      $item->setAttribute('s:id', $prefix . '0');
+      foreach ($overall_map as $field => $tag) {
+        $this->addElementNs($tag, $item, $this->node->get($field)->value);
+      }
     }
   }
 
@@ -263,15 +283,17 @@ EOS;
     }
 
     // Add overall data.
-    $item = $this->addElementNs('foia:OldestPendingItems', $parent);
-    $item->setAttribute('s:id', $prefix . 0);
-    foreach (range(1, 10) as $index) {
-      $date = $this->node->get($overall_date . $index)->value;
-      $days = $this->node->get($overall_days . $index)->value;
-      if (preg_match('/^\<1|\d+/', $days)) {
-        $old_item = $this->addElementNs('foia:OldItem', $item);
-        $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
-        $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:OldestPendingItems', $parent);
+      $item->setAttribute('s:id', $prefix . 0);
+      foreach (range(1, 10) as $index) {
+        $date = $this->node->get($overall_date . $index)->value;
+        $days = $this->node->get($overall_days . $index)->value;
+        if (preg_match('/^\<1|\d+/', $days)) {
+          $old_item = $this->addElementNs('foia:OldItem', $item);
+          $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
+          $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
+        }
       }
     }
   }
@@ -414,13 +436,15 @@ EOS;
     }
 
     // Add processing association for the agency overall.
-    $matchup = $this->addElementNs($tag, $parent);
-    $this
-      ->addElementNs('foia:ComponentDataReference', $matchup)
-      ->setAttribute('s:ref', $prefix . 0);
-    $this
-      ->addElementNs('nc:OrganizationReference', $matchup)
-      ->setAttribute('s:ref', 'ORG' . 0);
+    if (!$this->isCentralized) {
+      $matchup = $this->addElementNs($tag, $parent);
+      $this
+        ->addElementNs('foia:ComponentDataReference', $matchup)
+        ->setAttribute('s:ref', $prefix . 0);
+      $this
+        ->addElementNs('nc:OrganizationReference', $matchup)
+        ->setAttribute('s:ref', 'ORG' . 0);
+    }
   }
 
   /**
@@ -439,14 +463,20 @@ EOS;
 
     // Add abbreviation and name for each component and populate
     // $this->componentMap.
-    foreach ($this->node->field_agency_components->referencedEntities() as $delta => $component) {
-      $local_id = 'ORG' . ($delta + 1);
-      $this->componentMap[$component->id()] = $local_id;
+    if ($this->isCentralized) {
+      $component = $this->node->field_agency_components->referencedEntities()[0];
+      $this->componentMap[$component->id()] = 'ORG0';
+    }
+    else {
+      foreach ($this->node->field_agency_components->referencedEntities() as $delta => $component) {
+        $local_id = 'ORG' . ($delta + 1);
+        $this->componentMap[$component->id()] = $local_id;
 
-      $suborg = $this->addElementNs('nc:OrganizationSubUnit', $org);
-      $suborg->setAttribute('s:id', $local_id);
-      $item = $this->addElementNs('nc:OrganizationAbbreviationText', $suborg, $component->field_agency_comp_abbreviation->value);
-      $item = $this->addElementNs('nc:OrganizationName', $suborg, $component->label());
+        $suborg = $this->addElementNs('nc:OrganizationSubUnit', $org);
+        $suborg->setAttribute('s:id', $local_id);
+        $item = $this->addElementNs('nc:OrganizationAbbreviationText', $suborg, $component->field_agency_comp_abbreviation->value);
+        $item = $this->addElementNs('nc:OrganizationName', $suborg, $component->label());
+      }
     }
 
     // Add the fiscal year.
@@ -589,13 +619,15 @@ EOS;
     }
 
     // Add overall data.
-    $item = $this->addElementNs('foia:RequestDisposition', $section);
-    $item->setAttribute('s:id', 'RD' . 0);
-    foreach ($overall_map as $field => $tag) {
-      $this->addElementNs($tag, $item, $this->node->get($field)->value);
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:RequestDisposition', $section);
+      $item->setAttribute('s:id', 'RD' . 0);
+      foreach ($overall_map as $field => $tag) {
+        $this->addElementNs($tag, $item, $this->node->get($field)->value);
+      }
+      // Add quantity for each denial reason.
+      $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
     }
-    // Add quantity for each denial reason.
-    $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
 
     $this->addProcessingAssociations($component_data, $section, 'foia:RequestDispositionOrganizationAssociation', 'RD');
     $this->addFootnote('field_footnotes_vb1', $section);
@@ -623,9 +655,11 @@ EOS;
     }
 
     // Add data for the agency overall.
-    $item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
-    $item->setAttribute('s:id', 'CODR' . 0);
-    $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $this->node->get('field_overall_vb2_total')->value);
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+      $item->setAttribute('s:id', 'CODR' . 0);
+      $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $item, $this->node->get('field_overall_vb2_total')->value);
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:OtherDenialReasonOrganizationAssociation', 'CODR');
     $this->addFootnote('field_footnotes_vb2', $section);
@@ -682,10 +716,12 @@ EOS;
     }
 
     // Add overall data.
-    $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
-    $item->setAttribute('s:id', 'RDE' . 0);
-    // Add quantity for each exemption code.
-    $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
+      $item->setAttribute('s:id', 'RDE' . 0);
+      // Add quantity for each exemption code.
+      $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'RDE');
     $this->addFootnote('field_footnotes_vb3', $section);
@@ -796,10 +832,12 @@ EOS;
     }
 
     // Add overall data.
-    $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
-    $item->setAttribute('s:id', 'ADE' . 0);
-    // Add quantity for each exemption code.
-    $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:ComponentAppliedExemptions', $section);
+      $item->setAttribute('s:id', 'ADE' . 0);
+      // Add quantity for each exemption code.
+      $this->addLabeledQuantity($this->node, $item, 'foia:AppliedExemption', 'foia:AppliedExemptionCode', 'foia:AppliedExemptionQuantity', $overall_exemption_map);
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ComponentAppliedExemptionsOrganizationAssociation', 'ADE');
     $this->addFootnote('field_footnotes_vic1', $section);
@@ -849,9 +887,11 @@ EOS;
     }
 
     // Add overall data.
-    $item = $this->addElementNs('foia:AppealNonExemptionDenial', $section);
-    $item->setAttribute('s:id', 'ANE' . 0);
-    $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:AppealNonExemptionDenial', $section);
+      $item->setAttribute('s:id', 'ANE' . 0);
+      $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:AppealNonExemptionDenialOrganizationAssociation', 'ANE');
     $this->addFootnote('field_footnotes_vic2', $section);
@@ -882,9 +922,11 @@ EOS;
     }
 
     // Add data for the agency overall.
-    $reason_section = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
-    $reason_section->setAttribute('s:id', 'ADOR' . 0);
-    $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $reason_section, $this->node->field_overall_vic3_total->value);
+    if (!$this->isCentralized) {
+      $reason_section = $this->addElementNs('foia:ComponentOtherDenialReason', $section);
+      $reason_section->setAttribute('s:id', 'ADOR' . 0);
+      $this->addElementNs('foia:ComponentOtherDenialReasonQuantity', $reason_section, $this->node->field_overall_vic3_total->value);
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:OtherDenialReasonOrganizationAssociation', 'ADOR');
     $this->addFootnote('field_footnotes_vic3', $section);
@@ -946,9 +988,11 @@ EOS;
     }
 
     // Add data for the agency overall.
-    $item = $this->addElementNs('foia:ProcessedResponseTime', $section);
-    $item->setAttribute('s:id', 'PRT' . 0);
-    $this->addResponseTimes($this->node, $item, 'field_overall_viia_');
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:ProcessedResponseTime', $section);
+      $item->setAttribute('s:id', 'PRT' . 0);
+      $this->addResponseTimes($this->node, $item, 'field_overall_viia_');
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessedResponseTimeOrganizationAssociation', 'PRT');
     $this->addFootnote('field_footnotes_viia', $section);
@@ -971,9 +1015,11 @@ EOS;
     }
 
     // Add data for the agency overall.
-    $item = $this->addElementNs('foia:ProcessedResponseTime', $section);
-    $item->setAttribute('s:id', 'IGR' . 0);
-    $this->addResponseTimes($this->node, $item, 'field_overall_viib_');
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:ProcessedResponseTime', $section);
+      $item->setAttribute('s:id', 'IGR' . 0);
+      $this->addResponseTimes($this->node, $item, 'field_overall_viib_');
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ProcessedResponseTimeOrganizationAssociation', 'IGR');
     $this->addFootnote('field_footnotes_viib', $section);
@@ -996,9 +1042,11 @@ EOS;
     }
 
     // Add data for the agency overall.
-    $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
-    $item->setAttribute('s:id', 'SRT' . 0);
-    $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic1_');
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+      $item->setAttribute('s:id', 'SRT' . 0);
+      $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic1_');
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeIncrementsOrganizationAssociation', 'SRT');
     $this->addFootnote('field_footnotes_viic1', $section);
@@ -1021,9 +1069,11 @@ EOS;
     }
 
     // Add data for the agency overall.
-    $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
-    $item->setAttribute('s:id', 'CRT' . 0);
-    $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic2_');
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+      $item->setAttribute('s:id', 'CRT' . 0);
+      $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic2_');
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeIncrementsOrganizationAssociation', 'CRT');
     $this->addFootnote('field_footnotes_viic2', $section);
@@ -1046,9 +1096,11 @@ EOS;
     }
 
     // Add data for each component.
-    $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
-    $item->setAttribute('s:id', 'ERT' . 0);
-    $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic3_');
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:ComponentResponseTimeIncrements', $section);
+      $item->setAttribute('s:id', 'ERT' . 0);
+      $this->addResponseTimeIncrements($this->node, $item, 'field_overall_viic3_');
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:ResponseTimeIncrementsOrganizationAssociation', 'ERT');
     $this->addFootnote('field_footnotes_viic3', $section);
@@ -1071,9 +1123,11 @@ EOS;
     }
 
     // Add data for the agency overall.
-    $item = $this->addElementNs('foia:PendingPerfectedRequests', $section);
-    $item->setAttribute('s:id', 'PPR' . 0);
-    $this->addPendingRequests($this->node, $item, 'field_overall_viid_');
+    if (!$this->isCentralized) {
+      $item = $this->addElementNs('foia:PendingPerfectedRequests', $section);
+      $item->setAttribute('s:id', 'PPR' . 0);
+      $this->addPendingRequests($this->node, $item, 'field_overall_viid_');
+    }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:PendingPerfectedRequestsOrganizationAssociation', 'PPR');
     $this->addFootnote('field_footnotes_viid', $section);
