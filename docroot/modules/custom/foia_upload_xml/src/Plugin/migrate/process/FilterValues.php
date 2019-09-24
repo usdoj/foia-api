@@ -41,8 +41,8 @@ class FilterValues extends ProcessPluginBase {
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    $source = $value[0];
-    $filter = $value[1];
+    $source = (array) $value[0];
+    $filter = (array) $value[1];
     $target = $value[2];
     $result = [];
     foreach (array_keys($source) as $key) {

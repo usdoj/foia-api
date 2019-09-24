@@ -140,7 +140,7 @@ source:
     -
       name: field_overall_vb2_total
       label: 'Overall number of times Exemption 1 is used'
-      selector: 'foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason/foia:ComponentOtherDenialReasonQuantity'
+      selector: 'foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason[@s:id=../foia:OtherDenialReasonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComponentOtherDenialReasonQuantity'
     -
       name: field_footnotes_vb2
       label: 'V.B. (2) Footnotes'
@@ -386,7 +386,7 @@ source:
     -
       name: field_overall_vic3_total
       label: 'Overall number of times Exemption 1 is used'
-      selector: 'foia:AppealDenialOtherReasonSection/foia:ComponentOtherDenialReason/foia:ComponentOtherDenialReasonQuantity'
+      selector: 'foia:AppealDenialOtherReasonSection/foia:ComponentOtherDenialReason[@sid=../foia:OtherDenialReasonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComponentOtherDenialReasonQuantity'
     -
       name: field_footnotes_vic3
       label: 'VI.C. (3) Footnotes'
