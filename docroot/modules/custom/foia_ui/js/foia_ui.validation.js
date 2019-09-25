@@ -292,20 +292,22 @@
       // Disable Submit button until Validate button is clicked.
       $('input#edit-submit').prop('disabled', true);
       $('input#edit-validate-button').on('click', function(event) {
-        $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
-        $('input#edit-submit').prop('disabled', false);
         event.preventDefault();
-      });
 
-      // To validate select drop-downs as required, they must have an
-      // empty machine value.
-      $("select > option[value='_none']").val('');
+        // To validate select drop-downs as required, they must have an
+        // empty machine value.
+        $("select > option[value='_none']").val('');
 
-      // Empty drop-downs can still be submitted though, so restore
-      // Drupal's default empty drop-down value to avoid "An illegal
-      // choice has been detected" error in that scenario.
-      $('input#edit-submit').click(function() {
+        // Validate form
+        $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
+
+        // Empty drop-downs can still be submitted though, so restore
+        // Drupal's default empty drop-down value to avoid "An illegal
+        // choice has been detected" error in that scenario.
         $("select > option[value='']").val('_none');
+
+        // Enable form Save button
+        $('input#edit-submit').prop('disabled', false);
       });
 
       /**
