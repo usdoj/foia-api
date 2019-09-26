@@ -142,3 +142,10 @@ $settings['trusted_host_patterns'] = array(
  * @see: https://www.drupal.org/node/2837029
  */
 $config['simplesamlphp_auth.settings']['activate'] = false;
+
+/**
+ * Effectively disable auto-logout.
+ */
+$config['autologout.settings']['timeout'] = 86400;
+$config['autologout.settings']['max_timeout'] = 86400;
+$config['autologout.settings']['enforce_admin'] = false;
