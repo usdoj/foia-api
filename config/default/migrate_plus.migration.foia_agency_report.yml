@@ -1277,6 +1277,7 @@ source:
       type: string
   constants:
     base_title: 'Annual FOIA Report for'
+    user_id: 1
 process:
   type:
     plugin: default_value
@@ -1296,9 +1297,7 @@ process:
       - report_year
       - constants/base_title
       - agency
-  uid:
-    plugin: default_value
-    default_value: 1
+  uid: constants/user_id
   status:
     plugin: default_value
     default_value: false
@@ -1308,9 +1307,7 @@ process:
   sticky:
     plugin: default_value
     default_value: false
-  revision_uid:
-    plugin: default_value
-    default_value: 1
+  revision_uid: constants/user_id
   revision_log:
     plugin: default_value
     default_value: 'Import from NIEM-XML data'
@@ -1911,6 +1908,7 @@ process:
   field_overall_viic1_301_400_days: field_overall_viic1_301_400_days
   field_overall_viic1_400_up_days: field_overall_viic1_400_up_days
   field_overall_viic1_total: field_overall_viic1_total
+  field_footnotes_viic1: footnotes_viic1
   field_proc_req_viic2:
     -
       plugin: foia_array_pad
@@ -1954,6 +1952,7 @@ process:
   field_overall_viic2_301_400_days: field_overall_viic2_301_400_days
   field_overall_viic2_400_up_days: field_overall_viic2_400_up_days
   field_overall_viic2_total: field_overall_viic2_total
+  field_footnotes_viic2: footnotes_viic2
   field_proc_req_viic3:
     -
       plugin: foia_array_pad

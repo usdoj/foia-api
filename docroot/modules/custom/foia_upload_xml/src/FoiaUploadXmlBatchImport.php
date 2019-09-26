@@ -3,6 +3,7 @@
 namespace Drupal\foia_upload_xml;
 
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\migrate_tools\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
@@ -32,16 +33,26 @@ class FoiaUploadXmlBatchImport {
   protected $migrationPluginManager;
 
   /**
+   * The current user object.
+   *
+   * @var Drupal\Core\Session\AccountInterface
+   */
+  protected $user;
+
+  /**
    * Creates a FoiaUploadXmlBatchImport object.
    *
    * @param Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
    * @param Drupal\migrate\Plugin\MigrationPluginManager $migration_plugin_manager
    *   The migration plugin manager.
+   * @param Drupal\Core\Session\AccountInterface $user
+   *   The user to be used as the owner of the imported node.
    */
-  public function __construct(MessengerInterface $messenger, MigrationPluginManager $migration_plugin_manager) {
+  public function __construct(MessengerInterface $messenger, MigrationPluginManager $migration_plugin_manager, AccountInterface $user) {
     $this->messenger = $messenger;
     $this->migrationPluginManager = $migration_plugin_manager;
+    $this->user = $user;
   }
 
   /**
@@ -59,7 +70,7 @@ class FoiaUploadXmlBatchImport {
     $context['sandbox']['current_migration'] = $migration_list_item;
 
     $migration = $this->migrationPluginManager
-      ->createInstance($migration_list_item);
+      ->createInstance($migration_list_item, $this->sourceOverrides());
     $migration->getIdMap()->prepareUpdate();
     $executable = new MigrateExecutable($migration, new MigrateMessage());
     $executable->import();
@@ -68,6 +79,28 @@ class FoiaUploadXmlBatchImport {
     $context['message'] = $this->t('@item processed.', $strings);
     $context['results'][] = $migration_list_item;
     $this->messenger->addStatus($this->t('@item execution completed.', $strings));
+  }
+
+  /**
+   * Overrides for migration source plugin.
+   *
+   * These values will be merged with the ones defined in the migration's YAML
+   * file.
+   *
+   * @todo Also override $source['urls'] when we upload the XML file as
+   * something other than report.xml.
+   *
+   * @return array
+   *   A single key 'source', and the value is an array of overrides.
+   */
+  protected function sourceOverrides() {
+    $source = [
+      'constants' => [
+        'user_id' => $this->user->id(),
+      ],
+    ];
+
+    return ['source' => $source];
   }
 
   /**
