@@ -12,7 +12,7 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   git clone https://github.com/usdoj/foia-api.git
   git clone https://github.com/usdoj/foia.gov.git
   # Rename the API repo to match the way it is used in various files: dojfoia.
-  mv foia-api dojfoia
+  mv foia-api foia
 
   # Collect Github info.
   echo "Github email address?"
@@ -35,7 +35,6 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   cd /var/www/foia
   git remote add fork https://github.com/$github_user/foia-api.git
   composer install
-  composer run-script blt-alias
 
   # Front-stage installation.
   # Includes a manual Ruby installation because I can't get DrupalVM to set
@@ -56,14 +55,14 @@ if [ ! -e "$DRUPAL_BASIC_SETUP_FILE" ]; then
   echo "Please run 'drush sql-sync @foia.test @foia.local' to set up your local database."
   echo "****"
 
-  # Make the vendor/bin/drush command global.
+  # Make the drush and blt commands global.
   echo 'alias drush="/var/www/foia/vendor/bin/drush"' >> ~/.bashrc
+  echo 'alias blt="/var/www/foia/vendor/bin/blt"' >> ~/.bashrc
 
-  echo "Attempting to run BLT commands. If these fail, they need to be run manually."
-  source ~/.bashrc
-  blt setup:settings
-  blt setup:build
-  blt setup:hash-salt
+  # Run a few BLT setup commands.
+  /var/www/foia/vendor/bin/blt setup:settings
+  /var/www/foia/vendor/bin/blt setup:build
+  /var/www/foia/vendor/bin/blt setup:hash-salt
 
   # Create a file to indicate this script has already run.
   sudo touch $DRUPAL_BASIC_SETUP_FILE
