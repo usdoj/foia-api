@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * FOIA Advanced Auto-Calculation module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_node_form_alter().
+ */
+function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'foia_advcalc/advcalc_field';
+}

@@ -1,17 +1,4 @@
 (function ($, drupalSettings, Drupal) {
-  Drupal.behaviors.foia_ui_autocalc = {
-    attach: function attach() {
-      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value").change(function() {
-        var overall_ix_proc_costs = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
-        if ( overall_ix_proc_costs > 0 ) {
-          var overall_x_total_fees = Number($("#edit-field-overall-x-total-fees-0-value").val());
-          var overall_x_perc_costs = overall_x_total_fees / overall_ix_proc_costs;
-          var overall_x_perc_costs = Math.round(overall_x_perc_costs * 100) / 100; // Round to 2 decimal places
-          $('#edit-field-overall-x-perc-costs-0-value').val(overall_x_perc_costs);
-        }
-      });
-    }
-  },
   Drupal.behaviors.foia_ui_validation = {
     attach: function attach() {
       jQuery.validator.setDefaults({
