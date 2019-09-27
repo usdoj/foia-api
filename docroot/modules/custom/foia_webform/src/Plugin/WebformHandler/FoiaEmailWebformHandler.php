@@ -74,10 +74,16 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     // Let webform do the heavy lifting in setting up the email.
     $message = parent::getMessage($webformSubmission);
 
+    // Different intros based on whether this is production or not.
+    $prod_intro = t('A new FOIA request was submitted to your agency component:');
+    $non_prod_intro = t('FOR TESTING PURPOSES ONLY -- Do not process the following request:');
+    $is_prod = (isset($_ENV['AH_SITE_ENVIRONMENT']) && 'prod' == $_ENV['AH_SITE_ENVIRONMENT']);
+    $introduction = $is_prod ? $prod_intro : $non_prod_intro;
+
     // Build the message body.
     $bodySections = [
       t('Hello,'),
-      t('A new FOIA request was submitted to your agency component:'),
+      $introduction,
       $formatter->formatSubmissionContentsAsList(),
       $formatter->formatSubmissionContentsAsTable(),
     ];
