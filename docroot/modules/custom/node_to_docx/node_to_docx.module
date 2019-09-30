@@ -14,6 +14,10 @@
 function node_to_docx_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
   if ($hook == 'node_to_docx' && $variables['elements']['#view_mode'] == 'node_to_docx') {
     $node = $variables['elements']['#node'];
+    if ($node == NULL) {
+      \Drupal::messenger()->addError("Node was NULL when converting to DOCX.");
+      return;
+    }
     $suggestions = [];
     $suggestions[] = 'node__node_to_docx';
     $suggestions[] = 'node__' . $node->getType() . '__node_to_docx';

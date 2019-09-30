@@ -1,0 +1,198 @@
+<div class=WordSection42>
+
+<p class=MsoNormal ><b>VII.B. PROCESSED REQUESTS -- RESPONSE
+TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED<o:p></o:p></b></p>
+
+</div>
+
+<b ><br clear=all >
+</b>
+
+<div class=WordSection43>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td width=42 rowspan=2 >
+  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+  </td>
+  <td width=132 colspan=4 >
+  <p class=MsoNormal align=center >SIMPLE<o:p></o:p></p>
+  </td>
+  <td width=132 colspan=4 >
+  <p class=MsoNormal align=center >COMPLEX<o:p></o:p></p>
+  </td>
+  <td width=132 colspan=4 >
+  <p class=MsoNormal align=center >EXPEDITED PROCESSING<o:p></o:p></p>
+  </td>
+ </tr>
+ <tr >
+  <td width=44 >
+  <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Lowest Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Highest Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Lowest Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Highest Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Lowest Number of Days<o:p></o:p></p>
+  </td>
+  <td width=44 >
+  <p class=MsoNormal align=center >Highest Number of Days<o:p></o:p></p>
+  </td>
+ </tr>
+ <tr >
+
+{% for key,value in content.field_proc_req_viib if key|first != '#' %}
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }} 
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_sim_med.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_sim_avg.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_sim_low.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_sim_high.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_comp_med.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_comp_avg.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_comp_low.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_comp_high.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_exp_med.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_exp_avg.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_exp_low.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_proc_req_viib[key]['#paragraph'].field_exp_high.value }}
+  <o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+
+ <tr >
+  <td >
+  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_sim_med }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_sim_avg }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_sim_low }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_sim_high }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_comp_med }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_comp_avg }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_comp_low }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_comp_high }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_exp_med }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_exp_avg }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_exp_low }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viib_exp_high }}<o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection44>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td valign=bottom >
+  <p class=MsoNormal><i >{{ docx.field_footnotes_viib }}<o:p></o:p></i></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<i ><br clear=all >
+</i>
+

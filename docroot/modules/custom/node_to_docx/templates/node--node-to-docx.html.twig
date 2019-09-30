@@ -1,23 +1,132 @@
-<article{{ attributes }}>
-  {{ title_prefix }}
-  {% if not page %}
-    <h2{{ title_attributes }}>
-      {{ label }}
-    </h2>
-  {% endif %}
-  {{ title_suffix }}
+{% include '@node_to_docx/docx-head.html.twig' %}
 
-  {% if display_submitted %}
-    <footer>
-      {{ author_picture }}
-      <div{{ author_attributes }}>
-        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-        {{ metadata }}
-      </div>
-    </footer>
-  {% endif %}
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+<style type="text/css" media="screen">
 
-  <div{{ content_attributes }}>
-    {{ content }}
-  </div>
-</article>
+div {
+  font-size: 10.0pt;
+  mso-bidi-font-size: 11.0pt;
+  line-height: 107%;
+  font-family: Arial;
+  mso-bidi-font-family: Arial;
+  color: black;
+}
+
+table {
+  border-collapse: collapse;
+  border: none;
+}
+
+td {
+  border: solid windowtext 1.0pt;
+  border-top: solid #0F243E 1.0pt;
+  mso-border-alt: solid windowtext .5pt;
+  mso-border-top-alt: solid #0F243E .5pt;
+  padding: 0in 0in 0in 0in;
+}
+
+p {
+  margin-bottom: 6.0pt;
+  mso-para-margin-bottom: .5gd;
+}
+
+p.MsoNormal {
+  mso-style-unhide: no;
+  mso-style-qformat: yes;
+  mso-style-parent: "";
+  margin-top: 0in;
+  margin-right: 0in;
+  margin-bottom: 8.0pt;
+  margin-left: 0in;
+  line-height: 107%;
+  mso-pagination: widow-orphan;
+  font-size: 11.0pt;
+  font-family: Calibri;
+  mso-ascii-font-family: Calibri;
+  mso-ascii-theme-font: minor-latin;
+  mso-fareast-font-family: Calibri;
+  mso-fareast-theme-font: minor-latin;
+  mso-hansi-font-family: Calibri;
+  mso-hansi-theme-font: minor-latin;
+  mso-bidi-font-family: "Times New Roman";
+  mso-bidi-theme-font: minor-bidi;
+}
+</style>
+
+{% include '@node_to_docx/docx-agency-component-abbrev.html.twig' %}
+
+{% include '@node_to_docx/docx-iv-exemption-3-statutes.html.twig' %}
+
+{% include '@node_to_docx/docx-va-foia-requests.html.twig' %}
+
+{% include '@node_to_docx/docx-vb-disposition-foia-requests.html.twig' %}
+
+{% include '@node_to_docx/docx-vb2-disposition-foia-requests-other.html.twig' %}
+
+{% include '@node_to_docx/docx-vb3-disposition-number-of-times.html.twig' %}
+
+{% include '@node_to_docx/docx-via-administrative-appeals.html.twig' %}
+
+{% include '@node_to_docx/docx-vib-administrative-appeals.html.twig' %}
+
+{% include '@node_to_docx/docx-vic-reasons-denial.html.twig' %}
+
+{% include '@node_to_docx/docx-vic2-reasons-other.html.twig' %}
+
+{% include '@node_to_docx/docx-vic3-reasons-other.html.twig' %}
+
+{% include '@node_to_docx/docx-vic4-response-time.html.twig' %}
+
+{% include '@node_to_docx/docx-vic5-ten-oldest-pending.html.twig' %}
+
+{% include '@node_to_docx/docx-viia-response-time.html.twig' %}
+
+{% include '@node_to_docx/docx-viib-processed-requests-response-time.html.twig' %}
+
+{% include '@node_to_docx/docx-viic-processed-simple-ten-day.html.twig' %}
+
+{% include '@node_to_docx/docx-viic-processed-complex-ten-day.html.twig' %}
+
+{% include '@node_to_docx/docx-viic-processed-expedited-ten-day.html.twig' %}
+
+{% include '@node_to_docx/docx-viid-pending-requests.html.twig' %}
+
+{% include '@node_to_docx/docx-viie-pending-requests-ten-oldest.html.twig' %}
+
+{% include '@node_to_docx/docx-viiia-requests-expedited.html.twig' %}
+
+{% include '@node_to_docx/docx-viiib-requests-fee-waiver.html.twig' %}
+
+{% include '@node_to_docx/docx-ix-foia-personnel-costs.html.twig' %}
+
+{% include '@node_to_docx/docx-x-fees-collected.html.twig' %}
+
+{% include '@node_to_docx/docx-xia-number-times-subsection-c.html.twig' %}
+
+{% include '@node_to_docx/docx-xib-number-times-subsection-a2.html.twig' %}
+
+{% include '@node_to_docx/docx-xiia-backlogs.html.twig' %}
+
+{% include '@node_to_docx/docx-xiib-consultations.html.twig' %}
+
+{% include '@node_to_docx/docx-xiic-consultations-ten-oldest.html.twig' %}
+
+{% include '@node_to_docx/docx-xiid-comparisons.html.twig' %}
+
+{% include '@node_to_docx/docx-xiid-comparisons-backlogged.html.twig' %}
+
+{% include '@node_to_docx/docx-xiie-comparisons-appeals.html.twig' %}
+
+{% include '@node_to_docx/docx-xiie2-comparisons-backlogged-appeals.html.twig' %}
+<div class=WordSection99>
+
+<p class=MsoNormal style='margin-bottom:6.0pt;mso-para-margin-bottom:.5gd'><i
+style='mso-bidi-font-style:normal'><span style='font-size:9.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:Arial;mso-bidi-font-family:Arial;
+color:black;text-transform:uppercase'><o:p>&nbsp;</o:p></span></i></p>
+
+</div>
+
+</body>
+
+</html>

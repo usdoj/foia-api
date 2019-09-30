@@ -28,8 +28,12 @@ class NodeToDocxHandler implements ContainerAwareInterface {
     if ($this->isPhpdocxLibraryAvailable() === TRUE) {
       $filename = $node->id() . '-' . str_replace('/', '-', $node->getTitle());
       $view = node_view($node, 'node_to_docx');
+      // The following line should cause the templates in this module to be
+      // used.
       $view['#theme'] = 'node_to_docx';
       $drupalMarkup = \Drupal::service('renderer')->render($view);
+      // Debugging hint (remove period at end when uncommenting):
+      // file_put_contents('/var/www/foia/docroot/debug.html', $drupalMarkup);.
       $this->generateDocxFromHtml($drupalMarkup->__toString(), $filename);
       return new RedirectResponse(\Drupal::url('entity.node.canonical', ['node' => $node->id()]));
     }

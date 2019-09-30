@@ -1,0 +1,40 @@
+<div class=WordSection1>
+
+<p class=MsoNormal>3. Agency Component Abbreviations<o:p></o:p></p>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection2>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td width=142 >
+  <p class=MsoNormal align=center >Component Abbreviation<o:p></o:p></p>
+  </td>
+  <td width=359 >
+  <p class=MsoNormal align=center >Component Name<o:p></o:p></p>
+  </td>
+ </tr>
+{% for key,value in content.field_agency_components if key|first != '#' %}
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_agency_components[0]['#options'].entity.field_agency_comp_abbreviation.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_agency_components[key]['#title'] }}
+  <o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+<br clear=all >
+
