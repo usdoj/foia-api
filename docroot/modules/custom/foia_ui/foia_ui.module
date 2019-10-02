@@ -65,6 +65,12 @@ function foia_ui_form_node_annual_foia_report_data_edit_form_alter(&$form, FormS
       ],
     ],
   ];
+  foreach ($form['field_foia_xiie2']['widget'] as $key => &$element) {
+    if (is_int($key)) {
+      $element['subform']['field_back_cur_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report";
+      $element['subform']['field_back_prev_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report";
+    }
+  }
 }
 
 /**
