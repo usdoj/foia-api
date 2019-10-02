@@ -19,7 +19,7 @@ source:
     -
       name: field_num_relied_by_agency_comp
       label: 'Number of times the statute is used'
-      selector: 'foia:ReliedUponStatuteQuantity'
+      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref!="ORG0"]/foia:ReliedUponStatuteQuantity'
     -
       name: field_agency_component_inf
       label: 'Agency/Component Information'
