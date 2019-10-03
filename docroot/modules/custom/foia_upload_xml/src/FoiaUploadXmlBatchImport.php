@@ -69,8 +69,9 @@ class FoiaUploadXmlBatchImport {
     $this->messenger->addStatus($migration_list_item . ' in progress.');
     $context['sandbox']['current_migration'] = $migration_list_item;
 
-    $migration = $this->migrationPluginManager
-      ->createInstance($migration_list_item, $this->sourceOverrides());
+    $migration = $this->migrationPluginManager->createInstance(
+      $migration_list_item,
+      $this->sourceOverrides());
     $migration->getIdMap()->prepareUpdate();
     $executable = new MigrateExecutable($migration, new MigrateMessage());
     $executable->import();
@@ -87,8 +88,8 @@ class FoiaUploadXmlBatchImport {
    * These values will be merged with the ones defined in the migration's YAML
    * file.
    *
-   * @todo Also override $source['urls'] when we upload the XML file as
-   * something other than report.xml.
+   * Note - attempts to override $source['urls'] here didn't work, instead we
+   * load, set the url, and save the migration configuration in the form.
    *
    * @return array
    *   A single key 'source', and the value is an array of overrides.

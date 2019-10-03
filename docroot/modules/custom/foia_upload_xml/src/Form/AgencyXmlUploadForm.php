@@ -6,6 +6,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\user\Entity\User;
+use Drupal\migrate_plus\Entity\Migration;
 
 /**
  * Class AgencyXmlUploadForm.
@@ -90,8 +92,25 @@ class AgencyXmlUploadForm extends FormBase {
     // If we do not use temporary, then we should add $file->setPermanent().
     $file->save();
     $directory = 'temporary://foia-xml';
-    file_prepare_directory($directory);
-    file_move($file, "$directory/report.xml", FILE_EXISTS_REPLACE);
+    \Drupal::service('file_system')->prepareDirectory($directory, FILE_CREATE_DIRECTORY);
+
+    // Get the user's agency abbreviation to put in the file name, so that
+    // simulataneous uploads don't wipe out each other's files.
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_agency_nid = $user->get('field_agency')->target_id;
+    $xml_upload_filename =
+      "$directory/report_" . date('Y') . "_" . $user_agency_nid . ".xml";
+    file_move($file, $xml_upload_filename, FILE_EXISTS_REPLACE);
+
+    // Load the migrations, set them to use this new filename, and save them.
+    $migrations_list = $this->getMigrationsList();
+    foreach ($migrations_list as $migration_list_item) {
+      $migration = Migration::load($migration_list_item);
+      $source = $migration->get('source');
+      $source['urls'] = $xml_upload_filename;
+      $migration->set('source', $source);
+      $migration->save();
+    }
 
     $batch = [
       'title' => $this->t('Importing Annual Report XML Data...'),
@@ -197,11 +216,12 @@ class AgencyXmlUploadForm extends FormBase {
     $migrations_list = $this->getMigrationsList();
     $operations = [];
     foreach ($migrations_list as $migration_list_item) {
-      $operations[] = ['foia_upload_xml_execute_migration', [$migration_list_item]];
+      $operations[] = ['foia_upload_xml_execute_migration',
+        [$migration_list_item],
+      ];
     }
 
     return $operations;
-
   }
 
 }
