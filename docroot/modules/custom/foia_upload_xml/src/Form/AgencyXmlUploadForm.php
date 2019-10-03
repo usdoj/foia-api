@@ -135,6 +135,7 @@ class AgencyXmlUploadForm extends FormBase {
     $migrations_list = [
       'component',
       'component_ix_personnel',
+      'component_iv_statutes',
       'component_va_requests',
       'component_vb1_requests',
       'component_vb2_requests',

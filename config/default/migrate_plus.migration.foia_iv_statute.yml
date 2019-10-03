@@ -27,15 +27,15 @@ source:
     -
       name: field_num_relied_by_agency_comp
       label: 'Number of times the statute is used'
-      selector: 'foia:ReliedUponStatuteQuantity'
+      selector: '../foia:ReliedUponStatuteOrganizationAssociation/foia:ReliedUponStatuteQuantity'
     -
       name: field_agency_component_inf
       label: 'Agency/Component Information'
-      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref!="ORG0"]/nc:OrganizationReference/@s:ref'
+      selector: '../foia:ReliedUponStatuteOrganizationAssociation/nc:OrganizationReference/@s:ref'
     -
       name: field_agency_component_inf_filter
       label: 'Filter for Agency/Component Information'
-      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref!="ORG0"]/foia:ComponentDataReference/@s:ref'
+      selector: '../foia:ReliedUponStatuteOrganizationAssociation/foia:ComponentDataReference/@s:ref'
     -
       name: field_case_citation
       label: 'Case citation'
@@ -44,14 +44,6 @@ source:
       name: field_statute
       label: Statute
       selector: 'j:StatuteDescriptionText'
-    -
-      name: field_total_num_relied_by_agency
-      label: 'Total Number of Times Relied upon by Agency Overall'
-      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ReliedUponStatuteQuantity'
-    -
-      name: field_total_num_relied_by_agency_filter
-      label: 'Filter for Total Number of Times Relied upon by Agency Overall'
-      selector: '../foia:ReliedUponStatuteOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref'
     -
       name: field_type_of_info_withheld
       label: 'Type of Information Withheld'
@@ -111,15 +103,6 @@ process:
             - '1'
   field_case_citation: field_case_citation
   field_statute: field_statute
-  field_total_num_relied_by_agency:
-    -
-      plugin: foia_filter_values
-      source:
-        - field_total_num_relied_by_agency
-        - field_total_num_relied_by_agency_filter
-        - statute
-    -
-      plugin: array_pop
   field_type_of_info_withheld: field_type_of_info_withheld
 destination: null
 migration_dependencies:
