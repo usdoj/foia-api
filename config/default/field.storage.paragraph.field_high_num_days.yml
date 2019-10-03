@@ -1,4 +1,4 @@
-uuid: 1d54a1a8-a342-4475-89d4-e4397b86839a
+uuid: 0eb4d713-d6ef-4350-b30a-0995ce3d04b9
 langcode: en
 status: true
 dependencies:
@@ -11,10 +11,11 @@ third_party_settings:
 id: paragraph.field_high_num_days
 field_name: field_high_num_days
 entity_type: paragraph
-type: decimal
+type: string
 settings:
-  precision: 10
-  scale: 2
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1

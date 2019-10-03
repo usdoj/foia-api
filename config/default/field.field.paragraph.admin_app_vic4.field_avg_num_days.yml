@@ -1,10 +1,17 @@
-uuid: 1c93c9ca-102e-42db-a763-5913957d6466
+uuid: 516345ae-3829-4f4d-8650-a096afc89a4d
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_avg_num_days
     - paragraphs.paragraphs_type.admin_app_vic4
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.admin_app_vic4.field_avg_num_days
 field_name: field_avg_num_days
 entity_type: paragraph
@@ -15,9 +22,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  min: null
-  max: null
-  prefix: ''
-  suffix: ''
-field_type: decimal
+settings: {  }
+field_type: string
