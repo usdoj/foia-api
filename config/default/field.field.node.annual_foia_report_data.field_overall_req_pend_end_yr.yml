@@ -1,0 +1,34 @@
+uuid: a971e9cd-9796-4d3f-9c7d-e6975aebd67d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_req_pend_end_yr
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        e64ab631-79b6-44d6-9871-d999e4aa9006:
+          field: 'field_foia_requests_va:field_req_pend_end_yr'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_req_pend_end_yr
+field_name: field_overall_req_pend_end_yr
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Number of Requests Pending as of End of Fiscal Year'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

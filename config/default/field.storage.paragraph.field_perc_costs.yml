@@ -1,0 +1,24 @@
+uuid: fe0f2834-54e9-48da-bc16-7a5ffe6d6720
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - paragraphs
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: paragraph.field_perc_costs
+field_name: field_perc_costs
+entity_type: paragraph
+type: decimal
+settings:
+  precision: 10
+  scale: 4
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

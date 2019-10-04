@@ -1,0 +1,34 @@
+uuid: b01df585-51f5-4a32-9fbd-977c9e12aaf3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vib_total
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        708273ea-8b9a-4fdb-bee0-c100d6680703:
+          field: 'field_admin_app_vib:field_total'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_vib_total
+field_name: field_overall_vib_total
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Total'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

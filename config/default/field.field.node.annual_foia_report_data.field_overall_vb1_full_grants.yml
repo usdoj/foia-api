@@ -1,0 +1,34 @@
+uuid: ea7e93ac-ce1a-42ba-b71b-9b3e96198da1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vb1_full_grants
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        aad454be-7ca7-495a-bc4e-b3bd79ba1ad2:
+          field: 'field_foia_requests_vb1:field_full_grants'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_vb1_full_grants
+field_name: field_overall_vb1_full_grants
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Number of Full Grants'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

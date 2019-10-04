@@ -1,0 +1,34 @@
+uuid: 4014d112-79da-40f3-815c-cd45f750f42e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_viic2_400_up_days
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        8ae93b0e-be89-474e-a85a-5c9d9b4158e5:
+          field: 'field_proc_req_viic2:field_400_up_days'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_viic2_400_up_days
+field_name: field_overall_viic2_400_up_days
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall 400+ Days'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

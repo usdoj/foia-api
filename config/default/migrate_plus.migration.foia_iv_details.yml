@@ -1,0 +1,72 @@
+uuid: e7a0a669-eb03-4c7d-8769-44eee788cb9e
+langcode: en
+status: true
+dependencies: {  }
+id: foia_iv_details
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import_subs
+label: 'Import statute_agency_details paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:Exemption3StatuteSection/foia:ReliedUponStatuteOrganizationAssociation'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: 'nc:OrganizationReference/@s:ref'
+    -
+      name: statute
+      label: 'Internal index of the statute being cited'
+      selector: 'foia:ComponentDataReference/@s:ref'
+    -
+      name: field_num_relied_by_agency_comp
+      label: 'Number of times the statute is used'
+      selector: 'foia:ReliedUponStatuteQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    statute:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: statute_agency_details
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_num_relied_by_agency_comp: field_num_relied_by_agency_comp
+destination: null
+migration_dependencies:
+  required:
+    - component

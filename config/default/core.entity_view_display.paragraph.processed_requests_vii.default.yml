@@ -1,0 +1,120 @@
+uuid: b4e741c6-0811-4f32-a860-af9c88624a2a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.processed_requests_vii.field_agency_component
+    - field.field.paragraph.processed_requests_vii.field_comp_avg
+    - field.field.paragraph.processed_requests_vii.field_comp_high
+    - field.field.paragraph.processed_requests_vii.field_comp_low
+    - field.field.paragraph.processed_requests_vii.field_comp_med
+    - field.field.paragraph.processed_requests_vii.field_exp_avg
+    - field.field.paragraph.processed_requests_vii.field_exp_high
+    - field.field.paragraph.processed_requests_vii.field_exp_low
+    - field.field.paragraph.processed_requests_vii.field_exp_med
+    - field.field.paragraph.processed_requests_vii.field_sim_avg
+    - field.field.paragraph.processed_requests_vii.field_sim_high
+    - field.field.paragraph.processed_requests_vii.field_sim_low
+    - field.field.paragraph.processed_requests_vii.field_sim_med
+    - paragraphs.paragraphs_type.processed_requests_vii
+  module:
+    - text
+id: paragraph.processed_requests_vii.default
+targetEntityType: paragraph
+bundle: processed_requests_vii
+mode: default
+content:
+  field_agency_component:
+    weight: 14
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_comp_avg:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_comp_high:
+    weight: 8
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_comp_low:
+    weight: 7
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_comp_med:
+    weight: 12
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_exp_avg:
+    weight: 10
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_exp_high:
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_exp_low:
+    weight: 13
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_exp_med:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_sim_avg:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_sim_high:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_sim_low:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_sim_med:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden:
+  search_api_excerpt: true

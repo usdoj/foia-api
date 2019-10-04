@@ -1,0 +1,34 @@
+uuid: 080cf389-f616-4107-a4a8-b61387da7205
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_total_num_relied_by_agency
+    - paragraphs.paragraphs_type.statute
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        5587bcfe-bfa2-4cd9-87f3-b49404969d68:
+          field: 'field_agency_component_inf:field_num_relied_by_agency_comp'
+          this_entity: '1'
+          weight: '99'
+id: paragraph.statute.field_total_num_relied_by_agency
+field_name: field_total_num_relied_by_agency
+entity_type: paragraph
+bundle: statute
+label: 'Total Number of Times Relied upon by Agency Overall'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

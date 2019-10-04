@@ -1,0 +1,30 @@
+uuid: 5ad2682c-55ff-471f-897e-7d863d6658ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_viid_exp_pend
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        2465ce22-7e73-4416-8eb9-a2c00ba8e810:
+          field: 'field_pending_requests_vii_d_:field_exp_pend'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_viid_exp_pend
+field_name: field_overall_viid_exp_pend
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Number Pending'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

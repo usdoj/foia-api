@@ -1,0 +1,109 @@
+<div class=WordSection60>
+
+<p class=MsoNormal ><b>VIII.A. REQUESTS FOR EXPEDITED PROCESSING<o:p></o:p></b></p>
+
+</div>
+
+<b ><br clear=all >
+</b>
+
+<div class=WordSection61>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td width=95 >
+  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+  </td>
+  <td width=95 >
+  <p class=MsoNormal align=center >Number Granted<o:p></o:p></p>
+  </td>
+  <td width=95 >
+  <p class=MsoNormal align=center >Number Denied<o:p></o:p></p>
+  </td>
+  <td width=95 >
+  <p class=MsoNormal align=center >Median Number of Days to Adjudicate<o:p></o:p></p>
+  </td>
+  <td width=95 >
+  <p class=MsoNormal align=center >Average Number of Days to Adjudicate<o:p></o:p></p>
+  </td>
+  <td width=95 >
+  <p class=MsoNormal align=center >Number Adjudicated Within Ten Calendar
+  Days<o:p></o:p></p>
+  </td>
+ </tr>
+
+{% for key,value in content.field_req_viiia if key|first != '#' %}
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_req_viiia[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }} 
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_req_viiia[key]['#paragraph'].field_num_grant.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_req_viiia[key]['#paragraph'].field_num_denied.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_req_viiia[key]['#paragraph'].field_med_days_jud.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_req_viiia[key]['#paragraph'].field_avg_days_jud.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_req_viiia[key]['#paragraph'].field_num_jud_w10.value }}
+  <o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+ <tr >
+  <td >
+  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viiia_num_grant }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viiia_num_denied }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viiia_med_days_jud }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viiia_avg_days_jud }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_viiia_num_jud_w10 }}<o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection62>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <tdvalign=bottom >
+  <p class=MsoNormal ><i>{{ docx.field_footnotes_viiia }}</i><o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<i ><br clear=all >
+</i>
+

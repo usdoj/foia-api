@@ -1,0 +1,34 @@
+uuid: 79b4116f-9bb1-4453-8228-4befc77e34a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_ix_total_staff
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        976136f8-2766-46c4-a5ec-1830b4359957:
+          field: 'field_foia_pers_costs_ix:field_total_staff'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_ix_total_staff
+field_name: field_overall_ix_total_staff
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Total Number of "Full-Time FOIA Staff"'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

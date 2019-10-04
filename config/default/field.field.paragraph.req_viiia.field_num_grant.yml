@@ -1,0 +1,23 @@
+uuid: cb2491d1-b203-4bc4-93ce-676bcbb8ed20
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_num_grant
+    - paragraphs.paragraphs_type.req_viiia
+id: paragraph.req_viiia.field_num_grant
+field_name: field_num_grant
+entity_type: paragraph
+bundle: req_viiia
+label: 'Number Granted'
+description: 'Must contain non-negative integers.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,62 @@
+uuid: d5925637-dba9-4ef3-ab9c-416a636789f3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_xiib.field_agency_component
+    - field.field.paragraph.foia_xiib.field_con_during_yr
+    - field.field.paragraph.foia_xiib.field_pend_end_yr
+    - field.field.paragraph.foia_xiib.field_pend_start_yr
+    - field.field.paragraph.foia_xiib.field_proc_start_yr
+    - paragraphs.paragraphs_type.foia_xiib
+id: paragraph.foia_xiib.default
+targetEntityType: paragraph
+bundle: foia_xiib
+mode: default
+content:
+  field_agency_component:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_con_during_yr:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_pend_end_yr:
+    weight: 4
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_pend_start_yr:
+    weight: 1
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_proc_start_yr:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+hidden:
+  search_api_excerpt: true

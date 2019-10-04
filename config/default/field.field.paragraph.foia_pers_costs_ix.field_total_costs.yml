@@ -1,0 +1,38 @@
+uuid: 92db6b63-5168-434b-8948-e87078cb7117
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_total_costs
+    - paragraphs.paragraphs_type.foia_pers_costs_ix
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        d3c41ac7-c57d-4374-9a50-a4bc7aabb0e6:
+          field: field_proc_costs
+          this_entity: '1'
+          weight: '99'
+        89d17dc4-5096-4d77-8da3-ecdde9818d40:
+          field: field_lit_costs
+          this_entity: '1'
+          weight: '100'
+id: paragraph.foia_pers_costs_ix.field_total_costs
+field_name: field_total_costs
+entity_type: paragraph
+bundle: foia_pers_costs_ix
+label: 'Total Costs'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: $
+  suffix: ''
+field_type: decimal

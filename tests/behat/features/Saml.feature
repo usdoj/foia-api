@@ -4,7 +4,7 @@ Feature: SimpleSAML PHP Authentication
   As an authenticated government user
   I should be able to log in to the FOIA system with my single sign on credentials
 
-  @api
+  @api @experimental
   Scenario: Ensure that the SimpleSAMLphp library is installed and configured as a Service Provider
     Given I am at 'simplesaml'
     Then I should get a 200 HTTP response

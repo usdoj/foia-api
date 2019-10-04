@@ -1,0 +1,13 @@
+foia_autocalc.config.remove_row:
+  path: '/admin/foia-autocalc/remove_row/{field_config}/{uuid}'
+  defaults:
+    _controller: '\Drupal\foia_autocalc\Controller\AutocalcConfigController::removeConfigRow'
+  requirements:
+    _permission: 'administer content types'
+
+foia_autocalc.config.field_autocomplete:
+  path: '/foia-autocalc/field-autocomplete/{field_config}'
+  defaults:
+    _controller: '\Drupal\foia_autocalc\Controller\AutocalcConfigController::fieldAutocomplete'
+  requirements:
+    _permission: 'administer content types'

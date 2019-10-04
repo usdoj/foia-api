@@ -1,0 +1,116 @@
+uuid: b9bf3096-8575-4116-a7c1-0e0379612607
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_pers_costs_ix.field_agency_component
+    - field.field.paragraph.foia_pers_costs_ix.field_eq_full_emp
+    - field.field.paragraph.foia_pers_costs_ix.field_full_emp
+    - field.field.paragraph.foia_pers_costs_ix.field_lit_costs
+    - field.field.paragraph.foia_pers_costs_ix.field_proc_costs
+    - field.field.paragraph.foia_pers_costs_ix.field_total_costs
+    - field.field.paragraph.foia_pers_costs_ix.field_total_staff
+    - paragraphs.paragraphs_type.foia_pers_costs_ix
+  module:
+    - entity_reference_views_select
+    - field_group
+third_party_settings:
+  field_group:
+    group_tabs_wrapper:
+      children:
+        - group_personnel
+        - group_costs
+      parent_name: ''
+      weight: 1
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Tabs Wrapper'
+    group_personnel:
+      children:
+        - field_full_emp
+        - field_eq_full_emp
+        - field_total_staff
+      parent_name: group_tabs_wrapper
+      weight: 7
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: PERSONNEL
+    group_costs:
+      children:
+        - field_proc_costs
+        - field_lit_costs
+        - field_total_costs
+      parent_name: group_tabs_wrapper
+      weight: 8
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: COSTS
+id: paragraph.foia_pers_costs_ix.default
+targetEntityType: paragraph
+bundle: foia_pers_costs_ix
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: erviews_options_select
+    region: content
+  field_eq_full_emp:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_full_emp:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_lit_costs:
+    weight: 5
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_proc_costs:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_total_costs:
+    weight: 6
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_total_staff:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

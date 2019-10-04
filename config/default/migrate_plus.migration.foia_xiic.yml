@@ -1,0 +1,161 @@
+uuid: abb6f9c5-b672-4bb7-9a51-4845c90d5430
+langcode: en
+status: true
+dependencies: {  }
+id: foia_xiic
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: "Import oldest_days FOIA Requests and Administrative Appeals XII. C.\tparagraphs from NIEM-XML data."
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:OldestPendingConsultationSection/foia:OldestPendingItems'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_num_days_1
+      label: 'Number of days pending qty 1'
+      selector: 'foia:OldItem[1]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_2
+      label: 'Number of days pending qty 2'
+      selector: 'foia:OldItem[2]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_3
+      label: 'Number of days pending qty 3'
+      selector: 'foia:OldItem[3]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_4
+      label: 'Number of days pending qty 4'
+      selector: 'foia:OldItem[4]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_5
+      label: 'Number of days pending qty 5'
+      selector: 'foia:OldItem[5]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_6
+      label: 'Number of days pending qty 6'
+      selector: 'foia:OldItem[6]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_7
+      label: 'Number of days pending qty 7'
+      selector: 'foia:OldItem[7]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_8
+      label: 'Number of days pending qty 8'
+      selector: 'foia:OldItem[8]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_9
+      label: 'Number of days pending qty 9'
+      selector: 'foia:OldItem[9]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_num_days_10
+      label: 'Number of days pending qty 10'
+      selector: 'foia:OldItem[10]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_date_1
+      label: 'Number of days pending date 1'
+      selector: 'foia:OldItem[1]/foia:OldItemReceiptDate'
+    -
+      name: field_date_2
+      label: 'Number of days pending date 2'
+      selector: 'foia:OldItem[2]/foia:OldItemReceiptDate'
+    -
+      name: field_date_3
+      label: 'Number of days pending date 3'
+      selector: 'foia:OldItem[3]/foia:OldItemReceiptDate'
+    -
+      name: field_date_4
+      label: 'Number of days pending date 4'
+      selector: 'foia:OldItem[4]/foia:OldItemReceiptDate'
+    -
+      name: field_date_5
+      label: 'Number of days pending date 5'
+      selector: 'foia:OldItem[5]/foia:OldItemReceiptDate'
+    -
+      name: field_date_6
+      label: 'Number of days pending date 6'
+      selector: 'foia:OldItem[6]/foia:OldItemReceiptDate'
+    -
+      name: field_date_7
+      label: 'Number of days pending date 7'
+      selector: 'foia:OldItem[7]/foia:OldItemReceiptDate'
+    -
+      name: field_date_8
+      label: 'Number of days pending date 8'
+      selector: 'foia:OldItem[8]/foia:OldItemReceiptDate'
+    -
+      name: field_date_9
+      label: 'Number of days pending date 9'
+      selector: 'foia:OldItem[9]/foia:OldItemReceiptDate'
+    -
+      name: field_date_10
+      label: 'Number of days pending date 10'
+      selector: 'foia:OldItem[10]/foia:OldItemReceiptDate'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: oldest_days
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_xiic
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_num_days_1: field_num_days_1
+  field_num_days_2: field_num_days_2
+  field_num_days_3: field_num_days_3
+  field_num_days_4: field_num_days_4
+  field_num_days_5: field_num_days_5
+  field_num_days_6: field_num_days_6
+  field_num_days_7: field_num_days_7
+  field_num_days_8: field_num_days_8
+  field_num_days_9: field_num_days_9
+  field_num_days_10: field_num_days_10
+  field_date_1: field_date_1
+  field_date_2: field_date_2
+  field_date_3: field_date_3
+  field_date_4: field_date_4
+  field_date_5: field_date_5
+  field_date_6: field_date_6
+  field_date_7: field_date_7
+  field_date_8: field_date_8
+  field_date_9: field_date_9
+  field_date_10: field_date_10
+destination: null
+migration_dependencies:
+  required:
+    - component_xiic

@@ -1,0 +1,66 @@
+uuid: 7dbce5ee-1366-40c2-9c9d-8096751d3206
+langcode: en
+status: true
+dependencies: {  }
+id: component
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - Content
+migration_group: foia_xml
+label: 'Map internal identifiers in the XML file to Agency Component node IDs.'
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  urls:
+    - 'temporary://foia-xml/report.xml'
+  data_parser_plugin: simple_xml
+  namespaces:
+    iepd: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03'
+    foia: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03'
+    i: 'http://niem.gov/niem/appinfo/2.0'
+    j: 'http://niem.gov/niem/domains/jxdm/4.1'
+    nc: 'http://niem.gov/niem/niem-core/2.0'
+    s: 'http://niem.gov/niem/structures/2.0'
+    xsi: 'http://www.w3.org/2001/XMLSchema-instance'
+  item_selector: '/iepd:FoiaAnnualReport/nc:Organization|/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationSubUnit'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: abbreviation
+      label: 'Standard abbreviation of the agency component'
+      selector: 'nc:OrganizationAbbreviationText'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  nid:
+    -
+      plugin: foia_component_lookup
+      source:
+        - agency
+        - abbreviation
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Component node with the given abbreviation.'
+destination:
+  plugin: 'entity:node'
+migration_dependencies:
+  required: {  }

@@ -1,0 +1,30 @@
+uuid: d2b48121-326a-4785-b61d-c20696392a97
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_x_perc_costs
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.annual_foia_report_data.field_overall_x_perc_costs
+field_name: field_overall_x_perc_costs
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Percentage of Total Costs'
+description: 'The "Percentage of Total Costs" field is calculated by comparing the "Fees Collected" field with "Processing Costs" from section IX.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

@@ -1,0 +1,32 @@
+uuid: c4b77635-cc1b-4d5d-b51c-d7f0636faf6c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_agency_component
+    - paragraphs.paragraphs_type.foia_pers_costs_ix
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.foia_pers_costs_ix.field_agency_component
+field_name: field_agency_component
+entity_type: paragraph
+bundle: foia_pers_costs_ix
+label: Agency/Component
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: agency_component_by_agency
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference

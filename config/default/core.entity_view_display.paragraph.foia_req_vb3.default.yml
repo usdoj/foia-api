@@ -1,0 +1,112 @@
+uuid: 50fa6663-95f7-45ca-b90f-1ef58cbd6d1f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_req_vb3.field_agency_component
+    - field.field.paragraph.foia_req_vb3.field_ex_1
+    - field.field.paragraph.foia_req_vb3.field_ex_2
+    - field.field.paragraph.foia_req_vb3.field_ex_3
+    - field.field.paragraph.foia_req_vb3.field_ex_4
+    - field.field.paragraph.foia_req_vb3.field_ex_5
+    - field.field.paragraph.foia_req_vb3.field_ex_6
+    - field.field.paragraph.foia_req_vb3.field_ex_7
+    - field.field.paragraph.foia_req_vb3.field_ex_8
+    - field.field.paragraph.foia_req_vb3.field_ex_9
+    - paragraphs.paragraphs_type.foia_req_vb3
+id: paragraph.foia_req_vb3.default
+targetEntityType: paragraph
+bundle: foia_req_vb3
+mode: default
+content:
+  field_agency_component:
+    weight: 10
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_ex_1:
+    weight: 1
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_ex_2:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_ex_3:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_ex_4:
+    weight: 4
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_ex_5:
+    weight: 5
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_ex_6:
+    weight: 6
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_ex_7:
+    weight: 7
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_ex_8:
+    weight: 8
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_ex_9:
+    weight: 9
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+hidden:
+  search_api_excerpt: true

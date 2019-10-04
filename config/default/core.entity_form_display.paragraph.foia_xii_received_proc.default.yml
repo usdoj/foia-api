@@ -1,0 +1,99 @@
+uuid: bc851fea-53a5-4fec-840d-ae77324a1117
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_xii_received_proc.field_agency_component
+    - field.field.paragraph.foia_xii_received_proc.field_proc_cur_yr
+    - field.field.paragraph.foia_xii_received_proc.field_proc_last_yr
+    - field.field.paragraph.foia_xii_received_proc.field_received_cur_yr
+    - field.field.paragraph.foia_xii_received_proc.field_received_last_yr
+    - paragraphs.paragraphs_type.foia_xii_received_proc
+  module:
+    - entity_reference_views_select
+    - field_group
+third_party_settings:
+  field_group:
+    group_req_adm_app_rec_proc:
+      children:
+        - group_number_received
+        - group_number_processed_p_wrap
+        - group_agency_component
+      parent_name: ''
+      weight: 1
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'FOIA Requests and Administrative Appeals XII. Received and Processed'
+    group_number_received:
+      children:
+        - field_received_last_yr
+        - field_received_cur_yr
+      parent_name: group_req_adm_app_rec_proc
+      weight: 20
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'NUMBER RECEIVED'
+    group_number_processed_p_wrap:
+      children:
+        - field_proc_last_yr
+        - field_proc_cur_yr
+      parent_name: group_req_adm_app_rec_proc
+      weight: 21
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'NUMBER PROCESSED'
+id: paragraph.foia_xii_received_proc.default
+targetEntityType: paragraph
+bundle: foia_xii_received_proc
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: erviews_options_select
+    region: content
+  field_proc_cur_yr:
+    weight: 5
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_proc_last_yr:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_received_cur_yr:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_received_last_yr:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

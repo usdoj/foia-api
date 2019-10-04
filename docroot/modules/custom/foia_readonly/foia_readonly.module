@@ -1,0 +1,262 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for FOIA Readonly module.
+ *
+ * @todo: Replace static lists used here with a config form for better control.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function foia_readonly_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_readonly_disable_node_field($form, $form_state, $form_id);
+}
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function foia_readonly_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_readonly_disable_node_field($form, $form_state, $form_id);
+}
+
+/**
+ * Implements hook_field_widget_multivalue_WIDGET_TYPE_form_alter().
+ */
+function foia_readonly_field_widget_multivalue_entity_reference_paragraphs_form_alter(array &$elements, FormStateInterface $form_state, array $context) {
+
+  // Set the field names to disable, based on the paragraph element field name.
+  switch ($elements['#field_name']) {
+    case 'field_statute_iv':
+      $field_names = ['field_total_num_relied_by_agency'];
+      break;
+
+    case 'field_foia_requests_va':
+      $field_names = ['field_req_pend_end_yr'];
+      break;
+
+    case 'field_foia_requests_vb1':
+      $field_names = ['field_total'];
+      break;
+
+    case 'field_foia_requests_vb2':
+      $field_names = ['field_total'];
+      break;
+
+    case 'field_admin_app_via':
+      $field_names = ['field_app_pend_end_yr'];
+      break;
+
+    case 'field_admin_app_vib':
+      $field_names = ['field_total'];
+      break;
+
+    case 'field_admin_app_vic3':
+      $field_names = ['field_total'];
+      break;
+
+    case 'field_proc_req_viic1':
+    case 'field_proc_req_viic2':
+    case 'field_proc_req_viic3':
+      $field_names = ['field_total'];
+      break;
+
+    case 'field_foia_pers_costs_ix':
+      $field_names = [
+        'field_total_staff',
+        'field_total_costs',
+      ];
+      break;
+
+    case 'field_fees_x':
+      $field_names = ['field_perc_costs'];
+      break;
+
+    case 'field_foia_xiib':
+      $field_names = ['field_pend_end_yr'];
+      break;
+
+    default:
+      $field_names = [];
+  }
+
+  // For fields to disable, invoke helper function.
+  if ($field_names) {
+    foreach ($field_names as $field_name) {
+      foia_readonly_disable_paragraph_field($elements, $field_name);
+    }
+  }
+}
+
+/**
+ * Helper function for disabling fields on main node type.
+ */
+function foia_readonly_disable_node_field(&$form, FormStateInterface $form_state, $form_id) {
+  $fieldsToDisable = [
+    'overall_req_pend_start_yr',
+    'overall_req_received_yr',
+    'overall_req_processed_yr',
+    'overall_req_pend_end_yr',
+    'overall_vb1_full_grants',
+    'overall_vb1_part_grants_de',
+    'overall_vb1_full_denials_e',
+    'overall_vb1_no_rec',
+    'overall_vb1_rec_ref_to_an_',
+    'overall_vb1_req_withdrawn',
+    'overall_vb1_fee_related_re',
+    'overall_vb1_rec_not_desc',
+    'overall_vb1_imp_req_oth_re',
+    'overall_vb1_not_agency_rec',
+    'overall_vb1_dup_request',
+    'overall_vb1_oth',
+    'overall_vb1_total',
+    'overall_vb2_total',
+    'overall_vb3_ex_1',
+    'overall_vb3_ex_2',
+    'overall_vb3_ex_3',
+    'overall_vb3_ex_4',
+    'overall_vb3_ex_5',
+    'overall_vb3_ex_6',
+    'overall_vb3_ex_7_a',
+    'overall_vb3_ex_7_b',
+    'overall_vb3_ex_7_c',
+    'overall_vb3_ex_7_d',
+    'overall_vb3_ex_7_e',
+    'overall_vb3_ex_7_f',
+    'overall_vb3_ex_8',
+    'overall_vb3_ex_9',
+    'overall_via_app_pend_start',
+    'overall_via_app_recd_yr',
+    'overall_via_app_proc_yr',
+    'overall_via_app_pend_endyr',
+    'overall_vib_affirm_on_app',
+    'overall_vib_part_on_app',
+    'overall_vib_comp_on_app',
+    'overall_vib_closed_oth_app',
+    'overall_vib_total',
+    'overall_vic1_ex_1',
+    'overall_vic1_ex_2',
+    'overall_vic1_ex_3',
+    'overall_vic1_ex_4',
+    'overall_vic1_ex_5',
+    'overall_vic1_ex_6',
+    'overall_vic1_ex_7_a',
+    'overall_vic1_ex_7_b',
+    'overall_vic1_ex_7_c',
+    'overall_vic1_ex_7_d',
+    'overall_vic1_ex_7_e',
+    'overall_vic1_ex_7_f',
+    'overall_vic1_ex_8',
+    'overall_vic1_ex_9',
+    'overall_vic2_no_rec',
+    'overall_vic2_rec_refer_ini',
+    'overall_vic2_req_withdrawn',
+    'overall_vic2_fee_rel_reas',
+    'overall_vic2_rec_not_desc',
+    'overall_vic2_imp_req_oth',
+    'overall_vic2_not_agency_re',
+    'overall_vic2_dup_req',
+    'overall_vic2_req_in_lit',
+    'overall_vic2_app_denial_ex',
+    'overall_vic2_oth',
+    'overall_vic3_total',
+    'overall_viic1_1_20_days',
+    'overall_viic1_21_40_days',
+    'overall_viic1_41_60_days',
+    'overall_viic1_61_80_days',
+    'overall_viic1_81_100_days',
+    'overall_viic1_101_120_days',
+    'overall_viic1_121_140_days',
+    'overall_viic1_141_160_days',
+    'overall_viic1_161_180_days',
+    'overall_viic1_181_200_days',
+    'overall_viic1_201_300_days',
+    'overall_viic1_301_400_days',
+    'overall_viic1_400_up_days',
+    'overall_viic1_total',
+    'overall_viic2_1_20_days',
+    'overall_viic2_21_40_days',
+    'overall_viic2_41_60_days',
+    'overall_viic2_61_80_days',
+    'overall_viic2_81_100_days',
+    'overall_viic2_101_120_days',
+    'overall_viic2_121_140_days',
+    'overall_viic2_141_160_days',
+    'overall_viic2_161_180_days',
+    'overall_viic2_181_200_days',
+    'overall_viic2_201_300_days',
+    'overall_viic2_301_400_days',
+    'overall_viic2_400_up_days',
+    'overall_viic2_total',
+    'overall_viic3_1_20_days',
+    'overall_viic3_21_40_days',
+    'overall_viic3_41_60_days',
+    'overall_viic3_61_80_days',
+    'overall_viic3_81_100_days',
+    'overall_viic3_101_120_days',
+    'overall_viic3_121_140_days',
+    'overall_viic3_141_160_days',
+    'overall_viic3_161_180_days',
+    'overall_viic3_181_200_days',
+    'overall_viic3_201_300_days',
+    'overall_viic3_301_400_days',
+    'overall_viic3_400_up_days',
+    'overall_viic3_total',
+    'overall_ix_full_emp',
+    'overall_ix_eq_full_emp',
+    'overall_ix_total_staff',
+    'overall_ix_proc_costs',
+    'overall_ix_lit_costs',
+    'overall_ix_total_costs',
+    'overall_x_total_fees',
+    'overall_x_perc_costs',
+    'overall_xia_sub_used',
+    'overall_xib_rec_post_foia',
+    'overall_xib_rec_post_prog',
+    'overall_xiia_back_req_end_',
+    'overall_xiia_back_app_end_',
+    'overall_xiib_pend_start_yr',
+    'overall_xiib_con_during_yr',
+    'overall_xiib_proc_start_yr',
+    'overall_xiib_pend_end_yr',
+    'overall_xiid1_received_las',
+    'overall_xiid1_received_cur',
+    'overall_xiid1_proc_last_yr',
+    'overall_xiid1_proc_cur_yr',
+    'overall_xiid2_back_prev_yr',
+    'overall_xiid2_back_cur_yr',
+    'overall_xiie1_received_las',
+    'overall_xiie1_received_cur',
+    'overall_xiie1_proc_last_yr',
+    'overall_xiie1_proc_cur_yr',
+    'overall_xiie2_back_prev_yr',
+    'overall_xiie2_back_cur_yr',
+  ];
+
+  foreach ($fieldsToDisable as $fieldName) {
+    $fullFieldName = 'field_' . $fieldName;
+    $form[$fullFieldName]['widget'][0]['value']['#attributes']['readonly'] = TRUE;
+  }
+}
+
+/**
+ * Helper function for disabling fields within a multivalue paragraph widget.
+ *
+ * @param array $elements
+ *   Elements passed into hook_field_widget_multivalue_WIDGET_TYPE_form_alter().
+ * @param string $field_name
+ *   The name of the field to be disabled.
+ */
+function foia_readonly_disable_paragraph_field(array &$elements, $field_name) {
+  foreach (Element::children($elements) as $delta => $element) {
+    if (array_key_exists($delta, $elements)
+      && array_key_exists('subform', $elements[$delta])
+      && array_key_exists($field_name, $elements[$delta]['subform'])) {
+      $elements[$delta]['subform'][$field_name]['widget'][0]['value']['#attributes']['readonly'] = TRUE;
+    }
+  }
+}

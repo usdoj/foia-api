@@ -1,0 +1,62 @@
+id: foia_xib_subsection_a2
+label: 'Import XI.B. Number of Subsection (A)(2) Postings paragraphs from NIEM-XML data.'
+migration_group: foia_component_data_import
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:SubsectionPostSection/foia:Subsection'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_rec_post_prog
+      label: 'Placeholder Label - XI.B - field_rec_post_prog'
+      selector: 'foia:PostedbyProgramQuantity'
+    -
+      name: field_rec_post_foia
+      label: 'Placeholder Label - XI.B - field_rec_post_foia'
+      selector: 'foia:PostedbyFOIAQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: sub_xib
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_xib_subsection_a2
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_rec_post_prog: field_rec_post_prog
+  field_rec_post_foia: field_rec_post_foia
+migration_dependencies:
+  required:
+    - component_xib_subsection_a2

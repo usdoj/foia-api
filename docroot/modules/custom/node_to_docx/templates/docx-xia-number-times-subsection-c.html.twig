@@ -1,0 +1,70 @@
+<div class=WordSection72>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535>
+ <tr >
+  <td width=535 nowrap valign=bottom >
+  <p class=MsoNormal><b>XI.A. Number of Times Subsection (C) Used<o:p></o:p></b></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<b ><br clear=all >
+</b>
+
+<div class=WordSection73>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=354>
+ <tr >
+  <td width=131 >
+  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+  </td>
+  <td width=223 >
+  <p class=MsoNormal align=center >Number of Times Subsection Used<o:p></o:p></p>
+  </td>
+ </tr>
+
+{% for key,value in content.field_sub_xia if key|first != '#' %}
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_sub_xia[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }} 
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_sub_xia[key]['#paragraph'].field_sub_used.value }}
+  <o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+ <tr >
+  <td  >
+  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_xia_sub_used }}<o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection74>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535>
+ <tr >
+  <td valign=bottom >
+  <p class=MsoNormal >{{ docx.field_footnotes_xia }}<i><o:p></o:p></i></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<i ><br clear=all >
+</i>
+

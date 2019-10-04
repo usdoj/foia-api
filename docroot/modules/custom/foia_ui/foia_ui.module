@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_toolbar_alter().
@@ -40,5 +41,86 @@ function foia_ui_toolbar_alter(&$items) {
   }
   else {
     $items['reservoir_api'] = $empty_item_cacheability;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function foia_ui_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['validate_button'] = [
+    '#type' => 'button',
+    '#value' => t('Validate'),
+    '#attached' => [
+      'library' => [
+        'foia_ui/jquery_validation',
+        'foia_ui/foia_ui_validation',
+      ],
+      'drupalSettings' => [
+        'foiaUI' => [
+          'foiaUISettings' => [
+            'formID' => '#node-annual-foia-report-data-edit-form',
+          ],
+        ],
+      ],
+    ],
+  ];
+  foreach ($form['field_foia_xiie2']['widget'] as $key => &$element) {
+    if (is_int($key)) {
+      $element['subform']['field_back_cur_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report";
+      $element['subform']['field_back_prev_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report";
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function foia_ui_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['validate_button'] = [
+    '#type' => 'button',
+    '#value' => t('Validate'),
+    '#attached' => [
+      'library' => [
+        'foia_ui/jquery_validation',
+        'foia_ui/foia_ui_validation',
+      ],
+      'drupalSettings' => [
+        'foiaUI' => [
+          'foiaUISettings' => [
+            'formID' => '#node-annual-foia-report-data-form',
+          ],
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements template_preprocess_details().
+ */
+function foia_ui_preprocess_details(&$variables) {
+  if (isset($variables['element']['#entity_type'])) {
+    $entity_type = $variables['element']['#entity_type'];
+    if (isset($variables['element']['#bundle'])) {
+      $bundle = $variables['element']['#bundle'];
+      $problem_types = [
+        'processed_requests_vii',
+        'oldest_days',
+        'foia_xii_received_proc',
+      ];
+      if ($entity_type == 'paragraph' && in_array($bundle, $problem_types)) {
+        $context_id = '';
+        foreach ($variables['element'] as $key => $value) {
+          if ('field' == substr($key, 0, 5)) {
+            $context_id = $value['#parents'][0];
+            break;
+          }
+        }
+        // Append parent form ID to generate unique fragment IDs on nested
+        // vertical tabs using paragraphs.
+        $variables['attributes']['id'] = $variables['attributes']['id'] . '--' . $context_id;
+      }
+    }
   }
 }

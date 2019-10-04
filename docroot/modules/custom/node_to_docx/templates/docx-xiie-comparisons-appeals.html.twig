@@ -1,0 +1,111 @@
+<div class=WordSection93>
+
+<p class=MsoNormal ><b>XII.E.(1).
+COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT
+ANNUAL REPORT -- APPEALS RECEIVED AND PROCESSED<o:p></o:p></b></p>
+
+</div>
+
+<b ><br clear=all >
+</b>
+
+<div class=WordSection94>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td width=114 rowspan=2 >
+  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+  </td>
+  <td width=228 colspan=2 >
+  <p class=MsoNormal align=center >NUMBER OF APPEALS <u>RECEIVED</u><o:p></o:p></p>
+  </td>
+  <td width=228 colspan=2 >
+  <p class=MsoNormal align=center >NUMBER OF APPEALS <u>PROCESSED</u><o:p></o:p></p>
+  </td>
+ </tr>
+ <tr >
+  <td width=114 >
+  <p class=MsoNormal align=center >Number Received During Fiscal Year
+  from Last Year's Annual Report<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number Received During Fiscal Year
+  from Current Annual Report<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number Processed During Fiscal Year
+  from Last Year's Annual Report<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number Processed During Fiscal Year
+  from Current Annual Report<o:p></o:p></p>
+  </td>
+ </tr>
+
+{% for key,value in content.field_foia_xiie1 if key|first != '#' %}
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_foia_xiie1[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_foia_xiie1[key]['#paragraph'].field_received_last_yr.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_foia_xiie1[key]['#paragraph'].field_received_cur_yr.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_foia_xiie1[key]['#paragraph'].field_proc_last_yr.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_foia_xiie1[key]['#paragraph'].field_proc_cur_yr.value }}
+  <o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+ <tr >
+  <td >
+  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_xiie1_received_las }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_xiie1_received_cur }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_xiie1_proc_last_yr }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_xiie1_proc_cur_yr }}<o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection95>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td valign=bottom >
+  <p class=MsoNormal ><i>{{ docx.field_footnotes_xiie1 }}<o:p></o:p></i></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<i ><br clear=all >
+</i>
+

@@ -1,0 +1,177 @@
+<div class=WordSection27>
+
+<p class=MsoNormal ><b>VI.C.(2).
+REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS<o:p></o:p></b></p>
+
+</div>
+
+<b ><br clear=all >
+</b>
+
+<div class=WordSection28>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td width=31 >
+  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >No Records<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Records Referred at Initial Request
+  Level<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Request Withdrawn<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Fee-Related Reason<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Records not Reasonably Described<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Improper Request for Other Reasons<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Not Agency Record<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Duplicate Request or Appeal<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Request in Litigation<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Appeal Based Solely on Denial of
+  Request for Expedited Processing<o:p></o:p></p>
+  </td>
+  <td width=49 >
+  <p class=MsoNormal align=center >Other *Explain in chart below<o:p></o:p></p>
+  </td>
+ </tr>
+
+{% for key,value in content.field_admin_app_vic2 if key|first != '#' %}
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_no_rec.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_rec_refer_initial.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_req_withdrawn.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_fee_related_reason.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_rec_not_desc.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_imp_req_oth_reason.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_not_agency_record.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_dup_req.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_req_in_lit.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_app_denial_exp.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_vic2[key]['#paragraph'].field_oth.value }}
+  <o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+
+ <tr >
+  <td >
+  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_no_rec }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_rec_refer_ini }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_req_withdrawn }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_fee_rel_reas }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_rec_not_desc }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_imp_req_oth }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_not_agency_re }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_dup_req }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_req_in_lit }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_app_denial_ex }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_vic2_oth }}<o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection29>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td width=570 nowrap valign=bottom >
+  <p class=MsoNormal align=left ><i>{{ docx.field_footnotes_vic2 }}</i><o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<i ><br clear=all >
+</i>

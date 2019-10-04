@@ -1,0 +1,42 @@
+uuid: cc17e722-2d93-4839-a74b-2a6ec86f10a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.sub_xib.field_agency_component
+    - field.field.paragraph.sub_xib.field_rec_post_foia
+    - field.field.paragraph.sub_xib.field_rec_post_prog
+    - paragraphs.paragraphs_type.sub_xib
+id: paragraph.sub_xib.default
+targetEntityType: paragraph
+bundle: sub_xib
+mode: default
+content:
+  field_agency_component:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_rec_post_foia:
+    weight: 1
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_rec_post_prog:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+hidden:
+  search_api_excerpt: true

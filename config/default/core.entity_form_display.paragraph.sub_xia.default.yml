@@ -1,0 +1,31 @@
+uuid: 0f3fd5c2-297d-45e4-996c-b30385779707
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.sub_xia.field_agency_component
+    - field.field.paragraph.sub_xia.field_sub_used
+    - paragraphs.paragraphs_type.sub_xia
+  module:
+    - entity_reference_views_select
+id: paragraph.sub_xia.default
+targetEntityType: paragraph
+bundle: sub_xia
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: erviews_options_select
+    region: content
+  field_sub_used:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

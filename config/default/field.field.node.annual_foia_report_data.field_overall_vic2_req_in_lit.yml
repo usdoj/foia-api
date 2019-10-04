@@ -1,0 +1,34 @@
+uuid: 6a4c6893-dc0c-4a57-8a92-4d17ca7b73c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vic2_req_in_lit
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        96cd768a-5bbf-498b-a4fb-2247dc4698c7:
+          field: 'field_admin_app_vic2:field_req_in_lit'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_vic2_req_in_lit
+field_name: field_overall_vic2_req_in_lit
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Request in Litigation'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,34 @@
+uuid: 4de953a2-251d-4076-8901-d595f8516e47
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vic1_ex_9
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        b59f71ab-7cdc-4afa-81b3-637ef31cc338:
+          field: 'field_admin_app_vic1:field_ex_9'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_vic1_ex_9
+field_name: field_overall_vic1_ex_9
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Ex. 9'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

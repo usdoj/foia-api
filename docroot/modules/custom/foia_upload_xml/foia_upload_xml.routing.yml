@@ -1,0 +1,7 @@
+foia_upload_xml.agency_report:
+  path: 'report/upload'
+  defaults:
+    _title: 'Upload Annual FOIA Report Data'
+    _form: '\Drupal\foia_upload_xml\Form\AgencyXmlUploadForm'
+  requirements:
+    _permission: 'create annual_foia_report_data content'

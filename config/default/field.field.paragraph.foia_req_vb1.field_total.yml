@@ -1,0 +1,78 @@
+uuid: 66313c36-183d-4a89-8357-aaa3f2a6e48e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_total
+    - paragraphs.paragraphs_type.foia_req_vb1
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        c3e4cee6-d1a9-4226-96c3-916bb81f996d:
+          field: field_rec_ref_to_an_comp
+          this_entity: '1'
+          weight: '100'
+        77575473-97ae-4125-ac6f-83e24834d570:
+          field: field_dup_request
+          this_entity: '1'
+          weight: '101'
+        4e0b7723-01f1-495f-889f-49c2049d6715:
+          field: field_fee_related_reason
+          this_entity: '1'
+          weight: '102'
+        46d2c2d8-db96-4a74-b78f-a558735b678b:
+          field: field_imp_req_oth_reason
+          this_entity: '1'
+          weight: '103'
+        35d9eabb-d163-4130-9bf7-620866813547:
+          field: field_no_rec
+          this_entity: '1'
+          weight: '104'
+        09a9a30f-eb30-4bf6-9b29-e16dd3207b2a:
+          field: field_not_agency_record
+          this_entity: '1'
+          weight: '105'
+        4614a0da-da27-4ab7-8c63-81093fcc6400:
+          field: field_full_denials_ex
+          this_entity: '1'
+          weight: '106'
+        f117d2f5-ff14-4ae2-be67-b342b984db90:
+          field: field_full_grants
+          this_entity: '1'
+          weight: '107'
+        92e156aa-0ba2-4408-b25a-b2902fbca3fe:
+          field: field_part_grants_denials
+          this_entity: '1'
+          weight: '108'
+        24a585a0-0443-4ea2-af54-531311f0acd3:
+          field: field_oth
+          this_entity: '1'
+          weight: '109'
+        08b848b0-4955-489e-be77-c12db24b73d0:
+          field: field_rec_not_desc
+          this_entity: '1'
+          weight: '110'
+        80d92395-c49d-486c-af1f-4a838468ac07:
+          field: field_req_withdrawn
+          this_entity: '1'
+          weight: '111'
+id: paragraph.foia_req_vb1.field_total
+field_name: field_total
+entity_type: paragraph
+bundle: foia_req_vb1
+label: Total
+description: 'The total must match the number entered in the V.A. section, field ''Number of Requests Processed in Fiscal Year'' for the component.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

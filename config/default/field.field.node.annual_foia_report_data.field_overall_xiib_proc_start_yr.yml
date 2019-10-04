@@ -1,0 +1,34 @@
+uuid: ff910914-f939-4150-b242-c5756c42484c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_xiib_proc_start_yr
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        b3e6f3d4-5f58-4f4e-8153-86d393ad75a1:
+          field: 'field_foia_xiib:field_proc_start_yr'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_xiib_proc_start_yr
+field_name: field_overall_xiib_proc_start_yr
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Number of Consultations Received from Other Agencies that were Processed by the Agency During the Fiscal Year'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

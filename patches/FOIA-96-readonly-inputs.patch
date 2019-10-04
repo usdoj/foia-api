@@ -1,0 +1,21 @@
+diff --git a/core/themes/seven/css/components/form.css b/core/themes/seven/css/components/form.css
+index 98e78914e9..638db2c992 100644
+--- a/core/themes/seven/css/components/form.css
++++ b/core/themes/seven/css/components/form.css
+@@ -353,3 +353,16 @@ select {
+ div.filter-options select {
+   padding: 0;
+ }
++
++
++/* Display :read-only elements as if they are disabled */
++input:-moz-read-only,
++input:-moz-read-only:focus { /* For Firefox */
++  background-color: hsla(0,0%,0%,0.08);
++}
++
++input:read-only,
++input:read-only:focus {
++  background-color: hsla(0,0%,0%,0.08);
++}
++

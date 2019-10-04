@@ -1,0 +1,62 @@
+uuid: 26a52fb2-cad7-4d69-9ca0-62bec2b7793d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.foia_xii_received_proc.field_agency_component
+    - field.field.paragraph.foia_xii_received_proc.field_proc_cur_yr
+    - field.field.paragraph.foia_xii_received_proc.field_proc_last_yr
+    - field.field.paragraph.foia_xii_received_proc.field_received_cur_yr
+    - field.field.paragraph.foia_xii_received_proc.field_received_last_yr
+    - paragraphs.paragraphs_type.foia_xii_received_proc
+id: paragraph.foia_xii_received_proc.default
+targetEntityType: paragraph
+bundle: foia_xii_received_proc
+mode: default
+content:
+  field_agency_component:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_proc_cur_yr:
+    weight: 4
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_proc_last_yr:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_received_cur_yr:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_received_last_yr:
+    weight: 1
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+hidden:
+  search_api_excerpt: true

@@ -1,6 +1,6 @@
 project:
-  machine_name: dojfoia
-  prefix: DOJ
+  machine_name: foia
+  prefix: FOIA
   human_name: FOIA.gov
   profile:
     name: lightning
@@ -8,24 +8,25 @@ project:
     protocol: http
     hostname: local-api.foia.doj.gov
 git:
-  default_branch: foia-develop
+  default_branch: acquia-develop
   remotes:
     - 'foia@svn-23659.prod.hosting.acquia.com:foia.git'
 deploy:
   tag_source: true
 drush:
   aliases:
-    remote: foia.test
+    remote: foia.uat
     local: self
     ci: self
   default_alias: '${drush.aliases.local}'
+  sanitize: false
 modules:
   local:
     enable: [dblog, devel, seckit, views_ui]
-    uninstall: [acsf, acquia_connector, shield]
+    uninstall: [acquia_connector, shield]
   ci:
     enable: {  }
-    uninstall: [acquia_connector, shield]
+    uninstall: [acquia_connector, shield, simplesamlphp_auth]
   dev:
     enable: [acquia_connector, shield]
     uninstall: {  }

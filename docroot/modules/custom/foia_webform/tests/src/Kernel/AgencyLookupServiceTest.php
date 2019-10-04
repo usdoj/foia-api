@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\foia_webform\Kernel;
 
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\foia_webform\AgencyLookupService;
 use Drupal\node\Entity\NodeType;

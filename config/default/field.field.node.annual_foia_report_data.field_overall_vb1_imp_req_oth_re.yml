@@ -1,0 +1,34 @@
+uuid: a984f4c5-061a-4d37-aad1-4f4245ed57f7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vb1_imp_req_oth_re
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        0dee678e-82d2-4bdd-8e64-102c30fe941c:
+          field: 'field_foia_requests_vb1:field_imp_req_oth_reason'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_vb1_imp_req_oth_re
+field_name: field_overall_vb1_imp_req_oth_re
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Improper FOIA Request for Other Reason'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

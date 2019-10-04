@@ -1,0 +1,69 @@
+<div class=WordSection78>
+<p class=MsoNormal ><b>XII.A. Backlogs of FOIA Requests and Administrative
+  Appeals<o:p></o:p></b></p>
+</div>
+
+<b ><br clear=all >
+</b>
+
+<div class=WordSection79>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=342>
+ <tr >
+  <td width=114 >
+  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number of Backlogged Requests as of
+  End of Fiscal Year<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number of Backlogged Appeals as of End
+  of Fiscal Year<o:p></o:p></p>
+  </td>
+ </tr>
+{% for key,value in content.field_foia_xiia if key|first != '#' %}
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >{{ content.field_foia_xiia[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ content.field_foia_xiia[key]['#paragraph'].field_back_req_end_yr[0].value }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ content.field_foia_xiia[key]['#paragraph'].field_back_app_end_yr[0].value }}<o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+ <tr >
+  <td width=114 >
+  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_xiia_back_req_end_ }}<o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >{{ docx.field_overall_xiia_back_app_end_ }}<o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection80>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535>
+ <tr >
+  <td width=535 nowrap valign=bottom >
+  <p class=MsoNormal align=center ><i>{{ docx.field_footnotes_xiia }}<o:p></o:p></i></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<i ><br clear=all >
+</i>
+

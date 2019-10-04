@@ -1,0 +1,34 @@
+uuid: 4885d622-3973-41d0-924d-d8971d320a66
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_xiie1_proc_cur_yr
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        25f6e033-a862-4f06-aa04-237a3c573069:
+          field: 'field_foia_xiie1:field_proc_cur_yr'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_xiie1_proc_cur_yr
+field_name: field_overall_xiie1_proc_cur_yr
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Number Processed During Fiscal Year from Current Annual Report'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

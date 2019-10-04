@@ -1,0 +1,2662 @@
+id: foia_agency_report
+label: 'Create a node from an annual report in NIEM-XML format.'
+migration_group: foia_xml
+migration_tags:
+  - Content
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  urls:
+    - 'temporary://foia-xml/report.xml'
+  data_parser_plugin: simple_xml
+  namespaces:
+    iepd: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03'
+    foia: 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03'
+    i: 'http://niem.gov/niem/appinfo/2.0'
+    j: 'http://niem.gov/niem/domains/jxdm/4.1'
+    nc: 'http://niem.gov/niem/niem-core/2.0'
+    s: 'http://niem.gov/niem/structures/2.0'
+    xsi: 'http://www.w3.org/2001/XMLSchema-instance'
+  item_selector: '/iepd:FoiaAnnualReport'
+  # Does shared_configuration get included with a deep merge? If not, then we
+  # will have to repeat these fields in every migration.
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+  # Agency information
+    - name: field_date_prepared
+      label: 'Date Prepared'
+      selector: 'nc:DocumentCreationDate/nc:Date'
+    -
+      name: component
+      label: 'Index for this report of the agency component'
+      selector: 'nc:Organization/@s:id|nc:Organization/nc:OrganizationSubUnit/@s:id'
+  # Section IV
+    -
+      name: field_statute_iv
+      label: 'Statute'
+      selector: 'foia:Exemption3StatuteSection/foia:ReliedUponStatute/@s:id'
+    -
+      name: field_footnotes_iv
+      label: 'IV Footnotes'
+      selector: 'foia:Exemption3StatuteSection/foia:FootnoteText'
+  # Section V.A
+    -
+      name: component_va
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics/@s:id'
+    -
+      name: overall_req_pend_start_yr
+      label: 'Overall requests pending at the start of the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtStartQuantity'
+    -
+      name: overall_req_received_yr
+      label: 'Overall requests received during the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsReceivedQuantity'
+    -
+      name: overall_req_processed_yr
+      label: 'Overall requests processed during the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsProcessedQuantity'
+    -
+      name: overall_req_pend_end_yr
+      label: 'Overall requests pending at the end of the year'
+      selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtEndQuantity'
+    -
+      name: footnotes_va
+      label: 'V.A Footnotes'
+      selector: 'foia:ProcessedRequestSection/foia:FootnoteText'
+  # Section V.B. (1)
+    -
+      name: component_vb1
+      label: 'Internal index of the agency component'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition/@s:id'
+    -
+      name: overall_vb1_no_rec
+      label: 'Placeholder Label - V.B. (1) - overall_vb1_no_rec'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+    -
+      name: overall_vb1_rec_ref_to_an_comp
+      label: 'Placeholder Label - V.B. (1) - rec_ref_to_an_comp'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+    -
+      name: overall_vb1_req_withdrawn
+      label: 'Placeholder Label - V.B. (1) - req_withdrawn'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+    -
+      name: overall_vb1_fee_related_reason
+      label: 'Placeholder Label - V.B. (1) - fee_related_reason'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+    -
+      name: overall_vb1_rec_not_desc
+      label: 'Placeholder Label - V.B. (1) - rec_not_desc'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+    -
+      name: overall_vb1_imp_req_oth_reason
+      label: 'Placeholder Label - V.B. (1) - imp_req_oth_reason'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+    -
+      name: overall_vb1_not_agency_record
+      label: 'Placeholder Label - V.B. (1) - not_agency_record'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+    -
+      name: overall_vb1_dup_request
+      label: 'Placeholder Label - V.B. (1) - dup_request'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+    -
+      name: overall_vb1_oth
+      label: 'Placeholder Label - V.B. (1) - oth'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+    -
+      name: overall_vb1_full_grants
+      label: 'Placeholder Label - V.B. (1) - overall_vb1_full_grants'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionFullGrantQuantity'
+    -
+      name: overall_vb1_part_grants_denials
+      label: 'Placeholder Label - V.B. (1) - overall_vb1_part_grants_denials'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionPartialGrantQuantity'
+    -
+      name: overall_vb1_full_denials_ex
+      label: 'Placeholder Label - V.B. (1) - overall_vb1_full_denials_ex'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionFullExemptionDenialQuantity'
+    -
+      name: overall_vb1_total
+      label: 'Placeholder Label - V.B. (1) - total'
+      selector: 'foia:RequestDispositionSection/foia:RequestDisposition[@s:id=../foia:RequestDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDispositionTotalQuantity'
+    -
+      name: footnotes_vb1
+      label: 'V.B. (1) Footnotes'
+      selector: 'foia:RequestDispositionSection/foia:FootnoteText'
+  # Section V.B(2)
+    -
+      name: component_vb2
+      label: 'Internal index of the agency component'
+      selector: 'foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason/@s:id'
+    -
+      name: field_overall_vb2_total
+      label: 'Overall number of times Exemption 1 is used'
+      selector: 'foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason[@s:id=../foia:OtherDenialReasonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComponentOtherDenialReasonQuantity'
+    -
+      name: field_footnotes_vb2
+      label: 'V.B. (2) Footnotes'
+      selector: 'foia:RequestDenialOtherReasonSection/foia:FootnoteText'
+  # Section V.B(3)
+    -
+      name: component_vb3
+      label: 'Internal index of the agency component'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions/@s:id'
+    -
+      name: field_overall_vb3_ex_1
+      label: 'Overall number of times Exemption 1 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 1"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_2
+      label: 'Overall number of times Exemption 2 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 2"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_3
+      label: 'Overall number of times Exemption 3 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 3"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_4
+      label: 'Overall number of times Exemption 4 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 4"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_5
+      label: 'Overall number of times Exemption 5 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 5"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_6
+      label: 'Overall number of times Exemption 6 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 6"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_a
+      label: 'Overall number of times Exemption 7(A) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(A)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_b
+      label: 'Overall number of times Exemption 7(B) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(B)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_c
+      label: 'Overall number of times Exemption 7(C) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(C)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_d
+      label: 'Overall number of times Exemption 7(D) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(D)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_e
+      label: 'Overall number of times Exemption 7(E) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(E)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_7_f
+      label: 'Overall number of times Exemption 7(F) is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(F)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_8
+      label: 'Overall number of times Exemption 8 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 8"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vb3_ex_9
+      label: 'Overall number of times Exemption 9 is used'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 9"]/foia:AppliedExemptionQuantity'
+    -
+      name: footnotes_vb3
+      label: 'V.B(3) Footnotes'
+      selector: 'foia:RequestDispositionAppliedExemptionsSection/foia:FootnoteText'
+  # Section VI.A
+    -
+      name: component_via
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics/@s:id'
+    -
+      name: overall_app_pend_start_yr
+      label: 'Overall appeals pending at the start of the year'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtStartQuantity'
+    -
+      name: overall_app_received_yr
+      label: 'Overall appeals received during the year'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsReceivedQuantity'
+    -
+      name: overall_app_processed_yr
+      label: 'Overall appeals processed during the year'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsProcessedQuantity'
+    -
+      name: overall_app_pend_end_yr
+      label: 'Overall appeals pending at the end of the year'
+      selector: 'foia:ProcessedAppealSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtEndQuantity'
+    -
+      name: footnotes_via
+      label: 'V.A Footnotes'
+      selector: 'foia:ProcessedAppealSection/foia:FootnoteText'
+  # Section VI.B
+    -
+      name: component_vib
+      label: 'Internal index of the agency component'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition/@s:id'
+    -
+      name: field_overall_vib_affirm_on_app
+      label: 'Agency Overall Number Affirmed on Appeal'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionAffirmedQuantity'
+    -
+      name: field_overall_vib_part_on_app
+      label: 'Agency Overall Number Partially Affirmed & Partially Reversed/Remanded on Appeal'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionPartialQuantity'
+    -
+      name: field_overall_vib_comp_on_app
+      label: 'Agency Overall Number Completely Reversed/Remanded on Appeal'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionReversedQuantity'
+    -
+      name: field_overall_vib_closed_oth_app
+      label: 'Agency Overall Number of Appeals Closed for Other Reasons'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionOtherQuantity'
+    -
+      name: field_overall_vib_total
+      label: 'Agency Overall Total'
+      selector: 'foia:AppealDispositionSection/foia:AppealDisposition[@s:id=../foia:AppealDispositionOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppealDispositionTotalQuantity'
+  # Section VI.C(1)
+    -
+      name: component_vic1
+      label: 'Internal index of the agency component'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions/@s:id'
+    -
+      name: field_overall_vic1_ex_1
+      label: 'Overall number of times Exemption 1 is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 1"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_2
+      label: 'Overall number of times Exemption 2 is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 2"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_3
+      label: 'Overall number of times Exemption 3 is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 3"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_4
+      label: 'Overall number of times Exemption 4 is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 4"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_5
+      label: 'Overall number of times Exemption 5 is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 5"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_6
+      label: 'Overall number of times Exemption 6 is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 6"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_7_a
+      label: 'Overall number of times Exemption 7(A) is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(A)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_7_b
+      label: 'Overall number of times Exemption 7(B) is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(B)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_7_c
+      label: 'Overall number of times Exemption 7(C) is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(C)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_7_d
+      label: 'Overall number of times Exemption 7(D) is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(D)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_7_e
+      label: 'Overall number of times Exemption 7(E) is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(E)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_7_f
+      label: 'Overall number of times Exemption 7(F) is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 7(F)"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_8
+      label: 'Overall number of times Exemption 8 is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 8"]/foia:AppliedExemptionQuantity'
+    -
+      name: field_overall_vic1_ex_9
+      label: 'Overall number of times Exemption 9 is used'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:ComponentAppliedExemptions[@s:id=../foia:ComponentAppliedExemptionsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AppliedExemption[foia:AppliedExemptionCode="Ex. 9"]/foia:AppliedExemptionQuantity'
+    -
+      name: footnotes_vic1
+      label: 'VI.C(1) Footnotes'
+      selector: 'foia:AppealDispositionAppliedExemptionsSection/foia:FootnoteText'
+  # Section VI.C. (2)
+    -
+      name: component_vic2
+      label: 'Internal index of the agency component'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial/@s:id'
+    -
+      name: overall_vic2_app_denial_ex
+      label: 'Agency Overall Appeal Based Solely on Denial of Request for Expedited Processing'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ExpeditedDenial"]'
+    -
+      name: overall_vic2_no_rec
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_no_rec'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NoRecords"]'
+    -
+      name: overall_vic2_rec_ref_to_an_comp
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_rec_ref_to_an_comp'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Referred"]'
+    -
+      name: overall_vic2_req_withdrawn
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_req_withdrawn'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Withdrawn"]'
+    -
+      name: overall_vic2_fee_related_reason
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_fee_related_reason'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "FeeRelated"]'
+    -
+      name: overall_vic2_rec_not_desc
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_rec_not_desc'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotDescribed"]'
+    -
+      name: overall_vic2_imp_req_oth_reason
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_imp_req_oth_reason'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ImproperRequest"]'
+    -
+      name: overall_vic2_not_agency_record
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_not_agency_record'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "NotAgency"]'
+    -
+      name: overall_vic2_dup_request
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_dup_request'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Duplicate"]'
+    -
+      name: overall_vic2_oth
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_oth'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
+    -
+      name: overall_vic2_req_in_lit
+      label: 'Placeholder Label - VI.C. (2) - overall_vic2_req_in_lit'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:AppealNonExemptionDenial[@s:id=../foia:AppealNonExemptionDenialOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "InLitigation"]'
+    -
+      name: footnotes_vic2
+      label: 'VI.C. (2) Footnotes'
+      selector: 'foia:AppealNonExemptionDenialSection/foia:FootnoteText'
+  # Section VI.C(3)
+    -
+      name: component_vic3
+      label: 'Internal index of the agency component'
+      selector: 'foia:AppealDenialOtherReasonSection/foia:ComponentOtherDenialReason/@s:id'
+    -
+      name: field_overall_vic3_total
+      label: 'Overall number of times Exemption 1 is used'
+      selector: 'foia:AppealDenialOtherReasonSection/foia:ComponentOtherDenialReason[@sid=../foia:OtherDenialReasonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComponentOtherDenialReasonQuantity'
+    -
+      name: field_footnotes_vic3
+      label: 'VI.C. (3) Footnotes'
+      selector: 'foia:AppealDenialOtherReasonSection/foia:FootnoteText'
+  # Section VI.C.4
+    -
+      name: component_vic4
+      label: 'Internal index of the agency component'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime/@s:id'
+    -
+      name: field_overall_vic4_med_num_days
+      label: 'Overall median number of days response time for admin appeals'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_vic4_avg_num_days
+      label: 'Overall average number of days response time for admin appeals'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_vic4_low_num_days
+      label: 'Overall lowest number of days response time for admin appeals'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_vic4_high_num_days
+      label: 'Overall highest number of days response time for admin appeals'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_footnotes_vic4
+      label: 'Response Time for Administrative Appeals Footnote'
+      selector: 'foia:AppealResponseTimeSection/foia:FootnoteText'
+  # Section VI.C(5)
+    -
+      name: component_vic5
+      label: 'Internal index of the agency component'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems/@s:id'
+    -
+      name: field_overall_vic5_num_day_1
+      label: 'Overall number days pending 1'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_2
+      label: 'Overall number days pending 2'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_3
+      label: 'Overall number days pending 3'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_4
+      label: 'Overall number days pending 4'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_5
+      label: 'Overall number days pending 5'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_6
+      label: 'Overall number days pending 6'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_7
+      label: 'Overall number days pending 7'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_8
+      label: 'Overall number days pending 8'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_9
+      label: 'Overall number days pending 9'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_num_day_10
+      label: 'Overall number days pending 10'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_vic5_date_1
+      label: 'Overall date of receipt 1'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_2
+      label: 'Overall date of receipt 2'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_3
+      label: 'Overall date of receipt 3'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_4
+      label: 'Overall date of receipt 4'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_5
+      label: 'Overall date of receipt 5'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_6
+      label: 'Overall date of receipt 6'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_7
+      label: 'Overall date of receipt 7'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_8
+      label: 'Overall date of receipt 8'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_9
+      label: 'Overall date of receipt 9'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_vic5_date_10
+      label: 'Overall date of receipt 10'
+      selector: 'foia:OldestPendingAppealSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemReceiptDate'
+    -
+      name: field_footnotes_vic5
+      label: 'VI.C(5) Footnotes'
+      selector: 'foia:OldestPendingAppealSection/foia:FootnoteText'
+  # Section VII.A
+    -
+      name: component_viia
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime/@s:id'
+    -
+      name: field_overall_viia_sim_med
+      label: 'Overall Processed Requests - Simple - Median Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viia_sim_avg
+      label: 'Overall Processed Requests - Simple - Average Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viia_sim_low
+      label: 'Overall Processed Requests - Simple - Lowest Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viia_sim_high
+      label: 'Overall Processed Requests - Simple - Highest Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_overall_viia_comp_med
+      label: 'Overall Processed Requests - Complex - Median Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viia_comp_avg
+      label: 'Overall Processed Requests - Complex - Average Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viia_comp_low
+      label: 'Overall Processed Requests - Complex - Lowest Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viia_comp_high
+      label: 'Overall Processed Requests - Complex - Highest Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_overall_viia_exp_med
+      label: 'Overall Processed Requests - Expedited - Median Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viia_exp_avg
+      label: 'Overall Processed Requests - Expedited - Average Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viia_exp_low
+      label: 'Overall Processed Requests - Expedited - Lowest Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viia_exp_high
+      label: 'Overall Processed Requests - Expedited - Highest Response Time'
+      selector: 'foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_footnotes_viia
+      label: 'VII.A Footnotes'
+      selector: 'foia:ProcessedResponseTimeSection/foia:FootnoteText'
+  # Section VII.B
+    -
+      name: component_viib
+      label: 'Internal index of the agency component'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime/@s:id'
+    -
+      name: field_overall_viib_sim_med
+      label: 'Information Granted Requests - Simple - Median Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viib_sim_avg
+      label: 'Information Granted Requests - Simple - Average Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viib_sim_low
+      label: 'Information Granted Requests - Simple - Lowest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viib_sim_high
+      label: 'Information Granted Requests - Simple - Highest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_overall_viib_comp_med
+      label: 'Information Granted Requests - Complex - Median Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viib_comp_avg
+      label: 'Information Granted Requests - Complex - Average Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viib_comp_low
+      label: 'Information Granted Requests - Complext - Lowest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viib_comp_high
+      label: 'Information Granted Requests - Complex - Highest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_overall_viib_exp_med
+      label: 'Information Granted Requests - Expedited - Median Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_overall_viib_exp_avg
+      label: 'Information Granted Requests - Expedited - Average Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_viib_exp_low
+      label: 'Information Granted Requests - Expedited - Lowest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_overall_viib_exp_high
+      label: 'Information Granted Requests - Expedited - Highest Response Time'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:ProcessedResponseTime[@s:id=../foia:ProcessedResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_footnotes_viib
+      label: 'VII.B Footnotes'
+      selector: 'foia:InformationGrantedResponseTimeSection/foia:FootnoteText'
+  # Section VII.C(1)
+    -
+      name: component_viic1
+      label: 'Internal index of the agency component'
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements/@s:id'
+    -
+      name: field_overall_viic1_1_20_days
+      label: 'Simple Requests response times - 1-20 days.'
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="1-20"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_21_40_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="21-40"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_41_60_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="41-60"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_61_80_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="61-80"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_81_100_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="81-100"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_101_120_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="101-120"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_121_140_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="121-140"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_141_160_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="141-160"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_161_180_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="161-180"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_181_200_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="181-200"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_201_300_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="201-300"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_301_400_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="301-400"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_400_up_days
+      label: 'Simple Requests response times - 401 plus'
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="401+"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic1_total
+      label: 'Simple Requests response times - total'
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrementTotalQuantity'
+    -
+      name: footnotes_viic1
+      label: 'VII.C(1) Footnotes'
+      selector: 'foia:SimpleResponseTimeIncrementsSection/foia:FootnoteText'
+  # Section VII.C(2)
+    -
+      name: component_viic2
+      label: 'Internal index of the agency component'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements/@s:id'
+    -
+      name: field_overall_viic2_1_20_days
+      label: 'Simple Requests response times - 1-20 days.'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="1-20"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_21_40_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="21-40"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_41_60_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="41-60"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_61_80_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="61-80"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_81_100_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="81-100"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_101_120_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="101-120"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_121_140_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="121-140"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_141_160_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="141-160"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_161_180_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="161-180"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_181_200_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="181-200"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_201_300_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="201-300"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_301_400_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="301-400"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_400_up_days
+      label: 'Simple Requests response times - 401 plus'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="401+"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic2_total
+      label: 'Simple Requests response times - total'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrementTotalQuantity'
+    -
+      name: footnotes_viic2
+      label: 'VII.C(2) Footnotes'
+      selector: 'foia:ComplexResponseTimeIncrementsSection/foia:FootnoteText'
+  # Section VII.C(3)
+    -
+      name: component_viic3
+      label: 'Internal index of the agency component'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements/@s:id'
+    -
+      name: field_overall_viic3_1_20_days
+      label: 'Simple Requests response times - 1-20 days.'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="1-20"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_21_40_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="21-40"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_41_60_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="41-60"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_61_80_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="61-80"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_81_100_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="81-100"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_101_120_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="101-120"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_121_140_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="121-140"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_141_160_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="141-160"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_161_180_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="161-180"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_181_200_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="181-200"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_201_300_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="201-300"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_301_400_days
+      label: 'Simple Requests response times - '
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="301-400"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_400_up_days
+      label: 'Simple Requests response times - 401 plus'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrement[foia:TimeIncrementCode="401+"]/foia:TimeIncrementProcessedQuantity'
+    -
+      name: field_overall_viic3_total
+      label: 'Simple Requests response times - total'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:ComponentResponseTimeIncrements[@s:id=../foia:ResponseTimeIncrementsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimeIncrementTotalQuantity'
+    -
+      name: footnotes_viic3
+      label: 'VII.C(1) Footnotes'
+      selector: 'foia:ExpeditedResponseTimeIncrementsSection/foia:FootnoteText'
+  # Section VII.D
+    -
+      name: component_viid
+      label: 'Internal index of the agency component'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests/@s:id'
+    -
+      name: field_overall_viid_sim_med
+      label: 'Pending Requests - Simple Number of Days - Median'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_overall_viid_sim_avg
+      label: 'Pending Requests - Simple Number of Days - Average'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_overall_viid_sim_pend
+      label: 'Pending Requests - Simple Number of Days - Pending'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:SimplePendingRequestStatistics/foia:PendingRequestQuantity'
+    -
+      name: field_overall_viid_comp_med
+      label: 'Pending Requests - Complex Number of Days - Median'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_overall_viid_comp_avg
+      label: 'Pending Requests - Complex Number of Days - Average'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_overall_viid_comp_pend
+      label: 'Pending Requests - Complex Number of Days - Pending'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ComplexPendingRequestStatistics/foia:PendingRequestQuantity'
+    -
+      name: field_overall_viid_exp_med
+      label: 'Pending Requests - Expedited Number of Days - Median'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestMedianDaysValue'
+    -
+      name: field_overall_viid_exp_avg
+      label: 'Pending Requests - Expedited Number of Days - Average'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestAverageDaysValue'
+    -
+      name: field_overall_viid_exp_pend
+      label: 'Pending Requests - Expedited Number of Days - Pending'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:PendingPerfectedRequests[@s:id=../foia:PendingPerfectedRequestsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ExpeditedPendingRequestStatistics/foia:PendingRequestQuantity'
+    -
+      name: field_footnotes_viid
+      label: 'VII.D Footnotes'
+      selector: 'foia:PendingPerfectedRequestsSection/foia:FootnoteText'
+  # Section VII.E
+    -
+      name: component_viie
+      label: 'Internal index of the agency component'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems/@s:id'
+    -
+      name: field_overall_viie_num_days_1
+      label: 'Overall number days pending 1'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_2
+      label: 'Overall number days pending 2'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_3
+      label: 'Overall number days pending 3'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_4
+      label: 'Overall number days pending 4'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_5
+      label: 'Overall number days pending 5'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_6
+      label: 'Overall number days pending 6'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_7
+      label: 'Overall number days pending 7'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_8
+      label: 'Overall number days pending 8'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_9
+      label: 'Overall number days pending 9'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_num_days_10
+      label: 'Overall number days pending 10'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_viie_date_1
+      label: 'Overall date of receipt 1'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_2
+      label: 'Overall date of receipt 2'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_3
+      label: 'Overall date of receipt 3'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_4
+      label: 'Overall date of receipt 4'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_5
+      label: 'Overall date of receipt 5'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_6
+      label: 'Overall date of receipt 6'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_7
+      label: 'Overall date of receipt 7'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_8
+      label: 'Overall date of receipt 8'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_9
+      label: 'Overall date of receipt 9'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_viie_date_10
+      label: 'Overall date of receipt 10'
+      selector: 'foia:OldestPendingRequestSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemReceiptDate'
+    -
+      name: field_footnotes_viie
+      label: 'VII.E Footnotes'
+      selector: 'foia:OldestPendingRequestSection/foia:FootnoteText'
+  # Section VIII.A
+    -
+      name: component_viiia
+      label: 'Internal index of the agency component'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing/@s:id'
+    -
+      name: field_overall_viiia_num_grant
+      label: 'Placeholder Label - VIIIA - field_overall_viiia_num_grant'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestGrantedQuantity'
+    -
+      name: field_overall_viiia_num_denied
+      label: 'Placeholder Label - VIIIA - field_overall_viiia_num_deniedage'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDeniedQuantity'
+    -
+      name: field_overall_viiia_med_days_jud
+      label: 'Pending Requests - Simple Number of Days - Pending'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationMedianDaysValue'
+    -
+      name: field_overall_viiia_avg_days_jud
+      label: 'Placeholder Label - VIIIA - field_overall_viiia_avg_days_jud'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationAverageDaysValue'
+    -
+      name: field_overall_viiia_num_jud_w10
+      label: 'Placeholder Label - VIIIA - field_overall_viiia_num_jud_w10'
+      selector: 'foia:ExpeditedProcessingSection/foia:ExpeditedProcessing[@s:id=../foia:ExpeditedProcessingOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationWithinTenDaysQuantity'
+    -
+      name: field_footnotes_viiia
+      label: 'VIII.A Footnotes'
+      selector: 'foia:ExpeditedProcessingSection/foia:FootnoteText'
+  # Section VIII.B
+    -
+      name: component_viiib
+      label: 'Internal index of the agency component'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver/@s:id'
+    -
+      name: field_overall_viiib_num_grant
+      label: 'Placeholder Label - VIIIB - field_overall_viiib_num_grant'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestGrantedQuantity'
+    -
+      name: field_overall_viiib_num_denied
+      label: 'Placeholder Label - VIIIB - field_overall_viiib_num_deniedage'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:RequestDeniedQuantity'
+    -
+      name: field_overall_viiib_med_days_jud
+      label: 'Pending Requests - Simple Number of Days - field_overall_viiib_med_days_jud'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationMedianDaysValue'
+    -
+      name: field_overall_viiib_avg_days_jud
+      label: 'Placeholder Label - VIIIB - field_overall_viiib_avg_days_jud'
+      selector: 'foia:FeeWaiverSection/foia:FeeWaiver[@s:id=../foia:FeeWaiverOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:AdjudicationAverageDaysValue'
+    -
+      name: field_footnotes_viiib
+      label: 'VIII.B Footnotes'
+      selector: 'foia:FeeWaiverSection/foia:FootnoteText'
+  # Section IX
+    -
+      name: component_ix
+      label: 'Internal index of the agency component'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost/@s:id'
+    -
+      name: field_overall_ix_full_emp
+      label: 'Placeholder Label - IX - field_overall_ix_full_emp'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FullTimeEmployeeQuantity'
+    -
+      name: field_overall_ix_eq_full_emp
+      label: 'Placeholder Label - IX - field_overall_ix_eq_full_emp'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:EquivalentFullTimeEmployeeQuantity'
+    -
+      name: field_overall_ix_total_staff
+      label: 'Pending Requests - Simple Number of Days - field_overall_ix_total_staff'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TotalFullTimeStaffQuantity'
+    -
+      name: field_overall_ix_proc_costs
+      label: 'Placeholder Label - IX - field_overall_ix_proc_costs'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingCostAmount'
+    -
+      name: field_overall_ix_lit_costs
+      label: 'Placeholder Label - IX - field_overall_ix_lit_costs'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:LitigationCostAmount'
+    -
+      name: field_overall_ix_total_costs
+      label: 'Placeholder Label - IX - field_overall_ix_total_costs'
+      selector: 'foia:PersonnelAndCostSection/foia:PersonnelAndCost[@s:id=../foia:PersonnelAndCostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TotalCostAmount'
+    -
+      name: field_footnotes_ix
+      label: 'IX Footnotes'
+      selector: 'foia:PersonnelAndCostSection/foia:FootnoteText'
+  # Section X
+    -
+      name: component_x
+      label: 'Internal index of the agency component'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected/@s:id'
+    -
+      name: field_overall_x_total_fees
+      label: 'Placeholder Label - X - field_overall_x_total_fees'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id=../foia:FeesCollectedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FeesCollectedAmount'
+    -
+      name: field_overall_x_perc_costs
+      label: 'Placeholder Label - X - field_overall_x_perc_costs'
+      selector: 'foia:FeesCollectedSection/foia:FeesCollected[@s:id=../foia:FeesCollectedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:FeesCollectedCostPercent'
+    -
+      name: field_footnotes_x
+      label: 'X Footnotes'
+      selector: 'foia:FeesCollectedSection/foia:FootnoteText'
+  # Section XI.A
+    -
+      name: component_xia
+      label: 'Internal index of the agency component'
+      selector: 'foia:SubsectionUsedSection/foia:SubsectionUsed/@s:id'
+    -
+      name: field_overall_xia_sub_used
+      label: 'Placeholder Label - XI.A - field_overall_xia_sub_used'
+      selector: 'foia:SubsectionUsedSection/foia:SubsectionUsed[@s:id=../foia:SubsectionUsedOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:TimesUsedQuantity'
+    -
+      name: field_footnotes_xia
+      label: 'XI.A Footnotes'
+      selector: 'foia:SubsectionUsedSection/foia:FootnoteText'
+  # Section XI.B
+    -
+      name: component_xib
+      label: 'Internal index of the agency component'
+      selector: 'foia:SubsectionPostSection/foia:Subsection/@s:id'
+    -
+      name: field_overall_xib_rec_post_foia
+      label: 'Placeholder Label - XI.B - field_overall_xib_rec_post_foia'
+      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id=../foia:SubsectionPostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:PostedbyFOIAQuantity'
+    -
+      name: field_overall_xib_rec_post_prog
+      label: 'Placeholder Label - XI.B - field_overall_xib_rec_post_prog'
+      selector: 'foia:SubsectionPostSection/foia:Subsection[@s:id=../foia:SubsectionPostOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:PostedbyProgramQuantity'
+    -
+      name: field_footnotes_xib
+      label: 'XI.B Footnotes'
+      selector: 'foia:SubsectionPostSection/foia:FootnoteText'
+  # Section XII.A
+    -
+      name: component_xiia
+      label: 'Internal index of the agency component'
+      selector: 'foia:BacklogSection/foia:Backlog/@s:id'
+    -
+      name: field_overall_xiia_back_req_end_
+      label: 'Placeholder Label - XII.A - field_overall_xiia_back_req_end_'
+      selector: 'foia:BacklogSection/foia:Backlog[@s:id=../foia:BacklogOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BackloggedRequestQuantity'
+    -
+      name: field_overall_xiia_back_app_end_
+      label: 'Placeholder Label - XII.A - field_overall_xiia_back_app_end_'
+      selector: 'foia:BacklogSection/foia:Backlog[@s:id=../foia:BacklogOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BackloggedAppealQuantity'
+    -
+      name: field_footnotes_xiia
+      label: 'XII.A Footnotes'
+      selector: 'foia:BacklogSection/foia:FootnoteText'
+  # Section XII.B
+    -
+      name: component_xiib
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics/@s:id'
+    -
+      name: field_overall_xiib_pend_start_yr
+      label: 'Placeholder Label - XII.B - field_overall_xiib_pend_start_yr'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtStartQuantity'
+    -
+      name: field_overall_xiib_proc_start_yr
+      label: 'Placeholder Label - XII.B - field_overall_xiib_proc_start_yr'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsProcessedQuantity'
+    -
+      name: field_overall_xiib_con_during_yr
+      label: 'Placeholder Label - XII.B - field_overall_xiib_con_during_yr'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsReceivedQuantity'
+    -
+      name: field_overall_xiib_pend_end_yr
+      label: 'Placeholder Label - XII.B - field_overall_xiib_pend_end_yr'
+      selector: 'foia:ProcessedConsultationSection/foia:ProcessingStatistics[@s:id=../foia:ProcessingStatisticsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ProcessingStatisticsPendingAtEndQuantity'
+    -
+      name: field_footnotes_xiib
+      label: 'XII.B Footnotes'
+      selector: 'foia:ProcessedConsultationSection/foia:FootnoteText'
+  # Section XII.C
+    -
+      name: component_xiic
+      label: 'Internal index of the agency component'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems/@s:id'
+    -
+      name: field_overall_xiic_num_days_1
+      label: 'Overall number days pending 1'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_2
+      label: 'Overall number days pending 2'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_3
+      label: 'Overall number days pending 3'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_4
+      label: 'Overall number days pending 4'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_5
+      label: 'Overall number days pending 5'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_6
+      label: 'Overall number days pending 6'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_7
+      label: 'Overall number days pending 7'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_8
+      label: 'Overall number days pending 8'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_9
+      label: 'Overall number days pending 9'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_num_days_10
+      label: 'Overall number days pending 10'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemPendingDaysQuantity'
+    -
+      name: field_overall_xiic_date_1
+      label: 'Overall date of receipt 1'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[1]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_2
+      label: 'Overall date of receipt 2'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[2]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_3
+      label: 'Overall date of receipt 3'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[3]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_4
+      label: 'Overall date of receipt 4'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[4]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_5
+      label: 'Overall date of receipt 5'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[5]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_6
+      label: 'Overall date of receipt 6'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[6]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_7
+      label: 'Overall date of receipt 7'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[7]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_8
+      label: 'Overall date of receipt 8'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[8]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_9
+      label: 'Overall date of receipt 9'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[9]/foia:OldItemReceiptDate'
+    -
+      name: field_overall_xiic_date_10
+      label: 'Overall date of receipt 10'
+      selector: 'foia:OldestPendingConsultationSection/foia:OldestPendingItems[@s:id=../foia:OldestPendingItemsOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:OldItem[10]/foia:OldItemReceiptDate'
+    -
+      name: field_footnotes_xiic
+      label: 'VII.E Footnotes'
+      selector: 'foia:OldestPendingConsultationSection/foia:FootnoteText'
+  # Section XII.D.1
+    -
+      name: component_xiid1
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison/@s:id'
+    -
+      name: field_overall_xiid1_received_las
+      label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_received_las'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedLastYearQuantity'
+    -
+      name: field_overall_xiid1_received_cur
+      label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_received_cur'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedCurrentYearQuantity'
+    -
+      name: field_overall_xiid1_proc_last_yr
+      label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_proc_last_yr'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedLastYearQuantity'
+    -
+      name: field_overall_xiid1_proc_cur_yr
+      label: 'Placeholder Label - XII.D.1 - field_overall_xiid1_proc_cur_yr'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedCurrentYearQuantity'
+    -
+      name: field_footnotes_xiid1
+      label: 'XII.D.1 Footnotes'
+      selector: 'foia:ProcessedRequestComparisonSection/foia:FootnoteText'
+  # Section XII.D.2
+    -
+      name: component_xiid2
+      label: 'Internal index of the agency component'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison/@s:id'
+    -
+      name: field_overall_xiid2_back_prev_yr
+      label: 'Placeholder Label - XII.D.2 - field_overall_xiid2_back_prev_yr'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogLastYearQuantity'
+    -
+      name: field_overall_xiid2_back_cur_yr
+      label: 'Placeholder Label - XII.D.2 - field_overall_xiid2_back_cur_yr'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogCurrentYearQuantity'
+    -
+      name: field_footnotes_xiid2
+      label: 'XII.D.2 Footnotes'
+      selector: 'foia:BackloggedRequestComparisonSection/foia:FootnoteText'
+  # Section XII.E.1
+    -
+      name: component_xiie1
+      label: 'Internal index of the agency component'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison/@s:id'
+    -
+      name: field_overall_xiie1_received_las
+      label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_received_las'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedLastYearQuantity'
+    -
+      name: field_overall_xiie1_received_cur
+      label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_received_cur'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsReceivedCurrentYearQuantity'
+    -
+      name: field_overall_xiie1_proc_last_yr
+      label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_proc_last_yr'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedLastYearQuantity'
+    -
+      name: field_overall_xiie1_proc_cur_yr
+      label: 'Placeholder Label - XII.E.1 - field_overall_xiie1_proc_cur_yr'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:ProcessingComparison[@s:id=../foia:ProcessingComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ItemsProcessedCurrentYearQuantity'
+    -
+      name: field_footnotes_xiie1
+      label: 'XII.E.1 Footnotes'
+      selector: 'foia:ProcessedAppealComparisonSection/foia:FootnoteText'
+  # Section XII.E.2
+    -
+      name: component_xiie2
+      label: 'Internal index of the agency component'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison/@s:id'
+    -
+      name: overall_xiie2_back_prev_yr
+      label: 'Overall requests pending at the start of the year'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogLastYearQuantity'
+    -
+      name: overall_xiie2_back_cur_yr
+      label: 'Overall requests received during the year'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:BacklogComparison[@s:id=../foia:BacklogComparisonOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:BacklogCurrentYearQuantity'
+    -
+      name: footnotes_xiie2
+      label: 'XII.E 2 Footnotes'
+      selector: 'foia:BackloggedAppealComparisonSection/foia:FootnoteText'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+  constants:
+    base_title: 'Annual FOIA Report for'
+    # This is overridden by Drupal\FoiaUploadXmlBatchImport::sourceOverrides().
+    user_id: 1
+process:
+  type:
+    plugin: default_value
+    default_value: annual_foia_report_data
+  field_foia_annual_report_yr: report_year
+  field_agency:
+    plugin: entity_lookup
+    source: agency
+    value_key: field_agency_abbreviation
+  langcode:
+    plugin: default_value
+    default_value: en
+  title:
+    plugin: concat
+    delimiter: ' '
+    source:
+      - report_year
+      - constants/base_title
+      - agency
+  uid: constants/user_id
+  status:
+    plugin: default_value
+    default_value: false
+  # @todo Handle workflow status.
+  promote:
+    plugin: default_value
+    default_value: false
+  sticky:
+    plugin: default_value
+    default_value: false
+  revision_uid: constants/user_id
+  revision_log:
+    plugin: default_value
+    default_value: 'Import from NIEM-XML data'
+  # Agency information
+  field_date_prepared: field_date_prepared
+  field_agency_components:
+    -
+      plugin: foia_array_pad
+      source: component
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        target_id:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - component
+          no_stub: true
+  # Section IV
+  field_statute_iv:
+    -
+      plugin: foia_array_pad
+      source: field_statute_iv
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_iv_statute
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_footnotes_iv: field_footnotes_iv
+  # Section V.A
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_foia_requests_va:
+    -
+      plugin: foia_array_pad
+      source: component_va
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_va_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_req_pend_start_yr: overall_req_pend_start_yr
+  field_overall_req_received_yr: overall_req_received_yr
+  field_overall_req_processed_yr: overall_req_processed_yr
+  field_overall_req_pend_end_yr: overall_req_pend_end_yr
+  field_footnotes_va: footnotes_va
+  # Section V.B. (1)
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_foia_requests_vb1:
+    -
+      plugin: foia_array_pad
+      source: component_vb1
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vb1_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vb1_no_rec: overall_vb1_no_rec
+  field_overall_vb1_rec_ref_to_an_: overall_vb1_rec_ref_to_an_comp
+  field_overall_vb1_req_withdrawn: overall_vb1_req_withdrawn
+  field_overall_vb1_fee_related_re: overall_vb1_fee_related_reason
+  field_overall_vb1_rec_not_desc: overall_vb1_rec_not_desc
+  field_overall_vb1_imp_req_oth_re: overall_vb1_imp_req_oth_reason
+  field_overall_vb1_not_agency_rec: overall_vb1_not_agency_record
+  field_overall_vb1_dup_request: overall_vb1_dup_request
+  field_overall_vb1_oth: overall_vb1_oth
+  field_overall_vb1_total: overall_vb1_total
+  field_overall_vb1_full_grants: overall_vb1_full_grants
+  field_overall_vb1_part_grants_de: overall_vb1_part_grants_denials
+  field_overall_vb1_full_denials_e: overall_vb1_full_denials_ex
+  field_footnotes_vb1: footnotes_vb1
+  # Section V.B.2
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_foia_requests_vb2:
+    -
+      plugin: foia_array_pad
+      source: component_vb2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vb2
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vb2_total: field_overall_vb2_total
+  field_footnotes_vb2: field_footnotes_vb2
+  # Section V.B (3)
+  # V. FOIA REQUESTS / B. (3) Disposition of FOIA Requests - Number of Times
+  # Exemptions Applied.
+  field_foia_requests_vb3:
+    -
+      plugin: foia_array_pad
+      source: component_vb3
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vb3_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vb3_ex_1: field_overall_vb3_ex_1
+  field_overall_vb3_ex_2: field_overall_vb3_ex_2
+  field_overall_vb3_ex_3: field_overall_vb3_ex_3
+  field_overall_vb3_ex_4: field_overall_vb3_ex_4
+  field_overall_vb3_ex_5: field_overall_vb3_ex_5
+  field_overall_vb3_ex_6: field_overall_vb3_ex_6
+  field_overall_vb3_ex_7_a: field_overall_vb3_ex_7_a
+  field_overall_vb3_ex_7_b: field_overall_vb3_ex_7_b
+  field_overall_vb3_ex_7_c: field_overall_vb3_ex_7_c
+  field_overall_vb3_ex_7_d: field_overall_vb3_ex_7_d
+  field_overall_vb3_ex_7_e: field_overall_vb3_ex_7_e
+  field_overall_vb3_ex_7_f: field_overall_vb3_ex_7_f
+  field_overall_vb3_ex_8: field_overall_vb3_ex_8
+  field_overall_vb3_ex_9: field_overall_vb3_ex_9
+  field_footnotes_vb3: footnotes_vb3
+  # Section VI.A
+  # ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEALS
+  field_admin_app_via:
+    -
+      plugin: foia_array_pad
+      source: component_via
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_via_disposition
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_via_app_pend_start: overall_app_pend_start_yr
+  field_overall_via_app_recd_yr: overall_app_received_yr
+  field_overall_via_app_proc_yr: overall_app_processed_yr
+  field_overall_via_app_pend_endyr: overall_app_pend_end_yr
+  field_footnotes_via: footnotes_via
+  # Section VI.B
+  # ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEALS
+  field_admin_app_vib:
+    -
+      plugin: foia_array_pad
+      source: component_vib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vib_disposition
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vib_affirm_on_app: field_overall_vib_affirm_on_app
+  field_overall_vib_part_on_app: field_overall_vib_part_on_app
+  field_overall_vib_comp_on_app: field_overall_vib_comp_on_app
+  field_overall_vib_closed_oth_app: field_overall_vib_closed_oth_app
+  field_overall_vib_total: field_overall_vib_total
+  # Section VI.C. (1)
+  field_admin_app_vic1:
+    -
+      plugin: foia_array_pad
+      source: component_vic1
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vic1_applied_exemptions
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vic1_ex_1: field_overall_vic1_ex_1
+  field_overall_vic1_ex_2: field_overall_vic1_ex_2
+  field_overall_vic1_ex_3: field_overall_vic1_ex_3
+  field_overall_vic1_ex_4: field_overall_vic1_ex_4
+  field_overall_vic1_ex_5: field_overall_vic1_ex_5
+  field_overall_vic1_ex_6: field_overall_vic1_ex_6
+  field_overall_vic1_ex_7_a: field_overall_vic1_ex_7_a
+  field_overall_vic1_ex_7_b: field_overall_vic1_ex_7_b
+  field_overall_vic1_ex_7_c: field_overall_vic1_ex_7_c
+  field_overall_vic1_ex_7_d: field_overall_vic1_ex_7_d
+  field_overall_vic1_ex_7_e: field_overall_vic1_ex_7_e
+  field_overall_vic1_ex_7_f: field_overall_vic1_ex_7_f
+  field_overall_vic1_ex_8: field_overall_vic1_ex_8
+  field_overall_vic1_ex_9: field_overall_vic1_ex_9
+  field_footnotes_vic1: footnotes_vic1
+  # Section VI.C. (2)
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_admin_app_vic2:
+    -
+      plugin: foia_array_pad
+      source: component_vic2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vic2_nonexemption_denial
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vic2_app_denial_ex: overall_vic2_app_denial_ex
+  field_overall_vic2_no_rec: overall_vic2_no_rec
+  field_overall_vic2_rec_refer_ini: overall_vic2_rec_ref_to_an_comp
+  field_overall_vic2_req_withdrawn: overall_vic2_req_withdrawn
+  field_overall_vic2_fee_rel_reas: overall_vic2_fee_related_reason
+  field_overall_vic2_rec_not_desc: overall_vic2_rec_not_desc
+  field_overall_vic2_imp_req_oth: overall_vic2_imp_req_oth_reason
+  field_overall_vic2_not_agency_re: overall_vic2_not_agency_record
+  field_overall_vic2_dup_req: overall_vic2_dup_request
+  field_overall_vic2_oth: overall_vic2_oth
+  field_overall_vic2_req_in_lit: overall_vic2_req_in_lit
+  field_footnotes_vic2: footnotes_vic2
+  # Section VI.C.3
+  # Administrative Appeals VI. C (3) Other Denials Details
+  field_admin_app_vic3:
+    -
+      plugin: foia_array_pad
+      source: component_vic3
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vic3
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vic3_total: field_overall_vic3_total
+  field_footnotes_vic3: field_footnotes_vic3
+  # Section VI.C.4
+  # ADMINISTRATIVE APPEALS / C. (4) Response Time for Administrative Appeals
+  field_admin_app_vic4:
+    -
+      plugin: foia_array_pad
+      source: component_vic4
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vic4_response_time
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vic4_avg_num_days: field_overall_vic4_avg_num_days
+  field_overall_vic4_high_num_days: field_overall_vic4_high_num_days
+  field_overall_vic4_low_num_days: field_overall_vic4_low_num_days
+  field_overall_vic4_med_num_days: field_overall_vic4_med_num_days
+  field_footnotes_vic4: field_footnotes_vic4
+  # Section VI.C(5)
+  # VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS
+  field_admin_app_vic5:
+    -
+      plugin: foia_array_pad
+      source: component_vic5
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_vic5_oldest_pending
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_vic5_num_day_1: field_overall_vic5_num_day_1
+  field_overall_vic5_num_day_2: field_overall_vic5_num_day_2
+  field_overall_vic5_num_day_3: field_overall_vic5_num_day_3
+  field_overall_vic5_num_day_4: field_overall_vic5_num_day_4
+  field_overall_vic5_num_day_5: field_overall_vic5_num_day_5
+  field_overall_vic5_num_day_6: field_overall_vic5_num_day_6
+  field_overall_vic5_num_day_7: field_overall_vic5_num_day_7
+  field_overall_vic5_num_day_8: field_overall_vic5_num_day_8
+  field_overall_vic5_num_day_9: field_overall_vic5_num_day_9
+  field_overall_vic5_num_day_10: field_overall_vic5_num_day_10
+  field_overall_vic5_date_1: field_overall_vic5_date_1
+  field_overall_vic5_date_2: field_overall_vic5_date_2
+  field_overall_vic5_date_3: field_overall_vic5_date_3
+  field_overall_vic5_date_4: field_overall_vic5_date_4
+  field_overall_vic5_date_5: field_overall_vic5_date_5
+  field_overall_vic5_date_6: field_overall_vic5_date_6
+  field_overall_vic5_date_7: field_overall_vic5_date_7
+  field_overall_vic5_date_8: field_overall_vic5_date_8
+  field_overall_vic5_date_9: field_overall_vic5_date_9
+  field_overall_vic5_date_10: field_overall_vic5_date_10
+  field_footnotes_vic5: field_footnotes_vic5
+  # Section VII.A
+  # Processed Requests - Response Time for All Processed Perfected Requests and for Perfected Requests in Which Information Was Granted.
+  field_proc_req_viia:
+    -
+      plugin: foia_array_pad
+      source: component_viia
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viia_processed_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viia_sim_med: field_overall_viia_sim_med
+  field_overall_viia_sim_avg: field_overall_viia_sim_avg
+  field_overall_viia_sim_low: field_overall_viia_sim_low
+  field_overall_viia_sim_high: field_overall_viia_sim_high
+  field_overall_viia_comp_med: field_overall_viia_comp_med
+  field_overall_viia_comp_avg: field_overall_viia_comp_avg
+  field_overall_viia_comp_low: field_overall_viia_comp_low
+  field_overall_viia_comp_high: field_overall_viia_comp_high
+  field_overall_viia_exp_med: field_overall_viia_exp_med
+  field_overall_viia_exp_avg: field_overall_viia_exp_avg
+  field_overall_viia_exp_low: field_overall_viia_exp_low
+  field_overall_viia_exp_high: field_overall_viia_exp_high
+  field_footnotes_viia: field_footnotes_viia
+  # Section VII.B
+  # Processed Requests - Response Time for All Processed Perfected Requests and for Perfected Requests in Which Information Was Granted.
+  field_proc_req_viib:
+    -
+      plugin: foia_array_pad
+      source: component_viib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viib_processed_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viib_sim_med: field_overall_viib_sim_med
+  field_overall_viib_sim_avg: field_overall_viib_sim_avg
+  field_overall_viib_sim_low: field_overall_viib_sim_low
+  field_overall_viib_sim_high: field_overall_viib_sim_high
+  field_overall_viib_comp_med: field_overall_viib_comp_med
+  field_overall_viib_comp_avg: field_overall_viib_comp_avg
+  field_overall_viib_comp_low: field_overall_viib_comp_low
+  field_overall_viib_comp_high: field_overall_viib_comp_high
+  field_overall_viib_exp_med: field_overall_viib_exp_med
+  field_overall_viib_exp_avg: field_overall_viib_exp_avg
+  field_overall_viib_exp_low: field_overall_viib_exp_low
+  field_overall_viib_exp_high: field_overall_viib_exp_high
+  field_footnotes_viib: field_footnotes_viib
+  # Section VII.C. (1)
+  field_proc_req_viic1:
+    -
+      plugin: foia_array_pad
+      source: component_viic1
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viic1_simple_response
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viic1_1_20_days: field_overall_viic1_1_20_days
+  field_overall_viic1_21_40_days: field_overall_viic1_21_40_days
+  field_overall_viic1_41_60_days: field_overall_viic1_41_60_days
+  field_overall_viic1_61_80_days: field_overall_viic1_61_80_days
+  field_overall_viic1_81_100_days: field_overall_viic1_81_100_days
+  field_overall_viic1_101_120_days: field_overall_viic1_101_120_days
+  field_overall_viic1_121_140_days: field_overall_viic1_121_140_days
+  field_overall_viic1_141_160_days: field_overall_viic1_141_160_days
+  field_overall_viic1_161_180_days: field_overall_viic1_161_180_days
+  field_overall_viic1_181_200_days: field_overall_viic1_181_200_days
+  field_overall_viic1_201_300_days: field_overall_viic1_201_300_days
+  field_overall_viic1_301_400_days: field_overall_viic1_301_400_days
+  field_overall_viic1_400_up_days: field_overall_viic1_400_up_days
+  field_overall_viic1_total: field_overall_viic1_total
+  field_footnotes_viic1: footnotes_viic1
+  # Section VII.C. (2)
+  field_proc_req_viic2:
+    -
+      plugin: foia_array_pad
+      source: component_viic2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viic2_complex_response
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viic2_1_20_days: field_overall_viic2_1_20_days
+  field_overall_viic2_21_40_days: field_overall_viic2_21_40_days
+  field_overall_viic2_41_60_days: field_overall_viic2_41_60_days
+  field_overall_viic2_61_80_days: field_overall_viic2_61_80_days
+  field_overall_viic2_81_100_days: field_overall_viic2_81_100_days
+  field_overall_viic2_101_120_days: field_overall_viic2_101_120_days
+  field_overall_viic2_121_140_days: field_overall_viic2_121_140_days
+  field_overall_viic2_141_160_days: field_overall_viic2_141_160_days
+  field_overall_viic2_161_180_days: field_overall_viic2_161_180_days
+  field_overall_viic2_181_200_days: field_overall_viic2_181_200_days
+  field_overall_viic2_201_300_days: field_overall_viic2_201_300_days
+  field_overall_viic2_301_400_days: field_overall_viic2_301_400_days
+  field_overall_viic2_400_up_days: field_overall_viic2_400_up_days
+  field_overall_viic2_total: field_overall_viic2_total
+  field_footnotes_viic2: footnotes_viic2
+  # Section VII.C. (3)
+  field_proc_req_viic3:
+    -
+      plugin: foia_array_pad
+      source: component_viic3
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viic3_expedited_response
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viic3_1_20_days: field_overall_viic3_1_20_days
+  field_overall_viic3_21_40_days: field_overall_viic3_21_40_days
+  field_overall_viic3_41_60_days: field_overall_viic3_41_60_days
+  field_overall_viic3_61_80_days: field_overall_viic3_61_80_days
+  field_overall_viic3_81_100_days: field_overall_viic3_81_100_days
+  field_overall_viic3_101_120_days: field_overall_viic3_101_120_days
+  field_overall_viic3_121_140_days: field_overall_viic3_121_140_days
+  field_overall_viic3_141_160_days: field_overall_viic3_141_160_days
+  field_overall_viic3_161_180_days: field_overall_viic3_161_180_days
+  field_overall_viic3_181_200_days: field_overall_viic3_181_200_days
+  field_overall_viic3_201_300_days: field_overall_viic3_201_300_days
+  field_overall_viic3_301_400_days: field_overall_viic3_301_400_days
+  field_overall_viic3_400_up_days: field_overall_viic3_400_up_days
+  field_overall_viic3_total: field_overall_viic3_total
+  field_footnotes_viic3: footnotes_viic3
+  # Section VII.D
+  # Pending Requests - All Pending Perfected Requests.
+  field_pending_requests_vii_d_:
+    -
+      plugin: foia_array_pad
+      source: component_viid
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viid_pending_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viid_sim_med: field_overall_viid_sim_med
+  field_overall_viid_sim_avg: field_overall_viid_sim_avg
+  field_overall_viid_sim_pend: field_overall_viid_sim_pend
+  field_overall_viid_comp_med: field_overall_viid_comp_med
+  field_overall_viid_comp_avg: field_overall_viid_comp_avg
+  field_overall_viid_comp_pend: field_overall_viid_comp_pend
+  field_overall_viid_exp_med: field_overall_viid_exp_med
+  field_overall_viid_exp_avg: field_overall_viid_exp_avg
+  field_overall_viid_exp_pend: field_overall_viid_exp_pend
+  field_footnotes_viid: field_footnotes_viid
+  # Section VII.E
+  # Pending Requests - All Pending Perfected Requests.
+  field_admin_app_viie:
+    -
+      plugin: foia_array_pad
+      source: component_viie
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viie_oldest_pending
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viie_num_days_1: field_overall_viie_num_days_1
+  field_overall_viie_num_days_2: field_overall_viie_num_days_2
+  field_overall_viie_num_days_3: field_overall_viie_num_days_3
+  field_overall_viie_num_days_4: field_overall_viie_num_days_4
+  field_overall_viie_num_days_5: field_overall_viie_num_days_5
+  field_overall_viie_num_days_6: field_overall_viie_num_days_6
+  field_overall_viie_num_days_7: field_overall_viie_num_days_7
+  field_overall_viie_num_days_8: field_overall_viie_num_days_8
+  field_overall_viie_num_days_9: field_overall_viie_num_days_9
+  field_overall_viie_num_days_10: field_overall_viie_num_days_10
+  field_overall_viie_date_1: field_overall_viie_date_1
+  field_overall_viie_date_2: field_overall_viie_date_2
+  field_overall_viie_date_3: field_overall_viie_date_3
+  field_overall_viie_date_4: field_overall_viie_date_4
+  field_overall_viie_date_5: field_overall_viie_date_5
+  field_overall_viie_date_6: field_overall_viie_date_6
+  field_overall_viie_date_7: field_overall_viie_date_7
+  field_overall_viie_date_8: field_overall_viie_date_8
+  field_overall_viie_date_9: field_overall_viie_date_9
+  field_overall_viie_date_10: field_overall_viie_date_10
+  field_footnotes_viie: field_footnotes_viie
+  # Section VIII.A
+  # Placeholder section description.
+  field_req_viiia:
+    -
+      plugin: foia_array_pad
+      source: component_viiia
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viiia_expedited_processing
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viiia_num_grant: field_overall_viiia_num_grant
+  field_overall_viiia_num_denied: field_overall_viiia_num_denied
+  field_overall_viiia_med_days_jud: field_overall_viiia_med_days_jud
+  field_overall_viiia_avg_days_jud: field_overall_viiia_avg_days_jud
+  field_overall_viiia_num_jud_w10: field_overall_viiia_num_jud_w10
+  field_footnotes_viiia: field_footnotes_viiia
+  # Section VIII.B
+  # Placeholder section description.
+  field_req_viiib:
+    -
+      plugin: foia_array_pad
+      source: component_viiib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_viiib_fee_waiver
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_viiib_num_grant: field_overall_viiib_num_grant
+  field_overall_viiib_num_denied: field_overall_viiib_num_denied
+  field_overall_viiib_med_days_jud: field_overall_viiib_med_days_jud
+  field_overall_viiib_avg_days_jud: field_overall_viiib_avg_days_jud
+  field_footnotes_viiib: field_footnotes_viiib
+  # Section IX
+  # Placeholder section description.
+  field_foia_pers_costs_ix:
+    -
+      plugin: foia_array_pad
+      source: component_ix
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_ix_personnel
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_ix_full_emp: field_overall_ix_full_emp
+  field_overall_ix_eq_full_emp: field_overall_ix_eq_full_emp
+  field_overall_ix_total_staff: field_overall_ix_total_staff
+  field_overall_ix_proc_costs: field_overall_ix_proc_costs
+  field_overall_ix_lit_costs: field_overall_ix_lit_costs
+  field_overall_ix_total_costs: field_overall_ix_total_costs
+  field_footnotes_ix: field_footnotes_ix
+  # Section X
+  # Placeholder section description.
+  field_fees_x:
+    -
+      plugin: foia_array_pad
+      source: component_x
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_x_fees
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_x_total_fees: field_overall_x_total_fees
+  field_overall_x_perc_costs: field_overall_x_perc_costs
+  field_footnotes_x: field_footnotes_x
+  # Section XI.A
+  # Placeholder section description.
+  field_sub_xia:
+    -
+      plugin: foia_array_pad
+      source: component_xia
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xia_subsection_c
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xia_sub_used: field_overall_xia_sub_used
+  field_footnotes_xia: field_footnotes_xia
+  # Section XI.B
+  # Placeholder section description.
+  field_sub_xib:
+    -
+      plugin: foia_array_pad
+      source: component_xib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xib_subsection_a2
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xib_rec_post_foia: field_overall_xib_rec_post_foia
+  field_overall_xib_rec_post_prog: field_overall_xib_rec_post_prog
+  field_footnotes_xib: field_footnotes_xib
+  # Section XII.A
+  # Placeholder section description.
+  field_foia_xiia:
+    -
+      plugin: foia_array_pad
+      source: component_xiia
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiia
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiia_back_req_end_: field_overall_xiia_back_req_end_
+  field_overall_xiia_back_app_end_: field_overall_xiia_back_app_end_
+  field_footnotes_xiia: field_footnotes_xiia
+  # Section XII.B
+  # Placeholder section description.
+  field_foia_xiib:
+    -
+      plugin: foia_array_pad
+      source: component_xiib
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiib
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiib_pend_start_yr: field_overall_xiib_pend_start_yr
+  field_overall_xiib_proc_start_yr: field_overall_xiib_proc_start_yr
+  field_overall_xiib_con_during_yr: field_overall_xiib_con_during_yr
+  field_overall_xiib_pend_end_yr: field_overall_xiib_pend_end_yr
+  field_footnotes_xiib: field_footnotes_xiib
+  # Section XII.C
+  # Pending Requests - All Pending Perfected Requests.
+  field_foia_xiic:
+    -
+      plugin: foia_array_pad
+      source: component_xiic
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiic
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiic_num_days_1: field_overall_xiic_num_days_1
+  field_overall_xiic_num_days_2: field_overall_xiic_num_days_2
+  field_overall_xiic_num_days_3: field_overall_xiic_num_days_3
+  field_overall_xiic_num_days_4: field_overall_xiic_num_days_4
+  field_overall_xiic_num_days_5: field_overall_xiic_num_days_5
+  field_overall_xiic_num_days_6: field_overall_xiic_num_days_6
+  field_overall_xiic_num_days_7: field_overall_xiic_num_days_7
+  field_overall_xiic_num_days_8: field_overall_xiic_num_days_8
+  field_overall_xiic_num_days_9: field_overall_xiic_num_days_9
+  field_overall_xiic_num_days_10: field_overall_xiic_num_days_10
+  field_overall_xiic_date_1: field_overall_xiic_date_1
+  field_overall_xiic_date_2: field_overall_xiic_date_2
+  field_overall_xiic_date_3: field_overall_xiic_date_3
+  field_overall_xiic_date_4: field_overall_xiic_date_4
+  field_overall_xiic_date_5: field_overall_xiic_date_5
+  field_overall_xiic_date_6: field_overall_xiic_date_6
+  field_overall_xiic_date_7: field_overall_xiic_date_7
+  field_overall_xiic_date_8: field_overall_xiic_date_8
+  field_overall_xiic_date_9: field_overall_xiic_date_9
+  field_overall_xiic_date_10: field_overall_xiic_date_10
+  field_footnotes_xiic: field_footnotes_xiic
+  # Section XII.D.1
+  # Placeholder section description.
+  field_foia_xiid1:
+    -
+      plugin: foia_array_pad
+      source: component_xiid1
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiid1
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiid1_received_las: field_overall_xiid1_received_las
+  field_overall_xiid1_received_cur: field_overall_xiid1_received_cur
+  field_overall_xiid1_proc_last_yr: field_overall_xiid1_proc_last_yr
+  field_overall_xiid1_proc_cur_yr: field_overall_xiid1_proc_cur_yr
+  field_footnotes_xiid1: field_footnotes_xiid1
+  # Section XII.D.2
+  # Placeholder section description.
+  field_foia_xiid2:
+    -
+      plugin: foia_array_pad
+      source: component_xiid2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiid2
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiid2_back_prev_yr: field_overall_xiid2_back_prev_yr
+  field_overall_xiid2_back_cur_yr: field_overall_xiid2_back_cur_yr
+  field_footnotes_xiid2: field_footnotes_xiid2
+  # Section XII.E.1
+  # Placeholder section description.
+  field_foia_xiie1:
+    -
+      plugin: foia_array_pad
+      source: component_xiie1
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiie1
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiie1_received_las: field_overall_xiie1_received_las
+  field_overall_xiie1_received_cur: field_overall_xiie1_received_cur
+  field_overall_xiie1_proc_last_yr: field_overall_xiie1_proc_last_yr
+  field_overall_xiie1_proc_cur_yr: field_overall_xiie1_proc_cur_yr
+  field_footnotes_xiie1: field_footnotes_xiie1
+  # Section XII.E.2
+  # FOIA requests -- received, processed and pending FOIA requests
+  field_foia_xiie2:
+    -
+      plugin: foia_array_pad
+      source: component_xiie2
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_xiie2
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_overall_xiie2_back_prev_yr: overall_xiie2_back_prev_yr
+  field_overall_xiie2_back_cur_yr: overall_xiie2_back_cur_yr
+  field_footnotes_xiie2: footnotes_xiie2
+destination:
+  plugin: entity:node
+migration_dependencies:
+  required:
+    - foia_iv_statute
+    - foia_va_requests
+    - foia_vb1_requests
+    - foia_vb2
+    - foia_vb3_requests
+    - foia_via_disposition
+    - foia_vib_disposition
+    - foia_vic1_applied_exemptions
+    - foia_vic2_nonexemption_denial
+    - foia_vic3
+    - foia_vic4_response_time
+    - foia_viia_processed_requests
+    - foia_viib_processed_requests
+    - foia_viic1_simple_response
+    - foia_viic2_complex_response
+    - foia_viic3_expedited_response
+    - foia_viid_pending_requests
+    - foia_vic5_oldest_pending
+    - foia_viie_oldest_pending
+    - foia_viiia_expedited_processing
+    - foia_viiib_fee_waiver
+    - foia_ix_personnel
+    - foia_x_fees
+    - foia_xia_subsection_c
+    - foia_xib_subsection_a2
+    - foia_xiia
+    - foia_xiib
+    - foia_xiic
+    - foia_xiid1
+    - foia_xiid2
+    - foia_xiie1
+    - foia_xiie2

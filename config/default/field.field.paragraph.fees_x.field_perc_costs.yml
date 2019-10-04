@@ -1,0 +1,30 @@
+uuid: f2d934ae-0625-4531-8e91-7549f00b39c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_perc_costs
+    - paragraphs.paragraphs_type.fees_x
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.fees_x.field_perc_costs
+field_name: field_perc_costs
+entity_type: paragraph
+bundle: fees_x
+label: 'Percentage of Total Costs'
+description: 'The "Percentage of Total Costs" field is calculated by comparing the "Fees Collected" field with "Processing Costs" from section IX.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

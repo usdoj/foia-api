@@ -1,0 +1,137 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for foia_annual_data_report module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\AlertCommand;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Ajax\RedirectCommand;
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_annual_data_report_ajax_existing_node($form);
+}
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function foia_annual_data_report_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_annual_data_report_ajax_new_node($form);
+}
+
+/**
+ * Add ajax to a new annual report node to submit on agency field is set.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ */
+function foia_annual_data_report_ajax_new_node(array &$form) {
+
+  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
+    'callback' => 'foia_annual_data_report_create_node',
+    'event' => 'change',
+    'progress' => [
+      'type' => 'throbber',
+      'message' => 'Please Wait...',
+    ],
+  ];
+
+}
+
+/**
+ * Add ajax to a existing annual report node to submit on agency field is set.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ */
+function foia_annual_data_report_ajax_existing_node(array &$form) {
+
+  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
+    'callback' => 'foia_annual_data_report_refresh',
+    'event' => 'change',
+    'progress' => [
+      'type' => 'throbber',
+      'message' => 'Please Wait...',
+    ],
+  ];
+
+}
+
+/**
+ * Save the node and redirect back to the edit page for the node.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state passed from hook_form_form_id_alter().
+ *
+ * @return \Drupal\Core\Ajax\AjaxResponse
+ *   AjaxResponse object to alert user and redirect them.
+ */
+function foia_annual_data_report_create_node(array $form, FormStateInterface
+ $form_state) {
+
+  $response = new AjaxResponse();
+
+  // Set a temporary title, in case they have not.
+  $report_title = $form_state->getValue('title')[0]['value'] ?
+  $form_state->getValue('title')[0]['value'] :
+  'Agency Report ' . date('Y-m-d');
+
+  $node = \Drupal::entityTypeManager()->getStorage('node')->create([
+    'type' => 'annual_foia_report_data',
+    'title' => $report_title,
+    'field_agency' => $form_state->getValue('field_agency'),
+  ]);
+  $node->save();
+
+  $url = $node->toUrl('edit-form')->toString();
+
+  $response->addCommand(new RedirectCommand($url));
+  $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
+
+  return $response;
+}
+
+/**
+ * Do all the magic to get the component list and update the Component options.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state passed from hook_form_form_id_alter().
+ */
+function foia_annual_data_report_refresh(array $form, FormStateInterface
+ $form_state) {
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $response = new AjaxResponse();
+  $currentURL = Url::fromRoute('<current>');
+
+  if ($node instanceof NodeInterface) {
+    $nid = $node->id();
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+
+    // @todo: If users change anything else it doesnt persist.
+    $node->set('field_agency', $form_state->getValue('field_agency'));
+
+    // Set as new revision.
+    $node->setNewRevision(TRUE);
+    $node->revision_log = 'Updated Agency for report';
+    $node->setRevisionUserId(\Drupal::currentUser()->id());
+
+    $node->save();
+
+    $response->addCommand(new RedirectCommand($currentURL->toString()));
+    $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
+  }
+
+  return $response;
+}

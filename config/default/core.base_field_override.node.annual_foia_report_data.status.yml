@@ -1,0 +1,22 @@
+uuid: d9cc9f70-ddae-4910-ab18-f6433acf030f
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.annual_foia_report_data
+id: node.annual_foia_report_data.status
+field_name: status
+entity_type: node
+bundle: annual_foia_report_data
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

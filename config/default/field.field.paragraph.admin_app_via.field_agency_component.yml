@@ -1,0 +1,32 @@
+uuid: 940423bf-f161-421c-aec4-1e1dbca3d303
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_agency_component
+    - paragraphs.paragraphs_type.admin_app_via
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.admin_app_via.field_agency_component
+field_name: field_agency_component
+entity_type: paragraph
+bundle: admin_app_via
+label: Agency/Component
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: agency_component_by_agency
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference

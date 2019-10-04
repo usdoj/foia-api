@@ -1,0 +1,110 @@
+<div class=WordSection18>
+
+<p class=MsoNormal ><b>VI.A. ADMINISTRATIVE APPEALS OF INITIAL
+DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING
+ADMINISTRATIVE APPEALS<o:p></o:p></b></p>
+
+</div>
+
+<b ><br clear=all >
+</b>
+
+<div class=WordSection19>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td width=114 >
+  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number of Appeals<br>
+  Pending as of Start<br>
+  of Fiscal Year<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number of<br>
+  Appeals Received<br>
+  in Fiscal Year<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number of<br>
+  Appeals Processed<br>
+  in Fiscal Year<o:p></o:p></p>
+  </td>
+  <td width=114 >
+  <p class=MsoNormal align=center >Number of Appeals<br>
+  Pending as of End<br>
+  of Fiscal Year<o:p></o:p></p>
+  </td>
+ </tr>
+
+{% for key,value in content.field_admin_app_via if key|first != '#' %}
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_admin_app_via[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }} 
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_via[key]['#paragraph'].field_app_pend_start_yr.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_via[key]['#paragraph'].field_app_received_yr.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_via[key]['#paragraph'].field_app_processed_yr.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >
+  {{ content.field_admin_app_via[key]['#paragraph'].field_app_pend_end_yr.value }} 
+  <o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+
+ <tr >
+  <td width=114 >
+  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_via_app_pend_start }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_via_app_recd_yr }} <o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_via_app_proc_yr }}<o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >{{ docx.field_overall_via_app_pend_endyr }}<o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection20>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td valign=bottom >
+  <p class=MsoNormal><i >
+  {{ docx.field_footnotes_via }}
+  <o:p></o:p></i></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<i ><br clear=all >
+</i>
+

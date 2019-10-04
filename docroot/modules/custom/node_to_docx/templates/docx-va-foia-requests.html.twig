@@ -1,0 +1,111 @@
+<div class=WordSection6>
+<p class=MsoNormal ><b>V.A. FOIA REQUESTS -- RECEIVED, PROCESSED
+AND PENDING FOIA REQUESTS<o:p></o:p></b></p>
+</div>
+
+<div class=WordSection7>
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+ <tr >
+  <td width=114 >
+  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+  </td>
+  <td width=87 >
+  <p class=MsoNormal align=center >Number of Requests<br>
+  Pending as of Start<br>
+  of Fiscal Year<o:p></o:p></p>
+  </td>
+  <td width=87 >
+  <p class=MsoNormal align=center >Number of<br>
+  Requests Received<br>
+  in Fiscal Year<o:p></o:p></p>
+  </td>
+  <td width=87 >
+  <p class=MsoNormal align=center >Number of<br>
+  Requests Processed<br>
+  in Fiscal Year<o:p></o:p></p>
+  </td>
+  <td width=87 >
+  <p class=MsoNormal align=center >Number of Requests<br>
+  Pending as of End<br>
+  of Fiscal Year<o:p></o:p></p>
+  </td>
+ </tr>
+{% for key,value in content.field_foia_requests_va if key|first != '#' %}
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  {{ content.field_foia_requests_va[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_foia_requests_va[key]['#paragraph'].field_req_pend_start_yr[0].value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_foia_requests_va[key]['#paragraph'].field_req_received_yr[0].value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ content.field_foia_requests_va[key]['#paragraph'].field_req_processed_yr[0].value }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >
+  {{ content.field_foia_requests_va[key]['#paragraph'].field_req_pend_end_yr[0].value }}
+  <o:p></o:p></p>
+  </td>
+ </tr>
+{% endfor %}
+<!-- This is the totals row -->
+ <tr >
+  <td nowrap valign=bottom >
+  <p class=MsoNormal >
+  AGENCY OVERALL
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ docx.field_overall_req_pend_start_yr }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ docx.field_overall_req_received_yr }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap valign=bottom >
+  <p class=MsoNormal align=right >
+  {{ docx.field_overall_req_processed_yr }}
+  <o:p></o:p></p>
+  </td>
+  <td nowrap >
+  <p class=MsoNormal align=right >
+  {{ docx.field_overall_req_pend_end_yr }}
+  <o:p></o:p></p>
+  </td>
+ </tr>
+
+</table>
+
+</div>
+
+<br clear=all>
+
+<div class=WordSection8>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570 >
+{% for key,value in docx.field_footnotes_va if key|first != '#' %}
+ <tr >
+  <td width=570 nowrap valign=bottom >
+  <p class=MsoNormal align=left <i >
+  {{ docx.field_footnotes_va[key] }}
+  <o:p></o:p></i></p>
+  </td>
+ </tr>
+{% endfor %}
+</table>
+
+</div>

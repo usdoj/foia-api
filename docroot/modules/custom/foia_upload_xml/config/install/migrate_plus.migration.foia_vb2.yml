@@ -1,0 +1,93 @@
+id: foia_vb2
+label: 'Import V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS..." paragraphs from NIEM-XML data.'
+migration_group: foia_component_data_import
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:RequestDenialOtherReasonSection/foia:ComponentOtherDenialReason'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_desc_oth_reasons
+      label: 'Placeholder Label - V.B.2 Other - field_desc_oth_reasons'
+      selector: 'foia:OtherDenialReason/foia:OtherDenialReasonDescriptionText'
+    -
+      name: field_total
+      label: 'Placeholder Label - V.B.2 - field_total'
+      selector: 'foia:ComponentOtherDenialReasonQuantity'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: foia_req_vb2
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_vb2_requests
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_foia_req_vb2_info:
+    -
+      plugin: foia_array_pad
+      source: field_desc_oth_reasons
+      prefix:
+        - report_year
+        - agency
+        - component
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+            - '3'
+          migration:
+            - foia_vb2_other
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+  field_total: field_total
+migration_dependencies:
+  required:
+    - component_vb2_requests
+    - foia_vb2_other

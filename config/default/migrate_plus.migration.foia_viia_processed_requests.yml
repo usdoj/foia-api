@@ -1,0 +1,121 @@
+uuid: fc193b4a-0945-4db0-b60c-c268507a2089
+langcode: en
+status: true
+dependencies: {  }
+id: foia_viia_processed_requests
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: foia_component_data_import
+label: 'Import VII. Processed Requests - Response Time (perfected) paragraphs from NIEM-XML data.'
+source:
+  item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedResponseTimeSection/foia:ProcessedResponseTime'
+  fields:
+    -
+      name: report_year
+      label: 'Fiscal year for the current report'
+      selector: '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate'
+    -
+      name: agency
+      label: 'Standard abbreviation of the agency submitting the report'
+      selector: '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText'
+    -
+      name: component
+      label: 'Internal index of the agency component'
+      selector: '@s:id'
+    -
+      name: field_sim_med
+      label: 'Processed Requests - Simple Response Time - Median'
+      selector: 'foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_sim_avg
+      label: 'Processed Requests - Simple Response Time - Average'
+      selector: 'foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_sim_low
+      label: 'Processed Requests - Simple Response Time - Lowest'
+      selector: 'foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_sim_high
+      label: 'Processed Requests - Simple Response Time - Highest'
+      selector: 'foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_comp_med
+      label: 'Processed Requests - Complex Response Time - Median'
+      selector: 'foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_comp_avg
+      label: 'Processed Requests - Complex Response Time - Average'
+      selector: 'foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_comp_low
+      label: 'Processed Requests - Complex Response Time - Lowest'
+      selector: 'foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_comp_high
+      label: 'Processed Requests - Complex Response Time - Highest'
+      selector: 'foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_exp_med
+      label: 'Processed Requests - Expedited Response Time - Median'
+      selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
+    -
+      name: field_exp_avg
+      label: 'Processed Requests - Expedited Response Time - Average'
+      selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_exp_low
+      label: 'Processed Requests - Expedited Response Time - Lowest'
+      selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
+    -
+      name: field_exp_high
+      label: 'Processed Requests - Expedited Response Time - Highest'
+      selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+  ids:
+    report_year:
+      type: integer
+    agency:
+      type: string
+    component:
+      type: string
+process:
+  type:
+    plugin: default_value
+    default_value: processed_requests_vii
+  langcode:
+    plugin: default_value
+    default_value: en
+  status:
+    plugin: default_value
+    default_value: true
+  field_agency_component:
+    -
+      plugin: migration_lookup
+      source:
+        - report_year
+        - agency
+        - component
+      migration:
+        - component_viia_processed_requests
+      no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot find an Agency Component node with the given abbreviation.'
+  field_sim_med: field_sim_med
+  field_sim_avg: field_sim_avg
+  field_sim_low: field_sim_low
+  field_sim_high: field_sim_high
+  field_comp_med: field_comp_med
+  field_comp_avg: field_comp_avg
+  field_comp_low: field_comp_low
+  field_comp_high: field_comp_high
+  field_exp_med: field_exp_med
+  field_exp_avg: field_exp_avg
+  field_exp_low: field_exp_low
+  field_exp_high: field_exp_high
+destination: null
+migration_dependencies:
+  required:
+    - component_viia_processed_requests

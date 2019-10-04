@@ -1,0 +1,34 @@
+uuid: e09f4f57-9ead-45ed-b116-73ec8425208d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vic2_rec_refer_ini
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        c48f782a-595d-48b0-97c4-c976ea136346:
+          field: 'field_admin_app_vic2:field_rec_refer_initial'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_vic2_rec_refer_ini
+field_name: field_overall_vic2_rec_refer_ini
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Records Referred at Initial Request Level'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

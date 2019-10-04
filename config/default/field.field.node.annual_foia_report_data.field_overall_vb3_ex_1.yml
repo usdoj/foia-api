@@ -1,0 +1,34 @@
+uuid: 00bd14ad-4d98-4315-b6c9-fafdf54cbb84
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vb3_ex_1
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        b0114a32-776e-45b3-a531-50d4ab6df843:
+          field: 'field_foia_requests_vb3:field_ex_1'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_vb3_ex_1
+field_name: field_overall_vb3_ex_1
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Ex. 1'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

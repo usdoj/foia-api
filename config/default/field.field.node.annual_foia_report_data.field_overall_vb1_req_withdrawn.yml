@@ -1,0 +1,34 @@
+uuid: 89218e93-af2d-42bc-b233-9628d76883a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_vb1_req_withdrawn
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        8f7eb1f6-1b68-48e4-961c-e7b06f90af90:
+          field: 'field_foia_requests_vb1:field_req_withdrawn'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_vb1_req_withdrawn
+field_name: field_overall_vb1_req_withdrawn
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall Request Withdrawn'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

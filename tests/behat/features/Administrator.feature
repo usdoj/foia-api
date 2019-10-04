@@ -1,10 +1,11 @@
 @administrator
 Feature: Agency Administrator role
-  In order to keep Agencies, Components, and Managers up to date
+  In order to keep Agencies, Components, Reports, and Managers up to date
   As an Agency Administrator
-  I should be able to administer Agency Manager user accounts, agencies, and agency components
+  I should be able to administer Agency Manager user accounts, agencies,
+  agency components, and Annual FOIA Reports
 
-  @api @agency
+  @api @agency @experimental
   Scenario: Agency Administrator can administer user accounts with the Agency Manager role
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am at 'admin/structure/taxonomy/manage/agency/add'
@@ -85,11 +86,16 @@ Feature: Agency Administrator role
     Then I should see the following success messages:
       | Updated term A Test Agency. |
 
-  @api
+  @api @experimental
   Scenario: Agency Administrator can administer Agency Components
-    Given I am logged in as a user with the 'Agency Administrator' role
-    When I am at 'node/add/agency_component'
+    Given "agency" terms:
+      | name  |field_agency_abbreviation| description |format    | language |
+      | test  |DOJ                      | description |plain_text| en       |
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
+    And for 'Agency' I enter 'test'
+    And for Abbreviation I enter 'TAC'
     And I press the 'Save' button
     Then I should see the following success messages:
       | Agency Component A Test Agency Component has been created. |
@@ -152,7 +158,7 @@ Feature: Agency Administrator role
     Then I should see the following success messages:
       | The webform A Test Webform has been deleted. |
 
-  @api
+  @api @experimental
   Scenario: Can not delete any or all revisions
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am at 'node/add/agency_component'
@@ -169,7 +175,7 @@ Feature: Agency Administrator role
     When I click 'Revisions'
     Then I should not see 'Delete' in the 'change' row
 
-  @api @agency
+  @api @agency @experimental
   Scenario: Agency Administrator can add the Agency term references to Agency components
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am at 'admin/structure/taxonomy/manage/agency/add'
@@ -193,7 +199,7 @@ Feature: Agency Administrator role
     And I go to "/admin/structure/foia_request/add"
     Then I should see "Access Denied"
 
-  @api
+  @api @experimental
   Scenario: Agency Administrator can view custom FOIA request view
     Given I am logged in as a user with the 'Administrator' role
     And I am on "/admin/structure/foia_request/add"
@@ -204,3 +210,64 @@ Feature: Agency Administrator role
     Then I should see "FOIA Requests"
     And I go to saved URL
     Then I should see "Request Status"
+
+  @api
+  Scenario: Agency Administrator can add Annual FOIA Reports
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add"
+    Then I should see the link "Annual FOIA Report Data"
+
+  @api
+  Scenario: Agency Administrator can save Annual FOIA Reports in all workflow
+  states
+    Given "agency" terms:
+      | name  |field_agency_abbreviation| description |format    | language |
+      | test  |DOJ                      | description |plain_text| en       |
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/annual_foia_report_data"
+    And for 'Title' I enter 'A Test Report'
+    And for 'Agency' I enter 'test'
+    And I select "Draft" from "Save as"
+    When I press the 'Save' button
+    And save the current URL
+    Then I should see the following success messages:
+      | Annual FOIA Report Data A Test Report has been created. |
+    When I go to saved URL
+    And I click 'Edit'
+    And I select "Submitted to OIP" from "Change to"
+    And I press the 'Save' button
+    Then I should see the following success messages:
+      | Annual FOIA Report Data test from manager has been updated. |
+    When I go to saved URL
+    And I click 'Edit'
+    And I select "Cleared" from "Change to"
+    And I press the 'Save' button
+    Then I should see the following success messages:
+      | Annual FOIA Report Data test from manager has been updated. |
+    When I go to saved URL
+    And I click 'Edit'
+    And I select "Published" from "Change to"
+    And I press the 'Save' button
+    Then I should see the following success messages:
+      | Annual FOIA Report Data test from manager has been updated. |
+    When I go to saved URL
+    And I click 'Edit'
+    And I select "Back with Agency" from "Change to"
+    And I press the 'Save' button
+    Then I should see the following success messages:
+      | Annual FOIA Report Data test from manager has been updated. |
+
+  @api
+  Scenario: Non Agency Administrator cannot see Report Start and Expiration
+  Dates
+    When I am logged in as a user with the 'Agency Component creator' role
+    And I am on "/node/add/agency_component"
+    Then I should not see "Report Start Date"
+    And I should not see "Report Expiration Date"
+
+  @api
+  Scenario: Agency Administrator can update Report Start and Expiration Dates
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/agency_component"
+    Then I should see "Report Start Date"
+    And I should see "Report Expiration Date"

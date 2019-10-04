@@ -1,0 +1,34 @@
+uuid: 3e400b6b-38b6-4335-96eb-6b3394780736
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_overall_viic3_41_60_days
+    - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        4abda2d6-c87c-4b98-b9a7-803a95d31df7:
+          field: 'field_proc_req_viic3:field_41_60_days'
+          weight: '99'
+          this_entity: 0
+id: node.annual_foia_report_data.field_overall_viic3_41_60_days
+field_name: field_overall_viic3_41_60_days
+entity_type: node
+bundle: annual_foia_report_data
+label: 'Agency Overall 41-60 Days'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
