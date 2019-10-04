@@ -8,7 +8,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\user\Entity\User;
 use Drupal\migrate_plus\Entity\Migration;
-use Drupal\migrate\Plugin\MigrationInterface;
 
 /**
  * Class AgencyXmlUploadForm.
@@ -83,17 +82,10 @@ class AgencyXmlUploadForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    $migrateStatus = \Drupal::keyValue('migrate_status');
-    $migrateStatusArr = $migrateStatus->getAll();
-    $migration_clear = TRUE;
-    $migration_running = '';
-    foreach ($migrateStatusArr as $migration => $status) {
-      if ($status != MigrationInterface::STATUS_IDLE) {
-        $migration_clear = FALSE;
-        $migration_running = $migration;
-      }
-    }
-    if (!$migration_clear) {
+    // Attempt to get a lock, tell them to try again if we can't.
+    $lock = \Drupal::service('lock.persistent');
+    // This is released in foia_upload_xml_execute_migration_finished().
+    if (!$lock->acquire('foia_upload_xml',3600)) {
       $form_state->setErrorByName('submit',
         $this->t("Another Agency's import is running; please re-submit in a few minutes."));
     }
