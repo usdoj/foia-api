@@ -82,12 +82,17 @@ class AgencyXmlUploadForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Attempt to get a lock, tell them to try again if we can't.
-    $lock = \Drupal::service('lock.persistent');
-    // This is released in foia_upload_xml_execute_migration_finished().
-    if (!$lock->acquire('foia_upload_xml', 3600)) {
-      $form_state->setErrorByName('submit',
-        $this->t("Another Agency's import is running; please re-submit in a few minutes."));
+    // Don't set or check the lock if they are uploading the file, just if the
+    // form is actually being submitted.
+    $element = $form_state->getTriggeringElement();
+    if ($element['#id'] == 'edit-submit') {
+      // Attempt to get a lock, tell them to try again if we can't.
+      $lock = \Drupal::service('lock.persistent');
+      // This is released in foia_upload_xml_execute_migration_finished().
+      if (!$lock->acquire('foia_upload_xml', 3600)) {
+        $form_state->setErrorByName('submit',
+          $this->t("Another Agency's import is running; please re-submit in a few minutes."));
+      }
     }
   }
 
