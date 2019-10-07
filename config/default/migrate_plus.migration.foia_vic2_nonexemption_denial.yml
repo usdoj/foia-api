@@ -95,16 +95,76 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_no_rec: field_no_rec
-  field_rec_ref_to_an_comp: field_rec_ref_to_an_comp
-  field_req_withdrawn: field_req_withdrawn
-  field_fee_related_reason: field_fee_related_reason
-  field_rec_not_desc: field_rec_not_desc
-  field_imp_req_oth_reason: field_imp_req_oth_reason
-  field_not_agency_record: field_not_agency_record
-  field_dup_req: field_dup_req
-  field_oth: field_oth
-  field_req_in_lit: field_req_in_lit
+  field_no_rec:
+    -
+      plugin: get
+      source: field_no_rec
+    -
+      plugin: default_value
+      default_value: 0
+  field_rec_ref_to_an_comp:
+    -
+      plugin: get
+      source: field_rec_ref_to_an_comp
+    -
+      plugin: default_value
+      default_value: 0
+  field_req_withdrawn:
+    -
+      plugin: get
+      source: field_req_withdrawn
+    -
+      plugin: default_value
+      default_value: 0
+  field_fee_related_reason:
+    -
+      plugin: get
+      source: field_fee_related_reason
+    -
+      plugin: default_value
+      default_value: 0
+  field_rec_not_desc:
+    -
+      plugin: get
+      source: field_rec_not_desc
+    -
+      plugin: default_value
+      default_value: 0
+  field_imp_req_oth_reason:
+    -
+      plugin: get
+      source: field_imp_req_oth_reason
+    -
+      plugin: default_value
+      default_value: 0
+  field_not_agency_record:
+    -
+      plugin: get
+      source: field_not_agency_record
+    -
+      plugin: default_value
+      default_value: 0
+  field_dup_req:
+    -
+      plugin: get
+      source: field_dup_req
+    -
+      plugin: default_value
+      default_value: 0
+  field_oth:
+    -
+      plugin: get
+      source: field_oth
+    -
+      plugin: default_value
+      default_value: 0
+  field_req_in_lit:
+    -
+      plugin: get
+      source: field_req_in_lit
+    -
+      plugin: default_value
+      default_value: 0
 destination: null
 migration_dependencies:
   required:

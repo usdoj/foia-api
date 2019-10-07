@@ -103,20 +103,104 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_ex_1: field_ex_1
-  field_ex_2: field_ex_2
-  field_ex_3: field_ex_3
-  field_ex_4: field_ex_4
-  field_ex_5: field_ex_5
-  field_ex_6: field_ex_6
-  field_ex_7_a: field_ex_7_a
-  field_ex_7_b: field_ex_7_b
-  field_ex_7_c: field_ex_7_c
-  field_ex_7_d: field_ex_7_d
-  field_ex_7_e: field_ex_7_e
-  field_ex_7_f: field_ex_7_f
-  field_ex_8: field_ex_8
-  field_ex_9: field_ex_9
+  field_ex_1:
+    -
+      plugin: get
+      source: field_ex_1
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_2:
+    -
+      plugin: get
+      source: field_ex_2
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_3:
+    -
+      plugin: get
+      source: field_ex_3
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_4:
+    -
+      plugin: get
+      source: field_ex_4
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_5:
+    -
+      plugin: get
+      source: field_ex_5
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_6:
+    -
+      plugin: get
+      source: field_ex_6
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_7_a:
+    -
+      plugin: get
+      source: field_ex_7_a
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_7_b:
+    -
+      plugin: get
+      source: field_ex_7_b
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_7_c:
+    -
+      plugin: get
+      source: field_ex_7_c
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_7_d:
+    -
+      plugin: get
+      source: field_ex_7_d
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_7_e:
+    -
+      plugin: get
+      source: field_ex_7_e
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_7_f:
+    -
+      plugin: get
+      source: field_ex_7_f
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_8:
+    -
+      plugin: get
+      source: field_ex_8
+    -
+      plugin: default_value
+      default_value: 0
+  field_ex_9:
+    -
+      plugin: get
+      source: field_ex_9
+    -
+      plugin: default_value
+      default_value: 0
 migration_dependencies:
   required:
     - component_vb3_requests
