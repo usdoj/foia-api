@@ -278,23 +278,36 @@
 
       // Disable Submit button until Validate button is clicked.
       $('input#edit-submit').prop('disabled', true);
+      $('body').append('<div id="validation-overlay"' +
+          ' class="validation-overlay hidden">' +
+          '<div class="ajax-progress ajax-progress-fullscreen">' +
+          '<img src="/core/misc/loading-small.gif" />' +
+          '</div></div>');
       $('input#edit-validate-button').on('click', function(event) {
         event.preventDefault();
+
+        $('.validation-overlay').removeClass('hidden');
 
         // To validate select drop-downs as required, they must have an
         // empty machine value.
         $("select > option[value='_none']").val('');
 
-        // Validate form
-        $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
 
-        // Empty drop-downs can still be submitted though, so restore
-        // Drupal's default empty drop-down value to avoid "An illegal
-        // choice has been detected" error in that scenario.
-        $("select > option[value='']").val('_none');
+        // Allow some time for the overlay to render.
+        setTimeout(function() {
+          // Validate form
+          $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
 
-        // Enable form Save button
-        $('input#edit-submit').prop('disabled', false);
+          $('.validation-overlay').addClass('hidden');
+
+          // Empty drop-downs can still be submitted though, so restore
+          // Drupal's default empty drop-down value to avoid "An illegal
+          // choice has been detected" error in that scenario.
+          $("select > option[value='']").val('_none');
+
+          // Enable form Save button
+          $('input#edit-submit').prop('disabled', false);
+        }, 100);
       });
 
       /**
