@@ -21,6 +21,39 @@
       }
 
       /**
+       * Checks that a date is in the format of YYYY-MM-DD
+       *
+       * @param dateString
+       * @returns {boolean}
+       */
+      function isIsoDateFormat(dateString) {
+        return (new RegExp(/^\d{4}[\-]\d{2}[\-]\d{2}$/)).test(dateString);
+      }
+
+      /**
+       * Checks that a date in the YYYY-MM-DD format is valid.
+       *
+       * @param isoDateString
+       */
+      function isoDateStringIsValidDate(isoDateString) {
+        var year = Number(isoDateString.substr(0, 4)),
+            month = Number(isoDateString.substr(5, 2)),
+            day = Number(isoDateString.substr(8, 2));
+
+        if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+          return false;
+        }
+
+        if (month < 1 || month > 12) {
+          return false;
+        }
+
+        var date = new Date(year, (month - 1), day);
+
+        return (Boolean(+date) && date.getDate() === day);
+      }
+
+      /**
        * Custom validation methods
        */
       // lessThanEqualTo
@@ -191,6 +224,32 @@
         return this.optional(element) || !(value == average);
       }, "Must not be equal to the average.");
 
+      // isoDateFormattedOrNA
+      jQuery.validator.addMethod('isoDateFormattedOrNA', function (value, element) {
+        if (value.toLowerCase() === 'n/a' || value === '0') {
+          return true;
+        }
+
+        return this.optional(element) || isIsoDateFormat(value);
+      }, "Date must be formatted as YYYY-MM-DD.");
+
+      /**
+       * isoDateStringIsValid
+       *
+       * Check that a properly formatted YYYY-MM-DD string is a valid date.
+       *
+       * Requires running the isoDateFormattedOrNA method prior to this
+       * validation to ensure that no errors in the date format before
+       * validating.
+       */
+      jQuery.validator.addMethod('isoDateStringIsValid', function (value, element) {
+        if (value.toLowerCase() === 'n/a' || value === '0') {
+          return true;
+        }
+
+        return this.optional(element) || isoDateStringIsValidDate(value);
+      }, "Must be a valid date.");
+
       // vb1matchDispositionComp: hard-coded for V.B.(1)
       jQuery.validator.addMethod("vb1matchDispositionComp", function(value, element, params) {
         var allReqProcessedYr = $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']");
@@ -321,6 +380,21 @@
         required: true,
         });
       });
+
+      // Formatting and validity of date fields that accept text.
+      $("input[name^='field_admin_app_vic5']").filter('input[name*="field_date_"]')
+          .add("input[name^='field_admin_app_viie']").filter('input[name*="field_date_"]')
+          .add("input[name^='field_foia_xiic']").filter('input[name*="field_date_"]')
+          .add("input[name^='field_overall_vic5_date']")
+          .add("input[name^='field_overall_viie_date']")
+          .add("input[name^='field_overall_xiic_date']")
+          .filter('.form-text')
+          .each(function () {
+            $(this).rules("add", {
+              isoDateFormattedOrNA: true,
+              isoDateStringIsValid: true,
+            });
+          });
 
        // V.A. FOIA Requests
       $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function() {
