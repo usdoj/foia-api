@@ -175,7 +175,7 @@ EOS;
    */
   protected function addFootnote($field, \DOMElement $parent) {
     $footnote = trim(strip_tags($this->node->get($field)->value));
-    if ($footnote) {
+    if ($footnote && !empty($footnote)) {
       $this->addElementNs('foia:FootnoteText', $parent, SafeMarkup::checkPlain($footnote));
     }
   }

@@ -316,7 +316,7 @@
        * Note: All validation rules can be bypassed on submit.
        */
       // Require all Annual Report fields.
-      $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-revision-log-0-value').not('[readonly]').each(function() {
+      $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-revision-log-0-value').not('[readonly]').not('[id*="footnote"]').each(function() {
         $(this).rules( "add", {
         required: true,
         });
