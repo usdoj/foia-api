@@ -351,11 +351,15 @@
 
       // Disable Submit button until Validate button is clicked.
       $('input#edit-submit').prop('disabled', true);
-      $('body').append('<div id="validation-overlay"' +
-          ' class="validation-overlay hidden">' +
-          '<div class="ajax-progress ajax-progress-fullscreen">' +
-          '<img src="/core/misc/loading-small.gif" />' +
-          '</div></div>');
+
+      if ($('#validation-overlay').length === 0) {
+        $('body').append('<div id="validation-overlay"' +
+            ' class="validation-overlay hidden">' +
+            '<div class="ajax-progress ajax-progress-fullscreen">' +
+            '<img src="/core/misc/loading-small.gif" />' +
+            '</div></div>');
+      }
+
       $('input#edit-validate-button').on('click', function(event) {
         event.preventDefault();
 
