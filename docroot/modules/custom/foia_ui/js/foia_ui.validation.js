@@ -198,18 +198,20 @@
 
       // equalToLowestComp
       jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
+        value = convertSpecialToZero(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
-          valuesArray.push(Number($( params[i] ).val()));
+          valuesArray.push(Number(convertSpecialToZero($( params[i] ).val())));
         }
         return this.optional(element) || (value == Math.min.apply(null, valuesArray));
       }, "Must equal the lowest value.");
 
       // equalToHighestComp
       jQuery.validator.addMethod("equalToHighestComp", function(value, element, params) {
+        value = convertSpecialToZero(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
-          valuesArray.push(Number($( params[i] ).val()));
+          valuesArray.push(Number(convertSpecialToZero($( params[i] ).val())));
         }
         return this.optional(element) || (value == Math.max.apply(null, valuesArray));
       }, "Must equal the highest value.");
