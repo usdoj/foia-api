@@ -7,6 +7,18 @@
       });
 
       /**
+       * Added for ie11 compatability.
+       *
+       * @param value
+       * @returns {boolean}
+       */
+      function isInteger(value) {
+        return typeof value === 'number' &&
+            isFinite(value) &&
+            Math.floor(value) === value;
+      }
+
+      /**
        * Treat "N/A", "n/a", and "<1" values as zero
        */
       function convertSpecialToZero(value) {
@@ -40,7 +52,7 @@
             month = Number(isoDateString.substr(5, 2)),
             day = Number(isoDateString.substr(8, 2));
 
-        if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+        if (!isInteger(year) || !isInteger(month) || !isInteger(day)) {
           return false;
         }
 
