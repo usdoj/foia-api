@@ -1,23 +1,23 @@
-uuid: 6b2f61f6-2a5f-4a78-b1e4-84d47f1845b3
+uuid: 4f2305ce-9ddd-4fea-a03a-0aeb1b072682
 langcode: en
 status: true
 dependencies:
   config:
-    - views.view.annual_foia_report_data_content_1
+    - views.view.user_agency
   module:
     - system
     - user
     - views
   theme:
     - bartik
-id: views_block__annual_foia_report_data_block
+id: views_block__user_agency_user_agency
 theme: bartik
 region: content
-weight: -1
+weight: -2
 provider: null
-plugin: 'views_block:annual_foia_report_data_content_1-annual_foia_report_data_block'
+plugin: 'views_block:user_agency-user_agency'
 settings:
-  id: 'views_block:annual_foia_report_data_content_1-annual_foia_report_data_block'
+  id: 'views_block:user_agency-user_agency'
   label: ''
   provider: views
   label_display: '0'
@@ -33,6 +33,7 @@ visibility:
   user_role:
     id: user_role
     roles:
+      agency_administrator: agency_administrator
       agency_manager: agency_manager
     negate: false
     context_mapping:
