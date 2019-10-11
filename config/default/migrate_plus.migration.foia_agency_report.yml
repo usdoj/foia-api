@@ -1610,20 +1610,104 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_vic1_ex_1: field_overall_vic1_ex_1
-  field_overall_vic1_ex_2: field_overall_vic1_ex_2
-  field_overall_vic1_ex_3: field_overall_vic1_ex_3
-  field_overall_vic1_ex_4: field_overall_vic1_ex_4
-  field_overall_vic1_ex_5: field_overall_vic1_ex_5
-  field_overall_vic1_ex_6: field_overall_vic1_ex_6
-  field_overall_vic1_ex_7_a: field_overall_vic1_ex_7_a
-  field_overall_vic1_ex_7_b: field_overall_vic1_ex_7_b
-  field_overall_vic1_ex_7_c: field_overall_vic1_ex_7_c
-  field_overall_vic1_ex_7_d: field_overall_vic1_ex_7_d
-  field_overall_vic1_ex_7_e: field_overall_vic1_ex_7_e
-  field_overall_vic1_ex_7_f: field_overall_vic1_ex_7_f
-  field_overall_vic1_ex_8: field_overall_vic1_ex_8
-  field_overall_vic1_ex_9: field_overall_vic1_ex_9
+  field_overall_vic1_ex_1:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_1
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_2:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_2
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_3:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_3
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_4:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_4
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_5:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_5
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_6:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_6
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_a:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_a
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_b:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_b
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_c:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_c
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_d:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_d
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_e:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_e
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_f:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_f
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_8:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_8
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_9:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_9
+    -
+      plugin: default_value
+      default_value: 0
   field_footnotes_vic1: footnotes_vic1
   field_admin_app_vic2:
     -
@@ -1654,17 +1738,83 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_vic2_app_denial_ex: overall_vic2_app_denial_ex
-  field_overall_vic2_no_rec: overall_vic2_no_rec
-  field_overall_vic2_rec_refer_ini: overall_vic2_rec_ref_to_an_comp
-  field_overall_vic2_req_withdrawn: overall_vic2_req_withdrawn
-  field_overall_vic2_fee_rel_reas: overall_vic2_fee_related_reason
-  field_overall_vic2_rec_not_desc: overall_vic2_rec_not_desc
-  field_overall_vic2_imp_req_oth: overall_vic2_imp_req_oth_reason
-  field_overall_vic2_not_agency_re: overall_vic2_not_agency_record
-  field_overall_vic2_dup_req: overall_vic2_dup_request
-  field_overall_vic2_oth: overall_vic2_oth
-  field_overall_vic2_req_in_lit: overall_vic2_req_in_lit
+  field_overall_vic2_app_denial_ex:
+    -
+      plugin: get
+      source: overall_vic2_app_denial_ex
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_no_rec:
+    -
+      plugin: get
+      source: overall_vic2_no_rec
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_rec_refer_ini:
+    -
+      plugin: get
+      source: overall_vic2_rec_ref_to_an_comp
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_req_withdrawn:
+    -
+      plugin: get
+      source: overall_vic2_req_withdrawn
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_fee_rel_reas:
+    -
+      plugin: get
+      source: overall_vic2_fee_related_reason
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_rec_not_desc:
+    -
+      plugin: get
+      source: overall_vic2_rec_not_desc
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_imp_req_oth:
+    -
+      plugin: get
+      source: overall_vic2_imp_req_oth_reason
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_not_agency_re:
+    -
+      plugin: get
+      source: overall_vic2_not_agency_record
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_dup_req:
+    -
+      plugin: get
+      source: overall_vic2_dup_request
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_oth:
+    -
+      plugin: get
+      source: overall_vic2_oth
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_req_in_lit:
+    -
+      plugin: get
+      source: overall_vic2_req_in_lit
+    -
+      plugin: default_value
+      default_value: 0
   field_footnotes_vic2: footnotes_vic2
   field_admin_app_vic3:
     -

@@ -61,6 +61,10 @@ source:
       label: 'Placeholder Label - VI.C. (2) - oth'
       selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "Other"]'
     -
+      name: field_app_denial_exp
+      label: 'Placeholder Label - VI.C. (2) - app_denial_exp'
+      selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "ExpeditedDenial"]'
+    -
       name: field_req_in_lit
       label: 'Placeholder Label - VI.C. (2) - req_in_lit'
       selector: 'foia:NonExemptionDenial/foia:NonExemptionDenialQuantity[../foia:NonExemptionDenialReasonCode/text() = "InLitigation"]'
@@ -99,6 +103,13 @@ process:
     -
       plugin: get
       source: field_no_rec
+    -
+      plugin: default_value
+      default_value: 0
+  field_rec_refer_initial:
+    -
+      plugin: get
+      source: field_rec_refer_initial
     -
       plugin: default_value
       default_value: 0
@@ -148,6 +159,13 @@ process:
     -
       plugin: get
       source: field_dup_req
+    -
+      plugin: default_value
+      default_value: 0
+  field_app_denial_exp:
+    -
+      plugin: get
+      source: field_app_denial_exp
     -
       plugin: default_value
       default_value: 0
