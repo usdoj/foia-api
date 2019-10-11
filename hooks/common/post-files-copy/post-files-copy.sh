@@ -20,4 +20,13 @@ cd $repo_root
 
 blt artifact:ac-hooks:post-files-copy $site $target_env $source_env --environment=$target_env -v --no-interaction -D drush.ansi=false
 
+echo "$site.$target_env: Received copy of files from $source_env."
+
+# Only do this when going from prod to something other than prod.
+if [ $source_env == 'prod' -a $target_env != 'prod' ]
+then
+echo "$site.$target_env: Deleting webform uploads on $target_env."
+drush @$site.$target_env eval "file_unmanaged_delete_recursive('private://webform')"
+fi
+
 set +v
