@@ -21,7 +21,8 @@ function webform_template_webform_insert(WebformInterface $webform) {
  * Implements hook_entity_presave().
  */
 function webform_template_entity_presave(EntityInterface $entity) {
-  if (!isset($entity->bundle) || !$entity->bundle === 'webform') {
+
+  if (!($entity->bundle()) || $entity->bundle() !== 'webform') {
     return;
   }
   if ($entity->isNew() && empty($entity->getElementsDecoded())) {
