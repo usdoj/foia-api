@@ -1,10 +1,17 @@
-uuid: 92736c3b-edc3-4afb-8bbb-ab39b30f0234
+uuid: 876b5102-e183-4cfa-8992-6b1a14ec1d5b
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_overall_vic4_med_num_days
     - node.type.annual_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_overall_vic4_med_num_days
 field_name: field_overall_vic4_med_num_days
 entity_type: node
@@ -15,9 +22,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  min: null
-  max: null
-  prefix: ''
-  suffix: ''
-field_type: decimal
+settings: {  }
+field_type: string

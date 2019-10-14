@@ -1,4 +1,4 @@
-uuid: 7f352117-4710-4b4f-8cd0-6a337141db99
+uuid: a74608a8-24bb-4646-a93d-4247df17dce0
 langcode: en
 status: true
 dependencies:
@@ -11,10 +11,11 @@ third_party_settings:
 id: paragraph.field_avg_num_days
 field_name: field_avg_num_days
 entity_type: paragraph
-type: decimal
+type: string
 settings:
-  precision: 10
-  scale: 2
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1

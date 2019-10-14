@@ -106,8 +106,24 @@
         return value >= Number(target.val());
       }, "Please enter a greater value." );
 
+       // greaterThanEqualToNA
+      $.validator.addMethod( "greaterThanEqualToNA", function( value, element, param ) {
+        var target = convertSpecialToZero($( param ));
+        return value >= Number(convertSpecialToZero(target.val()));
+      }, "Please enter a greater value." );
+
        // greaterThanZero
        $.validator.addMethod( "greaterThanZero", function( value, element, param ) {
+        return value > 0;
+      }, "Please enter a value greater than zero." );
+
+       // greaterThanZeroOrNA
+       $.validator.addMethod( "greaterThanZeroOrNA", function( value, element, param ) {
+        switch (String(value).toLowerCase()) {
+          case "n/a":
+          case "<1":
+            return true;
+        }
         return value > 0;
       }, "Please enter a value greater than zero." );
 
@@ -234,6 +250,19 @@
         return this.optional(element) || (value >= min) && (value <= max);
       }, "Must be between the smallest and largest values.");
 
+      // betweenMinMaxCompNA
+      jQuery.validator.addMethod("betweenMinMaxCompNA", function(value, element, params) {
+        value = convertSpecialToZero(value);
+        var valuesArray = [];
+        for (var i = 0; i < params.length; i++){
+          valuesArray.push(Number(convertSpecialToZero($( params[i] ).val())));
+        }
+        var min = Math.min.apply(null, valuesArray);
+        var max = Math.max.apply(null, valuesArray);
+        return this.optional(element) || (value >= min) && (value <= max);
+      }, "Must be between the smallest and largest values.");
+
+
       // equalToLowestComp
       jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
         value = convertSpecialToZero(value);
@@ -289,6 +318,17 @@
 
         return this.optional(element) || isoDateStringIsValidDate(value);
       }, "Must be a valid date.");
+
+      // notAverageCompNA
+      jQuery.validator.addMethod("notAverageCompNA", function(value, element, params) {
+        value = convertSpecialToZero(value);
+        var sum = 0;
+        for (var i = 0; i < params.length; i++){
+          sum += Number(convertSpecialToZero($( params[i] ).val()));
+        }
+        var average = sum/params.length;
+        return this.optional(element) || !(value == average);
+      }, "Must not be equal to the average.");
 
       // vb1matchDispositionComp: hard-coded for V.B.(1)
       jQuery.validator.addMethod("vb1matchDispositionComp", function(value, element, params) {
@@ -590,7 +630,7 @@
       // VI.C.(4) - Administrative Appeals
       $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_low_num_days']").rules( "add", {
         lessThanEqualComp: $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
-        greaterThanZero: true,
+        greaterThanZeroOrNA: true,
         messages: {
           lessThanEqualComp: "Must be lower than or equal to the highest number of days."
         }
@@ -598,29 +638,29 @@
 
       // VI.C.(4) - Agency Overall Median Number of Days
       $( "#edit-field-overall-vic4-med-num-days-0-value").rules( "add", {
-        betweenMinMaxComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
-        notAverageComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
+        betweenMinMaxCompNA: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
+        notAverageCompNA: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_med_num_days']"),
         messages: {
-          betweenMinMaxComp: "This field should be between the largest and smallest values of Median Number of Days",
-          notAverageComp: "Warning: should not equal to the average Median Number of Days."
+          betweenMinMaxCompNA: "This field should be between the largest and smallest values of Median Number of Days",
+          notAverageCompNA: "Warning: should not equal to the average Median Number of Days."
         }
       });
 
       // VI.C.(4) - Agency Overall Lowest Number of Days
       $( "#edit-field-overall-vic4-low-num-days-0-value").rules( "add", {
-        lessThanEqualTo: "#edit-field-overall-vic4-high-num-days-0-value",
-        greaterThanZero: true,
+        lessThanEqualToNA: "#edit-field-overall-vic4-high-num-days-0-value",
+        greaterThanZeroOrNA: true,
         messages: {
-          lessThanEqualTo: "Must be lower than or equal to the highest number of days."
+          lessThanEqualToNA: "Must be lower than or equal to the highest number of days."
         }
       });
 
       // VI.C.(4) - Agency Overall Highest Number of Days
       $( "#edit-field-overall-vic4-high-num-days-0-value").rules( "add", {
-        greaterThanEqualTo: "#edit-field-overall-vic4-low-num-days-0-value",
-        greaterThanZero: true,
+        greaterThanEqualToNA: "#edit-field-overall-vic4-low-num-days-0-value",
+        greaterThanZeroOrNA: true,
         messages: {
-          greaterThanEqualTo: "Must be greater than or equal to the lowest number of days."
+          greaterThanEqualToNA: "Must be greater than or equal to the lowest number of days."
         }
       });
 
@@ -1219,7 +1259,7 @@
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_received_yr']"),
           messages: {
-            equalToComp: "Must match V.A.(1). Number of Requests Received in Fiscal Year for corresponding agency/component"
+            equalToComp: "Must match V.A. Number of Requests Received in Fiscal Year for corresponding agency/component"
           }
         });
       });
@@ -1229,7 +1269,7 @@
         $(this).rules( "add", {
           equalToComp: $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']"),
           messages: {
-            equalToComp: "Must match V.A.(1). Number of Requests Processed in Fiscal Year for corresponding agency/component"
+            equalToComp: "Must match V.A. Number of Requests Processed in Fiscal Year for corresponding agency/component"
           }
         });
       });
@@ -1238,7 +1278,7 @@
       $( "#edit-field-overall-xiid1-received-cur-0-value").rules( "add", {
         equalTo: "#edit-field-overall-req-received-yr-0-value",
         messages: {
-          equalTo: "Must match V.A.(1). Agency Overall Number of Requests Received in Fiscal Year",
+          equalTo: "Must match V.A. Agency Overall Number of Requests Received in Fiscal Year",
         }
       });
 
@@ -1246,28 +1286,8 @@
       $( "#edit-field-overall-xiid1-proc-cur-yr-0-value").rules( "add", {
         equalTo: "#edit-field-overall-req-processed-yr-0-value",
         messages: {
-          equalTo: "Must match V.A.(1). Agency Overall Number of Requests Processed in Fiscal Year",
+          equalTo: "Must match V.A. Agency Overall Number of Requests Processed in Fiscal Year",
         }
-      });
-
-      // XII.E.(1). Number Received During Fiscal Year from Current Annual Report
-      $( "input[name*='field_foia_xiie1']").filter("input[name*='field_received_cur_yr']").each(function() {
-        $(this).rules( "add", {
-          equalToComp: $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_received_yr']"),
-          messages: {
-            equalToComp: "Must match V.A.(1). Number of Requests Received in Fiscal Year for corresponding agency/component"
-          }
-        });
-      });
-
-      // XII.E.(1). Number Processed During Fiscal Year from Current Annual Report
-      $( "input[name*='field_foia_xiie1']").filter("input[name*='field_proc_cur_yr']").each(function() {
-        $(this).rules( "add", {
-          equalToComp: $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']"),
-          messages: {
-            equalToComp: "Must match V.A.(1). Number of Requests Processed in Fiscal Year for corresponding agency/component"
-          }
-        });
       });
 
       // XII.D.(2). Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report
@@ -1280,11 +1300,39 @@
         });
       });
 
+      // XII.D.(2). Agency Overall Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report
+      $( "#edit-field-overall-xiid2-back-cur-yr-0-value").rules( "add", {
+        equalTo: "#edit-field-overall-xiia-back-req-end-0-value",
+        messages: {
+          equalTo: "Must match XII.A. Agency Overall Number of Backlogged Requests as of End of Fiscal Year",
+        }
+      });
+
+      // XII.E.(1). Number Received During Fiscal Year from Current Annual Report
+      $( "input[name*='field_foia_xiie1']").filter("input[name*='field_received_cur_yr']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_received_yr']"),
+          messages: {
+            equalToComp: "Must match VI.A. Number of Appeals Received in Fiscal Year for corresponding agency/component"
+          }
+        });
+      });
+
+      // XII.E.(1). Number Processed During Fiscal Year from Current Annual Report
+      $( "input[name*='field_foia_xiie1']").filter("input[name*='field_proc_cur_yr']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']"),
+          messages: {
+            equalToComp: "Must match VI.A. Number of Appeals Processed in Fiscal Year for corresponding agency/component"
+          }
+        });
+      });
+
       // XII.E.(1). Agency Overall Number Received During Fiscal Year from Current Annual Report
       $( "#edit-field-overall-xiie1-received-cur-0-value").rules( "add", {
         equalTo: "#edit-field-overall-via-app-recd-yr-0-value",
         messages: {
-          equalTo: "Must match VI.A.(1). Agency Overall Number of Requests Received in Fiscal Year",
+          equalTo: "Must match VI.A. Agency Overall Number of Appeals Received in Fiscal Year",
         }
       });
 
@@ -1292,16 +1340,18 @@
       $( "#edit-field-overall-xiie1-proc-cur-yr-0-value").rules( "add", {
         equalTo: "#edit-field-overall-via-app-proc-yr-0-value",
         messages: {
-          equalTo: "Must match VI.A.(1). Agency Overall Number of Requests Processed in Fiscal Year",
+          equalTo: "Must match VI.A. Agency Overall Number of Appeals Processed in Fiscal Year",
         }
       });
-      
-      // XII.D.(2). Agency Overall Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report
-      $( "#edit-field-overall-xiid2-back-cur-yr-0-value").rules( "add", {
-        equalTo: "#edit-field-overall-xiia-back-req-end-0-value",
-        messages: {
-          equalTo: "Must match XII.A. Agency Overall Number of Backlogged Requests as of End of Fiscal Year",
-        }
+
+      // XII.E.(2). Number Processed During Fiscal Year from Current Annual Report
+      $( "input[name*='field_foia_xiie2']").filter("input[name*='field_back_cur_yr']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']"),
+          messages: {
+            equalToComp: "Must match XII.A. Number of Backlogged Appeals as of End of Fiscal Year for corresponding agency/component"
+          }
+        });
       });
 
       // XII.E.(2). Agency Overall Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report

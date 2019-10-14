@@ -7,7 +7,7 @@ dev:
   paths:
     drush-script: drush9
   root: /var/www/html/foia.dev/docroot
-  uri: foiadev.prod.acquia-sites.com
+  uri: dev-admin.foia.gov
   user: foia.dev
 test:
   host: foiastg.ssh.prod.acquia-sites.com
@@ -18,7 +18,7 @@ test:
   paths:
     drush-script: drush9
   root: /var/www/html/foia.test/docroot
-  uri: foiastg.prod.acquia-sites.com
+  uri: stg-admin.foia.gov
   user: foia.test
 uat:
   host: foiauat.ssh.prod.acquia-sites.com
@@ -29,11 +29,11 @@ uat:
   paths:
     drush-script: drush9
   root: /var/www/html/foia.uat/docroot
-  uri: uat-admin.foia.gov/
+  uri: uat-admin.foia.gov
   user: foia.uat
 prod:
-  uri: foia.prod.acquia-sites.com
-  host: web-27294.prod.hosting.acquia.com
+  uri: admin.foia.gov
+  host: foia.ssh.prod.acquia-sites.com
   options: {  }
   paths: { dump-dir: /mnt/tmp }
   root: /var/www/html/foia.prod/docroot

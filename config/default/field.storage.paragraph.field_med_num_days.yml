@@ -1,4 +1,4 @@
-uuid: c4d0ff41-e38b-4f41-bf9f-0a9ed2163004
+uuid: 6d64f322-b5e6-43fc-bc82-266fbb5baa48
 langcode: en
 status: true
 dependencies:
@@ -11,10 +11,11 @@ third_party_settings:
 id: paragraph.field_med_num_days
 field_name: field_med_num_days
 entity_type: paragraph
-type: decimal
+type: string
 settings:
-  precision: 10
-  scale: 2
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1

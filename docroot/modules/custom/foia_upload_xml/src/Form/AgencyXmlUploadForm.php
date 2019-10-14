@@ -6,6 +6,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\user\Entity\User;
+use Drupal\migrate_plus\Entity\Migration;
 
 /**
  * Class AgencyXmlUploadForm.
@@ -79,6 +81,24 @@ class AgencyXmlUploadForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Don't set or check the lock if they are uploading the file, just if the
+    // form is actually being submitted.
+    $element = $form_state->getTriggeringElement();
+    if ($element['#id'] == 'edit-submit') {
+      // Attempt to get a lock, tell them to try again if we can't.
+      $lock = \Drupal::service('lock.persistent');
+      // This is released in foia_upload_xml_execute_migration_finished().
+      if (!$lock->acquire('foia_upload_xml', 3600)) {
+        $form_state->setErrorByName('submit',
+          $this->t("Another Agency's import is running; please re-submit in a few minutes."));
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $fid = $form_state->getValue(['agency_report_xml', 0]);
     if (empty($fid)) {
@@ -90,8 +110,25 @@ class AgencyXmlUploadForm extends FormBase {
     // If we do not use temporary, then we should add $file->setPermanent().
     $file->save();
     $directory = 'temporary://foia-xml';
-    file_prepare_directory($directory);
-    file_move($file, "$directory/report.xml", FILE_EXISTS_REPLACE);
+    \Drupal::service('file_system')->prepareDirectory($directory, FILE_CREATE_DIRECTORY);
+
+    // Get the user's agency abbreviation to put in the file name, so that
+    // simulataneous uploads don't wipe out each other's files.
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_agency_nid = $user->get('field_agency')->target_id;
+    $xml_upload_filename =
+      "$directory/report_" . date('Y') . "_" . $user_agency_nid . ".xml";
+    file_move($file, $xml_upload_filename, FILE_EXISTS_REPLACE);
+
+    // Load the migrations, set them to use this new filename, and save them.
+    $migrations_list = $this->getMigrationsList();
+    foreach ($migrations_list as $migration_list_item) {
+      $migration = Migration::load($migration_list_item);
+      $source = $migration->get('source');
+      $source['urls'] = $xml_upload_filename;
+      $migration->set('source', $source);
+      $migration->save();
+    }
 
     $batch = [
       'title' => $this->t('Importing Annual Report XML Data...'),
@@ -116,6 +153,7 @@ class AgencyXmlUploadForm extends FormBase {
     $migrations_list = [
       'component',
       'component_ix_personnel',
+      'component_iv_statutes',
       'component_va_requests',
       'component_vb1_requests',
       'component_vb2_requests',
@@ -197,11 +235,12 @@ class AgencyXmlUploadForm extends FormBase {
     $migrations_list = $this->getMigrationsList();
     $operations = [];
     foreach ($migrations_list as $migration_list_item) {
-      $operations[] = ['foia_upload_xml_execute_migration', [$migration_list_item]];
+      $operations[] = ['foia_upload_xml_execute_migration',
+        [$migration_list_item],
+      ];
     }
 
     return $operations;
-
   }
 
 }

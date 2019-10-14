@@ -1,4 +1,4 @@
-uuid: f36a50e4-5522-4185-91e0-db7beb628b42
+uuid: 50f969d0-6a3b-4d61-b93c-ebd0d4278ecb
 langcode: en
 status: true
 dependencies:
@@ -11,10 +11,11 @@ third_party_settings:
 id: node.field_overall_vic4_high_num_days
 field_name: field_overall_vic4_high_num_days
 entity_type: node
-type: decimal
+type: string
 settings:
-  precision: 10
-  scale: 2
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1
