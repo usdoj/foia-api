@@ -631,7 +631,7 @@
       $( "#edit-field-overall-vic5-num-day-10-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-9-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"9th\"."
         }
       });
 
@@ -639,7 +639,7 @@
       $( "#edit-field-overall-vic5-num-day-9-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-8-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"8th\"."
         }
       });
 
@@ -647,7 +647,7 @@
       $( "#edit-field-overall-vic5-num-day-8-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-7-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"7th\"."
         }
       });
 
@@ -655,7 +655,7 @@
       $( "#edit-field-overall-vic5-num-day-7-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-6-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"6th\"."
         }
       });
 
@@ -663,7 +663,7 @@
       $( "#edit-field-overall-vic5-num-day-6-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-5-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"5th\"."
         }
       });
 
@@ -671,7 +671,7 @@
       $( "#edit-field-overall-vic5-num-day-5-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-4-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"4th\"."
         }
       });
 
@@ -679,7 +679,7 @@
       $( "#edit-field-overall-vic5-num-day-4-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-3-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3rd\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"3rd\"."
         }
       });
 
@@ -687,7 +687,7 @@
       $( "#edit-field-overall-vic5-num-day-3-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-2-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2nd\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"2nd\"."
         }
       });
 
@@ -695,7 +695,7 @@
       $( "#edit-field-overall-vic5-num-day-2-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-vic5-num-day-1-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"Overall\"."
         }
       });
 
@@ -708,7 +708,7 @@
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
             messages: {
-              lessThanEqualOlderComp: "This should be less than the number of days for <em>" + priorOrdinal + "</em>."
+              lessThanEqualOlderComp: "This should be less than or equal to the number of days for <em>" + priorOrdinal + "</em>."
             }
           });
         });
@@ -931,7 +931,7 @@
       $( "#edit-field-overall-viie-num-days-10-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-9-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"9th\"."
         }
       });
 
@@ -939,7 +939,7 @@
       $( "#edit-field-overall-viie-num-days-9-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-8-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"8th\"."
         }
       });
 
@@ -947,7 +947,7 @@
       $( "#edit-field-overall-viie-num-days-8-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-7-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"7th\"."
         }
       });
 
@@ -955,7 +955,7 @@
       $( "#edit-field-overall-viie-num-days-7-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-6-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"6th\"."
         }
       });
 
@@ -963,7 +963,7 @@
       $( "#edit-field-overall-viie-num-days-6-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-5-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"5th\"."
         }
       });
 
@@ -971,7 +971,7 @@
       $( "#edit-field-overall-viie-num-days-5-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-4-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"4th\"."
         }
       });
 
@@ -979,7 +979,7 @@
       $( "#edit-field-overall-viie-num-days-4-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-3-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"3d\"."
         }
       });
 
@@ -987,7 +987,7 @@
       $( "#edit-field-overall-viie-num-days-3-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-2-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"2d\"."
         }
       });
 
@@ -995,7 +995,7 @@
       $( "#edit-field-overall-viie-num-days-2-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-viie-num-days-1-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"Overall\"."
         }
       });
 
@@ -1008,7 +1008,7 @@
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
             messages: {
-              lessThanEqualOlderComp: "This should be less than the number of days for <em>" + priorOrdinal + "</em>."
+              lessThanEqualOlderComp: "This should be less than or equal to the number of days for <em>" + priorOrdinal + "</em>."
             }
           });
         });
@@ -1131,7 +1131,7 @@
       $( "#edit-field-overall-xiic-num-days-10-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-9-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"9th\"."
         }
       });
 
@@ -1139,7 +1139,7 @@
       $( "#edit-field-overall-xiic-num-days-9-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-8-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"8th\"."
         }
       });
 
@@ -1147,7 +1147,7 @@
       $( "#edit-field-overall-xiic-num-days-8-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-7-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"7th\"."
         }
       });
 
@@ -1155,7 +1155,7 @@
       $( "#edit-field-overall-xiic-num-days-7-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-6-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"6th\"."
         }
       });
 
@@ -1163,7 +1163,7 @@
       $( "#edit-field-overall-xiic-num-days-6-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-5-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"5th\"."
         }
       });
 
@@ -1171,7 +1171,7 @@
       $( "#edit-field-overall-xiic-num-days-5-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-4-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"4th\"."
         }
       });
 
@@ -1179,7 +1179,7 @@
       $( "#edit-field-overall-xiic-num-days-4-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-3-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"3d\"."
         }
       });
 
@@ -1187,7 +1187,7 @@
       $( "#edit-field-overall-xiic-num-days-3-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-2-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"2d\"."
         }
       });
 
@@ -1195,7 +1195,7 @@
       $( "#edit-field-overall-xiic-num-days-2-0-value").rules( "add", {
         lessThanEqualToNA: "#edit-field-overall-xiic-num-days-1-0-value",
         messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
+          lessThanEqualToNA: "This should be less than or equal to the number of days for \"Overall\"."
         }
       });
 
@@ -1208,7 +1208,7 @@
           $(this).rules( "add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
             messages: {
-              lessThanEqualOlderComp: "This should be less than the number of days for <em>" + priorOrdinal + "</em>."
+              lessThanEqualOlderComp: "This should be less than or equal to the number of days for <em>" + priorOrdinal + "</em>."
             }
           });
         });
