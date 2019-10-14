@@ -1,10 +1,17 @@
-uuid: 2c3586c8-219d-4a96-9975-a9ddd366442f
+uuid: 0f2ce629-d68c-4aa2-8b39-615f97bb9b09
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_high_num_days
     - paragraphs.paragraphs_type.admin_app_vic4
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.admin_app_vic4.field_high_num_days
 field_name: field_high_num_days
 entity_type: paragraph
@@ -15,9 +22,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  min: null
-  max: null
-  prefix: ''
-  suffix: ''
-field_type: decimal
+settings: {  }
+field_type: string

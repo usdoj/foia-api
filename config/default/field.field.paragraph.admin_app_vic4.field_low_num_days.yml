@@ -1,10 +1,17 @@
-uuid: dccd138a-5329-4720-bd55-439b4135f7ef
+uuid: a07c1afe-9fbb-4119-9268-6756e34985d8
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_low_num_days
     - paragraphs.paragraphs_type.admin_app_vic4
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.admin_app_vic4.field_low_num_days
 field_name: field_low_num_days
 entity_type: paragraph
@@ -15,9 +22,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  min: null
-  max: null
-  prefix: ''
-  suffix: ''
-field_type: decimal
+settings: {  }
+field_type: string

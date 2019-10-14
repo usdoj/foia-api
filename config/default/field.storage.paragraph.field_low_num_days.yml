@@ -1,4 +1,4 @@
-uuid: 30aebdde-8aec-4782-8763-070409f6a8cb
+uuid: 60304626-c7c0-4066-8e0b-53d4965ede41
 langcode: en
 status: true
 dependencies:
@@ -11,10 +11,11 @@ third_party_settings:
 id: paragraph.field_low_num_days
 field_name: field_low_num_days
 entity_type: paragraph
-type: decimal
+type: string
 settings:
-  precision: 10
-  scale: 2
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1

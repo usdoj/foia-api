@@ -1,10 +1,17 @@
-uuid: 83f3b34e-c9b5-4558-976d-11a256a31658
+uuid: 1b06e1da-d0e7-4551-ad94-52202d1f4887
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_med_num_days
     - paragraphs.paragraphs_type.admin_app_vic4
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.admin_app_vic4.field_med_num_days
 field_name: field_med_num_days
 entity_type: paragraph
@@ -15,9 +22,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  min: null
-  max: null
-  prefix: ''
-  suffix: ''
-field_type: decimal
+settings: {  }
+field_type: string
