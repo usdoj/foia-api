@@ -25,8 +25,11 @@ echo "$site.$target_env: Received copy of files from $source_env."
 # Only do this when going from prod to something other than prod.
 if [ "$source_env" = "prod" ] && [ "$target_env" != "prod" ]
 then
-echo "$site.$target_env: Deleting webform uploads on $target_env."
-drush @$site.$target_env eval "\Drupal::service('file_system')->deleteRecursive('private://webform', NULL);"
+# Delete webform_submission entities. This is also done after db copies,
+# but those deletions will fail if files are missing, so do it again
+# now.
+echo "$site.$target_env: Deleting webform submissions on $target_env."
+drush @$site.$target_env entity:delete webform_submission
 fi
 
 set +v
