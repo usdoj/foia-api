@@ -664,80 +664,20 @@
         }
       });
 
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 10th
-      $( "#edit-field-overall-vic5-num-day-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"9th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 9th
-      $( "#edit-field-overall-vic5-num-day-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"8th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 8th
-      $( "#edit-field-overall-vic5-num-day-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"7th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 7th
-      $( "#edit-field-overall-vic5-num-day-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"6th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 6th
-      $( "#edit-field-overall-vic5-num-day-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"5th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 5th
-      $( "#edit-field-overall-vic5-num-day-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"4th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 4th
-      $( "#edit-field-overall-vic5-num-day-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"3rd\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3rd
-      $( "#edit-field-overall-vic5-num-day-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"2nd\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd
-      $( "#edit-field-overall-vic5-num-day-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"Overall\"."
-        }
-      });
+      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd - 10th
+      // Iterate over 2nd to 10th oldest overall pending appeals, comparing
+      // the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        var prior = oldestOrdinal(i - 1),
+            inputId = "#edit-field-overall-vic5-num-day-" + i + "-0-value",
+            comparisonId = "#edit-field-overall-vic5-num-day-" + (i - 1) + "-0-value";
+        $(inputId).rules( "add", {
+          lessThanEqualToNA: $(comparisonId),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+          }
+        });
+      }
 
       // VI.C. (5) - ADMINISTRATIVE APPEALS - Oldest Days component/ 2nd-10th
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
@@ -964,80 +904,20 @@
         }
       });
 
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 10th
-      $( "#edit-field-overall-viie-num-days-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"9th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 9th
-      $( "#edit-field-overall-viie-num-days-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"8th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 8th
-      $( "#edit-field-overall-viie-num-days-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"7th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 7th
-      $( "#edit-field-overall-viie-num-days-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"6th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 6th
-      $( "#edit-field-overall-viie-num-days-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"5th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 5th
-      $( "#edit-field-overall-viie-num-days-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"4th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 4th
-      $( "#edit-field-overall-viie-num-days-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"3d\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 3d
-      $( "#edit-field-overall-viie-num-days-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"2d\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 2d
-      $( "#edit-field-overall-viie-num-days-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"Overall\"."
-        }
-      });
+      // VII.E. PENDING REQUESTS / 2nd - 10th
+      // Iterate over the the 2nd to 10th oldest overall pending requests,
+      // comparing the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        var prior = oldestOrdinal(i - 1),
+            inputId = "#edit-field-overall-viie-num-days-" + i + "-0-value",
+            comparisonId = "#edit-field-overall-viie-num-days-" + (i - 1) + "-0-value";
+        $(inputId).rules( "add", {
+          lessThanEqualToNA: $(comparisonId),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+          }
+        });
+      }
 
       // VII.E. PENDING REQUESTS - Oldest Days component/ 2nd-10th
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
@@ -1164,80 +1044,22 @@
         });
       });
 
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 10th
-      $( "#edit-field-overall-xiic-num-days-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"9th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 9th
-      $( "#edit-field-overall-xiic-num-days-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"8th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 8th
-      $( "#edit-field-overall-xiic-num-days-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"7th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 7th
-      $( "#edit-field-overall-xiic-num-days-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"6th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 6th
-      $( "#edit-field-overall-xiic-num-days-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"5th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 5th
-      $( "#edit-field-overall-xiic-num-days-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"4th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 4th
-      $( "#edit-field-overall-xiic-num-days-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"3d\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 3d
-      $( "#edit-field-overall-xiic-num-days-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"2d\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 2d
-      $( "#edit-field-overall-xiic-num-days-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than or equal to the number of days for \"Overall\"."
-        }
-      });
+      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY
+      // 2nd - 10th
+      // Iterate over the the 2nd to 10th overall oldest consultations
+      // received, comparing the value to the one before it,
+      // e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        var prior = oldestOrdinal(i - 1),
+            inputId = "#edit-field-overall-xiic-num-days-" + i + "-0-value",
+            comparisonId = "#edit-field-overall-xiic-num-days-" + (i - 1) + "-0-value";
+        $(inputId).rules( "add", {
+            lessThanEqualToNA: $(comparisonId),
+            messages: {
+              lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+            }
+          });
+      }
 
       // XII.C. FOIA Requests and Administrative Appeals - Oldest Days component/ 2nd-10th
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
