@@ -45,7 +45,7 @@ TRUNCATE foia_request__field_submission_time;
 TRUNCATE foia_request__field_tracking_number;
 TRUNCATE foia_request__field_webform_submission_id;
 EOF
-) | drush @$site.$target_env ah-sql-cli --db=$db_name
+) | drush @$site.$target_env sql-cli
 # Eventually the following might probably be better:
 #drush @$site.$target_env entity:delete foia_request
 
