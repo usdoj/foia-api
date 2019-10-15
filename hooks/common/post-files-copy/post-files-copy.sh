@@ -26,7 +26,8 @@ echo "$site.$target_env: Received copy of files from $source_env."
 if [ "$source_env" = "prod" ] && [ "$target_env" != "prod" ]
 then
 echo "$site.$target_env: Deleting webform uploads on $target_env."
-drush @$site.$target_env eval "\Drupal::service('file_system')->deleteRecursive('private://webform', NULL);"
+# This is not working. Disable for now.
+#drush @$site.$target_env eval "\Drupal::service('file_system')->deleteRecursive('private://webform', NULL);"
 fi
 
 set +v
