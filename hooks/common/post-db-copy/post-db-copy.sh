@@ -24,7 +24,7 @@ blt artifact:ac-hooks:post-db-copy $site $target_env $db_name $source_env --envi
 echo "$site.$target_env: Received copy of database $db_name from $source_env."
 
 # Only do this when going from prod to something other than prod.
-if [ $source_env == 'prod' -a $target_env != 'prod' ]
+if [ "$source_env" = "prod" ] && [ "$target_env" != "prod" ]
 then
 echo "$site.$target_env: Sanitizing database $db_name on $target_env."
 # Delete all foia_request entities.
