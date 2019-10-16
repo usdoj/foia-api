@@ -58,6 +58,10 @@
  * implementations with custom ones.
  */
 
+use Acquia\Blt\Robo\Common\EnvironmentDetector;
+
+$is_ah_env = EnvironmentDetector::isAhEnv();
+
 /**
  * Database settings:
  *
@@ -654,7 +658,9 @@ if ($settings['hash_salt']) {
  * configuration values in settings.php will not fire any of the configuration
  * change events.
  */
-# $config['system.file']['path']['temporary'] = '/tmp';
+if ($is_ah_env) {
+  $config['system.file']['path']['temporary'] = "/mnt/gfs/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/tmp";
+}
 # $config['system.site']['name'] = 'My Drupal site';
 # $config['system.theme']['default'] = 'stark';
 # $config['user.settings']['anonymous'] = 'Visitor';
