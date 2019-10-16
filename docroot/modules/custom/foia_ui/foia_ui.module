@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Url;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -76,6 +77,12 @@ function foia_ui_form_node_annual_foia_report_data_edit_form_alter(&$form, FormS
   $form['meta']['author']['#markup'] = "<h4 class='label inline'>" . $form['meta']['author']['#title'] . "</h4> " . $form['meta']['author']['#markup'];
   unset($form['meta']['changed']['#title']);
   unset($form['meta']['author']['#title']);
+
+  // Wrap the moderation state form element in a fieldset so that it's
+  // description is displayed, fixing broken aria-described by references.
+  foreach (Element::children($form['moderation_state']['widget']) as $key => $element) {
+    $form['moderation_state']['widget'][$key]['#theme_wrappers'][] = 'fieldset';
+  }
 }
 
 /**
@@ -105,8 +112,10 @@ function foia_ui_form_node_annual_foia_report_data_form_alter(&$form, FormStateI
   unset($form['meta']['changed']['#title']);
   unset($form['meta']['author']['#title']);
 
-  foreach (\Drupal\Core\Render\Element::children($form['moderation_state']['widget']) as $id => $widget) {
-    $form['moderation_state']['widget'][$id]['#theme_wrappers'][] = 'fieldset';
+  // Wrap the moderation state form element in a fieldset so that it's
+  // description is displayed, fixing broken aria-described by references.
+  foreach (Element::children($form['moderation_state']['widget']) as $key => $element) {
+    $form['moderation_state']['widget'][$key]['#theme_wrappers'][] = 'fieldset';
   }
 }
 

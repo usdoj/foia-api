@@ -5,3 +5,19 @@
 .vertical-tabs__menu-item > a {
   color: #006EB3;
 }
+
+.field--name-moderation-state fieldset:not(.fieldgroup) {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.field--name-moderation-state fieldset:not(.fieldgroup) > legend,
+.field--name-moderation-state fieldset:not(.fieldgroup) .fieldset-wrapper > .description {
+  position: absolute !important;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  word-wrap: normal;
+}
