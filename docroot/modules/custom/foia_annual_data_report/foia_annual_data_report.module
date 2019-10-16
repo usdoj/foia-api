@@ -16,7 +16,16 @@ use Drupal\Core\Ajax\RedirectCommand;
  * Implements hook_form_form_id_alter().
  */
 function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add the AJAX save callbacks.
   foia_annual_data_report_ajax_existing_node($form);
+
+  // Force a submit function to increase memory limit before core's submit.
+  foreach (array_keys($form['actions']) as $action) {
+    if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+      array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
+    }
+  }
+
 }
 
 /**
@@ -134,4 +143,89 @@ function foia_annual_data_report_refresh(array $form, FormStateInterface
   }
 
   return $response;
+}
+
+/**
+ * Implements hook_form_submit().
+ *
+ * Set the memory limit to 1024M. Should only be used on Annual Report forms.
+ */
+function foia_annual_data_report_early_submit($form, FormStateInterface $form_state) {
+  foia_annual_data_report_debug_log('Submitting Annual Report. Before setting memory');
+  foia_annual_data_report_set_memory_limit();
+  foia_annual_data_report_debug_log('Submitting Annual Report. After setting memory');
+
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function foia_annual_data_report_node_load($entities) {
+  // If there is an Annual Report being loaded and memory is not what we want
+  // then set it.
+  if (ini_get('memory_limit') !== foia_annual_data_report_get_config('annual_report_memory_limit')) {
+    foreach ($entities as $entity) {
+      if ($entity->bundle() === 'annual_foia_report_data') {
+
+        foia_annual_data_report_debug_log('Loading Annual Report. Before setting memory');
+        foia_annual_data_report_set_memory_limit();
+        foia_annual_data_report_debug_log('Loading Annual Report. After setting memory');
+
+        // If we already set the memory limit, break out of the array.
+        break;
+      }
+    }
+  }
+}
+
+/**
+ * Set memory limit for override based on config.
+ */
+function foia_annual_data_report_set_memory_limit() {
+  try {
+    $config_value = foia_annual_data_report_get_config('annual_report_memory_limit');
+  }
+  catch (\InvalidArgumentException $e) {
+    \Drupal::logger('foia_annual_data_report')->error('Invalid setting requested.');
+  }
+
+  if ($config_value) {
+    ini_set('memory_limit', $config_value);
+  }
+}
+
+/**
+ * Get the requested setting from this module's config.
+ *
+ * @param string $setting
+ *   The name of the setting to be retrieved.
+ *
+ * @return string
+ *   The value of the requested setting.
+ */
+function foia_annual_data_report_get_config(string $setting) {
+  if (!in_array($setting, ['annual_report_memory_limit', 'debug_annual_report_memory_limit'])) {
+    throw new \InvalidArgumentException('Invalid setting.');
+  }
+  $value = \Drupal::config('foia_annual_data_report.settings')
+    ->get($setting);
+
+  return $value;
+}
+
+/**
+ * Log debugging output if config value is set.
+ *
+ * @param string $message_base
+ *   Base text to prepend to memory_limit when writing debugging message.
+ */
+function foia_annual_data_report_debug_log(string $message_base) {
+  $debug = foia_annual_data_report_get_config('debug_annual_report_memory_limit');
+
+  if ($debug) {
+
+    $msg = $message_base . ': ' . ini_get('memory_limit');
+
+    \Drupal::logger('foia_annual_data_report')->debug($msg);
+  }
 }
