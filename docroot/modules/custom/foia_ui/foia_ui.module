@@ -72,6 +72,10 @@ function foia_ui_form_node_annual_foia_report_data_edit_form_alter(&$form, FormS
       $element['subform']['field_back_prev_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report";
     }
   }
+  $form['meta']['changed']['#markup'] = "<h4 class='label inline'>" . $form['meta']['changed']['#title'] . "</h4> " . $form['meta']['changed']['#markup'];
+  $form['meta']['author']['#markup'] = "<h4 class='label inline'>" . $form['meta']['author']['#title'] . "</h4> " . $form['meta']['author']['#markup'];
+  unset($form['meta']['changed']['#title']);
+  unset($form['meta']['author']['#title']);
 }
 
 /**
@@ -96,6 +100,10 @@ function foia_ui_form_node_annual_foia_report_data_form_alter(&$form, FormStateI
       ],
     ],
   ];
+  $form['meta']['changed']['#markup'] = "<h4 class='label inline'>" . $form['meta']['changed']['#title'] . "</h4> " . $form['meta']['changed']['#markup'];
+  $form['meta']['author']['#markup'] = "<h4 class='label inline'>" . $form['meta']['author']['#title'] . "</h4> " . $form['meta']['author']['#markup'];
+  unset($form['meta']['changed']['#title']);
+  unset($form['meta']['author']['#title']);
 }
 
 /**
