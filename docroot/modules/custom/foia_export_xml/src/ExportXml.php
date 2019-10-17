@@ -628,7 +628,7 @@ EOS;
       // Add quantity for each denial reason.
       $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
       // Add Request Disposition Total.
-      $this->addElementNs('foia:RequestDispositionTotalQuantity', $item, $component->get('field_overall_vb1_total')->value);
+      $this->addElementNs('foia:RequestDispositionTotalQuantity', $item, $component->get('field_total')->value);
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:RequestDispositionOrganizationAssociation', 'RD');
