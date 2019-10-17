@@ -103,18 +103,90 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_sim_med: field_sim_med
-  field_sim_avg: field_sim_avg
-  field_sim_low: field_sim_low
-  field_sim_high: field_sim_high
-  field_comp_med: field_comp_med
-  field_comp_avg: field_comp_avg
-  field_comp_low: field_comp_low
-  field_comp_high: field_comp_high
-  field_exp_med: field_exp_med
-  field_exp_avg: field_exp_avg
-  field_exp_low: field_exp_low
-  field_exp_high: field_exp_high
+  field_sim_med:
+    -
+      plugin: get
+      source: field_sim_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_sim_avg:
+    -
+      plugin: get
+      source: field_sim_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_sim_low:
+    -
+      plugin: get
+      source: field_sim_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_sim_high:
+    -
+      plugin: get
+      source: field_sim_high
+    -
+      plugin: default_value
+      default_value: N/A
+  field_comp_med:
+    -
+      plugin: get
+      source: field_comp_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_comp_avg:
+    -
+      plugin: get
+      source: field_comp_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_comp_low:
+    -
+      plugin: get
+      source: field_comp_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_comp_high:
+    -
+      plugin: get
+      source: field_comp_high
+    -
+      plugin: default_value
+      default_value: N/A
+  field_exp_med:
+    -
+      plugin: get
+      source: field_exp_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_exp_avg:
+    -
+      plugin: get
+      source: field_exp_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_exp_low:
+    -
+      plugin: get
+      source: field_exp_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_exp_high:
+    -
+      plugin: get
+      source: field_exp_high
+    -
+      plugin: default_value
+      default_value: N/A
 destination: null
 migration_dependencies:
   required:

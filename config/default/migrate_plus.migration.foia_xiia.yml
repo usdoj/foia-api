@@ -64,7 +64,13 @@ process:
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
   field_back_req_end_yr: field_back_req_end_yr
-  field_back_app_end_yr: field_back_app_end_yr
+  field_back_app_end_yr:
+    -
+      plugin: get
+      source: field_back_app_end_yr
+    -
+      plugin: default_value
+      default_value: 0
 destination: null
 migration_dependencies:
   required:
