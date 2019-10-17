@@ -5,6 +5,7 @@ namespace Drupal\foia_upload_xml\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\user\Entity\User;
 use Drupal\migrate_plus\Entity\Migration;
@@ -93,6 +94,23 @@ class AgencyXmlUploadForm extends FormBase {
         $form_state->setErrorByName('submit',
           $this->t("Another Agency's import is running; please re-submit in a few minutes."));
       }
+    }
+
+    // Don't allow uploading and processing a report upload for this user's
+    // agency if there is an existing report for the agency in the current
+    // calendar year whose workflow state indicates that it has been submitted
+    // or cleared.
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_agency_nid = $user->get('field_agency')->target_id;
+    if ($this->agencyReportYearIsLocked($user_agency_nid)) {
+      $form_state->setErrorByName(
+        'submit',
+        $this->t("Your agency’s report has already been cleared. If you need to make changes to your agency’s report, please contact OIP.")
+      );
+    }
+
+    if (!empty($form_state->getErrors())) {
+      \Drupal::service('lock.persistent')->release('foia_upload_xml');
     }
   }
 
@@ -241,6 +259,76 @@ class AgencyXmlUploadForm extends FormBase {
     }
 
     return $operations;
+  }
+
+  /**
+   * Determine if an agency's current year report can be overwritten.
+   *
+   * @param int $agency_tid
+   *   The taxonomy term id of the agency to check.
+   *
+   * @return bool
+   *   Returns true if there is an existing report for this agency in the
+   *   current year that should not be overwritten.
+   */
+  protected function agencyReportYearIsLocked($agency_tid) {
+    $report = $this->getReport($agency_tid);
+    if (!$report) {
+      return FALSE;
+    }
+
+    $node = Node::load($report);
+    return $this->reportIsLocked($node);
+  }
+
+  /**
+   * Check if a report is in a workflow state in which it should not be updated.
+   *
+   * @param \Drupal\node\Entity\Node $node
+   *   The annual report data node that is being checked.
+   *
+   * @return bool
+   *   Returns true if the given annual report is in a workflow state that
+   *   indicates it should not be overwritten.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   */
+  public function reportIsLocked(Node $node) {
+    return $node instanceof Node
+      && $node->bundle() == 'annual_foia_report_data'
+      && in_array($node->moderation_state->get(0)->value, [
+        'submitted_to_oip',
+        'cleared',
+        'published',
+      ]);
+  }
+
+  /**
+   * Get the nid of a report for the given agency and year, if one exists.
+   *
+   * @param int $agency_tid
+   *   The taxonomy term id of the agency report to lookup.
+   * @param string $year
+   *   The year of the report to lookup.
+   *
+   * @return bool|mixed
+   *   The node id of the annual report data node that matches the parameters
+   *   or false if none can be found.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function getReport($agency_tid, $year = NULL) {
+    $year = $year ? $year : date('Y');
+
+    $node_query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->condition('type', 'annual_foia_report_data')
+      ->condition('field_agency', $agency_tid)
+      ->condition('field_foia_annual_report_yr', $year);
+
+    $nids = $node_query->execute();
+
+    return !empty($nids) ? reset($nids) : FALSE;
   }
 
 }
