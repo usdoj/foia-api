@@ -2080,18 +2080,90 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_viia_sim_med: field_overall_viia_sim_med
-  field_overall_viia_sim_avg: field_overall_viia_sim_avg
-  field_overall_viia_sim_low: field_overall_viia_sim_low
-  field_overall_viia_sim_high: field_overall_viia_sim_high
-  field_overall_viia_comp_med: field_overall_viia_comp_med
-  field_overall_viia_comp_avg: field_overall_viia_comp_avg
-  field_overall_viia_comp_low: field_overall_viia_comp_low
-  field_overall_viia_comp_high: field_overall_viia_comp_high
-  field_overall_viia_exp_med: field_overall_viia_exp_med
-  field_overall_viia_exp_avg: field_overall_viia_exp_avg
-  field_overall_viia_exp_low: field_overall_viia_exp_low
-  field_overall_viia_exp_high: field_overall_viia_exp_high
+  field_overall_viia_sim_med:
+    -
+      plugin: get
+      source: field_overall_viia_sim_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_sim_avg:
+    -
+      plugin: get
+      source: field_overall_viia_sim_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_sim_low:
+    -
+      plugin: get
+      source: field_overall_viia_sim_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_sim_high:
+    -
+      plugin: get
+      source: field_overall_viia_sim_high
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_comp_med:
+    -
+      plugin: get
+      source: field_overall_viia_comp_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_comp_avg:
+    -
+      plugin: get
+      source: field_overall_viia_comp_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_comp_low:
+    -
+      plugin: get
+      source: field_overall_viia_comp_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_comp_high:
+    -
+      plugin: get
+      source: field_overall_viia_comp_high
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_exp_med:
+    -
+      plugin: get
+      source: field_overall_viia_exp_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_exp_avg:
+    -
+      plugin: get
+      source: field_overall_viia_exp_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_exp_low:
+    -
+      plugin: get
+      source: field_overall_viia_exp_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viia_exp_high:
+    -
+      plugin: get
+      source: field_overall_viia_exp_high
+    -
+      plugin: default_value
+      default_value: N/A
   field_footnotes_viia: field_footnotes_viia
   field_proc_req_viib:
     -
@@ -2122,18 +2194,90 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_viib_sim_med: field_overall_viib_sim_med
-  field_overall_viib_sim_avg: field_overall_viib_sim_avg
-  field_overall_viib_sim_low: field_overall_viib_sim_low
-  field_overall_viib_sim_high: field_overall_viib_sim_high
-  field_overall_viib_comp_med: field_overall_viib_comp_med
-  field_overall_viib_comp_avg: field_overall_viib_comp_avg
-  field_overall_viib_comp_low: field_overall_viib_comp_low
-  field_overall_viib_comp_high: field_overall_viib_comp_high
-  field_overall_viib_exp_med: field_overall_viib_exp_med
-  field_overall_viib_exp_avg: field_overall_viib_exp_avg
-  field_overall_viib_exp_low: field_overall_viib_exp_low
-  field_overall_viib_exp_high: field_overall_viib_exp_high
+  field_overall_viib_sim_med:
+    -
+      plugin: get
+      source: field_overall_viib_sim_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_sim_avg:
+    -
+      plugin: get
+      source: field_overall_viib_sim_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_sim_low:
+    -
+      plugin: get
+      source: field_overall_viib_sim_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_sim_high:
+    -
+      plugin: get
+      source: field_overall_viib_sim_high
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_comp_med:
+    -
+      plugin: get
+      source: field_overall_viib_comp_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_comp_avg:
+    -
+      plugin: get
+      source: field_overall_viib_comp_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_comp_low:
+    -
+      plugin: get
+      source: field_overall_viib_comp_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_comp_high:
+    -
+      plugin: get
+      source: field_overall_viib_comp_high
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_exp_med:
+    -
+      plugin: get
+      source: field_overall_viib_exp_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_exp_avg:
+    -
+      plugin: get
+      source: field_overall_viib_exp_avg
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_exp_low:
+    -
+      plugin: get
+      source: field_overall_viib_exp_low
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viib_exp_high:
+    -
+      plugin: get
+      source: field_overall_viib_exp_high
+    -
+      plugin: default_value
+      default_value: N/A
   field_footnotes_viib: field_footnotes_viib
   field_proc_req_viic1:
     -
@@ -2296,14 +2440,50 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_viid_sim_med: field_overall_viid_sim_med
-  field_overall_viid_sim_avg: field_overall_viid_sim_avg
+  field_overall_viid_sim_med:
+    -
+      plugin: get
+      source: field_overall_viid_sim_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viid_sim_avg:
+    -
+      plugin: get
+      source: field_overall_viid_sim_avg
+    -
+      plugin: default_value
+      default_value: N/A
   field_overall_viid_sim_pend: field_overall_viid_sim_pend
-  field_overall_viid_comp_med: field_overall_viid_comp_med
-  field_overall_viid_comp_avg: field_overall_viid_comp_avg
+  field_overall_viid_comp_med:
+    -
+      plugin: get
+      source: field_overall_viid_comp_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viid_comp_avg:
+    -
+      plugin: get
+      source: field_overall_viid_comp_avg
+    -
+      plugin: default_value
+      default_value: N/A
   field_overall_viid_comp_pend: field_overall_viid_comp_pend
-  field_overall_viid_exp_med: field_overall_viid_exp_med
-  field_overall_viid_exp_avg: field_overall_viid_exp_avg
+  field_overall_viid_exp_med:
+    -
+      plugin: get
+      source: field_overall_viid_exp_med
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viid_exp_avg:
+    -
+      plugin: get
+      source: field_overall_viid_exp_avg
+    -
+      plugin: default_value
+      default_value: N/A
   field_overall_viid_exp_pend: field_overall_viid_exp_pend
   field_footnotes_viid: field_footnotes_viid
   field_admin_app_viie:
@@ -2572,8 +2752,20 @@ process:
             - '1'
   field_overall_viiib_num_grant: field_overall_viiib_num_grant
   field_overall_viiib_num_denied: field_overall_viiib_num_denied
-  field_overall_viiib_med_days_jud: field_overall_viiib_med_days_jud
-  field_overall_viiib_avg_days_jud: field_overall_viiib_avg_days_jud
+  field_overall_viiib_med_days_jud:
+    -
+      plugin: get
+      source: field_overall_viiib_med_days_jud
+    -
+      plugin: default_value
+      default_value: N/A
+  field_overall_viiib_avg_days_jud:
+    -
+      plugin: get
+      source: field_overall_viiib_avg_days_jud
+    -
+      plugin: default_value
+      default_value: N/A
   field_footnotes_viiib: field_footnotes_viiib
   field_foia_pers_costs_ix:
     -
@@ -2736,7 +2928,13 @@ process:
           index:
             - '1'
   field_overall_xiia_back_req_end_: field_overall_xiia_back_req_end_
-  field_overall_xiia_back_app_end_: field_overall_xiia_back_app_end_
+  field_overall_xiia_back_app_end_:
+    -
+      plugin: get
+      source: field_overall_xiia_back_app_end_
+    -
+      plugin: default_value
+      default_value: N/A
   field_footnotes_xiia: field_footnotes_xiia
   field_foia_xiib:
     -
