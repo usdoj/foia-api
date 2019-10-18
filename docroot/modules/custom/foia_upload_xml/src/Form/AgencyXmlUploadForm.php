@@ -2,10 +2,10 @@
 
 namespace Drupal\foia_upload_xml\Form;
 
+use Drupal\foia_upload_xml\ReportUploadValidator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\user\Entity\User;
 use Drupal\migrate_plus\Entity\Migration;
@@ -25,13 +25,23 @@ class AgencyXmlUploadForm extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * Validator service to confirm report file can be processed.
+   *
+   * @var \Drupal\foia_upload_xml\ExistingReportCanBeOverwrittenValidator
+   */
+  protected $reportValidator;
+
+  /**
    * AgencyXmlUploadForm constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\foia_upload_xml\ReportUploadValidator $report_upload_validator
+   *   An object that can validate an uploaded report.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ReportUploadValidator $report_upload_validator) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->reportValidator = $report_upload_validator;
   }
 
   /**
@@ -39,7 +49,8 @@ class AgencyXmlUploadForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('foia_upload_xml.report_upload_validator')
     );
   }
 
@@ -94,19 +105,14 @@ class AgencyXmlUploadForm extends FormBase {
         $form_state->setErrorByName('submit',
           $this->t("Another Agency's import is running; please re-submit in a few minutes."));
       }
-    }
 
-    // Don't allow uploading and processing a report upload for this user's
-    // agency if there is an existing report for the agency in the current
-    // calendar year whose workflow state indicates that it has been submitted
-    // or cleared.
-    $user = User::load(\Drupal::currentUser()->id());
-    $user_agency_nid = $user->get('field_agency')->target_id;
-    if ($this->agencyReportYearIsLocked($user_agency_nid)) {
-      $form_state->setErrorByName(
-        'submit',
-        $this->t("Your agency’s report has already been cleared. If you need to make changes to your agency’s report, please contact OIP.")
-      );
+      // Don't allow processing a report upload if the reporting agency has
+      // an existing report in the current calendar year whose workflow
+      // state indicates that it has been submitted or cleared.
+      $file = $this->getUploadedFile($form_state);
+      if ($file) {
+        $this->reportValidator->validate($file, $form_state);
+      }
     }
 
     if (!empty($form_state->getErrors())) {
@@ -262,73 +268,25 @@ class AgencyXmlUploadForm extends FormBase {
   }
 
   /**
-   * Determine if an agency's current year report can be overwritten.
+   * Load the file uploaded in the agency_report_xml field.
    *
-   * @param int $agency_tid
-   *   The taxonomy term id of the agency to check.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
    *
-   * @return bool
-   *   Returns true if there is an existing report for this agency in the
-   *   current year that should not be overwritten.
-   */
-  protected function agencyReportYearIsLocked($agency_tid) {
-    $report = $this->getReport($agency_tid);
-    if (!$report) {
-      return FALSE;
-    }
-
-    $node = Node::load($report);
-    return $this->reportIsLocked($node);
-  }
-
-  /**
-   * Check if a report is in a workflow state in which it should not be updated.
-   *
-   * @param \Drupal\node\Entity\Node $node
-   *   The annual report data node that is being checked.
-   *
-   * @return bool
-   *   Returns true if the given annual report is in a workflow state that
-   *   indicates it should not be overwritten.
-   *
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
-   */
-  public function reportIsLocked(Node $node) {
-    return $node instanceof Node
-      && $node->bundle() == 'annual_foia_report_data'
-      && in_array($node->moderation_state->get(0)->value, [
-        'submitted_to_oip',
-        'cleared',
-        'published',
-      ]);
-  }
-
-  /**
-   * Get the nid of a report for the given agency and year, if one exists.
-   *
-   * @param int $agency_tid
-   *   The taxonomy term id of the agency report to lookup.
-   * @param string $year
-   *   The year of the report to lookup.
-   *
-   * @return bool|mixed
-   *   The node id of the annual report data node that matches the parameters
-   *   or false if none can be found.
+   * @return bool|\Drupal\Core\Entity\EntityInterface|null
+   *   The uploaded file object or FALSE if one does not exist.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function getReport($agency_tid, $year = NULL) {
-    $year = $year ? $year : date('Y');
+  protected function getUploadedFile(FormStateInterface $form_state) {
+    $fid = $form_state->getValue(['agency_report_xml', 0]);
+    if (empty($fid)) {
+      return FALSE;
+    }
 
-    $node_query = $this->entityTypeManager->getStorage('node')->getQuery()
-      ->condition('type', 'annual_foia_report_data')
-      ->condition('field_agency', $agency_tid)
-      ->condition('field_foia_annual_report_yr', $year);
-
-    $nids = $node_query->execute();
-
-    return !empty($nids) ? reset($nids) : FALSE;
+    $file_storage = $this->entityTypeManager->getStorage('file');
+    return $file_storage->load($fid);
   }
 
 }
