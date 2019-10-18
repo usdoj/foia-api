@@ -2,3 +2,6 @@ services:
   foia_upload_xml.batch_import:
     class: Drupal\foia_upload_xml\FoiaUploadXmlBatchImport
     arguments: ['@messenger', '@plugin.manager.migration', '@current_user']
+  foia_upload_xml.report_upload_validator:
+    class: Drupal\foia_upload_xml\ReportUploadValidator
+    arguments: ['@plugin.manager.migrate_plus.data_parser', '@entity_type.manager']
