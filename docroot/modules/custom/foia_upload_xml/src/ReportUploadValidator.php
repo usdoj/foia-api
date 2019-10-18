@@ -7,6 +7,7 @@ use Drupal\file\FileInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\migrate_plus\DataParserPluginManager;
+use Drupal\Core\TypedData\Exception\MissingDataException;
 
 /**
  * Validates that an uploaded report can overwrite existing report data.
@@ -117,7 +118,6 @@ class ReportUploadValidator {
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   protected function agencyReportYearIsLocked($agency_tid, $year = NULL) {
     $year = $year ? $year : (int) date('Y');
@@ -127,7 +127,14 @@ class ReportUploadValidator {
     }
 
     $node = Node::load($report);
-    return $this->reportIsLocked($node);
+    try {
+      return $this->reportIsLocked($node);
+    }
+    catch (MissingDataException $e) {
+      // If an agency's current year report does not have a workflow state,
+      // assume it can be overwritten.
+      return FALSE;
+    }
   }
 
   /**
