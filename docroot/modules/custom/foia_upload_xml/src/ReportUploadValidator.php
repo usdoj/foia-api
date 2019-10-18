@@ -93,6 +93,7 @@ class ReportUploadValidator {
     $file_data = $this->getFileData();
     $agency_tid = $this->getAgencyFromAbbreviation($file_data['agency'] ?? FALSE);
 
+    // If an agency can't be found, allow the upload to continue.
     if (!$agency_tid) {
       return;
     }
