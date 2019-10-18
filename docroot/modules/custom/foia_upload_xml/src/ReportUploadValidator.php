@@ -30,6 +30,13 @@ class ReportUploadValidator {
   protected $entityTypeManager;
 
   /**
+   * The uploaded file.
+   *
+   * @var \Drupal\file\FileInterface
+   */
+  protected $file;
+
+  /**
    * SimpleXml data parser configuration for fetching report data.
    *
    * @var array
@@ -100,7 +107,7 @@ class ReportUploadValidator {
    *
    * @param int $agency_tid
    *   The taxonomy term id of the agency to check for existing reports.
-   * @param string|null $year
+   * @param int|null $year
    *   The 4 digit reporting year to check for existing reports or null for
    *   the current calendar year.
    *
@@ -113,7 +120,7 @@ class ReportUploadValidator {
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   protected function agencyReportYearIsLocked($agency_tid, $year = NULL) {
-    $year = $year ? $year : date('Y');
+    $year = $year ? $year : (int) date('Y');
     $report = $this->getReport($agency_tid, $year);
     if (!$report) {
       return FALSE;
@@ -194,7 +201,7 @@ class ReportUploadValidator {
    *
    * @param int $agency_tid
    *   The taxonomy term id of the agency report to lookup.
-   * @param string $year
+   * @param int $year
    *   The 4 digit reporting year to check for existing reports or null for
    *   the current calendar year.
    *
@@ -206,7 +213,7 @@ class ReportUploadValidator {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function getReport($agency_tid, $year = NULL) {
-    $year = $year ? $year : date('Y');
+    $year = $year ? $year : (int) date('Y');
 
     $node_query = $this->entityTypeManager->getStorage('node')
       ->getQuery()
