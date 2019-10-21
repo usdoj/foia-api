@@ -92,13 +92,14 @@ class ReportUploadValidator {
 
     $file_data = $this->getFileData();
     $agency_tid = $this->getAgencyFromAbbreviation($file_data['agency'] ?? FALSE);
+    $report_year = isset($file_data['report_year']) && !empty($file_data['report_year']) ? (int) $file_data['report_year'] : (int) date('Y');
 
     // If an agency can't be found, allow the upload to continue.
     if (!$agency_tid) {
       return;
     }
 
-    if ($this->agencyReportYearIsLocked($agency_tid)) {
+    if ($this->agencyReportYearIsLocked($agency_tid, $report_year)) {
       $form_state->setErrorByName('submit', \Drupal::translation()
         ->translate("Your agency’s report has already been cleared. If you need to make changes to your agency’s report, please contact OIP."));
     }
