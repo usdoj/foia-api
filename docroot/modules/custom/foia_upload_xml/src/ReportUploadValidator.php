@@ -128,7 +128,7 @@ class ReportUploadValidator {
       return FALSE;
     }
 
-    $node = Node::load($report);
+    $node = $this->loadLatestReportRevision($report);
     try {
       return $this->reportIsLocked($node);
     }
@@ -233,6 +233,31 @@ class ReportUploadValidator {
     $nids = $node_query->execute();
 
     return !empty($nids) ? reset($nids) : FALSE;
+  }
+
+  /**
+   * Load the most recent revision of a node.
+   *
+   * @param int $nid
+   *   The node id to load.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|\Drupal\node\Entity\Node|null
+   *   The most recent revision of the given node id.
+   */
+  protected function loadLatestReportRevision($nid) {
+    $node = Node::load($nid);
+
+    $revision_ids = $this->entityTypeManager->getStorage('node')
+      ->revisionIds($node);
+
+    $most_recent = end($revision_ids);
+
+    if ($node && $node->getRevisionId() !== $most_recent) {
+      $node = $this->entityTypeManager->getStorage('node')
+        ->loadRevision($most_recent);
+    }
+
+    return $node;
   }
 
 }
