@@ -658,9 +658,6 @@ if ($settings['hash_salt']) {
  * configuration values in settings.php will not fire any of the configuration
  * change events.
  */
-if ($is_ah_env) {
-  $config['system.file']['path']['temporary'] = "/mnt/gfs/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/tmp";
-}
 # $config['system.site']['name'] = 'My Drupal site';
 # $config['system.theme']['default'] = 'stark';
 # $config['user.settings']['anonymous'] = 'Visitor';
@@ -793,6 +790,10 @@ $settings['entity_update_batch_size'] = 50;
 # }
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 $settings['install_profile'] = 'lightning';
+
+if ($is_ah_env) {
+  $config['system.file']['path']['temporary'] = "/mnt/gfs/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/tmp";
+}
 
 // Suppress display of error messages.
 ini_set('display_errors', '0');
