@@ -395,7 +395,7 @@
             // the current tab.  If there is at least one form element that has
             // the class .error, highlight this tab.
             var tab = document.getElementById(tabId.substr(1)),
-              error = tab.querySelector('.js-form-item .error:not(label)');
+              error = tab.querySelector('.error:not(label)');
 
             if (error) {
               $(menuItem).addClass('has-validation-error');
