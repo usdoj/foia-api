@@ -392,7 +392,7 @@
             }
 
             // Attempt to get the first form element that is a child of
-            // the current tab.  If there is at least one form element that
+            // the current tab.  If there is at least one form element that has
             // the class .error, highlight this tab.
             var tab = document.getElementById(tabId.substr(1)),
               error = tab.querySelector('.js-form-item .error:not(label)');
