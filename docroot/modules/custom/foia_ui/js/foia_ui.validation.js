@@ -426,7 +426,7 @@
             '</div></div>');
       }
 
-      $('input#edit-validate-button').on('click', function(event) {
+      $('input#edit-validate-button').once().on('click', function(event) {
         event.preventDefault();
 
         $('.validation-overlay').removeClass('hidden');
