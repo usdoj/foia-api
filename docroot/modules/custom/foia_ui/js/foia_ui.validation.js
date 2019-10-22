@@ -369,13 +369,16 @@
        */
       $(drupalSettings.foiaUI.foiaUISettings.formID).validate({
 
-
         // Show errors using the built in defaultShowErrors() method
         // and then highlight tabs all at once.
         showErrors: function(errors) {
           this.defaultShowErrors();
-          // Gets only the top level of vertical tabs, as these will
-          // be the first .vertical-tabs__menu element in the DOM.
+          this.settings.highlightTabs();
+        },
+
+        // Highlight top level tabs only.
+        highlightTabs: function() {
+          // Gets only the top level of vertical tab menu items.
           var tabs = document.querySelector('.vertical-tabs__menu');
 
           $('> .vertical-tabs__menu-item', tabs).each(function(index, menuItem) {
@@ -403,7 +406,7 @@
             else {
               $(menuItem).removeClass('has-validation-error');
             }
-          });
+        });
         }
       });
 
