@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_upload_xml\Form;
 
+use Drupal\foia_upload_xml\ReportUploadValidator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -24,13 +25,23 @@ class AgencyXmlUploadForm extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * Validator service to confirm report file can be processed.
+   *
+   * @var \Drupal\foia_upload_xml\ExistingReportCanBeOverwrittenValidator
+   */
+  protected $reportValidator;
+
+  /**
    * AgencyXmlUploadForm constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\foia_upload_xml\ReportUploadValidator $report_upload_validator
+   *   An object that can validate an uploaded report.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ReportUploadValidator $report_upload_validator) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->reportValidator = $report_upload_validator;
   }
 
   /**
@@ -38,7 +49,8 @@ class AgencyXmlUploadForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('foia_upload_xml.report_upload_validator')
     );
   }
 
@@ -93,6 +105,18 @@ class AgencyXmlUploadForm extends FormBase {
         $form_state->setErrorByName('submit',
           $this->t("Another Agency's import is running; please re-submit in a few minutes."));
       }
+
+      // Don't allow processing a report upload if the reporting agency has
+      // an existing report in the current calendar year whose workflow
+      // state indicates that it has been submitted or cleared.
+      $file = $this->getUploadedFile($form_state);
+      if ($file) {
+        $this->reportValidator->validate($file, $form_state);
+      }
+    }
+
+    if (!empty($form_state->getErrors())) {
+      \Drupal::service('lock.persistent')->release('foia_upload_xml');
     }
   }
 
@@ -241,6 +265,28 @@ class AgencyXmlUploadForm extends FormBase {
     }
 
     return $operations;
+  }
+
+  /**
+   * Load the file uploaded in the agency_report_xml field.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   *
+   * @return bool|\Drupal\Core\Entity\EntityInterface|null
+   *   The uploaded file object or FALSE if one does not exist.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function getUploadedFile(FormStateInterface $form_state) {
+    $fid = $form_state->getValue(['agency_report_xml', 0]);
+    if (empty($fid)) {
+      return FALSE;
+    }
+
+    $file_storage = $this->entityTypeManager->getStorage('file');
+    return $file_storage->load($fid);
   }
 
 }
