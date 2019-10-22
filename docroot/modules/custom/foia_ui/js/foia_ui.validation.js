@@ -418,7 +418,7 @@
             '</div></div>');
       }
 
-      $('input#edit-validate-button').once().on('click', function(event) {
+      $('input#edit-validate-button').once('foia-validation').on('click', function(event) {
         event.preventDefault();
 
         $('.validation-overlay').removeClass('hidden');
