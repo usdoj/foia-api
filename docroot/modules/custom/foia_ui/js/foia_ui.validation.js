@@ -369,49 +369,41 @@
        */
       $(drupalSettings.foiaUI.foiaUISettings.formID).validate({
 
-        // Display aggregate field validation popup message.
-        invalidHandler: function(event, validator) {
-          var errors = validator.numberOfInvalids();
-          if (errors) {
-            var message = errors == 1 ? '1 field is invalid and has been highlighted.' : '' + errors + ' fields are invalid and have been highlighted.';
-            // alert(message);
-          }
-        },
 
-        // Highlight vertical tabs that contain invalid fields
-        highlight: function(element, errorClass, validClass) {
-          $(element).addClass(errorClass).removeClass(validClass);
-          var containerPaneID = $(element).parents("details.vertical-tabs__pane").last().attr('id');
-          var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
-          if(parentVerticalTabMenuItem.attr('data-invalid')) {
-            var parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
-            if(parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) === -1) {
-              parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid') + ',' + $(element).attr('id');
-            }
-          }
-          else {
-            parentVerticalTabMenuItemDataInvalid = $(element).attr('id');
-          }
-          parentVerticalTabMenuItem.attr('data-invalid', parentVerticalTabMenuItemDataInvalid);
-          parentVerticalTabMenuItem.addClass('has-validation-error');
-        },
+        // Show errors using the built in defaultShowErrors() method
+        // and then highlight tabs all at once.
+        showErrors: function(errors) {
+          this.defaultShowErrors();
+          // Gets only the top level of vertical tabs, as these will
+          // be the first .vertical-tabs__menu element in the DOM.
+          var tabs = document.querySelector('.vertical-tabs__menu');
 
-        // Remove highlighting from vertical tabs when field validation passes
-        unhighlight: function(element, errorClass, validClass) {
-          $(element).removeClass(errorClass).addClass(validClass);
-          var containerPaneID = $(element).parents("details.vertical-tabs__pane").last().attr('id');
-          var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
-          var parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
-          if( parentVerticalTabMenuItemDataInvalid && parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) > -1) {
-            var dataInvalidArr = parentVerticalTabMenuItem.attr('data-invalid').split(',');
-            var index = dataInvalidArr.indexOf($(element).attr('id'));
-            if (index > -1) {
-              dataInvalidArr.splice(index, 1);
+          $('> .vertical-tabs__menu-item', tabs).each(function(index, menuItem) {
+            try {
+              var link = $('> a', menuItem).get(0),
+                  tabId = link.getAttribute('href') || false;
             }
-            var dataInvalid = dataInvalidArr.join();
-            parentVerticalTabMenuItem.attr('data-invalid', dataInvalid);
-            parentVerticalTabMenuItem.removeClass('has-validation-error');
-          }
+            catch (error) {
+              tabId = false;
+            }
+
+            if (!tabId) {
+              return;
+            }
+
+            // Attempt to get the first form element that is a child of
+            // the current tab.  If there is at least one form element that
+            // the class .error, highlight this tab.
+            var tab = document.getElementById(tabId.substr(1)),
+              error = tab.querySelector('.js-form-item .error:not(label)');
+
+            if (error) {
+              $(menuItem).addClass('has-validation-error');
+            }
+            else {
+              $(menuItem).removeClass('has-validation-error');
+            }
+          });
         }
       });
 
