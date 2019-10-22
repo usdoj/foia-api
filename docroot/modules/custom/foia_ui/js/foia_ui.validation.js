@@ -379,7 +379,7 @@
         // Highlight top level tabs only.
         highlightTabs: function() {
           // Gets only the top level of vertical tab menu items.
-          var tabs = document.querySelector('.vertical-tabs__menu');
+          var tabs = document.querySelector('.js-vertical-tabs--main > .vertical-tabs > .vertical-tabs__menu');
 
           $('> .vertical-tabs__menu-item', tabs).each(function(index, menuItem) {
             try {
