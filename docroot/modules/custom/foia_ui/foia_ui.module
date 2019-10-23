@@ -46,76 +46,45 @@ function foia_ui_toolbar_alter(&$items) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_BASE_FORM_ID_alter().
  */
-function foia_ui_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['actions']['validate_button'] = [
-    '#type' => 'button',
-    '#value' => t('Validate'),
-    '#attached' => [
-      'library' => [
-        'foia_ui/jquery_validation',
-        'foia_ui/foia_ui_validation',
-        'foia_ui/foia_ui_admin',
-      ],
-      'drupalSettings' => [
-        'foiaUI' => [
-          'foiaUISettings' => [
-            'formID' => '#node-annual-foia-report-data-edit-form',
+function foia_ui_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $node = $form_state->getFormObject()->getEntity();
+  if ($node->getType() == 'annual_foia_report_data') {
+    $form['actions']['validate_button'] = [
+      '#type' => 'button',
+      '#value' => t('Validate'),
+      '#attached' => [
+        'library' => [
+          'foia_ui/jquery_validation',
+          'foia_ui/foia_ui_validation',
+          'foia_ui/foia_ui_admin',
+        ],
+        'drupalSettings' => [
+          'foiaUI' => [
+            'foiaUISettings' => [
+              'formID' => '#' . $form['#id'],
+            ],
           ],
         ],
       ],
-    ],
-  ];
-  foreach ($form['field_foia_xiie2']['widget'] as $key => &$element) {
-    if (is_int($key)) {
-      $element['subform']['field_back_cur_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report";
-      $element['subform']['field_back_prev_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report";
+    ];
+    foreach ($form['field_foia_xiie2']['widget'] as $key => &$element) {
+      if (is_int($key)) {
+        $element['subform']['field_back_cur_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report";
+        $element['subform']['field_back_prev_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report";
+      }
     }
-  }
-  $form['meta']['changed']['#markup'] = "<h4 class='label inline'>" . $form['meta']['changed']['#title'] . "</h4> " . $form['meta']['changed']['#markup'];
-  $form['meta']['author']['#markup'] = "<h4 class='label inline'>" . $form['meta']['author']['#title'] . "</h4> " . $form['meta']['author']['#markup'];
-  unset($form['meta']['changed']['#title']);
-  unset($form['meta']['author']['#title']);
+    $form['meta']['changed']['#markup'] = "<h4 class='label inline'>" . $form['meta']['changed']['#title'] . "</h4> " . $form['meta']['changed']['#markup'];
+    $form['meta']['author']['#markup'] = "<h4 class='label inline'>" . $form['meta']['author']['#title'] . "</h4> " . $form['meta']['author']['#markup'];
+    unset($form['meta']['changed']['#title']);
+    unset($form['meta']['author']['#title']);
 
-  // Wrap the moderation state form element in a fieldset so that it's
-  // description is displayed, fixing broken aria-described by references.
-  foreach (Element::children($form['moderation_state']['widget']) as $key => $element) {
-    $form['moderation_state']['widget'][$key]['#theme_wrappers'][] = 'fieldset';
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function foia_ui_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['actions']['validate_button'] = [
-    '#type' => 'button',
-    '#value' => t('Validate'),
-    '#attached' => [
-      'library' => [
-        'foia_ui/jquery_validation',
-        'foia_ui/foia_ui_validation',
-        'foia_ui/foia_ui_admin',
-      ],
-      'drupalSettings' => [
-        'foiaUI' => [
-          'foiaUISettings' => [
-            'formID' => '#node-annual-foia-report-data-form',
-          ],
-        ],
-      ],
-    ],
-  ];
-  $form['meta']['changed']['#markup'] = "<h4 class='label inline'>" . $form['meta']['changed']['#title'] . "</h4> " . $form['meta']['changed']['#markup'];
-  $form['meta']['author']['#markup'] = "<h4 class='label inline'>" . $form['meta']['author']['#title'] . "</h4> " . $form['meta']['author']['#markup'];
-  unset($form['meta']['changed']['#title']);
-  unset($form['meta']['author']['#title']);
-
-  // Wrap the moderation state form element in a fieldset so that it's
-  // description is displayed, fixing broken aria-described by references.
-  foreach (Element::children($form['moderation_state']['widget']) as $key => $element) {
-    $form['moderation_state']['widget'][$key]['#theme_wrappers'][] = 'fieldset';
+    // Wrap the moderation state form element in a fieldset so that it's
+    // description is displayed, fixing broken aria-described by references.
+    foreach (Element::children($form['moderation_state']['widget']) as $key => $element) {
+      $form['moderation_state']['widget'][$key]['#theme_wrappers'][] = 'fieldset';
+    }
   }
 }
 
