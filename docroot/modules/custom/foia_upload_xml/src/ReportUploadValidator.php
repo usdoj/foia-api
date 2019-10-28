@@ -101,7 +101,7 @@ class ReportUploadValidator {
 
     if ($this->agencyReportYearIsLocked($agency_tid, $report_year)) {
       $form_state->setErrorByName('submit', \Drupal::translation()
-        ->translate("Your agency’s report has already been cleared. If you need to make changes to your agency’s report, please contact OIP."));
+        ->translate("Your agency’s report has already been submitted. If you need to make changes to your agency’s report, please contact OIP."));
     }
   }
 
