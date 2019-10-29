@@ -133,10 +133,30 @@
       // Fields from section VII.A. to calculate Highest Number of Days.
       calcOverall('edit-field-proc-req-viia', 'field_sim_high', 'edit-field-overall-viia-sim-high-0-value', '>');
 
+      // Fields from section VII.A. to calculate Lowest Number of Days (complex).
+      calcOverall('edit-field-proc-req-viia', 'field_comp_low', 'edit-field-overall-viia-comp-low-0-value', '<');
+      // Fields from section VII.A. to calculate Highest Number of Days (complex).
+      calcOverall('edit-field-proc-req-viia', 'field_comp_high', 'edit-field-overall-viia-comp-high-0-value', '>');
+
+      // Fields from section VII.A. to calculate Lowest Number of Days (expedited).
+      calcOverall('edit-field-proc-req-viia', 'field_exp_low', 'edit-field-overall-viia-exp-low-0-value', '<');
+      // Fields from section VII.A. to calculate Highest Number of Days (expedited).
+      calcOverall('edit-field-proc-req-viia', 'field_exp_high', 'edit-field-overall-viia-exp-high-0-value', '>');
+
       // Fields from section VII.B. to calculate Lowest Number of Days.
       calcOverall('edit-field-proc-req-viib', 'field_sim_low', 'edit-field-overall-viib-sim-low-0-value', '<');
       // Fields from section VII.B. to calculate Highest Number of Days.
       calcOverall('edit-field-proc-req-viib', 'field_sim_high', 'edit-field-overall-viib-sim-high-0-value', '>');
+
+      // Fields from section VII.B. to calculate Lowest Number of Days (complex).
+      calcOverall('edit-field-proc-req-viib', 'field_comp_low', 'edit-field-overall-viib-comp-low-0-value', '<');
+      // Fields from section VII.B. to calculate Highest Number of Days (complex).
+      calcOverall('edit-field-proc-req-viib', 'field_comp_high', 'edit-field-overall-viib-comp-high-0-value', '>');
+
+      // Fields from section VII.B. to calculate Lowest Number of Days (expedited).
+      calcOverall('edit-field-proc-req-viib', 'field_exp_low', 'edit-field-overall-viib-exp-low-0-value', '<');
+      // Fields from section VII.B. to calculate Highest Number of Days (expedited).
+      calcOverall('edit-field-proc-req-viib', 'field_exp_high', 'edit-field-overall-viib-exp-high-0-value', '>');
 
       // Fields from section VIII.A. to calculate Overall Number Adjudicated Within Ten Calendar Days.
       calcOverall('edit-field-req-viiia', 'field_num_jud_w10', 'edit-field-overall-viiia-num-jud-w10-0-value', '+');
