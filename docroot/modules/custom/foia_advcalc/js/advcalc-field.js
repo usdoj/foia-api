@@ -52,30 +52,35 @@
         var ops = {
           '<': function(a, b) { return a < b },
           '>': function(a, b) { return a > b },
-          '+': function(a, b) { return a + b },
         }
         var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
         fields.each(function() {
           $(this).once('advCalcOverall').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
             var output = null;
+            var isOverallNA = true;
             fields.each(function () {
               value = $(this).val();
-              if(value != '' && String(value).toLowerCase() != 'n/a') {
-                if (output == null && value !== null) {
+              if (String(value).toLowerCase() != 'n/a') {
+                isOverallNA = false;
+                if (value != '' && value !== null && (output == null || output == "n/a")) {
+                  // Set output for the first valid value.
                   output = displayLessThan(specialNumber(value));
                 }
-                else if(value != undefined && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
+                else if(value != '' && value != undefined && ops[event.data.operator](specialNumber(value), specialNumber(output))) {
+                  // Override output if operation criterion is met.
                   output = displayLessThan(specialNumber(value));
                 }
               }
             });
-            // Clear overall value if output is "NaN"
-            if(output !== output) {
-              $('#' + event.data.overallFieldID).val('');
+            // Clear overall value if output is "NaN".
+            if (output !== output) {
+              output = '';
             }
-            else {
-              $('#' + event.data.overallFieldID).val(output);
+            // Set overall value to "N/A" if all fields are "N/A".
+            else if (isOverallNA) {
+              output = 'N/A';
             }
+            $('#' + event.data.overallFieldID).val(output);
           });
         });
       }
@@ -157,9 +162,6 @@
       calcOverall('edit-field-proc-req-viib', 'field_exp_low', 'edit-field-overall-viib-exp-low-0-value', '<');
       // Fields from section VII.B. to calculate Highest Number of Days (expedited).
       calcOverall('edit-field-proc-req-viib', 'field_exp_high', 'edit-field-overall-viib-exp-high-0-value', '>');
-
-      // Fields from section VIII.A. to calculate Overall Number Adjudicated Within Ten Calendar Days.
-      calcOverall('edit-field-req-viiia', 'field_num_jud_w10', 'edit-field-overall-viiia-num-jud-w10-0-value', '+');
 
       // Section V A automatically calculate field_req_pend_end_yr.
       // req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
