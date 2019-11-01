@@ -349,28 +349,6 @@
         }
       }, "Sum of the fields must be greater than zero.");
 
-      // percentComp
-      jQuery.validator.addMethod("percentComp", function(value, element, params) {
-        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
-        if (elementAgencyComponent != '_none') {
-          var totalFees = params[0];
-          var totalCosts = params[1];
-          for (var i = 0; i < totalFees.length; i++){
-            var totalFeesAgencyComponent = $(totalFees[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
-            if (totalFeesAgencyComponent == elementAgencyComponent) {
-              var totalFeesVal = Number($( totalFees[i] ).val());
-            }
-          }
-          for (var j = 0; j < totalFees.length; j++){
-            var totalCostsAgencyComponent = $(totalCosts[j]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
-            if (totalCostsAgencyComponent == elementAgencyComponent) {
-              var totalCostsVal = Number($( totalCosts[j] ).val());
-            }
-          }
-          return this.optional(element) || Math.round( Number ( value ) * 10000 ) == Math.round( (totalFeesVal / totalCostsVal) * 10000 );
-        }
-      }, "Must be equal to the Total Fees / Total Costs.");
-
       // vb1matchDispositionComp: hard-coded for V.B.(1)
       jQuery.validator.addMethod("vb1matchDispositionComp", function(value, element, params) {
         var allReqProcessedYr = $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']");
@@ -1098,19 +1076,6 @@
           },
           messages: {
             greaterThanZero: "Should be greater than zero, if requests were processed in V.B.(1).",
-          }
-        });
-      });
-
-      // X. Agency Overall Number of Appeals Processed in Fiscal Year
-      $( "input[name*='field_fees_x']").filter("input[name*='field_perc_costs']").each(function() {
-        $(this).rules( "add", {
-          percentComp: [
-            $("input[name*='field_fees_x']").filter("input[name*='field_total_fees']"),
-            $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_total_costs']"),
-          ],
-          messages: {
-            percentComp: "Must equal X. Total Fees / IX. Total Costs."
           }
         });
       });
