@@ -86,7 +86,7 @@
         if ( overall_x_total_fees > 0 ) {
           var overall_ix_proc_costs = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
           var overall_x_perc_costs =  overall_x_total_fees /overall_ix_proc_costs;
-          var overall_x_perc_costs = Math.round(overall_x_perc_costs * 10000) / 100; // Percent rounded to 2 decimal places
+          var overall_x_perc_costs = Math.round(overall_x_perc_costs * 10000) / 10000; // Decimal format rounded to 4 places
           $('#edit-field-overall-x-perc-costs-0-value').val(overall_x_perc_costs);
         }
       });
@@ -260,7 +260,7 @@
         if(total_fees.val() > 0) {
           //set value of target field
           perc_costs_val = total_fees.val() / proc_costs.val();
-          perc_costs_val = Math.round(perc_costs_val * 10000) / 100; // Percent rounded to 2 decimal places
+          perc_costs_val = Math.round(perc_costs_val * 10000) / 10000; // Decimal format rounded to 4 places
           $(perc_costs).val(perc_costs_val);
           return perc_costs;
         }
