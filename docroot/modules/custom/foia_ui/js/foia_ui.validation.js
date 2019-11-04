@@ -429,9 +429,6 @@
         }
       });
 
-      // Disable Submit button until Validate button is clicked.
-      $('input#edit-submit').prop('disabled', true);
-
       if ($('#validation-overlay').length === 0) {
         $('body').append('<div id="validation-overlay"' +
             ' class="validation-overlay hidden">' +
@@ -461,9 +458,6 @@
           // Drupal's default empty drop-down value to avoid "An illegal
           // choice has been detected" error in that scenario.
           $("select > option[value='']").val('_none');
-
-          // Enable form Save button
-          $('input#edit-submit').prop('disabled', false);
         }, 100);
       });
 
