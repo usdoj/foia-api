@@ -122,6 +122,11 @@ process:
       plugin: get
       source: field_sim_low
     -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
       plugin: default_value
       default_value: N/A
   field_sim_high:
@@ -150,6 +155,11 @@ process:
       plugin: get
       source: field_comp_low
     -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
       plugin: default_value
       default_value: N/A
   field_comp_high:
@@ -177,6 +187,11 @@ process:
     -
       plugin: get
       source: field_exp_low
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A

@@ -2099,6 +2099,11 @@ process:
       plugin: get
       source: field_overall_viia_sim_low
     -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
       plugin: default_value
       default_value: N/A
   field_overall_viia_sim_high:
@@ -2127,6 +2132,11 @@ process:
       plugin: get
       source: field_overall_viia_comp_low
     -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
       plugin: default_value
       default_value: N/A
   field_overall_viia_comp_high:
@@ -2154,6 +2164,11 @@ process:
     -
       plugin: get
       source: field_overall_viia_exp_low
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A
@@ -2213,6 +2228,11 @@ process:
       plugin: get
       source: field_overall_viib_sim_low
     -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
       plugin: default_value
       default_value: N/A
   field_overall_viib_sim_high:
@@ -2241,6 +2261,11 @@ process:
       plugin: get
       source: field_overall_viib_comp_low
     -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
       plugin: default_value
       default_value: N/A
   field_overall_viib_comp_high:
@@ -2268,6 +2293,11 @@ process:
     -
       plugin: get
       source: field_overall_viib_exp_low
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A
