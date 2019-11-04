@@ -15,3 +15,24 @@
 .vertical-tabs__menu-item.has-validation-error > a > .vertical-tabs__menu-item-title {
   color: #a51b00 !important;
 }
+
+.validation-overlay {
+  background: rgba(0, 0, 0, .5);
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.validation-overlay .ajax-progress {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.validation-overlay .ajax-progress-fullscreen {
+  background-image: none;
+}

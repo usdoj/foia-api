@@ -7,6 +7,18 @@
       });
 
       /**
+       * Added for ie11 compatability.
+       *
+       * @param value
+       * @returns {boolean}
+       */
+      function isInteger(value) {
+        return typeof value === 'number' &&
+            isFinite(value) &&
+            Math.floor(value) === value;
+      }
+
+      /**
        * Treat "N/A", "n/a", and "<1" values as zero
        */
       function convertSpecialToZero(value) {
@@ -18,6 +30,58 @@
           default:
             return value;
         }
+      }
+
+      /**
+       * Return Oldest Days ordinal number with suffix
+       */
+      function oldestOrdinal(value) {
+        switch (value) {
+          case 1:
+            return "Oldest";
+            break;
+          case 2:
+            return value + "nd"
+            break;
+          case 3:
+            return value + "rd"
+            break;
+          default:
+            return value + "th"
+        }
+      }
+
+      /**
+       * Checks that a date is in the format of YYYY-MM-DD
+       *
+       * @param dateString
+       * @returns {boolean}
+       */
+      function isIsoDateFormat(dateString) {
+        return (new RegExp(/^\d{4}[\-]\d{2}[\-]\d{2}$/)).test(dateString);
+      }
+
+      /**
+       * Checks that a date in the YYYY-MM-DD format is valid.
+       *
+       * @param isoDateString
+       */
+      function isoDateStringIsValidDate(isoDateString) {
+        var year = Number(isoDateString.substr(0, 4)),
+            month = Number(isoDateString.substr(5, 2)),
+            day = Number(isoDateString.substr(8, 2));
+
+        if (!isInteger(year) || !isInteger(month) || !isInteger(day)) {
+          return false;
+        }
+
+        if (month < 1 || month > 12) {
+          return false;
+        }
+
+        var date = new Date(year, (month - 1), day);
+
+        return (Boolean(+date) && date.getDate() === day);
       }
 
       /**
@@ -144,6 +208,13 @@
         }
       }, "Must be less than or equal to a field.");
 
+      // lessThanEqualOlderComp
+      jQuery.validator.addMethod("lessThanEqualOlderComp", function(value, element, params) {
+        value = Number(convertSpecialToZero(value));
+        var target = Number($(element).parents('.paragraphs-subform').find("input[name*='" + params + "']").val());
+        return this.optional(element) || value <= target;
+      }, "Must be less than or equal to a field.");
+
       // greaterThanEqualComp
       jQuery.validator.addMethod("greaterThanEqualComp", function(value, element, params) {
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
@@ -191,21 +262,22 @@
         return this.optional(element) || (value >= min) && (value <= max);
       }, "Must be between the smallest and largest values.");
 
-
       // equalToLowestComp
       jQuery.validator.addMethod("equalToLowestComp", function(value, element, params) {
+        value = convertSpecialToZero(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
-          valuesArray.push(Number($( params[i] ).val()));
+          valuesArray.push(Number(convertSpecialToZero($( params[i] ).val())));
         }
         return this.optional(element) || (value == Math.min.apply(null, valuesArray));
       }, "Must equal the lowest value.");
 
       // equalToHighestComp
       jQuery.validator.addMethod("equalToHighestComp", function(value, element, params) {
+        value = convertSpecialToZero(value);
         var valuesArray = [];
         for (var i = 0; i < params.length; i++){
-          valuesArray.push(Number($( params[i] ).val()));
+          valuesArray.push(Number(convertSpecialToZero($( params[i] ).val())));
         }
         return this.optional(element) || (value == Math.max.apply(null, valuesArray));
       }, "Must equal the highest value.");
@@ -220,6 +292,32 @@
         return this.optional(element) || !(value == average);
       }, "Must not be equal to the average.");
 
+      // isoDateFormattedOrNA
+      jQuery.validator.addMethod('isoDateFormattedOrNA', function (value, element) {
+        if (value.toLowerCase() === 'n/a' || value === '0') {
+          return true;
+        }
+
+        return this.optional(element) || isIsoDateFormat(value);
+      }, "Date must be formatted as YYYY-MM-DD.");
+
+      /**
+       * isoDateStringIsValid
+       *
+       * Check that a properly formatted YYYY-MM-DD string is a valid date.
+       *
+       * Requires running the isoDateFormattedOrNA method prior to this
+       * validation to ensure that no errors in the date format before
+       * validating.
+       */
+      jQuery.validator.addMethod('isoDateStringIsValid', function (value, element) {
+        if (value.toLowerCase() === 'n/a' || value === '0') {
+          return true;
+        }
+
+        return this.optional(element) || isoDateStringIsValidDate(value);
+      }, "Must be a valid date.");
+
       // notAverageCompNA
       jQuery.validator.addMethod("notAverageCompNA", function(value, element, params) {
         value = convertSpecialToZero(value);
@@ -231,6 +329,25 @@
         return this.optional(element) || !(value == average);
       }, "Must not be equal to the average.");
 
+      // greaterThanZeroSumComp
+      jQuery.validator.addMethod("greaterThanZeroSumComp", function(value, element, params) {
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        var sum = 0;
+        if (value > 0) {
+          for (var i = 0; i < params.length; i++) {
+            for (var j = 0; j < params[i].length; j++) {
+              var paramAgencyComponent = $(params[i][j]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+              if (paramAgencyComponent == elementAgencyComponent) {
+                sum += Number($(params[i][j]).val());
+              }
+            }
+          }
+          return this.optional(element) || sum > 0;
+        }
+        else {
+          return true;
+        }
+      }, "Sum of the fields must be greater than zero.");
 
       // vb1matchDispositionComp: hard-coded for V.B.(1)
       jQuery.validator.addMethod("vb1matchDispositionComp", function(value, element, params) {
@@ -271,71 +388,83 @@
        */
       $(drupalSettings.foiaUI.foiaUISettings.formID).validate({
 
-        // Display aggregate field validation popup message.
-        invalidHandler: function(event, validator) {
-          var errors = validator.numberOfInvalids();
-          if (errors) {
-            var message = errors == 1 ? '1 field is invalid and has been highlighted.' : '' + errors + ' fields are invalid and have been highlighted.';
-            // alert(message);
-          }
+        // Show errors using the built in defaultShowErrors() method
+        // and then highlight tabs all at once.
+        showErrors: function(errors) {
+          this.defaultShowErrors();
+          this.settings.highlightTabs();
         },
 
-        // Highlight vertical tabs that contain invalid fields
-        highlight: function(element, errorClass, validClass) {
-          $(element).addClass(errorClass).removeClass(validClass);
-          var containerPaneID = $(element).parents("details.vertical-tabs__pane").last().attr('id');
-          var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
-          if(parentVerticalTabMenuItem.attr('data-invalid')) {
-            var parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
-            if(parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) === -1) {
-              parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid') + ',' + $(element).attr('id');
-            }
-          }
-          else {
-            parentVerticalTabMenuItemDataInvalid = $(element).attr('id');
-          }
-          parentVerticalTabMenuItem.attr('data-invalid', parentVerticalTabMenuItemDataInvalid);
-          parentVerticalTabMenuItem.addClass('has-validation-error');
-        },
+        // Highlight top level tabs only.
+        highlightTabs: function() {
+          // Gets only the top level of vertical tab menu items.
+          var tabs = document.querySelector('.js-vertical-tabs--main > .vertical-tabs > .vertical-tabs__menu');
 
-        // Remove highlighting from vertical tabs when field validation passes
-        unhighlight: function(element, errorClass, validClass) {
-          $(element).removeClass(errorClass).addClass(validClass);
-          var containerPaneID = $(element).parents("details.vertical-tabs__pane").last().attr('id');
-          var parentVerticalTabMenuItem = $(element).parents(".vertical-tabs").last().children('.vertical-tabs__menu').find('a[href="#' + containerPaneID + '"]').parent();
-          var parentVerticalTabMenuItemDataInvalid = parentVerticalTabMenuItem.attr('data-invalid');
-          if( parentVerticalTabMenuItemDataInvalid && parentVerticalTabMenuItemDataInvalid.indexOf($(element).attr('id')) > -1) {
-            var dataInvalidArr = parentVerticalTabMenuItem.attr('data-invalid').split(',');
-            var index = dataInvalidArr.indexOf($(element).attr('id'));
-            if (index > -1) {
-              dataInvalidArr.splice(index, 1);
+          $('> .vertical-tabs__menu-item', tabs).each(function(index, menuItem) {
+            try {
+              var link = $('> a', menuItem).get(0),
+                  tabId = link.getAttribute('href') || false;
             }
-            var dataInvalid = dataInvalidArr.join();
-            parentVerticalTabMenuItem.attr('data-invalid', dataInvalid);
-            parentVerticalTabMenuItem.removeClass('has-validation-error');
-          }
+            catch (error) {
+              tabId = false;
+            }
+
+            if (!tabId) {
+              return;
+            }
+
+            // Attempt to get the first form element that is a child of
+            // the current tab.  If there is at least one form element that has
+            // the class .error, highlight this tab.
+            var tab = document.getElementById(tabId.substr(1)),
+              error = tab.querySelector('.error:not(label)');
+
+            if (error) {
+              $(menuItem).addClass('has-validation-error');
+            }
+            else {
+              $(menuItem).removeClass('has-validation-error');
+            }
+        });
         }
       });
 
       // Disable Submit button until Validate button is clicked.
       $('input#edit-submit').prop('disabled', true);
-      $('input#edit-validate-button').on('click', function(event) {
+
+      if ($('#validation-overlay').length === 0) {
+        $('body').append('<div id="validation-overlay"' +
+            ' class="validation-overlay hidden">' +
+            '<div class="ajax-progress ajax-progress-fullscreen">' +
+            '<img src="/core/misc/loading-small.gif" />' +
+            '</div></div>');
+      }
+
+      $('input#edit-validate-button').once('foia-validation').on('click', function(event) {
         event.preventDefault();
+
+        $('.validation-overlay').removeClass('hidden');
 
         // To validate select drop-downs as required, they must have an
         // empty machine value.
         $("select > option[value='_none']").val('');
 
-        // Validate form
-        $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
 
-        // Empty drop-downs can still be submitted though, so restore
-        // Drupal's default empty drop-down value to avoid "An illegal
-        // choice has been detected" error in that scenario.
-        $("select > option[value='']").val('_none');
+        // Allow some time for the overlay to render.
+        setTimeout(function() {
+          // Validate form
+          $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
 
-        // Enable form Save button
-        $('input#edit-submit').prop('disabled', false);
+          $('.validation-overlay').addClass('hidden');
+
+          // Empty drop-downs can still be submitted though, so restore
+          // Drupal's default empty drop-down value to avoid "An illegal
+          // choice has been detected" error in that scenario.
+          $("select > option[value='']").val('_none');
+
+          // Enable form Save button
+          $('input#edit-submit').prop('disabled', false);
+        }, 100);
       });
 
       /**
@@ -344,11 +473,26 @@
        * Note: All validation rules can be bypassed on submit.
        */
       // Require all Annual Report fields.
-      $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-revision-log-0-value').not('[readonly]').each(function() {
+      $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-revision-log-0-value').not('[readonly]').not('[id*="footnote"]').each(function() {
         $(this).rules( "add", {
         required: true,
         });
       });
+
+      // Formatting and validity of date fields that accept text.
+      $("input[name^='field_admin_app_vic5']").filter('input[name*="field_date_"]')
+          .add("input[name^='field_admin_app_viie']").filter('input[name*="field_date_"]')
+          .add("input[name^='field_foia_xiic']").filter('input[name*="field_date_"]')
+          .add("input[name^='field_overall_vic5_date']")
+          .add("input[name^='field_overall_viie_date']")
+          .add("input[name^='field_overall_xiic_date']")
+          .filter('.form-text')
+          .each(function () {
+            $(this).rules("add", {
+              isoDateFormattedOrNA: true,
+              isoDateStringIsValid: true,
+            });
+          });
 
        // V.A. FOIA Requests
       $( "input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function() {
@@ -442,6 +586,41 @@
         }
       });
 
+      // V.B.(1) Agency Component Other*
+      $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_oth']").each(function() {
+          $(this).rules( "add", {
+              equalToComp: $("input[name*='field_foia_requests_vb2']").filter("input[name*='field_total']"),
+              messages: {
+                  equalToComp: "Must match V.A. Agency Number of Requests Processed in Fiscal Year"
+              }
+          });
+      });
+
+      // V.B.(1) Agency Number of Full Denials Based on Exemptions
+        $( "input[name*='field_foia_requests_vb1']").filter("input[name*='field_full_denials_ex']").each(function() {
+          $(this).rules( "add", {
+            lessThanEqualSumComp: [
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_1']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_2']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_3']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_4']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_5']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_6']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_a']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_b']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_c']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_d']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_e']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_f']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_8']"),
+              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_9']"),
+            ],
+          messages: {
+              lessThanEqualSumComp: "This field should be no more than the sum of the fields V.B.(3) Ex.1 through V.B.(3) Ex.9. for the corresponding agency."
+          }
+        })
+      });
+
       // V.B. (2) (Component) Number of Times "Other" Reason Was Relied Upon
       $( "#edit-field-foia-requests-vb2-0-subform-field-foia-req-vb2-info-0-subform-field-num-relied-upon-0-value").rules( "add", {
         notNegative: true,
@@ -457,6 +636,37 @@
         messages: {
           equalTo: "Must match VI.B. Agency Overall Total"
         }
+      });
+
+      // VI.A. Administrative Appeals Processed During Fiscal Year from Current Annual Report
+      $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_admin_app_vib']").filter("input[name*='field_total']"),
+          messages: {
+            equalToComp: "Must match VI.B. Total Processed Appeals in Fiscal Year for corresponding agency/component"
+          }
+        });
+      });
+
+      // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year
+      $( "input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']").each(function() {
+        $(this).rules( "add", {
+          greaterThanZeroSumComp: [
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_1']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_2']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_3']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_4']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_5']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_6']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_7']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_8']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_9']"),
+            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_10']"),
+          ],
+          messages: {
+            greaterThanZeroSumComp: "Must match VI.C.5. must have values > 0."
+          }
+        });
       });
 
       // VI.B. Administrative Appeals
@@ -497,6 +707,16 @@
         }
       });
 
+      // VI.C.2 Reasons for Denial on Appeal -- "Other" Reasons
+      $( "input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']").each(function() {
+        $(this).rules( "add", {
+          equalToComp: $( "input[name*='field_admin_app_vic3']").filter("input[name*='field_total']"),
+          messages: {
+            equalToComp: "Must match VI.B. Total Processed Appeals in Fiscal Year for corresponding agency/component"
+          }
+        });
+      });
+
       // VI.C.(4) - Administrative Appeals
       $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_low_num_days']").rules( "add", {
         lessThanEqualComp: $( "input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
@@ -534,157 +754,35 @@
         }
       });
 
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 10th
-      $( "#edit-field-overall-vic5-num-day-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
-        }
-      });
+      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd - 10th
+      // Iterate over 2nd to 10th oldest overall pending appeals, comparing
+      // the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        var prior = oldestOrdinal(i - 1),
+            inputId = "#edit-field-overall-vic5-num-day-" + i + "-0-value",
+            comparisonId = "#edit-field-overall-vic5-num-day-" + (i - 1) + "-0-value";
+        $(inputId).rules( "add", {
+          lessThanEqualToNA: $(comparisonId),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+          }
+        });
+      }
 
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 9th
-      $( "#edit-field-overall-vic5-num-day-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 8th
-      $( "#edit-field-overall-vic5-num-day-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 7th
-      $( "#edit-field-overall-vic5-num-day-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 6th
-      $( "#edit-field-overall-vic5-num-day-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 5th
-      $( "#edit-field-overall-vic5-num-day-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 4th
-      $( "#edit-field-overall-vic5-num-day-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3rd\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3rd
-      $( "#edit-field-overall-vic5-num-day-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2nd\"."
-        }
-      });
-
-      // VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd
-      $( "#edit-field-overall-vic5-num-day-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-vic5-num-day-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
-        }
-      });
-
-      // VI.C. (5) - Agency Components
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).  Unlike the above group, this is for the agency
-      // component part of the form.
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 10th
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
-        }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 9th
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
-        }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 8th
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
-        }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 7th
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
-        }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 6th
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
-        }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 5th
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
-        }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 4th
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3rd\"."
-        }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 3rd
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2nd\"."
-        }
-      });
-
-      // VI.C.(5). (Component) TEN OLDEST PENDING ADMINISTRATIVE APPEALS / 2nd
-      $( "#edit-field-admin-app-vic5-0-subform-field-num-days-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-admin-app-vic5-0-subform-field-num-days-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Oldest\"."
-        }
-      });
+      // VI.C. (5) - ADMINISTRATIVE APPEALS - Oldest Days component/ 2nd-10th
+      // For each Agency/Component, iterate over 2nd to 10th Oldest days
+      // comparing the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        priorOrdinal = oldestOrdinal(i - 1);
+        $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+          $(this).rules( "add", {
+            lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
+            messages: {
+              lessThanEqualOlderComp: "This should be less than or equal to the number of days for <em>" + priorOrdinal + "</em>."
+            }
+          });
+        });
+      }
 
       // VII.A. Simple - Agency Overall Median Number of Days
       $( "#edit-field-overall-viia-sim-med-0-value").rules( "add", {
@@ -896,80 +994,35 @@
         }
       });
 
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 10th
-      $( "#edit-field-overall-viie-num-days-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
-        }
-      });
+      // VII.E. PENDING REQUESTS / 2nd - 10th
+      // Iterate over the the 2nd to 10th oldest overall pending requests,
+      // comparing the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        var prior = oldestOrdinal(i - 1),
+            inputId = "#edit-field-overall-viie-num-days-" + i + "-0-value",
+            comparisonId = "#edit-field-overall-viie-num-days-" + (i - 1) + "-0-value";
+        $(inputId).rules( "add", {
+          lessThanEqualToNA: $(comparisonId),
+          messages: {
+            lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+          }
+        });
+      }
 
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 9th
-      $( "#edit-field-overall-viie-num-days-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 8th
-      $( "#edit-field-overall-viie-num-days-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 7th
-      $( "#edit-field-overall-viie-num-days-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 6th
-      $( "#edit-field-overall-viie-num-days-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 5th
-      $( "#edit-field-overall-viie-num-days-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 4th
-      $( "#edit-field-overall-viie-num-days-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 3d
-      $( "#edit-field-overall-viie-num-days-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
-        }
-      });
-
-      // VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS / 2d
-      $( "#edit-field-overall-viie-num-days-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-viie-num-days-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
-        }
-      });
+      // VII.E. PENDING REQUESTS - Oldest Days component/ 2nd-10th
+      // For each Agency/Component, iterate over 2nd to 10th Oldest days
+      // comparing the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        priorOrdinal = oldestOrdinal(i - 1);
+        $("input[name*='field_admin_app_viie']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+          $(this).rules( "add", {
+            lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
+            messages: {
+              lessThanEqualOlderComp: "This should be less than or equal to the number of days for <em>" + priorOrdinal + "</em>."
+            }
+          });
+        });
+      }
 
       // VIII.A. Agency Overall Median Number of Days to Adjudicate
       $( "#edit-field-overall-viiia-med-days-jud-0-value").rules( "add", {
@@ -1027,17 +1080,6 @@
         });
       });
 
-
-      // XII.C. FOIA Requests and Administrative Appeals
-      $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_1']").each(function() {
-        $(this).rules( "add", {
-          ifGreaterThanZeroComp: $("input[name*='field_foia_xiib']").filter("input[name*='field_pend_end_yr']"),
-          messages: {
-            ifGreaterThanZeroComp: "If there are consultations pending at end of year for XII.B, there must be entries in this section for that component.",
-          }
-        });
-      });
-
       // XII.A. Number of Backlogged Requests as of End of Fiscal Year
       $( "input[name*='field_foia_xiia']").filter("input[name*='field_back_req_end_yr']").each(function() {
         $(this).rules( "add", {
@@ -1082,155 +1124,47 @@
         }
       });
 
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 10th
-      $( "#edit-field-overall-xiic-num-days-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
-        }
+      // XII.C. FOIA Requests and Administrative Appeals
+      $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_1']").each(function() {
+        $(this).rules( "add", {
+          ifGreaterThanZeroComp: $("input[name*='field_foia_xiib']").filter("input[name*='field_pend_end_yr']"),
+          messages: {
+            ifGreaterThanZeroComp: "If there are consultations pending at end of year for XII.B, there must be entries in this section for that component.",
+          }
+        });
       });
 
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 9th
-      $( "#edit-field-overall-xiic-num-days-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
-        }
-      });
+      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY
+      // 2nd - 10th
+      // Iterate over the the 2nd to 10th overall oldest consultations
+      // received, comparing the value to the one before it,
+      // e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        var prior = oldestOrdinal(i - 1),
+            inputId = "#edit-field-overall-xiic-num-days-" + i + "-0-value",
+            comparisonId = "#edit-field-overall-xiic-num-days-" + (i - 1) + "-0-value";
+        $(inputId).rules( "add", {
+            lessThanEqualToNA: $(comparisonId),
+            messages: {
+              lessThanEqualToNA: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+            }
+          });
+      }
 
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 8th
-      $( "#edit-field-overall-xiic-num-days-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 7th
-      $( "#edit-field-overall-xiic-num-days-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 6th
-      $( "#edit-field-overall-xiic-num-days-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 5th
-      $( "#edit-field-overall-xiic-num-days-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 4th
-      $( "#edit-field-overall-xiic-num-days-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 3d
-      $( "#edit-field-overall-xiic-num-days-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
-        }
-      });
-
-      // XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 2d
-      $( "#edit-field-overall-xiic-num-days-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-overall-xiic-num-days-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
-        }
-      });
-
-      // For the next 9 rules, each is comparing the value to the one lower
-      // than it ( i.e., field 10 is less than field 9, field 9 is less than
-      // field 8, etc).  This is the agency component part of the form.
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 10th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-10-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-9-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"9th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 9th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-9-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-8-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"8th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 8th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-8-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-7-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"7th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 7th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-7-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-6-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"6th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 6th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-6-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-5-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"5th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 5th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-5-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-4-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"4th\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 4th
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-4-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-3-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"3d\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 3d
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-3-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-2-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"2d\"."
-        }
-      });
-
-      // XII.C. (Agency Components) CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY / 2d
-      $( "#edit-field-foia-xiic-0-subform-field-num-days-2-0-value").rules( "add", {
-        lessThanEqualToNA: "#edit-field-foia-xiic-0-subform-field-num-days-1-0-value",
-        messages: {
-          lessThanEqualToNA: "This should be less than the number of days for \"Overall\"."
-        }
-      });
+      // XII.C. FOIA Requests and Administrative Appeals - Oldest Days component/ 2nd-10th
+      // For each Agency/Component, iterate over 2nd to 10th Oldest days
+      // comparing the value to the one before it, e.g. value of 9th <= 8th.
+      for (var i = 2; i <= 10; i++){
+        priorOrdinal = oldestOrdinal(i - 1);
+        $("input[name*='field_foia_xiic']").filter("input[name*='field_num_days_" + i + "']").each(function() {
+          $(this).rules( "add", {
+            lessThanEqualOlderComp: 'field_num_days_' + String(i-1),
+            messages: {
+              lessThanEqualOlderComp: "This should be less than or equal to the number of days for <em>" + priorOrdinal + "</em>."
+            }
+          });
+        });
+      }
 
       // XII.D.(1). Number Received During Fiscal Year from Current Annual Report
       $( "input[name*='field_foia_xiid1']").filter("input[name*='field_received_cur_yr']").each(function() {

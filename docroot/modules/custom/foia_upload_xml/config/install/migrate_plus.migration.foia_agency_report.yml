@@ -1655,20 +1655,104 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_vic1_ex_1: field_overall_vic1_ex_1
-  field_overall_vic1_ex_2: field_overall_vic1_ex_2
-  field_overall_vic1_ex_3: field_overall_vic1_ex_3
-  field_overall_vic1_ex_4: field_overall_vic1_ex_4
-  field_overall_vic1_ex_5: field_overall_vic1_ex_5
-  field_overall_vic1_ex_6: field_overall_vic1_ex_6
-  field_overall_vic1_ex_7_a: field_overall_vic1_ex_7_a
-  field_overall_vic1_ex_7_b: field_overall_vic1_ex_7_b
-  field_overall_vic1_ex_7_c: field_overall_vic1_ex_7_c
-  field_overall_vic1_ex_7_d: field_overall_vic1_ex_7_d
-  field_overall_vic1_ex_7_e: field_overall_vic1_ex_7_e
-  field_overall_vic1_ex_7_f: field_overall_vic1_ex_7_f
-  field_overall_vic1_ex_8: field_overall_vic1_ex_8
-  field_overall_vic1_ex_9: field_overall_vic1_ex_9
+  field_overall_vic1_ex_1:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_1
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_2:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_2
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_3:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_3
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_4:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_4
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_5:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_5
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_6:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_6
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_a:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_a
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_b:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_b
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_c:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_c
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_d:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_d
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_e:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_e
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_7_f:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_7_f
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_8:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_8
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic1_ex_9:
+    -
+      plugin: get
+      source: field_overall_vic1_ex_9
+    -
+      plugin: default_value
+      default_value: 0
   field_footnotes_vic1: footnotes_vic1
   # Section VI.C. (2)
   # FOIA requests -- received, processed and pending FOIA requests
@@ -1701,17 +1785,83 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_vic2_app_denial_ex: overall_vic2_app_denial_ex
-  field_overall_vic2_no_rec: overall_vic2_no_rec
-  field_overall_vic2_rec_refer_ini: overall_vic2_rec_ref_to_an_comp
-  field_overall_vic2_req_withdrawn: overall_vic2_req_withdrawn
-  field_overall_vic2_fee_rel_reas: overall_vic2_fee_related_reason
-  field_overall_vic2_rec_not_desc: overall_vic2_rec_not_desc
-  field_overall_vic2_imp_req_oth: overall_vic2_imp_req_oth_reason
-  field_overall_vic2_not_agency_re: overall_vic2_not_agency_record
-  field_overall_vic2_dup_req: overall_vic2_dup_request
-  field_overall_vic2_oth: overall_vic2_oth
-  field_overall_vic2_req_in_lit: overall_vic2_req_in_lit
+  field_overall_vic2_app_denial_ex:
+     -
+       plugin: get
+       source: overall_vic2_app_denial_ex
+     -
+       plugin: default_value
+       default_value: 0
+  field_overall_vic2_no_rec:
+    -
+      plugin: get
+      source: overall_vic2_no_rec
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_rec_refer_ini:
+    -
+      plugin: get
+      source: overall_vic2_rec_ref_to_an_comp
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_req_withdrawn:
+    -
+      plugin: get
+      source: overall_vic2_req_withdrawn
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_fee_rel_reas:
+    -
+      plugin: get
+      source: overall_vic2_fee_related_reason
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_rec_not_desc:
+    -
+      plugin: get
+      source: overall_vic2_rec_not_desc
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_imp_req_oth:
+    -
+      plugin: get
+      source: overall_vic2_imp_req_oth_reason
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_not_agency_re:
+    -
+      plugin: get
+      source: overall_vic2_not_agency_record
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_dup_req:
+    -
+      plugin: get
+      source: overall_vic2_dup_request
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_oth:
+    -
+      plugin: get
+      source: overall_vic2_oth
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic2_req_in_lit:
+    -
+      plugin: get
+      source: overall_vic2_req_in_lit
+    -
+      plugin: default_value
+      default_value: 0
   field_footnotes_vic2: footnotes_vic2
   # Section VI.C.3
   # Administrative Appeals VI. C (3) Other Denials Details
@@ -1813,26 +1963,146 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_vic5_num_day_1: field_overall_vic5_num_day_1
-  field_overall_vic5_num_day_2: field_overall_vic5_num_day_2
-  field_overall_vic5_num_day_3: field_overall_vic5_num_day_3
-  field_overall_vic5_num_day_4: field_overall_vic5_num_day_4
-  field_overall_vic5_num_day_5: field_overall_vic5_num_day_5
-  field_overall_vic5_num_day_6: field_overall_vic5_num_day_6
-  field_overall_vic5_num_day_7: field_overall_vic5_num_day_7
-  field_overall_vic5_num_day_8: field_overall_vic5_num_day_8
-  field_overall_vic5_num_day_9: field_overall_vic5_num_day_9
-  field_overall_vic5_num_day_10: field_overall_vic5_num_day_10
-  field_overall_vic5_date_1: field_overall_vic5_date_1
-  field_overall_vic5_date_2: field_overall_vic5_date_2
-  field_overall_vic5_date_3: field_overall_vic5_date_3
-  field_overall_vic5_date_4: field_overall_vic5_date_4
-  field_overall_vic5_date_5: field_overall_vic5_date_5
-  field_overall_vic5_date_6: field_overall_vic5_date_6
-  field_overall_vic5_date_7: field_overall_vic5_date_7
-  field_overall_vic5_date_8: field_overall_vic5_date_8
-  field_overall_vic5_date_9: field_overall_vic5_date_9
-  field_overall_vic5_date_10: field_overall_vic5_date_10
+  field_overall_vic5_num_day_1:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_1
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_2:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_2
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_3:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_3
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_4:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_4
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_5:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_5
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_6:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_6
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_7:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_7
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_8:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_8
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_9:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_9
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_num_day_10:
+    -
+      plugin: get
+      source: field_overall_vic5_num_day_10
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_vic5_date_1:
+    -
+      plugin: get
+      source: field_overall_vic5_date_1
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_2:
+    -
+      plugin: get
+      source: field_overall_vic5_date_2
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_3:
+    -
+      plugin: get
+      source: field_overall_vic5_date_3
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_4:
+    -
+      plugin: get
+      source: field_overall_vic5_date_4
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_5:
+    -
+      plugin: get
+      source: field_overall_vic5_date_5
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_6:
+    -
+      plugin: get
+      source: field_overall_vic5_date_6
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_7:
+    -
+      plugin: get
+      source: field_overall_vic5_date_7
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_8:
+    -
+      plugin: get
+      source: field_overall_vic5_date_8
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_9:
+    -
+      plugin: get
+      source: field_overall_vic5_date_9
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_vic5_date_10:
+    -
+      plugin: get
+      source: field_overall_vic5_date_10
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_footnotes_vic5: field_footnotes_vic5
   # Section VII.A
   # Processed Requests - Response Time for All Processed Perfected Requests and for Perfected Requests in Which Information Was Granted.
@@ -1865,18 +2135,90 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_viia_sim_med: field_overall_viia_sim_med
-  field_overall_viia_sim_avg: field_overall_viia_sim_avg
-  field_overall_viia_sim_low: field_overall_viia_sim_low
-  field_overall_viia_sim_high: field_overall_viia_sim_high
-  field_overall_viia_comp_med: field_overall_viia_comp_med
-  field_overall_viia_comp_avg: field_overall_viia_comp_avg
-  field_overall_viia_comp_low: field_overall_viia_comp_low
-  field_overall_viia_comp_high: field_overall_viia_comp_high
-  field_overall_viia_exp_med: field_overall_viia_exp_med
-  field_overall_viia_exp_avg: field_overall_viia_exp_avg
-  field_overall_viia_exp_low: field_overall_viia_exp_low
-  field_overall_viia_exp_high: field_overall_viia_exp_high
+  field_overall_viia_sim_med:
+    -
+      plugin: get
+      source: field_overall_viia_sim_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_sim_avg:
+    -
+      plugin: get
+      source: field_overall_viia_sim_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_sim_low:
+    -
+      plugin: get
+      source: field_overall_viia_sim_low
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_sim_high:
+    -
+      plugin: get
+      source: field_overall_viia_sim_high
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_comp_med:
+    -
+      plugin: get
+      source: field_overall_viia_comp_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_comp_avg:
+    -
+      plugin: get
+      source: field_overall_viia_comp_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_comp_low:
+    -
+      plugin: get
+      source: field_overall_viia_comp_low
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_comp_high:
+    -
+      plugin: get
+      source: field_overall_viia_comp_high
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_exp_med:
+    -
+      plugin: get
+      source: field_overall_viia_exp_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_exp_avg:
+    -
+      plugin: get
+      source: field_overall_viia_exp_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_exp_low:
+    -
+      plugin: get
+      source: field_overall_viia_exp_low
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viia_exp_high:
+    -
+      plugin: get
+      source: field_overall_viia_exp_high
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_footnotes_viia: field_footnotes_viia
   # Section VII.B
   # Processed Requests - Response Time for All Processed Perfected Requests and for Perfected Requests in Which Information Was Granted.
@@ -1909,18 +2251,90 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_viib_sim_med: field_overall_viib_sim_med
-  field_overall_viib_sim_avg: field_overall_viib_sim_avg
-  field_overall_viib_sim_low: field_overall_viib_sim_low
-  field_overall_viib_sim_high: field_overall_viib_sim_high
-  field_overall_viib_comp_med: field_overall_viib_comp_med
-  field_overall_viib_comp_avg: field_overall_viib_comp_avg
-  field_overall_viib_comp_low: field_overall_viib_comp_low
-  field_overall_viib_comp_high: field_overall_viib_comp_high
-  field_overall_viib_exp_med: field_overall_viib_exp_med
-  field_overall_viib_exp_avg: field_overall_viib_exp_avg
-  field_overall_viib_exp_low: field_overall_viib_exp_low
-  field_overall_viib_exp_high: field_overall_viib_exp_high
+  field_overall_viib_sim_med:
+    -
+      plugin: get
+      source: field_overall_viib_sim_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_sim_avg:
+    -
+      plugin: get
+      source: field_overall_viib_sim_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_sim_low:
+    -
+      plugin: get
+      source: field_overall_viib_sim_low
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_sim_high:
+    -
+      plugin: get
+      source: field_overall_viib_sim_high
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_comp_med:
+    -
+      plugin: get
+      source: field_overall_viib_comp_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_comp_avg:
+    -
+      plugin: get
+      source: field_overall_viib_comp_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_comp_low:
+    -
+      plugin: get
+      source: field_overall_viib_comp_low
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_comp_high:
+    -
+      plugin: get
+      source: field_overall_viib_comp_high
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_exp_med:
+    -
+      plugin: get
+      source: field_overall_viib_exp_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_exp_avg:
+    -
+      plugin: get
+      source: field_overall_viib_exp_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_exp_low:
+    -
+      plugin: get
+      source: field_overall_viib_exp_low
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viib_exp_high:
+    -
+      plugin: get
+      source: field_overall_viib_exp_high
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_footnotes_viib: field_footnotes_viib
   # Section VII.C. (1)
   field_proc_req_viic1:
@@ -2088,14 +2502,50 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_viid_sim_med: field_overall_viid_sim_med
-  field_overall_viid_sim_avg: field_overall_viid_sim_avg
+  field_overall_viid_sim_med:
+    -
+      plugin: get
+      source: field_overall_viid_sim_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viid_sim_avg:
+    -
+      plugin: get
+      source: field_overall_viid_sim_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_overall_viid_sim_pend: field_overall_viid_sim_pend
-  field_overall_viid_comp_med: field_overall_viid_comp_med
-  field_overall_viid_comp_avg: field_overall_viid_comp_avg
+  field_overall_viid_comp_med:
+    -
+      plugin: get
+      source: field_overall_viid_comp_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viid_comp_avg:
+    -
+      plugin: get
+      source: field_overall_viid_comp_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_overall_viid_comp_pend: field_overall_viid_comp_pend
-  field_overall_viid_exp_med: field_overall_viid_exp_med
-  field_overall_viid_exp_avg: field_overall_viid_exp_avg
+  field_overall_viid_exp_med:
+    -
+      plugin: get
+      source: field_overall_viid_exp_med
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viid_exp_avg:
+    -
+      plugin: get
+      source: field_overall_viid_exp_avg
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_overall_viid_exp_pend: field_overall_viid_exp_pend
   field_footnotes_viid: field_footnotes_viid
   # Section VII.E
@@ -2129,26 +2579,146 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_viie_num_days_1: field_overall_viie_num_days_1
-  field_overall_viie_num_days_2: field_overall_viie_num_days_2
-  field_overall_viie_num_days_3: field_overall_viie_num_days_3
-  field_overall_viie_num_days_4: field_overall_viie_num_days_4
-  field_overall_viie_num_days_5: field_overall_viie_num_days_5
-  field_overall_viie_num_days_6: field_overall_viie_num_days_6
-  field_overall_viie_num_days_7: field_overall_viie_num_days_7
-  field_overall_viie_num_days_8: field_overall_viie_num_days_8
-  field_overall_viie_num_days_9: field_overall_viie_num_days_9
-  field_overall_viie_num_days_10: field_overall_viie_num_days_10
-  field_overall_viie_date_1: field_overall_viie_date_1
-  field_overall_viie_date_2: field_overall_viie_date_2
-  field_overall_viie_date_3: field_overall_viie_date_3
-  field_overall_viie_date_4: field_overall_viie_date_4
-  field_overall_viie_date_5: field_overall_viie_date_5
-  field_overall_viie_date_6: field_overall_viie_date_6
-  field_overall_viie_date_7: field_overall_viie_date_7
-  field_overall_viie_date_8: field_overall_viie_date_8
-  field_overall_viie_date_9: field_overall_viie_date_9
-  field_overall_viie_date_10: field_overall_viie_date_10
+  field_overall_viie_num_days_1:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_1
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_2:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_2
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_3:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_3
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_4:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_4
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_5:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_5
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_6:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_6
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_7:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_7
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_8:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_8
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_9:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_9
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_num_days_10:
+    -
+      plugin: get
+      source: field_overall_viie_num_days_10
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viie_date_1:
+    -
+      plugin: get
+      source: field_overall_viie_date_1
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_2:
+    -
+      plugin: get
+      source: field_overall_viie_date_2
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_3:
+    -
+      plugin: get
+      source: field_overall_viie_date_3
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_4:
+    -
+      plugin: get
+      source: field_overall_viie_date_4
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_5:
+    -
+      plugin: get
+      source: field_overall_viie_date_5
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_6:
+    -
+      plugin: get
+      source: field_overall_viie_date_6
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_7:
+    -
+      plugin: get
+      source: field_overall_viie_date_7
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_8:
+    -
+      plugin: get
+      source: field_overall_viie_date_8
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_9:
+    -
+      plugin: get
+      source: field_overall_viie_date_9
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viie_date_10:
+    -
+      plugin: get
+      source: field_overall_viie_date_10
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_footnotes_viie: field_footnotes_viie
   # Section VIII.A
   # Placeholder section description.
@@ -2181,11 +2751,41 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_viiia_num_grant: field_overall_viiia_num_grant
-  field_overall_viiia_num_denied: field_overall_viiia_num_denied
-  field_overall_viiia_med_days_jud: field_overall_viiia_med_days_jud
-  field_overall_viiia_avg_days_jud: field_overall_viiia_avg_days_jud
-  field_overall_viiia_num_jud_w10: field_overall_viiia_num_jud_w10
+  field_overall_viiia_num_grant:
+    -
+      plugin: get
+      source: field_overall_viiia_num_grant
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viiia_num_denied:
+    -
+      plugin: get
+      source: field_overall_viiia_num_denied
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viiia_med_days_jud:
+    -
+      plugin: get
+      source: field_overall_viiia_med_days_jud
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viiia_avg_days_jud:
+    -
+      plugin: get
+      source: field_overall_viiia_avg_days_jud
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_viiia_num_jud_w10:
+    -
+      plugin: get
+      source: field_overall_viiia_num_jud_w10
+    -
+      plugin: default_value
+      default_value: 0
   field_footnotes_viiia: field_footnotes_viiia
   # Section VIII.B
   # Placeholder section description.
@@ -2220,8 +2820,20 @@ process:
             - '1'
   field_overall_viiib_num_grant: field_overall_viiib_num_grant
   field_overall_viiib_num_denied: field_overall_viiib_num_denied
-  field_overall_viiib_med_days_jud: field_overall_viiib_med_days_jud
-  field_overall_viiib_avg_days_jud: field_overall_viiib_avg_days_jud
+  field_overall_viiib_med_days_jud:
+    -
+      plugin: get
+      source: field_overall_viiib_med_days_jud
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_viiib_avg_days_jud:
+    -
+      plugin: get
+      source: field_overall_viiib_avg_days_jud
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_footnotes_viiib: field_footnotes_viiib
   # Section IX
   # Placeholder section description.
@@ -2394,7 +3006,13 @@ process:
           index:
             - '1'
   field_overall_xiia_back_req_end_: field_overall_xiia_back_req_end_
-  field_overall_xiia_back_app_end_: field_overall_xiia_back_app_end_
+  field_overall_xiia_back_app_end_:
+    -
+      plugin: get
+      source: field_overall_xiia_back_app_end_
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_footnotes_xiia: field_footnotes_xiia
   # Section XII.B
   # Placeholder section description.
@@ -2463,26 +3081,146 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_xiic_num_days_1: field_overall_xiic_num_days_1
-  field_overall_xiic_num_days_2: field_overall_xiic_num_days_2
-  field_overall_xiic_num_days_3: field_overall_xiic_num_days_3
-  field_overall_xiic_num_days_4: field_overall_xiic_num_days_4
-  field_overall_xiic_num_days_5: field_overall_xiic_num_days_5
-  field_overall_xiic_num_days_6: field_overall_xiic_num_days_6
-  field_overall_xiic_num_days_7: field_overall_xiic_num_days_7
-  field_overall_xiic_num_days_8: field_overall_xiic_num_days_8
-  field_overall_xiic_num_days_9: field_overall_xiic_num_days_9
-  field_overall_xiic_num_days_10: field_overall_xiic_num_days_10
-  field_overall_xiic_date_1: field_overall_xiic_date_1
-  field_overall_xiic_date_2: field_overall_xiic_date_2
-  field_overall_xiic_date_3: field_overall_xiic_date_3
-  field_overall_xiic_date_4: field_overall_xiic_date_4
-  field_overall_xiic_date_5: field_overall_xiic_date_5
-  field_overall_xiic_date_6: field_overall_xiic_date_6
-  field_overall_xiic_date_7: field_overall_xiic_date_7
-  field_overall_xiic_date_8: field_overall_xiic_date_8
-  field_overall_xiic_date_9: field_overall_xiic_date_9
-  field_overall_xiic_date_10: field_overall_xiic_date_10
+  field_overall_xiic_num_days_1:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_1
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_2:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_2
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_3:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_3
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_4:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_4
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_5:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_5
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_6:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_6
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_7:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_7
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_8:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_8
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_9:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_9
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_num_days_10:
+    -
+      plugin: get
+      source: field_overall_xiic_num_days_10
+    -
+      plugin: default_value
+      default_value: 0
+  field_overall_xiic_date_1:
+    -
+      plugin: get
+      source: field_overall_xiic_date_1
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_2:
+    -
+      plugin: get
+      source: field_overall_xiic_date_2
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_3:
+    -
+      plugin: get
+      source: field_overall_xiic_date_3
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_4:
+    -
+      plugin: get
+      source: field_overall_xiic_date_4
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_5:
+    -
+      plugin: get
+      source: field_overall_xiic_date_5
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_6:
+    -
+      plugin: get
+      source: field_overall_xiic_date_6
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_7:
+    -
+      plugin: get
+      source: field_overall_xiic_date_7
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_8:
+    -
+      plugin: get
+      source: field_overall_xiic_date_8
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_9:
+    -
+      plugin: get
+      source: field_overall_xiic_date_9
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_overall_xiic_date_10:
+    -
+      plugin: get
+      source: field_overall_xiic_date_10
+    -
+      plugin: default_value
+      default_value: 'N/A'
   field_footnotes_xiic: field_footnotes_xiic
   # Section XII.D.1
   # Placeholder section description.

@@ -43,14 +43,20 @@ function foia_annual_data_report_form_node_annual_foia_report_data_form_alter(&$
  */
 function foia_annual_data_report_ajax_new_node(array &$form) {
 
+  // The 'change.agency' event corresponds to the event triggered in
+  // the foia_change_report_agency library that is attached to this element.
+  // This is a workaround for IE11, which does not fire the change event on
+  // this input when selecting a value from the autocomplete dropdown list.
   $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
     'callback' => 'foia_annual_data_report_create_node',
-    'event' => 'change',
+    'event' => 'change.agency',
     'progress' => [
       'type' => 'throbber',
       'message' => 'Please Wait...',
     ],
   ];
+
+  $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
 
 }
 
@@ -62,14 +68,19 @@ function foia_annual_data_report_ajax_new_node(array &$form) {
  */
 function foia_annual_data_report_ajax_existing_node(array &$form) {
 
+  // The 'change.agency' event corresponds to the event triggered in
+  // the foia_change_report_agency library that is attached to this element.
+  // This is a workaround for IE11, which does not fire the change event on
+  // this input when selecting a value from the autocomplete dropdown list.
   $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
     'callback' => 'foia_annual_data_report_refresh',
-    'event' => 'change',
+    'event' => 'change.agency',
     'progress' => [
       'type' => 'throbber',
       'message' => 'Please Wait...',
     ],
   ];
+  $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
 
 }
 

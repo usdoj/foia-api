@@ -72,6 +72,7 @@ class NodeToDocxHandler implements ContainerAwareInterface {
     $docx->embedHTML($html);
 
     $file_path = drupal_realpath(file_default_scheme() . '://');
+    $docx->modifyPageLayout('letter-landscape');
     $docx->createDocx($file_path . '/' . $file_name_output);
     $buffer = file_get_contents($file_path . '/' . $file_name_output . '.docx');
     header('Content-Description: File Transfer');

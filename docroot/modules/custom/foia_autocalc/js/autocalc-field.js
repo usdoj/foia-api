@@ -20,12 +20,20 @@
   function calculateField(fieldName, fieldSettings) {
     var totalValues = {};
     var idSelector = '';
+    var isTotalNA = true;
 
     fieldSettings.forEach(function (fieldSetting) {
       $(convertToFieldSelector(fieldSetting) + ' input').each(function() {
+        var value = $(this).val();
         var selectedValue = 0;
-        if (isNumeric($(this).val())) {
-          selectedValue = Number($(this).val());
+        if (String(value).toLowerCase() === "n/a") {
+          var selectedValue = null;
+        }
+        else {
+          isTotalNA = false;
+          if ( isNumeric(value) ) {
+            selectedValue = Number($(this).val());
+          }
         }
 
         // Get the selector for this field.
@@ -39,7 +47,9 @@
 
         // Add value to the selector.
         if (totalValues.hasOwnProperty(idSelector)) {
-          totalValues[idSelector] += selectedValue;
+          if(selectedValue !== null) {
+            totalValues[idSelector] += selectedValue;
+          }
         }
         else {
           totalValues[idSelector] = selectedValue;
@@ -48,6 +58,10 @@
     });
 
     Object.keys(totalValues).forEach(function (selector) {
+      // Set overall value to "N/A" if all fields are "N/A".
+      if(isTotalNA) {
+        totalValues[selector] = "N/A";
+      }
       if (selector == 'all') {
         $(convertToFieldSelector({ field: fieldName }) + ' input').val(totalValues[selector]).trigger('change');
       }

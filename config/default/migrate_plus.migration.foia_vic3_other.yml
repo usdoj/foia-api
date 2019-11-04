@@ -51,7 +51,19 @@ process:
   status:
     plugin: default_value
     default_value: true
-  field_desc_oth_reasons: field_desc_oth_reasons
-  field_num_relied_upon: field_num_relied_upon
+  field_desc_oth_reasons:
+    -
+      plugin: get
+      source: field_desc_oth_reasons
+    -
+      plugin: default_value
+      default_value: N/A
+  field_num_relied_upon:
+    -
+      plugin: get
+      source: field_num_relied_upon
+    -
+      plugin: default_value
+      default_value: 0
 destination: null
 migration_dependencies: {  }

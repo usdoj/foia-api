@@ -127,26 +127,146 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_num_days_1: field_num_days_1
-  field_num_days_2: field_num_days_2
-  field_num_days_3: field_num_days_3
-  field_num_days_4: field_num_days_4
-  field_num_days_5: field_num_days_5
-  field_num_days_6: field_num_days_6
-  field_num_days_7: field_num_days_7
-  field_num_days_8: field_num_days_8
-  field_num_days_9: field_num_days_9
-  field_num_days_10: field_num_days_10
-  field_date_1: field_date_1
-  field_date_2: field_date_2
-  field_date_3: field_date_3
-  field_date_4: field_date_4
-  field_date_5: field_date_5
-  field_date_6: field_date_6
-  field_date_7: field_date_7
-  field_date_8: field_date_8
-  field_date_9: field_date_9
-  field_date_10: field_date_10
+  field_num_days_1:
+    -
+      plugin: get
+      source: field_num_days_1
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_2:
+    -
+      plugin: get
+      source: field_num_days_2
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_3:
+    -
+      plugin: get
+      source: field_num_days_3
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_4:
+    -
+      plugin: get
+      source: field_num_days_4
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_5:
+    -
+      plugin: get
+      source: field_num_days_5
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_6:
+    -
+      plugin: get
+      source: field_num_days_6
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_7:
+    -
+      plugin: get
+      source: field_num_days_7
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_8:
+    -
+      plugin: get
+      source: field_num_days_8
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_9:
+    -
+      plugin: get
+      source: field_num_days_9
+    -
+      plugin: default_value
+      default_value: 0
+  field_num_days_10:
+    -
+      plugin: get
+      source: field_num_days_10
+    -
+      plugin: default_value
+      default_value: 0
+  field_date_1:
+    -
+      plugin: get
+      source: field_date_1
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_2:
+    -
+      plugin: get
+      source: field_date_2
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_3:
+    -
+      plugin: get
+      source: field_date_3
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_4:
+    -
+      plugin: get
+      source: field_date_4
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_5:
+    -
+      plugin: get
+      source: field_date_5
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_6:
+    -
+      plugin: get
+      source: field_date_6
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_7:
+    -
+      plugin: get
+      source: field_date_7
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_8:
+    -
+      plugin: get
+      source: field_date_8
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_9:
+    -
+      plugin: get
+      source: field_date_9
+    -
+      plugin: default_value
+      default_value: 'N/A'
+  field_date_10:
+    -
+      plugin: get
+      source: field_date_10
+    -
+      plugin: default_value
+      default_value: 'N/A'
 migration_dependencies:
   required:
     - component_viie_oldest_pending

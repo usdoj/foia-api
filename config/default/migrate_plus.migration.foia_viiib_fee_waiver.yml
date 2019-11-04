@@ -71,8 +71,20 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_avg_days_jud: field_avg_days_jud
-  field_med_days_jud: field_med_days_jud
+  field_avg_days_jud:
+    -
+      plugin: get
+      source: field_avg_days_jud
+    -
+      plugin: default_value
+      default_value: N/A
+  field_med_days_jud:
+    -
+      plugin: get
+      source: field_med_days_jud
+    -
+      plugin: default_value
+      default_value: N/A
   field_num_denied: field_num_denied
   field_num_grant: field_num_grant
 destination: null

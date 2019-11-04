@@ -175,7 +175,7 @@ EOS;
    */
   protected function addFootnote($field, \DOMElement $parent) {
     $footnote = trim(strip_tags($this->node->get($field)->value));
-    if ($footnote) {
+    if ($footnote && !empty($footnote)) {
       $this->addElementNs('foia:FootnoteText', $parent, SafeMarkup::checkPlain($footnote));
     }
   }
@@ -574,13 +574,11 @@ EOS;
       'field_full_grants' => 'foia:foia:RequestDispositionFullGrantQuantity',
       'field_part_grants_denials' => 'foia:RequestDispositionPartialGrantQuantity',
       'field_full_denials_ex' => 'foia:RequestDispositionFullExemptionDenialQuantity',
-      'field_total' => 'foia:RequestDispositionTotalQuantity',
     ];
     $overall_map = [
       'field_overall_vb1_full_grants' => 'foia:RequestDispositionFullGrantQuantity',
       'field_overall_vb1_part_grants_de' => 'foia:RequestDispositionPartialGrantQuantity',
       'field_overall_vb1_full_denials_e' => 'foia:RequestDispositionFullExemptionDenialQuantity',
-      'field_overall_vb1_total' => 'foia:RequestDispositionTotalQuantity',
     ];
     $reason_map = [
       'field_no_rec' => 'NoRecords',
@@ -616,6 +614,8 @@ EOS;
       }
       // Add quantity for each denial reason.
       $this->addLabeledQuantity($component, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $reason_map);
+      // Add Request Disposition Total.
+      $this->addElementNs('foia:RequestDispositionTotalQuantity', $item, $component->get('field_total')->value);
     }
 
     // Add overall data.
@@ -627,6 +627,11 @@ EOS;
       }
       // Add quantity for each denial reason.
       $this->addLabeledQuantity($this->node, $item, 'foia:NonExemptionDenial', 'foia:NonExemptionDenialReasonCode', 'foia:NonExemptionDenialQuantity', $overall_reason_map);
+      // Add Request Disposition Total.
+      $total = isset($component) && !is_null($component)
+        ? $component->get('field_total')->value
+        : NULL;
+      $this->addElementNs('foia:RequestDispositionTotalQuantity', $item, $total);
     }
 
     $this->addProcessingAssociations($component_data, $section, 'foia:RequestDispositionOrganizationAssociation', 'RD');

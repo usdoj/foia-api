@@ -107,19 +107,97 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_no_rec: no_rec
-  field_rec_ref_to_an_comp: rec_ref_to_an_comp
-  field_req_withdrawn: req_withdrawn
-  field_fee_related_reason: fee_related_reason
-  field_rec_not_desc: rec_not_desc
-  field_imp_req_oth_reason: imp_req_oth_reason
-  field_not_agency_record: not_agency_record
-  field_dup_request: dup_request
-  field_oth: oth
-  field_full_grants: full_grants
-  field_part_grants_denials: part_grants_denials
-  field_full_denials_ex: full_denials_ex
-  field_total: total
+  field_no_rec:
+    -
+      plugin: get
+      source: no_rec
+    -
+      plugin: default_value
+      default_value: 0
+  field_rec_ref_to_an_comp:
+    -
+      plugin: get
+      source: rec_ref_to_an_comp
+    -
+      plugin: default_value
+      default_value: 0
+  field_req_withdrawn:
+    -
+      plugin: get
+      source: req_withdrawn
+    -
+      plugin: default_value
+      default_value: 0
+  field_fee_related_reason:
+    -
+      plugin: get
+      source: fee_related_reason
+    -
+      plugin: default_value
+      default_value: 0
+  field_rec_not_desc:
+    -
+      plugin: get
+      source: rec_not_desc
+    -
+      plugin: default_value
+      default_value: 0
+  field_imp_req_oth_reason:
+    -
+      plugin: get
+      source: imp_req_oth_reason
+    -
+      plugin: default_value
+      default_value: 0
+  field_not_agency_record:
+    -
+      plugin: get
+      source: not_agency_record
+    -
+      plugin: default_value
+      default_value: 0
+  field_dup_request:
+    -
+      plugin: get
+      source: dup_request
+    -
+      plugin: default_value
+      default_value: 0
+  field_oth:
+    -
+      plugin: get
+      source: oth
+    -
+      plugin: default_value
+      default_value: 0
+  field_full_grants:
+    -
+      plugin: get
+      source: full_grants
+    -
+      plugin: default_value
+      default_value: 0
+  field_part_grants_denials:
+    -
+      plugin: get
+      source: part_grants_denials
+    -
+      plugin: default_value
+      default_value: 0
+  field_full_denials_ex:
+    -
+      plugin: get
+      source: full_denials_ex
+    -
+      plugin: default_value
+      default_value: 0
+  field_total:
+    -
+      plugin: get
+      source: total
+    -
+      plugin: default_value
+      default_value: 0
 destination: null
 migration_dependencies:
   required:
