@@ -18,6 +18,7 @@ use Drupal\Core\Ajax\RedirectCommand;
 function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Add the AJAX save callbacks.
   foia_annual_data_report_ajax_existing_node($form);
+  foia_annual_data_report_set_default_report_year($form);
 
   // Force a submit function to increase memory limit before core's submit.
   foreach (array_keys($form['actions']) as $action) {
@@ -32,6 +33,7 @@ function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alt
  * Implements hook_form_form_id_alter().
  */
 function foia_annual_data_report_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_annual_data_report_set_default_report_year($form);
   foia_annual_data_report_ajax_new_node($form);
 }
 
@@ -100,15 +102,10 @@ function foia_annual_data_report_create_node(array $form, FormStateInterface
 
   $response = new AjaxResponse();
 
-  // Set a temporary title, in case they have not.
-  $report_title = $form_state->getValue('title')[0]['value'] ?
-  $form_state->getValue('title')[0]['value'] :
-  'Agency Report ' . date('Y-m-d');
-
   $node = \Drupal::entityTypeManager()->getStorage('node')->create([
     'type' => 'annual_foia_report_data',
-    'title' => $report_title,
     'field_agency' => $form_state->getValue('field_agency'),
+    'field_foia_annual_report_yr' => $form_state->getValue('field_foia_annual_report_yr'),
   ]);
   $node->save();
 
@@ -186,6 +183,22 @@ function foia_annual_data_report_node_load($entities) {
         break;
       }
     }
+  }
+}
+
+/**
+ * Set the FOIA annual report year field's default value to the current year.
+ *
+ * This allows the auto_entitylabel module to rely on the
+ * field_foia_annual_report_yr value when setting the title.
+ *
+ * @param array $form
+ *   The annual_foia_report_data node add or edit form array.
+ */
+function foia_annual_data_report_set_default_report_year(array &$form) {
+  $default_value = $form['field_foia_annual_report_yr']['widget'][0]['value']['#default_value'] ?? FALSE;
+  if (!$default_value) {
+    $form['field_foia_annual_report_yr']['widget'][0]['value']['#default_value'] = date('Y');
   }
 }
 
