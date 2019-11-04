@@ -52,6 +52,25 @@ class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInte
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function isQueued(FoiaRequestInterface $foiaRequest) {
+    $database = \Drupal::database();
+    $query = $database
+      ->select('queue', 'q')
+      ->condition('name', 'foia_submissions')
+      ->fields('q', ['data']);
+    $result = $query->execute();
+    foreach ($result as $record) {
+      $item = unserialize($record->data);
+      if ($item->id == $foiaRequest->id()) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
    * Log the result of the queueing attempt.
    *
    * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
