@@ -86,7 +86,7 @@
       }
 
       // Fields from sections IX and X to calculate overall_x_perc_costs.
-      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value").change(function() {
+      $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value").once('advCalcOverallXPercCosts').change(function() {
         var overall_x_total_fees = Number($("#edit-field-overall-x-total-fees-0-value").val());
         if ( overall_x_total_fees > 0 ) {
           var overall_ix_proc_costs = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
@@ -96,9 +96,9 @@
         }
       });
 
-      // Fields from section VI A to calculate app_pend_start_yr.
+      // Fields from section VI A to calculate app_pend_end_yr.
       var via = $('input[id^="edit-field-admin-app-via"]');
-      via.change(function() {
+      via.once('advCalcVIAppPendEndYr').change(function() {
         var via_count = $("table[id^='field-admin-app-via-values'] tbody" + " tr");
         var via_vals = [];
 
@@ -118,7 +118,7 @@
           $(edit_pend_end_name).val(via_vals[i].appPendEndYr());
         }
 
-        $("#edit-field-overall-via-app-pend-start-0-value, #edit-field-overall-via-app-recd-yr-0-value, #edit-field-overall-via-app-proc-yr-0-value").change(function() {
+        $("#edit-field-overall-via-app-pend-start-0-value, #edit-field-overall-via-app-recd-yr-0-value, #edit-field-overall-via-app-proc-yr-0-value").once('advCalcVIOverallAppPendEndYr').change(function() {
           var overall_app_pend_start_yr = Number($("#edit-field-overall-via-app-pend-start-0-value").val());
           var overall_app_received_yr = Number($("#edit-field-overall-via-app-recd-yr-0-value").val());
           var overall_app_processed_yr = Number($("#edit-field-overall-via-app-proc-yr-0-value").val());
@@ -166,7 +166,7 @@
       // Section V A automatically calculate field_req_pend_end_yr.
       // req_pend_start_yr + req_received_yr - req_processed_yr = req_pend_end_yr
       var via = $('input[id^="edit-field-foia-requests-va"]');
-      via.change(function() {
+      via.once('advCalcVAReqPendEndYr').change(function() {
         var va_count = $("table[id^='field-foia-requests-va-values'] tbody" + " tr");
         var va_vals = [];
 
@@ -186,7 +186,7 @@
           $(edit_pend_end_name).val(va_vals[i].appPendEndYr());
         }
 
-        $("#edit-field-overall-req-pend-start-yr-0-value, #edit-field-overall-req-received-yr-0-value, #edit-field-overall-req-processed-yr-0-value").change(function() {
+        $("#edit-field-overall-req-pend-start-yr-0-value, #edit-field-overall-req-received-yr-0-value, #edit-field-overall-req-processed-yr-0-value").once('advCalcVAOverallReqPendEndYr').change(function() {
             var overall_app_pend_start_yr = Number($("#edit-field-overall-req-pend-start-yr-0-value").val());
             var overall_app_received_yr = Number($("#edit-field-overall-req-received-yr-0-value").val());
             var overall_app_processed_yr = Number($("#edit-field-overall-req-processed-yr-0-value").val());
@@ -199,7 +199,7 @@
       // Section XII B automatically calculate field_pend_end_yr.
       // pend_start_yr + con_during_yr - proc_start_yr = pend_end_yr
       var xiib = $('input[id^="edit-field-foia-xiib"]');
-      xiib.change(function() {
+      xiib.once('advCalcXIIBPendEndYr').change(function() {
         var xiib_count = $("table[id^='field-foia-xiib-values'] tbody" + " tr");
         var xiib_vals = [];
 
@@ -219,7 +219,7 @@
           $(edit_pend_end_name).val(xiib_vals[i].appPendEndYr());
         }
 
-        $("#edit-field-overall-xiib-pend-start-yr-0-value, #edit-field-overall-xiib-con-during-yr-0-value, #edit-field-overall-xiib-proc-start-yr-0-value").change(function() {
+        $("#edit-field-overall-xiib-pend-start-yr-0-value, #edit-field-overall-xiib-con-during-yr-0-value, #edit-field-overall-xiib-proc-start-yr-0-value").once('advCalcXIIBOverallPendEndYr').change(function() {
           var overall_pend_start_yr = Number($("#edit-field-overall-xiib-pend-start-yr-0-value").val());
           var overall_con_during_yr = Number($("#edit-field-overall-xiib-con-during-yr-0-value").val());
           var overall_processed_yr = Number($("#edit-field-overall-xiib-proc-start-yr-0-value").val());
@@ -232,7 +232,7 @@
       //FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
       // If section IX proc_costs field changes.
       $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']").each(function() {
-        $(this).change(function() {
+        $(this).once('advCalcIXProcCosts').change(function() {
           var proc_costs_agency_val = getAgencyComponent($(this));
 
           if(proc_costs_agency_val != '_none') {
@@ -245,7 +245,7 @@
 
       // If section X total_fees field changes.
       $( "input[name*='field_fees_x']").filter("input[name*='field_total_fees']").each(function() {
-        $(this).change(function() {
+        $(this).once('advCalcXPercCosts').change(function() {
           var total_fees_agency_val = getAgencyComponent($(this));
 
           if(total_fees_agency_val != '_none') {
