@@ -17,15 +17,4 @@ interface FoiaSubmissionQueueingServiceInterface {
    */
   public function enqueue(FoiaRequestInterface $foiaRequest);
 
-  /**
-   * Checks to see if a FOIA request is in the foia_submissions queue.
-   *
-   * @param \Drupal\foia_request\Entity\FoiaRequestInterface $foiaRequest
-   *   The FOIA Request to look for in the queue.
-   *
-   * @return bool
-   *   TRUE if the request is already queued, FALSE otherwise.
-   */
-  public function isQueued(FoiaRequestInterface $foiaRequest);
-
 }
