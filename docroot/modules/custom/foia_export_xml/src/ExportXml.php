@@ -329,6 +329,10 @@ EOS;
         $value = $entity->get($field_prefix . $key . $suffix)->value;
         if ($value) {
           $this->addElementNs("foia:$tag", $item, $value);
+          if (trim(strval($value)) == "<1" || trim(strval($value)) == "&lt;1") {
+            $tag = str_replace("Value", "Code", $tag);
+            $this->addElementNs("foia:$tag", $item, "LT1");
+          }
         }
       }
     }

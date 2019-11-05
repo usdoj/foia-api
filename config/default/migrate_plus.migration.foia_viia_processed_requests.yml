@@ -29,49 +29,97 @@ source:
       label: 'Processed Requests - Simple Response Time - Median'
       selector: 'foia:SimpleResponseTime/foia:ResponseTimeMedianDaysValue'
     -
+      name: field_sim_med_code
+      label: 'Processed Requests - Simple Response Time Code - Median'
+      selector: 'foia:SimpleResponseTime/foia:ResponseTimeMedianDaysCode'
+    -
       name: field_sim_avg
       label: 'Processed Requests - Simple Response Time - Average'
       selector: 'foia:SimpleResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_sim_avg_code
+      label: 'Processed Requests - Simple Response Time Code - Average'
+      selector: 'foia:SimpleResponseTime/foia:ResponseTimeAverageDaysCode'
     -
       name: field_sim_low
       label: 'Processed Requests - Simple Response Time - Lowest'
       selector: 'foia:SimpleResponseTime/foia:ResponseTimeLowestDaysValue'
     -
+      name: field_sim_low_code
+      label: 'Processed Requests - Simple Response Time Code - Lowest'
+      selector: 'foia:SimpleResponseTime/foia:ResponseTimeLowestDaysCode'
+    -
       name: field_sim_high
       label: 'Processed Requests - Simple Response Time - Highest'
       selector: 'foia:SimpleResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_sim_high_code
+      label: 'Processed Requests - Simple Response Time Code - Highest'
+      selector: 'foia:SimpleResponseTime/foia:ResponseTimeHighestDaysCode'
     -
       name: field_comp_med
       label: 'Processed Requests - Complex Response Time - Median'
       selector: 'foia:ComplexResponseTime/foia:ResponseTimeMedianDaysValue'
     -
+      name: field_comp_med_code
+      label: 'Processed Requests - Complex Response Time Code - Median'
+      selector: 'foia:ComplexResponseTime/foia:ResponseTimeMedianDaysCode'
+    -
       name: field_comp_avg
       label: 'Processed Requests - Complex Response Time - Average'
       selector: 'foia:ComplexResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_comp_avg_code
+      label: 'Processed Requests - Complex Response Time Code - Average'
+      selector: 'foia:ComplexResponseTime/foia:ResponseTimeAverageDaysCode'
     -
       name: field_comp_low
       label: 'Processed Requests - Complex Response Time - Lowest'
       selector: 'foia:ComplexResponseTime/foia:ResponseTimeLowestDaysValue'
     -
+      name: field_comp_low_code
+      label: 'Processed Requests - Complex Response Time Code - Lowest'
+      selector: 'foia:ComplexResponseTime/foia:ResponseTimeLowestDaysCode'
+    -
       name: field_comp_high
       label: 'Processed Requests - Complex Response Time - Highest'
       selector: 'foia:ComplexResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_comp_high_code
+      label: 'Processed Requests - Complex Response Time Code - Highest'
+      selector: 'foia:ComplexResponseTime/foia:ResponseTimeHighestDaysCode'
     -
       name: field_exp_med
       label: 'Processed Requests - Expedited Response Time - Median'
       selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysValue'
     -
+      name: field_exp_med_code
+      label: 'Processed Requests - Expedited Response Time Code - Median'
+      selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeMedianDaysCode'
+    -
       name: field_exp_avg
       label: 'Processed Requests - Expedited Response Time - Average'
       selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_exp_avg_code
+      label: 'Processed Requests - Expedited Response Time Code - Average'
+      selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeAverageDaysCode'
     -
       name: field_exp_low
       label: 'Processed Requests - Expedited Response Time - Lowest'
       selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysValue'
     -
+      name: field_exp_low_code
+      label: 'Processed Requests - Expedited Response Time Code - Lowest'
+      selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeLowestDaysCode'
+    -
       name: field_exp_high
       label: 'Processed Requests - Expedited Response Time - Highest'
       selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_exp_high_code
+      label: 'Processed Requests - Expedited Response Time Code - Highest'
+      selector: 'foia:ExpeditedResponseTime/foia:ResponseTimeHighestDaysCode'
   ids:
     report_year:
       type: integer
@@ -103,24 +151,66 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_sim_med:
+  temp_field_sim_med:
     -
       plugin: get
       source: field_sim_med
+  field_sim_med:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_sim_med'
+        - field_sim_med_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A
-  field_sim_avg:
+  temp_field_sim_avg:
     -
       plugin: get
       source: field_sim_avg
+  field_sim_avg:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_sim_avg'
+        - field_sim_avg_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A
-  field_sim_low:
+  temp_field_sim_low:
     -
       plugin: get
       source: field_sim_low
+  field_sim_low:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_sim_low'
+        - field_sim_low_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: static_map
       map:
@@ -129,31 +219,87 @@ process:
     -
       plugin: default_value
       default_value: N/A
-  field_sim_high:
+  temp_field_sim_high:
     -
       plugin: get
       source: field_sim_high
+  field_sim_high:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_sim_high'
+        - field_sim_high_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A
-  field_comp_med:
+  temp_field_comp_med:
     -
       plugin: get
       source: field_comp_med
+  field_comp_med:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_comp_med'
+        - field_comp_med_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A
-  field_comp_avg:
+  temp_field_comp_avg:
     -
       plugin: get
       source: field_comp_avg
+  field_comp_avg:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_comp_avg'
+        - field_comp_avg_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A
-  field_comp_low:
+  temp_field_comp_low:
     -
       plugin: get
       source: field_comp_low
+  field_comp_low:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_comp_low'
+        - field_comp_low_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: static_map
       map:
@@ -162,31 +308,19 @@ process:
     -
       plugin: default_value
       default_value: N/A
-  field_comp_high:
+  temp_field_comp_high:
     -
       plugin: get
       source: field_comp_high
+  field_comp_high:
     -
-      plugin: default_value
-      default_value: N/A
-  field_exp_med:
+      plugin: callback
+      source:
+        - '@temp_field_comp_high'
+        - field_comp_high_code
+      callable: array_filter
     -
-      plugin: get
-      source: field_exp_med
-    -
-      plugin: default_value
-      default_value: N/A
-  field_exp_avg:
-    -
-      plugin: get
-      source: field_exp_avg
-    -
-      plugin: default_value
-      default_value: N/A
-  field_exp_low:
-    -
-      plugin: get
-      source: field_exp_low
+      plugin: array_shift
     -
       plugin: static_map
       map:
@@ -195,10 +329,92 @@ process:
     -
       plugin: default_value
       default_value: N/A
-  field_exp_high:
+  temp_field_exp_med:
+    -
+      plugin: get
+      source: field_exp_med
+  field_exp_med:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_exp_med'
+        - field_exp_med_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_exp_avg:
+    -
+      plugin: get
+      source: field_exp_avg
+  field_exp_avg:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_exp_avg'
+        - field_exp_avg_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_exp_low:
+    -
+      plugin: get
+      source: field_exp_low
+  field_exp_low:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_exp_low'
+        - field_exp_low_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_exp_high:
     -
       plugin: get
       source: field_exp_high
+  field_exp_high:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_exp_high'
+        - field_exp_high_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: default_value
       default_value: N/A
