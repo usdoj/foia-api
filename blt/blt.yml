@@ -23,21 +23,21 @@ drush:
 modules:
   local:
     enable: [dblog, devel, seckit, views_ui]
-    uninstall: [acquia_connector, shield]
+    uninstall: [acquia_connector]
   ci:
     enable: {  }
-    uninstall: [acquia_connector, shield, simplesamlphp_auth]
+    uninstall: [acquia_connector, simplesamlphp_auth]
   dev:
-    enable: [acquia_connector, shield]
+    enable: [acquia_connector]
     uninstall: {  }
   test:
-    enable: [acquia_connector, shield]
+    enable: [acquia_connector]
     uninstall: [devel, views_ui]
   uat:
-    enable: [acquia_connector, shield]
+    enable: [acquia_connector]
     uninstall: [devel, views_ui]
   prod:
-    enable: [acquia_connector, shield]
+    enable: [acquia_connector]
     uninstall: [devel, views_ui]
 target-hooks:
   frontend-setup:
