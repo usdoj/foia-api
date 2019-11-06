@@ -48,13 +48,24 @@ function _foia_request_validate_status(array $element, FormStateInterface $form_
  */
 function foia_request_foia_request_update(FoiaRequestInterface $entity) {
 
+  $new_status = $entity->getRequestStatus();
+  $old_status = $entity->original->getRequestStatus();
+
   // Abort unless the status is STATUS_QUEUED.
-  if ($entity->getRequestStatus() != FoiaRequestInterface::STATUS_QUEUED) {
+  if ($new_status != FoiaRequestInterface::STATUS_QUEUED) {
     return;
   }
 
-  // Abort unless the previous status was not STATUS_QUEUED.
-  if ($entity->original->getRequestStatus() == FoiaRequestInterface::STATUS_QUEUED) {
+  // Abort unless the previous status was not STATUS_QUEUED. This protects
+  // against the case where the status was not changed at all.
+  if ($old_status == FoiaRequestInterface::STATUS_QUEUED) {
+    return;
+  }
+
+  // Abort unless the previous status was not STATUS_SCAN. This protects
+  // against the common case where a request that is 'Pending virus scan'
+  // changes to 'Queued for submission'.
+  if ($old_status == FoiaRequestInterface::STATUS_SCAN) {
     return;
   }
 
