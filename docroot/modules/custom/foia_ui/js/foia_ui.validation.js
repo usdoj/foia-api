@@ -183,6 +183,25 @@
         return this.optional(element) || value <= sum;
       }, "Must be less than or equal to a field.");
 
+      // multiLessThanEqualSumComp
+      jQuery.validator.addMethod("multiLessThanEqualSumComp", function(value, element, params) {
+        value = convertSpecialToZero(value);
+        var sum = 0;
+        var target = 0;
+        params.multiFields.forEach(function(multiField) {
+          var sumElement = $(element).parents('.paragraphs-subform').find("input[name*='" + multiField + "']");
+          sum += Number(convertSpecialToZero($(sumElement).val()));
+        });
+        var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+        for (var i = 0; i < params.target.length; i++){
+          var paramAgencyComponent = $(params.target[i]).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
+          if (paramAgencyComponent == elementAgencyComponent) {
+            target = Number(convertSpecialToZero($( params.target[i] ).val()));
+          }
+        }
+        return this.optional(element) || sum <= target;
+      }, "Sum of fields must be less than or equal to a field.");
+
       // equalToComp
       jQuery.validator.addMethod("equalToComp", function(value, element, params) {
         var elementAgencyComponent = $(element).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
@@ -932,6 +951,20 @@
         messages: {
           equalToHighestComp: "Must equal largest value of Highest number of days."
         }
+      });
+
+      // VII.D. Sum of requests in simple, complex, and expedited must be equal
+      // to or less than number of requests pending at end of FY from V.A
+      $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='field_sim_pend'], input[name*='field_comp_pend'], input[name*='field_exp_pend']").each(function() {
+        $(this).rules( "add", {
+          multiLessThanEqualSumComp: {
+            multiFields: ['field_sim_pend', 'field_comp_pend', 'field_exp_pend'],
+            target: $("input[name*='field_foia_requests_va']").filter("input[name*='field_req_pend_end_yr']"),
+          },
+          messages: {
+            multiLessThanEqualSumComp: "Number pending for simple, complex, and expedited should be less than or equal to number of requests pending at end of FY from V.A."
+          }
+        });
       });
 
       // VII.D. Simple - Number Pending
