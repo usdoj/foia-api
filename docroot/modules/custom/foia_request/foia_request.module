@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Module code for foia_request.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
+use Drupal\webform\Entity\WebformSubmission;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function foia_request_form_foia_request_edit_form_alter(&$form, FormStateInterface $form_state) {
+  // Add special validation to the request_status field.
+  $form['request_status']['widget']['#element_validate'][] = '_foia_request_validate_status';
+}
+
+/**
+ * Custom callback for validating the request_status field.
+ */
+function _foia_request_validate_status(array $element, FormStateInterface $form_state) {
+  // This ensures that a request cannot be changed to STATUS_QUEUED from
+  // anything else, if the webform submission no longer exists.
+  $status = $form_state->getUserInput()['request_status'];
+  if ($status != FoiaRequestInterface::STATUS_QUEUED) {
+    return;
+  }
+  $webform_submission_id = $form_state->getValue('field_webform_submission_id');
+  if (!empty($webform_submission_id[0]['value'])) {
+    $webform_submission = WebformSubmission::load($webform_submission_id[0]['value']);
+    if (!$webform_submission) {
+      $message = t('This request cannot be re-queued because the webform submission no longer exists.');
+      $form_state->setError($element, $message);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * When the request is intentionally changed to "Queued for submission" we
+ * want to actually queue it for submission. This is for cases where the
+ * request fails initially but later needs to be "re-queued". We are extra
+ * careful not to do this at the wrong time, so there are a number of
+ * conditions that need to be met.
+ */
+function foia_request_foia_request_update(FoiaRequestInterface $entity) {
+
+  $new_status = $entity->getRequestStatus();
+  $old_status = $entity->original->getRequestStatus();
+
+  // Abort unless the status is STATUS_QUEUED.
+  if ($new_status != FoiaRequestInterface::STATUS_QUEUED) {
+    return;
+  }
+
+  // Abort unless the previous status was not STATUS_QUEUED. This protects
+  // against the case where the status was not changed at all.
+  if ($old_status == FoiaRequestInterface::STATUS_QUEUED) {
+    return;
+  }
+
+  // Abort unless the previous status was not STATUS_SCAN. This protects
+  // against the common case where a request that is 'Pending virus scan'
+  // changes to 'Queued for submission'.
+  if ($old_status == FoiaRequestInterface::STATUS_SCAN) {
+    return;
+  }
+
+  // Abort unless the request still has submission data in the system.
+  $webformSubmissionId = $entity->get('field_webform_submission_id')->value;
+  $webformSubmission = WebformSubmission::load($webformSubmissionId);
+  if (!$webformSubmission) {
+    return;
+  }
+
+  // If we are still here after all those conditions, we re-queue the request.
+  $queue = \Drupal::service('foia_webform.foia_submission_queueing_service');
+  if ($queue->enqueue($entity)) {
+    $notice = 'FOIA request ' . $entity->id() . ' has been re-queued.';
+    \Drupal::logger('foia_request')->notice($notice);
+  }
+}
