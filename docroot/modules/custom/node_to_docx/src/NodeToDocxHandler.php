@@ -69,7 +69,7 @@ class NodeToDocxHandler implements ContainerAwareInterface {
    */
   private function generateDocxFromHtml($html, $file_name_output) {
     $docx = new CreateDocx();
-    $docx->embedHTML($html);
+    $docx->embedHTML($html, ['useHTMLExtended' => TRUE]);
 
     $file_path = drupal_realpath(file_default_scheme() . '://');
     $docx->modifyPageLayout('letter-landscape');
