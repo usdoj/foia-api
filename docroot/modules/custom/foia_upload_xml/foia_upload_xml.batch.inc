@@ -5,6 +5,8 @@
  * Helper functions called by the Batch API.
  */
 
+use Drupal\file\FileInterface;
+
 /**
  * Executes Migration's Import with Batch context.
  *
@@ -15,9 +17,9 @@
  *
  * @throws \Drupal\migrate\MigrateException
  */
-function foia_upload_xml_execute_migration($migration_list_item, array &$context) {
+function foia_upload_xml_execute_migration($migration_list_item, FileInterface $sourceFile, array &$context) {
   $batch_import = \Drupal::service('foia_upload_xml.batch_import');
-  $batch_import->executeMigration($migration_list_item, $context);
+  $batch_import->executeMigration($migration_list_item, $sourceFile, $context);
 }
 
 /**
