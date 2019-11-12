@@ -3278,14 +3278,20 @@ process:
       plugin: sub_process
       process:
         combined:
-          plugin: migration_lookup
-          source:
-            - '0'
-            - '1'
-            - '2'
-          migration:
-            - foia_xia_subsection_c
-          no_stub: true
+          -
+            plugin: migration_lookup
+            source:
+              - '0'
+              - '1'
+              - '2'
+            migration:
+              - foia_xia_subsection_c
+            no_stub: true
+          -
+            plugin: default_value
+            default_value:
+              -
+              -
         target_id:
           plugin: extract
           source: '@combined'
@@ -3309,14 +3315,20 @@ process:
       plugin: sub_process
       process:
         combined:
-          plugin: migration_lookup
-          source:
-            - '0'
-            - '1'
-            - '2'
-          migration:
-            - foia_xib_subsection_a2
-          no_stub: true
+          -
+            plugin: migration_lookup
+            source:
+              - '0'
+              - '1'
+              - '2'
+            migration:
+              - foia_xib_subsection_a2
+            no_stub: true
+          -
+            plugin: default_value
+            default_value:
+              -
+              -
         target_id:
           plugin: extract
           source: '@combined'
