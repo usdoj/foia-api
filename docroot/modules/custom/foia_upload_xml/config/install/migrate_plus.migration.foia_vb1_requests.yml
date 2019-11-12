@@ -1,5 +1,6 @@
 id: foia_vb1_requests
 label: 'Import V. B. (1) Disposition of FOIA Requests - All Processed Requests paragraphs from NIEM-XML data.'
+class: \Drupal\foia_upload_xml\Plugin\migrate\FoiaUploadXmlMigration
 migration_group: foia_component_data_import
 source:
   item_selector: '/iepd:FoiaAnnualReport/foia:RequestDispositionSection/foia:RequestDisposition'
