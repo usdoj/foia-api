@@ -1,5 +1,6 @@
 id: foia_iv_details
 label: 'Import statute_agency_details paragraphs from NIEM-XML data.'
+class: \Drupal\foia_upload_xml\Plugin\migrate\FoiaUploadXmlMigration
 migration_group: foia_component_data_import_subs
 source:
   item_selector: '/iepd:FoiaAnnualReport/foia:Exemption3StatuteSection/foia:ReliedUponStatuteOrganizationAssociation'

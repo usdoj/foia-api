@@ -1,5 +1,6 @@
 id: foia_va_requests
 label: 'Import FOIA Requests A. paragraphs from NIEM-XML data.'
+class: \Drupal\foia_upload_xml\Plugin\migrate\FoiaUploadXmlMigration
 migration_group: foia_component_data_import
 source:
   item_selector: '/iepd:FoiaAnnualReport/foia:ProcessedRequestSection/foia:ProcessingStatistics'

@@ -1,4 +1,5 @@
 id: foia_viib_processed_requests
+class: \Drupal\foia_upload_xml\Plugin\migrate\FoiaUploadXmlMigration
 label: 'Import VII.B. Information Granted Requests - Response Time (perfected) paragraphs from NIEM-XML data.'
 migration_group: foia_component_data_import
 source:
@@ -204,6 +205,11 @@ process:
         LT1: '<1'
       bypass: true
     -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
       plugin: default_value
       default_value: N/A
   temp_field_sim_high:
@@ -288,6 +294,11 @@ process:
         LT1: '<1'
       bypass: true
     -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
       plugin: default_value
       default_value: N/A
   temp_field_comp_high:
@@ -366,6 +377,11 @@ process:
       callable: 'array_filter'
     -
       plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
     -
       plugin: static_map
       map:
