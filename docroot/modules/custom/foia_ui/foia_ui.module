@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -115,4 +117,54 @@ function foia_ui_preprocess_details(&$variables) {
       }
     }
   }
+}
+
+/**
+ * Implements template_preprocess_field_multiple_value_form().
+ */
+function foia_ui_preprocess_field_multiple_value_form(&$variables) {
+  if (!foia_ui_page_is_annual_foia_report_data_form()) {
+    return;
+  }
+
+  // Add a colgroup to the table with the same number of <col> elements as
+  // there are columns in the first row of data.  This allows styling the
+  // table-layout as fixed and setting widths on <col> elements for better
+  // responsiveness of paragraph tables.
+  // @see foia_ui_admin.css
+  $row_columns = $variables['table']['#rows'][0]['data'] ?? FALSE;
+  $colgroups = $variables['table']['#colgroups'] ?? FALSE;
+  if ($row_columns && !$colgroups) {
+    $variables['table']['#colgroups'] = [
+      [
+        'data' => array_fill(0, count($row_columns), []),
+      ],
+    ];
+  }
+}
+
+/**
+ * Determine if the current page is an annual report node add/edit form.
+ *
+ * @return bool
+ *   TRUE if this is a node add or edit form for an annual foia report data
+ *   node.
+ */
+function foia_ui_page_is_annual_foia_report_data_form() {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  // Depending on the route, the node_type or node parameter will exist in
+  // the routes parameters.  Use the existing parameter to determine the
+  // type of node being created or edited.
+  if ($route_name === 'entity.node.edit_form') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node_type = $node instanceof Node ? $node->getType() : FALSE;
+  }
+
+  if ($route_name === 'node.add') {
+    $node_type = \Drupal::routeMatch()->getParameter('node_type');
+    $node_type = $node_type instanceof NodeType ? $node_type->get('type') : FALSE;
+  }
+
+  return isset($node_type) && $node_type === 'annual_foia_report_data';
 }
