@@ -11,3 +11,7 @@ services:
   foia_upload_xml.report_parser:
     class: Drupal\foia_upload_xml\FoiaUploadXmlReportParser
     arguments: ['@plugin.manager.migrate_plus.data_parser', '@entity_type.manager']
+  foia_upload_xml.migration_subscriber:
+    class: Drupal\foia_upload_xml\EventSubscriber\FoiaUploadXmlMigrationSubscriber
+    tags:
+      - { name: 'event_subscriber' }
