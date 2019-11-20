@@ -1,27 +1,23 @@
+/**
+ * @file
+ * Automatically calculate total fields with non-trivial summation.
+ * See foia_autocalc module for simple sum auto-calculations.
+ */
+
 (function ($, drupalSettings, Drupal) {
+
+  'use strict';
+
   Drupal.behaviors.advcalc_field = {
     attach: function attach() {
 
       /**
-       * Converts value to number and "N/A", "n/a", and "<1" values to 0.
-       *
-       * @param value
-       * @returns {number}
+       * Alias Drupal.FoiaUI utility functions
        */
-      function specialNumber(value) {
-        switch (String(value).toLowerCase()) {
-          case "n/a":
-            return Number(0);
-            break;
-          case "<1":
-            return Number(0.1);
-            break;
-          default:
-            return Number(value);
-        }
-      }
+      var specialNumber = Drupal.FoiaUI.specialNumber;
+      var getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
 
-     /**
+      /**
        * Converts number back to "<1" if between 0 and 1.
        *
        * @param {number}
@@ -46,7 +42,7 @@
        * @param {string} overallFieldID
        *    The calculated overall field HTML fragment ID.
        * @param {string} operator
-       *    The operation to be performed, "<", ">", or "+".
+       *    The operation to be performed, "<" or ">".
        */
       function calcOverall(componentId, componentFieldName, overallFieldID, operator) {
         var ops = {
@@ -59,7 +55,7 @@
             var output = null;
             var isOverallNA = true;
             fields.each(function () {
-              value = $(this).val();
+              var value = $(this).val();
               if (String(value).toLowerCase() != 'n/a') {
                 isOverallNA = false;
                 if (value != '' && value !== null && (output == null || output == "n/a")) {
@@ -229,7 +225,7 @@
       });
 
       // Fields from IX and X to calculate field_perc_costs per agency.
-      //FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
+      // FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
       // If section IX proc_costs field changes.
       $( "input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']").each(function() {
         $(this).once('advCalcIXProcCosts').change(function() {
@@ -266,11 +262,6 @@
           $(perc_costs).val(perc_costs_val);
           return perc_costs;
         }
-      }
-
-      // Gets agency_component field for given field.
-      function getAgencyComponent(changed) {
-        return $(changed).parents('.paragraphs-subform').find("select[name*='field_agency_component']").val();
       }
 
       // Get input field based on changed field ID and agency_component value.
