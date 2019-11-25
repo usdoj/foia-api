@@ -80,7 +80,7 @@ class ExportXml {
       $this->isCentralized = $component_data[0]->field_is_centralized->value;
     }
 
-    $date = $this->node->field_date_prepared->value;
+    $date = date('Y-m-d', strtotime($this->node->field_date_prepared->value));
     $snippet = <<<EOS
 <?xml version="1.0"?>
 <iepd:FoiaAnnualReport xmlns:iepd="http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03" xsi:schemaLocation="http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03 ../schema/exchange/FoiaAnnualReport.xsd" xmlns:foia="http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03" xmlns:i="http://niem.gov/niem/appinfo/2.0" xmlns:j="http://niem.gov/niem/domains/jxdm/4.1" xmlns:nc="http://niem.gov/niem/niem-core/2.0" xmlns:s="http://niem.gov/niem/structures/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -272,7 +272,7 @@ EOS;
       $item = $this->addElementNs('foia:OldestPendingItems', $parent);
       $item->setAttribute('s:id', $prefix . ($delta + 1));
       foreach (range(1, 10) as $index) {
-        $date = $component->get("field_date_$index")->value;
+        $date = date('Y-m-d', strtotime($component->get("field_date_$index")->value));
         $days = $component->get("field_num_days_$index")->value;
         if (preg_match('/^\<1|\d+/', $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
@@ -287,7 +287,7 @@ EOS;
       $item = $this->addElementNs('foia:OldestPendingItems', $parent);
       $item->setAttribute('s:id', $prefix . 0);
       foreach (range(1, 10) as $index) {
-        $date = $this->node->get($overall_date . $index)->value;
+        $date = date('Y-m-d', strtotime($this->node->get($overall_date . $index)->value));
         $days = $this->node->get($overall_days . $index)->value;
         if (preg_match('/^\<1|\d+/', $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
