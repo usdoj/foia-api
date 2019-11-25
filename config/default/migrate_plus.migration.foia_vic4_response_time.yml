@@ -29,17 +29,33 @@ source:
       label: 'Administrative appeals median number of days response time'
       selector: 'foia:ResponseTimeMedianDaysValue'
     -
+      name: field_med_num_days_code
+      label: 'Administrative appeals median number of days response time code'
+      selector: 'foia:ResponseTimeMedianDaysCode'
+    -
       name: field_avg_num_days
       label: 'Administrative appeals average number of days response time'
       selector: 'foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_avg_num_days_code
+      label: 'Administrative appeals average number of days response time code'
+      selector: 'foia:ResponseTimeAverageDaysCode'
     -
       name: field_low_num_days
       label: 'Administrative appeals lowest number of days response time'
       selector: 'foia:ResponseTimeLowestDaysValue'
     -
+      name: field_low_num_days_code
+      label: 'Administrative appeals lowest number of days response time code'
+      selector: 'foia:ResponseTimeLowestDaysCode'
+    -
       name: field_high_num_days
       label: 'Administrative appeals highest number of days response time'
       selector: 'foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_high_num_days_code
+      label: 'Administrative appeals highest number of days response time code'
+      selector: 'foia:ResponseTimeHighestDaysCode'
   ids:
     report_year:
       type: integer
@@ -71,10 +87,90 @@ process:
       plugin: skip_on_empty
       method: row
       message: 'Cannot find an Agency Component node with the given abbreviation.'
-  field_med_num_days: field_med_num_days
-  field_avg_num_days: field_avg_num_days
-  field_low_num_days: field_low_num_days
-  field_high_num_days: field_high_num_days
+  temp_field_med_num_days:
+    -
+      plugin: get
+      source: field_med_num_days
+  field_med_num_days:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_med_num_days'
+        - field_med_num_days_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_avg_num_days:
+    -
+      plugin: get
+      source: field_avg_num_days
+  field_avg_num_days:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_avg_num_days'
+        - field_avg_num_days_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_low_num_days:
+    -
+      plugin: get
+      source: field_low_num_days
+  field_low_num_days:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_low_num_days'
+        - field_low_num_days_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_high_num_days:
+    -
+      plugin: get
+      source: field_high_num_days
+  field_high_num_days:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_high_num_days'
+        - field_high_num_days_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
 destination: null
 migration_dependencies:
   required:

@@ -395,17 +395,33 @@ source:
       label: 'Overall median number of days response time for admin appeals'
       selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeMedianDaysValue'
     -
+      name: field_overall_vic4_med_num_days_code
+      label: 'Overall median number of days response time for admin appeals code'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeMedianDaysCode'
+    -
       name: field_overall_vic4_avg_num_days
       label: 'Overall average number of days response time for admin appeals'
       selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeAverageDaysValue'
+    -
+      name: field_overall_vic4_avg_num_days_code
+      label: 'Overall average number of days response time for admin appeals code'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeAverageDaysCode'
     -
       name: field_overall_vic4_low_num_days
       label: 'Overall lowest number of days response time for admin appeals'
       selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeLowestDaysValue'
     -
+      name: field_overall_vic4_low_num_days_code
+      label: 'Overall lowest number of days response time for admin appeals code'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeLowestDaysCode'
+    -
       name: field_overall_vic4_high_num_days
       label: 'Overall highest number of days response time for admin appeals'
       selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeHighestDaysValue'
+    -
+      name: field_overall_vic4_high_num_days_code
+      label: 'Overall highest number of days response time for admin appeals code'
+      selector: 'foia:AppealResponseTimeSection/foia:ResponseTime[@s:id=../foia:ResponseTimeOrganizationAssociation[nc:OrganizationReference/@s:ref="ORG0"]/foia:ComponentDataReference/@s:ref]/foia:ResponseTimeHighestDaysCode'
     -
       name: field_footnotes_vic4
       label: 'Response Time for Administrative Appeals Footnote'
@@ -1972,10 +1988,90 @@ process:
           source: '@combined'
           index:
             - '1'
-  field_overall_vic4_avg_num_days: field_overall_vic4_avg_num_days
-  field_overall_vic4_high_num_days: field_overall_vic4_high_num_days
-  field_overall_vic4_low_num_days: field_overall_vic4_low_num_days
-  field_overall_vic4_med_num_days: field_overall_vic4_med_num_days
+  temp_field_overall_vic4_avg_num_days:
+    -
+      plugin: get
+      source: field_overall_vic4_avg_num_days
+  field_overall_vic4_avg_num_days:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_overall_vic4_avg_num_days'
+        - field_overall_vic4_avg_num_days_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_overall_vic4_high_num_days:
+    -
+      plugin: get
+      source: field_overall_vic4_high_num_days
+  field_overall_vic4_high_num_days:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_overall_vic4_high_num_days'
+        - field_overall_vic4_high_num_days_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_overall_vic4_low_num_days:
+    -
+      plugin: get
+      source: field_overall_vic4_low_num_days
+  field_overall_vic4_low_num_days:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_overall_vic4_low_num_days'
+        - field_overall_vic4_low_num_days_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
+  temp_field_overall_vic4_med_num_days:
+    -
+      plugin: get
+      source: field_overall_vic4_med_num_days
+  field_overall_vic4_med_num_days:
+    -
+      plugin: callback
+      source:
+        - '@temp_field_overall_vic4_med_num_days'
+        - field_overall_vic4_med_num_days_code
+      callable: array_filter
+    -
+      plugin: array_shift
+    -
+      plugin: static_map
+      map:
+        LT1: '<1'
+      bypass: true
+    -
+      plugin: default_value
+      default_value: N/A
   field_footnotes_vic4: field_footnotes_vic4
   field_admin_app_vic5:
     -

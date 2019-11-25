@@ -80,7 +80,7 @@ class ExportXml {
       $this->isCentralized = $component_data[0]->field_is_centralized->value;
     }
 
-    $date = date('Y-m-d', strtotime($this->node->field_date_prepared->value));
+    $date = date('Y-m-d', strtotime($this->node->changed->value));
     $snippet = <<<EOS
 <?xml version="1.0"?>
 <iepd:FoiaAnnualReport xmlns:iepd="http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03" xsi:schemaLocation="http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03 ../schema/exchange/FoiaAnnualReport.xsd" xmlns:foia="http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03" xmlns:i="http://niem.gov/niem/appinfo/2.0" xmlns:j="http://niem.gov/niem/domains/jxdm/4.1" xmlns:nc="http://niem.gov/niem/niem-core/2.0" xmlns:s="http://niem.gov/niem/structures/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -233,7 +233,10 @@ EOS;
       $item = $this->addElementNs($data_tag, $parent);
       $item->setAttribute('s:id', $prefix . ($delta + 1));
       foreach ($map as $field => $tag) {
-        $this->addElementNs($tag, $item, $component->get($field)->value);
+        $value = $component->get($field)->value;
+        $this->responseTimeHandleLessThanOneCode($tag, $value);
+        $this->addElementNs($tag, $item, $value);
+        unset($value);
       }
     }
 
@@ -242,7 +245,10 @@ EOS;
       $item = $this->addElementNs($data_tag, $parent);
       $item->setAttribute('s:id', $prefix . '0');
       foreach ($overall_map as $field => $tag) {
-        $this->addElementNs($tag, $item, $this->node->get($field)->value);
+        $value = $this->node->get($field)->value;
+        $this->responseTimeHandleLessThanOneCode($tag, $value);
+        $this->addElementNs($tag, $item, $value);
+        unset($value);
       }
     }
   }
@@ -328,14 +334,78 @@ EOS;
       foreach ($types as $suffix => $tag) {
         $value = $entity->get($field_prefix . $key . $suffix)->value;
         if ($value) {
+          $this->responseTimeHandleLessThanOneCode($tag, $value);
           $this->addElementNs("foia:$tag", $item, $value);
-          if (trim(strval($value)) == "<1" || trim(strval($value)) == "&lt;1") {
-            $tag = str_replace("Value", "Code", $tag);
-            $this->addElementNs("foia:$tag", $item, "LT1");
-          }
         }
       }
     }
+  }
+
+  /**
+   * Handles changing <1 values and tags to LT1 codes.
+   *
+   * @param string $tag
+   *   An export xml tag element name.
+   * @param string $value
+   *   A value being added to the xml element.
+   */
+  protected function responseTimeHandleLessThanOneCode(&$tag, &$value) {
+    if (!$this->isResponseTimeValueTag($tag)) {
+      return;
+    }
+
+    if (!$this->responseTimeValueIsLessThanOne($value)) {
+      return;
+    }
+
+    $tag = str_replace("Value", "Code", $tag);
+    $value = 'LT1';
+  }
+
+  /**
+   * An array of ResponseTime value tags that can be substituted with codes.
+   *
+   * @return array
+   *   An array of ResponseTime value tags that can be substituted with
+   *   ResponseTime codes.
+   */
+  protected function responseTimeSubstitutionTags() {
+    return [
+      'ResponseTimeMedianDaysValue',
+      'ResponseTimeAverageDaysValue',
+      'ResponseTimeLowestDaysValue',
+      'ResponseTimeHighestDaysValue',
+    ];
+  }
+
+  /**
+   * Checks if a given xml element name is a ResponseTime value tag.
+   *
+   * @param string $tag
+   *   An xml element name.
+   *
+   * @return bool
+   *   TRUE if the tag in question could be substituted in the export with a
+   *   ResponseTime code tag.
+   */
+  protected function isResponseTimeValueTag($tag) {
+    // Trim the prefix 'foia:' from the tag when checking if it's in the
+    // responseTimeSubstitutionTags() array b/c the tags passed from the
+    // componentData() method and the addResponseTimes() method are different.
+    return in_array(str_replace('foia:', '', $tag), $this->responseTimeSubstitutionTags());
+  }
+
+  /**
+   * Checks if a value is either '<1' or the encoded value '&lt;1'.
+   *
+   * @param string $value
+   *   A field value.
+   *
+   * @return bool
+   *   TRUE if the value is equal to <1 or '&lt;1'.
+   */
+  protected function responseTimeValueIsLessThanOne($value) {
+    return in_array(trim(strval($value)), ["<1", "&lt;1"]);
   }
 
   /**
