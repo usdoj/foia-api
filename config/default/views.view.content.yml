@@ -130,7 +130,7 @@ display:
               empty_column: false
               responsive: ''
             moderation_state:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -541,6 +541,16 @@ display:
           admin_label: author
           required: true
           plugin_id: standard
+        moderation_state:
+          id: moderation_state
+          table: node_field_data
+          field: moderation_state
+          relationship: none
+          group_type: group
+          admin_label: 'Content moderation state'
+          required: false
+          entity_type: node
+          plugin_id: standard
       show_admin_links: false
       filter_groups:
         operator: AND
@@ -839,7 +849,7 @@ display:
           id: moderation_state
           table: content_moderation_state_field_data
           field: moderation_state
-          relationship: none
+          relationship: moderation_state
           group_type: group
           admin_label: ''
           label: Status
