@@ -9,6 +9,8 @@ jquery_validation:
     gpl-compatible: true
   js:
     /libraries/jquery-validation/dist/jquery.validate.min.js: {}
+  dependencies:
+    - core/jquery
 
 foia_ui_validation:
   js:
@@ -16,6 +18,13 @@ foia_ui_validation:
   css:
     state:
       css/foia_ui.validation.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery.once
+    - foia_ui/jquery_validation
+    - foia_ui/foia_ui_utility
 
 foia_ui_admin:
   css:
@@ -29,3 +38,7 @@ foia_ui_admin:
 foia_ui_utility:
   js:
     js/foia_ui.utility.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
