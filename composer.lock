@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7b5b9d4e3067031c5fa3331113b73ba",
+    "content-hash": "9a7573eac8f2c7cd9f4be0c926e34ff3",
     "packages": [
         {
             "name": "acquia/blt",
@@ -874,7 +874,7 @@
             "version": "3.4.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "15bc73803f76bc53b654b9fdbbbc096f56d7c03d"
             },
             "dist": {
@@ -2200,6 +2200,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -4339,6 +4340,9 @@
                     "JSONAPI fix for missing entities": "https://www.drupal.org/files/issues/2019-06-21/drupal--jsonapi--3063326--public-name-for-relatable-fields.patch",
                     "FOIA-96: Style read-only inputs as disabled": "./patches/FOIA-96-readonly-inputs.patch",
                     "FOIA-227: large numbers w/decimals fail validation": "https://www.drupal.org/files/issues/2019-05-04/drupal_2230909_138.patch",
+                    "FOIA-32: Dynamically provide action plugins for every moderation state change": "https://www.drupal.org/files/issues/2019-11-20/2797583_provide_moderation_states_as_actions_128.patch",
+                    "FOIA-32: Allow null value for ViewsSelection validateReferenceableEntities": "https://www.drupal.org/files/issues/2909132-3.patch",
+                    "FOIA-32: Exclude Agency/Component from validation for bulk publishing": "./patches/FOIA-32-validator.patch",
                     "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2869592-remove-update-warning-7.patch",
                     "2885441 - EntityReferenceAutocompleteWidget should define its size setting as an integer": "https://www.drupal.org/files/issues/2885441-2.patch",
                     "2815221 - Add quickedit to the latest-revision route": "https://www.drupal.org/files/issues/2019-03-05/2815221-116.patch",
