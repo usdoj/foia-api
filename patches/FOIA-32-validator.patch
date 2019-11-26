@@ -1,0 +1,16 @@
+diff --git a/core/lib/Drupal/Core/Entity/Plugin/Validation/Constraint/ValidReferenceConstraintValidator.php b/core/lib/Drupal/Core/Entity/Plugin/Validation/Constraint/ValidReferenceConstraintValidator.php
+index aef9fb0018..2f6998d948 100644
+--- a/core/lib/Drupal/Core/Entity/Plugin/Validation/Constraint/ValidReferenceConstraintValidator.php
++++ b/core/lib/Drupal/Core/Entity/Plugin/Validation/Constraint/ValidReferenceConstraintValidator.php
+@@ -143,6 +143,11 @@ class ValidReferenceConstraintValidator extends ConstraintValidator implements C
+             continue;
+           }
+
++          // Exclude agency/component validation for bulk publishing.
++          if(\Drupal::routeMatch()->getRouteName() == 'system.admin_content' && $handler->getConfiguration()['view']['view_name'] == "agency_component_by_agency") {
++            continue;
++          }
++
+           $message = isset($existing_entities[$target_id]) ? $constraint->message : $constraint->nonExistingMessage;
+           $this->context->buildViolation($message)
+             ->setParameter('%type', $target_type_id)
