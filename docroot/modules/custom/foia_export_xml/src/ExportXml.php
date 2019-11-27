@@ -278,7 +278,11 @@ EOS;
       $item = $this->addElementNs('foia:OldestPendingItems', $parent);
       $item->setAttribute('s:id', $prefix . ($delta + 1));
       foreach (range(1, 10) as $index) {
-        $date = date('Y-m-d', strtotime($component->get("field_date_$index")->value));
+        $raw_date = $component->get("field_date_$index")->value;
+        if ($raw_date) {
+          $raw_date = $this->convertDateSeparators2Slashes($raw_date);
+        }
+        $date = date('Y-m-d', strtotime($raw_date));
         $days = $component->get("field_num_days_$index")->value;
         if (preg_match('/^\<1|\d+/', $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
@@ -293,7 +297,11 @@ EOS;
       $item = $this->addElementNs('foia:OldestPendingItems', $parent);
       $item->setAttribute('s:id', $prefix . 0);
       foreach (range(1, 10) as $index) {
-        $date = date('Y-m-d', strtotime($this->node->get($overall_date . $index)->value));
+        $raw_date = $this->node->get($overall_date . $index)->value;
+        if ($raw_date) {
+          $raw_date = $this->convertDateSeparators2Slashes($raw_date);
+        }
+        $date = date('Y-m-d', strtotime($raw_date));
         $days = $this->node->get($overall_days . $index)->value;
         if (preg_match('/^\<1|\d+/', $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
@@ -302,6 +310,30 @@ EOS;
         }
       }
     }
+  }
+
+  /**
+   * Convert date punctuation to slashes.
+   *
+   * Checks date string for periods ('.') or hyphens ('-') and converts to
+   * slashes ('/').
+   *
+   * @param string $raw_date
+   *   The date string to be converted if numeric and using periods or hyphens.
+   *
+   * @return mixed
+   *   The date string with modifications (if needed).
+   */
+  protected function convertDateSeparators2Slashes(string $raw_date) {
+    if (!preg_match("/[a-z]/i", $raw_date)) {
+      if (strpos($raw_date, '.') > 0 && substr_count($raw_date, '.') > 1) {
+        $raw_date = str_replace('.', '/', $raw_date);
+      }
+      elseif (strpos($raw_date, '-') > 0 && substr_count($raw_date, '/') > 1) {
+        $raw_date = str_replace('-', '/', $raw_date);
+      }
+    }
+    return $raw_date;
   }
 
   /**
