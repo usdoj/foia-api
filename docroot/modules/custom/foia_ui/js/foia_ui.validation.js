@@ -173,6 +173,9 @@
             return  this.optional(element) || true;
           }
         }
+        else {
+          return 'dependency-mismatch';
+        }
       }, "Must be greater than or equal to a field.");
 
       // equalSumComp
@@ -209,6 +212,9 @@
           }
           return this.optional(element) || value <= sum;
         }
+        else {
+            return 'dependency-mismatch';
+        }
       }, "Must be less than or equal to a field.");
 
       // multiLessThanEqualSumComp
@@ -230,6 +236,9 @@
           }
           return this.optional(element) || sum <= target;
         }
+        else {
+            return 'dependency-mismatch';
+        }
       }, "Sum of fields must be less than or equal to a field.");
 
       // equalToComp
@@ -243,6 +252,9 @@
               return this.optional(element) || value == target;
             }
           }
+        }
+        else {
+          return 'dependency-mismatch';
         }
       }, "Must be equal to a field.");
 
@@ -258,6 +270,9 @@
               return this.optional(element) || value <= target;
             }
           }
+        }
+        else {
+            return 'dependency-mismatch';
         }
       }, "Must be less than or equal to a field.");
 
@@ -280,6 +295,9 @@
             }
           }
         }
+        else {
+            return 'dependency-mismatch';
+        }
       }, "Must be greater than or equal to a field.");
 
       jQuery.validator.addMethod("greaterThanEqualSumComp", function (value, element, params) {
@@ -293,6 +311,9 @@
             }
           }
           return this.optional(element) || value >= sum;
+        }
+        else {
+          return 'dependency-mismatch';
         }
       }, "Must be greater than or equal to sum of the fields.");
 
@@ -419,6 +440,9 @@
 
           // reqProcessedYr == sumVIICTotals - Improper Request for Other - Records Not Reasonably Described
           return (reqProcessedYr == sumVIICTotals - Number(value) - otherField);
+        }
+        else {
+          return 'dependency-mismatch';
         }
       }, "Must not be equal to the average.");
 
