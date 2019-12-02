@@ -80,7 +80,7 @@ class ExportXml {
       $this->isCentralized = $component_data[0]->field_is_centralized->value;
     }
 
-    $date = date('Y-m-d', strtotime($this->node->changed->value));
+    $date = date('Y-m-d', $this->node->getChangedTime());
     $snippet = <<<EOS
 <?xml version="1.0"?>
 <iepd:FoiaAnnualReport xmlns:iepd="http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03" xsi:schemaLocation="http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03 ../schema/exchange/FoiaAnnualReport.xsd" xmlns:foia="http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03" xmlns:i="http://niem.gov/niem/appinfo/2.0" xmlns:j="http://niem.gov/niem/domains/jxdm/4.1" xmlns:nc="http://niem.gov/niem/niem-core/2.0" xmlns:s="http://niem.gov/niem/structures/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
