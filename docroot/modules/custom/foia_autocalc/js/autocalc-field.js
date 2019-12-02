@@ -4,16 +4,20 @@
       var autocalcSettings = drupalSettings.foiaAutocalc.autocalcSettings;
       Object.keys(autocalcSettings).forEach(function(fieldName, fieldIndex) {
         var fieldSettings = autocalcSettings[fieldName];
+
+        // Calculate field on initial form load only.
+        var fieldCalculationsInitialized = fieldSettings['fieldCalculationsInitialized'] || false;
+        if (!fieldCalculationsInitialized) {
+          calculateAllFieldsWithName(fieldName, fieldSettings);
+          fieldSettings['fieldCalculationsInitialized'] = true;
+        }
+
         fieldSettings.forEach(function(fieldSetting) {
           var fieldSelector = convertToFieldSelector(fieldSetting);
           $(fieldSelector + ' input').each(function(index) {
-            // Calculate field on initial form load.
-            $(fieldSelector + ' input').each(function(index) {
-              calculateField(fieldName, fieldSettings);
-            });
             // Bind event listeners to calculate field when input fields are changed.
             $(this).once(fieldSelector + '_' + fieldIndex + '_' + index).on('change', function() {
-              calculateField(fieldName, fieldSettings);
+              calculateAllFieldsWithName(fieldName, fieldSettings);
             });
           });
         });
@@ -21,8 +25,15 @@
     }
   };
 
-  // Determines the value of the automatically calculated field.
-  function calculateField(fieldName, fieldSettings) {
+  /**
+   * Calculates the value of all configured autocalc fields with a given field name.
+   *
+   * @param {string} fieldName
+   *   The name of a field or fields to be autocalculated.
+   * @param {array} fieldSettings
+   *   Settings for all paragraph component or fields that contain an autocalculated field with the given fieldName.
+   */
+  function calculateAllFieldsWithName(fieldName, fieldSettings) {
     var totalValues = {};
     var idSelector = '';
     var isTotalNA = true;
