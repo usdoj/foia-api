@@ -406,6 +406,9 @@
             return true;
           }
         }
+        else {
+          return 'dependency-mismatch';
+        }
       }, "Sum of the fields must be greater than zero.");
 
       // vb1matchDispositionComp: hard-coded for V.B.(1)
