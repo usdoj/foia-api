@@ -279,10 +279,7 @@ EOS;
       $item->setAttribute('s:id', $prefix . ($delta + 1));
       foreach (range(1, 10) as $index) {
         $raw_date = $component->get("field_date_$index")->value;
-        if ($raw_date) {
-          $raw_date = $this->convertDateSeparators2Slashes($raw_date);
-        }
-        $date = date('Y-m-d', strtotime($raw_date));
+        $date = $this->convertDateForExport($raw_date);
         $days = $component->get("field_num_days_$index")->value;
         if (preg_match('/^\<1|\d+/', $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
@@ -298,10 +295,7 @@ EOS;
       $item->setAttribute('s:id', $prefix . 0);
       foreach (range(1, 10) as $index) {
         $raw_date = $this->node->get($overall_date . $index)->value;
-        if ($raw_date) {
-          $raw_date = $this->convertDateSeparators2Slashes($raw_date);
-        }
-        $date = date('Y-m-d', strtotime($raw_date));
+        $date = $this->convertDateForExport($raw_date);
         $days = $this->node->get($overall_days . $index)->value;
         if (preg_match('/^\<1|\d+/', $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
@@ -321,19 +315,38 @@ EOS;
    * @param string $raw_date
    *   The date string to be converted if numeric and using periods or hyphens.
    *
-   * @return mixed
+   * @return string
    *   The date string with modifications (if needed).
    */
-  protected function convertDateSeparators2Slashes(string $raw_date) {
+  protected function convertDateSeparators2Slashes($raw_date) {
+    $new_date = $raw_date;
     if (!preg_match("/[a-z]/i", $raw_date)) {
       if (strpos($raw_date, '.') > 0 && substr_count($raw_date, '.') > 1) {
-        $raw_date = str_replace('.', '/', $raw_date);
+        $new_date = str_replace('.', '/', $raw_date);
       }
-      elseif (strpos($raw_date, '-') > 0 && substr_count($raw_date, '/') > 1) {
-        $raw_date = str_replace('-', '/', $raw_date);
+      elseif (strpos($raw_date, '-') > 0 && substr_count($raw_date, '-') > 1) {
+        $new_date = str_replace('-', '/', $raw_date);
       }
     }
-    return $raw_date;
+    return $new_date;
+  }
+
+  /**
+   * Convert date string to date format (`Y-m-d`) for XML export.
+   *
+   * @param string $raw_date
+   *   User-entered date string to be converted.
+   *
+   * @return false|string
+   *   Formatted date string for export to XML.
+   */
+  protected function convertDateForExport($raw_date) {
+    $date = $this->convertDateSeparators2Slashes($raw_date);
+    $date = date('Y-m-d', strtotime($date));
+    if (!$date || $date == "" || $date == "1969-12-31") {
+      $date = "Invalid date entered";
+    }
+    return $date;
   }
 
   /**
