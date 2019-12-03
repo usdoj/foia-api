@@ -411,11 +411,11 @@
         .filter("input[name*='field_total_fees']")
         .each(function() {
           if (!fieldIsInitialized(this)) {
-            var proc_costs_agency_val = getAgencyComponent($(this));
-            if(proc_costs_agency_val != '_none') {
-              var total_fees = getFieldByAgency('ix_proc_costs', proc_costs_agency_val);
-              var target = getFieldByAgency('x_perc_costs', proc_costs_agency_val);
-              calcPercCosts($(this), total_fees, target);
+            var total_fees_agency_val = getAgencyComponent($(this));
+            if(total_fees_agency_val != '_none') {
+              var proc_costs = getFieldByAgency('ix_proc_costs', total_fees_agency_val);
+              var target = getFieldByAgency('x_perc_costs', total_fees_agency_val);
+              calcPercCosts(proc_costs, $(this), target);
             }
             markFieldInitialized(this);
           }
