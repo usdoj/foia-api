@@ -49,6 +49,9 @@ EOF
 # Eventually the following might probably be better:
 #drush @$site.$target_env entity:delete foia_request
 
+# Clear any queues that may be in progress.
+drush @$site.$target_env sqlq "TRUNCATE queue"
+
 # Delete all webform_submission entities.
 drush @$site.$target_env entity:delete webform_submission
 fi
