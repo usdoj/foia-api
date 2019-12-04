@@ -1,7 +1,17 @@
 services:
   foia_upload_xml.batch_import:
     class: Drupal\foia_upload_xml\FoiaUploadXmlBatchImport
-    arguments: ['@messenger', '@plugin.manager.migration', '@current_user']
+    arguments: ['@messenger', '@foia_upload_xml.migrations_processor', '@current_user']
   foia_upload_xml.report_upload_validator:
     class: Drupal\foia_upload_xml\ReportUploadValidator
+    arguments: ['@foia_upload_xml.report_parser', '@entity_type.manager', '@database']
+  foia_upload_xml.migrations_processor:
+    class: Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor
+    arguments: ['@plugin.manager.migration']
+  foia_upload_xml.report_parser:
+    class: Drupal\foia_upload_xml\FoiaUploadXmlReportParser
     arguments: ['@plugin.manager.migrate_plus.data_parser', '@entity_type.manager']
+  foia_upload_xml.migration_subscriber:
+    class: Drupal\foia_upload_xml\EventSubscriber\FoiaUploadXmlMigrationSubscriber
+    tags:
+      - { name: 'event_subscriber' }

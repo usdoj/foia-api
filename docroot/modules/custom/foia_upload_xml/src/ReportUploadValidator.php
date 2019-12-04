@@ -6,8 +6,8 @@ use Drupal\node\Entity\Node;
 use Drupal\file\FileInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeManager;
-use Drupal\migrate_plus\DataParserPluginManager;
 use Drupal\Core\TypedData\Exception\MissingDataException;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 
 /**
  * Validates that an uploaded report can overwrite existing report data.
@@ -16,12 +16,7 @@ use Drupal\Core\TypedData\Exception\MissingDataException;
  */
 class ReportUploadValidator {
 
-  /**
-   * The data parser plugin manager.
-   *
-   * @var \Drupal\migrate_plus\DataParserPluginManager
-   */
-  protected $dataParserPluginManager;
+  use DependencySerializationTrait;
 
   /**
    * The entity type manager.
@@ -31,51 +26,23 @@ class ReportUploadValidator {
   protected $entityTypeManager;
 
   /**
-   * The uploaded file.
+   * The report xml parser.
    *
-   * @var \Drupal\file\FileInterface
+   * @var \Drupal\foia_upload_xml\FoiaUploadXmlReportParser
    */
-  protected $file;
-
-  /**
-   * SimpleXml data parser configuration for fetching report data.
-   *
-   * @var array
-   */
-  protected $simpleXmlParserConfig = [
-    'data_fetcher_plugin' => 'file',
-    'namespaces' => [
-      'iepd' => 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/exchange/1.03',
-      'foia' => 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03',
-      'nc' => 'http://niem.gov/niem/niem-core/2.0',
-    ],
-    'item_selector' => '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate|/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText',
-    'fields' => [
-      [
-        'name' => 'report_year',
-        'selector' => '/iepd:FoiaAnnualReport/foia:DocumentFiscalYearDate',
-      ],
-      [
-        'name' => 'agency',
-        'selector' => '/iepd:FoiaAnnualReport/nc:Organization/nc:OrganizationAbbreviationText',
-      ],
-    ],
-    'ids' => [
-      "report_year" => ['type' => 'integer'],
-      "agency" => ['type' => 'string'],
-    ],
-  ];
+  protected $foiaUploadXmlReportParser;
 
   /**
    * ReportUploadValidator constructor.
    *
-   * @param \Drupal\migrate_plus\DataParserPluginManager $dataParserPluginManager
-   *   The data parser plugin manager service.
+   * @param \Drupal\foia_upload_xml\FoiaUploadXmlReportParser $foiaUploadXmlReportParser
+   *   The custom parser that gets the report year and agency abbreviation by
+   *   default.
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   The entity type manager service.
    */
-  public function __construct(DataParserPluginManager $dataParserPluginManager, EntityTypeManager $entityTypeManager) {
-    $this->dataParserPluginManager = $dataParserPluginManager;
+  public function __construct(FoiaUploadXmlReportParser $foiaUploadXmlReportParser, EntityTypeManager $entityTypeManager) {
+    $this->foiaUploadXmlReportParser = $foiaUploadXmlReportParser;
     $this->entityTypeManager = $entityTypeManager;
   }
 
@@ -88,20 +55,22 @@ class ReportUploadValidator {
    *   The form state object on which to set errors.
    */
   public function validate(FileInterface $file, FormStateInterface $form_state) {
-    $this->file = $file;
-
-    $file_data = $this->getFileData();
-    $agency_tid = $this->getAgencyFromAbbreviation($file_data['agency'] ?? FALSE);
+    $file_data = $this->foiaUploadXmlReportParser->parse($file);
     $report_year = isset($file_data['report_year']) && !empty($file_data['report_year']) ? (int) $file_data['report_year'] : (int) date('Y');
 
     // If an agency can't be found, allow the upload to continue.
-    if (!$agency_tid) {
+    if (!$file_data['agency_tid']) {
       return;
     }
 
-    if ($this->agencyReportYearIsLocked($agency_tid, $report_year)) {
+    if ($this->agencyReportYearIsLocked($file_data['agency_tid'], $report_year)) {
       $form_state->setErrorByName('submit', \Drupal::translation()
         ->translate("Your agency’s report has already been submitted. If you need to make changes to your agency’s report, please contact OIP."));
+    }
+
+    if ($this->agencyReportYearIsQueued($file_data['agency_tid'], $report_year)) {
+      $form_state->setErrorByName('submit', \Drupal::translation()
+        ->translate("Your agency already uploaded a report for the fiscal year. You may continue working on the existing report. Or you may start over by deleting the existing report before uploading a new XML"));
     }
   }
 
@@ -140,6 +109,40 @@ class ReportUploadValidator {
   }
 
   /**
+   * Check if the given agency and year already has an xml file in the queue.
+   *
+   * @param string $agency_tid
+   *   The agency taxonomy term id to validate against.
+   * @param int $year
+   *   The annual report year to validate against.
+   *
+   * @return bool
+   *   TRUE if a report is queued and this file should not be uploaded, FALSE
+   *   if there is no report in the queue and this validation passes.
+   */
+  public function agencyReportYearIsQueued($agency_tid = NULL, $year = NULL) {
+    if (!$agency_tid) {
+      return FALSE;
+    }
+
+    $year = $year ? (int) $year : (int) date('Y');
+    $queue_items = \Drupal::database()
+      ->select('queue', 'q')
+      ->fields('q')
+      ->condition('name', 'foia_xml_report_import_worker', '=')
+      ->execute();
+
+    foreach ($queue_items as $queue_item) {
+      $data = unserialize($queue_item->data);
+      if ($data->agency == $agency_tid && $data->report_year == $year) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
    * Check if a report is in a workflow state in which it should not be updated.
    *
    * @param \Drupal\node\Entity\Node $node
@@ -157,52 +160,6 @@ class ReportUploadValidator {
       'cleared',
       'published',
     ]);
-  }
-
-  /**
-   * Get data from the uploaded file using the SimpleXml parser.
-   *
-   * @return array
-   *   Report data retrieved from the xpath configuration.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\PluginException
-   */
-  protected function getFileData() {
-    $this->simpleXmlParserConfig['urls'] = [$this->file->getFileUri()];
-    $simple_xml_parser = $this->dataParserPluginManager->createInstance('simple_xml', $this->simpleXmlParserConfig);
-
-    $simple_xml_parser->rewind();
-    $data = $simple_xml_parser->current();
-    unset($simple_xml_parser);
-
-    return $data;
-  }
-
-  /**
-   * Lookup an agency taxonomy term id from the agency's abbreviated name.
-   *
-   * @param string $agency_abbreviation
-   *   An agency's abbreviated name.
-   *
-   * @return bool|mixed
-   *   The agency's taxonomy term id or FALSE if not found.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
-  protected function getAgencyFromAbbreviation($agency_abbreviation) {
-    if (!$agency_abbreviation) {
-      return FALSE;
-    }
-
-    $term_query = $this->entityTypeManager->getStorage('taxonomy_term')
-      ->getQuery()
-      ->condition('vid', 'agency')
-      ->condition('field_agency_abbreviation', $agency_abbreviation);
-
-    $tids = $term_query->execute();
-
-    return !empty($tids) ? reset($tids) : FALSE;
   }
 
   /**

@@ -21,3 +21,51 @@
   height: 1px;
   word-wrap: normal;
 }
+
+
+.node-annual-foia-report-data-form .form-item > table,
+.node-annual-foia-report-data-edit-form .form-item > table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.node-annual-foia-report-data-form .form-item > table > colgroup > col:first-child,
+.node-annual-foia-report-data-edit-form .form-item > table > colgroup > col:first-child {
+  width: 30px;
+}
+
+.node-annual-foia-report-data-form .form-item > table > colgroup > col:last-child,
+.node-annual-foia-report-data-edit-form .form-item > table > colgroup > col:last-child {
+  width: 85px;
+}
+
+
+@media
+screen and (max-width: 1500px),
+(orientation: landscape) and (max-device-width: 1500px){
+  .node-annual-foia-report-data-form .layout-region-node-main,
+  .node-annual-foia-report-data-form .layout-region-node-secondary,
+  .node-annual-foia-report-data-form .layout-region-node-footer,
+  .node-annual-foia-report-data-edit-form .layout-region-node-main,
+  .node-annual-foia-report-data-edit-form .layout-region-node-secondary,
+  .node-annual-foia-report-data-edit-form .layout-region-node-footer {
+    float: none;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+  }
+}
+
+@media
+screen and (min-width: 1501px) and (max-width: 1700px),
+(orientation: landscape) and (min-device-width: 1401px) and (max-device-width: 1600px){
+  .node-annual-foia-report-data-form .paragraphs-subform .vertical-tabs__menu,
+  .node-annual-foia-report-data-edit-form .paragraphs-subform .vertical-tabs__menu {
+    width: 200px;
+  }
+
+  .node-annual-foia-report-data-form .paragraphs-subform .vertical-tabs__panes,
+  .node-annual-foia-report-data-edit-form .paragraphs-subform .vertical-tabs__panes {
+    margin-left: 200px;
+  }
+}

@@ -16,13 +16,12 @@ Feature: Annual FOIA Report Data Feature
   Scenario: Create an Annual FOIA Report Data node.
     Given I am logged in as a user with the 'Administrator' role
     And I am at 'node/add/annual_foia_report_data'
-    And for 'Title' I enter '2019 Test Agency 1 Annual FOIA Report'
     And for 'Agency' I enter 'Federal Testing Agency'
     And for 'FOIA Annual Report Year' I enter '2019'
     And for 'Date Prepared' I enter '08/22/2019'
     When I press the 'Save' button
     Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been created. |
+      | FTA - 2019 - Annual FOIA Report has been created. |
 
   @api
   Scenario: Edit an Annual FOIA Report Data node Section IV Exemption 3 Statutes.
@@ -32,7 +31,7 @@ Feature: Annual FOIA Report Data Feature
     And I press the 'Save' button
     Then I should see the following success messages:
       | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-    
+
 
   @api
   Scenario: Edit an Annual FOIA Report Data node Section V.A. FOIA REQUESTS.

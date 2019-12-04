@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: foia_xiia
-class: null
+class: \Drupal\foia_upload_xml\Plugin\migrate\FoiaUploadXmlMigration
 field_plugin_method: null
 cck_plugin_method: null
 migration_tags: null
@@ -70,7 +70,7 @@ process:
       source: field_back_app_end_yr
     -
       plugin: default_value
-      default_value: 0
+      default_value: N/A
 destination: null
 migration_dependencies:
   required:

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: foia_viiib_fee_waiver
-class: null
+class: \Drupal\foia_upload_xml\Plugin\migrate\FoiaUploadXmlMigration
 field_plugin_method: null
 cck_plugin_method: null
 migration_tags: null
@@ -84,7 +84,7 @@ process:
       source: field_med_days_jud
     -
       plugin: default_value
-      default_value: N/A
+      default_value: 0
   field_num_denied: field_num_denied
   field_num_grant: field_num_grant
 destination: null

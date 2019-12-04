@@ -225,7 +225,6 @@ Feature: Agency Administrator role
       | test  |DOJ                      | description |plain_text| en       |
     When I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add/annual_foia_report_data"
-    And for 'Title' I enter 'A Test Report'
     And for 'Agency' I enter 'test'
     And I select "Draft" from "Save as"
     When I press the 'Save' button
