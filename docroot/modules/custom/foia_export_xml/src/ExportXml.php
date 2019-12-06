@@ -30,7 +30,7 @@ class ExportXml {
   /**
    * The node being processed.
    *
-   * @var Drupal\node\Entity\Node
+   * @var \Drupal\node\Entity\Node
    */
   protected $node;
 
@@ -68,7 +68,7 @@ class ExportXml {
   /**
    * Construct an ExportXml object with root element and header information.
    *
-   * @param Drupal\node\Entity\Node $node
+   * @param \Drupal\node\Entity\Node $node
    *   A node of type annual_foia_report_data.
    */
   public function __construct(Node $node) {
@@ -183,7 +183,7 @@ EOS;
   /**
    * Add data from several fields on an entity, each with a corresponding label.
    *
-   * @param Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   A Drupal entity, such as a node or a paragraph.
    * @param \DOMElement $parent
    *   The parent element to which new nodes will be added.
@@ -213,7 +213,7 @@ EOS;
    * Add data from an array of paragraphs with per-component data and
    * corresponding overall data from the node.
    *
-   * @param Drupal\Core\Entity\EntityInterface[] $component_data
+   * @param \Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
    * @param \DOMElement $parent
@@ -259,7 +259,7 @@ EOS;
    * Add "oldest days" data from an array of paragraphs with per-component data
    * and corresponding overall data from the node.
    *
-   * @param Drupal\Core\Entity\EntityInterface[] $component_data
+   * @param \Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
    * @param \DOMElement $parent
@@ -354,7 +354,7 @@ EOS;
    *
    * Add "response time" data from a node or paragraph.
    *
-   * @param Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   A node or paragraph with response-time data.
    * @param \DOMElement $parent
    *   The parent element to which new nodes will be added.
@@ -458,7 +458,7 @@ EOS;
    *
    * Add "response time increments" data from a node or paragraph.
    *
-   * @param Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   A node or paragraph with response-time-increments data.
    * @param \DOMElement $parent
    *   The parent element to which new nodes will be added.
@@ -494,7 +494,7 @@ EOS;
    *
    * Add pending-request data from a node or paragraph.
    *
-   * @param Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   A node or paragraph with pending-request data.
    * @param \DOMElement $parent
    *   The parent element to which new nodes will be added.
@@ -525,7 +525,7 @@ EOS;
    * Add associations between per-section identifiers and per-report identifiers
    * for components.
    *
-   * @param Drupal\Core\Entity\EntityInterface[] $component_data
+   * @param \Drupal\Core\Entity\EntityInterface[] $component_data
    *   An array of paragraphs with per-component data, each with
    *   field_agency_component referencing an Agency Component node.
    * @param \DOMElement $parent
