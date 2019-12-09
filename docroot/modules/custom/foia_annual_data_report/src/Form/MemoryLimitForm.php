@@ -38,7 +38,7 @@ class MemoryLimitForm extends ConfigFormBase {
     ];
     $form['debug_annual_report_memory_limit'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Debug Annual Report memory limit.'),
+      '#title' => $this->t('Debug Annual Report memory limit'),
       '#default_value' => $this->config('foia_annual_data_report.settings')->get('debug_annual_report_memory_limit'),
       '#description' => $this->t('When set `debug` entries will be written to log files to verify the module is working.'),
     ];
