@@ -87,7 +87,25 @@
     });
   }
 
-  // Converts field autocalc settings to a jQuery selector.
+  /**
+   * Helper function to conver fieldSetting objects to selector strings.
+   *
+   * fieldSetting object structure is based on the structure of the field objects used to calculate field values.
+   * For example, drupalSettings.foiaAutocalc.autocalcSettings['field_total'][0].
+   *
+   * @param {object} fieldSetting
+   *   An object containing field and subfield that should be converted to a selector string.
+   *   {
+   *     field: 'field_name',
+   *     subfield: {
+   *       field: 'field_subfield'
+   *     },
+   *     this_entity: 1
+   *   }
+   *
+   * @returns {string}
+   *   A dom selector string.
+   */
   function convertToFieldSelector(fieldSetting) {
     var selector = '.field--name-' + fieldSetting.field.replace(/_/g, '-');
     if (fieldSetting.hasOwnProperty('subfield')) {
@@ -96,8 +114,16 @@
     return selector;
   }
 
-  function isNumeric(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+  /**
+   * Helper function to check if a value is numeric.
+   *
+   * @param value
+   *   The value to check.
+   *
+   * @returns {boolean}
+   */
+  function isNumeric(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
   }
 
 })(jQuery, drupalSettings, Drupal);
