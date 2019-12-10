@@ -47,7 +47,7 @@
      * @returns {boolean}
      */
     isEmpty: function (value) {
-      if ( typeof value == 'undefined' || !value || value === 0 || value.length == 0 ) {
+      if ( typeof value === 'undefined' || !value || value === 0 || value.length === 0 ) {
         return true;
       }
       else {
@@ -63,7 +63,7 @@
      * @returns {boolean}
      */
     hasAgencyComponent: function (agencyComponentVal) {
-      if ( Drupal.FoiaUI.isEmpty(agencyComponentVal) || agencyComponentVal == '_none') {
+      if ( Drupal.FoiaUI.isEmpty(agencyComponentVal) || agencyComponentVal === '_none') {
         return false;
       }
       else {
