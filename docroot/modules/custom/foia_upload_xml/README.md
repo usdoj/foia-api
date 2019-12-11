@@ -6,9 +6,13 @@ TABLE OF CONTENTS
  * Recommended modules
  * Installation
  * Usage
+ * The queue
  * Configuration
+   - Post-installation configuration
+   - Updating and adding report sections
+   - Adding a section to the foia_agency_report migration
+   - Special sections
  * Troubleshooting
- * Running the migrations
 
 
 INTRODUCTION
@@ -36,11 +40,13 @@ recommended.
 RECOMMENDED MODULES
 -------------------
 
- * FOIA Migrate: Custom module in this codebase.  When enabled, FOIA Migrate
-can be used to import and create Agencies and Agency Components that may
-be referenced in the migrations run during upload of a report file from
-this module.
-
+ * FOIA Migrate: Custom module in this codebase. When enabled, FOIA Migrate
+ can be used to import and create Agencies and Agency Components that may
+ be referenced in the migrations run during upload of a report file from
+ this module.
+ * Queue UI (https://www.drupal.org/project/queue_ui): When enabled, users
+ with the permission Administer queues can inspect items in a queue, remove
+ leases on items in a queue, or clear a queue.
 
 INSTALLATION
 -------------
@@ -71,23 +77,27 @@ Should any errors or other issues occur with the upload, users should contact
 their Agency Managers or Agency Administrators.
 
 
+THE QUEUE
+---------
+
+In the event that an import process is already running when a user uploads a
+report file, the new report will be added to the
+`foia_xml_report_import_worker` queue. The queue worker for this queue is
+defined in `FoiaXmlReportImportWorker.php`. It will run on cron, processing
+as many queued reports as possible in 10 minutes.
+
+
 CONFIGURATION
 -------------
-
-### Contents
-
- * Post-installation configuration
- * Updating and adding report sections
- * Handling a new section
- * Special sections
 
 
 ### Post-installation configuration
 
 Upon installation of the FOIA Upload XML module users with 
 `create annual_foia_report_data content` permission will be able to upload XML 
-report files for their assigned agency. No further configuration will be 
-required.
+report files for their assigned agency. If using the Queue UI module, users
+with the `Administer queues` permission will be able to inspect and alter
+queues and queue items. No further configuration will be required.
 
 Should the report format be updated the following section will describe how the 
 report migration mappings are currently setup and how new mappings might be 
@@ -213,28 +223,45 @@ Paragraphs of type `foia_req_va`. These Paragraphs are then referenced in
 `migration_lookup` process plugin.
 
 
-### Handling a new section
+### Adding a section to the foia_agency_report migration
 
-Each section of the annual report has a corresponding section of the XML file,
-and we should be able to handle them all as described in the previous section.
-There are some nested Paragraphs, and handling those will be a little
-different (see `Special sections` below).
+[The middle](#the-middle) describes how a section's component data is
+imported into paragraph items from a corresponding section of the XML file. In
+addition to this, we also need to ensure that the section data gets properly
+imported in the `foia_agency_report` migration. (There are some nested
+Paragraphs, and handling those will be a little different.  See `Special
+sections` below.)
 
-In addition to adding two migrations, you will have to update the
-`foia_agency_report` migration:
+To do this, the `foia_agency_report` migration in
+`migrate_plus.migration.foia_agency_report.yml` needs to be updated to import
+the section's "agency overall" data and attach the imported paragraph items to
+the annual report node. The basic process looks like the following:
 
  1. Add fields in the `source/fields` section.
- 2. Map those fields in the `process` section. Remember that most destination
-   fields have the prefix `field_`.
- 3. Use the `migration_lookup` process plugin, referencing your Paragraph
-   migration, to populate the relevant field.
+ 2. Map agency overall fields in the `process` section. Remember that most
+   destination fields have the prefix `field_`.
+ 3. Attach component data to the annual report node, using the
+   `migration_lookup` process plugin to find and reference Paragraph's
+   imported in the section migration.
  4. Add your Paragraph migration to the list of dependencies at the end of the
    file.
 
+Continuing with the example section V.A and the component data imported in the
+migration `migrate_plus.migration.foia_requests_va.yml`, the following
+details how that section would be added and processed in the
+`foia_agency_report` migration.
+
+#### 1. Add fields in the `source/fields` section
+
 Step 1 is a little tricky, since you have to find the correct XPath
-expressions to extract the data from the XML. The "overall" fields are closely
-related to the corresponding per-component fields. For example,
-`migrate_plus.migration.foia_requests_va.yml` includes the following:
+expressions to extract the data from the XML. Since the `foia_agency_report`
+migration includes both component specific data and agency overall data, you
+will likely have to add both overall data and references to component
+data as sources in the `foia_agency_report` migration.
+
+The "overall" fields are closely related to the corresponding per-component
+fields. For example, `migrate_plus.migration.foia_requests_va.yml` includes
+the following:
 
 ```
 source:
@@ -246,8 +273,8 @@ source:
       selector: 'foia:ProcessingStatisticsPendingAtStartQuantity'
 ```
 
-Combining the `item_selector` and the selector for this field gives (adding
-line breaks for readability)
+The full XPath selector, when combining the `item_selector` and the `selector`
+for this field, gives (adding line breaks for readability)
 
 ```
   /iepd:FoiaAnnualReport
@@ -256,8 +283,8 @@ line breaks for readability)
   /foia:ProcessingStatisticsPendingAtStartQuantity
 ```
 
-Compare this with the corresponding lines in
-`migrate_plus.migration.foia_agency_report.yml`:
+Compare this to selecting the agency overall data for this same element
+in `migrate_plus.migration.foia_agency_report.yml`:
 
 ```
 source:
@@ -269,7 +296,7 @@ source:
       selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics[@s:id="PS0"]/foia:ProcessingStatisticsPendingAtStartQuantity'
 ```
 
-Combining these two selectors gives
+The full XPath selector for this field's agency overall data is:
 
 ```
   /iepd:FoiaAnnualReport
@@ -280,8 +307,77 @@ Combining these two selectors gives
 
 The only difference is the additional selector `[@s:id="PS0"]`.
 
-The third part (migration lookup) is the most complicated, so let's break it
-down. The process pipeline starts with
+In addition to the section's agency overall fields, the section's component
+data must also be added as a source field in the `foia_agency_report`
+migration. In this example, adding section V.A's component data as a source
+looks like the following:
+
+```
+  name: component_va
+  label: 'Internal index of the agency component'
+  selector: 'foia:ProcessedRequestSection/foia:ProcessingStatistics/@s:id'
+```
+
+
+#### 2. Map agency overall fields
+
+Continuing with the example of adding data from section V.A to the
+`foia_agency_report`, there is some agency overall data that needs to be
+ mapped in the migration's `process` section.
+
+Agency overall data can be mapped relatively simply. Often the data can be
+set directly as the field value like so:
+
+```
+field_overall_req_pend_start_yr: overall_req_pend_start_yr
+```
+
+More processing of overall data can be done if required. A common option is
+to set the field value along with a default value.
+
+
+#### 3. Map Paragraph fields using the `migration_lookup` process plugin
+
+Mapping component data is slightly more complex. The processing pipeline
+that attaches the paragraph items imported in
+`migrate_plus.migration.foia_requests_va.yml` to the agency report node looks
+like this:
+
+```
+  field_foia_requests_va:
+    -
+      plugin: foia_array_pad
+      source: component_va
+      prefix:
+        - report_year
+        - agency
+    -
+      plugin: sub_process
+      process:
+        combined:
+          plugin: migration_lookup
+          source:
+            - '0'
+            - '1'
+            - '2'
+          migration:
+            - foia_va_requests
+          no_stub: true
+        target_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '0'
+        target_revision_id:
+          plugin: extract
+          source: '@combined'
+          index:
+            - '1'
+```
+
+This first part of the process pipeline gets data from the source field
+`component_va` and transforms it to array values that can be used in the
+migration lookup sub-process.
 
 ```
   field_foia_requests_va:
@@ -307,7 +403,7 @@ The `foia_array_pad` plugin is custom: it adds the source fields listed under
 ```
 
 The next step in the process pipeline is to apply `migration_lookup` to each
-of those triples:
+of those triples created by the `foia_array_pad` plugin:
 
 ```
     -
@@ -345,20 +441,47 @@ Still within the`sub_process` plugin, we have
             - '1'
 ```
 
-At this point, we have an array of arrays. One of the inner arrays looks
-something like this:
+These processes extract their respective values from the migration
+lookup. At this point, the original array of values from the `component_va
+` source field:
 
 ```
+["PS1", "PS2", ... ]
+```
+
+Has been processed into an array that can be used to set the value, or values,
+of the `field_foia_requests_va` paragraph reference field:
+
+```
+[
   [
     'combined' => [123, 456],
     'target_id' => 123,
     'target_revision_id' => 456,
+  ],
+  [
+    'combined' => [678, 789],
+    'target_id' => 678,
+    'target_revision_id' => 789,
   ]
+]
 ```
 
-This field expects a `target_id` and a `target_revision_id`, and the
-`combined` value is ignored.
+As the `field_foia_requests_va` field is a reference field to paragraph
+entities, the migration expects a `target_id` and a `target_revision_id` in
+order to set the field value, and the `combined` value is ignored.
 
+
+#### 4. Add the section migration to the agency report migration's dependencies
+
+Add the new section's migration to the `foia_agency_report` migration's
+dependencies:
+
+```
+migration_dependencies:
+  required:
+    - foia_va_requests
+```
 
 #### Adding new section to batch process
 
@@ -453,14 +576,18 @@ configuration directory. There are at least two advantages to this redundancy:
    configuration directory.
 
 
-RUNNING THE MIGRATIONS
-----------------------
+### Running the migrations
+
+#### Via the UI
 
 One option is to run the migrations through the admin UI. The upload form at
 `/report/upload` has a link to the relevant page, and it also redirects there
 after uploading the file.
 
-The other option is to use the command line:
+
+#### Via the migrate import commands
+
+The other option is to use the drush migrate commands on the command line:
 
 ```
 drush @foia.local ms; drush @foia.local mim -vvv --debug component; drush @foia.local mim -vvv --debug --group=foia_component_data_mapping; drush @foia.local mim -vvv --debug --group=foia_component_data_import_subs; drush @foia.local mim -vvv --debug --group=foia_component_data_import; drush @foia.local mim -vvv --debug foia_agency_report --update; drush @foia.local ms
@@ -479,3 +606,23 @@ drush @foia.local mim -vvv --debug foia_agency_report --update
 
  * Use `drush ms --group=foia_xml` to check the status of the migrations.
  * To see available import options, use `drush help mim`.
+
+
+### Processing the queue
+
+
+#### Via the Queue UI module
+
+Issues with the queue may not be obvious when run in the production environment.
+In addition to information found in the logs, the Queue UI module defines
+admin screens that can be used to inspect and clear queues, or remove leases
+on queue items.  This is useful if there are items that are stuck in the
+queue and need to be cleared out and re-processed or re-uploaded.  This can be
+found at `/admin/config/system/queue-ui`.
+
+
+#### Via the command line
+
+The queue can be run by running cron on the command line:
+
+`drush @foia.local core:cron`
