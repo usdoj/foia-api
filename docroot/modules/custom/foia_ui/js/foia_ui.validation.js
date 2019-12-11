@@ -20,7 +20,7 @@
       var hasAgencyComponent = Drupal.FoiaUI.hasAgencyComponent;
 
       /**
-       * Added for ie11 compatability.
+       * Added for ie11 compatibility.
        *
        * @param value
        * @returns {boolean}
@@ -38,15 +38,12 @@
         switch (value) {
           case 1:
             return "Oldest";
-            break;
           case 2:
-            return value + "nd"
-            break;
+            return value + "nd";
           case 3:
-            return value + "rd"
-            break;
+            return value + "rd";
           default:
-            return value + "th"
+            return value + "th";
         }
       }
 

@@ -18,10 +18,8 @@
       switch (String(value).toLowerCase()) {
         case "n/a":
           return Number(0);
-          break;
         case "<1":
           return Number(0.1);
-          break;
         default:
           return Number(value);
       }
