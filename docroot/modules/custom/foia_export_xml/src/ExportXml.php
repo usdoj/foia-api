@@ -56,6 +56,50 @@ class ExportXml {
   protected $componentMap = [];
 
   /**
+   * The names of all elements the schema defines as integers.
+   *
+   * @var array
+   */
+  protected $integerElements = [
+    'AdjudicationWithinTenDaysQuantity',
+    'AppealDispositionAffirmedQuantity',
+    'AppealDispositionOtherQuantity',
+    'AppealDispositionPartialQuantity',
+    'AppealDispositionReversedQuantity',
+    'AppealDispositionTotalQuantity',
+    'AppliedExemptionQuantity',
+    'BacklogCurrentYearQuantity',
+    'BackloggedAppealQuantity',
+    'BackloggedRequestQuantity',
+    'BacklogLastYearQuantity',
+    'ComponentOtherDenialReasonQuantity',
+    'ItemsProcessedCurrentYearQuantity',
+    'ItemsProcessedLastYearQuantity',
+    'ItemsReceivedCurrentYearQuantity',
+    'ItemsReceivedLastYearQuantity',
+    'NonExemptionDenialQuantity',
+    'OldItemPendingDaysQuantity',
+    'OtherDenialReasonQuantity',
+    'PendingRequestQuantity',
+    'PostedbyFOIAQuantity',
+    'PostedbyProgramQuantity',
+    'ProcessingStatisticsPendingAtEndQuantity',
+    'ProcessingStatisticsPendingAtStartQuantity',
+    'ProcessingStatisticsProcessedQuantity',
+    'ProcessingStatisticsReceivedQuantity',
+    'ReliedUponStatuteQuantity',
+    'RequestDeniedQuantity',
+    'RequestDispositionFullExemptionDenialQuantity',
+    'RequestDispositionFullGrantQuantity',
+    'RequestDispositionPartialGrantQuantity',
+    'RequestDispositionTotalQuantity',
+    'RequestGrantedQuantity',
+    'TimeIncrementProcessedQuantity',
+    'TimeIncrementTotalQuantity',
+    'TimesUsedQuantity',
+  ];
+
+  /**
    * Cast an ExportXml object to string.
    *
    * @return string
@@ -157,6 +201,7 @@ EOS;
     if (empty($namespaces[$prefix])) {
       throw new \Exception("Unrecognized prefix: $prefix");
     }
+    $value = $this->handleIntegerElementDefault($value, $tag);
     $element = $this->document->createElementNS($namespaces[$prefix], $local_name);
     if (!is_null($value)) {
       $element->appendChild($this->document->createTextNode($value));
@@ -254,6 +299,51 @@ EOS;
   }
 
   /**
+   * Check if an xml element is defined as an integer element in the schema.
+   *
+   * @param string $tag
+   *   An xml element name.
+   *
+   * @return bool
+   *   TRUE if the tag is defined as a nonNegativeInteger in the xml schema.
+   */
+  protected function isIntegerElement($tag) {
+    $tag = str_replace('foia:', '', $tag);
+
+    return in_array($tag, $this->integerElements);
+  }
+
+  /**
+   * Sets a default value for integer elements if the value passed in invalid.
+   *
+   * Integer values cannot be null or 'n/a', however there are certain
+   * strings that are acceptable to be exported for various reasons, such as
+   * '<1' or 'Invalid Date Entered'.  This purposefully only returns a
+   * default value of 0 if the value given is NULL or 'n/a'.
+   *
+   * @param mixed $value
+   *   The value being checked if it is an integer.
+   * @param string $tag
+   *   The name of the element being exported.
+   *
+   * @return mixed
+   *   A value that can be exported in a nonNegativeInteger element.
+   */
+  protected function handleIntegerElementDefault($value, $tag) {
+    if (!$this->isIntegerElement($tag)) {
+      return $value;
+    }
+
+    // Integer values cannot be null or 'n/a', however there are certain
+    // strings that are acceptable to be exported for various reasons, such as
+    // '<1' or 'Invalid Date Entered'.  This purposefully only returns a
+    // default value of 0 if the value given is NULL or 'n/a'.
+    return !is_null($value) && !in_array(strtolower($value), ['n/a'])
+      ? $value
+      : 0;
+  }
+
+  /**
    * Add oldest-days data.
    *
    * Add "oldest days" data from an array of paragraphs with per-component data
@@ -281,7 +371,7 @@ EOS;
         $raw_date = $component->get("field_date_$index")->value;
         $date = $this->convertDateForExport($raw_date);
         $days = $component->get("field_num_days_$index")->value;
-        if (preg_match('/^\<1|\d+/', $days)) {
+        if ($this->isValidOldItem($raw_date, $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
           $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
           $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
@@ -297,13 +387,31 @@ EOS;
         $raw_date = $this->node->get($overall_date . $index)->value;
         $date = $this->convertDateForExport($raw_date);
         $days = $this->node->get($overall_days . $index)->value;
-        if (preg_match('/^\<1|\d+/', $days)) {
+        if ($this->isValidOldItem($raw_date, $days)) {
           $old_item = $this->addElementNs('foia:OldItem', $item);
           $this->addElementNs('foia:OldItemReceiptDate', $old_item, $date);
           $this->addElementNs('foia:OldItemPendingDaysQuantity', $old_item, $days);
         }
       }
     }
+  }
+
+  /**
+   * Check if a date and days pair is a valid value for an OldItem element.
+   *
+   * @param string $date
+   *   A formatted date as YYYY-MM-DD or a string indicating the date is
+   *   invalid or does not exist.
+   * @param string $days
+   *   A string representing the number of days an item has been pending.
+   *   Valid values are numeric or the value <1.
+   *
+   * @return bool
+   *   Return TRUE if the date is not 'N/A' or 'Invalid date entered' and the
+   *   number of days is numeric or '<1'.
+   */
+  protected function isValidOldItem($date, $days) {
+    return !in_array(strtolower($date), ['n/a']) && preg_match('/^\<1|\d+/', $days);
   }
 
   /**
@@ -634,7 +742,10 @@ EOS;
           ->setAttribute('s:ref', $local_id);
         $this->addElementNs('nc:OrganizationReference', $item)
           ->setAttribute('s:ref', $this->componentMap[$agency_component->id()]);
-        $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $component_info->field_num_relied_by_agency_comp->value);
+        $quantity = !is_null($component_info->field_num_relied_by_agency_comp->value)
+          ? $component_info->field_num_relied_by_agency_comp->value
+          : 0;
+        $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $quantity);
       }
       // Add agency overall data for the statute.
       $item = $this->addElementNs('foia:ReliedUponStatuteOrganizationAssociation', $statuteSection);
@@ -642,7 +753,10 @@ EOS;
         ->setAttribute('s:ref', $local_id);
       $this->addElementNs('nc:OrganizationReference', $item)
         ->setAttribute('s:ref', 'ORG0');
-      $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $statute->field_total_num_relied_by_agency->value);
+      $quantity = !is_null($statute->field_total_num_relied_by_agency->value)
+        ? $statute->field_total_num_relied_by_agency->value
+        : 0;
+      $this->addElementNs('foia:ReliedUponStatuteQuantity', $item, $quantity);
     }
 
     // Add footnote.
