@@ -18,10 +18,8 @@
       switch (String(value).toLowerCase()) {
         case "n/a":
           return Number(0);
-          break;
         case "<1":
           return Number(0.1);
-          break;
         default:
           return Number(value);
       }
@@ -47,7 +45,7 @@
      * @returns {boolean}
      */
     isEmpty: function (value) {
-      if ( typeof value == 'undefined' || !value || value === 0 || value.length == 0 ) {
+      if ( typeof value === 'undefined' || !value || value === 0 || value.length === 0 ) {
         return true;
       }
       else {
@@ -63,7 +61,7 @@
      * @returns {boolean}
      */
     hasAgencyComponent: function (agencyComponentVal) {
-      if ( Drupal.FoiaUI.isEmpty(agencyComponentVal) || agencyComponentVal == '_none') {
+      if ( Drupal.FoiaUI.isEmpty(agencyComponentVal) || agencyComponentVal === '_none') {
         return false;
       }
       else {

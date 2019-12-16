@@ -93,9 +93,16 @@ function foia_readonly_field_widget_multivalue_entity_reference_paragraphs_form_
 }
 
 /**
- * Helper function for disabling fields on main node type.
+ * Helper function for disabling fields on Annual FOIA Report Data nodes.
+ *
+ * @param array $form
+ *   The form containing the fields to disable.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ * @param string $form_id
+ *   The current form id.
  */
-function foia_readonly_disable_node_field(&$form, FormStateInterface $form_state, $form_id) {
+function foia_readonly_disable_node_field(array &$form, FormStateInterface $form_state, $form_id) {
   $fieldsToDisable = [
     'overall_req_pend_start_yr',
     'overall_req_received_yr',
@@ -221,8 +228,10 @@ function foia_readonly_disable_node_field(&$form, FormStateInterface $form_state
     'overall_viic3_400_up_days',
     'overall_viic3_total',
     'overall_viiia_num_denied',
+    'overall_viiia_num_grant',
     'overall_viiia_num_jud_w10',
     'overall_viiib_num_denied',
+    'overall_viiib_num_grant',
     'overall_ix_full_emp',
     'overall_ix_eq_full_emp',
     'overall_ix_total_staff',

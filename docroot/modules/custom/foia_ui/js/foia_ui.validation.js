@@ -20,7 +20,7 @@
       var hasAgencyComponent = Drupal.FoiaUI.hasAgencyComponent;
 
       /**
-       * Added for ie11 compatability.
+       * Added for ie11 compatibility.
        *
        * @param value
        * @returns {boolean}
@@ -38,15 +38,12 @@
         switch (value) {
           case 1:
             return "Oldest";
-            break;
           case 2:
-            return value + "nd"
-            break;
+            return value + "nd";
           case 3:
-            return value + "rd"
-            break;
+            return value + "rd";
           default:
-            return value + "th"
+            return value + "th";
         }
       }
 
@@ -162,7 +159,7 @@
         if (hasAgencyComponent(elementAgencyComponent)) {
           for (var i = 0; i < params.length; i++){
             var paramAgencyComponent = getAgencyComponent(params[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               var target = Number($( params[i] ).val());
             }
           }
@@ -184,7 +181,7 @@
         for (var i = 0; i < params.length; i++){
           sum += Number($( params[i] ).val());
         }
-        return this.optional(element) || value == sum;
+        return this.optional(element) || value === sum;
       }, "Must equal sum of fields.");
 
       // lessThanEqualSum
@@ -205,7 +202,7 @@
           for (var i = 0; i < params.length; i++){
             for (var j = 0; j < params[i].length; j++){
               var paramAgencyComponent = getAgencyComponent(params[i][j]);
-              if (paramAgencyComponent == elementAgencyComponent) {
+              if (paramAgencyComponent === elementAgencyComponent) {
                 sum += specialNumber($( params[i][j] ).val());
               }
             }
@@ -230,7 +227,7 @@
         if (hasAgencyComponent(elementAgencyComponent)) {
           for (var i = 0; i < params.target.length; i++){
             var paramAgencyComponent = getAgencyComponent(params.target[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               target = specialNumber($( params.target[i] ).val());
             }
           }
@@ -247,9 +244,9 @@
         if (hasAgencyComponent(elementAgencyComponent)) {
           for (var i = 0; i < params.length; i++){
             var paramAgencyComponent = getAgencyComponent(params[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               var target = Number($( params[i] ).val());
-              return this.optional(element) || value == target;
+              return this.optional(element) || value === target;
             }
           }
         }
@@ -265,7 +262,7 @@
         if (hasAgencyComponent(elementAgencyComponent)) {
           for (var i = 0; i < params.length; i++){
             var paramAgencyComponent = getAgencyComponent(params[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               var target = specialNumber($( params[i] ).val());
               return this.optional(element) || value <= target;
             }
@@ -289,7 +286,7 @@
         if (hasAgencyComponent(elementAgencyComponent)) {
           for (var i = 0; i < params.length; i++){
             var paramAgencyComponent = getAgencyComponent(params[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               var target = Number($( params[i] ).val());
               return this.optional(element) || value >= target;
             }
@@ -306,7 +303,7 @@
           var sum = 0;
           for (var i = 0; i < params.length; i++) {
             var paramAgencyComponent = getAgencyComponent(params[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               sum += Number($( params[i] ).val());
             }
           }
@@ -336,7 +333,7 @@
         for (var i = 0; i < params.length; i++){
           valuesArray.push(specialNumber($( params[i] ).val()));
         }
-        return this.optional(element) || (value == Math.min.apply(null, valuesArray));
+        return this.optional(element) || (value === Math.min.apply(null, valuesArray));
       }, "Must equal the lowest value.");
 
       // equalToHighestComp
@@ -346,7 +343,7 @@
         for (var i = 0; i < params.length; i++){
           valuesArray.push(specialNumber($( params[i] ).val()));
         }
-        return this.optional(element) || (value == Math.max.apply(null, valuesArray));
+        return this.optional(element) || (value === Math.max.apply(null, valuesArray));
       }, "Must equal the highest value.");
 
       // isoDateFormattedOrNA
@@ -383,7 +380,7 @@
           sum += specialNumber($( params[i] ).val());
         }
         var average = sum/params.length;
-        return this.optional(element) || !(value == average);
+        return this.optional(element) || !(value === average);
       }, "Must not be equal to the average.");
 
       // greaterThanZeroSumComp
@@ -395,7 +392,7 @@
             for (var i = 0; i < params.length; i++) {
               for (var j = 0; j < params[i].length; j++) {
                 var paramAgencyComponent = getAgencyComponent(params[i][j]);
-                if (paramAgencyComponent == elementAgencyComponent) {
+                if (paramAgencyComponent === elementAgencyComponent) {
                   sum += Number($(params[i][j]).val());
                 }
               }
@@ -422,27 +419,27 @@
 
           for (var i = 0; i < allReqProcessedYr.length; i++){
             var paramAgencyComponent = getAgencyComponent(allReqProcessedYr[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               var reqProcessedYr = Number($( allReqProcessedYr[i] ).val());
             }
           }
 
           for (var i = 0; i < params.viicn.length; i++){
             var paramAgencyComponent = getAgencyComponent(params.viicn[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               sumVIICTotals += Number($( params.viicn[i] ).val());
             }
           }
 
           for (var i = 0; i < params.otherField.length; i++){
             var paramAgencyComponent = getAgencyComponent(params.otherField[i]);
-            if (paramAgencyComponent == elementAgencyComponent) {
+            if (paramAgencyComponent === elementAgencyComponent) {
               otherField = Number($( params.otherField[i] ).val());
             }
           }
 
-          // reqProcessedYr == sumVIICTotals - Improper Request for Other - Records Not Reasonably Described
-          return (reqProcessedYr == sumVIICTotals - Number(value) - otherField);
+          // reqProcessedYr === sumVIICTotals - Improper Request for Other - Records Not Reasonably Described
+          return (reqProcessedYr === sumVIICTotals - Number(value) - otherField);
         }
         else {
           return 'dependency-mismatch';
