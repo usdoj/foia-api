@@ -100,6 +100,34 @@ class ExportXml {
   ];
 
   /**
+   * The names of all elements the schema defines as decimals.
+   *
+   * @var array
+   */
+  public $decimalElements = [
+    'AdjudicationAverageDaysValue',
+    'AdjudicationMedianDaysValue',
+    'EquivalentFullTimeEmployeeQuantity',
+    'FullTimeEmployeeQuantity',
+    'PendingRequestAverageDaysValue',
+    'PendingRequestMedianDaysValue',
+    'ResponseTimeAverageDaysValue',
+    'ResponseTimeHighestDaysValue',
+    'ResponseTimeLowestDaysValue',
+    'ResponseTimeMedianDaysValue',
+    'TotalFullTimeStaffQuantity',
+  ];
+
+  /**
+   * The names of all elements the schema defines as percentageType.
+   *
+   * @var array
+   */
+  public $percentageElements = [
+    'FeesCollectedCostPercent',
+  ];
+
+  /**
    * Cast an ExportXml object to string.
    *
    * @return string
@@ -202,6 +230,7 @@ EOS;
       throw new \Exception("Unrecognized prefix: $prefix");
     }
     $value = $this->handleIntegerElementDefault($value, $tag);
+    $value = $this->handleDecimalTypeElementDefault($value, $tag);
     $element = $this->document->createElementNS($namespaces[$prefix], $local_name);
     if (!is_null($value)) {
       $element->appendChild($this->document->createTextNode($value));
@@ -314,6 +343,25 @@ EOS;
   }
 
   /**
+   * Check if an xml element is defined as a decimal or percentage type element.
+   *
+   * Checks for both decimal and percentage elements because the
+   * PercentageType element extends the decimal type.
+   *
+   * @param string $tag
+   *   An xml element name.
+   *
+   * @return bool
+   *   TRUE if the tag is defined as a decimal or PercentageType in the xml
+   *   schema.
+   */
+  protected function isDecimalTypeElement($tag) {
+    $tag = str_replace('foia:', '', $tag);
+
+    return in_array($tag, $this->decimalElements) || in_array($tag, $this->percentageElements);
+  }
+
+  /**
    * Sets a default value for integer elements if the value passed in invalid.
    *
    * Integer values cannot be null or 'n/a', however there are certain
@@ -341,6 +389,37 @@ EOS;
     return !is_null($value) && !in_array(strtolower($value), ['n/a'])
       ? $value
       : 0;
+  }
+
+  /**
+   * Sets a default value for decimal elements if the value passed in invalid.
+   *
+   * Decimal type values cannot be null or 'n/a', however there are certain
+   * strings that are acceptable to be exported for various reasons, such as
+   * '<1'.  This purposefully only returns a default value if the value
+   * given is NULL or 'n/a'.
+   *
+   * @param mixed $value
+   *   The value being checked if it is a valid decimal element.
+   * @param string $tag
+   *   The name of the element being exported.
+   *
+   * @return mixed
+   *   A value that can be exported in a decimal or PercentageType element.
+   */
+  protected function handleDecimalTypeElementDefault($value, $tag) {
+    if (!$this->isDecimalTypeElement($tag)) {
+      return $value;
+    }
+
+    // Decimal values cannot be null or 'n/a', however there are certain
+    // strings that may be acceptable to be exported for various reasons,
+    // such as '<1'.  This purposefully only returns a
+    // default value if the value given is NULL or 'n/a'.  The default value
+    // is a string so that the proper precision can be exported.
+    return !is_null($value) && !in_array(strtolower($value), ['n/a'])
+      ? $value
+      : '0.0000';
   }
 
   /**
