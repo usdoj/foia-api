@@ -1,3 +1,7 @@
+/**
+ * @file
+ */
+
 (function ($, drupalSettings) {
   Drupal.behaviors.foia_change_report_agency = {
     attach: function attach() {
@@ -14,10 +18,10 @@
      * @see foia_annual_data_report_ajax_existing_node()
      * @see foia_annual_data_report_ajax_new_node()
      */
-    triggerNodeRefreshOnUpdate: function() {
+    triggerNodeRefreshOnUpdate: function () {
       drupalSettings.foiaReportAgencyInitialValue = $('#edit-field-agency-0-target-id').val();
 
-      $('#edit-field-agency-0-target-id').once('foia-trigger-agency-change').blur(function(event) {
+      $('#edit-field-agency-0-target-id').once('foia-trigger-agency-change').blur(function (event) {
         if ($(this).val() !== drupalSettings.foiaReportAgencyInitialValue) {
           $('#edit-field-agency-0-target-id').trigger('change.agency');
         }

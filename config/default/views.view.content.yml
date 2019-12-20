@@ -20,7 +20,6 @@ description: 'Find and manage content.'
 tag: default
 base_table: node_field_data
 base_field: nid
-core: 8.x
 display:
   default:
     display_options:
@@ -405,7 +404,7 @@ display:
           field_api_classes: false
           entity_type: content_moderation_state
           entity_field: moderation_state
-          plugin_id: field
+          plugin_id: moderation_state_field
       filters:
         title:
           id: title
@@ -433,6 +432,8 @@ display:
               anonymous: '0'
               administrator: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -474,6 +475,8 @@ display:
               anonymous: '0'
               administrator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -515,6 +518,8 @@ display:
               anonymous: '0'
               administrator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -980,7 +985,7 @@ display:
           field_api_classes: false
           entity_type: content_moderation_state
           entity_field: moderation_state
-          plugin_id: field
+          plugin_id: moderation_state_field
       defaults:
         fields: false
         filters: false
@@ -1012,6 +1017,8 @@ display:
               anonymous: '0'
               administrator: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1053,6 +1060,8 @@ display:
               anonymous: '0'
               administrator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1094,6 +1103,8 @@ display:
               anonymous: '0'
               administrator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1147,6 +1158,8 @@ display:
               agency_manager: '0'
               non_sso: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1204,6 +1217,8 @@ display:
             placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1462,6 +1477,8 @@ display:
               agency_manager: '0'
               non_sso: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: true
           group_info:
             label: 'Redirect or Interoperable?'
@@ -1523,6 +1540,8 @@ display:
               agency_manager: '0'
               non_sso: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

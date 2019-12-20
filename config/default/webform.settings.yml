@@ -1,6 +1,7 @@
 settings:
   default_status: open
   default_page_base_path: form
+  default_ajax: false
   default_ajax_effect: fade
   default_ajax_speed: 500
   default_ajax_progress_type: throbber
@@ -114,6 +115,7 @@ batch:
 purge:
   cron_size: 100
 element:
+  machine_name_pattern: a-z0-9_
   empty_message: '{Empty}'
   allowed_tags: admin
   wrapper_classes: "container-inline clearfix\r\nform--inline clearfix\r\nmessages messages--error\r\nmessages messages--warning\r\nmessages messages--status\r\n"
@@ -160,7 +162,7 @@ mail:
   default_return_path: ''
   default_sender_mail: ''
   default_sender_name: ''
-  default_subject: 'Webform submission from: [webform_submission:source-entity]'
+  default_subject: 'Webform submission from: [webform_submission:source-title]'
   default_body_text: "Submitted on [webform_submission:created]\nSubmitted by: [webform_submission:user]\n\nSubmitted values are:\n[webform_submission:values]\n"
   default_body_html: "<p>Submitted on [webform_submission:created]</p>\n<p>Submitted by: [webform_submission:user]</p>\n<p>Submitted values are:</p>\n[webform_submission:values]\n"
   roles: {  }
