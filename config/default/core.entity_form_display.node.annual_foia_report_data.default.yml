@@ -318,7 +318,6 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_sub_xia
     - field.field.node.annual_foia_report_data.field_sub_xib
     - node.type.annual_foia_report_data
-    - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
     - entity_reference_views_select
@@ -1974,6 +1973,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content

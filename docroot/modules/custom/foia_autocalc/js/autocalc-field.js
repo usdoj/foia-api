@@ -1,8 +1,12 @@
+/**
+ * @file
+ */
+
 (function ($, drupalSettings, Drupal) {
   Drupal.behaviors.autocalcFields = {
     attach: function attach() {
       var autocalcSettings = drupalSettings.foiaAutocalc.autocalcSettings;
-      Object.keys(autocalcSettings).forEach(function(fieldName, fieldIndex) {
+      Object.keys(autocalcSettings).forEach(function (fieldName, fieldIndex) {
         var fieldSettings = autocalcSettings[fieldName];
 
         // Calculate field on initial form load only.
@@ -12,11 +16,11 @@
           fieldSettings['fieldCalculationsInitialized'] = true;
         }
 
-        fieldSettings.forEach(function(fieldSetting) {
+        fieldSettings.forEach(function (fieldSetting) {
           var fieldSelector = convertToFieldSelector(fieldSetting);
-          $(fieldSelector + ' input').each(function(index) {
+          $(fieldSelector + ' input').each(function (index) {
             // Bind event listeners to calculate field when input fields are changed.
-            $(this).once(fieldSelector + '_' + fieldIndex + '_' + index).on('change', function() {
+            $(this).once(fieldSelector + '_' + fieldIndex + '_' + index).on('change', function () {
               calculateAllFieldsWithName(fieldName, fieldSettings);
             });
           });
@@ -39,7 +43,7 @@
     var isTotalNA = true;
 
     fieldSettings.forEach(function (fieldSetting) {
-      $(convertToFieldSelector(fieldSetting) + ' input').each(function() {
+      $(convertToFieldSelector(fieldSetting) + ' input').each(function () {
         var value = $(this).val();
         var selectedValue = 0;
         if (String(value).toLowerCase() === "n/a") {
@@ -47,7 +51,7 @@
         }
         else {
           isTotalNA = false;
-          if ( isNumeric(value) ) {
+          if (isNumeric(value)) {
             selectedValue = Number($(this).val());
           }
         }
@@ -63,7 +67,7 @@
 
         // Add value to the selector.
         if (totalValues.hasOwnProperty(idSelector)) {
-          if(selectedValue !== null) {
+          if (selectedValue !== null) {
             totalValues[idSelector] += selectedValue;
           }
         }
@@ -75,7 +79,7 @@
 
     Object.keys(totalValues).forEach(function (selector) {
       // Set overall value to "N/A" if all fields are "N/A".
-      if(isTotalNA) {
+      if (isTotalNA) {
         totalValues[selector] = "N/A";
       }
       if (selector == 'all') {
@@ -90,7 +94,7 @@
   /**
    * Helper function to conver fieldSetting objects to selector strings.
    *
-   * fieldSetting object structure is based on the structure of the field objects used to calculate field values.
+   * FieldSetting object structure is based on the structure of the field objects used to calculate field values.
    * For example, drupalSettings.foiaAutocalc.autocalcSettings['field_total'][0].
    *
    * @param {object} fieldSetting

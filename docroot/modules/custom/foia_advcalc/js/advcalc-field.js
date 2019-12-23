@@ -1,6 +1,7 @@
 /**
  * @file
  * Automatically calculate total fields with non-trivial summation.
+ *
  * See foia_autocalc module for simple sum auto-calculations.
  */
 
@@ -71,8 +72,8 @@
        */
       function calculateBoundaryOfSet(fields, operator) {
         var ops = {
-          '<': function(a, b) { return a < b; },
-          '>': function(a, b) { return a > b; },
+          '<': function (a, b) { return a < b; },
+          '>': function (a, b) { return a > b; },
         };
         var output = null;
         var isOverallNA = true;
@@ -123,8 +124,8 @@
           markFieldInitialized('#' + overallFieldID);
         }
 
-        fields.each(function() {
-          $(this).once('advCalcOverall').on('change', {overallFieldID: overallFieldID, operator: operator}, function(event) {
+        fields.each(function () {
+          $(this).once('advCalcOverall').on('change', {overallFieldID: overallFieldID, operator: operator}, function (event) {
             var output = calculateBoundaryOfSet(fields, event.data.operator);
             $('#' + event.data.overallFieldID).val(output);
           });
@@ -193,7 +194,7 @@
        */
       function getElementValByAgency(elements, agency) {
         var result = null;
-        $(elements).each(function() {
+        $(elements).each(function () {
           var elementAgency = getAgencyComponent($(this));
           if (agency === elementAgency) {
             result = Number($(this).val());
@@ -213,14 +214,14 @@
         var totalFeesElements = $("input[name*='field_fees_x']").filter("input[name*='field_total_fees']");
         $("input[name*='field_fees_x']")
           .filter("input[name*='field_perc_costs']")
-          .each(function() {
+          .each(function () {
             var elementAgency = getAgencyComponent($(this));
             if (agency === elementAgency) {
               var totalFees = getElementValByAgency(totalFeesElements, agency);
               if (totalFees > 0) {
                 var procCosts = getElementValByAgency(procCostsElements, agency);
-                // Convert to decimal format rounded to 4 places
-                var percentCosts = Math.round(totalFees/procCosts * 10000) / 10000;
+                // Convert to decimal format rounded to 4 places.
+                var percentCosts = Math.round(totalFees / procCosts * 10000) / 10000;
               }
               $(this).val(percentCosts);
             }
@@ -232,10 +233,10 @@
        */
       function calculateOverallPercentCosts() {
         var overallTotalFees = Number($("#edit-field-overall-x-total-fees-0-value").val());
-        if (overallTotalFees > 0 ) {
+        if (overallTotalFees > 0) {
           var overallProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
-          var overallPercentCosts = overallTotalFees /overallProcCosts;
-          // Convert to decimal format rounded to 4 places
+          var overallPercentCosts = overallTotalFees / overallProcCosts;
+          // Convert to decimal format rounded to 4 places.
           overallPercentCosts = Math.round(overallPercentCosts * 10000) / 10000;
           $('#edit-field-overall-x-perc-costs-0-value').val(overallPercentCosts);
         }
@@ -246,20 +247,20 @@
        * per agency/component
        */
 
-      // V.A. Number of Requests Pending as of End of Fiscal Year
+      // V.A. Number of Requests Pending as of End of Fiscal Year.
       $("input[name*='field_foia_requests_va']")
         .filter("input[name*='field_req_pend_start_yr'], input[name*='field_req_received_yr'], input[name*='field_req_processed_yr']")
-          .each(function() {
-            $(this).once('advCalcVAReqPendEndYr').change(function() {
+          .each(function () {
+            $(this).once('advCalcVAReqPendEndYr').change(function () {
               calculatePendEndYr(this, 'field_req_pend_start_yr', 'field_req_received_yr', 'field_req_processed_yr', 'field_req_pend_end_yr');
             });
       });
 
-      // Initialize V.A. Number of Requests Pending as of End of Fiscal Year
+      // Initialize V.A. Number of Requests Pending as of End of Fiscal Year.
       $("input[name*='field_foia_requests_va']")
         .once('initAdvCalcVIAppPendEndYr')
         .filter("input[name*='field_req_pend_end_yr']")
-        .each(function() {
+        .each(function () {
           if (!fieldIsInitialized(this)) {
             calculatePendEndYr(this, 'field_req_pend_start_yr', 'field_req_received_yr', 'field_req_processed_yr', 'field_req_pend_end_yr');
             markFieldInitialized(this);
@@ -271,7 +272,7 @@
        */
 
       // Initialize on load:
-      // V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+      // V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year.
       if (!fieldIsInitialized('#edit-field-overall-req-pend-end-yr-0-value')) {
         calculateOverallPendEndYr(
           '#edit-field-overall-req-pend-start-yr-0-value',
@@ -283,10 +284,10 @@
       }
 
       // Calculate on change:
-      // V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year
+      // V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year.
       $("#edit-field-overall-req-pend-start-yr-0-value, #edit-field-overall-req-received-yr-0-value, #edit-field-overall-req-processed-yr-0-value")
         .once('advCalcVAOverallReqPendEndYr')
-        .change(function() {
+        .change(function () {
           calculateOverallPendEndYr(
             '#edit-field-overall-req-pend-start-yr-0-value',
             '#edit-field-overall-req-received-yr-0-value',
@@ -301,11 +302,11 @@
        */
 
       // Initialize on load:
-      // VI.A. Number of Appeals Pending as of End of Fiscal Year
+      // VI.A. Number of Appeals Pending as of End of Fiscal Year.
       $("input[name*='field_admin_app_via']")
         .once('initAdvCalcVIAppPendEndYr')
         .filter("input[name*='field_app_pend_end_yr']")
-        .each(function() {
+        .each(function () {
           if (!fieldIsInitialized(this)) {
             calculatePendEndYr(this, 'field_app_pend_start_yr', 'field_app_received_yr', 'field_app_processed_yr', 'field_app_pend_end_yr');
             markFieldInitialized(this);
@@ -313,12 +314,12 @@
       });
 
       // Calculate on change:
-      // VI.A. Number of Appeals Pending as of End of Fiscal Year
+      // VI.A. Number of Appeals Pending as of End of Fiscal Year.
       $("input[name*='field_admin_app_via']")
         .filter("input[name*='field_app_pend_start_yr'], input[name*='field_app_received_yr'], input[name*='field_app_processed_yr']")
-        .each(function() {
+        .each(function () {
           $(this).once('advCalcVIAppPendEndYr')
-            .change(function() {
+            .change(function () {
               calculatePendEndYr(this, 'field_app_pend_start_yr', 'field_app_received_yr', 'field_app_processed_yr', 'field_app_pend_end_yr');
             });
       });
@@ -328,7 +329,7 @@
        */
 
       // Initialize on load:
-      // VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Yr
+      // VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Yr.
       if (!fieldIsInitialized('#edit-field-overall-via-app-pend-endyr-0-value')) {
         calculateOverallPendEndYr(
           '#edit-field-overall-via-app-pend-start-0-value',
@@ -340,10 +341,10 @@
       }
 
       // Calculate on change:
-      // VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Yr
+      // VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Yr.
       $("#edit-field-overall-req-pend-start-yr-0-value, #edit-field-overall-req-received-yr-0-value, #edit-field-overall-req-processed-yr-0-value")
         .once('advCalcVIOverallAppPendEndYr')
-        .change(function() {
+        .change(function () {
           calculateOverallPendEndYr(
             '#edit-field-overall-via-app-pend-start-0-value',
             '#edit-field-overall-via-app-recd-yr-0-value',
@@ -394,11 +395,11 @@
        * FOIA Personnel and Costs IX. proc_costs / Fees X. total_fees  = Fees X. perc_costs
        */
 
-      // Initialize on load: X. Percentage of Total Costs
+      // Initialize on load: X. Percentage of Total Costs.
       $("input[name*='field_fees_x']")
         .once('initAdvCalcIXPercCosts')
         .filter("input[name*='field_perc_costs']")
-        .each(function() {
+        .each(function () {
           if (!fieldIsInitialized(this)) {
             var percCostsAgency = getAgencyComponent($(this));
             if (percCostsAgency !== '_none') {
@@ -413,9 +414,9 @@
       $("input[name*='field_fees_x']")
         .filter("input[name*='field_total_fees']")
         .add(processingCostsElements)
-        .each(function() {
+        .each(function () {
           // If X. Total Fees or IX. Processing Costs change, calculate % costs.
-          $(this).once('advCalcXPercCosts').change(function() {
+          $(this).once('advCalcXPercCosts').change(function () {
             var processingCostsAgency = getAgencyComponent($(this));
             if (processingCostsAgency !== '_none') {
               calculatePercentTotalCosts(processingCostsAgency);
@@ -424,17 +425,17 @@
       });
 
       // Initialize on load:
-      // X. Agency Overall Percentage of Total Costs
+      // X. Agency Overall Percentage of Total Costs.
       if (!fieldIsInitialized('#edit-field-overall-x-perc-costs-0-value')) {
         calculateOverallPercentCosts();
         markFieldInitialized('#edit-field-overall-x-perc-costs-0-value');
       }
 
       // Calculate on change:
-      // X. Agency Overall Percentage of Total Costs
+      // X. Agency Overall Percentage of Total Costs.
       $("#edit-field-overall-ix-proc-costs-0-value, #edit-field-overall-x-total-fees-0-value")
         .once('advCalcOverallXPercCosts')
-        .change(function() {
+        .change(function () {
           calculateOverallPercentCosts();
       });
 
@@ -445,11 +446,11 @@
 
       // Initialize on load:
       // XII.B. Number of Consultations Received from Other Agencies that were
-      // Pending at the Agency as of End of the Fiscal Year
+      // Pending at the Agency as of End of the Fiscal Year.
       $("input[name*='field_foia_xiib']")
         .once('initAdvCalcXIIBConPendEndYr')
         .filter("input[name*='field_pend_end_yr']")
-        .each(function() {
+        .each(function () {
           if (!fieldIsInitialized(this)) {
             calculatePendEndYr(this, 'field_pend_start_yr', 'field_con_during_yr', 'field_proc_start_yr', 'field_pend_end_yr');
             markFieldInitialized(this);
@@ -458,12 +459,12 @@
 
       // Calculate on change:
       // XII.B. Number of Consultations Received from Other Agencies that were
-      // Pending at the Agency as of End of the Fiscal Year
+      // Pending at the Agency as of End of the Fiscal Year.
       $("input[name*='field_foia_xiib']")
         .filter("input[name*='field_pend_start_yr'], input[name*='field_con_during_yr'], input[name*='field_proc_start_yr']")
-        .each(function() {
+        .each(function () {
           $(this).once('advCalcXIIBConPendEndYr')
-            .change(function() {
+            .change(function () {
               calculatePendEndYr(this, 'field_pend_start_yr', 'field_con_during_yr', 'field_proc_start_yr', 'field_pend_end_yr');
             });
       });
@@ -475,7 +476,7 @@
 
       // Initialize on load: XII.B. Agency Overall Number of Consultations
       // Received from Other Agencies that were Pending at the Agency as of End
-      // of the Fiscal Year
+      // of the Fiscal Year.
       if (!fieldIsInitialized('#edit-field-overall-xiib-pend-end-yr-0-value')) {
         calculateOverallPendEndYr(
           '#edit-field-overall-xiib-pend-start-yr-0-value',
@@ -488,10 +489,10 @@
 
       // Calculate on change: XII.B. Agency Overall Number of Consultations
       // Received from Other Agencies that were Pending at the Agency as of End
-      // of the Fiscal Year
+      // of the Fiscal Year.
       $("#edit-field-overall-xiib-pend-start-yr-0-value, #edit-field-overall-xiib-con-during-yr-0-value, #edit-field-overall-xiib-proc-start-yr-0-value")
         .once('advCalcXIIBOverallAppPendEndYr')
-        .change(function() {
+        .change(function () {
           calculateOverallPendEndYr(
             '#edit-field-overall-xiib-pend-start-yr-0-value',
             '#edit-field-overall-xiib-con-during-yr-0-value',
