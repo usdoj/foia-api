@@ -24,290 +24,46 @@ Feature: Annual FOIA Report Data Feature
       | FTA - 2019 - Annual FOIA Report has been created. |
 
   @api
-  Scenario: Edit an Annual FOIA Report Data node Section IV Exemption 3 Statutes.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
+  Scenario: Agency Administrator can add Annual FOIA Reports
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add"
+    Then I should see the link "Annual FOIA Report Data"
+
+  @api
+  Scenario: Agency Administrator can save Annual FOIA Reports in all workflow
+  states
+    Given "agency" terms:
+      | name  |field_agency_abbreviation| description |format    | language |
+      | test  |DOJ                      | description |plain_text| en       |
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/annual_foia_report_data"
+    And for 'Agency' I enter 'test'
+    And I select "Draft" from "Save as"
+    When I press the 'Save' button
+    And save the current URL
+    Then I should see the following success messages:
+      | Annual FOIA Report Data A Test Report has been created. |
+    When I go to saved URL
+    And I click 'Edit'
+    And I select "Submitted to OIP" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section V.A. FOIA REQUESTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
+      | Annual FOIA Report Data test from manager has been updated. |
+    When I go to saved URL
+    And I click 'Edit'
+    And I select "Cleared" from "Change to"
+    And I press the 'Save' button
     Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section V.B.(1). --- Number of Full Denials Based on Reasons Other than Exemptions.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
+      | Annual FOIA Report Data test from manager has been updated. |
+    When I go to saved URL
+    And I click 'Edit'
+    And I select "Published" from "Change to"
+    And I press the 'Save' button
     Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS".
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
+      | Annual FOIA Report Data test from manager has been updated. |
+    When I go to saved URL
+    And I click 'Edit'
+    And I select "Back with Agency" from "Change to"
+    And I press the 'Save' button
     Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEA.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VI. C. (5) ADMINISTRATIVE APPEALS - OLDEST DAYS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VII.A. FOIA REQUESTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VII. B. PROCESSED REQUESTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VII.C.1 PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VII.C.2 PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VII.C.3 PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VII. D. PENDING REQUESTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VII. E. PENDING REQUESTS - OLDEST DAYS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VIII.A. REQUESTS FOR EXPEDITED PROCESSING.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section VIII.B. REQUESTS FOR FEE WAIVER.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section IX. FOIA PERSONNEL AND COSTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section X. FEES COLLECTED FOR PROCESSING REQUESTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XI.A. NUMBER OF TIMES SUBSECTION (C) USED.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XI.B. NUMBER OF SUBSECTION (A)(2) POSTINGS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XII.A. BACKLOGS OF FOIA REQUESTS AND ADMINISTRATIVE APPEALS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XII. C. FOIA REQUESTS AND ADMINISTRATIVE APPEALS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XII. D. (1). FOIA REQUESTS AND ADMINISTRATIVE APPEALS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XII.D.(2). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED REQUESTS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XII. E. (1). FOIA REQUESTS AND ADMINISTRATIVE APPEALS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
-
-  @api
-  Scenario: Edit an Annual FOIA Report Data node Section XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS.
-    Given I am logged in as a user with the 'Administrator' role
-    And I go to the 'node' type entity with the '2019 Test Agency 1 Annual FOIA Report' label
-    And I edit the current entity
-    When I press the 'Save' button
-    Then I should see the following success messages:
-      | Annual FOIA Report Data 2019 Test Agency 1 Annual FOIA Report has been updated. |
+      | Annual FOIA Report Data test from manager has been updated. |
