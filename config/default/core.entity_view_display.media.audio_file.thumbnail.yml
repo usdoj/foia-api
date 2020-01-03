@@ -1,31 +1,35 @@
-uuid: 3a3c1e8b-55a8-4aac-8bae-ed6f005afd9a
+uuid: c9f5df94-ad7f-4a1f-8057-3d845880d886
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.media.thumbnail
+    - field.field.media.audio_file.field_media_audio_file
+    - field.field.media.audio_file.field_media_in_library
     - image.style.medium
-    - media.type.video
+    - media.type.audio_file
   module:
     - image
-id: media.video.thumbnail
+_core:
+  default_config_hash: ZkdF5ut1PZ1MPJH9FMPRDYMyuI42lGa5R3QGTTU-LdY
+id: media.audio_file.thumbnail
 targetEntityType: media
-bundle: video
+bundle: audio_file
 mode: thumbnail
 content:
   thumbnail:
     type: image
     weight: 0
-    label: hidden
+    region: content
+    label: visually_hidden
     settings:
       image_style: medium
       image_link: ''
     third_party_settings: {  }
-    region: content
 hidden:
   created: true
+  field_media_audio_file: true
   field_media_in_library: true
-  field_media_video_embed_field: true
   name: true
   search_api_excerpt: true
   uid: true

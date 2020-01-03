@@ -1,51 +1,56 @@
-uuid: fcf0c615-0e75-426e-8433-1ff9c66c8b34
+uuid: 4d48aece-40a7-4080-bb8e-3d852409c6dd
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.media.media_browser
-    - field.field.media.video.field_media_in_library
-    - field.field.media.video.field_media_video_embed_field
-    - media.type.video
-id: media.video.media_browser
+    - field.field.media.audio_file.field_media_audio_file
+    - field.field.media.audio_file.field_media_in_library
+    - media.type.audio_file
+  module:
+    - file
+    - path
+_core:
+  default_config_hash: scS6z7UbOgL-jnF_xNAMLsgYlIwhGZxu5JLNR1xDat8
+id: media.audio_file.default
 targetEntityType: media
-bundle: video
-mode: media_browser
+bundle: audio_file
+mode: default
 content:
-  field_media_in_library:
-    type: boolean_checkbox
+  field_media_audio_file:
     weight: 1
     settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
+  field_media_in_library:
+    type: boolean_checkbox
+    settings:
       display_label: true
+    weight: 2
     third_party_settings: {  }
     region: content
   name:
     type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    region: content
   path:
     type: path
     weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
-  preview:
-    weight: 101
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 100
+    weight: 3
     region: content
     third_party_settings: {  }
 hidden:
   created: true
-  field_media_video_embed_field: true
   uid: true
