@@ -218,10 +218,11 @@
             var elementAgency = getAgencyComponent($(this));
             if (agency === elementAgency) {
               var totalFees = getElementValByAgency(totalFeesElements, agency);
+              var percentCosts = 0;
               if (totalFees > 0) {
                 var procCosts = getElementValByAgency(procCostsElements, agency);
                 // Convert to decimal format rounded to 4 places.
-                var percentCosts = Math.round(totalFees / procCosts * 10000) / 10000;
+                percentCosts = Math.round(totalFees / procCosts * 10000) / 10000;
               }
               $(this).val(percentCosts);
             }
@@ -233,13 +234,14 @@
        */
       function calculateOverallPercentCosts() {
         var overallTotalFees = Number($("#edit-field-overall-x-total-fees-0-value").val());
+        var overallPercentCosts = 0;
         if (overallTotalFees > 0) {
           var overallProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
-          var overallPercentCosts = overallTotalFees / overallProcCosts;
+          overallPercentCosts = overallTotalFees / overallProcCosts;
           // Convert to decimal format rounded to 4 places.
           overallPercentCosts = Math.round(overallPercentCosts * 10000) / 10000;
-          $('#edit-field-overall-x-perc-costs-0-value').val(overallPercentCosts);
         }
+        $('#edit-field-overall-x-perc-costs-0-value').val(overallPercentCosts);
       }
 
       /**
