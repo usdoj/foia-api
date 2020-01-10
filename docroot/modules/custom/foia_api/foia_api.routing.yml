@@ -1,0 +1,6 @@
+foia_api.annual_report_fiscal_years:
+  path: '/api/annual_foia_report/fiscal_years'
+  defaults:
+    _controller: '\Drupal\foia_api\Controller\FoiaApiFiscalYearController::get'
+  requirements:
+    _permission: 'access content'
