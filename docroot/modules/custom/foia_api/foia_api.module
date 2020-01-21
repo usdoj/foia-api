@@ -1,0 +1,27 @@
+<?php
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Access\AccessResultAllowed;
+
+/**
+ * Implements hook_jsonapi_ENTITY_TYPE_filter_access().
+ */
+function foia_api_jsonapi_node_filter_access(EntityTypeInterface $entity_type, AccountInterface $account) {
+  $access = $account->hasPermission('view any unpublished agency_component content')
+    || $account->hasPermission('view any unpublished content')
+    || $account->hasPermission('view any unpublished annual_foia_report_data content');
+
+  // At this point we are unable to restrict access by node type, so as long
+  // as the account has access to view unpublished nodes of either the
+  // annual_foia_report_data or agency_component type, we will allow jsonapi
+  // access to filter among all nodes.  This fixes an issue where jsonapi was
+  // adding a status=1 condition to queries for agency_components when the
+  // request included a filter parameter. Access can still be restricted with a
+  // default status filter, such as for the /api/annual_foia_report endpoint.
+  if ($access) {
+    return [
+      JSONAPI_FILTER_AMONG_ALL => AccessResultAllowed::allowed(),
+    ];
+  }
+}
