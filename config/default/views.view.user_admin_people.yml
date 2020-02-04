@@ -941,10 +941,10 @@ display:
         group_by: false
       empty: {  }
       fields:
-        mail:
-          id: mail
+        name_1:
+          id: name_1
           table: users_field_data
-          field: mail
+          field: name
           relationship: none
           group_type: group
           admin_label: ''
@@ -990,8 +990,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
-          settings: {  }
+          type: string
+          settings:
+            link_to_entity: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1002,9 +1003,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
           entity_type: user
-          entity_field: mail
+          entity_field: name
+          plugin_id: field
         name:
           id: name
           table: taxonomy_term_field_data
