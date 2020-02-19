@@ -25,3 +25,12 @@ function foia_api_jsonapi_node_filter_access(EntityTypeInterface $entity_type, A
     ];
   }
 }
+
+/**
+ * Implements hook_jsonapi_ENTITY_TYPE_filter_access().
+ */
+function foia_api_jsonapi_paragraph_filter_access(EntityTypeInterface $entity_type, AccountInterface $account) {
+  return [
+    JSONAPI_FILTER_AMONG_PUBLISHED => AccessResultAllowed::allowed(),
+  ];
+}
