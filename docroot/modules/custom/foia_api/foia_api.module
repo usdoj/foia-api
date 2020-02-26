@@ -65,12 +65,16 @@ function foia_api_query_alter(AlterableInterface $query) {
  */
 function _foia_api_cast_condition_values($parent, $query) {
   foreach($parent->conditions() as $delta => &$condition) {
+    if (!is_array($condition)) {
+      continue;
+    }
+
     if ($condition['field'] instanceof ConditionInterface) {
       _foia_api_cast_condition_values($condition['field'], $query);
       continue;
     }
 
-    if (is_array($condition) && _foia_api_is_string_field($condition['field']) && is_numeric($condition['value'])) {
+    if (_foia_api_is_string_field($condition['field']) && is_numeric($condition['value'])) {
       // Current condition values.
       $value = (int) $condition['value'];
       $operator = $condition['operator'];
