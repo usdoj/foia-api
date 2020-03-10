@@ -797,6 +797,13 @@ if ($is_ah_env) {
 
 // Suppress display of error messages.
 ini_set('display_errors', '0');
+
+# Set the Drush memory limit to 1024M
+# NOTE: This will only work if you do NOT have other memory overrides set up.
+if (PHP_SAPI === 'cli') {
+  ini_set('memory_limit', '1024M');
+}
+
 #
 # IMPORTANT
 # Do not include additional settings here. Instead, add them to settings included
