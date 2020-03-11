@@ -139,6 +139,15 @@ class FoiaUploadXmlCommands extends DrushCommands {
           ]));
         }
 
+        // If the import is successful, set the moderation state to
+        // cleared so that DoJ can check and then bulk publish all the imported
+        // reports at once.
+        $node = $this->migratedNode($source);
+        if ($node) {
+          $node->set('moderation_state', 'cleared');
+          $node->save();
+        }
+
         $rows[] = [
           'file' => $info['basename'],
           'status' => 'Processed',
@@ -180,7 +189,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
    * @param \Drupal\file\FileInterface $file
    *   The report's source xml file.
    *
-   * @return int
+   * @return int|false
    *   The value of the source_row_status column in the
    *   migrate_map_foia_agency_report table for the agency and report year
    *   of the given source file.
@@ -188,18 +197,54 @@ class FoiaUploadXmlCommands extends DrushCommands {
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function migrationStatus(FileInterface $file) {
+    $row = $this->migratedRow($file);
+    return (int) $row['source_row_status'] ?? FALSE;
+  }
+
+  /**
+   * Load the node that report data was migrated into.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The source xml file.
+   *
+   * @return bool|\Drupal\Core\Entity\EntityInterface|false
+   *   The migration's destination node or false if it does not exist.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function migratedNode(FileInterface $file) {
+    $row = $this->migratedRow($file);
+    return $row['destid1']
+      ? $this->entityTypeManager->getStorage('node')->load($row['destid1'])
+      : FALSE;
+  }
+
+  /**
+   * Get the status and destination id of the imported report.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The report's source xml file.
+   *
+   * @return array
+   *   An array containing the source_row_status and destid1 values from the
+   *   migrate_map_foia_agency_report table that correspond to the source file's
+   *   agency and report year.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   */
+  protected function migratedRow(FileInterface $file) {
     $report_data = $this->reportParser->parse($file);
     $agency = $report_data['agency'] ?? FALSE;
     $year = $report_data['report_year'] ?? date('Y');
 
-    $status = $this->connection->select('migrate_map_foia_agency_report', 'm')
-      ->fields('m', ['source_row_status'])
+    return $this->connection->select('migrate_map_foia_agency_report', 'm')
+      ->fields('m', ['source_row_status', 'destid1'])
       ->condition('sourceid1', $year)
       ->condition('sourceid2', $agency)
       ->execute()
-      ->fetchField();
-
-    return (int) $status;
+      ->fetchAssoc();
   }
 
 }
