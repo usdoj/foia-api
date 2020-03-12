@@ -90,13 +90,18 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
       return;
     }
 
+    /** @var Row $row */
     $row = $migration->foiaErrorInformation['row'] ?? FALSE;
     if (!$row) {
       return;
     }
 
+    $saved = &drupal_static(__FUNCTION__ . md5(join('.', $row->getSourceIdValues())), FALSE);
+    if ($saved) {
+      return;
+    }
     $this->savePartial($migration, $row);
-    $this->getEventDispatcher()->removeListener(MigrateEvents::POST_IMPORT, [$this, 'onPostAgencyImport']);
+    $saved = TRUE;
   }
 
   /**
