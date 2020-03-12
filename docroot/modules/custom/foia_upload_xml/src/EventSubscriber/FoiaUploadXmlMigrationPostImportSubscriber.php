@@ -86,6 +86,9 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
       return;
     }
 
+    // The listener is being run multiple times, but cannot be removed b/c
+    // it has to work with the bulk uploader as well.  This ensures that
+    // it only attempts to save the partial report once.
     $saved = &drupal_static(__FUNCTION__ . md5(join('.', $row->getSourceIdValues())), FALSE);
     if ($saved) {
       return;
