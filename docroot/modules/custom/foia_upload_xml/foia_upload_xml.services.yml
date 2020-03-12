@@ -17,6 +17,6 @@ services:
       - { name: 'event_subscriber' }
   foia_upload_xml.migration_post_import_subscriber:
     class: Drupal\foia_upload_xml\EventSubscriber\FoiaUploadXmlMigrationPostImportSubscriber
-    arguments: ['@messenger']
+    arguments: ['@messenger', '@entity_type.manager']
     tags:
       - { name: event_subscriber }
