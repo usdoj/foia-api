@@ -51,26 +51,6 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
   }
 
   /**
-   * Kernel request event handler.
-   *
-   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
-   *   Response event.
-   */
-  public function onKernelRequest(GetResponseEvent $event) {
-    $this->messenger->addStatus(__FUNCTION__);
-  }
-
-  /**
-   * Kernel response event handler.
-   *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
-   *   Response event.
-   */
-  public function onKernelResponse(FilterResponseEvent $event) {
-    $this->messenger->addStatus(__FUNCTION__);
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
