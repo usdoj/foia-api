@@ -7,7 +7,6 @@ use Drupal\migrate\MigrateMessage;
 use Drupal\Core\Cache\NullBackend;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\migrate_tools\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrationPluginManager;
 
@@ -75,7 +74,7 @@ class FoiaUploadXmlMigrationsProcessor {
     // exist.
     $migration = $migration->setMigrationSourceUrls($migration);
     $migration->getIdMap()->prepareUpdate();
-    $executable = new MigrateExecutable($migration, $this->migrateMessage);
+    $executable = new FoiaUploadXmlMigrateExecutable($migration, $this->migrateMessage);
     $executable->import();
   }
 
