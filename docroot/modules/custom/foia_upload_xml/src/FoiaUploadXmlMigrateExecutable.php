@@ -31,6 +31,10 @@ class FoiaUploadXmlMigrateExecutable extends MigrateExecutable {
       $isFailedAgencyMigration = $this->migration->id() === 'foia_agency_report' && $e->getStatus() == MigrateIdMapInterface::STATUS_FAILED;
       if ($isFailedAgencyMigration) {
         $this->getFailureHandler($e)->handle();
+        $this->migration->foiaErrorInformation = [
+          'status' => $e->getStatus(),
+          'row' => $this->migration->getSourcePlugin()->current(),
+        ];
       }
 
       throw $e;
