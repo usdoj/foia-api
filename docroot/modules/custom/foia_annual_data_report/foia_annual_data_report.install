@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Install/update code for FOIA Annual Data Reports.
+ */
+
+/**
+ * Convert all "N/A" to "0" in Section XIIa backlog appeals.
+ */
+function foia_annual_data_report_update_8001(&$sandbox) {
+  $paragraph_type = 'foia_xiia';
+  $field_name = 'field_back_app_end_yr';
+
+  $ids = \Drupal::entityQuery('paragraph')
+    ->condition('type', $paragraph_type)
+    ->execute();
+  $entities = \Drupal\paragraphs\Entity\Paragraph::loadMultiple($ids);
+  foreach ($entities as $id => $entity) {
+    $value = $entity->get($field_name)->getString();
+    if ($value == 'N/A') {
+      $entity->set($field_name, '0');
+      $entity->save();
+    }
+  }
+}
