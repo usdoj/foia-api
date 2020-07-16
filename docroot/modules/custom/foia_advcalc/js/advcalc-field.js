@@ -222,7 +222,7 @@
               if (totalFees > 0) {
                 var procCosts = getElementValByAgency(procCostsElements, agency);
                 // Convert to decimal format rounded to 4 places.
-                percentCosts = Math.round(totalFees / procCosts * 10000) / 10000;
+                percentCosts = Math.round(totalFees / procCosts * 10000) / 100;
               }
               $(this).val(percentCosts);
             }
@@ -239,7 +239,7 @@
           var overallProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
           overallPercentCosts = overallTotalFees / overallProcCosts;
           // Convert to decimal format rounded to 4 places.
-          overallPercentCosts = Math.round(overallPercentCosts * 10000) / 10000;
+          overallPercentCosts = Math.round(overallPercentCosts * 10000) / 100;
         }
         $('#edit-field-overall-x-perc-costs-0-value').val(overallPercentCosts);
       }
