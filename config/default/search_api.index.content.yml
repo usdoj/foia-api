@@ -72,11 +72,15 @@ datasource_settings:
       default: true
       selected: {  }
 processor_settings:
-  add_url: {  }
   aggregated_field: {  }
-  content_access:
+  ignorecase:
+    fields:
+      - label
+      - rendered
     weights:
-      preprocess_query: -10
+      preprocess_index: -9
+      preprocess_query: -8
+    all_fields: false
   html_filter:
     fields:
       - label
@@ -93,15 +97,7 @@ processor_settings:
       preprocess_index: -10
       preprocess_query: -9
     all_fields: false
-  ignorecase:
-    fields:
-      - label
-      - rendered
-    weights:
-      preprocess_index: -9
-      preprocess_query: -8
-    all_fields: false
-  rendered_item: {  }
+  language_with_fallback: {  }
   stopwords:
     fields:
       - label
@@ -146,6 +142,19 @@ processor_settings:
       preprocess_index: -5
       preprocess_query: -4
     all_fields: false
+  transliteration:
+    fields:
+      - label
+      - rendered
+    weights:
+      preprocess_index: -4
+      preprocess_query: -3
+    all_fields: false
+  rendered_item: {  }
+  add_url: {  }
+  content_access:
+    weights:
+      preprocess_query: -10
   tokenizer:
     fields:
       - label
@@ -156,14 +165,6 @@ processor_settings:
     weights:
       preprocess_index: -6
       preprocess_query: -5
-    all_fields: false
-  transliteration:
-    fields:
-      - label
-      - rendered
-    weights:
-      preprocess_index: -4
-      preprocess_query: -3
     all_fields: false
 tracker_settings:
   default:
