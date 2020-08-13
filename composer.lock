@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "55fecebf33c236373129e33c69fc2de1",
+    "content-hash": "6475480e9b9b0c6a3ff185cfbeba15d0",
     "packages": [
         {
             "name": "acquia/blt",
@@ -890,7 +890,7 @@
             "version": "3.5.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "4c0e4becb8263bb5b3e6dadc448d8e7305ef8215"
             },
             "dist": {
@@ -8623,6 +8623,56 @@
                 "source": "https://cgit.drupalcode.org/pathauto",
                 "issues": "https://www.drupal.org/project/issues/pathauto",
                 "documentation": "https://www.drupal.org/docs/8/modules/pathauto"
+            }
+        },
+        {
+            "name": "drupal/precision_modifier",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/precision_modifier.git",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/precision_modifier-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "c42aa4ae3c121445e063fe405a6b39ab92428f43"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1554208384",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Mwebaze",
+                    "homepage": "https://www.drupal.org/user/3201071"
+                }
+            ],
+            "description": "Allows site admins change precision and scale values of node fields of type decimal the have data associated with them.",
+            "homepage": "https://www.drupal.org/project/precision_modifier",
+            "keywords": [
+                "drupal",
+                "precision modifier",
+                "precision_modifier",
+                "site administration"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/precision_modifier"
             }
         },
         {
@@ -19868,6 +19918,7 @@
         "drupal/maillog": 20,
         "drupal/node_revision_delete": 10,
         "drupal/password_policy": 15,
+        "drupal/precision_modifier": 10,
         "drupal/roleassign": 15,
         "drupal/rules": 15,
         "drupal/simplesamlphp_auth": 20,
