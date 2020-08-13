@@ -34,7 +34,7 @@ $config = [
         'saml:SP',
         'idp' => $idp,
         'NameIDPolicy' => FALSE,
-        'AuthnContextClassRef' => 'https://max.gov/icam/2015/10/securityLevels/securePlus2',
+        'AuthnContextClassRef' => 'https://max.gov/icam/2015/10/securityLevels/piv',
 
         // The entity ID of this SP.
         // Can be NULL/unset, in which case an entity ID is generated based on the metadata URL.
