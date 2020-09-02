@@ -771,7 +771,7 @@
         $(this).rules("add", {
           equalToComp: $("input[name*='field_admin_app_vic3']").filter("input[name*='field_total']"),
           messages: {
-            equalToComp: "Must match VI.B. Total Processed Appeals in Fiscal Year for corresponding agency/component"
+            equalToComp: "The number in the Other* field should match the total Other* reasons listed for each component in VI.C.3. Check that there is component level data in VI.C.3."
           }
         });
       });
