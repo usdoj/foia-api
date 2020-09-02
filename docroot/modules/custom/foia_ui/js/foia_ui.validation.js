@@ -651,7 +651,7 @@
           $(this).rules("add", {
               equalToComp: $("input[name*='field_foia_requests_vb2']").filter("input[name*='field_total']"),
               messages: {
-                  equalToComp: "Must match V.A. Agency Number of Requests Processed in Fiscal Year"
+                  equalToComp: "Must match V.B.2. \"Total\" Other Reasons"
               }
           });
       });
