@@ -781,7 +781,8 @@
         lessThanEqualComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
         greaterThanZeroOrNA: true,
         messages: {
-          lessThanEqualComp: "Must be lower than or equal to the highest number of days."
+          lessThanEqualComp: "Must be lower than or equal to the highest number of days.",
+          greaterThanZeroOrNA: "Please enter a value greater than zero. If your agency processed any appeals during the FY, please enter a value greater than zero or the value <1. If your agency didn't process any appeals, enter N/A."
         }
       });
 
