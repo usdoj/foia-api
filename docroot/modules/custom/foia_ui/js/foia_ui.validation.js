@@ -651,7 +651,7 @@
           $(this).rules("add", {
               equalToComp: $("input[name*='field_foia_requests_vb2']").filter("input[name*='field_total']"),
               messages: {
-                  equalToComp: "Must match V.A. Agency Number of Requests Processed in Fiscal Year"
+                  equalToComp: "Must match V.B.2. \"Total\" Other Reasons"
               }
           });
       });
@@ -771,7 +771,7 @@
         $(this).rules("add", {
           equalToComp: $("input[name*='field_admin_app_vic3']").filter("input[name*='field_total']"),
           messages: {
-            equalToComp: "Must match VI.B. Total Processed Appeals in Fiscal Year for corresponding agency/component"
+            equalToComp: "The number in the Other* field should match the total Other* reasons listed for each component in VI.C.3. Check that there is component level data in VI.C.3."
           }
         });
       });
@@ -781,7 +781,8 @@
         lessThanEqualComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
         greaterThanZeroOrNA: true,
         messages: {
-          lessThanEqualComp: "Must be lower than or equal to the highest number of days."
+          lessThanEqualComp: "Must be lower than or equal to the highest number of days.",
+          greaterThanZeroOrNA: "Please enter a value greater than zero. If your agency processed any appeals during the FY, please enter a value greater than zero or the value <1. If your agency didn't process any appeals, enter N/A."
         }
       });
 
