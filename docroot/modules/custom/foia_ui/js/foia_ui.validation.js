@@ -729,6 +729,8 @@
       });
 
       // VI.B. Administrative Appeals.
+      // Removing for now. @see WS-218.
+      /*
       $("input[name*='field_admin_app_vib']").filter("input[name*='field_closed_oth_app']").each(function () {
         $(this).rules("add", {
           lessThanEqualComp: $("input[name*='field_admin_app_vic2']").filter("input[name*='field_oth']"),
@@ -737,6 +739,7 @@
           }
         });
       });
+      */
 
       // VI.C.(3). Agency Overall Total.
       $("#edit-field-overall-vic3-total-0-value").rules("add", {
