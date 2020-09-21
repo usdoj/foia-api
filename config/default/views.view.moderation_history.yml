@@ -66,9 +66,9 @@ display:
       fields:
         moderation_state:
           id: moderation_state
-          table: content_moderation_state_field_revision
+          table: node_field_revision
           field: moderation_state
-          relationship: moderation_state
+          relationship: none
           group_type: group
           admin_label: 'Moderation state'
           label: ''
@@ -125,8 +125,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: content_moderation_state
-          entity_field: moderation_state
+          entity_type: node
           plugin_id: moderation_state_field
         revision_uid:
           id: revision_uid
@@ -282,16 +281,6 @@ display:
       footer: {  }
       empty: {  }
       relationships:
-        moderation_state:
-          id: moderation_state
-          table: node_field_revision
-          field: moderation_state
-          relationship: none
-          group_type: group
-          admin_label: 'Moderation state'
-          required: true
-          entity_type: node
-          plugin_id: standard
         revision_uid:
           id: revision_uid
           table: node_revision
