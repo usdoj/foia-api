@@ -161,6 +161,7 @@ function foia_annual_data_report_refresh(array $form, FormStateInterface
 function foia_annual_data_report_early_submit($form, FormStateInterface $form_state) {
   foia_annual_data_report_debug_log('Submitting Annual Report. Before setting memory');
   foia_annual_data_report_set_memory_limit();
+  foia_annual_data_report_set_max_execution_time();
   foia_annual_data_report_debug_log('Submitting Annual Report. After setting memory');
 
 }
@@ -177,6 +178,7 @@ function foia_annual_data_report_node_load($entities) {
 
         foia_annual_data_report_debug_log('Loading Annual Report. Before setting memory');
         foia_annual_data_report_set_memory_limit();
+        foia_annual_data_report_set_max_execution_time();
         foia_annual_data_report_debug_log('Loading Annual Report. After setting memory');
 
         // If we already set the memory limit, break out of the array.
@@ -219,6 +221,22 @@ function foia_annual_data_report_set_memory_limit() {
 }
 
 /**
+ * Set max execution time for override based on config.
+ */
+function foia_annual_data_report_set_max_execution_time() {
+  try {
+    $config_value = foia_annual_data_report_get_config('annual_report_max_execution_time');
+  }
+  catch (\InvalidArgumentException $e) {
+    \Drupal::logger('foia_annual_data_report')->error('Invalid setting requested.');
+  }
+
+  if ($config_value) {
+    ini_set('max_execution_time', $config_value);
+  }
+}
+
+/**
  * Get the requested setting from this module's config.
  *
  * @param string $setting
@@ -228,7 +246,12 @@ function foia_annual_data_report_set_memory_limit() {
  *   The value of the requested setting.
  */
 function foia_annual_data_report_get_config(string $setting) {
-  if (!in_array($setting, ['annual_report_memory_limit', 'debug_annual_report_memory_limit'])) {
+  $allowed_settings = [
+    'annual_report_max_execution_time',
+    'annual_report_memory_limit',
+    'debug_annual_report_memory_limit',
+  ];
+  if (!in_array($setting, $allowed_settings)) {
     throw new \InvalidArgumentException('Invalid setting.');
   }
   $value = \Drupal::config('foia_annual_data_report.settings')

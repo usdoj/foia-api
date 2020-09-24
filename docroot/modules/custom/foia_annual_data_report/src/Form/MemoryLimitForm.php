@@ -36,6 +36,12 @@ class MemoryLimitForm extends ConfigFormBase {
       '#default_value' => $this->config('foia_annual_data_report.settings')->get('annual_report_memory_limit'),
       '#description' => $this->t('Leave blank for no override. If set, make sure this value is valid per PHPs memory limit options.'),
     ];
+    $form['annual_report_max_execution_time'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Annual Report Max Execution Time'),
+      '#default_value' => $this->config('foia_annual_data_report.settings')->get('annual_report_max_execution_time'),
+      '#description' => $this->t('Leave blank for no override. If set, make sure this value is valid per PHPs max_execution_time options.'),
+    ];
     $form['debug_annual_report_memory_limit'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Debug Annual Report memory limit'),
@@ -51,6 +57,9 @@ class MemoryLimitForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('foia_annual_data_report.settings')
       ->set('annual_report_memory_limit', $form_state->getValue('annual_report_memory_limit'))
+      ->save();
+      $this->config('foia_annual_data_report.settings')
+      ->set('annual_report_max_execution_time', $form_state->getValue('annual_report_max_execution_time'))
       ->save();
     $this->config('foia_annual_data_report.settings')
       ->set('debug_annual_report_memory_limit', $form_state->getValue('debug_annual_report_memory_limit'))
