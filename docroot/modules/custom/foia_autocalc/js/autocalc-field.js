@@ -78,6 +78,10 @@
     });
 
     Object.keys(totalValues).forEach(function (selector) {
+      // Deal with long decimals.
+      if (typeof totalValues[selector] === 'number') {
+        totalValues[selector] = Math.round((totalValues[selector] + Number.EPSILON) * 100000) / 100000
+      }
       // Set overall value to "N/A" if all fields are "N/A".
       if (isTotalNA) {
         totalValues[selector] = "N/A";
