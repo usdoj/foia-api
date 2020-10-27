@@ -10,6 +10,7 @@ third_party_settings:
   jsonapi_defaults:
     default_filter:
       'filter:status': '1'
+    page_limit: 50
 id: node--agency_component
 disabled: false
 path: agency_components
@@ -355,6 +356,12 @@ resourceFields:
     disabled: true
     fieldName: field_submission_api
     publicName: submission_api
+    enhancer:
+      id: ''
+  field_submission_api_cert:
+    disabled: true
+    fieldName: field_submission_api_cert
+    publicName: field_submission_api_cert
     enhancer:
       id: ''
   field_submission_api_secret:

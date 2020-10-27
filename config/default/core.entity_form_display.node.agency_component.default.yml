@@ -34,6 +34,7 @@ dependencies:
     - field.field.node.agency_component.field_simple_median_days
     - field.field.node.agency_component.field_submission_address
     - field.field.node.agency_component.field_submission_api
+    - field.field.node.agency_component.field_submission_api_cert
     - field.field.node.agency_component.field_submission_api_secret
     - field.field.node.agency_component.field_submission_email
     - field.field.node.agency_component.field_submission_fax
@@ -45,6 +46,7 @@ dependencies:
     - content_moderation
     - datetime
     - field_group
+    - file
     - inline_entity_form
     - link
     - path
@@ -106,6 +108,7 @@ third_party_settings:
       children:
         - field_submission_api
         - field_submission_api_secret
+        - field_submission_api_cert
       parent_name: group_portal_submission_options
       weight: 23
       format_type: details
@@ -297,6 +300,7 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -320,6 +324,7 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -342,6 +347,7 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -366,6 +372,7 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -393,6 +400,7 @@ content:
     weight: 22
     settings:
       default_data: true
+      webforms: {  }
     third_party_settings: {  }
     type: webform_entity_reference_select
     region: content
@@ -409,6 +417,7 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -457,6 +466,13 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
+  field_submission_api_cert:
+    weight: 28
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
     region: content
   field_submission_api_secret:
     weight: 27

@@ -1,0 +1,33 @@
+uuid: 1c61ca04-2470-48f5-80d6-eda25afdb92f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_submission_api_cert
+    - node.type.agency_component
+  module:
+    - file
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.agency_component.field_submission_api_cert
+field_name: field_submission_api_cert
+entity_type: node
+bundle: agency_component
+label: 'Submission API Certificate'
+description: 'Use this to upload a custom SSL certificate, if required by your API endpoint. <strong>In most cases, this is not necessary.</strong>'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: pem
+  max_filesize: '10 KB'
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

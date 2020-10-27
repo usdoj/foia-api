@@ -34,6 +34,7 @@ dependencies:
     - field.field.node.agency_component.field_simple_median_days
     - field.field.node.agency_component.field_submission_address
     - field.field.node.agency_component.field_submission_api
+    - field.field.node.agency_component.field_submission_api_cert
     - field.field.node.agency_component.field_submission_api_secret
     - field.field.node.agency_component.field_submission_email
     - field.field.node.agency_component.field_submission_fax
@@ -255,6 +256,8 @@ content:
     label: above
     settings:
       label: '[webform:title]'
+      dialog: ''
+      attributes: {  }
     third_party_settings: {  }
     type: webform_entity_reference_link
     region: content
@@ -370,4 +373,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_submission_api_cert: true
   search_api_excerpt: true
