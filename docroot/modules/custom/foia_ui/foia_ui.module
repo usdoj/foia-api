@@ -48,6 +48,13 @@ function foia_ui_toolbar_alter(&$items) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function foia_ui_form_taxonomy_term_agency_form_alter(&$form, FormStateInterface $form_state) {
+  $form['status']['widget']['value']['#description'] = 'IMPORTANT NOTE: Please do NOT uncheck this box! Unpublished agencies can interfere with critical site functionality.';
+}
+
+/**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function foia_ui_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
