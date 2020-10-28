@@ -318,6 +318,7 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_sub_xia
     - field.field.node.annual_foia_report_data.field_sub_xib
     - node.type.annual_foia_report_data
+    - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
     - entity_reference_views_select
@@ -854,11 +855,12 @@ third_party_settings:
       weight: 17
       format_type: tab
       format_settings:
+        label: 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
+        formatter: closed
+        description: "<h3>VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
+        required_fields: true
         id: ''
         classes: ''
-        formatter: closed
-        description: '<h3>VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        required_fields: true
       label: 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
     group_vii_c_2_processed_complex_:
       children:
@@ -882,11 +884,12 @@ third_party_settings:
       weight: 18
       format_type: tab
       format_settings:
+        label: 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS '
+        formatter: closed
+        description: "<h3>VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
+        required_fields: true
         id: ''
         classes: ''
-        formatter: closed
-        description: '<h3>VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        required_fields: true
       label: 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS '
     group_vii_c_3_processed_requests:
       children:
@@ -910,11 +913,12 @@ third_party_settings:
       weight: 19
       format_type: tab
       format_settings:
+        label: 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS '
+        formatter: closed
+        description: "<h3>VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
+        required_fields: true
         id: ''
         classes: ''
-        formatter: closed
-        description: '<h3>VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        required_fields: true
       label: 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS '
     group_vii_d_pending_requests_all:
       children:
@@ -1752,7 +1756,7 @@ third_party_settings:
       format_settings:
         label: 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
         formatter: closed
-        description: '<h3>VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. Values must either be non-negative numeric values, the special value "<1", or the special value "N/A". To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: "<h3>VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
         required_fields: true
         id: ''
         classes: ''
@@ -1768,7 +1772,7 @@ third_party_settings:
       format_settings:
         label: 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED'
         formatter: closed
-        description: '<h3>VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Values must either be non-negative numeric values, the special value "<1", or the special value "N/A". Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: "<h3>VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
         required_fields: true
         id: ''
         classes: ''

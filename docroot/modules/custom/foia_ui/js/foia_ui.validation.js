@@ -413,6 +413,8 @@
       }, "Sum of the fields must be greater than zero.");
 
       // vb1matchDispositionComp: hard-coded for V.B.(1)
+      // Removing this for now, but we need to fix and add it back soon.
+      /*
       jQuery.validator.addMethod("vb1matchDispositionComp", function (value, element, params) {
         var allReqProcessedYr = $("input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']");
         var elementAgencyComponent = getAgencyComponent(element);
@@ -449,6 +451,7 @@
           return 'dependency-mismatch';
         }
       }, "Must not be equal to the average.");
+      */
 
       /**
        * Form validation call
@@ -577,6 +580,8 @@
       });
 
       // V.B.(1) Records Not Reasonably Described.
+      // Removing this for now, but we need to fix and add back soon.
+      /*
       $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_rec_not_desc']").each(function () {
         $(this).rules("add", {
           vb1matchDispositionComp: {
@@ -590,8 +595,11 @@
           }
         });
       });
+      */
 
       // V.B.(1) Improper FOIA Request for Other Reason.
+      // Removing this for now, but we need to fix and add back soon.
+      /*
       $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_imp_req_oth_reason']").each(function () {
         $(this).rules("add", {
           vb1matchDispositionComp: {
@@ -605,6 +613,7 @@
           }
         });
       });
+      */
 
       // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions.
       $("#edit-field-overall-vb1-full-denials-e-0-value").rules("add", {
