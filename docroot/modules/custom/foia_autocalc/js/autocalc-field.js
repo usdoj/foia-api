@@ -41,6 +41,10 @@
     var totalValues = {};
     var idSelector = '';
     var isTotalNA = true;
+    
+    if (Number.EPSILON === undefined) {
+      Number.EPSILON = Math.pow(2, -52);
+    }
 
     fieldSettings.forEach(function (fieldSetting) {
       $(convertToFieldSelector(fieldSetting) + ' input').each(function () {
