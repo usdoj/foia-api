@@ -201,8 +201,13 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    */
   protected function submitToComponentEndpoint($componentEndpoint, array $submissionValues) {
     $secretToken = $this->agencyComponent->get('field_submission_api_secret')->value;
+    $caBundle = '';
+    $caBundleFile = $node->get('field_submission_api_cert')->entity;
+    if ($caBundleFile) {
+        $caBundle = \Drupal::service('file_system')->realpath($caBundleFile->getFileUri());
+    }
     try {
-      $response = $this->postToEndpoint($componentEndpoint, $submissionValues, $secretToken);
+      $response = $this->postToEndpoint($componentEndpoint, $submissionValues, $secretToken, $caBundle);
       return $this->parseAgencyResponse($response);
     }
     catch (RequestException $e) {
@@ -270,6 +275,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   An array containing the values to submit to the component endpoint.
    * @param string $secretToken
    *   The secret token to use in the FOIA-API-SECRET header.
+   * @param string $sslCert
+   *   A path to a CA bundle file.
    *
    * @return \GuzzleHttp\Psr7\Response
    *   The Guzzle response.
@@ -278,20 +285,15 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *
    * @see http://docs.guzzlephp.org/en/stable/quickstart.html#exceptions
    */
-  protected function postToEndpoint($endpointUrl, array $submissionValues, $secretToken = '') {
+  protected function postToEndpoint($endpointUrl, array $submissionValues, $secretToken = '', $caBundle = '') {
+    $postOptions = ['json' => $submissionValues];
     if ($secretToken) {
-      return $this->httpClient->post($endpointUrl, [
-        'json' => $submissionValues,
-        'headers' => [
-          'FOIA-API-SECRET' => $secretToken,
-        ],
-      ]);
+      $postOptions['headers'] = ['FOIA-API-SECRET' => $secretToken];
     }
-    else {
-      return $this->httpClient->post($endpointUrl, [
-        'json' => $submissionValues,
-      ]);
+    if ($caBundle) {
+      $postOptions['verify'] = $caBundle;
     }
+    return $this->httpClient->post($endpointUrl, $postOptions);
   }
 
   /**
