@@ -202,7 +202,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected function submitToComponentEndpoint($componentEndpoint, array $submissionValues) {
     $secretToken = $this->agencyComponent->get('field_submission_api_secret')->value;
     $caBundle = '';
-    $caBundleFile = $node->get('field_submission_api_cert')->entity;
+    $caBundleFile = $this->agencyComponent->get('field_submission_api_cert')->entity;
     if ($caBundleFile) {
         $caBundle = \Drupal::service('file_system')->realpath($caBundleFile->getFileUri());
     }
