@@ -1207,9 +1207,9 @@
           ifCompThenMustBeNonNegativeAndLessThanEqual: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
           ifCompThenMustNotNa: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
           messages: {
-            ifNoCompThenMustBeNa: "Must be N/A because component is not in VI.A.(1) - Number of Appeals Pending as of End of Fiscal Year.",
-            ifCompThenMustBeNonNegativeAndLessThanEqual: "Must be non-negative, and equal to or less than VI.A.(1). corresponding Number of Appeals Pending as of End of Fiscal Year",
-            ifCompThenMustNotNa: "Must not be N/A because component is in VI.A.(1) - Number of Appeals Pending as of End of Fiscal Year.",
+            ifNoCompThenMustBeNa: "If this component does not process appeals, please enter N/A.",
+            ifCompThenMustBeNonNegativeAndLessThanEqual: "Must be equal or less than to corresponding Number of Appeals Pending as of End of Fiscal Year in VI.A.(1). for the component.",
+            ifCompThenMustNotNa: "Must not be N/A because component processes appeals according to VI.A.(1) - Number of Appeals Pending as of End of Fiscal Year.",
           }
         });
       });
