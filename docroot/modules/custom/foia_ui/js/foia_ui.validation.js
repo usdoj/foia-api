@@ -412,6 +412,62 @@
         }
       }, "Sum of the fields must be greater than zero.");
 
+      // ifNoCompThenMustBeNa
+      jQuery.validator.addMethod("ifNoCompThenMustBeNa", function (value, element, params) {
+        var valueIsNa = value.toLowerCase() === 'n/a';
+        var elementAgencyComponent = getAgencyComponent(element);
+        if (hasAgencyComponent(elementAgencyComponent)) {
+          for (var i = 0; i < params.length; i++) {
+            var paramAgencyComponent = getAgencyComponent(params[i]);
+            if (paramAgencyComponent == elementAgencyComponent) {
+              return true;
+            }
+          }
+          return valueIsNa;
+        }
+        else {
+            return 'dependency-mismatch';
+        }
+      }, "Must be N/A when comparison value is missing.");
+
+      // ifCompThenMustBeNonNegativeAndLessThanEqual
+      jQuery.validator.addMethod("ifCompThenMustBeNonNegativeAndLessThanEqual", function (value, element, params) {
+        value = specialNumber(value);
+        var valueIsNonNegative = value >= 0;
+        var elementAgencyComponent = getAgencyComponent(element);
+        if (hasAgencyComponent(elementAgencyComponent)) {
+          for (var i = 0; i < params.length; i++) {
+            var paramAgencyComponent = getAgencyComponent(params[i]);
+            if (paramAgencyComponent == elementAgencyComponent) {
+              var target = specialNumber($(params[i]).val());
+              return valueIsNonNegative && value <= target;
+            }
+          }
+          return true;
+        }
+        else {
+            return 'dependency-mismatch';
+        }
+      }, "Must be a non-negative number that is less than or equal to the comparison value.");
+
+      // ifCompThenMustNotNa
+      jQuery.validator.addMethod("ifCompThenMustNotNa", function (value, element, params) {
+        var valueIsNa = value.toLowerCase() === 'n/a';
+        var elementAgencyComponent = getAgencyComponent(element);
+        if (hasAgencyComponent(elementAgencyComponent)) {
+          for (var i = 0; i < params.length; i++) {
+            var paramAgencyComponent = getAgencyComponent(params[i]);
+            if (paramAgencyComponent == elementAgencyComponent) {
+              return !valueIsNa;
+            }
+          }
+          return true;
+        }
+        else {
+            return 'dependency-mismatch';
+        }
+      }, "Must not be N/A if there is a comparison value.");
+
       // vb1matchDispositionComp: hard-coded for V.B.(1)
       // Removing this for now, but we need to fix and add it back soon.
       /*
@@ -1147,9 +1203,13 @@
       // XII.A. Number of Backlogged Appeals as of End of Fiscal Year.
       $("input[name*='field_foia_xiia']").filter("input[name*='field_back_app_end_yr']").each(function () {
         $(this).rules("add", {
-          lessThanEqualComp: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
+          ifNoCompThenMustBeNa: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
+          ifCompThenMustBeNonNegativeAndLessThanEqual: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
+          ifCompThenMustNotNa: $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']"),
           messages: {
-            lessThanEqualComp: "Must be equal to or less than VI.A.(1). corresponding Number of Appeals Pending as of End of Fiscal Year"
+            ifNoCompThenMustBeNa: "If this component does not process appeals, please enter N/A.",
+            ifCompThenMustBeNonNegativeAndLessThanEqual: "Must be equal or less than to corresponding Number of Appeals Pending as of End of Fiscal Year in VI.A.(1). for the component.",
+            ifCompThenMustNotNa: "Must not be N/A because component processes appeals according to VI.A.(1) - Number of Appeals Pending as of End of Fiscal Year.",
           }
         });
       });
