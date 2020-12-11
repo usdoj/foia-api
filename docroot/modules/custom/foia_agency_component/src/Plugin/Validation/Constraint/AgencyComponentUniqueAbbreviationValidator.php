@@ -34,7 +34,7 @@ class AgencyComponentUniqueAbbreviationValidator extends ConstraintValidator {
         // This is unique and new, no error needed.
         return;
       }
-      if (!empty($results[$entity->id()]) && count($results) == 1) {
+      if (in_array($entity->id(), $results) && count($results) == 1) {
         // This is unique and already exists, no error needed.
         return;
       }
