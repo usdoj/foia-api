@@ -30,11 +30,18 @@ class AgencyComponentUniqueAbbreviationValidator extends ConstraintValidator {
         ->condition('field_agency_comp_abbreviation', $abbreviation)
         ->condition('field_agency', $agency);
       $results = $query->execute();
-      if (!empty($results)) {
-          $this->context->addViolation($constraint->notUnique, [
-            '%abbreviation' => $abbreviation,
-          ]);
+      if (empty($results)) {
+        // This is unique and new, no error needed.
+        return;
       }
+      if (!empty($results[$entity->id()]) && count($results) == 1) {
+        // This is unique and already exists, no error needed.
+        return;
+      }
+      // Otherwise this is not unique.
+      $this->context->addViolation($constraint->notUnique, [
+        '%abbreviation' => $abbreviation,
+      ]);
     }
   }
 }
