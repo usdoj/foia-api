@@ -792,7 +792,12 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 $settings['install_profile'] = 'lightning';
 
 if ($is_ah_env) {
-  $settings['file_temp_path'] = "/mnt/gfs/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/tmp";
+  if ($_ENV['AH_SITE_ENVIRONMENT'] == 'ide') {
+    $settings['file_temp_path'] = '/mnt/tmp/foia';
+  }
+  else {
+    $settings['file_temp_path'] = "/mnt/gfs/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/tmp";
+  }
 }
 
 // Suppress display of error messages.
