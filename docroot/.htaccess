@@ -75,6 +75,7 @@ AddEncoding gzip svgz
 
   # Forbid access to admin, node, and user paths on non-server domains & environments.
   RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^.+$
+  RewriteCond %{HTTP_HOST} !(.*)web\.ahdev\.cloud$ [NC]
   RewriteCond %{HTTP_HOST} !(.*)admin\.foia\.gov$ [NC]
   RewriteCond %{HTTP_HOST} !(.*)acquia-sites\.com$ [NC]
   RewriteRule ^((admin|node|user)($|/)) - [F]
@@ -205,3 +206,4 @@ AddEncoding gzip svgz
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
 </IfModule>
+

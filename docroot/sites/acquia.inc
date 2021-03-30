@@ -18,7 +18,7 @@ function ac_protect_this_site() {
     Request::setTrustedProxies(array($request->server->get('REMOTE_ADDR')));
   }
 
-  $denied_response = $config['ah_denied_not_found'] ? 404 : 403;
+  $denied_response = !empty($config['ah_denied_not_found']) ? 404 : 403;
   $client_ip = $request->getClientIp();
   $current_path = $request->getRequestUri();
 
