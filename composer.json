@@ -67,7 +67,14 @@
     "extra": {
         "drupal-scaffold": {
             "locations": {
-              "web-root": "./docroot"
+                "web-root": "./docroot"
+            },
+            "file-mapping": {
+                "[web-root]/.htaccess": false,
+                "[web-root]/robots.txt": false,
+                "[web-root]/sites/development.services.yml": false,
+                "[project-root]/.editorconfig": false,
+                "[project-root]/.gitattributes": false
             }
         },
         "enable-patching": true,
