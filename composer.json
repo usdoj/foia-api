@@ -12,7 +12,6 @@
         "acquia/memcache-settings": "*",
         "composer/installers": "^1.7",
         "dompdf/dompdf": "^0.8.2",
-        "drupal-composer/drupal-scaffold": "^2.5.4",
         "drupal/acquia_connector": "^1.5.0",
         "drupal/acquia_purge": "^1.0-beta3",
         "drupal/address": "~1.0",
@@ -21,6 +20,7 @@
         "drupal/autosave_form": "^1.0",
         "drupal/cog": "^1.8",
         "drupal/config_split": "^1.0.0",
+        "drupal/core-composer-scaffold": "^8.9",
         "drupal/core-recommended": "^8.8",
         "drupal/cors": "~1.0",
         "drupal/devel": "^2.0.0",
@@ -65,6 +65,11 @@
         "geerlingguy/drupal-vm": "~5.0"
     },
     "extra": {
+        "drupal-scaffold": {
+            "locations": {
+              "web-root": "./docroot"
+            }
+        },
         "enable-patching": true,
         "installer-paths": {
             "docroot/core": [
@@ -112,7 +117,6 @@
                 "Fix inconsistent date format issues": "https://www.drupal.org/files/issues/password_policy-inconsistent-datetime-formats-2860671-13-D8.patch"
             },
             "drupal/entity_clone": {
-                "Circular reference fix": "https://www.drupal.org/files/issues/2020-05-20/3046561-11.patch",
                 "Paragraph fix": "https://www.drupal.org/files/issues/2019-10-17/%20entity_clone-corrupted-paragraph-cloning-3060223-5.patch"
             }
         },
@@ -121,12 +125,6 @@
             "npm-asset"
         ],
         "composer-exit-on-patch-failure": true,
-        "drupal-scaffold": {
-            "initial": {
-                "sites/default/default.services.yml": "sites/default/services.yml",
-                "sites/default/default.settings.php": "sites/default/settings.php"
-            }
-        },
         "patchLevel": {
             "drupal/core": "-p2"
         }
@@ -159,7 +157,6 @@
         "post-create-project-cmd": [
             "blt internal:create-project:init-repo"
         ],
-        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [
             "rm -rf vendor composer.lock docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
             "@composer clearcache --ansi",
