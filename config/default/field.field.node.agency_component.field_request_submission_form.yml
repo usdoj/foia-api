@@ -6,7 +6,13 @@ dependencies:
     - field.storage.node.field_request_submission_form
     - node.type.agency_component
   module:
+    - foia_autocalc
     - webform
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.agency_component.field_request_submission_form
 field_name: field_request_submission_form
 entity_type: node
