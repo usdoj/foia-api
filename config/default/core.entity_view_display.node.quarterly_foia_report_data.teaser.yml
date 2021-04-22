@@ -1,0 +1,29 @@
+uuid: e572f2e6-c2ef-4575-aa90-a158c6599a76
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.quarterly_foia_report_data.field_agency
+    - field.field.node.quarterly_foia_report_data.field_agency_components
+    - field.field.node.quarterly_foia_report_data.field_quarterly_quarter
+    - field.field.node.quarterly_foia_report_data.field_quarterly_year
+    - node.type.quarterly_foia_report_data
+  module:
+    - user
+id: node.quarterly_foia_report_data.teaser
+targetEntityType: node
+bundle: quarterly_foia_report_data
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_agency: true
+  field_agency_components: true
+  field_quarterly_quarter: true
+  field_quarterly_year: true
+  search_api_excerpt: true

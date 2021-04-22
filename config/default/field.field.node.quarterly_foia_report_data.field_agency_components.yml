@@ -1,0 +1,32 @@
+uuid: 72f43c73-d5d4-46b0-b007-96ac7dc05471
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_agency_components
+    - node.type.quarterly_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.quarterly_foia_report_data.field_agency_components
+field_name: field_agency_components
+entity_type: node
+bundle: quarterly_foia_report_data
+label: Components
+description: 'Select all active components.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: agency_component_by_agency
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference

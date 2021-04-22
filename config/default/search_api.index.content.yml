@@ -43,6 +43,7 @@ field_settings:
           annual_foia_report_data: default
           landing_page: full
           page: default
+          quarterly_foia_report_data: default
   status:
     label: null
     datasource_id: 'entity:node'
@@ -158,6 +159,7 @@ processor_settings:
       preprocess_index: -6
       preprocess_query: -5
     all_fields: false
+    ignored: ._-
   transliteration:
     fields:
       - label
