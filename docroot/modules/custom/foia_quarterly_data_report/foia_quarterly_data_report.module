@@ -1,0 +1,189 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for foia_quarterly_data_report module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\AlertCommand;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Ajax\RedirectCommand;
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add the AJAX save callbacks.
+  foia_quarterly_data_report_ajax_existing_node($form);
+  foia_quarterly_data_report_set_default_report_values($form);
+}
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_quarterly_data_report_set_default_report_values($form);
+  foia_quarterly_data_report_ajax_new_node($form);
+}
+
+/**
+ * Add ajax to a new quarterly report node to submit on agency field is set.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_ajax_new_node(array &$form) {
+
+  // The 'change.agency' event corresponds to the event triggered in
+  // the foia_change_report_agency library that is attached to this element.
+  // This is a workaround for IE11, which does not fire the change event on
+  // this input when selecting a value from the autocomplete dropdown list.
+  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
+    'callback' => 'foia_quarterly_data_report_create_node',
+    'event' => 'change.agency',
+    'progress' => [
+      'type' => 'throbber',
+      'message' => 'Please Wait...',
+    ],
+  ];
+
+  $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_quarterly_data_report/foia_change_report_agency';
+
+}
+
+/**
+ * Add ajax to a existing quarterly report to submit on agency field is set.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_ajax_existing_node(array &$form) {
+
+  // The 'change.agency' event corresponds to the event triggered in
+  // the foia_change_report_agency library that is attached to this element.
+  // This is a workaround for IE11, which does not fire the change event on
+  // this input when selecting a value from the autocomplete dropdown list.
+  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
+    'callback' => 'foia_quarterly_data_report_refresh',
+    'event' => 'change.agency',
+    'progress' => [
+      'type' => 'throbber',
+      'message' => 'Please Wait...',
+    ],
+  ];
+  $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_quarterly_data_report/foia_change_report_agency';
+
+}
+
+/**
+ * Save the node and redirect back to the edit page for the node.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state passed from hook_form_form_id_alter().
+ *
+ * @return \Drupal\Core\Ajax\AjaxResponse
+ *   AjaxResponse object to alert user and redirect them.
+ */
+function foia_quarterly_data_report_create_node(array $form, FormStateInterface $form_state) {
+
+  $response = new AjaxResponse();
+
+  $node = \Drupal::entityTypeManager()->getStorage('node')->create([
+    'type' => 'quarterly_foia_report_data',
+    'field_agency' => $form_state->getValue('field_agency'),
+    'field_quarterly_year' => $form_state->getValue('field_quarterly_year'),
+    'field_quarterly_quarter' => $form_state->getValue('field_quarterly_quarter'),
+  ]);
+  $node->save();
+
+  $url = $node->toUrl('edit-form')->toString();
+
+  $response->addCommand(new RedirectCommand($url));
+  $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
+
+  return $response;
+}
+
+/**
+ * Do all the magic to get the component list and update the Component options.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state passed from hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_refresh(array $form, FormStateInterface $form_state) {
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $response = new AjaxResponse();
+  $currentURL = Url::fromRoute('<current>');
+
+  if ($node instanceof NodeInterface) {
+    $nid = $node->id();
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+
+    // @todo If users change anything else it doesnt persist.
+    $node->set('field_agency', $form_state->getValue('field_agency'));
+
+    // Set as new revision.
+    $node->setNewRevision(TRUE);
+    $node->revision_log = 'Updated Agency for report';
+    $node->setRevisionUserId(\Drupal::currentUser()->id());
+
+    $node->save();
+
+    $response->addCommand(new RedirectCommand($currentURL->toString()));
+    $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
+  }
+
+  return $response;
+}
+
+/**
+ * Set the FOIA quarterly report year field's default values.
+ *
+ * Works for both the year and quarter fields.
+ *
+ * This allows the auto_entitylabel module to rely on the field_quarterly_year
+ * and field_quarterly_quarter when setting the title.
+ *
+ * @param array $form
+ *   The quarterly_foia_report_data node add or edit form array.
+ */
+function foia_quarterly_data_report_set_default_report_values(array &$form) {
+  $current_year = intval(date('Y'));
+  $current_month = intval(date('n'));
+
+  // Fiscal year.
+  if ($current_month >= 10) {
+    $current_year += 1;
+  }
+
+  // Decide on quarter.
+  $current_quarter = 1;
+  if ($current_month <= 3) {
+    $current_quarter = 2;
+  }
+  elseif ($current_month <= 6) {
+    $current_quarter = 3;
+  }
+  elseif ($current_month <= 9) {
+    $current_quarter = 4;
+  }
+
+  $default_year_value = $form['field_quarterly_year']['widget'][0]['value']['#default_value'] ?? FALSE;
+  $default_quarter_value = $form['field_quarterly_quarter']['widget'][0]['value']['#default_value'] ?? FALSE;
+
+  if (!$default_year_value) {
+    $form['field_quarterly_year']['widget'][0]['value']['#default_value'] = $current_year;
+  }
+
+  if (!$default_quarter_value) {
+    $form['field_quarterly_quarter']['widget']['#default_value'] = $current_quarter;
+  }
+}
