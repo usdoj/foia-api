@@ -6,6 +6,9 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.quarterly_foia_report_data.field_agency
     - field.field.node.quarterly_foia_report_data.field_agency_components
+    - field.field.node.quarterly_foia_report_data.field_quarterly_closed
+    - field.field.node.quarterly_foia_report_data.field_quarterly_component_data
+    - field.field.node.quarterly_foia_report_data.field_quarterly_pending
     - field.field.node.quarterly_foia_report_data.field_quarterly_quarter
     - field.field.node.quarterly_foia_report_data.field_quarterly_year
     - node.type.quarterly_foia_report_data
@@ -24,6 +27,9 @@ content:
 hidden:
   field_agency: true
   field_agency_components: true
+  field_quarterly_closed: true
+  field_quarterly_component_data: true
+  field_quarterly_pending: true
   field_quarterly_quarter: true
   field_quarterly_year: true
   search_api_excerpt: true
