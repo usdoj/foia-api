@@ -1,0 +1,52 @@
+uuid: e37065b8-3216-466b-825a-eb1b047235dd
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.quarterly_foia_report_data
+  module:
+    - content_moderation
+id: quarterly_report_workflow
+label: 'Quarterly Report Workflow'
+type: content_moderation
+type_settings:
+  states:
+    draft:
+      label: Draft
+      published: false
+      default_revision: false
+      weight: -2
+    published:
+      label: Published
+      published: true
+      default_revision: true
+      weight: 0
+    submitted_to_oip:
+      published: false
+      default_revision: true
+      label: 'Submitted to OIP'
+      weight: -1
+  transitions:
+    create_new_draft:
+      label: 'Create New Draft'
+      to: draft
+      weight: -2
+      from:
+        - draft
+    publish:
+      label: Publish
+      to: published
+      weight: 0
+      from:
+        - published
+        - submitted_to_oip
+    submit_to_oip:
+      label: 'Submit to OIP'
+      from:
+        - draft
+      to: submitted_to_oip
+      weight: -1
+  entity_types:
+    node:
+      - quarterly_foia_report_data
+  default_moderation_state: draft
