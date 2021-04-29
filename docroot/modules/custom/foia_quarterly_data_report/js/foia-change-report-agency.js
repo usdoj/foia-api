@@ -37,7 +37,8 @@
           checkedComponentSelector = '#edit-field-agency-components input:checked',
           componentDropdownSelector = '#edit-field-quarterly-component-data-wrapper table tr:last-child .field--name-field-agency-component select';
       $(fieldWrapperSelector).once('foia-add-populate-button').each(function() {
-        var $button = $('<button class="button">Add placeholders for component data below</button>');
+        $(this).prepend('<div class="description">Use this button when starting a new report, to quickly add placeholders for all of the components that you have selected in the checkboxes above.</div>');
+        var $button = $('<button class="button component-placeholder-button">Add placeholders for component data below</button>');
         $(this).prepend($button);
         $button.click(function(evt) {
           evt.preventDefault();
