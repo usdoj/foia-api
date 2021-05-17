@@ -18,7 +18,6 @@ dependencies:
     - options
     - taxonomy
     - user
-    - views_bulk_operations
 id: content_cleanup
 label: 'Content Cleanup'
 module: views
@@ -148,14 +147,14 @@ display:
       row:
         type: fields
       fields:
-        views_bulk_operations_bulk_form:
-          id: views_bulk_operations_bulk_form
-          table: views
-          field: views_bulk_operations_bulk_form
+        node_bulk_form:
+          id: node_bulk_form
+          table: node
+          field: node_bulk_form
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Views bulk operations'
+          label: 'Node operations bulk form'
           exclude: false
           alter:
             alter_text: false
@@ -196,44 +195,12 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          batch: true
-          batch_size: 10
-          form_step: true
-          buttons: false
-          clear_on_exposed: true
           action_title: Action
+          include_exclude: include
           selected_actions:
-            -
-              action_id: 'moderation_state_change:node'
-            -
-              action_id: node_unpromote_action
-            -
-              action_id: node_unpublish_action
-            -
-              action_id: node_publish_action
-            -
-              action_id: node_unpublish_by_keyword_action
-            -
-              action_id: node_assign_owner_action
-            -
-              action_id: node_promote_action
-            -
-              action_id: node_save_action
-            -
-              action_id: node_make_sticky_action
-            -
-              action_id: node_make_unsticky_action
-            -
-              action_id: views_bulk_operations_delete_entity
-            -
-              action_id: 'entity:save_action:node'
-            -
-              action_id: 'entity:unpublish_action:node'
-            -
-              action_id: 'entity:publish_action:node'
-            -
-              action_id: 'entity:delete_action:node'
-          plugin_id: views_bulk_operations_bulk_form
+            - change_moderation_state_of_content
+          entity_type: node
+          plugin_id: node_bulk_form
         title:
           id: title
           table: node_field_data
@@ -939,14 +906,14 @@ display:
         access: false
       display_description: ''
       fields:
-        views_bulk_operations_bulk_form:
-          id: views_bulk_operations_bulk_form
-          table: views
-          field: views_bulk_operations_bulk_form
+        node_bulk_form:
+          id: node_bulk_form
+          table: node
+          field: node_bulk_form
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Views bulk operations'
+          label: 'Node operations bulk form'
           exclude: false
           alter:
             alter_text: false
@@ -987,44 +954,12 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          batch: true
-          batch_size: 10
-          form_step: true
-          buttons: false
-          clear_on_exposed: true
           action_title: Action
+          include_exclude: exclude
           selected_actions:
-            -
-              action_id: 'moderation_state_change:node'
-            -
-              action_id: node_unpromote_action
-            -
-              action_id: node_unpublish_action
-            -
-              action_id: node_publish_action
-            -
-              action_id: node_unpublish_by_keyword_action
-            -
-              action_id: node_assign_owner_action
-            -
-              action_id: node_promote_action
-            -
-              action_id: node_save_action
-            -
-              action_id: node_make_sticky_action
-            -
-              action_id: node_make_unsticky_action
-            -
-              action_id: views_bulk_operations_delete_entity
-            -
-              action_id: 'entity:save_action:node'
-            -
-              action_id: 'entity:unpublish_action:node'
-            -
-              action_id: 'entity:publish_action:node'
-            -
-              action_id: 'entity:delete_action:node'
-          plugin_id: views_bulk_operations_bulk_form
+            - publish_quarterly_reports
+          entity_type: node
+          plugin_id: node_bulk_form
         title:
           id: title
           table: node_field_data
