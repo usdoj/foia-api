@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Class NodeToDocxHandler.
+ * Class NodeToDocxHandler for converting nodes to docx.
  */
 class NodeToDocxHandler implements ContainerAwareInterface {
   use ContainerAwareTrait;
@@ -30,7 +30,12 @@ class NodeToDocxHandler implements ContainerAwareInterface {
       $view = node_view($node, 'node_to_docx');
       // The following line should cause the templates in this module to be
       // used.
-      $view['#theme'] = 'node_to_docx';
+      if ($node->getType == 'quarterly_foia_report_data') {
+        $view['#theme'] = 'node_to_docx_quarterly';
+      }
+      else {
+        $view['#theme'] = 'node_to_docx';
+      }
       $drupalMarkup = \Drupal::service('renderer')->render($view);
       // Debugging hint (remove period at end when uncommenting):
       // file_put_contents('/var/www/foia/docroot/debug.html', $drupalMarkup);.
