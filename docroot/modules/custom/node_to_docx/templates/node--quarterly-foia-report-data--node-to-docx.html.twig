@@ -1,0 +1,75 @@
+{% include '@node_to_docx/docx-head.html.twig' %}
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+<style type="text/css" media="screen">
+
+div {
+  font-size: 10.0pt;
+  mso-bidi-font-size: 11.0pt;
+  line-height: 107%;
+  font-family: Arial;
+  mso-bidi-font-family: Arial;
+  color: black;
+}
+
+table {
+  border-collapse: collapse;
+  border: none;
+}
+
+td {
+  border: solid windowtext 1.0pt;
+  border-top: solid #0F243E 1.0pt;
+  mso-border-alt: solid windowtext .5pt;
+  mso-border-top-alt: solid #0F243E .5pt;
+  padding: 0in 0in 0in 0in;
+}
+
+p {
+  margin-bottom: 6.0pt;
+  mso-para-margin-bottom: .5gd;
+}
+
+p.MsoNormal {
+  mso-style-unhide: no;
+  mso-style-qformat: yes;
+  mso-style-parent: "";
+  margin-top: 0in;
+  margin-right: 0in;
+  margin-bottom: 8.0pt;
+  margin-left: 0in;
+  line-height: 107%;
+  mso-pagination: widow-orphan;
+  font-size: 11.0pt;
+  font-family: Calibri;
+  mso-ascii-font-family: Calibri;
+  mso-ascii-theme-font: minor-latin;
+  mso-fareast-font-family: Calibri;
+  mso-fareast-theme-font: minor-latin;
+  mso-hansi-font-family: Calibri;
+  mso-hansi-theme-font: minor-latin;
+  mso-bidi-font-family: "Times New Roman";
+  mso-bidi-theme-font: minor-bidi;
+}
+</style>
+
+<p class=MsoNormal>Ten Oldest Pending Requests: {{ content.field_quarterly_pending }} <o:p></o:p></p>
+
+<p class=MsoNormal>Ten Oldest Requests Closed: {{ content.field_quarterly_closed }} <o:p></o:p></p>
+
+{% include '@node_to_docx/docx-agency-component-abbrev.html.twig' %}
+
+{% include '@node_to_docx/docx-quarterly-component-data.html.twig' %}
+
+<div class=WordSection99>
+
+<p class=MsoNormal style='margin-bottom:6.0pt;mso-para-margin-bottom:.5gd'><i
+style='mso-bidi-font-style:normal'><span style='font-size:9.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:Arial;mso-bidi-font-family:Arial;
+color:black;text-transform:uppercase'><o:p>&nbsp;</o:p></span></i></p>
+
+</div>
+
+</body>
+
+</html>
