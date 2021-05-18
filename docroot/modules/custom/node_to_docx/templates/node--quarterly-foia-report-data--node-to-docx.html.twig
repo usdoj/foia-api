@@ -53,9 +53,9 @@ p.MsoNormal {
 }
 </style>
 
-<p class=MsoNormal>Ten Oldest Pending Requests: {{ content.field_quarterly_pending }} <o:p></o:p></p>
+<p class=MsoNormal>Ten Oldest Pending Requests: {{ content.field_quarterly_pending.value }} <o:p></o:p></p>
 
-<p class=MsoNormal>Ten Oldest Requests Closed: {{ content.field_quarterly_closed }} <o:p></o:p></p>
+<p class=MsoNormal>Ten Oldest Requests Closed: {{ content.field_quarterly_closed.value }} <o:p></o:p></p>
 
 {% include '@node_to_docx/docx-agency-component-abbrev.html.twig' %}
 
