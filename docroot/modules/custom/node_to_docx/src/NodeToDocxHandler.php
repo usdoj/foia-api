@@ -30,7 +30,7 @@ class NodeToDocxHandler implements ContainerAwareInterface {
       $view = node_view($node, 'node_to_docx');
       // The following line should cause the templates in this module to be
       // used.
-      if ($node->getType == 'quarterly_foia_report_data') {
+      if ($node->getType() == 'quarterly_foia_report_data') {
         $view['#theme'] = 'node_to_docx_quarterly';
       }
       else {
