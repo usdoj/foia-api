@@ -27,6 +27,12 @@ type_settings:
       label: 'Submitted to OIP'
       weight: -1
   transitions:
+    back_to_submitted:
+      label: 'Back to submitted'
+      from:
+        - published
+      to: submitted_to_oip
+      weight: 2
     create_new_draft:
       label: 'Create New Draft'
       to: draft
@@ -41,7 +47,7 @@ type_settings:
         - published
         - submitted_to_oip
     send_back_to_agency:
-      label: 'Send back to agency'
+      label: 'Back to draft'
       from:
         - published
         - submitted_to_oip
