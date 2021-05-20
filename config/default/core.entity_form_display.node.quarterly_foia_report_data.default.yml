@@ -11,7 +11,9 @@ dependencies:
     - field.field.node.quarterly_foia_report_data.field_quarterly_quarter
     - field.field.node.quarterly_foia_report_data.field_quarterly_year
     - node.type.quarterly_foia_report_data
+    - workflows.workflow.quarterly_report_workflow
   module:
+    - content_moderation
     - entity_reference_views_select
     - paragraphs
 id: node.quarterly_foia_report_data.default
@@ -74,6 +76,12 @@ content:
     third_party_settings: {  }
     type: number
     region: content
+  moderation_state:
+    type: moderation_state_default
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
@@ -91,7 +99,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  moderation_state: true
   path: true
   promote: true
   sticky: true
