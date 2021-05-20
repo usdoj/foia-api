@@ -40,6 +40,13 @@ type_settings:
       from:
         - published
         - submitted_to_oip
+    send_back_to_agency:
+      label: 'Send back to agency'
+      from:
+        - published
+        - submitted_to_oip
+      to: draft
+      weight: 1
     submit_to_oip:
       label: 'Submit to OIP'
       from:
