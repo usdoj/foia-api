@@ -9,11 +9,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 
 /**
- * Gets jsonapi data
+ * Gets jsonapi data.
  *
  * @package Drupal\foia_api\Controller
  */
-class FoiaApiQuarterlyFiscalYearController extends ControllerBase  implements ContainerInjectionInterface  {
+class FoiaApiQuarterlyFiscalYearController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * The number of seconds in a day, for use with the cache max age.
@@ -38,9 +38,13 @@ class FoiaApiQuarterlyFiscalYearController extends ControllerBase  implements Co
   }
 
   /**
+   * Create.
+   *
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The container.
    *
    * @return \Drupal\Core\Controller\ControllerBase|void
+   *   The controller.
    */
   public static function create(ContainerInterface $container) {
     return new static(
@@ -49,9 +53,10 @@ class FoiaApiQuarterlyFiscalYearController extends ControllerBase  implements Co
   }
 
   /**
-   * Get an array of report years for published Quarterly FOIA Report Data nodes.
+   * Get an array of report years for published Quarterly Report nodes.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The response.
    */
   public function get() {
     $query = $this->connection->select('node__field_quarterly_year', 'y')
@@ -63,4 +68,5 @@ class FoiaApiQuarterlyFiscalYearController extends ControllerBase  implements Co
 
     return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
   }
+
 }
