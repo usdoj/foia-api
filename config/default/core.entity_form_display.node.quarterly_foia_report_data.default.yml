@@ -5,10 +5,13 @@ dependencies:
   config:
     - field.field.node.quarterly_foia_report_data.field_agency
     - field.field.node.quarterly_foia_report_data.field_agency_components
+    - field.field.node.quarterly_foia_report_data.field_quarterly_backlogged_oa
     - field.field.node.quarterly_foia_report_data.field_quarterly_closed
     - field.field.node.quarterly_foia_report_data.field_quarterly_component_data
     - field.field.node.quarterly_foia_report_data.field_quarterly_pending
+    - field.field.node.quarterly_foia_report_data.field_quarterly_processed_oa
     - field.field.node.quarterly_foia_report_data.field_quarterly_quarter
+    - field.field.node.quarterly_foia_report_data.field_quarterly_received_oa
     - field.field.node.quarterly_foia_report_data.field_quarterly_year
     - node.type.quarterly_foia_report_data
     - workflows.workflow.quarterly_report_workflow
@@ -24,6 +27,7 @@ third_party_settings:
         - group_agency_info
         - group_agency_data
         - group_component_data
+        - group_agency_overall
       parent_name: ''
       weight: 1
       format_type: tabs
@@ -75,6 +79,21 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Component data'
+    group_agency_overall:
+      children:
+        - field_quarterly_backlogged_oa
+        - field_quarterly_processed_oa
+        - field_quarterly_received_oa
+      parent_name: group_quarterly_tabs
+      weight: 14
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Agency Overall'
 id: node.quarterly_foia_report_data.default
 targetEntityType: node
 bundle: quarterly_foia_report_data
@@ -95,6 +114,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: erviews_options_buttons
+    region: content
+  field_quarterly_backlogged_oa:
+    weight: 26
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
     region: content
   field_quarterly_closed:
     weight: 5
@@ -122,11 +148,25 @@ content:
     third_party_settings: {  }
     type: number
     region: content
+  field_quarterly_processed_oa:
+    weight: 27
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
   field_quarterly_quarter:
     weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_quarterly_received_oa:
+    weight: 28
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
     region: content
   field_quarterly_year:
     weight: 3

@@ -5,10 +5,13 @@ dependencies:
   config:
     - field.field.node.quarterly_foia_report_data.field_agency
     - field.field.node.quarterly_foia_report_data.field_agency_components
+    - field.field.node.quarterly_foia_report_data.field_quarterly_backlogged_oa
     - field.field.node.quarterly_foia_report_data.field_quarterly_closed
     - field.field.node.quarterly_foia_report_data.field_quarterly_component_data
     - field.field.node.quarterly_foia_report_data.field_quarterly_pending
+    - field.field.node.quarterly_foia_report_data.field_quarterly_processed_oa
     - field.field.node.quarterly_foia_report_data.field_quarterly_quarter
+    - field.field.node.quarterly_foia_report_data.field_quarterly_received_oa
     - field.field.node.quarterly_foia_report_data.field_quarterly_year
     - node.type.quarterly_foia_report_data
   module:
@@ -20,6 +23,11 @@ targetEntityType: node
 bundle: quarterly_foia_report_data
 mode: default
 content:
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_agency:
     weight: 102
     label: above
@@ -35,6 +43,15 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_quarterly_backlogged_oa:
+    weight: 109
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
     region: content
   field_quarterly_closed:
     weight: 107
@@ -63,12 +80,30 @@ content:
     third_party_settings: {  }
     type: number_integer
     region: content
+  field_quarterly_processed_oa:
+    weight: 110
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
   field_quarterly_quarter:
     weight: 104
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_quarterly_received_oa:
+    weight: 111
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
     region: content
   field_quarterly_year:
     weight: 103

@@ -1,0 +1,34 @@
+uuid: e8fd3021-2eb6-404c-8a4f-da09660760d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_quarterly_processed_oa
+    - node.type.quarterly_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config:
+        c0c9803e-9cf3-4a87-9875-1b7143509db1:
+          field: 'field_quarterly_component_data:field_quarterly_processed'
+          weight: '99'
+          this_entity: 0
+id: node.quarterly_foia_report_data.field_quarterly_processed_oa
+field_name: field_quarterly_processed_oa
+entity_type: node
+bundle: quarterly_foia_report_data
+label: 'Agency Overall - Number of requests processed'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
