@@ -81,9 +81,9 @@ third_party_settings:
       label: 'Component data'
     group_agency_overall:
       children:
-        - field_quarterly_backlogged_oa
-        - field_quarterly_processed_oa
         - field_quarterly_received_oa
+        - field_quarterly_processed_oa
+        - field_quarterly_backlogged_oa
       parent_name: group_quarterly_tabs
       weight: 14
       format_type: tab
@@ -116,7 +116,7 @@ content:
     type: erviews_options_buttons
     region: content
   field_quarterly_backlogged_oa:
-    weight: 26
+    weight: 30
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -149,7 +149,7 @@ content:
     type: number
     region: content
   field_quarterly_processed_oa:
-    weight: 27
+    weight: 29
     settings:
       placeholder: ''
     third_party_settings: {  }
