@@ -140,6 +140,8 @@
       for (var i = 0; i < sections.length; i++) {
         this.addPopulateComponentsButton(sections[i]);
       }
+
+      this.addClearDataButton();
     },
 
     /**
@@ -162,6 +164,25 @@
       });
     },
 
+    addClearDataButton: function() {
+      function clearData() {
+        var $checkedBoxes = $('#edit-field-agency-components input:checked');
+        $('#node-annual-foia-report-data-edit-form').trigger('reset');
+        $checkedBoxes.prop('checked', true);
+        alert('All data has been cleared from the form. Click "Save" to finalize.');
+      }
+      $('#edit-actions').once('foia-clear-data-button').each(function() {
+        var $button = $('<button class="button clear-data-button">Clear all data</button>');
+        $(this).append($button);
+        $button.click(function(evt) {
+          evt.preventDefault();
+          if (confirm('Are you sure you want to clear all data from this report?')) {
+            clearData();
+          }
+        });
+      });
+    },
+
     addPopulateComponentsButton: function(section) {
       var fieldWrapperId = 'edit-' + section.field.replace(/_/g, '-') + '-wrapper',
           addMoreName = section.field + '_' + section.paragraph + '_add_more',
@@ -169,7 +190,7 @@
           addMoreSelector = 'input[name="' + addMoreName + '"]',
           existingComponentSelector = fieldWrapperSelector + ' tbody tr',
           checkedComponentSelector = '#edit-field-agency-components input:checked',
-          getComponentDropdownName = function(index) { return section.field + '[' + index + '][subform][field_agency_component]' };
+          getComponentDropdownName = function(index) { return section.field + '[' + index + '][subform]' };
       $(fieldWrapperSelector).once('foia-add-populate-button').each(function() {
         $(this).prepend('<div class="description">Use this button when starting a new report, to quickly add placeholders for all of the components that you have selected in the checkboxes above.</div>');
         var $button = $('<button class="button component-placeholder-button">Add placeholders for component data below</button>');
@@ -193,7 +214,7 @@
           function populateNextComponent() {
             var componentNodeId = $components.eq(currentComponent).val();
             var componentDropdownName = getComponentDropdownName(currentComponent);
-            var componentDropdownSelector = 'select[name="' + componentDropdownName + '"]';
+            var componentDropdownSelector = 'select[name^="' + componentDropdownName + '"]';
             $(componentDropdownSelector).val(componentNodeId);
 
             currentComponent += 1;
