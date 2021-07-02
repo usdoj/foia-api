@@ -166,9 +166,16 @@
 
     addClearDataButton: function() {
       function clearData() {
-        var $checkedBoxes = $('#edit-field-agency-components input:checked');
-        $('#node-annual-foia-report-data-edit-form').trigger('reset');
-        $checkedBoxes.prop('checked', true);
+        var form = '#node-annual-foia-report-data-edit-form';
+        var exempt = '#edit-group-agency-info';
+        var elements = [
+          'textarea',
+          'input[type="number"]',
+          'input[type="text"]',
+        ]
+        for (var i = 0; i < elements.length; i++) {
+          $(form + ' ' + elements[i]).not(exempt + ' ' + elements[i]).val('');
+        }
         alert('All data has been cleared from the form. Click "Save" to finalize.');
       }
       $('#edit-actions').once('foia-clear-data-button').each(function() {
