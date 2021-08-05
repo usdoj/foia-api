@@ -27,7 +27,7 @@ class ExportController extends ControllerBase {
   }
 
   /**
-   * Endpoint for the general public with simpler interface - published only.
+   * Endpoint for the general public with simpler interface.
    *
    * @param string $agency_abbreviation
    *   The agency abbreviation for the report.
@@ -38,15 +38,9 @@ class ExportController extends ControllerBase {
    *   The result of the access check.
    */
   public function checkAccessPublic($agency_abbreviation, $year) {
-
-    $report = $this->getReportByAgencyAndYear($agency_abbreviation, $year);
-
-    if (!empty($report) && !$report->isPublished()) {
-      return AccessResult::forbidden();
-    }
-    else {
-      return AccessResult::allowed();
-    }
+    // To avoid double-load on the server, just allow these and
+    // do the actual checks on export.
+    return AccessResult::allowed();
   }
 
   /**
@@ -82,13 +76,16 @@ class ExportController extends ControllerBase {
 
     $report = $this->getReportByAgencyAndYear($agency_abbreviation, $year);
 
-    if (!empty($report) && $report->isPublished()) {
-      return $this->convertReportToXmlResponse($report);
+    if (empty($report)) {
+      $response = new Response('Report not found.', Response::HTTP_NOT_FOUND);
+    }
+    elseif (!$report->isPublished()) {
+      $response = new Response('Report not complete.', Response::HTTP_FORBIDDEN);
     }
     else {
-      $response = new Response('Report not found.', Response::HTTP_NOT_FOUND);
-      return $response;
+      $response = $this->convertReportToXmlResponse($report);
     }
+    return $response;
   }
 
   /**
