@@ -820,3 +820,13 @@ if (PHP_SAPI === 'cli') {
 if (file_exists($app_root . '/' . $site_path . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 'true') {
   include $app_root . '/' . $site_path . '/settings.ddev.php';
 }
+
+$databases['migrate_quarterly']['default'] = array (
+  'database'  => 'migrate_quarterly',
+  'username'  => 'root',
+  'password'  => 'root',
+  'host'      => 'db',
+  'port'      => '3306',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver'    => 'mysql',
+);
