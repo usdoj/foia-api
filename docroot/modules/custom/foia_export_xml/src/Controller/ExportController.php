@@ -7,7 +7,6 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\foia_export_xml\ExportXml;
 use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class ExportController for XML export.
@@ -61,7 +60,10 @@ class ExportController extends ControllerBase {
    *   exported XML.
    */
   public function exportXml(Node $node) {
-    return $this->convertReportToXmlResponse($node);
+    $response = $this->convertReportToXmlResponse($node);
+    $response->headers->set('Content-Type', 'text/xml; charset=UTF-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="annual-report.xml"');
+    return $response;
   }
 
   /**
@@ -84,7 +86,8 @@ class ExportController extends ControllerBase {
       return $this->convertReportToXmlResponse($report);
     }
     else {
-      throw new NotFoundHttpException();
+      $response = new Response('Report not found.', Response::HTTP_NOT_FOUND);
+      return $response;
     }
   }
 
@@ -100,8 +103,6 @@ class ExportController extends ControllerBase {
   private function convertReportToXmlResponse(Node $report) {
     $export = new ExportXml($report);
     $response = new Response((string) $export);
-    $response->headers->set('Content-Type', 'text/xml; charset=UTF-8');
-    $response->headers->set('Content-Disposition', 'attachment; filename="annual-report.xml"');
     return $response;
   }
 
