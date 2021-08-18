@@ -821,12 +821,7 @@ if (file_exists($app_root . '/' . $site_path . '/settings.ddev.php') && getenv('
   include $app_root . '/' . $site_path . '/settings.ddev.php';
 }
 
-$databases['migrate_quarterly']['default'] = array (
-  'database'  => 'migrate_quarterly',
-  'username'  => 'root',
-  'password'  => 'root',
-  'host'      => 'db',
-  'port'      => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver'    => 'mysql',
-);
+// Database credentials on Acquia.
+if (file_exists('/var/www/site-php')) {
+  require '/var/www/site-php/foia/migrate_quarterly-settings.inc';
+}
