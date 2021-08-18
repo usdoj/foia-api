@@ -37,7 +37,7 @@ class QuarterlyReportNode extends SqlBase {
       ]);
 
     // For now we are only migrating 2020.
-    $query->condition('Year', '2020');
+    $query->condition('Year', '2021');
 
     $query->condition('Level', 1);
     $query->join('agencies', 'ag', 'ag.id = qo.CompId');

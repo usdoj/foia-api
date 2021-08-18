@@ -37,7 +37,7 @@ class QuarterlyReportParagraph extends SqlBase {
       ]);
 
     // For now we are only migrating 2020.
-    $query->condition('Year', '2020');
+    $query->condition('Year', '2021');
 
     $query->join('agencies', 'ag', 'ag.id = qr.CompId');
     return $query;
