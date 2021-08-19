@@ -36,7 +36,7 @@ class QuarterlyReportNode extends SqlBase {
         'Description',
       ]);
 
-    // For now we are only migrating 2020.
+    // For now we are only migrating 2021.
     $query->condition('Year', '2021');
 
     $query->condition('Level', 1);

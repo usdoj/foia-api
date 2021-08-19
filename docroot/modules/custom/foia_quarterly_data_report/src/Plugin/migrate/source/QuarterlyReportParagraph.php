@@ -36,7 +36,7 @@ class QuarterlyReportParagraph extends SqlBase {
         'Description',
       ]);
 
-    // For now we are only migrating 2020.
+    // For now we are only migrating 2021.
     $query->condition('Year', '2021');
 
     $query->join('agencies', 'ag', 'ag.id = qr.CompId');
@@ -75,12 +75,6 @@ class QuarterlyReportParagraph extends SqlBase {
    */
   public function prepareRow(Row $row) {
     $year = $row->getSourceProperty('Year');
-
-    // For now we will only migrate 2020 reports.
-    if ($year != '2020') {
-      return FALSE;
-    }
-
     $level = $row->getSourceProperty('Level');
 
     $agency_abbreviation = $this->fixAgencyAbbreviation($row->getSourceProperty('USagency'));
