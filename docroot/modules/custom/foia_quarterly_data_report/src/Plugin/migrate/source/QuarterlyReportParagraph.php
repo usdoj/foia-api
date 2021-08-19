@@ -106,6 +106,7 @@ class QuarterlyReportParagraph extends SqlBase {
     if (!$component_id) {
       print('Unknown component abbreviation: ' . $component_abbreviation . PHP_EOL);
       print('  (in agency: ' . $agency_abbreviation . ')' . PHP_EOL);
+      print('  (name: ' . $row->getSource()['Description'] . ')' . PHP_EOL);
       return FALSE;
     }
 
@@ -202,6 +203,12 @@ class QuarterlyReportParagraph extends SqlBase {
     $fixes = [
       'DOT' => [
         'SLSDC' => 'GLS',
+      ],
+      'DOC' => [
+        'ESA' => 'BEA',
+      ],
+      'DOI' => [
+        'FRAO' => 'FPAO',
       ],
     ];
     if (!empty($fixes[$agency_abbreviation][$component_abbreviation])) {
