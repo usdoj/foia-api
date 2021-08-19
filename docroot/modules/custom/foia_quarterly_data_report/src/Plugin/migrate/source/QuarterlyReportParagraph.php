@@ -181,6 +181,7 @@ class QuarterlyReportParagraph extends SqlBase {
       'US RRB' => 'USRRB',
       'U.S. CPSC' => 'CPSC',
       'State' => 'DOS',
+      'USNRC' => 'NRC',
     ];
     if (!empty($fixes[$abbreviation])) {
       return $fixes[$abbreviation];
