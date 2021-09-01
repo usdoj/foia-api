@@ -7,6 +7,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\foia_export_xml\ExportXml;
 use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\Response;
+use Drupal\Core\Cache\CacheBackendInterface;
 
 /**
  * Class ExportController for XML export.
@@ -93,7 +94,8 @@ class ExportController extends ControllerBase {
       else {
         $response = $this->convertReportToXmlResponse($report);
         $response->headers->set('Cache-Control', 'max-age=259200');
-        \Drupal::cache()->set($cid, $response);
+        $tags = ['node:' . $report->id()];
+        \Drupal::cache()->set($cid, $response, CacheBackendInterface::CACHE_PERMANENT, $tags);
       }
     }
 
