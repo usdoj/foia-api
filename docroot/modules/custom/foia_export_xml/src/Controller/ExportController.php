@@ -86,6 +86,7 @@ class ExportController extends ControllerBase {
     }
     else {
       $response = $this->convertReportToXmlResponse($report);
+      $response->headers->set('Cache-Control', 'max-age=259200');
     }
     return $response;
   }
