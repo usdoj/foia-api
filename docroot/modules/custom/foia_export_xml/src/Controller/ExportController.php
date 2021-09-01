@@ -74,20 +74,29 @@ class ExportController extends ControllerBase {
    */
   public function exportXmlPublic($agency_abbreviation, $year) {
 
-    \Drupal::logger('foia_export_xml')->notice('Exporting XML for ' . $agency_abbreviation . '/' . $year);
-
-    $report = $this->getReportByAgencyAndYear($agency_abbreviation, $year);
-
-    if (empty($report)) {
-      $response = new Response('Report not found.', Response::HTTP_NOT_FOUND);
-    }
-    elseif (!$report->isPublished()) {
-      $response = new Response('Report not complete.', Response::HTTP_FORBIDDEN);
+    $cid = 'foia_export_xml:' . strtolower($agency_abbreviation) . '-' . $year;
+    $response = NULL;
+    if ($cache = \Drupal::cache()->get($cid)) {
+      $response = $cache->data;
     }
     else {
-      $response = $this->convertReportToXmlResponse($report);
-      $response->headers->set('Cache-Control', 'max-age=259200');
+      \Drupal::logger('foia_export_xml')->notice('Exporting XML for ' . $agency_abbreviation . '/' . $year);
+
+      $report = $this->getReportByAgencyAndYear($agency_abbreviation, $year);
+
+      if (empty($report)) {
+        $response = new Response('Report not found.', Response::HTTP_NOT_FOUND);
+      }
+      elseif (!$report->isPublished()) {
+        $response = new Response('Report not complete.', Response::HTTP_FORBIDDEN);
+      }
+      else {
+        $response = $this->convertReportToXmlResponse($report);
+        $response->headers->set('Cache-Control', 'max-age=259200');
+        \Drupal::cache()->set($cid, $response);
+      }
     }
+
     return $response;
   }
 
