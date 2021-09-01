@@ -74,6 +74,8 @@ class ExportController extends ControllerBase {
    */
   public function exportXmlPublic($agency_abbreviation, $year) {
 
+    \Drupal::logger('foia_export_xml')->notice('Exporting XML for ' . $agency_abbreviation . '/' . $year);
+
     $report = $this->getReportByAgencyAndYear($agency_abbreviation, $year);
 
     if (empty($report)) {
