@@ -6,3 +6,10 @@ foia_export_xml.export:
   requirements:
     _custom_access: '\Drupal\foia_export_xml\Controller\ExportController::checkAccess'
     _entity_access: node.view
+foia_export_xml.export_public:
+  path: '/api/annual-report-xml/{agency_abbreviation}/{year}'
+  defaults:
+    _controller: '\Drupal\foia_export_xml\Controller\ExportController::exportXmlPublic'
+    _title: 'XML Annual Report - Public'
+  requirements:
+    _custom_access: '\Drupal\foia_export_xml\Controller\ExportController::checkAccessPublic'
