@@ -4,7 +4,7 @@
  *
  * Remember to remove the IdPs you don't use from this file.
  *
- * See: https://simplesamlphp.org/docs/stable/simplesamlphp-reference-idp-remote 
+ * See: https://simplesamlphp.org/docs/stable/simplesamlphp-reference-idp-remote
  */
 
 $metadata['https://login.max.gov/idp/shibboleth'] = [
@@ -64,7 +64,7 @@ $metadata['https://login.test.max.gov/idp/shibboleth'] = [
           'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign',
           'Location' => 'https://login.test.max.gov/idp/profile/SAML2/POST-SimpleSign/SSO',
         ],
-      3 => [ 
+      3 => [
           'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
           'Location' => 'https://login.test.max.gov/idp/profile/SAML2/Redirect/SSO',
         ],
@@ -86,3 +86,86 @@ MIIDMzCCAhugAwIBAgIUGZmNOfGrnHuo8FkedfSoNuXGh0swDQYJKoZIhvcNAQEF BQAwHTEbMBkGA1U
       0 => 'max.gov',
     ],
 ];
+
+$metadata['https://login.stage.max.gov/idp/shibboleth'] = array (
+  'entityid' => 'https://login.stage.max.gov/idp/shibboleth',
+  'contacts' =>
+  array (
+  ),
+  'metadata-set' => 'saml20-idp-remote',
+  'SingleSignOnService' =>
+  array (
+    0 =>
+    array (
+      'Binding' => 'urn:mace:shibboleth:1.0:profiles:AuthnRequest',
+      'Location' => 'https://login.stage.max.gov/idp/profile/Shibboleth/SSO',
+    ),
+    1 =>
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+      'Location' => 'https://login.stage.max.gov/idp/profile/SAML2/POST/SSO',
+    ),
+    2 =>
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign',
+      'Location' => 'https://login.stage.max.gov/idp/profile/SAML2/POST-SimpleSign/SSO',
+    ),
+    3 =>
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+      'Location' => 'https://login.stage.max.gov/idp/profile/SAML2/Redirect/SSO',
+    ),
+  ),
+  'SingleLogoutService' =>
+  array (
+    0 =>
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+      'Location' => 'https://login.stage.max.gov/idp/profile/SAML2/Redirect/SLO',
+    ),
+    1 =>
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+      'Location' => 'https://login.stage.max.gov/idp/profile/SAML2/POST/SLO',
+    ),
+    2 =>
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
+      'Location' => 'https://login.stage.max.gov/idp/profile/SAML2/SOAP/SLO',
+    ),
+  ),
+  'ArtifactResolutionService' =>
+  array (
+    0 =>
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding',
+      'Location' => 'https://login.stage.max.gov/idp/profile/SAML1/SOAP/ArtifactResolution',
+      'index' => 1,
+    ),
+    1 =>
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
+      'Location' => 'https://login.stage.max.gov/idp/profile/SAML2/SOAP/ArtifactResolution',
+      'index' => 2,
+    ),
+  ),
+  'NameIDFormats' =>
+  array (
+    0 => 'urn:mace:shibboleth:1.0:nameIdentifier',
+    1 => 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
+  ),
+  'keys' =>
+  array (
+    0 =>
+    array (
+      'encryption' => false,
+      'signing' => true,
+      'type' => 'X509Certificate',
+      'X509Certificate' => 'MIIDODCCAiCgAwIBAgIVAIt37bpkVQbi5DGlmw+bIzL8qIDdMA0GCSqGSIb3DQEBBQUAMB4xHDAaBgNVBAMME2xvZ2luLnN0YWdlLm1heC5nb3YwHhcNMTYwNjIzMTcxMTEwWhcNMzYwNjIzMTcxMTEwWjAeMRwwGgYDVQQDDBNsb2dpbi5zdGFnZS5tYXguZ292MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmDOvx90OJIEihGG87XMF5kPIoM5+4o9/8bLsr1B+11m6swyD69fweFxSC898sQp64ecdkWqX85CRXn04zh0IyINPgCbZA8JhvdCCeY6ZsWMvVj8WDM3o8BDT+owAcTWeekJQwtC4AsUEgYUjfsZ3SaNLfRVrog1ZoLZqARLVMMDBmkV2BO1qcEQZMlAauPPnKLuCG053eeFozqU3Jwp62whU14fN/YGp8g9V6jJFl3Ryw5DfF1sjuu0ZV48UxvpojGq+tYCmOTDT3x47kP+auiD8ZPs1GeUCpXoR9PDcvXzdFk04XXBiiYEBYvL6jUwPhgVdF1pquy6uaM3VioVRYwIDAQABo20wazAdBgNVHQ4EFgQUjZgk45a/61ud3ajgA29Wmf2Jf48wSgYDVR0RBEMwQYITbG9naW4uc3RhZ2UubWF4LmdvdoYqaHR0cHM6Ly9sb2dpbi5zdGFnZS5tYXguZ292L2lkcC9zaGliYm9sZXRoMA0GCSqGSIb3DQEBBQUAA4IBAQCPJZ939ZWE1EwyTlt1p+nkLQGsQ1IWaBPsBR5cE01NCcndj0B3yUMo3ZpaENLYvSh7hglgh7HH8NdEo01eSwkTsUYnzL2GAjiIGbgXcWyqoVugCw/qIkL/32R1qsw+/yhcbHwrstApH5B8sS5EMI/Ky9nMG1WfzJOploXCEmBryodM8S3CHgnBmd7Fq9eEq3cNbAZG/BZlO92B8frFFQWNvNtua88dMRtyzRbrwT66vi+7FqTEx0k5gMWXf+U18qQuZ1KHxlEXUIWssobl5E+12XYwjgXhFGX9iLxvbRBIhb0+6OcwEyXKbXnLKDR1jRJ6bOBImKg09FKwk3eR0CPH',
+    ),
+  ),
+  'scope' =>
+  array (
+    0 => 'max.gov',
+  ),
+);
