@@ -5862,7 +5862,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.4",
-                    "datestamp": "1624457459",
+                    "datestamp": "1624457496",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6089,24 +6089,24 @@
         },
         {
             "name": "drupal/feeds_ex",
-            "version": "1.0.0-alpha4",
+            "version": "1.0.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/feeds_ex.git",
-                "reference": "8.x-1.0-alpha4"
+                "reference": "8.x-1.0-alpha5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/feeds_ex-8.x-1.0-alpha4.zip",
-                "reference": "8.x-1.0-alpha4",
-                "shasum": "b1b5d5478335c133af1f6eb6bb3434aad9d202b7"
+                "url": "https://ftp.drupal.org/files/projects/feeds_ex-8.x-1.0-alpha5.zip",
+                "reference": "8.x-1.0-alpha5",
+                "shasum": "95f155c9d794b97518bbc9171c434319d2e007d8"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
                 "drupal/feeds": "*",
-                "flow/jsonpath": "~0.3",
                 "mtdowling/jmespath.php": "^2.0",
-                "querypath/querypath": "^3.0"
+                "querypath/querypath": "^3.0",
+                "softcreatr/jsonpath": "^0.5 || ^0.7"
             },
             "require-dev": {
                 "drupal/feeds": "3.x-dev"
@@ -6114,8 +6114,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-alpha4",
-                    "datestamp": "1591295180",
+                    "version": "8.x-1.0-alpha5",
+                    "datestamp": "1630593698",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -11531,52 +11531,6 @@
             "time": "2018-06-29T15:13:57+00:00"
         },
         {
-            "name": "flow/jsonpath",
-            "version": "0.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FlowCommunications/JSONPath.git",
-                "reference": "b9738858c75d008c1211612b973e9510f8b7f8ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FlowCommunications/JSONPath/zipball/b9738858c75d008c1211612b973e9510f8b7f8ea",
-                "reference": "b9738858c75d008c1211612b973e9510f8b7f8ea",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "peekmo/jsonpath": "dev-master",
-                "phpunit/phpunit": "^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Flow\\JSONPath": "src/",
-                    "Flow\\JSONPath\\Test": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Stephen Frank",
-                    "email": "stephen@flowsa.com"
-                }
-            ],
-            "description": "JSONPath implementation for parsing, searching and flattening arrays",
-            "support": {
-                "issues": "https://github.com/FlowCommunications/JSONPath/issues",
-                "source": "https://github.com/FlowCommunications/JSONPath/tree/0.5.0"
-            },
-            "abandoned": "softcreatr/jsonpath",
-            "time": "2019-07-15T17:23:22+00:00"
-        },
-        {
             "name": "gettext/gettext",
             "version": "v4.8.5",
             "source": {
@@ -15407,16 +15361,16 @@
         },
         {
             "name": "simplesamlphp/simplesamlphp-module-consent",
-            "version": "v0.9.6",
+            "version": "v0.9.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/simplesamlphp/simplesamlphp-module-consent.git",
-                "reference": "2f84d15e96afb5a32b6d1cff93370f501ca7867d"
+                "reference": "16a347ee4003e2adf415284b334a582e9b8a5717"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplesamlphp/simplesamlphp-module-consent/zipball/2f84d15e96afb5a32b6d1cff93370f501ca7867d",
-                "reference": "2f84d15e96afb5a32b6d1cff93370f501ca7867d",
+                "url": "https://api.github.com/repos/simplesamlphp/simplesamlphp-module-consent/zipball/16a347ee4003e2adf415284b334a582e9b8a5717",
+                "reference": "16a347ee4003e2adf415284b334a582e9b8a5717",
                 "shasum": ""
             },
             "require": {
@@ -15426,7 +15380,7 @@
             "require-dev": {
                 "phpunit/phpunit": "~5.7",
                 "simplesamlphp/simplesamlphp": "^1.17",
-                "webmozart/assert": "<1.7"
+                "webmozart/assert": "<1.6"
             },
             "type": "simplesamlphp-module",
             "autoload": {
@@ -15453,7 +15407,7 @@
                 "issues": "https://github.com/tvdijen/simplesamlphp-module-consent/issues",
                 "source": "https://github.com/tvdijen/simplesamlphp-module-consent"
             },
-            "time": "2020-06-15T14:26:23+00:00"
+            "time": "2021-09-04T19:57:14+00:00"
         },
         {
             "name": "simplesamlphp/simplesamlphp-module-consentadmin",
@@ -15660,16 +15614,16 @@
         },
         {
             "name": "simplesamlphp/simplesamlphp-module-ldap",
-            "version": "v0.9.10",
+            "version": "v0.9.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/simplesamlphp/simplesamlphp-module-ldap.git",
-                "reference": "78f04cbe41bfb9dcbcdeff4b5f12e67c060e1a77"
+                "reference": "88f2f40eedc27abfc5a9e5b61ae86cd6e86da4e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplesamlphp/simplesamlphp-module-ldap/zipball/78f04cbe41bfb9dcbcdeff4b5f12e67c060e1a77",
-                "reference": "78f04cbe41bfb9dcbcdeff4b5f12e67c060e1a77",
+                "url": "https://api.github.com/repos/simplesamlphp/simplesamlphp-module-ldap/zipball/88f2f40eedc27abfc5a9e5b61ae86cd6e86da4e1",
+                "reference": "88f2f40eedc27abfc5a9e5b61ae86cd6e86da4e1",
                 "shasum": ""
             },
             "require": {
@@ -15712,7 +15666,7 @@
                 "issues": "https://github.com/tvdijen/simplesamlphp-module-ldap/issues",
                 "source": "https://github.com/tvdijen/simplesamlphp-module-ldap"
             },
-            "time": "2020-09-16T21:09:07+00:00"
+            "time": "2021-09-07T15:21:37+00:00"
         },
         {
             "name": "simplesamlphp/simplesamlphp-module-memcachemonitor",
@@ -16434,6 +16388,71 @@
                 "wiki": "https://github.com/sirbrillig/phpcs-variable-analysis/wiki"
             },
             "time": "2021-07-06T23:45:17+00:00"
+        },
+        {
+            "name": "softcreatr/jsonpath",
+            "version": "0.7.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SoftCreatR/JSONPath.git",
+                "reference": "008569bf80aa3584834f7890781576bc7b65afa7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SoftCreatR/JSONPath/zipball/008569bf80aa3584834f7890781576bc7b65afa7",
+                "reference": "008569bf80aa3584834f7890781576bc7b65afa7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.1"
+            },
+            "replace": {
+                "flow/jsonpath": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=7.0",
+                "roave/security-advisories": "dev-master",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Flow\\JSONPath\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Frank",
+                    "email": "stephen@flowsa.com",
+                    "homepage": "https://prismaticbytes.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sascha Greuel",
+                    "email": "hello@1-2.dev",
+                    "homepage": "http://1-2.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "JSONPath implementation for parsing, searching and flattening arrays",
+            "support": {
+                "email": "hello@1-2.dev",
+                "forum": "https://github.com/SoftCreatR/JSONPath/discussions",
+                "issues": "https://github.com/SoftCreatR/JSONPath/issues",
+                "source": "https://github.com/SoftCreatR/JSONPath"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/softcreatr",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-06-02T22:15:26+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -21298,6 +21317,7 @@
                 "issues": "https://github.com/sebastianbergmann/resource-operations/issues",
                 "source": "https://github.com/sebastianbergmann/resource-operations/tree/master"
             },
+            "abandoned": true,
             "time": "2015-07-28T20:34:47+00:00"
         },
         {
