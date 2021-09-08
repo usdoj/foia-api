@@ -5,9 +5,11 @@ $idp = '';
 
 switch ($env) {
   case 'dev':
-  case 'test':
   case 'uat':
     $idp = 'https://login.test.max.gov/idp/shibboleth';
+    break;
+  case 'test':
+    $idp = 'https://login.stage.max.gov/idp/shibboleth';
     break;
   case 'prod':
     $idp = 'https://login.max.gov/idp/shibboleth';
