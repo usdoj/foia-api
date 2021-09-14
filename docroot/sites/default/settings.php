@@ -820,8 +820,3 @@ if (PHP_SAPI === 'cli') {
 if (file_exists($app_root . '/' . $site_path . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 'true') {
   include $app_root . '/' . $site_path . '/settings.ddev.php';
 }
-
-// Database credentials on Acquia.
-if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/foia/migrate_quarterly-settings.inc';
-}
