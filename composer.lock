@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2d80b29612e15fd9eaf55f1eaaba33e",
+    "content-hash": "37e06c4c90276b94e55da8702a3e9a11",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9690,38 +9690,35 @@
         },
         {
             "name": "drupal/rules",
-            "version": "3.0.0-alpha6",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rules.git",
-                "reference": "8.x-3.0-alpha6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rules-8.x-3.0-alpha6.zip",
-                "reference": "8.x-3.0-alpha6",
-                "shasum": "073bf5c23f0ef8f1aebf56538249d50d631d5a24"
+                "reference": "615221d"
             },
             "require": {
-                "drupal/core": "^8.7",
-                "drupal/typed_data": "1.x-dev"
+                "drupal/core": "^8.8.2 || ^9",
+                "drupal/typed_data": "^1.0"
             },
             "require-dev": {
                 "drupal/typed_data": "1.x-dev"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-3.0-alpha6",
-                    "datestamp": "1595975406",
+                    "version": "8.x-3.x-dev",
+                    "datestamp": "1619156352",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9"
+                        "drush.services.yml": "^9 || ^10"
                     }
                 }
             },
@@ -21481,7 +21478,7 @@
         "drupal/password_policy": 15,
         "drupal/precision_modifier": 10,
         "drupal/roleassign": 15,
-        "drupal/rules": 15,
+        "drupal/rules": 20,
         "drupal/simplesamlphp_auth": 20,
         "drupal/view_unpublished": 15
     },
