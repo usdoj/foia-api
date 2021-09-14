@@ -1,18 +1,20 @@
-uuid: eef22b1e-a2a1-444d-996d-5994bae77ccd
+uuid: ea0a75a0-9c82-41e9-9c5e-60e7086e97a6
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_foia_annual_report_yr
+    - field.storage.node.field_quarterly_quarter
+    - field.storage.node.field_quarterly_year
     - field.storage.user.field_agency
-    - node.type.annual_foia_report_data
+    - node.type.quarterly_foia_report_data
   module:
     - content_moderation
     - node
+    - options
     - taxonomy
     - user
-id: annual_foia_report_data_content_1
-label: 'Annual FOIA Report Data Content 1'
+id: quarterly_foia_report_data_content_1
+label: 'Quarterly FOIA Report Data Content 1'
 module: views
 description: ''
 tag: ''
@@ -28,7 +30,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'create annual_foia_report_data content'
+          perm: 'create quarterly_foia_report_data content'
       cache:
         type: tag
         options: {  }
@@ -80,12 +82,13 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: 'Existing Annual FOIA Reports'
+          caption: 'Existing Quarterly FOIA Reports'
           summary: ''
           description: ''
           columns:
             title: title
-            field_foia_annual_report_yr: field_foia_annual_report_yr
+            field_quarterly_year: field_quarterly_year
+            field_quarterly_quarter: field_quarterly_quarter
             uid: uid
             changed: changed
             moderation_state: moderation_state
@@ -100,9 +103,16 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_foia_annual_report_yr:
-              sortable: true
-              default_sort_order: desc
+            field_quarterly_year:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_quarterly_quarter:
+              sortable: false
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
@@ -149,7 +159,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-          default: field_foia_annual_report_yr
+          default: '-1'
           empty_table: false
       row:
         type: fields
@@ -224,14 +234,14 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-        field_foia_annual_report_yr:
-          id: field_foia_annual_report_yr
-          table: node__field_foia_annual_report_yr
-          field: field_foia_annual_report_yr
+        field_quarterly_year:
+          id: field_quarterly_year
+          table: node__field_quarterly_year
+          field: field_quarterly_year
           relationship: reverse__node__field_agency
           group_type: group
           admin_label: ''
-          label: 'Report Year'
+          label: Year
           exclude: false
           alter:
             alter_text: false
@@ -277,6 +287,68 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_quarterly_quarter:
+          id: field_quarterly_quarter
+          table: node__field_quarterly_quarter
+          field: field_quarterly_quarter
+          relationship: reverse__node__field_agency
+          group_type: group
+          admin_label: ''
+          label: Quarter
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -714,7 +786,7 @@ display:
           admin_label: ''
           operator: in
           value:
-            annual_foia_report_data: annual_foia_report_data
+            quarterly_foia_report_data: quarterly_foia_report_data
           group: 1
           exposed: false
           expose:
@@ -723,6 +795,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -731,8 +805,6 @@ display:
               authenticated: authenticated
             reduce: false
             argument: null
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -749,7 +821,7 @@ display:
           entity_field: type
           plugin_id: bundle
       sorts: {  }
-      title: 'Annual FOIA Report Data Content'
+      title: 'Quarterly FOIA Report Data Content'
       header:
         area:
           id: area
@@ -761,7 +833,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: "<p>Annual FOIA Report</p>\r\n<p><a href=\"/node/add/annual_foia_report_data\">Add new Annual FOIA Report</a></p>\r\n<p><a href=\"/report/upload\">Upload Annual FOIA Report data</a></p>"
+            value: "<p>Quarterly FOIA Report</p>\r\n<p><a href=\"/node/add/quarterly_foia_report_data\">Add new Quarterly FOIA Report</a></p>"
             format: rich_text
           plugin_id: text
       footer: {  }
@@ -835,11 +907,12 @@ display:
         - user
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_foia_annual_report_yr'
+        - 'config:field.storage.node.field_quarterly_quarter'
+        - 'config:field.storage.node.field_quarterly_year'
         - 'config:field.storage.user.field_agency'
-  annual_foia_report_data_block:
+  quarterly_foia_report_data_block:
     display_plugin: block
-    id: annual_foia_report_data_block
+    id: quarterly_foia_report_data_block
     display_title: Block
     position: 1
     display_options:
@@ -854,5 +927,6 @@ display:
         - user
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_foia_annual_report_yr'
+        - 'config:field.storage.node.field_quarterly_quarter'
+        - 'config:field.storage.node.field_quarterly_year'
         - 'config:field.storage.user.field_agency'
