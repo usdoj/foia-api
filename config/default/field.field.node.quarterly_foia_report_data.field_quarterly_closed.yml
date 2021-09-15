@@ -1,0 +1,30 @@
+uuid: 8dc305f6-b5cb-4aef-a2de-77a545096e0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_quarterly_closed
+    - node.type.quarterly_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.quarterly_foia_report_data.field_quarterly_closed
+field_name: field_quarterly_closed
+entity_type: node
+bundle: quarterly_foia_report_data
+label: 'Ten Oldest Requests Closed'
+description: 'Of the ten or fewer requests identified in your previous response, please select the number of requests your agency has closed during the current fiscal year.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: 10
+  prefix: ''
+  suffix: ''
+field_type: integer

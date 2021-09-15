@@ -1,0 +1,30 @@
+uuid: 7be91385-cfda-4592-9d39-8ac2da631127
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_quarterly_year
+    - node.type.quarterly_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.quarterly_foia_report_data.field_quarterly_year
+field_name: field_quarterly_year
+entity_type: node
+bundle: quarterly_foia_report_data
+label: 'Fiscal Year'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

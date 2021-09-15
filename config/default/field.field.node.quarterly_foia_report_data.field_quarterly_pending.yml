@@ -1,0 +1,30 @@
+uuid: fbdd11fc-c2b8-4d8d-aafb-67dee7dcff6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_quarterly_pending
+    - node.type.quarterly_foia_report_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.quarterly_foia_report_data.field_quarterly_pending
+field_name: field_quarterly_pending
+entity_type: node
+bundle: quarterly_foia_report_data
+label: 'Ten Oldest Pending Requests'
+description: "<p>Did your agency have 10 or more perfected requests pending at the end of the last fiscal year?</p>\r\n<ul>\r\n  <li>If so, please select the number 10.</li>\r\n  <li>If your agency had fewer than 10, please select the correct number.</li>\r\n</ul>"
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: 10
+  prefix: ''
+  suffix: ''
+field_type: integer

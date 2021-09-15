@@ -18,23 +18,34 @@ function foia_workflow_node_access(NodeInterface $node, $op, AccountProxy $accou
   $workflow_state = $node->get('moderation_state')->getString();
   $author = $node->getOwner()->id();
   $user = $account->id();
-  $is_report_type = (bool) ($type == 'annual_foia_report_data');
+  $is_report_type = (bool) in_array($type, [
+    'quarterly_foia_report_data',
+    'annual_foia_report_data',
+  ]);
   $is_agency_admin = (bool) in_array('agency_administrator', $account->getRoles());
   $is_agency_manager = (bool) in_array('agency_manager', $account->getRoles());
   $is_same_agency_as_author = (bool) ($node->getOwner()->get('field_agency')->target_id == User::load($user)->get('field_agency')->target_id);
   $is_draft = (bool) (bool) ($workflow_state == 'draft');
   $is_not_author = (bool) ($author != $user);
-  // Do not allow Agency Administrators to edit draft Annual Reports.
+  // Do not allow Agency Administrators to edit draft Annual/Quarterly Reports.
   if ($is_report_type && $is_agency_admin && $is_draft && $is_not_author && $op ==
     'update') {
     return AccessResult::forbidden();
   }
-  // Agency Managers cannot update or delete Annual Reports once submitted.
-  if ($is_report_type && $is_agency_manager && !$is_draft && $workflow_state != 'back_with_agency' && in_array($op, ['update', 'delete'])) {
+  // Agency Managers can't update or delete Annual/Quarterly Reports
+  // once submitted.
+  if ($is_report_type
+      && $is_agency_manager
+      && !$is_draft
+      && $workflow_state != 'back_with_agency'
+      && in_array($op, ['update', 'delete'])) {
     return AccessResult::forbidden();
   }
-  // Agency Managers can update Annual Reports within their agency.
-  if ($is_report_type && $is_agency_manager && $is_same_agency_as_author && in_array($op, ['update', 'delete'])) {
+  // Agency Managers can update Annual/Quarterly Reports within their agency.
+  if ($is_report_type
+      && $is_agency_manager
+      && $is_same_agency_as_author
+      && in_array($op, ['update', 'delete'])) {
     return AccessResult::allowed();
   }
 }

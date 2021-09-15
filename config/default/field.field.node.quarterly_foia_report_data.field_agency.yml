@@ -1,0 +1,36 @@
+uuid: 30bbeeb9-5c97-4837-8e7c-123d8e7d1b9c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_agency
+    - node.type.quarterly_foia_report_data
+    - taxonomy.vocabulary.agency
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.quarterly_foia_report_data.field_agency
+field_name: field_agency
+entity_type: node
+bundle: quarterly_foia_report_data
+label: Agency
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      agency: agency
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

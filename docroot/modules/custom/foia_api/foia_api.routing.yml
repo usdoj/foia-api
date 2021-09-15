@@ -4,3 +4,9 @@ foia_api.annual_report_fiscal_years:
     _controller: '\Drupal\foia_api\Controller\FoiaApiFiscalYearController::get'
   requirements:
     _permission: 'access content'
+foia_api.quarterly_report_fiscal_years:
+  path: '/api/quarterly_foia_report/fiscal_years'
+  defaults:
+    _controller: '\Drupal\foia_api\Controller\FoiaApiQuarterlyFiscalYearController::get'
+  requirements:
+    _permission: 'access content'

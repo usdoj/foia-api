@@ -1,0 +1,14 @@
+uuid: b39c52ac-54ab-4c65-b86c-8b2c887b4b47
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.quarterly_foia_report_data_creator
+  module:
+    - user
+id: user_remove_role_action.quarterly_foia_report_data_creator
+label: 'Remove the Quarterly FOIA Report Data creator role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: quarterly_foia_report_data_creator

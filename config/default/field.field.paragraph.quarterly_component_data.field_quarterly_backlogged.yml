@@ -1,0 +1,30 @@
+uuid: a651ee84-3ab8-43a7-981f-b3c59116b6cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_quarterly_backlogged
+    - paragraphs.paragraphs_type.quarterly_component_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.quarterly_component_data.field_quarterly_backlogged
+field_name: field_quarterly_backlogged
+entity_type: paragraph
+bundle: quarterly_component_data
+label: 'Number of requests backlogged'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

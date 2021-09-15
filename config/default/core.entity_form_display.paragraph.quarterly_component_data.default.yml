@@ -1,0 +1,48 @@
+uuid: 9b62c8a8-76de-40d3-ae84-60af0fe499bc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.quarterly_component_data.field_agency_component
+    - field.field.paragraph.quarterly_component_data.field_quarterly_backlogged
+    - field.field.paragraph.quarterly_component_data.field_quarterly_processed
+    - field.field.paragraph.quarterly_component_data.field_quarterly_received
+    - paragraphs.paragraphs_type.quarterly_component_data
+  module:
+    - entity_reference_views_select
+id: paragraph.quarterly_component_data.default
+targetEntityType: paragraph
+bundle: quarterly_component_data
+mode: default
+content:
+  field_agency_component:
+    weight: 0
+    settings:
+      empty_value: '- None -'
+    third_party_settings: {  }
+    type: erviews_options_select
+    region: content
+  field_quarterly_backlogged:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_quarterly_processed:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_quarterly_received:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+hidden:
+  created: true
+  status: true

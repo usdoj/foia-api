@@ -83,6 +83,7 @@ display:
               annual_foia_report_data: default
               landing_page: teaser
               page: teaser
+              quarterly_foia_report_data: default
       fields:
         rendered:
           table: search_api_index_content
@@ -230,7 +231,9 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.content'
   page:
     display_plugin: page
     id: page
@@ -246,4 +249,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.content'
