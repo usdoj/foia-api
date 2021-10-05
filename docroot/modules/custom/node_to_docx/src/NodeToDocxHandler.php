@@ -28,7 +28,7 @@ class NodeToDocxHandler implements ContainerAwareInterface {
     // Check if phpdocx library is available.
     if ($this->isPhpdocxLibraryAvailable() === TRUE) {
       $filename = $node->id() . '-' . str_replace('/', '-', $node->getTitle());
-      $view = node_view($node, 'node_to_docx');
+      $view = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, 'node_to_docx');
       // The following line should cause the templates in this module to be
       // used.
       if ($node->getType() == 'quarterly_foia_report_data') {
