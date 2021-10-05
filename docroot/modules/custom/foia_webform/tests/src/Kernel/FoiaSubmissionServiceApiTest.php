@@ -520,7 +520,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    * Sets up logger mock.
    */
   protected function setupLoggerMock() {
-    $this->logger = $this->getMock('\Psr\Log\LoggerInterface');
+    $this->logger = $this->createMock('\Psr\Log\LoggerInterface');
   }
 
   /**

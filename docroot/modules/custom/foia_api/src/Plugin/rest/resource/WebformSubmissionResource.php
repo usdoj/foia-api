@@ -392,7 +392,7 @@ class WebformSubmissionResource extends ResourceBase {
     $fileSize = isset($fileAttachment['filesize']) ? $fileAttachment['filesize'] : '';
     $fileName = isset($fileAttachment['filename']) ? $fileAttachment['filename'] : '';
     $destination = \Drupal::service('file_system')->tempnam('temporary://', 'foiaAttach');
-    $fileUri = file_unmanaged_save_data($fileContents, $destination);
+    $fileUri = \Drupal::service('file_system')->saveData($fileContents, $destination);
     if ($fileUri) {
       $file = FileEntity::create([
         'type' => 'attachment_support_document',
@@ -577,7 +577,7 @@ class WebformSubmissionResource extends ResourceBase {
         $sourceUri = $file->getFileUri();
         $destinationUri = "{$uriScheme}://webform/{$webform->id()}/{$webformSubmission->id()}/{$file->getFilename()}";
         $destinationDirectory = $this->fileSystem->dirname($destinationUri);
-        file_prepare_directory($destinationDirectory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+        \Drupal::service('file_system')->prepareDirectory($destinationDirectory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
         $destinationUri = file_unmanaged_move($sourceUri, $destinationUri);
         // Update the file's uri and save.
         $file->setFileUri($destinationUri);
