@@ -51,7 +51,7 @@ class FoiaPersonnelRevisionRevertTranslationForm extends FoiaPersonnelRevisionRe
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager')->getStorage('foia_personnel'),
+      $container->get('entity_type.manager')->getStorage('foia_personnel'),
       $container->get('date.formatter'),
       $container->get('language_manager')
     );
