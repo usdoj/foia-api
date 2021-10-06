@@ -1,4 +1,4 @@
-uuid: 582506b3-7bee-4530-a497-8dfdd58a556c
+uuid: cfd50c5e-e2bb-4c0e-99e6-456c2cd19f6d
 langcode: en
 status: open
 dependencies:
@@ -7,11 +7,11 @@ dependencies:
 open: null
 close: null
 weight: 0
-uid: 301
+uid: 2521
 template: false
 archive: false
-id: doi_blm2_form
-title: 'DOI-BLM2 Form'
+id: doi_asia_form
+title: 'DOI-ASIA Form'
 description: ''
 category: ''
 elements: "name_first:\n  '#type': textfield\n  '#title': 'First name'\n  '#help': '<p style=\"margin:0in\"><span style=\"font-size:11.0pt\"><span style=\"font-family:Calibri\">First and last name are&nbsp;required pursuant to <a href=\"https://www.ecfr.gov/cgi-bin/text-idx?SID=cef708ab37b3c65728527077e5e8d64e&amp;mc=true&amp;node=se43.1.2_111&amp;rgn=div8\">43 C.F.R. &sect; 2.11</a>.</span></span></p>'\n  '#required': true\nname_last:\n  '#type': textfield\n  '#title': 'Last name'\n  '#required': true\ncompany_organization:\n  '#type': textfield\n  '#title': 'Your organization'\nemail:\n  '#type': email\n  '#title': 'Email address'\n  '#help': '<p style=\"margin-top:0pt; margin-bottom:8pt\"><span style=\"font-size:11.0pt\"><span style=\"font-family:Calibri\">In order for us to communicate with you about your request, you must provide at least one form of contact information (for&nbsp;example, your email address or your complete mailing address). <a href=\"https://www.ecfr.gov/cgi-bin/text-idx?SID=cef708ab37b3c65728527077e5e8d64e&amp;mc=true&amp;node=se43.1.2_111&amp;rgn=div8\">43 C.F.R. &sect; 2.11</a>.&nbsp;</span></span></p>'\nphone_number:\n  '#type': tel\n  '#title': 'Phone number'\nfax_number:\n  '#type': tel\n  '#title': 'Fax number'\naddress_line1:\n  '#type': textfield\n  '#title': 'Mailing address 1'\naddress_line2:\n  '#type': textfield\n  '#title': 'Mailing address 2'\naddress_city:\n  '#type': textfield\n  '#title': City\naddress_state_province:\n  '#type': textfield\n  '#title': 'State or province'\naddress_zip_postal_code:\n  '#type': textfield\n  '#title': 'Zip or postal code'\naddress_country:\n  '#type': select\n  '#title': Country\n  '#default_value': 'United States'\n  '#options': country_names\nrequest_category:\n  '#type': select\n  '#title': 'What type of requester are you?'\n  '#help': 'Please select the category that best fits you. This information helps FOIA personnel determine what fees, if any, may be applicable.&nbsp; This is required pursuant to&nbsp;<a href=\"https://www.ecfr.gov/cgi-bin/text-idx?SID=cef708ab37b3c65728527077e5e8d64e&amp;mc=true&amp;node=se43.1.2_17&amp;rgn=div8\" style=\"font-family: Calibri; font-size: 11pt;\">43 C.F.R. &sect; 2.7</a><span style=\"font-family:Calibri; font-size:11pt\">.</span>'\n  '#options':\n    media: 'Representative of the news media'\n    educational: 'Educational Institution'\n    scientific: 'Non-commercial scientific institution'\n    commercial: 'Commercial-use requester'\n    other: 'All other requester'\n  '#required': true\nrequest_description:\n  '#type': textarea\n  '#maxlength': 10000\n  '#title': 'Your request'\n  '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'\n  '#required': true\nfee_waiver:\n  '#type': select\n  '#title': 'Fee waiver'\n  '#default_value': 'no'\n  '#options':\n    'no': 'No'\n    'yes': 'Yes'\nfee_waiver_explanation:\n  '#type': textarea\n  '#maxlength': 10000\n  '#title': 'Fee waiver justification'\n  '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'\nfee_amount_willing:\n  '#type': textfield\n  '#title': 'The amount of money you’re willing to pay in fees, if any'\n  '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'\n  '#pattern': '^(?=.)([+\\-\\$]?([0-9]*)(\\.([0-9]+))?)$'\n  '#counter_type': word\n  '#counter_maximum': 1\nexpedited_processing:\n  '#type': select\n  '#title': 'Expedited processing'\n  '#default_value': 'no'\n  '#options':\n    'no': 'No'\n    'yes': 'Yes'\nexpedited_processing_explanation:\n  '#type': textarea\n  '#maxlength': 10000\n  '#title': 'Justification for expedited processing'\n  '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above. By requesting expedited processing, you certifying that the statement(s) made below concerning expedited processing are true and correct to the best of your knowledge and belief.'\nattachments_supporting_documentation:\n  '#type': managed_file\n  '#title': 'Upload additional documentation'\n  '#multiple': true\n  '#max_filesize': '20'\n  '#file_extensions': 'gif jpg png txt pdf doc docx odf'\nz_particular_park:\n  '#type': textarea\n  '#title': 'Are you seeking these records from a particular park, refuge, site, or other location? '\n  '#help': '<span style=\"font-size:12.0pt\"><span style=\"font-family:&quot;Times New Roman&quot;,serif\">If so, please name it here.</span></span>'\n  '#maxlength': 10000"
@@ -145,6 +145,7 @@ settings:
   token_view: false
   token_update: false
   serial_disabled: false
+  token_delete: false
 access:
   create:
     roles:
@@ -223,11 +224,11 @@ handlers:
       return_path: ''
       ignore_access: false
       exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      twig: false
       sender_mail: ''
       sender_name: ''
-      exclude_empty_checkbox: false
-      twig: false
       theme_name: ''
       parameters: {  }
-      exclude_attachments: false
 variants: {  }
