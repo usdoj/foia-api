@@ -2,7 +2,6 @@
 
 namespace Drupal\foia_request\Commands;
 
-use Drupal\Core\Database\Connection;
 use Drush\Commands\DrushCommands;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\file_entity\Entity\FileEntity;
@@ -21,24 +20,6 @@ use Drupal\foia_request\Entity\FoiaRequest;
  *   - http://cgit.drupalcode.org/devel/tree/drush.services.yml
  */
 class FoiaRequestCommands extends DrushCommands {
-
-  /**
-   * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected $connection;
-
-  /**
-   * FoiaUploadXmlCommands constructor.
-   *
-   * @param \Drupal\Core\Database\Connection $database
-   *   The database connection.
-   */
-  public function __construct(Connection $database) {
-    parent::__construct();
-    $this->connection = $database;
-  }
 
   /**
    * Queue clean FOIA request when files have been scanned.
@@ -126,7 +107,7 @@ class FoiaRequestCommands extends DrushCommands {
    * Query for FOIA requests whose status is set to "To Be Scanned".
    */
   public function toBeScanned() {
-    $query = $this->connection->select('foia_request', 'fr');
+    $query = \Drupal::database()->select('foia_request', 'fr');
     $query->addField('fr', 'id');
     $query->join('foia_request__field_webform_submission_id', 'frid', 'frid.entity_id = fr.id');
     $query->addField('frid', 'field_webform_submission_id_value', 'sid');
@@ -143,7 +124,7 @@ class FoiaRequestCommands extends DrushCommands {
    * FoiaRequestInterface::ASSUME_DELIVERED_AFTER constant.
    */
   public function deliveredEmails() {
-    $query = $this->connection->select('foia_request', 'fr');
+    $query = \Drupal::database()->select('foia_request', 'fr');
     $query->addField('fr', 'id');
     $query->condition('fr.request_status', FoiaRequestInterface::STATUS_IN_TRANSIT);
     $query->condition('fr.created', time() - FoiaRequestInterface::ASSUME_DELIVERED_AFTER, '<');
