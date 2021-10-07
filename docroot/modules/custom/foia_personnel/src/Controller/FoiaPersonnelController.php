@@ -89,13 +89,9 @@ class FoiaPersonnelController extends ControllerBase implements ContainerInjecti
         // Use revision link to link to revisions that are not active.
         $date = \Drupal::service('date.formatter')->format($revision->getRevisionCreationTime(), 'short');
         if ($vid != $foia_personnel->getRevisionId()) {
-          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
-          // Please manually remove the `use LinkGeneratorTrait;` statement from this class.
           $link = Link::fromTextAndUrl($date, new Url('entity.foia_personnel.revision', ['foia_personnel' => $foia_personnel->id(), 'foia_personnel_revision' => $vid]));
         }
         else {
-          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
-          // Please confirm that `$foia_personnel` is an instance of `\Drupal\Core\Entity\EntityInterface`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
           $link = $foia_personnel->toLink($date)->toString();
         }
 
