@@ -399,7 +399,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
       'migrate_message_foia_xiie2',
     ];
     foreach ($tables as $table) {
-      db_drop_table($table);
+      $this->connection->schema()->dropTable($table);
     }
   }
 
