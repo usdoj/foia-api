@@ -59,7 +59,17 @@
         "drupal/views_data_export": "^1.0.0-beta1",
         "drupal/webform": "^6.0.5",
         "drush/drush": "~10.3.6",
-        "npm-asset/jquery-validation": "^1.19"
+        "npm-asset/jquery-validation": "^1.19",
+        "ext-dom": "*",
+        "cweagans/composer-patches": "^1.6.4",
+        "drupal/core": "~8.9.19",
+        "drupal/libraries": "^3.0",
+        "drupal/lightning_api": "^4.1",
+        "drupal/lightning_core": "^5.2",
+        "drupal/lightning_layout": "^1.12",
+        "drupal/lightning_media": "^3.21 || ^4.6",
+        "drupal/lightning_workflow": "^3.6",
+        "drupal/profile_switcher": "^1.0-alpha5"
     },
     "require-dev": {
         "acquia/blt-require-dev": "11.0.0-alpha1",
@@ -117,7 +127,10 @@
                 "FOIA-96: Style read-only inputs as disabled": "./patches/FOIA-96-readonly-inputs.patch",
                 "FOIA-227: large numbers w/decimals fail validation": "https://www.drupal.org/files/issues/2020-05-26/2230909-162.patch",
                 "FOIA-32: Dynamically provide action plugins for every moderation state change": "https://www.drupal.org/files/issues/2019-11-20/2797583_provide_moderation_states_as_actions_128.patch",
-                "FOIA-32: Exclude Agency/Component from validation for bulk publishing": "./patches/FOIA-32-validator.patch"
+                "FOIA-32: Exclude Agency/Component from validation for bulk publishing": "./patches/FOIA-32-validator.patch",
+                "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2020-02-07/2869592-remove-update-warning-34.patch",
+                "[subprofile support] 1356276 - Allow profiles to define a base/parent profile and load them in the correct order / 2914389 - Allow profiles to exclude dependencies of their parent": "https://www.drupal.org/files/issues/2021-01-14/3143958-11-subprofile-support-8.9.x.patch",
+                "REMOVE: Allow installation profile to be changed from Lightning during config sync": "https://www.drupal.org/files/issues/2021-01-21/3143958-12-change-profile-config-sync-9.1.x.patch"
             },
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/2021-07-05/password_policy_field_last_password_reset_unknown_error_2771129-130.patch"
@@ -136,6 +149,15 @@
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
+        },
+        "patches-ignore": {
+            "drupal/lightning_core": {
+                "drupal/core": {
+                    "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2869592-remove-update-warning-7.patch",
+                    "[subprofile support] 1356276 - Allow profiles to define a base/parent profile and load them in the correct order": "https://www.drupal.org/files/issues/2019-11-05/1356276-531-8.8.x-4.patch",
+                    "[subprofile support] 2914389 - Allow profiles to exclude dependencies of their parent": "https://www.drupal.org/files/issues/2018-07-09/2914389-8-do-not-test.patch"
+                }
+            }
         }
     },
     "repositories": {
