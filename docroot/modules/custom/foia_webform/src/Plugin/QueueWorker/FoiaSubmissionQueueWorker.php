@@ -88,7 +88,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     $agencyComponent = Node::load($agencyComponentId);
     $submissionService = $this->foiaSubmissionServiceFactory->get($agencyComponent);
 
-    $foiaRequest->set('field_submission_time', REQUEST_TIME);
+    $foiaRequest->set('field_submission_time', \Drupal::time()->getRequestTime());
     // Submit the form values to the Agency Component.
     $submissionResponse = $submissionService->sendRequestToComponent($foiaRequest, $agencyComponent);
     $this->handleSubmissionResponse($foiaRequest, $submissionResponse, $submissionService);

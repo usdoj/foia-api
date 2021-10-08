@@ -16,6 +16,11 @@ use Drupal\webform\Entity\WebformOptions;
 class WebformNormalizerTest extends BrowserTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * Modules to enable.
    *
    * @var array

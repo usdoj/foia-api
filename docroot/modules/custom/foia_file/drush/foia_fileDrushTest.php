@@ -10,7 +10,7 @@ if (class_exists('Unish\CommandUnishTestCase')) {
    * PHPUnit Tests for foia_file. This uses Drush's own test framework, based on
    * PHPUnit. To run the tests, use run-tests-drush.sh from the devel directory.
    *
-   * @package Drupal\Tests\foia_webform\Unish
+   * @package Drupal\Tests\foia_file\Unish
    */
   class FoiaFileCase extends CommandUnishTestCase {
 

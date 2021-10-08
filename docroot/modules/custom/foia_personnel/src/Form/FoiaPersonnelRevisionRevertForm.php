@@ -57,7 +57,7 @@ class FoiaPersonnelRevisionRevertForm extends ConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager')->getStorage('foia_personnel'),
+      $container->get('entity_type.manager')->getStorage('foia_personnel'),
       $container->get('date.formatter')
     );
   }
@@ -120,7 +120,7 @@ class FoiaPersonnelRevisionRevertForm extends ConfirmFormBase {
     $this->revision->save();
 
     $this->logger('content')->notice('FOIA Personnel: reverted %title revision %revision.', ['%title' => $this->revision->label(), '%revision' => $this->revision->getRevisionId()]);
-    drupal_set_message(t('FOIA Personnel %title has been reverted to the revision from %revision-date.', ['%title' => $this->revision->label(), '%revision-date' => $this->dateFormatter->format($original_revision_timestamp)]));
+    $this->messenger()->addStatus(t('FOIA Personnel %title has been reverted to the revision from %revision-date.', ['%title' => $this->revision->label(), '%revision-date' => $this->dateFormatter->format($original_revision_timestamp)]));
     $form_state->setRedirect(
       'entity.foia_personnel.version_history',
       ['foia_personnel' => $this->revision->id()]
@@ -141,7 +141,7 @@ class FoiaPersonnelRevisionRevertForm extends ConfirmFormBase {
   protected function prepareRevertedRevision(FoiaPersonnelInterface $revision, FormStateInterface $form_state) {
     $revision->setNewRevision();
     $revision->isDefaultRevision(TRUE);
-    $revision->setRevisionCreationTime(REQUEST_TIME);
+    $revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
 
     return $revision;
   }
