@@ -16,7 +16,6 @@ class FoiaPersonnelForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    /* @var $entity \Drupal\foia_personnel\Entity\FoiaPersonnel */
     $form = parent::buildForm($form, $form_state);
 
     if (!$this->entity->isNew()) {
@@ -28,6 +27,9 @@ class FoiaPersonnelForm extends ContentEntityForm {
       ];
     }
 
+    /**
+     * @var \Drupal\foia_personnel\Entity\FoiaPersonnel
+     * */
     $entity = $this->entity;
 
     return $form;
@@ -44,7 +46,7 @@ class FoiaPersonnelForm extends ContentEntityForm {
       $entity->setNewRevision();
 
       // If a new revision is created, save the current user as revision author.
-      $entity->setRevisionCreationTime(REQUEST_TIME);
+      $entity->setRevisionCreationTime(\Drupal::time()->getRequestTime());
       $entity->setRevisionUserId(\Drupal::currentUser()->id());
     }
     else {
@@ -55,13 +57,13 @@ class FoiaPersonnelForm extends ContentEntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label FOIA Personnel.', [
+        $this->messenger()->addStatus($this->t('Created the %label FOIA Personnel.', [
           '%label' => $entity->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label FOIA Personnel.', [
+        $this->messenger()->addStatus($this->t('Saved the %label FOIA Personnel.', [
           '%label' => $entity->label(),
         ]));
     }

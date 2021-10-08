@@ -2,6 +2,7 @@
 
 namespace Drupal\foia_personnel\Controller;
 
+use Drupal\Core\Link;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -25,8 +26,8 @@ class FoiaPersonnelController extends ControllerBase implements ContainerInjecti
    *   An array suitable for drupal_render().
    */
   public function revisionShow($foia_personnel_revision) {
-    $foia_personnel = $this->entityManager()->getStorage('foia_personnel')->loadRevision($foia_personnel_revision);
-    $view_builder = $this->entityManager()->getViewBuilder('foia_personnel');
+    $foia_personnel = \Drupal::service('entity_type.manager')->getStorage('foia_personnel')->loadRevision($foia_personnel_revision);
+    $view_builder = \Drupal::service('entity_type.manager')->getViewBuilder('foia_personnel');
 
     return $view_builder->view($foia_personnel);
   }
@@ -41,8 +42,12 @@ class FoiaPersonnelController extends ControllerBase implements ContainerInjecti
    *   The page title.
    */
   public function revisionPageTitle($foia_personnel_revision) {
-    $foia_personnel = $this->entityManager()->getStorage('foia_personnel')->loadRevision($foia_personnel_revision);
-    return $this->t('Revision of %title from %date', ['%title' => $foia_personnel->label(), '%date' => format_date($foia_personnel->getRevisionCreationTime())]);
+    $foia_personnel = \Drupal::service('entity_type.manager')->getStorage('foia_personnel')->loadRevision($foia_personnel_revision);
+    return $this->t('Revision of %title from %date',
+      [
+        '%title' => $foia_personnel->label(),
+        '%date' => \Drupal::service('date.formatter')->format($foia_personnel->getRevisionCreationTime()),
+      ]);
   }
 
   /**
@@ -60,9 +65,17 @@ class FoiaPersonnelController extends ControllerBase implements ContainerInjecti
     $langname = $foia_personnel->language()->getName();
     $languages = $foia_personnel->getTranslationLanguages();
     $has_translations = (count($languages) > 1);
-    $foia_personnel_storage = $this->entityManager()->getStorage('foia_personnel');
+    $foia_personnel_storage = \Drupal::service('entity_type.manager')->getStorage('foia_personnel');
 
-    $build['#title'] = $has_translations ? $this->t('@langname revisions for %title', ['@langname' => $langname, '%title' => $foia_personnel->label()]) : $this->t('Revisions for %title', ['%title' => $foia_personnel->label()]);
+    $build['#title'] = $has_translations ?
+      $this->t('@langname revisions for %title',
+        [
+          '@langname' => $langname,
+          '%title' => $foia_personnel->label(),
+        ])
+      : $this->t(
+        'Revisions for %title', ['%title' => $foia_personnel->label()]
+      );
     $header = [$this->t('Revision'), $this->t('Operations')];
 
     $revert_permission = (($account->hasPermission("revert all foia personnel revisions") || $account->hasPermission('administer foia personnel entities')));
@@ -88,10 +101,16 @@ class FoiaPersonnelController extends ControllerBase implements ContainerInjecti
         // Use revision link to link to revisions that are not active.
         $date = \Drupal::service('date.formatter')->format($revision->getRevisionCreationTime(), 'short');
         if ($vid != $foia_personnel->getRevisionId()) {
-          $link = $this->l($date, new Url('entity.foia_personnel.revision', ['foia_personnel' => $foia_personnel->id(), 'foia_personnel_revision' => $vid]));
+          $link = Link::fromTextAndUrl(
+            $date,
+            new Url('entity.foia_personnel.revision',
+              [
+                'foia_personnel' => $foia_personnel->id(),
+                'foia_personnel_revision' => $vid,
+              ]));
         }
         else {
-          $link = $foia_personnel->link($date);
+          $link = $foia_personnel->toLink($date)->toString();
         }
 
         $row = [];
@@ -102,7 +121,10 @@ class FoiaPersonnelController extends ControllerBase implements ContainerInjecti
             '#context' => [
               'date' => $link,
               'username' => \Drupal::service('renderer')->renderPlain($username),
-              'message' => ['#markup' => $revision->getRevisionLogMessage(), '#allowed_tags' => Xss::getHtmlTagList()],
+              'message' => [
+                '#markup' => $revision->getRevisionLogMessage(),
+                '#allowed_tags' => Xss::getHtmlTagList(),
+              ],
             ],
           ],
         ];
@@ -126,14 +148,22 @@ class FoiaPersonnelController extends ControllerBase implements ContainerInjecti
           if ($revert_permission) {
             $links['revert'] = [
               'title' => $this->t('Revert'),
-              'url' => Url::fromRoute('entity.foia_personnel.revision_revert', ['foia_personnel' => $foia_personnel->id(), 'foia_personnel_revision' => $vid]),
+              'url' => Url::fromRoute('entity.foia_personnel.revision_revert',
+                [
+                  'foia_personnel' => $foia_personnel->id(),
+                  'foia_personnel_revision' => $vid,
+                ]),
             ];
           }
 
           if ($delete_permission) {
             $links['delete'] = [
               'title' => $this->t('Delete'),
-              'url' => Url::fromRoute('entity.foia_personnel.revision_delete', ['foia_personnel' => $foia_personnel->id(), 'foia_personnel_revision' => $vid]),
+              'url' => Url::fromRoute('entity.foia_personnel.revision_delete',
+                [
+                  'foia_personnel' => $foia_personnel->id(),
+                  'foia_personnel_revision' => $vid,
+                ]),
             ];
           }
 
