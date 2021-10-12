@@ -40,6 +40,7 @@ dependencies:
     - field.field.node.agency_component.field_submission_web
     - field.field.node.agency_component.field_website
     - node.type.agency_component
+    - workflows.workflow.quarterly_report_workflow
   module:
     - address
     - content_moderation
@@ -66,6 +67,7 @@ third_party_settings:
         open: true
         required_fields: true
       label: 'Paper Submissions'
+      region: content
     group_email_submissions:
       children:
         - field_submission_email
@@ -78,6 +80,7 @@ third_party_settings:
         open: true
         required_fields: true
       label: 'Email Submissions'
+      region: content
     group_web_submissions:
       children:
         - field_submission_web
@@ -90,6 +93,7 @@ third_party_settings:
         open: true
         required_fields: true
       label: 'Web Submissions'
+      region: content
     group_fax_submissions:
       children:
         - field_submission_fax
@@ -102,6 +106,7 @@ third_party_settings:
         open: true
         required_fields: true
       label: 'Fax Submissions'
+      region: content
     group_api_submissions:
       children:
         - field_submission_api
@@ -115,6 +120,7 @@ third_party_settings:
         open: true
         required_fields: true
       label: 'API Submissions'
+      region: content
     group_portal_submission_options:
       children:
         - field_portal_submission_format
@@ -129,6 +135,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Portal Submission Options'
+      region: content
     group_processing_data:
       children:
         - field_request_data_year
@@ -153,6 +160,7 @@ third_party_settings:
         open: true
         required_fields: true
       label: 'Processing Data'
+      region: content
     group_annual_foia_report_dates:
       children:
         - field_rep_start
@@ -166,6 +174,7 @@ third_party_settings:
         open: false
         required_fields: true
       label: 'Annual FOIA Report Start/Expiration Dates'
+      region: content
 id: node.agency_component.default
 targetEntityType: node
 bundle: agency_component

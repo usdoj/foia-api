@@ -1,6 +1,6 @@
 settings:
   default_status: open
-  default_page_base_path: form
+  default_page_base_path: /form
   default_ajax: false
   default_ajax_effect: fade
   default_ajax_speed: 500
@@ -17,6 +17,7 @@ settings:
   default_form_disable_back: false
   default_form_submit_back: false
   default_form_unsaved: false
+  default_form_disable_remote_addr: false
   default_form_novalidate: false
   default_form_disable_inline_errors: false
   default_form_required: false
@@ -84,8 +85,6 @@ settings:
     wide:
       title: Wide
       width: 1000
-  default_submission_login_message: 'Please login to access this submission.'
-  default_wizard_complete_label: Complete
 assets:
   css: ''
   javascript: ''
@@ -115,7 +114,6 @@ export:
   excel: false
   archive_type: tar
   excluded_exporters: {  }
-  file_name: 'submission-[webform_submission:serial]'
 batch:
   default_batch_export_size: 500
   default_batch_import_size: 100
@@ -145,8 +143,6 @@ element:
   excluded_elements:
     password: password
     password_confirm: password_confirm
-  default_icheck: ''
-  default_google_maps_api_key: ''
 html_editor:
   disabled: false
   element_format: ''
@@ -191,8 +187,6 @@ ui:
   support_disabled: false
   description_help: true
   toolbar_item: false
-  about_disabled: false
-  html_editor_disabled: false
 libraries:
   excluded_libraries:
     - jquery.chosen
@@ -206,5 +200,3 @@ langcode: en
 third_party_settings:
   captcha:
     replace_administration_mode: true
-_core:
-  default_config_hash: Ogs5iIs2gNcR9Awk-_1S3xYuJ4ZDtjMvjUQwY-wz3Hs
