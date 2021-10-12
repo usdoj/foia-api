@@ -12,7 +12,9 @@ if (class_exists('Unish\CommandUnishTestCase')) {
    *
    * @package Drupal\Tests\foia_file\Unish
    */
+  // @codingStandardsIgnoreStart
   class FoiaFileCase extends CommandUnishTestCase {
+  // @codingStandardsIgnoreEnd
 
     /**
      * Tests drush commands for the foia_file module.
@@ -29,7 +31,8 @@ if (class_exists('Unish\CommandUnishTestCase')) {
         'root' => $this->webroot(),
         'uri' => key($sites),
       ];
-      $this->drush('pm-enable', ['foia_file'], $options + ['skip' => NULL, 'yes' => NULL]);
+      $this->drush('pm-enable', ['foia_file'], $options +
+        ['skip' => NULL, 'yes' => NULL]);
 
       $this->drush('file-entity-update', ['/var/www/files/test.txt: Eicar-Test-Signature FOUND\n/var/www/files/test.txt: Removed.\n/var/www/files/another.test.txt: OK\n/var/www/files/test.txt.txt: OK'], $options);
 

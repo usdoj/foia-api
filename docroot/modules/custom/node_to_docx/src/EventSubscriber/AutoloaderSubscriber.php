@@ -4,14 +4,13 @@ namespace Drupal\node_to_docx\EventSubscriber;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Phpdocx\AutoLoader;
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Logger\RfcLogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Class AutoloaderSubscriber.
+ * Class AutoloaderSubscriber - register with the Autoloader.
  */
 class AutoloaderSubscriber implements EventSubscriberInterface {
   /**

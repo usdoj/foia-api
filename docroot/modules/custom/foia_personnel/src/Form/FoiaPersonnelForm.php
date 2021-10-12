@@ -16,7 +16,6 @@ class FoiaPersonnelForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    /* @var $entity \Drupal\foia_personnel\Entity\FoiaPersonnel */
     $form = parent::buildForm($form, $form_state);
 
     if (!$this->entity->isNew()) {
@@ -28,6 +27,9 @@ class FoiaPersonnelForm extends ContentEntityForm {
       ];
     }
 
+    /**
+     * @var \Drupal\foia_personnel\Entity\FoiaPersonnel
+     * */
     $entity = $this->entity;
 
     return $form;

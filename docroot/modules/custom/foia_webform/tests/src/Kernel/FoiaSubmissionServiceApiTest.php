@@ -527,7 +527,9 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    * Sets up a webform submission.
    */
   protected function setupWebformSubmission() {
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
+    $webformSubmission = WebformSubmission::create(
+      ['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]
+    );
     $webformSubmission->save();
     $this->webformSubmission = $webformSubmission;
   }

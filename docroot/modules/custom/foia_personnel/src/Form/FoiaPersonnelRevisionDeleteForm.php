@@ -29,7 +29,7 @@ class FoiaPersonnelRevisionDeleteForm extends ConfirmFormBase {
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $FoiaPersonnelStorage;
+  protected $foiaPersonnelStorage;
 
   /**
    * The database connection.
@@ -47,7 +47,7 @@ class FoiaPersonnelRevisionDeleteForm extends ConfirmFormBase {
    *   The database connection.
    */
   public function __construct(EntityStorageInterface $entity_storage, Connection $connection) {
-    $this->FoiaPersonnelStorage = $entity_storage;
+    $this->foiaPersonnelStorage = $entity_storage;
     $this->connection = $connection;
   }
 
@@ -94,7 +94,7 @@ class FoiaPersonnelRevisionDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $foia_personnel_revision = NULL) {
-    $this->revision = $this->FoiaPersonnelStorage->loadRevision($foia_personnel_revision);
+    $this->revision = $this->foiaPersonnelStorage->loadRevision($foia_personnel_revision);
     $form = parent::buildForm($form, $form_state);
 
     return $form;
@@ -104,10 +104,20 @@ class FoiaPersonnelRevisionDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->FoiaPersonnelStorage->deleteRevision($this->revision->getRevisionId());
+    $this->foiaPersonnelStorage->deleteRevision($this->revision->getRevisionId());
 
-    $this->logger('content')->notice('FOIA Personnel: deleted %title revision %revision.', ['%title' => $this->revision->label(), '%revision' => $this->revision->getRevisionId()]);
-    $this->messenger()->addStatus(t('Revision from %revision-date of FOIA Personnel %title has been deleted.', ['%revision-date' => \Drupal::service('date.formatter')->format($this->revision->getRevisionCreationTime()), '%title' => $this->revision->label()]));
+    $this->logger('content')->notice(
+      'FOIA Personnel: deleted %title revision %revision.',
+      [
+        '%title' => $this->revision->label(),
+        '%revision' => $this->revision->getRevisionId(),
+      ]);
+    $this->messenger()->addStatus(t(
+      'Revision from %revision-date of FOIA Personnel %title has been deleted.',
+      [
+        '%revision-date' => \Drupal::service('date.formatter')->format($this->revision->getRevisionCreationTime()),
+        '%title' => $this->revision->label(),
+      ]));
     $form_state->setRedirect(
       'entity.foia_personnel.canonical',
        ['foia_personnel' => $this->revision->id()]
