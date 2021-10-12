@@ -58,6 +58,11 @@ use Drupal\user\UserInterface;
  *     "revision_delete" = "/admin/structure/foia_personnel/{foia_personnel}/revisions/{foia_personnel_revision}/delete",
  *     "collection" = "/admin/structure/foia_personnel",
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_user",
+ *     "revision_created" = "revision_created",
+ *     "revision_log_message" = "revision_log",
+ *   },
  *   field_ui_base_route = "foia_personnel.settings"
  * )
  */

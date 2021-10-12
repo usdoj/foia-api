@@ -5,12 +5,69 @@ dependencies:
   config:
     - field.field.node.page.body
     - field.field.node.page.field_meta_tags
+    - field.field.node.page.layout_selection
     - field.field.node.page.panelizer
     - node.type.page
   module:
+    - layout_builder
+    - layout_discovery
+    - layout_library
     - metatag
     - text
     - user
+third_party_settings:
+  layout_builder:
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+        components:
+          5ee272a0-da50-469f-9c64-c30d92ee8247:
+            uuid: 5ee272a0-da50-469f-9c64-c30d92ee8247
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:page:body'
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          79b96630-1fd5-45e5-866f-489e0fef4e34:
+            uuid: 79b96630-1fd5-45e5-866f-489e0fef4e34
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:page:links'
+            additional: {  }
+            weight: 1
+          f2203199-ee0f-43e6-826f-d66eee1eb2bd:
+            uuid: f2203199-ee0f-43e6-826f-d66eee1eb2bd
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:page:field_meta_tags'
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 2
+        third_party_settings: {  }
+  layout_library:
+    enable: true
 _core:
   default_config_hash: wQOp0Gtvf-nibo11pyMBzr9dcDrKIc6BA96c3lyY_bM
 id: node.page.default
@@ -40,6 +97,9 @@ content:
   workbench_moderation_control:
     weight: -20
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  layout_selection: true
   panelizer: true
   search_api_excerpt: true
