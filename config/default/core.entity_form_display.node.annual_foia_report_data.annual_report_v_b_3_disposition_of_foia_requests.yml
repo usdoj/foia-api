@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -332,16 +331,18 @@ third_party_settings:
         - field_foia_requests_vb3
         - group_agency_overall_v_b_3_wrapp
         - field_footnotes_vb3
-      parent_name: group_tabs
+      parent_name: ''
       weight: 7
-      format_type: tab
+      format_type: details
       format_settings:
+        description: '<h3>V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        open: true
+        required_fields: true
         id: ''
         classes: ''
-        formatter: closed
-        description: '<h3>V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        required_fields: true
+        show_empty_fields: false
       label: 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED'
+      region: content
     group_agency_overall_v_b_3_:
       children:
         - field_overall_vb3_ex_1
@@ -368,6 +369,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall V. B. (3)'
+      region: content
     group_agency_overall_v_b_3_wrapp:
       children:
         - group_agency_overall_v_b_3_
@@ -379,17 +381,7 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: 'Agency Overall V. B. (3) wrapper'
-    group_tabs:
-      children:
-        - group_v_b_3_disposition_of_foia_
-      parent_name: ''
-      weight: 1
-      format_type: tabs
-      format_settings:
-        direction: vertical
-        id: ''
-        classes: js-vertical-tabs--main
-      label: Tabs
+      region: content
 id: node.annual_foia_report_data.annual_report_v_b_3_disposition_of_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -511,6 +503,20 @@ content:
     weight: 34
     region: content
     settings:
+      placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
 hidden:
