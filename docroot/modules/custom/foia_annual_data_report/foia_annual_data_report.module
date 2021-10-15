@@ -25,7 +25,11 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
 
     // Add in the previous and next links if there are any.
     if (!empty($adr_form_info['form_nav'])) {
-      $form['form-section-links'] = [
+      $form['form_section'] = [
+        '#type' => 'value',
+        '#value' => $adr_form_info['form_section'],
+      ];
+      $form['form_section_links'] = [
         '#markup' => $adr_form_info['form_nav'],
       ];
     }
@@ -38,15 +42,28 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
     // @todo This may not be needed, now that the form is split.
 
     // Attach the css to transform the secondary local links to a dropdown.
-    $form['#attached'] = [
-      'library' => ['foia_annual_data_report/foia_annual_data_report_form_display_links'],
-    ];
+    $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
-    // Redirect back to this page.
-    // dump(\Drupal::routeMatch()->getRouteName());
-    // @todo $form_state->setRedirect('entity.node.edit_form.annual_report_v_a_foia_requests');
+    // Add a submit handler to redirect back to this section.
+    $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
 
   }
+
+}
+
+/**
+ * For the Annual Data Report, redirect back to the section that was submitted.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function _foia_annual_data_report_section_redirect(array &$form, FormStateInterface $form_state): void {
+  // This section's part of the route was saved in the form.
+  $route = 'entity.node.edit_form.' . $form['form_section']['#value'];
+  // Redirect back to this page / section of the form.
+  $form_state->setRedirect($route, ['node' => $form_state->getformObject()->getEntity()->id()]);
 }
 
 

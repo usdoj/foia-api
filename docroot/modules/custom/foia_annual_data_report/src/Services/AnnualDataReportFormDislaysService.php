@@ -18,6 +18,7 @@ class AnnualDataReportFormDislaysService {
     // Initialize an array used to return values.
     $info = [
       'is_adr_form' => FALSE,
+      'form_section' => '',
       'form_nav' => '',
     ];
 
@@ -72,12 +73,12 @@ class AnnualDataReportFormDislaysService {
       }
 
       // Divider for both links.
-      if ($mode_pos > 0 && $mode_pos < $iterator->count()) {
+      if ($mode_pos > 0 && $mode_pos < $iterator->count() - 1) {
         $form_nav .= '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;';
       }
 
       // Grab the next link if not at the end.
-      if ($mode_pos < $iterator->count()) {
+      if ($mode_pos < $iterator->count() - 1) {
         $iterator->seek($mode_pos + 1);
         $form_nav .= '<a href="' . $path_part;
         $form_nav .= '/' . $iterator->key() . '">';
@@ -87,6 +88,7 @@ class AnnualDataReportFormDislaysService {
       // Set the return info.
       $info = [
         'is_adr_form' => TRUE,
+        'form_section' => $current_mode,
         'form_nav' => $form_nav,
       ];
 
