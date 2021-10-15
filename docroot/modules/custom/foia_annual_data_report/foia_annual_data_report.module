@@ -15,28 +15,36 @@ use Drupal\Core\Ajax\RedirectCommand;
 /**
  * Implements hook_form_form_alter().
  */
-function foia_annual_data_report_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  //  dump($form_id);
-  if ($form_id === 'node_annual_foia_report_data_annual_report_v_a_foia_requests_form') {
+function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  // Use the Service to check if this is an annual data report form.
+  $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info();
+
+  // This is an Annual Data Report form.
+  if ($adr_form_info['is_adr_form']) {
+
+    // Add in the previous and next links if there are any.
+    if (!empty($adr_form_info['form_nav'])) {
+      $form['form-section-links'] = [
+        '#markup' => $adr_form_info['form_nav'],
+      ];
+    }
 
     // Add the AJAX save callbacks.
     foia_annual_data_report_ajax_existing_node($form);
     foia_annual_data_report_set_default_report_year($form);
 
     // Force a submit function to increase memory limit before core's submit.
-//    foreach (array_keys($form['actions']) as $action) {
-//      if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
-//        array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
-//      }
-//    }
+    // @todo This may not be needed, now that the form is split.
 
-
+    // Attach the css to transform the secondary local links to a dropdown.
     $form['#attached'] = [
       'library' => ['foia_annual_data_report/foia_annual_data_report_form_display_links'],
     ];
 
+    // Redirect back to this page.
     // dump(\Drupal::routeMatch()->getRouteName());
-  //    $form_state->setRedirect('entity.node.edit_form.annual_report_v_a_foia_requests');
+    // @todo $form_state->setRedirect('entity.node.edit_form.annual_report_v_a_foia_requests');
 
   }
 }
