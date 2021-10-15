@@ -13,6 +13,36 @@ use Drupal\Core\Url;
 use Drupal\Core\Ajax\RedirectCommand;
 
 /**
+ * Implements hook_form_form_alter().
+ */
+function foia_annual_data_report_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  //  dump($form_id);
+  if ($form_id === 'node_annual_foia_report_data_annual_report_v_a_foia_requests_form') {
+
+    // Add the AJAX save callbacks.
+    foia_annual_data_report_ajax_existing_node($form);
+    foia_annual_data_report_set_default_report_year($form);
+
+    // Force a submit function to increase memory limit before core's submit.
+//    foreach (array_keys($form['actions']) as $action) {
+//      if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+//        array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
+//      }
+//    }
+
+
+    $form['#attached'] = [
+      'library' => ['foia_annual_data_report/foia_annual_data_report_form_display_links'],
+    ];
+
+    // dump(\Drupal::routeMatch()->getRouteName());
+  //    $form_state->setRedirect('entity.node.edit_form.annual_report_v_a_foia_requests');
+
+  }
+}
+
+
+/**
  * Implements hook_form_form_id_alter().
  */
 function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -28,6 +58,7 @@ function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alt
   }
 
 }
+
 
 /**
  * Implements hook_form_form_id_alter().
@@ -275,4 +306,15 @@ function foia_annual_data_report_debug_log(string $message_base) {
 
     \Drupal::logger('foia_annual_data_report')->debug($msg);
   }
+}
+
+
+function foia_annual_data_report_menu_local_tasks_alter(&$data, $route_name) {
+//  dump($route_name);
+//  dump($data);
+//  $data = [
+//    '#type' => 'markup',
+//    '#markup' => 'heynow',
+//  ];
+//  dump($data);
 }
