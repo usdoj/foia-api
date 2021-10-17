@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -332,27 +331,18 @@ third_party_settings:
         - field_foia_requests_vb2
         - field_overall_vb2_total
         - field_footnotes_vb2
-      parent_name: group_tabs
-      weight: 6
-      format_type: tab
-      format_settings:
-        id: ''
-        classes: ''
-        formatter: closed
-        description: '<h3>V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, at least one description must also be entered. If a description is entered, an associated count must be entered. Counts must be non-negative integers. For each agency/component enter any "Other Reasons for Denials" from Chart V.B.1. Each agency/component may have more than one "Other Reason." To add another reason for a component click "Add FOIA Requests V.B.2. Other Denials Detail." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The calculated column titled ''COMPONENT TOTAL'' must match the number entered in V.B.1., column ''Other'' for the component, and for the agency overall. If a component or the agency does not have other reasons to list, users should enter “N/A” for the Description and “0” for the Number of Times “Other” Reason was Relied Upon.'
-        required_fields: true
-      label: 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"'
-    group_tabs:
-      children:
-        - group_v_b_2_disposition_of_foia_
       parent_name: ''
       weight: 1
-      format_type: tabs
+      format_type: details
       format_settings:
-        direction: vertical
+        description: 'Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, at least one description must also be entered. If a description is entered, an associated count must be entered. Counts must be non-negative integers. For each agency/component enter any "Other Reasons for Denials" from Chart V.B.1. Each agency/component may have more than one "Other Reason." To add another reason for a component click "Add FOIA Requests V.B.2. Other Denials Detail." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The calculated column titled ''COMPONENT TOTAL'' must match the number entered in V.B.1., column ''Other'' for the component, and for the agency overall. If a component or the agency does not have other reasons to list, users should enter “N/A” for the Description and “0” for the Number of Times “Other” Reason was Relied Upon.'
+        open: true
+        required_fields: true
         id: ''
-        classes: js-vertical-tabs--main
-      label: Tabs
+        classes: ''
+        show_empty_fields: false
+      label: 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"'
+      region: content
 id: node.annual_foia_report_data.annual_report_v_b_2_disposition_of_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -383,6 +373,20 @@ content:
     weight: 22
     region: content
     settings:
+      placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 2
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
 hidden:

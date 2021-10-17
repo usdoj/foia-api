@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -332,28 +331,18 @@ third_party_settings:
         - field_foia_requests_vb1
         - group_agency_overall_v_b_1_
         - field_footnotes_vb1
-      parent_name: group_tabs
-      weight: 5
-      format_type: tab
+      parent_name: ''
+      weight: 1
+      format_type: details
       format_settings:
-        label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
-        formatter: closed
-        description: '<h3>V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The sum of all columns (calculated column titled ''TOTAL'') must match the number entered in V.A., column ''Number of Requests Processed in Fiscal Year'' for the component, and for the agency overall.'
+        description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The sum of all columns (calculated column titled ''TOTAL'') must match the number entered in V.A., column ''Number of Requests Processed in Fiscal Year'' for the component, and for the agency overall.'
+        open: true
         required_fields: true
         id: ''
         classes: ''
+        show_empty_fields: false
       label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
-    group_tabs:
-      children:
-        - group_overall_vb1_main
-      parent_name: ''
-      weight: 1
-      format_type: tabs
-      format_settings:
-        direction: vertical
-        id: ''
-        classes: js-vertical-tabs--main
-      label: Tabs
+      region: content
     group_agency_overall_v_b_1_:
       children:
         - group_agency_overall_main
@@ -366,6 +355,7 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: 'Agency Overall V. B. (1).'
+      region: content
     group_agency_overall_main:
       children:
         - field_overall_vb1_full_grants
@@ -376,13 +366,13 @@ third_party_settings:
       weight: 21
       format_type: tab
       format_settings:
-        label: 'Agency Overall'
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
       label: 'Agency Overall'
+      region: content
     group_agency_overall_number_of_f:
       children:
         - field_overall_vb1_no_rec
@@ -404,6 +394,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall Number of Full Denials Based on Reasons Other than Exemptions'
+      region: content
 id: node.annual_foia_report_data.annual_report_v_b_1_disposition_of_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -520,6 +511,20 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 2
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
 hidden:
   created: true
   field_admin_app_via: true
@@ -588,7 +593,6 @@ hidden:
   field_overall_req_pend_start_yr: true
   field_overall_req_processed_yr: true
   field_overall_req_received_yr: true
-  field_overall_vb1_total: true
   field_overall_vb2_total: true
   field_overall_vb3_ex_1: true
   field_overall_vb3_ex_2: true

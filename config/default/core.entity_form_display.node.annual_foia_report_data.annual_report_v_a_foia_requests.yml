@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -332,27 +331,18 @@ third_party_settings:
         - field_foia_requests_va
         - group_agency_overall_v_a_wrapper
         - field_footnotes_va
-      parent_name: group_tabs
-      weight: 4
-      format_type: tab
-      format_settings:
-        id: ''
-        classes: ''
-        formatter: closed
-        description: '<h3>V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Requests Pending as of End of Fiscal Year" field(s) will be autocalculated as you enter data in this section.'
-        required_fields: true
-      label: 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS '
-    group_tabs:
-      children:
-        - group_v_a_foia_requests_received
       parent_name: ''
       weight: 1
-      format_type: tabs
+      format_type: details
       format_settings:
-        direction: vertical
+        description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Requests Pending as of End of Fiscal Year" field(s) will be autocalculated as you enter data in this section.'
+        open: true
+        required_fields: true
         id: ''
-        classes: js-vertical-tabs--main
-      label: Tabs
+        classes: ''
+        show_empty_fields: false
+      label: 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS '
+      region: content
     group_agency_overall_v_a_wrapper:
       children:
         - group_agency_overall_v_a_
@@ -364,6 +354,25 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: 'Agency Overall V. A. Wrapper'
+      region: content
+    group_agency_overall_v_a_:
+      children:
+        - field_overall_req_pend_start_yr
+        - field_overall_req_received_yr
+        - field_overall_req_processed_yr
+        - field_overall_req_pend_end_yr
+      parent_name: group_agency_overall_v_a_wrapper
+      weight: 20
+      format_type: tab
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        description: ''
+        formatter: closed
+        required_fields: true
+      label: 'Agency Overall V. A.'
 id: node.annual_foia_report_data.annual_report_v_a_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -387,6 +396,48 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_pend_end_yr:
+    type: number
+    weight: 24
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_pend_start_yr:
+    type: number
+    weight: 21
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_processed_yr:
+    type: number
+    weight: 23
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_received_yr:
+    type: number
+    weight: 22
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 2
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
 hidden:
@@ -453,10 +504,6 @@ hidden:
   field_overall_ix_proc_costs: true
   field_overall_ix_total_costs: true
   field_overall_ix_total_staff: true
-  field_overall_req_pend_end_yr: true
-  field_overall_req_pend_start_yr: true
-  field_overall_req_processed_yr: true
-  field_overall_req_received_yr: true
   field_overall_vb1_dup_request: true
   field_overall_vb1_fee_related_re: true
   field_overall_vb1_full_denials_e: true
