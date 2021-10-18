@@ -13,6 +13,61 @@ use Drupal\Core\Url;
 use Drupal\Core\Ajax\RedirectCommand;
 
 /**
+ * Implements hook_form_form_alter().
+ */
+function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  // Use the Service to check if this is an annual data report form.
+  $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info();
+
+  // This is an Annual Data Report form.
+  if ($adr_form_info['is_adr_form']) {
+
+    // Add in the previous and next links if there are any.
+    if (!empty($adr_form_info['form_nav'])) {
+      $form['form_section'] = [
+        '#type' => 'value',
+        '#value' => $adr_form_info['form_section'],
+      ];
+      $form['form_section_links'] = [
+        '#markup' => $adr_form_info['form_nav'],
+      ];
+    }
+
+    // Add the AJAX save callbacks.
+    foia_annual_data_report_ajax_existing_node($form);
+    foia_annual_data_report_set_default_report_year($form);
+
+    // Force a submit function to increase memory limit before core's submit.
+    // @todo This may not be needed, now that the form is split.
+
+    // Attach the css to transform the secondary local links to a dropdown.
+    $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
+
+    // Add a submit handler to redirect back to this section.
+    $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
+
+  }
+
+}
+
+/**
+ * For the Annual Data Report, redirect back to the section that was submitted.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function _foia_annual_data_report_section_redirect(array &$form, FormStateInterface $form_state): void {
+  // This section's part of the route was saved in the form.
+  $route = 'entity.node.edit_form.' . $form['form_section']['#value'];
+  // Redirect back to this page / section of the form.
+  $form_state->setRedirect($route, ['node' => $form_state->getformObject()->getEntity()->id()]);
+}
+
+
+/**
  * Implements hook_form_form_id_alter().
  */
 function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -28,6 +83,7 @@ function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alt
   }
 
 }
+
 
 /**
  * Implements hook_form_form_id_alter().
@@ -275,4 +331,15 @@ function foia_annual_data_report_debug_log(string $message_base) {
 
     \Drupal::logger('foia_annual_data_report')->debug($msg);
   }
+}
+
+
+function foia_annual_data_report_menu_local_tasks_alter(&$data, $route_name) {
+//  dump($route_name);
+//  dump($data);
+//  $data = [
+//    '#type' => 'markup',
+//    '#markup' => 'heynow',
+//  ];
+//  dump($data);
 }

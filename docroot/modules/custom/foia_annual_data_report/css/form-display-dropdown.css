@@ -1,0 +1,70 @@
+#block-seven-secondary-local-tasks ul.secondary {
+  border-top: 10px solid #fff;
+}
+#block-seven-secondary-local-tasks ul.secondary {
+  height: 2.5rem;
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem;
+}
+#block-seven-secondary-local-tasks ul.secondary li {
+  visibility: hidden;
+  position: relative;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  background-color: #e0e0d8;
+  border-right: 1px solid #e0e0d8;
+  border-left: 1px solid #e0e0d8;
+  box-shadow: 0px 0px 20px -3px #e0e0d8;
+  transition: 80ms;
+}
+#block-seven-secondary-local-tasks ul.secondary li a {
+  display: block;
+  width: 100%;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  padding: 0rem 1rem;
+  color: #000;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: font-size 200ms, background-color 200ms;
+}
+#block-seven-secondary-local-tasks ul.secondary li a:active {
+  font-size: 0.8em;
+  background-color: #DDDDDD;
+}
+#block-seven-secondary-local-tasks ul.secondary li.is-active {
+  visibility: visible;
+  border-top: 1px solid #e0e0d8;
+  border-radius: 0.3rem;
+  transition: background-color 200ms;
+  position: absolute;
+  top: 10px;
+}
+#block-seven-secondary-local-tasks ul.secondary li:last-of-type {
+  border-bottom: 1px solid #e0e0d8;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+#block-seven-secondary-local-tasks ul.secondary:hover li {
+  visibility: visible;
+}
+#block-seven-secondary-local-tasks ul.secondary:hover li.is-active {
+  position: relative;
+  top: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #fff;
+  color: #0074bd;
+  font-weight: 600;
+}
+#block-seven-secondary-local-tasks ul.secondary li:hover {
+  background-color: white !important;
+  z-index: 15;
+}
+#block-seven-secondary-local-tasks ul.secondary li:hover a {
+  color: #0074bd;
+}
