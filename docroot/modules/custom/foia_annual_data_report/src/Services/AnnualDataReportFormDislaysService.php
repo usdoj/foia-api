@@ -49,7 +49,7 @@ class AnnualDataReportFormDislaysService {
     $current_path_ar = explode('/', $current_path);
     $current_mode = array_pop($current_path_ar);
 
-    // Create an array of form ids that would indicate this is a adr form.
+    // Create an array of form ids that would indicate this is an adr form.
     $adr_form_ids = [
       'node_annual_foia_report_data_' . $current_mode . '_form',
     ];
