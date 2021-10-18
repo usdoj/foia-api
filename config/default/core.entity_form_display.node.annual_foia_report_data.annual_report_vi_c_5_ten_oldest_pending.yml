@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -343,11 +342,11 @@ third_party_settings:
       weight: 30
       format_type: tabs
       format_settings:
-        label: 'Agency Overall VI.C.(5).'
         direction: vertical
         id: ''
         classes: ''
       label: 'Agency Overall VI.C.(5).'
+      region: content
     group_vi_c_5_10th:
       children:
         - field_overall_vic5_date_10
@@ -362,6 +361,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 10th'
+      region: content
     group_vi_c_5_9th:
       children:
         - field_overall_vic5_date_9
@@ -376,6 +376,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 9th'
+      region: content
     group_vi_c_5_8th:
       children:
         - field_overall_vic5_date_8
@@ -390,6 +391,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 8th'
+      region: content
     group_vi_c_5_7th:
       children:
         - field_overall_vic5_date_7
@@ -398,13 +400,13 @@ third_party_settings:
       weight: 17
       format_type: tab
       format_settings:
-        label: 'Agency Overall 7th'
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
       label: 'Agency Overall 7th'
+      region: content
     group_vi_c_5_6th:
       children:
         - field_overall_vic5_date_6
@@ -413,13 +415,13 @@ third_party_settings:
       weight: 16
       format_type: tab
       format_settings:
-        label: 'Agency Overall 6th'
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
       label: 'Agency Overall 6th'
+      region: content
     group_vi_c_5_5th:
       children:
         - field_overall_vic5_date_5
@@ -428,13 +430,13 @@ third_party_settings:
       weight: 15
       format_type: tab
       format_settings:
-        label: 'Agency Overall 5th'
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
       label: 'Agency Overall 5th'
+      region: content
     group_vi_c_5_4th:
       children:
         - field_overall_vic5_date_4
@@ -443,13 +445,13 @@ third_party_settings:
       weight: 14
       format_type: tab
       format_settings:
-        label: 'Agency Overall 4th'
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
       label: 'Agency Overall 4th'
+      region: content
     group_vi_c_5_3rd:
       children:
         - field_overall_vic5_date_3
@@ -458,13 +460,13 @@ third_party_settings:
       weight: 13
       format_type: tab
       format_settings:
-        label: 'Agency Overall 3rd'
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
       label: 'Agency Overall 3rd'
+      region: content
     group_vi_c_5_2nd:
       children:
         - field_overall_vic5_date_2
@@ -473,13 +475,13 @@ third_party_settings:
       weight: 12
       format_type: tab
       format_settings:
-        label: 'Agency Overall 2nd'
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
       label: 'Agency Overall 2nd'
+      region: content
     group_vi_c_5_oldest_appeal:
       children:
         - field_overall_vic5_date_1
@@ -488,13 +490,13 @@ third_party_settings:
       weight: 11
       format_type: tab
       format_settings:
-        label: 'Agency Overall Oldest Appeal'
         formatter: closed
         description: ''
         required_fields: true
         id: ''
         classes: ''
       label: 'Agency Overall Oldest Appeal'
+      region: content
     group_vi_c_5_ten_oldest:
       children:
         - field_admin_app_vic5
@@ -504,13 +506,14 @@ third_party_settings:
       weight: 14
       format_type: details
       format_settings:
-        label: 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
         description: 'Only those components that process administrative appeals should be entered in this section. If a component or the agency overall does not have ten or more appeals pending as of the end of the fiscal year, complete the excess cells by listing "N/A" for the "Date of Appeal" and "0" for the "Number of Days Pending." If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days Pending" values must be non-negative integers. Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.\r\n\r\nIn the date field enter the date the appeal was received.'
         open: true
         required_fields: true
         id: ''
         classes: ''
+        show_empty_fields: false
       label: 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
+      region: content
 id: node.annual_foia_report_data.annual_report_vi_c_5_ten_oldest_pending
 targetEntityType: node
 bundle: annual_foia_report_data
