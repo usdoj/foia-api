@@ -18,7 +18,7 @@ use Drupal\Core\Ajax\RedirectCommand;
 function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
   // Use the Service to check if this is an annual data report form.
-  $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info();
+  $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info($form_id);
 
   // This is an Annual Data Report form.
   if ($adr_form_info['is_adr_form']) {

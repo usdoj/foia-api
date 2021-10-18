@@ -13,7 +13,7 @@ class AnnualDataReportFormDislaysService {
    * @return array
    *   Info about the form display.
    */
-  public function info(): array {
+  public function info($form_id): array {
 
     // Initialize an array used to return values.
     $info = [
@@ -49,8 +49,13 @@ class AnnualDataReportFormDislaysService {
     $current_path_ar = explode('/', $current_path);
     $current_mode = array_pop($current_path_ar);
 
+    // Create an array of form ids that would indicate this is a adr form.
+    $adr_form_ids = [
+      'node_annual_foia_report_data_' . $current_mode . '_form',
+    ];
+
     // If this path is in the list of modes then modify for annual report.
-    if (array_key_exists($current_mode, $modes)) {
+    if (in_array($form_id, $adr_form_ids)) {
 
       // Use this to help get the prev/next links.
       $iterator = new \ArrayIterator($modes);
