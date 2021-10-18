@@ -11,17 +11,15 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
 /**
- * Implements hook_form_form_id_alter().
+ * Implements hook_form_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
  */
-function foia_readonly_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  foia_readonly_disable_node_field($form, $form_state, $form_id);
-}
-
-/**
- * Implements hook_form_form_id_alter().
- */
-function foia_readonly_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  foia_readonly_disable_node_field($form, $form_state, $form_id);
+function foia_readonly_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ( strpos( $form_id, 'node_annual_foia_report_data_' ) !== false ) {
+    foia_readonly_disable_node_field($form, $form_state, $form_id);
+  }
 }
 
 /**
