@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -342,6 +341,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall -- Complex'
+      region: content
     group_vii_d_pending_requests_all:
       children:
         - group_vii_d_pending_requests_sim
@@ -355,6 +355,7 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
+      region: content
     group_vii_d_pending_requests_exp:
       children:
         - field_overall_viid_exp_pend
@@ -370,6 +371,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall -- Expedited Processing'
+      region: content
     group_vii_d_pending_requests_sim:
       children:
         - field_overall_viid_sim_pend
@@ -385,6 +387,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall -- Simple'
+      region: content
     group_vii_d_pending_req_wrap:
       children:
         - field_pending_requests_vii_d_
@@ -394,13 +397,13 @@ third_party_settings:
       weight: 20
       format_type: details
       format_settings:
-        label: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
         open: true
         description: 'Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Pending" fields must contain non-negative integer, or the special value "N/A". "Median" and "Average" fields must contain non-negative decimal numbers, or the special value "N/A". If there are no pending requests for a track, enter “0” for number pending and “N/A” for Median and Average Number of Days. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
         required_fields: true
         id: ''
         classes: ''
       label: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
+      region: content
 id: node.annual_foia_report_data.annual_report_vii_d_pending_requests_all
 targetEntityType: node
 bundle: annual_foia_report_data

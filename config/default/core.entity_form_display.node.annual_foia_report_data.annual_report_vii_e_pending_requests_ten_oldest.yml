@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -347,6 +346,7 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS '
+      region: content
     group_vii_e_pending_requests_10t:
       children:
         - field_overall_viie_date_10
@@ -361,6 +361,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 10th'
+      region: content
     group_vii_e_pending_requests_9th:
       children:
         - field_overall_viie_date_9
@@ -375,6 +376,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 9th'
+      region: content
     group_vii_e_pending_requests_8th:
       children:
         - field_overall_viie_date_8
@@ -389,6 +391,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 8th'
+      region: content
     group_vii_e_pending_requests_7th:
       children:
         - field_overall_viie_date_7
@@ -403,6 +406,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 7th'
+      region: content
     group_vii_e_pending_requests_6th:
       children:
         - field_overall_viie_date_6
@@ -417,6 +421,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 6th'
+      region: content
     group_vii_e_pending_requests_5th:
       children:
         - field_overall_viie_date_5
@@ -431,6 +436,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 5th'
+      region: content
     group_vii_e_pending_requests_4th:
       children:
         - field_overall_viie_date_4
@@ -445,6 +451,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 4th'
+      region: content
     group_vii_e_pending_requests_3rd:
       children:
         - field_overall_viie_date_3
@@ -459,6 +466,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 3rd'
+      region: content
     group_vii_e_pending_requests_2nd:
       children:
         - field_overall_viie_date_2
@@ -473,6 +481,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall 2nd'
+      region: content
     group_vii_e_pending_requests_old:
       children:
         - field_overall_viie_date_1
@@ -487,6 +496,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall Oldest Request'
+      region: content
     group_vii_e_pending_req_wrap:
       children:
         - field_admin_app_viie
@@ -496,13 +506,13 @@ third_party_settings:
       weight: 21
       format_type: details
       format_settings:
-        label: 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS'
         open: true
         description: 'Every component that  processes requests should be listed, even if they do not have data to report in this section. If there are no pending perfected requests for a component, enter “N/A” for Date of Receipt and “0” for Days Pending. If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days Pending" values must be non-negative integers.Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
         required_fields: true
         id: ''
         classes: ''
       label: 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS'
+      region: content
 id: node.annual_foia_report_data.annual_report_vii_e_pending_requests_ten_oldest
 targetEntityType: node
 bundle: annual_foia_report_data

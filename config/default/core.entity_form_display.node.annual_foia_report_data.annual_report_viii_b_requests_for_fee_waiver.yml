@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -339,13 +338,13 @@ third_party_settings:
       weight: 23
       format_type: details
       format_settings:
-        label: 'VIII.B. Requests for Fee Waiver'
         open: true
         description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A." Enter “0” for number granted and denied and “N/A” for Median and Average Number of Days if the component did not adjudicate any requests for fee waiver during the fiscal year. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
         required_fields: true
         id: ''
         classes: ''
       label: 'VIII.B. Requests for Fee Waiver'
+      region: content
 id: node.annual_foia_report_data.annual_report_viii_b_requests_for_fee_waiver
 targetEntityType: node
 bundle: annual_foia_report_data

@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -336,11 +335,11 @@ third_party_settings:
       weight: 23
       format_type: tabs
       format_settings:
-        label: 'Agency Overall VII.A'
         direction: vertical
         id: ''
         classes: ''
       label: 'Agency Overall VII.A'
+      region: content
     group_vii_a_foia_requests_simple:
       children:
         - field_overall_viia_sim_med
@@ -357,6 +356,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall -- Simple'
+      region: content
     group_vii_a_foia_requests_comple:
       children:
         - field_overall_viia_comp_med
@@ -373,6 +373,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall -- Complex'
+      region: content
     group_vii_a_foia_requests_expedi:
       children:
         - field_overall_viia_exp_med
@@ -389,6 +390,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall -- Expedited Processing'
+      region: content
     group_vii_a_foia_requests_wrap:
       children:
         - field_proc_req_viia
@@ -398,13 +400,13 @@ third_party_settings:
       weight: 15
       format_type: details
       format_settings:
-        label: 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
         open: true
         description: "<p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
         required_fields: true
         id: ''
         classes: ''
       label: 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
+      region: content
 id: node.annual_foia_report_data.annual_report_vii_a_foia_requests_response_time
 targetEntityType: node
 bundle: annual_foia_report_data

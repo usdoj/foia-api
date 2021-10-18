@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -349,13 +348,13 @@ third_party_settings:
       weight: 17
       format_type: details
       format_settings:
-        label: 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
         open: true
         description: "<p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
         required_fields: true
         id: ''
         classes: ''
       label: 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
+      region: content
 id: node.annual_foia_report_data.annual_report_vii_c_1_processed_simple_requests_response_time
 targetEntityType: node
 bundle: annual_foia_report_data

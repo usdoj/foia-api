@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -340,13 +339,13 @@ third_party_settings:
       weight: 22
       format_type: details
       format_settings:
-        label: 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING'
         open: true
         description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A". Enter “N/A” for Median and Average if the component did not adjudicate any requests for expedited processing during the fiscal year. "Number Adjudicated within Ten Calendar Days" column must contain non-negative integers, or the special value "N/A". To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
         required_fields: true
         id: ''
         classes: ''
       label: 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING'
+      region: content
 id: node.annual_foia_report_data.annual_report_viii_a_requests_for_expedited_processing
 targetEntityType: node
 bundle: annual_foia_report_data
