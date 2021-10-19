@@ -47,8 +47,11 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       // Attach the css to transform the secondary local links to a dropdown.
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
-      // Add a submit handler to redirect back to this section.
-      $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
+      // Don't try to alter redirect on default form display.
+      if ($adr_form_info['form_section'] != 'edit') {
+        // Add a submit handler to redirect back to this section.
+        $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
+      }
 
     }
 
