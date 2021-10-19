@@ -377,6 +377,8 @@ third_party_settings:
     group_hidden:
       children:
         - field_agency_components
+        - field_foia_requests_vb1
+        - field_overall_vb1_total
       parent_name: ''
       weight: 10
       format_type: html_element
@@ -417,6 +419,18 @@ content:
       form_display_mode: default
       default_paragraph_type: foia_req_va
     third_party_settings: {  }
+  field_foia_requests_vb1:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
   field_footnotes_va:
     type: string_textarea
     weight: 160
@@ -427,7 +441,7 @@ content:
     third_party_settings: {  }
   field_overall_req_pend_end_yr:
     type: number
-    weight: 24
+    weight: 25
     region: content
     settings:
       placeholder: ''
@@ -441,14 +455,21 @@ content:
     third_party_settings: {  }
   field_overall_req_processed_yr:
     type: number
-    weight: 23
+    weight: 24
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_req_received_yr:
     type: number
-    weight: 22
+    weight: 23
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb1_total:
+    type: number
+    weight: 3
     region: content
     settings:
       placeholder: ''
@@ -483,7 +504,6 @@ hidden:
   field_fees_x: true
   field_foia_annual_report_yr: true
   field_foia_pers_costs_ix: true
-  field_foia_requests_vb1: true
   field_foia_requests_vb2: true
   field_foia_requests_vb3: true
   field_foia_xiia: true
@@ -542,7 +562,6 @@ hidden:
   field_overall_vb1_rec_not_desc: true
   field_overall_vb1_rec_ref_to_an_: true
   field_overall_vb1_req_withdrawn: true
-  field_overall_vb1_total: true
   field_overall_vb2_total: true
   field_overall_vb3_ex_1: true
   field_overall_vb3_ex_2: true
