@@ -29,14 +29,6 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
     // This is an Annual Data Report form.
     if ($adr_form_info['is_adr_form']) {
 
-      // Hide the agency "Components" on all pages but agency info.
-      if (
-        $adr_form_info['form_section'] != 'annual_report_agency_info'
-        && !empty($form['field_agency_components'])
-      ) {
-        $form['field_agency_components']['#attributes']['style'] = 'display: none;';
-      }
-
       // Add in the previous and next links if there are any.
       if (!empty($adr_form_info['form_nav'])) {
         $form['form_section'] = [
@@ -52,20 +44,21 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       foia_annual_data_report_ajax_existing_node($form);
       foia_annual_data_report_set_default_report_year($form);
 
-      // Force a submit function to increase memory limit before core's submit.
-// @todo This may not be needed, now that the form is split.
-//      foreach (array_keys($form['actions']) as $action) {
-//        if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
-//          array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
-//        }
-//      }
-
       // Attach the css to transform the secondary local links to a dropdown.
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
       // Add a submit handler to redirect back to this section.
       $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
 
+    }
+
+    // Force a submit function to increase memory limit before core's submit.
+    if ($form_id === 'node_annual_foia_report_data_edit_form') {
+      foreach (array_keys($form['actions']) as $action) {
+        if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+          array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
+        }
+      }
     }
 
   }
