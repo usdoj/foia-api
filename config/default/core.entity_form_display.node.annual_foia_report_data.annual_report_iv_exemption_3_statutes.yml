@@ -324,6 +324,23 @@ dependencies:
     - content_moderation
     - field_group
     - paragraphs
+third_party_settings:
+  field_group:
+    group_iv_exemption_3_statutes:
+      children:
+        - field_statute_iv
+        - field_footnotes_iv
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: true
+        description: 'List all Exemption 3 statutes relied upon to withhold information and the number of times each was relied upon. Enter a single statute in the "Statute" field. Enter data for each component that cited the statute. Multiple components may cite the same statute. Enter the "Information Withheld" and "Case Citation" associated with the statute. If no "Case Citation" is available, enter "N/A." Click "Add Statute" to enter additional statutes. To add a component click the "Add Statute Agency Details" button above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data for this section. Data must be entered for each component added.'
+        required_fields: true
+      label: 'IV. Exemption 3 Statutes'
+      region: content
 id: node.annual_foia_report_data.annual_report_iv_exemption_3_statutes
 targetEntityType: node
 bundle: annual_foia_report_data

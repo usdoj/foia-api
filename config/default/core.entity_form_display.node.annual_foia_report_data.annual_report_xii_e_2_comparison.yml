@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -333,27 +332,18 @@ third_party_settings:
         - field_overall_xiie2_back_prev_yr
         - field_overall_xiie2_back_cur_yr
         - field_footnotes_xiie2
-      parent_name: group_tabs
-      weight: 34
-      format_type: tab
-      format_settings:
-        id: ''
-        classes: ''
-        formatter: closed
-        description: '<h3>XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        required_fields: true
-      label: 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
-    group_tabs:
-      children:
-        - group_xii_e_2_comparison_of_numb
       parent_name: ''
       weight: 1
-      format_type: tabs
+      format_type: details
       format_settings:
-        direction: vertical
+        description: '<h3>XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        open: true
+        required_fields: true
         id: ''
-        classes: js-vertical-tabs--main
-      label: Tabs
+        classes: ''
+        show_empty_fields: false
+      label: 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
+      region: content
 id: node.annual_foia_report_data.annual_report_xii_e_2_comparison
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -395,13 +385,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 2
     settings: {  }
     region: content
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60

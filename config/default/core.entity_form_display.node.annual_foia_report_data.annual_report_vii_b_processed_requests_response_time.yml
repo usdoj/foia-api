@@ -322,7 +322,6 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -340,6 +339,7 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED'
+      region: content
     group_vii_b_processed_requests_s:
       children:
         - field_overall_viib_sim_med
@@ -356,6 +356,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall Simple'
+      region: content
     group_vii_b_processed_requests_c:
       children:
         - field_overall_viib_comp_med
@@ -372,6 +373,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall -- Complex'
+      region: content
     group_vii_b_processed_requests_e:
       children:
         - field_overall_viib_exp_med
@@ -388,6 +390,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Agency Overall -- Expedited Processing'
+      region: content
     group_vii_b_processed_req_wrap:
       children:
         - field_proc_req_viib
@@ -397,13 +400,13 @@ third_party_settings:
       weight: 16
       format_type: details
       format_settings:
-        label: 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED'
         open: true
         description: "<p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
         required_fields: true
         id: ''
         classes: ''
       label: 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED'
+      region: content
 id: node.annual_foia_report_data.annual_report_vii_b_processed_requests_response_time
 targetEntityType: node
 bundle: annual_foia_report_data
