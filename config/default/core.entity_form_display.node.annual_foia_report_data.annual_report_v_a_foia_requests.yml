@@ -374,6 +374,26 @@ third_party_settings:
         formatter: closed
         required_fields: true
       label: 'Agency Overall V. A.'
+    group_hidden:
+      children:
+        - field_agency_components
+      parent_name: ''
+      weight: 10
+      format_type: html_element
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        required_fields: true
+        attributes: 'style="display:none;"'
+        effect: none
+        speed: fast
+      label: HIDDEN
 id: node.annual_foia_report_data.annual_report_v_a_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -381,7 +401,7 @@ mode: annual_report_v_a_foia_requests
 content:
   field_agency_components:
     type: erviews_options_buttons
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
