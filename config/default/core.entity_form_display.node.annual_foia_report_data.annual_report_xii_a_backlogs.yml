@@ -334,7 +334,7 @@ third_party_settings:
         - field_overall_xiia_back_app_end_
         - field_footnotes_xiia
       parent_name: ''
-      weight: 28
+      weight: 1
       format_type: details
       format_settings:
         description: 'If the component field is filled in, all other editable columns must be filled in. "Number of Backlogged Requests" column must contain non-negative integers. "Number of Backlogged Appeals" column must contain non-negative integers, or the special value "N/A". Users should enter "N/A" for any components of their agency that do not process appeals. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
@@ -347,9 +347,15 @@ third_party_settings:
       region: content
     group_hidden:
       children:
+        - field_admin_app_via
         - field_agency_components
+        - field_pending_requests_vii_d_
+        - field_overall_viid_comp_pend
+        - field_overall_viid_exp_pend
+        - field_overall_viid_sim_pend
+        - field_overall_via_app_pend_endyr
       parent_name: ''
-      weight: 10
+      weight: 2
       format_type: html_element
       region: content
       format_settings:
@@ -370,6 +376,18 @@ targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_xii_a_backlogs
 content:
+  field_admin_app_via:
+    type: entity_reference_paragraphs
+    weight: 7
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
   field_agency_components:
     type: erviews_options_buttons
     weight: 1
@@ -396,6 +414,37 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
+  field_overall_via_app_pend_endyr:
+    type: number
+    weight: 6
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_viid_comp_pend:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_viid_exp_pend:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_viid_sim_pend:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_overall_xiia_back_app_end_:
     weight: 40
     settings:
@@ -411,15 +460,27 @@ content:
     third_party_settings: {  }
     type: number
     region: content
+  field_pending_requests_vii_d_:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 3
     settings: {  }
     region: content
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -427,7 +488,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  field_admin_app_via: true
   field_admin_app_vib: true
   field_admin_app_vic1: true
   field_admin_app_vic2: true
@@ -520,7 +580,6 @@ hidden:
   field_overall_vb3_ex_7_f: true
   field_overall_vb3_ex_8: true
   field_overall_vb3_ex_9: true
-  field_overall_via_app_pend_endyr: true
   field_overall_via_app_pend_start: true
   field_overall_via_app_proc_yr: true
   field_overall_via_app_recd_yr: true
@@ -647,13 +706,10 @@ hidden:
   field_overall_viic3_total: true
   field_overall_viid_comp_avg: true
   field_overall_viid_comp_med: true
-  field_overall_viid_comp_pend: true
   field_overall_viid_exp_avg: true
   field_overall_viid_exp_med: true
-  field_overall_viid_exp_pend: true
   field_overall_viid_sim_avg: true
   field_overall_viid_sim_med: true
-  field_overall_viid_sim_pend: true
   field_overall_viie_date_1: true
   field_overall_viie_date_10: true
   field_overall_viie_date_2: true
@@ -724,7 +780,6 @@ hidden:
   field_overall_xiie1_received_las: true
   field_overall_xiie2_back_cur_yr: true
   field_overall_xiie2_back_prev_yr: true
-  field_pending_requests_vii_d_: true
   field_proc_req_viia: true
   field_proc_req_viib: true
   field_proc_req_viic1: true

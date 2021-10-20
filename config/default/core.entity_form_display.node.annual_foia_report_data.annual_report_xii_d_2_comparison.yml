@@ -334,7 +334,7 @@ third_party_settings:
         - field_overall_xiid2_back_cur_yr
         - field_footnotes_xiid2
       parent_name: ''
-      weight: 32
+      weight: 1
       format_type: details
       format_settings:
         description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
@@ -347,6 +347,8 @@ third_party_settings:
       region: content
     group_hidden:
       children:
+        - field_foia_xiia
+        - field_overall_xiia_back_req_end_
         - field_agency_components
       parent_name: ''
       weight: 10
@@ -376,6 +378,18 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_foia_xiia:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
   field_foia_xiid2:
     type: entity_reference_paragraphs
     weight: 37
@@ -394,6 +408,13 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_xiia_back_req_end_:
+    type: number
+    weight: 3
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xiid2_back_cur_yr:
@@ -444,7 +465,6 @@ hidden:
   field_foia_requests_vb1: true
   field_foia_requests_vb2: true
   field_foia_requests_vb3: true
-  field_foia_xiia: true
   field_foia_xiib: true
   field_foia_xiic: true
   field_foia_xiid1: true
@@ -688,7 +708,6 @@ hidden:
   field_overall_xib_rec_post_foia: true
   field_overall_xib_rec_post_prog: true
   field_overall_xiia_back_app_end_: true
-  field_overall_xiia_back_req_end_: true
   field_overall_xiib_con_during_yr: true
   field_overall_xiib_pend_end_yr: true
   field_overall_xiib_pend_start_yr: true

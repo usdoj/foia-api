@@ -384,12 +384,6 @@ targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_vi_c_1_reasons_for_denial_on_appeal
 content:
-  field_agency_components:
-    type: erviews_options_buttons
-    weight: 1
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_admin_app_vic1:
     type: entity_reference_paragraphs
     weight: 1
@@ -401,6 +395,12 @@ content:
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: ''
+    third_party_settings: {  }
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_footnotes_vic1:
     type: string_textarea

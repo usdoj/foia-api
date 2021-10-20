@@ -336,7 +336,7 @@ third_party_settings:
         - field_overall_vic4_high_num_days
         - field_footnotes_vic4
       parent_name: ''
-      weight: 13
+      weight: 1
       format_type: details
       format_settings:
         description: 'Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative numeric values, or the special values "<1" or "N/A." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
@@ -372,12 +372,6 @@ targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_vi_c_4_response_time
 content:
-  field_agency_components:
-    type: erviews_options_buttons
-    weight: 1
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_admin_app_vic4:
     type: entity_reference_paragraphs
     weight: 23
@@ -390,6 +384,12 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
     region: content
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_footnotes_vic4:
     type: string_textarea
     weight: 28

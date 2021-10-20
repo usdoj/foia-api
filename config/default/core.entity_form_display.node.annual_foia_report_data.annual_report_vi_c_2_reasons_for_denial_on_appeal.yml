@@ -356,6 +356,7 @@ third_party_settings:
       region: content
     group_hidden:
       children:
+        - field_admin_app_vic3
         - field_agency_components
       parent_name: ''
       weight: 10
@@ -379,12 +380,6 @@ targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_vi_c_2_reasons_for_denial_on_appeal
 content:
-  field_agency_components:
-    type: erviews_options_buttons
-    weight: 1
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_admin_app_vic2:
     type: entity_reference_paragraphs
     weight: 15
@@ -396,6 +391,24 @@ content:
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: ''
+    third_party_settings: {  }
+  field_admin_app_vic3:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_footnotes_vic2:
     type: string_textarea
@@ -501,7 +514,6 @@ hidden:
   field_admin_app_via: true
   field_admin_app_vib: true
   field_admin_app_vic1: true
-  field_admin_app_vic3: true
   field_admin_app_vic4: true
   field_admin_app_vic5: true
   field_admin_app_viie: true

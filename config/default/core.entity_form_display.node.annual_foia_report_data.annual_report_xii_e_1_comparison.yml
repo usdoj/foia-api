@@ -333,7 +333,7 @@ third_party_settings:
         - group_xii_e_1_comparison_of_numb
         - field_footnotes_xiie1
       parent_name: ''
-      weight: 33
+      weight: 1
       format_type: details
       format_settings:
         description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
@@ -389,6 +389,9 @@ third_party_settings:
       region: content
     group_hidden:
       children:
+        - field_admin_app_via
+        - field_overall_via_app_proc_yr
+        - field_overall_via_app_recd_yr
         - field_agency_components
       parent_name: ''
       weight: 10
@@ -412,6 +415,18 @@ targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_xii_e_1_comparison
 content:
+  field_admin_app_via:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
   field_agency_components:
     type: erviews_options_buttons
     weight: 1
@@ -436,6 +451,20 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_via_app_proc_yr:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_via_app_recd_yr:
+    type: number
+    weight: 4
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xiie1_proc_cur_yr:
@@ -482,7 +511,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  field_admin_app_via: true
   field_admin_app_vib: true
   field_admin_app_vic1: true
   field_admin_app_vic2: true
@@ -577,8 +605,6 @@ hidden:
   field_overall_vb3_ex_9: true
   field_overall_via_app_pend_endyr: true
   field_overall_via_app_pend_start: true
-  field_overall_via_app_proc_yr: true
-  field_overall_via_app_recd_yr: true
   field_overall_vib_affirm_on_app: true
   field_overall_vib_closed_oth_app: true
   field_overall_vib_comp_on_app: true

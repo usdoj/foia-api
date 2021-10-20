@@ -395,7 +395,7 @@ third_party_settings:
         - group_vii_d_pending_requests_all
         - field_footnotes_viid
       parent_name: ''
-      weight: 20
+      weight: 1
       format_type: details
       format_settings:
         open: true
@@ -408,6 +408,7 @@ third_party_settings:
     group_hidden:
       children:
         - field_agency_components
+        - field_foia_requests_va
       parent_name: ''
       weight: 10
       format_type: html_element
@@ -435,6 +436,18 @@ content:
     weight: 1
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_foia_requests_va:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
   field_footnotes_viid:
     type: string_textarea
@@ -558,7 +571,6 @@ hidden:
   field_fees_x: true
   field_foia_annual_report_yr: true
   field_foia_pers_costs_ix: true
-  field_foia_requests_va: true
   field_foia_requests_vb1: true
   field_foia_requests_vb2: true
   field_foia_requests_vb3: true

@@ -504,7 +504,7 @@ third_party_settings:
         - group_vii_e_pending_requests_ten
         - field_footnotes_viie
       parent_name: ''
-      weight: 21
+      weight: 1
       format_type: details
       format_settings:
         open: true
@@ -539,12 +539,6 @@ targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_vii_e_pending_requests_ten_oldest
 content:
-  field_agency_components:
-    type: erviews_options_buttons
-    weight: 1
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_admin_app_viie:
     type: entity_reference_paragraphs
     weight: 22
@@ -557,6 +551,12 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
     region: content
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_footnotes_viie:
     type: string_textarea
     weight: 24

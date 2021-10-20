@@ -351,6 +351,7 @@ third_party_settings:
       children:
         - field_agency_components
         - field_admin_app_vib
+        - field_admin_app_vic5
         - field_overall_vib_total
       parent_name: ''
       weight: 10
@@ -389,6 +390,18 @@ content:
   field_admin_app_vib:
     type: entity_reference_paragraphs
     weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_admin_app_vic5:
+    type: entity_reference_paragraphs
+    weight: 3
     region: content
     settings:
       title: Paragraph
@@ -442,7 +455,7 @@ content:
     region: content
   field_overall_vib_total:
     type: number
-    weight: 3
+    weight: 4
     region: content
     settings:
       placeholder: ''
@@ -467,7 +480,6 @@ hidden:
   field_admin_app_vic2: true
   field_admin_app_vic3: true
   field_admin_app_vic4: true
-  field_admin_app_vic5: true
   field_admin_app_viie: true
   field_agency: true
   field_agency_abbr: true

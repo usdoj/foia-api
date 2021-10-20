@@ -351,6 +351,17 @@ third_party_settings:
     group_hidden:
       children:
         - field_agency_components
+        - field_overall_vic2_no_rec
+        - field_overall_vic2_rec_refer_ini
+        - field_overall_vic2_req_withdrawn
+        - field_overall_vic2_fee_rel_reas
+        - field_overall_vic2_rec_not_desc
+        - field_overall_vic2_imp_req_oth
+        - field_overall_vic2_not_agency_re
+        - field_overall_vic2_dup_req
+        - field_overall_vic2_req_in_lit
+        - field_overall_vic2_app_denial_ex
+        - field_overall_vic2_oth
       parent_name: ''
       weight: 10
       format_type: html_element
@@ -373,12 +384,6 @@ targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_vi_b_disposition_of_administrative_appeals
 content:
-  field_agency_components:
-    type: erviews_options_buttons
-    weight: 1
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_admin_app_vib:
     type: entity_reference_paragraphs
     weight: 4
@@ -391,6 +396,12 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
     region: content
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_footnotes_vib:
     type: string_textarea
     weight: 10
@@ -434,6 +445,83 @@ content:
     third_party_settings: {  }
     type: number
     region: content
+  field_overall_vic2_app_denial_ex:
+    type: number
+    weight: 21
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_dup_req:
+    type: number
+    weight: 19
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_fee_rel_reas:
+    type: number
+    weight: 15
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_imp_req_oth:
+    type: number
+    weight: 17
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_no_rec:
+    type: number
+    weight: 12
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_not_agency_re:
+    type: number
+    weight: 18
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_oth:
+    type: number
+    weight: 22
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_rec_not_desc:
+    type: number
+    weight: 16
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_rec_refer_ini:
+    type: number
+    weight: 13
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_req_in_lit:
+    type: number
+    weight: 20
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_req_withdrawn:
+    type: number
+    weight: 14
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
     weight: 100
@@ -561,17 +649,6 @@ hidden:
   field_overall_vic1_ex_7_f: true
   field_overall_vic1_ex_8: true
   field_overall_vic1_ex_9: true
-  field_overall_vic2_app_denial_ex: true
-  field_overall_vic2_dup_req: true
-  field_overall_vic2_fee_rel_reas: true
-  field_overall_vic2_imp_req_oth: true
-  field_overall_vic2_no_rec: true
-  field_overall_vic2_not_agency_re: true
-  field_overall_vic2_oth: true
-  field_overall_vic2_rec_not_desc: true
-  field_overall_vic2_rec_refer_ini: true
-  field_overall_vic2_req_in_lit: true
-  field_overall_vic2_req_withdrawn: true
   field_overall_vic3_total: true
   field_overall_vic4_avg_num_days: true
   field_overall_vic4_high_num_days: true
