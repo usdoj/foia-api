@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3211aa8bb84a160335afe3a39b262c5",
+    "content-hash": "bb9ffca55e157287b57076feaed880f0",
     "packages": [
         {
             "name": "acquia/blt",
@@ -6331,6 +6331,63 @@
             }
         },
         {
+            "name": "drupal/form_mode_manager",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/form_mode_manager.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/form_mode_manager-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "4d9bac6edccf9af6901a8b5b6e34fe40c6c104d5"
+            },
+            "require": {
+                "drupal/core": "^8"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1626888158",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Alexandre Mallet",
+                    "homepage": "https://github.com/woprrr",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "woprrr",
+                    "homepage": "https://www.drupal.org/user/858604"
+                }
+            ],
+            "description": "Allow use of form mode in all Content entities",
+            "homepage": "https://www.drupal.org/project/image_widget_crop",
+            "keywords": [
+                "Drupal",
+                "Drupal Display modes",
+                "Field Ui",
+                "Form modes"
+            ],
+            "support": {
+                "source": "https://www.drupal.org/project/form_mode_manager",
+                "issues": "https://www.drupal.org/project/issues/form_mode_manager",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
             "name": "drupal/image_widget_crop",
             "version": "2.3.0",
             "source": {
@@ -8208,6 +8265,66 @@
             "homepage": "https://www.drupal.org/project/moderation_sidebar",
             "support": {
                 "source": "https://git.drupalcode.org/project/moderation_sidebar"
+            }
+        },
+        {
+            "name": "drupal/node_edit_protection",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/node_edit_protection.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/node_edit_protection-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "741f873893607b3d7f729afa1447af0a5f2c1fd8"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1598972381",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Mohammed J. Razem",
+                    "homepage": "https://www.drupal.org/user/255384"
+                },
+                {
+                    "name": "czigor",
+                    "homepage": "https://www.drupal.org/user/826222"
+                },
+                {
+                    "name": "erynn",
+                    "homepage": "https://www.drupal.org/user/1163382"
+                },
+                {
+                    "name": "febbraro",
+                    "homepage": "https://www.drupal.org/user/43670"
+                },
+                {
+                    "name": "mgifford",
+                    "homepage": "https://www.drupal.org/user/27930"
+                }
+            ],
+            "description": "Protect the user against navigating away from a node edit form before saving their changes.",
+            "homepage": "https://www.drupal.org/project/node_edit_protection",
+            "support": {
+                "source": "https://git.drupalcode.org/project/node_edit_protection"
             }
         },
         {
@@ -10989,78 +11106,6 @@
                 "issues": "https://www.drupal.org/project/issues/webform?version=8.x",
                 "docs": "https://www.drupal.org/docs/8/modules/webform",
                 "forum": "https://drupal.stackexchange.com/questions/tagged/webform"
-            }
-        },
-        {
-            "name": "drupal/xhprof",
-            "version": "1.0.0-beta4",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/XHProf.git",
-                "reference": "8.x-1.0-beta4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/xhprof-8.x-1.0-beta4.zip",
-                "reference": "8.x-1.0-beta4",
-                "shasum": "23e2fa0c4cd4811e0e1effeabecdf728d1d22949"
-            },
-            "require": {
-                "drupal/core": "^8.7.7 || ^9"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.0-beta4",
-                    "datestamp": "1598577814",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Steven Merrill",
-                    "homepage": "https://www.drupal.org/user/218671"
-                },
-                {
-                    "name": "amateescu",
-                    "homepage": "https://www.drupal.org/user/729614"
-                },
-                {
-                    "name": "andypost",
-                    "homepage": "https://www.drupal.org/user/118908"
-                },
-                {
-                    "name": "beejeebus",
-                    "homepage": "https://www.drupal.org/user/38580"
-                },
-                {
-                    "name": "lussoluca",
-                    "homepage": "https://www.drupal.org/user/138068"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
-                },
-                {
-                    "name": "msonnabaum",
-                    "homepage": "https://www.drupal.org/user/75278"
-                },
-                {
-                    "name": "pifantastic",
-                    "homepage": "https://www.drupal.org/user/737486"
-                }
-            ],
-            "description": "Provides code profiling with XHProf integration.",
-            "homepage": "https://www.drupal.org/project/xhprof",
-            "support": {
-                "source": "https://git.drupalcode.org/project/xhprof"
             }
         },
         {
