@@ -322,6 +322,7 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
+    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -503,7 +504,7 @@ third_party_settings:
         - group_vi_c_5_ten_oldest_pending_
         - field_footnotes_vic5
       parent_name: ''
-      weight: 14
+      weight: 1
       format_type: details
       format_settings:
         description: 'Only those components that process administrative appeals should be entered in this section. If a component or the agency overall does not have ten or more appeals pending as of the end of the fiscal year, complete the excess cells by listing "N/A" for the "Date of Appeal" and "0" for the "Number of Days Pending." If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days Pending" values must be non-negative integers. Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.\r\n\r\nIn the date field enter the date the appeal was received.'
@@ -514,6 +515,26 @@ third_party_settings:
         show_empty_fields: false
       label: 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
       region: content
+    group_hidden:
+      children:
+        - field_agency_components
+      parent_name: ''
+      weight: 10
+      format_type: html_element
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        required_fields: true
+        attributes: 'style="display:none;"'
+        effect: none
+        speed: fast
+      label: HIDDEN
 id: node.annual_foia_report_data.annual_report_vi_c_5_ten_oldest_pending
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -530,6 +551,12 @@ content:
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: ''
+    third_party_settings: {  }
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_footnotes_vic5:
     type: string_textarea
@@ -724,7 +751,6 @@ hidden:
   field_admin_app_viie: true
   field_agency: true
   field_agency_abbr: true
-  field_agency_components: true
   field_date_prepared: true
   field_fees_x: true
   field_foia_annual_report_yr: true

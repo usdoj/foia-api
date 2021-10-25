@@ -322,6 +322,7 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
+    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -343,6 +344,27 @@ third_party_settings:
         show_empty_fields: false
       label: 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS '
       region: content
+    group_hidden:
+      children:
+        - field_overall_vic2_oth
+        - field_agency_components
+      parent_name: ''
+      weight: 10
+      format_type: html_element
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        required_fields: true
+        attributes: 'style="display:none;"'
+        effect: none
+        speed: fast
+      label: HIDDEN
 id: node.annual_foia_report_data.annual_report_vi_c_3_reasons_for_denial_on_appeal
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -360,12 +382,25 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_footnotes_vic3:
     type: string_textarea
     weight: 28
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vic2_oth:
+    type: number
+    weight: 2
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vic3_total:
@@ -400,7 +435,6 @@ hidden:
   field_admin_app_viie: true
   field_agency: true
   field_agency_abbr: true
-  field_agency_components: true
   field_date_prepared: true
   field_fees_x: true
   field_foia_annual_report_yr: true
@@ -514,7 +548,6 @@ hidden:
   field_overall_vic2_imp_req_oth: true
   field_overall_vic2_no_rec: true
   field_overall_vic2_not_agency_re: true
-  field_overall_vic2_oth: true
   field_overall_vic2_rec_not_desc: true
   field_overall_vic2_rec_refer_ini: true
   field_overall_vic2_req_in_lit: true

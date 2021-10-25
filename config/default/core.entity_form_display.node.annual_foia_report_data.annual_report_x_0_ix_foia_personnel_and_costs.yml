@@ -1,9 +1,9 @@
-uuid: 6d7c7dc6-2baa-404e-89d8-2655082d5405
+uuid: cabb6794-0237-4f96-854c-2fe90dc9c7c8
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.node.annual_report_ix_foia_personnel_and_costs
+    - core.entity_form_mode.node.annual_report_x_0_ix_foia_personnel_and_costs
     - field.field.node.annual_foia_report_data.field_admin_app_via
     - field.field.node.annual_foia_report_data.field_admin_app_vib
     - field.field.node.annual_foia_report_data.field_admin_app_vic1
@@ -322,6 +322,7 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
+    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -332,7 +333,7 @@ third_party_settings:
         - group_ix_foia_personnel_and_cost
         - field_footnotes_ix
       parent_name: ''
-      weight: 24
+      weight: 1
       format_type: details
       format_settings:
         description: '<h3>IX. FOIA Personnel and Costs</h3>Every component that  processes requests or appeals should be listed, even if they do not have data to report in this section. If the component processed requests in V.A. there must be a value entered for personnel and costs. If the component field is filled in, all other editable columns must be filled in. All values must be non-negative numeric integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section.'
@@ -388,11 +389,38 @@ third_party_settings:
         required_fields: true
       label: 'Agency Overall COSTS'
       region: content
-id: node.annual_foia_report_data.annual_report_ix_foia_personnel_and_costs
+    group_hidden:
+      children:
+        - field_foia_requests_vb1
+        - field_agency_components
+      parent_name: ''
+      weight: 10
+      format_type: html_element
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        required_fields: true
+        attributes: 'style="display:none;"'
+        effect: none
+        speed: fast
+      label: HIDDEN
+id: node.annual_foia_report_data.annual_report_x_0_ix_foia_personnel_and_costs
 targetEntityType: node
 bundle: annual_foia_report_data
-mode: annual_report_ix_foia_personnel_and_costs
+mode: annual_report_x_0_ix_foia_personnel_and_costs
 content:
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_foia_pers_costs_ix:
     type: entity_reference_paragraphs
     weight: 27
@@ -405,6 +433,18 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
     region: content
+  field_foia_requests_vb1:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
   field_footnotes_ix:
     type: string_textarea
     weight: 29
@@ -481,12 +521,10 @@ hidden:
   field_admin_app_viie: true
   field_agency: true
   field_agency_abbr: true
-  field_agency_components: true
   field_date_prepared: true
   field_fees_x: true
   field_foia_annual_report_yr: true
   field_foia_requests_va: true
-  field_foia_requests_vb1: true
   field_foia_requests_vb2: true
   field_foia_requests_vb3: true
   field_foia_xiia: true
