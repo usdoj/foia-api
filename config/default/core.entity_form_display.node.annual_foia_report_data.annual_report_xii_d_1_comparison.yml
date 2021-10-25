@@ -322,6 +322,7 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
+    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -332,10 +333,10 @@ third_party_settings:
         - group_xii_d_1_comparison_of_numb
         - field_footnotes_xiid1
       parent_name: ''
-      weight: 31
+      weight: 1
       format_type: details
       format_settings:
-        description: '<h3>XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered on tab V.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered on tab V.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
         open: true
         required_fields: true
         id: ''
@@ -386,11 +387,52 @@ third_party_settings:
         required_fields: true
       label: 'Agency Overall NUMBER OF REQUESTS PROCESSED'
       region: content
+    group_hidden:
+      children:
+        - field_foia_requests_va
+        - field_overall_req_processed_yr
+        - field_overall_req_received_yr
+        - field_agency_components
+      parent_name: ''
+      weight: 10
+      format_type: html_element
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        required_fields: true
+        attributes: 'style="display:none;"'
+        effect: none
+        speed: fast
+      label: HIDDEN
 id: node.annual_foia_report_data.annual_report_xii_d_1_comparison
 targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_xii_d_1_comparison
 content:
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_foia_requests_va:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
   field_foia_xiid1:
     type: entity_reference_paragraphs
     weight: 6
@@ -409,6 +451,20 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_processed_yr:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_received_yr:
+    type: number
+    weight: 4
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xiid1_proc_cur_yr:
@@ -465,12 +521,10 @@ hidden:
   field_admin_app_viie: true
   field_agency: true
   field_agency_abbr: true
-  field_agency_components: true
   field_date_prepared: true
   field_fees_x: true
   field_foia_annual_report_yr: true
   field_foia_pers_costs_ix: true
-  field_foia_requests_va: true
   field_foia_requests_vb1: true
   field_foia_requests_vb2: true
   field_foia_requests_vb3: true
@@ -519,8 +573,6 @@ hidden:
   field_overall_ix_total_staff: true
   field_overall_req_pend_end_yr: true
   field_overall_req_pend_start_yr: true
-  field_overall_req_processed_yr: true
-  field_overall_req_received_yr: true
   field_overall_vb1_dup_request: true
   field_overall_vb1_fee_related_re: true
   field_overall_vb1_full_denials_e: true

@@ -322,6 +322,7 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
+    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -332,7 +333,7 @@ third_party_settings:
         - group_agency_overall_v_b_1_
         - field_footnotes_vb1
       parent_name: ''
-      weight: 1
+      weight: 2
       format_type: details
       format_settings:
         description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The sum of all columns (calculated column titled ''TOTAL'') must match the number entered in V.A., column ''Number of Requests Processed in Fiscal Year'' for the component, and for the agency overall.'
@@ -395,14 +396,82 @@ third_party_settings:
         required_fields: true
       label: 'Agency Overall Number of Full Denials Based on Reasons Other than Exemptions'
       region: content
+    group_hidden:
+      children:
+        - field_agency_components
+        - field_foia_requests_vb2
+        - field_foia_requests_vb3
+        - field_overall_vb3_ex_1
+        - field_overall_vb3_ex_2
+        - field_overall_vb3_ex_3
+        - field_overall_vb3_ex_4
+        - field_overall_vb3_ex_5
+        - field_overall_vb3_ex_6
+        - field_overall_vb3_ex_7_a
+        - field_overall_vb3_ex_7_b
+        - field_overall_vb3_ex_7_c
+        - field_overall_vb3_ex_7_d
+        - field_overall_vb3_ex_7_e
+        - field_overall_vb3_ex_7_f
+        - field_overall_vb3_ex_8
+        - field_overall_vb3_ex_9
+        - field_overall_vb2_total
+        - field_overall_req_processed_yr
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        required_fields: true
+        attributes: 'style="display:none;"'
+        effect: none
+        speed: fast
+      label: HIDDEN
 id: node.annual_foia_report_data.annual_report_v_b_1_disposition_of_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_v_b_1_disposition_of_foia_requests
 content:
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_foia_requests_vb1:
     type: entity_reference_paragraphs
     weight: 9
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_foia_requests_vb2:
+    type: entity_reference_paragraphs
+    weight: 9
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_foia_requests_vb3:
+    type: entity_reference_paragraphs
+    weight: 10
     region: content
     settings:
       title: Paragraph
@@ -418,6 +487,13 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_req_processed_yr:
+    type: number
+    weight: 26
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb1_dup_request:
@@ -436,7 +512,7 @@ content:
     third_party_settings: {  }
   field_overall_vb1_full_denials_e:
     type: number
-    weight: 13
+    weight: 14
     region: content
     settings:
       placeholder: ''
@@ -478,7 +554,7 @@ content:
     third_party_settings: {  }
   field_overall_vb1_part_grants_de:
     type: number
-    weight: 12
+    weight: 13
     region: content
     settings:
       placeholder: ''
@@ -511,9 +587,114 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_overall_vb2_total:
+    type: number
+    weight: 25
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_1:
+    type: number
+    weight: 11
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_2:
+    type: number
+    weight: 12
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_3:
+    type: number
+    weight: 13
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_4:
+    type: number
+    weight: 14
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_5:
+    type: number
+    weight: 15
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_6:
+    type: number
+    weight: 16
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_7_a:
+    type: number
+    weight: 17
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_7_b:
+    type: number
+    weight: 18
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_7_c:
+    type: number
+    weight: 19
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_7_d:
+    type: number
+    weight: 20
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_7_e:
+    type: number
+    weight: 21
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_7_f:
+    type: number
+    weight: 22
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_8:
+    type: number
+    weight: 23
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_vb3_ex_9:
+    type: number
+    weight: 24
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 2
+    weight: 3
     settings: {  }
     region: content
     third_party_settings: {  }
@@ -537,14 +718,11 @@ hidden:
   field_admin_app_viie: true
   field_agency: true
   field_agency_abbr: true
-  field_agency_components: true
   field_date_prepared: true
   field_fees_x: true
   field_foia_annual_report_yr: true
   field_foia_pers_costs_ix: true
   field_foia_requests_va: true
-  field_foia_requests_vb2: true
-  field_foia_requests_vb3: true
   field_foia_xiia: true
   field_foia_xiib: true
   field_foia_xiic: true
@@ -591,23 +769,7 @@ hidden:
   field_overall_ix_total_staff: true
   field_overall_req_pend_end_yr: true
   field_overall_req_pend_start_yr: true
-  field_overall_req_processed_yr: true
   field_overall_req_received_yr: true
-  field_overall_vb2_total: true
-  field_overall_vb3_ex_1: true
-  field_overall_vb3_ex_2: true
-  field_overall_vb3_ex_3: true
-  field_overall_vb3_ex_4: true
-  field_overall_vb3_ex_5: true
-  field_overall_vb3_ex_6: true
-  field_overall_vb3_ex_7_a: true
-  field_overall_vb3_ex_7_b: true
-  field_overall_vb3_ex_7_c: true
-  field_overall_vb3_ex_7_d: true
-  field_overall_vb3_ex_7_e: true
-  field_overall_vb3_ex_7_f: true
-  field_overall_vb3_ex_8: true
-  field_overall_vb3_ex_9: true
   field_overall_via_app_pend_endyr: true
   field_overall_via_app_pend_start: true
   field_overall_via_app_proc_yr: true

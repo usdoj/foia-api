@@ -322,6 +322,7 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
+    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -397,7 +398,7 @@ third_party_settings:
         - group_vii_a_foia_requests_respon
         - field_footnotes_viia
       parent_name: ''
-      weight: 15
+      weight: 1
       format_type: details
       format_settings:
         open: true
@@ -407,11 +408,37 @@ third_party_settings:
         classes: ''
       label: 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
       region: content
+    group_hidden:
+      children:
+        - field_agency_components
+      parent_name: ''
+      weight: 10
+      format_type: html_element
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        required_fields: true
+        attributes: 'style="display:none;"'
+        effect: none
+        speed: fast
+      label: HIDDEN
 id: node.annual_foia_report_data.annual_report_vii_a_foia_requests_response_time
 targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_vii_a_foia_requests_response_time
 content:
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_footnotes_viia:
     type: string_textarea
     weight: 24
@@ -554,7 +581,6 @@ hidden:
   field_admin_app_viie: true
   field_agency: true
   field_agency_abbr: true
-  field_agency_components: true
   field_date_prepared: true
   field_fees_x: true
   field_foia_annual_report_yr: true

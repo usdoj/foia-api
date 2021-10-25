@@ -45,20 +45,24 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       foia_annual_data_report_ajax_existing_node($form);
       foia_annual_data_report_set_default_report_year($form);
 
-      // Force a submit function to increase memory limit before core's submit.
-// @todo This may not be needed, now that the form is split.
-//      foreach (array_keys($form['actions']) as $action) {
-//        if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
-//          array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
-//        }
-//      }
-
       // Attach the css to transform the secondary local links to a dropdown.
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
-      // Add a submit handler to redirect back to this section.
-      $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
+      // Don't try to alter redirect on default form display.
+      if ($adr_form_info['form_section'] != 'edit') {
+        // Add a submit handler to redirect back to this section.
+        $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
+      }
 
+    }
+
+    // Force a submit function to increase memory limit before core's submit.
+    if ($form_id === 'node_annual_foia_report_data_edit_form') {
+      foreach (array_keys($form['actions']) as $action) {
+        if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+          array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
+        }
+      }
     }
 
   }
@@ -140,8 +144,7 @@ function foia_annual_data_report_ajax_existing_node(array &$form) {
  * @return \Drupal\Core\Ajax\AjaxResponse
  *   AjaxResponse object to alert user and redirect them.
  */
-function foia_annual_data_report_create_node(array $form, FormStateInterface
- $form_state) {
+function foia_annual_data_report_create_node(array $form, FormStateInterface $form_state) {
 
   $response = new AjaxResponse();
 
@@ -168,8 +171,7 @@ function foia_annual_data_report_create_node(array $form, FormStateInterface
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state passed from hook_form_form_id_alter().
  */
-function foia_annual_data_report_refresh(array $form, FormStateInterface
- $form_state) {
+function foia_annual_data_report_refresh(array $form, FormStateInterface $form_state) {
 
   $node = \Drupal::routeMatch()->getParameter('node');
   $response = new AjaxResponse();
@@ -179,7 +181,7 @@ function foia_annual_data_report_refresh(array $form, FormStateInterface
     $nid = $node->id();
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
 
-    // @todo: If users change anything else it doesnt persist.
+    // @todo If users change anything else it doesn't persist.
     $node->set('field_agency', $form_state->getValue('field_agency'));
 
     // Set as new revision.

@@ -322,6 +322,7 @@ dependencies:
     - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
+    - entity_reference_views_select
     - field_group
     - paragraphs
 third_party_settings:
@@ -332,10 +333,10 @@ third_party_settings:
         - group_xii_e_1_comparison_of_numb
         - field_footnotes_xiie1
       parent_name: ''
-      weight: 33
+      weight: 1
       format_type: details
       format_settings:
-        description: '<h3>XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
         open: true
         required_fields: true
         id: ''
@@ -386,11 +387,52 @@ third_party_settings:
         required_fields: true
       label: 'Agency Overall NUMBER OF APPEALS PROCESSED'
       region: content
+    group_hidden:
+      children:
+        - field_admin_app_via
+        - field_overall_via_app_proc_yr
+        - field_overall_via_app_recd_yr
+        - field_agency_components
+      parent_name: ''
+      weight: 10
+      format_type: html_element
+      region: content
+      format_settings:
+        show_empty_fields: false
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        required_fields: true
+        attributes: 'style="display:none;"'
+        effect: none
+        speed: fast
+      label: HIDDEN
 id: node.annual_foia_report_data.annual_report_xii_e_1_comparison
 targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_xii_e_1_comparison
 content:
+  field_admin_app_via:
+    type: entity_reference_paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_foia_xiie1:
     type: entity_reference_paragraphs
     weight: 3
@@ -409,6 +451,20 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_via_app_proc_yr:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_overall_via_app_recd_yr:
+    type: number
+    weight: 4
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xiie1_proc_cur_yr:
@@ -455,7 +511,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  field_admin_app_via: true
   field_admin_app_vib: true
   field_admin_app_vic1: true
   field_admin_app_vic2: true
@@ -465,7 +520,6 @@ hidden:
   field_admin_app_viie: true
   field_agency: true
   field_agency_abbr: true
-  field_agency_components: true
   field_date_prepared: true
   field_fees_x: true
   field_foia_annual_report_yr: true
@@ -551,8 +605,6 @@ hidden:
   field_overall_vb3_ex_9: true
   field_overall_via_app_pend_endyr: true
   field_overall_via_app_pend_start: true
-  field_overall_via_app_proc_yr: true
-  field_overall_via_app_recd_yr: true
   field_overall_vib_affirm_on_app: true
   field_overall_vib_closed_oth_app: true
   field_overall_vib_comp_on_app: true
