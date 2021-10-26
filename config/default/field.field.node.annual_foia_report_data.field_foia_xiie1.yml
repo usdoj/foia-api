@@ -20,7 +20,7 @@ entity_type: node
 bundle: annual_foia_report_data
 label: 'FOIA Requests and Administrative Appeals XII. E. (1).'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -51,9 +51,6 @@ settings:
         enabled: false
       admin_app_vic4:
         weight: 36
-        enabled: false
-      component_details:
-        weight: 37
         enabled: false
       fees_x:
         weight: 38
@@ -98,6 +95,9 @@ settings:
         weight: 51
         enabled: false
       processed_requests_vii:
+        weight: 52
+        enabled: false
+      quarterly_component_data:
         weight: 52
         enabled: false
       req_viiia:
