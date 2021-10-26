@@ -56,12 +56,13 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       // Attach the css to transform the secondary local links to a dropdown.
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
-      // Add validation handler for form.
-      $form['#validate'][] = '_form_annual_data_report_section_validate';
+      // Add validation handler for form VI.C(5) Ten Oldest Pending Administrative Appeals Section.
+      if ( $adr_form_info['form_section'] === 'annual_report_vi_c_5_ten_oldest_pending' ) {
+        $form['#validate'][] = '_form_annual_data_report_section_validate';
+      }
 
       // Add a submit handler to redirect back to this section.
       $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
-
     }
 
   }
@@ -88,6 +89,8 @@ function _foia_annual_data_report_section_redirect(array &$form, FormStateInterf
  * @param FormStateInterface $form_state
  */
 function _form_annual_data_report_section_validate(array &$form, FormStateInterface $form_state): void {
+
+  // Fields for validation for VI.C(5) Ten Oldest Pending Number of Days.
   $fields_to_validate = [
     'field_overall_vic5_num_day_1',
     'field_overall_vic5_num_day_2',
