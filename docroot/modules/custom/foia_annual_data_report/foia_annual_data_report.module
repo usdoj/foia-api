@@ -57,7 +57,7 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
       // Add validation handler for form VI.C(5) Ten Oldest Pending Administrative Appeals Section.
-      if ( $adr_form_info['form_section'] === 'annual_report_vi_c_5_ten_oldest_pending' ) {
+      if ( $adr_form_info['form_section'] === 'edit' || $adr_form_info['form_section'] === 'annual_report_vi_c_5_ten_oldest_pending' ) {
         $form['#validate'][] = '_form_annual_data_report_section_validate';
       }
 
