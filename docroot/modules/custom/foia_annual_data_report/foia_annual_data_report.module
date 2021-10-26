@@ -110,7 +110,7 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
         $value = $form_value[0]['value'];
         $element = $form[$key];
         $element_title = $element['widget'][0]['#title'];
-        $error_msg = t("Invalid input for {$element_title}, please use number greater or equal to 0.");
+        $error_msg = t("Invalid input for {$element_title}, please use number greater or equal to zero.");
 
         if ( ! empty( $value ) ) {
           // Check of value is greater than or equal to 0.
