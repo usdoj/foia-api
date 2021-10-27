@@ -8,13 +8,19 @@ dependencies:
     - paragraphs.paragraphs_type.admin_app_vic4
   module:
     - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_admin_app_vic4
 field_name: field_admin_app_vic4
 entity_type: node
 bundle: annual_foia_report_data
 label: 'Administrative Appeals VI. C. (4)'
 description: 'This is the first section in which the "Agency Overall" information cannot be calculated from component information, and must be entered manually.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -46,9 +52,6 @@ settings:
       admin_app_vic4:
         enabled: true
         weight: 36
-      component_details:
-        weight: 37
-        enabled: false
       fees_x:
         weight: 38
         enabled: false
@@ -92,6 +95,9 @@ settings:
         weight: 51
         enabled: false
       processed_requests_vii:
+        weight: 52
+        enabled: false
+      quarterly_component_data:
         weight: 52
         enabled: false
       req_viiia:

@@ -8,13 +8,19 @@ dependencies:
     - paragraphs.paragraphs_type.statute
   module:
     - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_statute_iv
 field_name: field_statute_iv
 entity_type: node
 bundle: annual_foia_report_data
 label: Statute
 description: 'List all Exemption 3 statutes relied upon to withhold information and the number of times each was relied upon. Enter each statute separately.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -46,9 +52,6 @@ settings:
       admin_app_vic4:
         weight: 36
         enabled: false
-      component_details:
-        weight: 37
-        enabled: false
       fees_x:
         weight: 38
         enabled: false
@@ -70,17 +73,17 @@ settings:
       foia_req_vb3:
         weight: 44
         enabled: false
-      foia_xiia:
-        weight: 45
-        enabled: false
-      foia_xiib:
-        weight: 46
-        enabled: false
       foia_xii_backlogged:
         weight: 47
         enabled: false
       foia_xii_received_proc:
         weight: 48
+        enabled: false
+      foia_xiia:
+        weight: 45
+        enabled: false
+      foia_xiib:
+        weight: 46
         enabled: false
       oldest_days:
         weight: 49
@@ -88,10 +91,13 @@ settings:
       pending_requests_viid:
         weight: 50
         enabled: false
+      proc_req_viic:
+        weight: 52
+        enabled: false
       processed_requests_vii:
         weight: 51
         enabled: false
-      proc_req_viic:
+      quarterly_component_data:
         weight: 52
         enabled: false
       req_viiia:

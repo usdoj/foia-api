@@ -8,13 +8,19 @@ dependencies:
     - paragraphs.paragraphs_type.sub_xib
   module:
     - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_sub_xib
 field_name: field_sub_xib
 entity_type: node
 bundle: annual_foia_report_data
 label: 'Subsection XI. B.'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -45,9 +51,6 @@ settings:
         enabled: false
       admin_app_vic4:
         weight: 36
-        enabled: false
-      component_details:
-        weight: 37
         enabled: false
       fees_x:
         weight: 38
@@ -92,6 +95,9 @@ settings:
         weight: 51
         enabled: false
       processed_requests_vii:
+        weight: 52
+        enabled: false
+      quarterly_component_data:
         weight: 52
         enabled: false
       req_viiia:
