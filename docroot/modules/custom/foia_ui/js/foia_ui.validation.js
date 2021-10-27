@@ -876,6 +876,14 @@
           }
         });
       }
+      for (var i = 1; i <= 10; i++) {
+        $("#edit-field-overall-vic5-num-day-" + i + "-0-value").rules("add", {
+          notNegative: "#edit-field-overall-vic5-num-day-" + i + "-0-value",
+          messages: {
+            notNegative: "Please use number greater or equal to zero."
+          }
+        });
+      }
 
       // VI.C. (5) - ADMINISTRATIVE APPEALS - Oldest Days component/ 2nd-10th
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
