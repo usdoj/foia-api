@@ -49,6 +49,9 @@ class AnnualDataReportFormDislaysService {
     $current_path_ar = explode('/', $current_path);
     $current_mode = array_pop($current_path_ar);
 
+    // Sort by machine name.
+    ksort($modes);
+
     // Create an array of form ids that would indicate this is an adr form.
     $adr_form_ids = [
       'node_annual_foia_report_data_' . $current_mode . '_form',
@@ -57,17 +60,29 @@ class AnnualDataReportFormDislaysService {
     // If this path is in the list of modes then modify for annual report.
     if (in_array($form_id, $adr_form_ids)) {
 
+      // Use this part of the path to append the nav form mode to.
+      $path_part = implode('/', $current_path_ar);
+
       // Use this to help get the prev/next links.
       $iterator = new \ArrayIterator($modes);
 
       // Initialize for nav html.
       $form_nav = '';
 
+      // "Dropdown" nav with all form modes.
+      $form_nav .= '<ul class="form-section-nav">';
+      foreach ($modes as $key => $label) {
+        $li_tag = '<li>';
+        if ($key === $current_mode) {
+          $li_tag = '<li class="is-active">';
+        }
+        $form_nav .= $li_tag . '<a href="' . $path_part . '/' . $key . '">';
+        $form_nav .= $label . '</a></li>';
+      }
+      $form_nav .= '</ul>';
+
       // Position of the mode in the array.
       $mode_pos = array_search($current_mode, array_keys($modes));
-
-      // Use this part of the path to append the nav form mode to.
-      $path_part = implode('/', $current_path_ar);
 
       // If the mode is not found in the mode array, this must be the default.
       if (!$mode_pos && $current_mode === 'edit') {

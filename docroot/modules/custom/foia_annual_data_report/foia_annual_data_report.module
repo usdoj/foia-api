@@ -45,7 +45,7 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       foia_annual_data_report_ajax_existing_node($form);
       foia_annual_data_report_set_default_report_year($form);
 
-      // Attach the css to transform the secondary local links to a dropdown.
+      // Attach the css for the "dropdown" form section navigation.
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
       // Don't try to alter redirect on default form display.
