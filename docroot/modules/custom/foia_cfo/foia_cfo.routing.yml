@@ -1,0 +1,6 @@
+foia_cfo.council:
+  path: 'api/cfo/council'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getCouncil' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
