@@ -1,0 +1,22 @@
+uuid: 1fd07756-def5-47fc-8104-a569f528dbd6
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.cfo_council
+id: node.cfo_council.promote
+field_name: promote
+entity_type: node
+bundle: cfo_council
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

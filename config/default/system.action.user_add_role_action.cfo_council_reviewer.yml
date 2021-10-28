@@ -1,0 +1,14 @@
+uuid: 0c953364-2af4-45dc-8fc4-604415f84977
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_council_reviewer
+  module:
+    - user
+id: user_add_role_action.cfo_council_reviewer
+label: 'Add the CFO Council reviewer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cfo_council_reviewer

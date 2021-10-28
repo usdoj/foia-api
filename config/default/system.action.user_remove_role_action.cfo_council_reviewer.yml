@@ -1,0 +1,14 @@
+uuid: 98b74db4-30c8-4790-b857-f3cba03d5879
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_council_reviewer
+  module:
+    - user
+id: user_remove_role_action.cfo_council_reviewer
+label: 'Remove the CFO Council reviewer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cfo_council_reviewer
