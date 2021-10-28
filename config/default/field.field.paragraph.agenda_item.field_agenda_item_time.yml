@@ -1,0 +1,27 @@
+uuid: 4597991c-53e5-40e2-8c93-a769c06553f3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_agenda_item_time
+    - paragraphs.paragraphs_type.agenda_item
+  module:
+    - foia_autocalc
+    - time_field
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.agenda_item.field_agenda_item_time
+field_name: field_agenda_item_time
+entity_type: paragraph
+bundle: agenda_item
+label: Time
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: time

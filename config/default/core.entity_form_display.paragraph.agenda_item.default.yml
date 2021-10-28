@@ -1,0 +1,43 @@
+uuid: f20fc1bb-ff78-4efc-8448-4c72618167b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.agenda_item.field_agenda_item_description
+    - field.field.paragraph.agenda_item.field_agenda_item_time
+    - field.field.paragraph.agenda_item.field_agenda_item_title
+    - paragraphs.paragraphs_type.agenda_item
+  module:
+    - time_field
+id: paragraph.agenda_item.default
+targetEntityType: paragraph
+bundle: agenda_item
+mode: default
+content:
+  field_agenda_item_description:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_agenda_item_time:
+    weight: 0
+    settings:
+      enabled: false
+      step: 5
+    third_party_settings: {  }
+    type: time_widget
+    region: content
+  field_agenda_item_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
