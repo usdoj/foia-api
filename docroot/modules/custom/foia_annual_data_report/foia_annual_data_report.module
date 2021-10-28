@@ -144,7 +144,7 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
 
         // Check if field is a selected paragraph field.
         if (in_array($key, $paragraph_parent_fields) ) {
-          _foia_annual_data_report_validate_paragraph_fields($form_state, $form, $key, $form_value, $paragraph_fields_for_validation);
+          _foia_annual_data_report_validate_paragraph_fields($form, $form_state, $key, $form_value, $paragraph_fields_for_validation);
         } else {
           $value = $form_value[0]['value'];
           $element = $form[$key];
@@ -159,13 +159,13 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
 
 /**
  * Validation function to check paragraph text fields.
- * @param $form_state
- * @param $form
+ * @param array $form
+ * @param FormStateInterface $form_state
  * @param string $parent_key
  * @param array $parent_array
  * @param array $fields_to_validate
  */
-function _foia_annual_data_report_validate_paragraph_fields($form_state, $form, string $parent_key, array $parent_array, array $fields_to_validate): void {
+function _foia_annual_data_report_validate_paragraph_fields(array &$form, FormStateInterface $form_state, string $parent_key, array $parent_array, array $fields_to_validate): void {
   if (!empty($parent_array)) {
     foreach($parent_array as $paragraph_key => $paragraph_value) {
       if($paragraph_key === 'add_more') {
@@ -188,12 +188,12 @@ function _foia_annual_data_report_validate_paragraph_fields($form_state, $form, 
 
 /**
  * Handles Validation to check if value is greater or equal to zero for text fields.
- * @param $form_state
+ * @param FormStateInterface $form_state
  * @param $key
  * @param $value
  * @param $error_message
  */
-function _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_message): void {
+function _foia_annual_data_report_text_as_integer_validation(FormStateInterface $form_state, $key, $value, $error_message): void {
   if ( ! empty( $value ) ) {
     // Check of value is greater than or equal to 0.
     if ( ! ctype_digit($value) || (int) $value < 0 ) {
