@@ -1,0 +1,34 @@
+uuid: ea6f80b4-735c-47ab-a192-cb15c84509e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.cfo_committee.body
+    - node.type.cfo_committee
+  module:
+    - text
+    - user
+id: node.cfo_committee.default
+targetEntityType: node
+bundle: cfo_committee
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true
