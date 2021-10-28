@@ -1,0 +1,33 @@
+uuid: 4cc4754e-901f-4699-85a7-d1d1149a1eda
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_link_file
+    - paragraphs.paragraphs_type.link_or_file
+  module:
+    - file
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.link_or_file.field_link_file
+field_name: field_link_file
+entity_type: paragraph
+bundle: link_or_file
+label: File
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: cfo
+  file_extensions: 'txt pdf'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

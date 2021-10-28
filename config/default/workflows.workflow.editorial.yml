@@ -2,6 +2,10 @@ uuid: ae37d41d-2453-474e-8dc6-c12c179c6b02
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.cfo_committee
+    - node.type.cfo_council
+    - node.type.cfo_meeting
   module:
     - content_moderation
 _core:
@@ -54,5 +58,9 @@ type_settings:
       from:
         - draft
         - published
-  entity_types: {  }
+  entity_types:
+    node:
+      - cfo_committee
+      - cfo_council
+      - cfo_meeting
   default_moderation_state: draft

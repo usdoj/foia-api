@@ -1,0 +1,14 @@
+uuid: 1d77543c-b265-44a5-9966-a381d882ed13
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_council_creator
+  module:
+    - user
+id: user_remove_role_action.cfo_council_creator
+label: 'Remove the CFO Council creator role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cfo_council_creator
