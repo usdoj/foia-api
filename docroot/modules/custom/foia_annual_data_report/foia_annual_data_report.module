@@ -166,8 +166,8 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
  * @param array $fields_to_validate
  */
 function _foia_annual_data_report_validate_paragraph_fields($form_state, $form, string $parent_key, array $parent_array, array $fields_to_validate): void {
-  if ( ! empty($parent_array) ) {
-    foreach($parent_array as $paragraph_key => $paragraph_value) {;
+  if (!empty($parent_array)) {
+    foreach($parent_array as $paragraph_key => $paragraph_value) {
       if($paragraph_key === 'add_more') {
         continue;
       }
