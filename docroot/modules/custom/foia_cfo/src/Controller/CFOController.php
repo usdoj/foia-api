@@ -12,7 +12,6 @@ use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\file\Entity\File;
-use Drupal\views\Views;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
 
 /**
