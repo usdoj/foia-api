@@ -1,0 +1,14 @@
+uuid: 850219d8-ea60-49d8-9651-1b21febd5764
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_committee_reviewer
+  module:
+    - user
+id: user_remove_role_action.cfo_committee_reviewer
+label: 'Remove the CFO Committee reviewer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cfo_committee_reviewer

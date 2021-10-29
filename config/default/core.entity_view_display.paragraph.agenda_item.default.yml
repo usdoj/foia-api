@@ -1,0 +1,41 @@
+uuid: b9062477-3eea-49c2-a675-ea69ad36c562
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.agenda_item.field_agenda_item_description
+    - field.field.paragraph.agenda_item.field_agenda_item_time
+    - field.field.paragraph.agenda_item.field_agenda_item_title
+    - paragraphs.paragraphs_type.agenda_item
+  module:
+    - time_field
+id: paragraph.agenda_item.default
+targetEntityType: paragraph
+bundle: agenda_item
+mode: default
+content:
+  field_agenda_item_description:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_agenda_item_time:
+    weight: 3
+    label: above
+    settings:
+      time_format: 'h:i a'
+    third_party_settings: {  }
+    type: time_formatter
+    region: content
+  field_agenda_item_title:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  search_api_excerpt: true

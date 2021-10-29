@@ -1,0 +1,14 @@
+uuid: d8745c13-a6eb-4366-bd68-2404cec40240
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_committee_reviewer
+  module:
+    - user
+id: user_add_role_action.cfo_committee_reviewer
+label: 'Add the CFO Committee reviewer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cfo_committee_reviewer

@@ -1,0 +1,14 @@
+uuid: ff720bce-3fcf-4665-9039-c62a17b18931
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_council_creator
+  module:
+    - user
+id: user_add_role_action.cfo_council_creator
+label: 'Add the CFO Council creator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cfo_council_creator
