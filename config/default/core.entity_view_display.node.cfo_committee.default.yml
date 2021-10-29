@@ -6,8 +6,15 @@ dependencies:
     - field.field.node.cfo_committee.body
     - node.type.cfo_committee
   module:
+    - panelizer
     - text
     - user
+third_party_settings:
+  panelizer:
+    enable: false
+    custom: false
+    allow: false
+    default: default
 id: node.cfo_committee.default
 targetEntityType: node
 bundle: cfo_committee
@@ -16,19 +23,11 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  content_moderation_control:
-    weight: -20
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  links:
-    weight: 100
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     region: content
 hidden:
+  content_moderation_control: true
+  links: true
   search_api_excerpt: true
