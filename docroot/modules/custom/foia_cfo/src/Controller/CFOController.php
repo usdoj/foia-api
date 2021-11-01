@@ -80,7 +80,10 @@ class CFOController extends ControllerBase {
       // Title and body of the Council node.
       $response['title'] = $council_node->label();
 
-      if ($council_node->get('body')) {
+      if (
+        !empty($council_node->get('body'))
+        && !empty($council_node->get('body')->getValue()[0]['value'])
+      ) {
         $body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($council_node->get('body')->getValue()[0]['value']);
         $response['body'] = $body;
       }
@@ -279,10 +282,10 @@ class CFOController extends ControllerBase {
    * @param \Drupal\node\Entity\Node $committee
    *   Node object of the committee passed as argument through routing.
    *
-   * @return \Drupal\Core\Cache\CacheableJsonResponse|false
+   * @return \Drupal\Core\Cache\CacheableJsonResponse
    *   Returns json object or false if the node did not load.
    */
-  public function getCommittee(Node $committee) {
+  public function getCommittee(Node $committee): CacheableJsonResponse {
 
     if (!empty($committee) && $committee->isPublished()) {
 
@@ -296,7 +299,11 @@ class CFOController extends ControllerBase {
       ];
 
       // Add body HTML if any - use absolute links.
-      if ($committee->hasField('body') && !empty($committee->get('body'))) {
+      if (
+        $committee->hasField('body')
+        && !empty($committee->get('body'))
+        && !empty($committee->get('body')->getValue()[0]['value'])
+      ) {
         $response['committee_body'] = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee->get('body')->getValue()[0]['value']);
       }
 
@@ -319,7 +326,7 @@ class CFOController extends ControllerBase {
     else {
 
       // Not a valid committee or not published.
-      return FALSE;
+      return new CacheableJsonResponse([]);
 
     }
 

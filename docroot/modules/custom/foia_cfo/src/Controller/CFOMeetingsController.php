@@ -120,10 +120,10 @@ class CFOMeetingsController extends ControllerBase {
    * @param \Drupal\node\Entity\Node $meeting
    *   Node object of the meeting passed as argument through routing.
    *
-   * @return \Drupal\Core\Cache\CacheableJsonResponse|false
+   * @return \Drupal\Core\Cache\CacheableJsonResponse
    *   Returns json object or false if the node did not load.
    */
-  public function getMeeting(Node $meeting) {
+  public function getMeeting(Node $meeting): CacheableJsonResponse {
 
     if (!empty($meeting) && $meeting->isPublished()) {
 
@@ -221,7 +221,7 @@ class CFOMeetingsController extends ControllerBase {
     else {
 
       // Not a valid meeting or not published.
-      return FALSE;
+      return new CacheableJsonResponse([]);
 
     }
 
