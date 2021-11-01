@@ -22,13 +22,13 @@ foia_cfo.committee:
         type: entity:node
 foia_cfo.meetings:
   path: 'api/cfo/meetings'
-  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getMeetings' }
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOMeetingsController::getMeetings' }
   methods:  [GET]
   requirements:
     _access: 'TRUE'
 foia_cfo.meeting:
   path: 'api/cfo/meeting/{meeting}'
-  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getMeeting' }
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOMeetingsController::getMeeting' }
   methods:  [GET]
   requirements:
     _access: 'TRUE'
