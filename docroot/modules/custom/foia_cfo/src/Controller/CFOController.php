@@ -11,6 +11,8 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Render\RenderContext;
 use Drupal\file\Entity\File;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
 
@@ -47,20 +49,22 @@ class CFOController extends ControllerBase {
     // Array to hold cache dependent node id's.
     $cache_nids = [];
 
-    // Load the council node.  Load the oldest one, there should be just one.
-    $council_query = \Drupal::entityQuery('node')
-      ->condition('type', 'cfo_council')
-      ->condition('status', 1)
-      ->sort('created')
-      ->range(0, 1)
-      ->accessCheck(FALSE)
-      ->execute();
+    // Wrap Query in render context.
+    $context = new RenderContext();
+    $council_nids = \Drupal::service('renderer')->executeInRenderContext($context, function () {
+      $council_query = \Drupal::entityQuery('node')
+        ->condition('type', 'cfo_council')
+        ->condition('status', 1)
+        ->sort('created')
+        ->range(0, 1);
+      return $council_query->execute();
+    });
 
     // Should only be one result.
-    if (!empty($council_query)) {
+    if (!empty($council_nids)) {
 
       // Grab the node id of the council node.
-      $council_nid = array_shift($council_query);
+      $council_nid = array_shift($council_nids);
 
       // Add the node id of the council page.
       $cache_nids[] = 'node:' . $council_nid;
@@ -91,31 +95,35 @@ class CFOController extends ControllerBase {
           // Add the node id of the committee page.
           $cache_nids[] = 'node:' . $nid;
           $committee_node = $this->nodeStorage->load($nid);
-          $committee_body = self::absolutePathFormatter($committee_node->body->getValue()[0]['value']);
-          $response['committees'][] = [
-            'committee_title' => $committee_node->label(),
-            'committee_body' => $committee_body,
-          ];
+          $committee = ['committee_title' => $committee_node->label()];
+          if (!empty($committee_node->body->getValue())) {
+            $committee_body = self::absolutePathFormatter($committee_node->body->getValue()[0]['value']);
+            $committee['committee_body'] = $committee_body;
+          }
+          $response['committees'][] = $committee;
         }
       }
 
     }
 
-    // Query for all CFO meetings.
-    $meetings_query = \Drupal::entityQuery('node')
-      ->condition('type', 'cfo_meeting')
-      ->condition('status', 1)
-      ->sort('field_meeting_date', 'DESC')
-      ->accessCheck(FALSE)
-      ->execute();
+    // Wrap Query in render context.
+    $context_meetings = new RenderContext();
+    $meetings_nids = \Drupal::service('renderer')->executeInRenderContext($context_meetings, function () {
+      // Query for all CFO meetings.
+      $meetings_query = \Drupal::entityQuery('node')
+        ->condition('type', 'cfo_meeting')
+        ->condition('status', 1)
+        ->sort('field_meeting_date', 'DESC');
+      return $meetings_query->execute();
+    });
 
-    if (!empty($meetings_query)) {
+    if (!empty($meetings_nids)) {
 
       // Store meetings as array elements.
       $response['meetings'] = [];
 
       // Loop through all meetings.
-      foreach ($meetings_query as $meeting_nid) {
+      foreach ($meetings_nids as $meeting_nid) {
 
         // Initialize this meeting.
         $meeting = [];
@@ -156,6 +164,7 @@ class CFOController extends ControllerBase {
 
     }
 
+    // Set up the Cache Meta.
     $cacheMeta = (new CacheableMetadata())
       ->setCacheTags($cache_nids)
       ->setCacheMaxAge(Cache::PERMANENT);
@@ -166,13 +175,25 @@ class CFOController extends ControllerBase {
     // Add in the cache dependencies.
     $json_response->addCacheableDependency($cacheMeta);
 
+    // Handle any bubbled cacheability metadata.
+    if (!$context->isEmpty()) {
+      $bubbleable_metadata = $context->pop();
+      BubbleableMetadata::createFromObject($council_nids)
+        ->merge($bubbleable_metadata);
+    }
+    if (!$context_meetings->isEmpty()) {
+      $bubbleable_metadata = $context_meetings->pop();
+      BubbleableMetadata::createFromObject($meetings_nids)
+        ->merge($bubbleable_metadata);
+    }
+
     // Return JSON Response.
     return $json_response;
 
   }
 
   /**
-   * Adds the absolute path to src and href paramater values.
+   * Adds the absolute path to src and href parameter values.
    *
    * @param string $input
    *   Input string (html).
@@ -217,8 +238,10 @@ class CFOController extends ControllerBase {
       $return_item = [];
 
       // Set the item label.
-      $return_item['item_title'] = $item->get('field_link_label')
-        ->getValue()[0]['value'];
+      if (!empty($item->get('field_link_label')->getValue())) {
+        $return_item['item_title'] = $item->get('field_link_label')
+          ->getValue()[0]['value'];
+      }
 
       // Set the item link - this will be a URL or File.
       if (!empty($item->get('field_link_link')->getValue()[0]['uri'])) {
@@ -238,7 +261,9 @@ class CFOController extends ControllerBase {
       }
 
       // Add this item to the return array.
-      $return[] = $return_item;
+      if (!empty($return_item)) {
+        $return[] = $return_item;
+      }
 
     }
 
