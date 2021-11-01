@@ -4,3 +4,9 @@ foia_cfo.council:
   methods:  [GET]
   requirements:
     _access: 'TRUE'
+foia_cfo.committees:
+  path: 'api/cfo/committees'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getCommittees' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'

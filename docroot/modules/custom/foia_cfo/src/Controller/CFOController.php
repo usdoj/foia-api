@@ -39,7 +39,13 @@ class CFOController extends ControllerBase {
   }
 
   /**
-   * Callback for `api/cfo/council` API method.
+   * Callback for `api/cfo/council` API method returns JSON Response.
+   *
+   * Includes all elements for the council page including attached committees
+   * and details of all CFO Meetings.
+   *
+   * @return \Drupal\Core\Cache\CacheableJsonResponse
+   *   JSON for the CFO council page.
    */
   public function getCouncil(): CacheableJsonResponse {
 
@@ -76,7 +82,7 @@ class CFOController extends ControllerBase {
       $response['title'] = $council_node->label();
 
       if ($council_node->get('body')) {
-        $body = self::absolutePathFormatter($council_node->get('body')->getValue()[0]['value']);
+        $body = static::absolutePathFormatter($council_node->get('body')->getValue()[0]['value']);
         $response['body'] = $body;
       }
 
@@ -97,7 +103,7 @@ class CFOController extends ControllerBase {
           $committee_node = $this->nodeStorage->load($nid);
           $committee = ['committee_title' => $committee_node->label()];
           if (!empty($committee_node->body->getValue())) {
-            $committee_body = self::absolutePathFormatter($committee_node->body->getValue()[0]['value']);
+            $committee_body = static::absolutePathFormatter($committee_node->body->getValue()[0]['value']);
             $committee['committee_body'] = $committee_body;
           }
           $response['committees'][] = $committee;
@@ -137,7 +143,7 @@ class CFOController extends ControllerBase {
         // Add title and body for the meeting.
         $meeting['meeting_title'] = $meeting_node->label();
         if (!empty($meeting_node->body->getValue()[0]['value'])) {
-          $meeting_body = self::absolutePathFormatter($meeting_node->body->getValue()[0]['value']);
+          $meeting_body = static::absolutePathFormatter($meeting_node->body->getValue()[0]['value']);
           $meeting['meeting_body'] = $meeting_body;
         }
 
@@ -149,12 +155,12 @@ class CFOController extends ControllerBase {
 
         // Meeting materials.
         if ($meeting_node->field_meeting_materials->count()) {
-          $meeting['meeting_materials'] = self::linkOrFileFormatter($meeting_node->field_meeting_materials);
+          $meeting['meeting_materials'] = static::linkOrFileFormatter($meeting_node->field_meeting_materials);
         }
 
         // Meeting documents.
         if ($meeting_node->field_meeting_documents->count()) {
-          $meeting['meeting_documents'] = self::linkOrFileFormatter($meeting_node->field_meeting_documents);
+          $meeting['meeting_documents'] = static::linkOrFileFormatter($meeting_node->field_meeting_documents);
         }
 
         // Add this meeting to the return meeting array.
@@ -184,6 +190,79 @@ class CFOController extends ControllerBase {
     if (!$context_meetings->isEmpty()) {
       $bubbleable_metadata = $context_meetings->pop();
       BubbleableMetadata::createFromObject($meetings_nids)
+        ->merge($bubbleable_metadata);
+    }
+
+    // Return JSON Response.
+    return $json_response;
+
+  }
+
+  /**
+   * Callback for `api/cfo/committees` API method returns JSON Response.
+   *
+   * Returns array of node ids, committee name, and a few other details.
+   * The node id's can then be passed to the committee detail callback
+   * for full details of the committee.
+   *
+   * @return \Drupal\Core\Cache\CacheableJsonResponse
+   *   JSON for the committees list.
+   */
+  public function getCommittees(): CacheableJsonResponse {
+
+    // Initialize the response.
+    $response = [];
+
+    // Array to hold cache dependent node id's.
+    $cache_nids = [];
+
+    // Wrap Query in render context.
+    $context = new RenderContext();
+    $committee_nids = \Drupal::service('renderer')->executeInRenderContext($context, function () {
+      $committee_query = \Drupal::entityQuery('node')
+        ->condition('type', 'cfo_committee')
+        ->condition('status', 1)
+        ->sort('created');
+      return $committee_query->execute();
+    });
+
+    if (!empty($committee_nids)) {
+
+      // Loop through all committees.
+      foreach ($committee_nids as $committee_nid) {
+
+        // Add the node id of the committee.
+        $cache_nids[] = 'node:' . $committee_nid;
+
+        // Load the committee node.
+        if ($committee_node = $this->nodeStorage->load($committee_nid)) {
+          $committee = [
+            'committee_nid' => $committee_nid,
+            'committee_title' => $committee_node->label(),
+            'committee_updated' => $committee_node->changed->value,
+          ];
+          $response[] = $committee;
+        }
+
+      }
+
+    }
+
+    // Set up the Cache Meta.
+    $cacheMeta = (new CacheableMetadata())
+      ->setCacheTags($cache_nids)
+      ->setCacheMaxAge(Cache::PERMANENT);
+
+    // Set the JSON response to the agents array.
+    $json_response = new CacheableJsonResponse($response);
+
+    // Add in the cache dependencies.
+    $json_response->addCacheableDependency($cacheMeta);
+
+    // Handle any bubbled cacheability metadata.
+    if (!$context->isEmpty()) {
+      $bubbleable_metadata = $context->pop();
+      BubbleableMetadata::createFromObject($committee_nids)
         ->merge($bubbleable_metadata);
     }
 
