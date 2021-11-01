@@ -15,6 +15,7 @@ use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\RenderContext;
 use Drupal\file\Entity\File;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
+use Drupal\node\Entity\Node;
 
 /**
  * Controller routines for foia_cfo routes.
@@ -175,7 +176,7 @@ class CFOController extends ControllerBase {
       ->setCacheTags($cache_nids)
       ->setCacheMaxAge(Cache::PERMANENT);
 
-    // Set the JSON response to the agents array.
+    // Set the JSON response from our response of council data.
     $json_response = new CacheableJsonResponse($response);
 
     // Add in the cache dependencies.
@@ -253,7 +254,7 @@ class CFOController extends ControllerBase {
       ->setCacheTags($cache_nids)
       ->setCacheMaxAge(Cache::PERMANENT);
 
-    // Set the JSON response to the agents array.
+    // Set the JSON response to the response of committees.
     $json_response = new CacheableJsonResponse($response);
 
     // Add in the cache dependencies.
@@ -268,6 +269,60 @@ class CFOController extends ControllerBase {
 
     // Return JSON Response.
     return $json_response;
+
+  }
+
+  /**
+   * Callback for `api/cfo/committee/{node}` API method returns JSON Response.
+   *
+   * Returns full details for a committee based on node id passed.
+   *
+   * @param \Drupal\node\Entity\Node $committee
+   *   Node object of the committee passed as argument through routing.
+   *
+   * @return \Drupal\Core\Cache\CacheableJsonResponse|false
+   *   Returns json object or false if the node did not load.
+   */
+  public function getCommittee(Node $committee) {
+
+    if (!empty($committee) && $committee->isPublished()) {
+
+      // Array to hold cache dependent node id's (just this one).
+      $cache_nids = ['node:' . $committee->id()];
+
+      // Initialize the response with basic info.
+      $response = [
+        'committee_title' => $committee->label(),
+        'committee_updated' => $committee->changed->value,
+      ];
+
+      // Add body HTML if any - use absolute links.
+      if ($committee->hasField('body') && !empty($committee->get('body'))) {
+        $response['committee_body'] = static::absolutePathFormatter($committee->get('body')->getValue()[0]['value']);
+      }
+
+      // Set up the Cache Meta.
+      $cacheMeta = (new CacheableMetadata())
+        ->setCacheTags($cache_nids)
+        ->setCacheMaxAge(Cache::PERMANENT);
+
+      // Set the JSON response to the response of committee data.
+      $json_response = new CacheableJsonResponse($response);
+
+      // Add in the cache dependencies.
+      $json_response->addCacheableDependency($cacheMeta);
+
+      // Return JSON Response.
+      return $json_response;
+
+    }
+
+    else {
+
+      // Not a valid committee or not published.
+      return FALSE;
+
+    }
 
   }
 
