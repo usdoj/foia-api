@@ -20,3 +20,19 @@ foia_cfo.committee:
     parameters:
       committee:
         type: entity:node
+foia_cfo.meetings:
+  path: 'api/cfo/meetings'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getMeetings' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+foia_cfo.meeting:
+  path: 'api/cfo/meeting/{meeting}'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getMeeting' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+  options:
+    parameters:
+      meeting:
+        type: entity:node
