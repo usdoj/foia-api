@@ -1112,6 +1112,38 @@
         }
       });
 
+      // VII.D Check fields for value greater or equal to zero.
+      var viidPendingFieldsToValidate = [
+        '#edit-field-overall-viid-sim-pend-0-value',
+        '#edit-field-overall-viid-comp-pend-0-value',
+        '#edit-field-overall-viid-exp-pend-0-value',
+      ];
+      for(var i = 0; i <= viidPendingFieldsToValidate.length - 1; i++) {
+        $(viidPendingFieldsToValidate[i]).rules("add", {
+          notNegative: true,
+          messages: {
+            notNegative: "Please use number greater or equal to zero."
+          }
+        });
+      }
+
+      // VII.D. Expedited - Agency Overall number greater or equal to zero validation check for text fields.
+      var viidFieldsToFilter = [
+        'field_sim_pend',
+        'field_comp_pend',
+        'field_exp_pend',
+      ];
+      for(var i = 0; i <= viidFieldsToFilter.length - 1; i++) {
+        $("input[name*='field_pending_requests_vii_d_']").filter("input[name*='" + viidFieldsToFilter[i] + "']").each(function() {
+          $(this).rules("add", {
+            notNegative: $("input[name*='field_req_viiia']").filter("input[name*='" + viidFieldsToFilter[i] + "']"),
+            messages: {
+              notNegative: "Please use number greater or equal to zero."
+            }
+          });
+        });
+      }
+
       // VII.E. PENDING REQUESTS / 2nd - 10th
       // Iterate over the the 2nd to 10th oldest overall pending requests,
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
@@ -1160,6 +1192,31 @@
           lessThanEqualSum: "This field should be should be equal to or less than the # granted + # denied.",
         }
       });
+
+      // VIII.A. Agency Overall number greater or equal to zero validation check for text fields.
+      $('#edit-field-overall-viiia-num-jud-w10-0-value').rules("add", {
+        notNegative: true,
+        messages: {
+          notNegative: "Please use number greater or equal to zero."
+        }
+      });
+
+      // VIII.A. Agency Overall number greater or equal to zero validation check for text fields.
+      var viiiaFieldsToFilter = [
+        'field_num_jud_w10',
+        'field_num_grant',
+        'field_num_denied'
+      ];
+      for(var i = 0; i <= viiiaFieldsToFilter.length - 1; i++) {
+        $("input[name*='field_req_viiia']").filter("input[name*='" + viiiaFieldsToFilter[i] + "']").each(function() {
+          $(this).rules("add", {
+            notNegative: $("input[name*='field_req_viiia']").filter("input[name*='" + viiiaFieldsToFilter[i] + "']"),
+            messages: {
+              notNegative: "Please use number greater or equal to zero."
+            }
+          });
+        });
+      }
 
       // VIII.B. Agency Overall Median Number of Days to Adjudicate.
       $("#edit-field-overall-viiib-med-days-jud-0-value").rules("add", {
