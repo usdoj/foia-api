@@ -1,0 +1,38 @@
+foia_cfo.council:
+  path: 'api/cfo/council'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getCouncil' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+foia_cfo.committees:
+  path: 'api/cfo/committees'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getCommittees' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+foia_cfo.committee:
+  path: 'api/cfo/committee/{committee}'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getCommittee' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+  options:
+    parameters:
+      committee:
+        type: entity:node
+foia_cfo.meetings:
+  path: 'api/cfo/meetings'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOMeetingsController::getMeetings' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+foia_cfo.meeting:
+  path: 'api/cfo/meeting/{meeting}'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOMeetingsController::getMeeting' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+  options:
+    parameters:
+      meeting:
+        type: entity:node
