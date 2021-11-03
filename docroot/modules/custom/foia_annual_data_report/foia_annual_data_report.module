@@ -498,3 +498,32 @@ function foia_annual_data_report_node_presave($entity) {
   }
 
 }
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ *
+ * Removes all the "Add As..." form display links for the annual
+ * report data.  Also renames the default link for adding a new report.
+ */
+function foia_annual_data_report_menu_local_actions_alter(&$local_actions) {
+
+  // Look for this string to match an Annual Data Report (ADR).
+  $adr_string = 'form_mode_manager.action:node.annual_report_';
+
+  foreach ($local_actions as $key => $action) {
+    // Look for the adr string in the form id.
+    if (substr($key, 0, strlen($adr_string)) === $adr_string) {
+      // Unset if this is one of the form modes for the annual report.
+      if ($key != 'form_mode_manager.action:node.annual_report_agency_info') {
+        unset($local_actions[$key]);
+      }
+      // If this is the "agency info" make this the only ADR link.
+      else {
+        $local_actions[$key]['title'] = t('Add Annual Report Data');
+      }
+    }
+  }
+
+}
+
+
