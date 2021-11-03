@@ -5,6 +5,7 @@
  * Primary module hooks for foia_annual_data_report module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\AlertCommand;
@@ -57,7 +58,7 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
         'annual_report_viii_a_requests_for_expedited_processing',
         'annual_report_vii_d_pending_requests_all',
       ];
-      if (in_array($form_section, $validate_sections) ) {
+      if (in_array($form_section, $validate_sections)) {
         $form['#validate'][] = '_form_annual_data_report_section_validate';
       }
 
@@ -511,7 +512,7 @@ function foia_annual_data_report_menu_local_actions_alter(&$local_actions) {
   $adr_string = 'form_mode_manager.action:node.annual_report_';
 
   foreach ($local_actions as $key => $action) {
-    // Look for the adr string in the form id.
+    // Look for the adr string in the key.
     if (substr($key, 0, strlen($adr_string)) === $adr_string) {
       // Unset if this is one of the form modes for the annual report.
       if ($key != 'form_mode_manager.action:node.annual_report_agency_info') {
@@ -527,3 +528,40 @@ function foia_annual_data_report_menu_local_actions_alter(&$local_actions) {
 }
 
 
+/**
+ * Implements hook_entity_operation_alter().
+ *
+ * Removes the extra "Edit As..." form modes for annual data reports.
+ * Also removes the edit and renames the "agency info" form mode to edit.
+ */
+function foia_annual_data_report_entity_operation_alter(array &$operations, EntityInterface $entity) {
+
+  if ($entity->bundle() === 'annual_foia_report_data') {
+
+    // Start by setting the edit operation - takes a long time to load.
+    if (!empty('edit')) {
+      $operations['edit']['title'] = 'FULL EDIT';
+      $operations['edit']['weight'] = 1000;
+    }
+
+    // Look for this string to match an Annual Data Report (ADR).
+    $adr_string = 'annual_report_';
+
+    foreach ($operations as $key => $operation) {
+      // Look for the adr string in the key.
+      if (substr($key, 0, strlen($adr_string)) === $adr_string) {
+        // Unset if this is one of the form modes for the annual report.
+        if ($key != 'annual_report_agency_info') {
+          unset($operations[$key]);
+        }
+        // If this is the "agency info" make this the only ADR link.
+        else {
+          $operations[$key]['title'] = 'Edit';
+          $operations[$key]['weight'] = 10;
+        }
+      }
+    }
+
+  }
+
+}
