@@ -55,9 +55,11 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       $validate_sections = [
         'edit',
         'annual_report_vi_c_5_ten_oldest_pending',
-        'annual_report_viii_a_requests_for_expedited_processing',
+        'annual_report_vii_e_pending_requests_ten_oldest',
         'annual_report_vii_d_pending_requests_all',
+        'annual_report_viii_a_requests_for_expedited_processing',
       ];
+
       if (in_array($form_section, $validate_sections)) {
         $form['#validate'][] = '_form_annual_data_report_section_validate';
       }
@@ -107,6 +109,7 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
   // Fields for validation.
   $fields_to_validate = [
     'field_admin_app_vic5',
+    'field_admin_app_viie',
     'field_overall_vic5_num_day_1',
     'field_overall_vic5_num_day_2',
     'field_overall_vic5_num_day_3',
@@ -120,6 +123,16 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
     'field_overall_viid_sim_pend',
     'field_overall_viid_comp_pend',
     'field_overall_viid_exp_pend',
+    'field_overall_viie_num_days_1',
+    'field_overall_viie_num_days_2',
+    'field_overall_viie_num_days_3',
+    'field_overall_viie_num_days_4',
+    'field_overall_viie_num_days_5',
+    'field_overall_viie_num_days_6',
+    'field_overall_viie_num_days_7',
+    'field_overall_viie_num_days_8',
+    'field_overall_viie_num_days_9',
+    'field_overall_viie_num_days_10',
     'field_overall_viiia_num_jud_w10',
     'field_pending_requests_vii_d_',
     'field_req_viiia',
@@ -140,6 +153,7 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
   ];
 
   $form_state_values = $form_state->getValues();
+
   if (!empty($form_state_values)) {
 
     foreach ($form_state_values as $key => $form_value) {
@@ -151,6 +165,11 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
           _foia_annual_data_report_validate_paragraph_fields($form, $form_state, $key, $form_value, $paragraph_fields_for_validation);
         }
         else {
+
+//          if ($key === 'field_admin_app_viie') {
+//            dump($form_value);
+//            die();
+//          }
 
           // Determine first if this is a subform of the field to be validated.
           if (!empty($form_value['widget'][0]['subform'])) {
@@ -167,7 +186,7 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
                       $this_fieldname = 'field_num_days_' . $i;
                       $this_key = $key . '][' . $pos . '][subform][' . $this_fieldname;
                       $this_value = $value['subform'][$this_fieldname][0]['value'];
-                      $element_title = 'Oldest Days Component #' . ($pos + 1) . ' Day #' . $i;
+                      $element_title = 'Oldest Days agency component #' . ($pos + 1) . ' day #' . $i;
                       $error_msg = t("Invalid input for {$element_title}, please use number greater or equal to zero.");
                       _foia_annual_data_report_text_as_integer_validation($form_state, $this_key, $this_value, $error_msg);
                     }
