@@ -884,6 +884,13 @@
           }
         });
       }
+      // Need to add the numeric validator to the first "oldest" day.  Prior ordinal will catch the rest.
+      $("#edit-field-admin-app-vic5-0-subform-field-num-days-1-0-value").rules("add", {
+        notNegative: "#edit-field-admin-app-vic5-0-subform-field-num-days-1-0-value",
+        messages: {
+          notNegative: "Please use number greater or equal to zero."
+        }
+      });
 
       // VI.C. (5) - ADMINISTRATIVE APPEALS - Oldest Days component/ 2nd-10th
       // For each Agency/Component, iterate over 2nd to 10th Oldest days
