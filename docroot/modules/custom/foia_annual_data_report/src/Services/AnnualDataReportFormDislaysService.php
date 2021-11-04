@@ -63,6 +63,11 @@ class AnnualDataReportFormDislaysService {
       // Use this part of the path to append the nav form mode to.
       $path_part = implode('/', $current_path_ar);
 
+      // Append /edit if this is the full/default edit view.
+      if ($current_mode === 'edit') {
+        $path_part .= '/edit';
+      }
+
       // Use this to help get the prev/next links.
       $iterator = new \ArrayIterator($modes);
 
@@ -71,6 +76,15 @@ class AnnualDataReportFormDislaysService {
 
       // "Dropdown" nav with all form modes.
       $form_nav .= '<ul class="form-section-nav">';
+
+      // Manually add link for default/full edit mode.
+      $li_tag = '<li>';
+      if ($current_mode === 'edit') {
+        $li_tag = '<li class="is-active">';
+      }
+      $form_nav .= $li_tag . '<a href="' . $path_part . '">';
+      $form_nav .= 'Default/Full Mode</a></li>';
+
       foreach ($modes as $key => $label) {
         $li_tag = '<li>';
         if ($key === $current_mode) {
@@ -90,7 +104,7 @@ class AnnualDataReportFormDislaysService {
         // Default view should link to first "mode".
         $iterator->seek(0);
         $form_nav .= '<a href="' . $path_part;
-        $form_nav .= '/edit/' . $iterator->key() . '">';
+        $form_nav .= '/' . $iterator->key() . '">';
         $form_nav .= $iterator->current() . ' ---&gt;</a>';
 
       }
