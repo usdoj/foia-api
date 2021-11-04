@@ -106,6 +106,7 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
 
   // Fields for validation.
   $fields_to_validate = [
+    'field_admin_app_vic5',
     'field_overall_vic5_num_day_1',
     'field_overall_vic5_num_day_2',
     'field_overall_vic5_num_day_3',
@@ -139,19 +140,51 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
   ];
 
   $form_state_values = $form_state->getValues();
-  if ( ! empty($form_state_values) ) {
-    foreach($form_state_values as $key => $form_value) {
-      if ( in_array($key, $fields_to_validate) ) {
+  if (!empty($form_state_values)) {
+
+    foreach ($form_state_values as $key => $form_value) {
+
+      if (in_array($key, $fields_to_validate)) {
 
         // Check if field is a selected paragraph field.
-        if (in_array($key, $paragraph_parent_fields) ) {
+        if (in_array($key, $paragraph_parent_fields)) {
           _foia_annual_data_report_validate_paragraph_fields($form, $form_state, $key, $form_value, $paragraph_fields_for_validation);
-        } else {
-          $value = $form_value[0]['value'];
-          $element = $form[$key];
-          $element_title = $element['widget'][0]['#title'];
-          $error_msg = t("Invalid input for {$element_title}, please use number greater or equal to zero.");
-          _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
+        }
+        else {
+
+          // Determine first if this is a subform of the field to be validated.
+          if (!empty($form_value['widget'][0]['subform'])) {
+            // Get the type of subform.
+            $subform = array_keys($form_value['widget'][0]['subform'])[0];
+            switch ($subform) {
+              case "group_oldest_days":
+                // Loop over each agency component.
+                foreach ($form_value as $pos => $value) {
+                  // Just get the values not widgets etc.
+                  if (is_numeric($pos)) {
+                    // Loop over 10 days.
+                    for ($i = 1; $i <= 10; $i++) {
+                      $this_fieldname = 'field_num_days_' . $i;
+                      $this_key = $key . '][' . $pos . '][subform][' . $this_fieldname;
+                      $this_value = $value['subform'][$this_fieldname][0]['value'];
+                      $element_title = 'Oldest Days Component #' . ($pos + 1) . ' Day #' . $i;
+                      $error_msg = t("Invalid input for {$element_title}, please use number greater or equal to zero.");
+                      _foia_annual_data_report_text_as_integer_validation($form_state, $this_key, $this_value, $error_msg);
+                    }
+                  }
+                }
+                break;
+            }
+          }
+
+          else {
+            $value = $form_value[0]['value'];
+            $element = $form[$key];
+            $element_title = $element['widget'][0]['#title'];
+            $error_msg = t("Invalid input for {$element_title}, please use number greater or equal to zero.");
+            _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
+          }
+
         }
       }
     }
@@ -188,17 +221,22 @@ function _foia_annual_data_report_validate_paragraph_fields(array &$form, FormSt
 }
 
 /**
- * Handles Validation to check if value is greater or equal to zero for text fields.
- * @param FormStateInterface $form_state
- * @param $key
- * @param $value
- * @param $error_message
+ * Handles Validation check value is greater or equal to zero for text fields.
+ *
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ * @param string $key
+ *   Field key.
+ * @param string $value
+ *   Field Value.
+ * @param string $error_message
+ *   Error.
  */
 function _foia_annual_data_report_text_as_integer_validation(FormStateInterface $form_state, $key, $value, $error_message): void {
-  if ( ! empty( $value ) ) {
+  if (!empty($value)) {
     // Check of value is greater than or equal to 0.
-    if ( ! ctype_digit($value) || (int) $value < 0 ) {
-      $form_state->setErrorByName( $key, $error_message );
+    if (!ctype_digit($value) || (int) $value < 0) {
+      $form_state->setErrorByName($key, $error_message);
     }
   }
 }
