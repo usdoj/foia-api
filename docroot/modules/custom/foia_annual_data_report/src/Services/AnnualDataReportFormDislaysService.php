@@ -74,7 +74,14 @@ class AnnualDataReportFormDislaysService {
       // Initialize for nav html.
       $form_nav = '';
 
-      // "Dropdown" nav with all form modes.
+
+      // Close "button" for the form section nav.
+      $form_nav .= '<div id="form-section-nav-close">X</div>';
+
+      // "Dropdown" nav with all form modes. Wrapper.
+      $form_nav .= '<div id="adr-form-section-nav">';
+
+      // Links to form sections.
       $form_nav .= '<ul class="form-section-nav">';
 
       // Manually add link for default/full edit mode.
@@ -85,15 +92,17 @@ class AnnualDataReportFormDislaysService {
       $form_nav .= $li_tag . '<a href="' . $path_part . '">';
       $form_nav .= 'Default/Full Mode</a></li>';
 
+      // Loop through the modes adding li's which are styled as dropdown items.
       foreach ($modes as $key => $label) {
-        $li_tag = '<li>';
-        if ($key === $current_mode) {
-          $li_tag = '<li class="is-active">';
+        if ($key != $current_mode) {
+          $form_nav .= '<li><a href="' . $path_part . '/' . $key . '">';
+          $form_nav .= $label . '</a></li>';
         }
-        $form_nav .= $li_tag . '<a href="' . $path_part . '/' . $key . '">';
-        $form_nav .= $label . '</a></li>';
+        else {
+          $form_nav .= '<li class="is-active">' . $label . '</li>';
+        }
       }
-      $form_nav .= '</ul>';
+      $form_nav .= '</ul></div>';
 
       // Position of the mode in the array.
       $mode_pos = array_search($current_mode, array_keys($modes));
