@@ -336,7 +336,7 @@ third_party_settings:
       weight: 1
       format_type: details
       format_settings:
-        description: '<h3>IX. FOIA Personnel and Costs</h3>Every component that  processes requests or appeals should be listed, even if they do not have data to report in this section. If the component processed requests in V.A. there must be a value entered for personnel and costs. If the component field is filled in, all other editable columns must be filled in. All values must be non-negative numeric integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section.'
+        description: 'Every component that  processes requests or appeals should be listed, even if they do not have data to report in this section. If the component processed requests in V.A. there must be a value entered for personnel and costs. If the component field is filled in, all other editable columns must be filled in. All values must be non-negative numeric integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section.'
         open: true
         required_fields: true
         id: ''
@@ -391,8 +391,8 @@ third_party_settings:
       region: content
     group_hidden:
       children:
-        - field_foia_requests_vb1
         - field_agency_components
+        - field_foia_requests_vb1
       parent_name: ''
       weight: 10
       format_type: html_element
