@@ -101,15 +101,18 @@ class CFOController extends ControllerBase {
           /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $committee */
           $nid = $committee->getValue()['target_id'];
           // Add the node id of the committee page.
-          $cache_nids[] = 'node:' . $nid;
           $committee_node = $this->nodeStorage->load($nid);
-          $committee = ['committee_title' => $committee_node->label()];
-          if (!empty($committee_node->body->getValue())) {
-            $committee_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee_node->body->getValue()[0]['value']);
-            $committee['committee_body'] = $committee_body;
+          if (!empty($committee_node)) {
+            $cache_nids[] = 'node:' . $nid;
+            $committee = ['committee_title' => $committee_node->label()];
+            if (!empty($committee_node->body->getValue())) {
+              $committee_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee_node->body->getValue()[0]['value']);
+              $committee['committee_body'] = $committee_body;
+            }
+            $response['committees'][] = $committee;
           }
-          $response['committees'][] = $committee;
         }
+
       }
 
     }
@@ -300,7 +303,11 @@ class CFOController extends ControllerBase {
    */
   public function getCommittee(Node $committee): CacheableJsonResponse {
 
-    if (!empty($committee) && $committee->isPublished()) {
+    if (
+      !empty($committee)
+      && $committee->isPublished()
+      && $committee->bundle() === 'cfo_committee'
+    ) {
 
       // Array to hold cache dependent node id's (just this one).
       $cache_nids = ['node:' . $committee->id()];

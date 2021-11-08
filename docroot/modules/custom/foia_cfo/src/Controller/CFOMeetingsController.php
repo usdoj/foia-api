@@ -128,7 +128,11 @@ class CFOMeetingsController extends ControllerBase {
     // Use this function to get the meeting node from the date string.
     $meeting = \Drupal::service('foia_cfo.default')->meetingFromDateString($meeting_date_string);
 
-    if (!empty($meeting) && $meeting->isPublished()) {
+    if (
+      !empty($meeting)
+      && $meeting->isPublished()
+      && $meeting->bundle() === 'cfo_meeting'
+    ) {
 
       // Array to hold cache dependent node id's (just this one).
       $cache_nids = ['node:' . $meeting->id()];
