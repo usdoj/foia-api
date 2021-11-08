@@ -149,16 +149,29 @@ class CFOController extends ControllerBase {
           $meeting['meeting_body'] = $meeting_body;
         }
 
-        // Add link to the Agenda if there is one.
-        if (!empty($meeting_node->get('field_meeting_agenda'))) {
-          /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $agenda */
-          $agenda = $meeting_node->get('field_meeting_agenda');
-        }
-
         // Meeting materials.
         if ($meeting_node->field_meeting_materials->count()) {
           // Use the Service to get info for an annual data report form.
           $meeting['meeting_materials'] = \Drupal::service('foia_cfo.default')->linkOrFileFormatter($meeting_node->field_meeting_materials);
+        }
+
+        // Add link to the Agenda if there is one, as part of meeting materials.
+        // Add as the first link - relative path.
+        if (!empty($meeting_node->get('field_meeting_agenda')->getValue())) {
+          if (!empty($meeting_node->get('field_meeting_date')->getValue()[0]['value'])) {
+            $meeting_date = $meeting_node->get('field_meeting_date')->getValue()[0]['value'];
+            $date_slug = date('F-j-Y', strtotime($meeting_date));
+            $meeting_materials_agenda = [
+              'item_title' => 'Agenda',
+              'item_link' => '/chief-foia-officers-council/meeting/' . $date_slug,
+            ];
+            if (!empty($meeting['meeting_materials'])) {
+              array_unshift($meeting['meeting_materials'], $meeting_materials_agenda);
+            }
+            else {
+              $meeting['meeting_materials'][0] = $meeting_materials_agenda;
+            }
+          }
         }
 
         // Meeting documents.

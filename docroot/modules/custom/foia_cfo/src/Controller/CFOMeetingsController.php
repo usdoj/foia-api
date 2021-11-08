@@ -137,7 +137,6 @@ class CFOMeetingsController extends ControllerBase {
       $response = [
         'meeting_title' => $meeting->label(),
         'meeting_updated' => $meeting->changed->value,
-        'meeting_slug' => $meeting->get('field_meeting_date')->getValue()[0]['value'],
       ];
 
       // Add body HTML if any - use absolute links.
