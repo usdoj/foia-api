@@ -113,19 +113,26 @@ class CFOMeetingsController extends ControllerBase {
   }
 
   /**
-   * Callback for `api/cfo/meeting/{meeting}` API method.
+   * Callback for `api/cfo/meeting/{meeting_date_string}` API method.
    *
-   * Returns JSON Response full details for a meeting based on node id passed.
+   * Returns JSON Response full details for a meeting based on date string.
    *
-   * @param \Drupal\node\Entity\Node $meeting
-   *   Node object of the meeting passed as argument through routing.
+   * @param string $meeting_date_string
+   *   Meeting date as string in the format M-d-Y.
    *
    * @return \Drupal\Core\Cache\CacheableJsonResponse
    *   Returns json object or false if the node did not load.
    */
-  public function getMeeting(Node $meeting): CacheableJsonResponse {
+  public function getMeeting(string $meeting_date_string): CacheableJsonResponse {
 
-    if (!empty($meeting) && $meeting->isPublished()) {
+    // Use this function to get the meeting node from the date string.
+    $meeting = \Drupal::service('foia_cfo.default')->meetingFromDateString($meeting_date_string);
+
+    if (
+      !empty($meeting)
+      && $meeting->isPublished()
+      && $meeting->bundle() === 'cfo_meeting'
+    ) {
 
       // Array to hold cache dependent node id's (just this one).
       $cache_nids = ['node:' . $meeting->id()];
