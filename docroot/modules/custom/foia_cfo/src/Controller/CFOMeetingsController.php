@@ -75,12 +75,22 @@ class CFOMeetingsController extends ControllerBase {
 
         // Load the meeting node.
         if ($meeting_node = $this->nodeStorage->load($meeting_nid)) {
+
+          // Prepare the meeting date for the url "slug".
+          $meeting_date = $meeting_node->get('field_meeting_date')->getValue()[0]['value'];
+          $meeting_slug = date('F-j-Y', strtotime($meeting_date));
+
+          // Contents of this meeting.
           $meeting = [
             'meeting_nid' => $meeting_nid,
             'meeting_title' => $meeting_node->label(),
             'meeting_updated' => $meeting_node->changed->value,
+            'meeting_slug' => $meeting_slug,
           ];
+
+          // Add this meeting into the response.
           $response[] = $meeting;
+
         }
 
       }
