@@ -36,3 +36,19 @@ foia_cfo.meeting:
     parameters:
       meeting_date_string:
         type: string
+foia_cfo.pages:
+  path: 'api/cfo/pages'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOPagesController::getPages' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+foia_cfo.page:
+  path: 'api/cfo/page/{slug}'
+  defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOPagesController::getPage' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+  options:
+    parameters:
+      slug:
+        type: string

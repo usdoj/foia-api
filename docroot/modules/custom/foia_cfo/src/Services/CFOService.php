@@ -140,6 +140,17 @@ class CFOService {
 
   }
 
+  /**
+   * Returns a node object that matches the slug and content type passed.
+   *
+   * @param string $slug
+   *   Matches field_cfo_slug.
+   * @param string $content_type
+   *   Matches node content type.
+   *
+   * @return \Drupal\node\Entity\Node|false
+   *   Node object or false.
+   */
   public function contentFromSlug(string $slug, string $content_type) {
 
     // Wrap Query in render context.

@@ -4,7 +4,7 @@ namespace Drupal\foia_cfo\Controller;
 
 /**
  * @file
- * Contains \Drupal\foia_cfo\Controller\TestAPIController.
+ * Contains \Drupal\foia_cfo\Controller\CFOMeetingsController.
  */
 
 use Drupal\Core\Cache\Cache;
@@ -52,9 +52,6 @@ class CFOMeetingsController extends ControllerBase {
     // Initialize the response.
     $response = [];
 
-    // Array to hold cache dependent node id's.
-    $cache_nids = [];
-
     // Wrap Query in render context.
     $context = new RenderContext();
     $meeting_nids = \Drupal::service('renderer')->executeInRenderContext($context, function () {
@@ -69,9 +66,6 @@ class CFOMeetingsController extends ControllerBase {
 
       // Loop through all meetings.
       foreach ($meeting_nids as $meeting_nid) {
-
-        // Add the node id of the meeting.
-        $cache_nids[] = 'node:' . $meeting_nid;
 
         // Load the meeting node.
         if ($meeting_node = $this->nodeStorage->load($meeting_nid)) {
@@ -99,7 +93,7 @@ class CFOMeetingsController extends ControllerBase {
 
     // Set up the Cache Meta.
     $cacheMeta = (new CacheableMetadata())
-      ->setCacheTags($cache_nids)
+      ->setCacheTags(['node_list:cfo_meeting'])
       ->setCacheMaxAge(Cache::PERMANENT);
 
     // Set the JSON response to the response of meetings.
@@ -141,9 +135,6 @@ class CFOMeetingsController extends ControllerBase {
       && $meeting->isPublished()
       && $meeting->bundle() === 'cfo_meeting'
     ) {
-
-      // Array to hold cache dependent node id's (just this one).
-      $cache_nids = ['node:' . $meeting->id()];
 
       // Initialize the response with basic info.
       $response = [
@@ -219,7 +210,7 @@ class CFOMeetingsController extends ControllerBase {
 
       // Set up the Cache Meta.
       $cacheMeta = (new CacheableMetadata())
-        ->setCacheTags($cache_nids)
+        ->setCacheTags(['node:' . $meeting->id()])
         ->setCacheMaxAge(Cache::PERMANENT);
 
       // Set the JSON response to the response of meeting data.

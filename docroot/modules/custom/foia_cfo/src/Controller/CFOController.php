@@ -4,7 +4,7 @@ namespace Drupal\foia_cfo\Controller;
 
 /**
  * @file
- * Contains \Drupal\foia_cfo\Controller\TestAPIController.
+ * Contains \Drupal\foia_cfo\Controller\CFOController.
  */
 
 use Drupal\Core\Cache\Cache;
@@ -13,7 +13,6 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\RenderContext;
-use Drupal\node\Entity\Node;
 
 /**
  * Controller routines for foia_cfo routes.
@@ -232,16 +231,13 @@ class CFOController extends ControllerBase {
     // Initialize the response.
     $response = [];
 
-    // Array to hold cache dependent node id's.
-    $cache_nids = [];
-
     // Wrap Query in render context.
     $context = new RenderContext();
     $committee_nids = \Drupal::service('renderer')->executeInRenderContext($context, function () {
       $committee_query = \Drupal::entityQuery('node')
         ->condition('type', 'cfo_committee')
         ->condition('status', 1)
-        ->sort('created');
+        ->sort('title');
       return $committee_query->execute();
     });
 
@@ -250,15 +246,13 @@ class CFOController extends ControllerBase {
       // Loop through all committees.
       foreach ($committee_nids as $committee_nid) {
 
-        // Add the node id of the committee.
-        $cache_nids[] = 'node:' . $committee_nid;
-
         // Load the committee node.
         if ($committee_node = $this->nodeStorage->load($committee_nid)) {
           $committee = [
             'committee_nid' => $committee_nid,
             'committee_title' => $committee_node->label(),
             'committee_updated' => $committee_node->changed->value,
+            'committee_slug' => $committee_node->get('field_cfo_slug')->getValue()[0]['value'],
           ];
           $response[] = $committee;
         }
@@ -269,7 +263,7 @@ class CFOController extends ControllerBase {
 
     // Set up the Cache Meta.
     $cacheMeta = (new CacheableMetadata())
-      ->setCacheTags($cache_nids)
+      ->setCacheTags(['node_list:cfo_committee'])
       ->setCacheMaxAge(Cache::PERMANENT);
 
     // Set the JSON response to the response of committees.
@@ -312,9 +306,6 @@ class CFOController extends ControllerBase {
       && $committee->bundle() === 'cfo_committee'
     ) {
 
-      // Array to hold cache dependent node id's (just this one).
-      $cache_nids = ['node:' . $committee->id()];
-
       // Initialize the response with basic info.
       $response = [
         'committee_title' => $committee->label(),
@@ -332,7 +323,7 @@ class CFOController extends ControllerBase {
 
       // Set up the Cache Meta.
       $cacheMeta = (new CacheableMetadata())
-        ->setCacheTags($cache_nids)
+        ->setCacheTags(['node:' . $committee->id()])
         ->setCacheMaxAge(Cache::PERMANENT);
 
       // Set the JSON response to the response of committee data.
