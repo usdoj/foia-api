@@ -140,4 +140,30 @@ class CFOService {
 
   }
 
+  public function contentFromSlug(string $slug, string $content_type) {
+
+    // Wrap Query in render context.
+    $render_context = new RenderContext();
+    $render_query = \Drupal::service('renderer')->executeInRenderContext($render_context, function () use ($slug, $content_type) {
+      // Query for the meeting - match just date (not time) hence "like".
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', $content_type)
+        ->condition('status', 1)
+        ->condition('field_cfo_slug', $slug)
+        ->sort('created')
+        ->range(0, 1);
+      return $query->execute();
+    });
+
+    // If we have a got match, return the node otherwise FALSE.
+    if (!empty(array_values($render_query)[0])) {
+      $nid = array_values($render_query)[0];
+      return Node::load($nid);
+    }
+    else {
+      return FALSE;
+    }
+
+  }
+
 }

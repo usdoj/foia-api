@@ -291,17 +291,20 @@ class CFOController extends ControllerBase {
   }
 
   /**
-   * Callback for `api/cfo/committee/{committee}` API method.
+   * Callback for `api/cfo/committee/{slug}` API method.
    *
    * Returns JSON Response full details for a committee based on node id passed.
    *
-   * @param \Drupal\node\Entity\Node $committee
+   * @param string $slug
    *   Node object of the committee passed as argument through routing.
    *
    * @return \Drupal\Core\Cache\CacheableJsonResponse
    *   Returns json object or false if the node did not load.
    */
-  public function getCommittee(Node $committee): CacheableJsonResponse {
+  public function getCommittee(string $slug): CacheableJsonResponse {
+
+    // Use this function to get the meeting node from the date string.
+    $committee = \Drupal::service('foia_cfo.default')->contentFromSlug($slug, 'cfo_committee');
 
     if (
       !empty($committee)
