@@ -1,0 +1,26 @@
+uuid: 4560f8b3-b7e0-4266-8f1b-a4e2546177a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cfo_slug
+    - node.type.cfo_page
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.cfo_page.field_cfo_slug
+field_name: field_cfo_slug
+entity_type: node
+bundle: cfo_page
+label: 'URL Slug'
+description: 'The URL slug is used to make the browser''s address "pretty".  Use only lowercase letters and hyphens.  A slug is the part of a URL that identifies a particular page on a website in an easy-to-read form.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,43 @@
+uuid: b60d91db-45ca-44b4-ad8a-b15fbd29d12f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.cfo_page.body
+    - field.field.node.cfo_page.field_cfo_slug
+    - node.type.cfo_page
+  module:
+    - text
+    - user
+id: node.cfo_page.default
+targetEntityType: node
+bundle: cfo_page
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_cfo_slug:
+    weight: 102
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true
