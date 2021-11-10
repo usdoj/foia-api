@@ -1,0 +1,14 @@
+uuid: 7481def2-2618-46c2-83cc-35d939380d9f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_page_creator
+  module:
+    - user
+id: user_remove_role_action.cfo_page_creator
+label: 'Remove the CFO Page creator role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cfo_page_creator
