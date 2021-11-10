@@ -11,15 +11,15 @@ foia_cfo.committees:
   requirements:
     _access: 'TRUE'
 foia_cfo.committee:
-  path: 'api/cfo/committee/{committee}'
+  path: 'api/cfo/committee/{slug}'
   defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOController::getCommittee' }
   methods:  [GET]
   requirements:
     _access: 'TRUE'
   options:
     parameters:
-      committee:
-        type: entity:node
+      slug:
+        type: string
 foia_cfo.meetings:
   path: 'api/cfo/meetings'
   defaults: { _controller: '\Drupal\foia_cfo\Controller\CFOMeetingsController::getMeetings' }
