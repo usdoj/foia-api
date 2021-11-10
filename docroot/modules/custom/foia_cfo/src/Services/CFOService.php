@@ -2,7 +2,7 @@
 
 namespace Drupal\foia_cfo\Services;
 
-use DateTime;
+use Drupal\Core\Render\RenderContext;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
 use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
@@ -116,14 +116,18 @@ class CFOService {
     // Convert the string to a date value, used in the query "like".
     $meeting_date_value = date('Y-m-d', strtotime($meeting_date_string)) . 'T%';
 
-    // Query for the meeting - match just date (not time) hence "like".
-    $meeting_query = \Drupal::entityQuery('node')
-      ->condition('type', 'cfo_meeting')
-      ->condition('status', 1)
-      ->condition('field_meeting_date', $meeting_date_value, 'LIKE')
-      ->sort('created')
-      ->range(0, 1)
-      ->execute();
+    // Wrap Query in render context.
+    $context_meeting = new RenderContext();
+    $meeting_query = \Drupal::service('renderer')->executeInRenderContext($context_meeting, function () use ($meeting_date_value) {
+      // Query for the meeting - match just date (not time) hence "like".
+      $meeting_query = \Drupal::entityQuery('node')
+        ->condition('type', 'cfo_meeting')
+        ->condition('status', 1)
+        ->condition('field_meeting_date', $meeting_date_value, 'LIKE')
+        ->sort('created')
+        ->range(0, 1);
+      return $meeting_query->execute();
+    });
 
     // If we have a got match, return the meeting node otherwise FALSE.
     if (!empty(array_values($meeting_query)[0])) {
