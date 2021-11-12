@@ -650,12 +650,6 @@ function foia_annual_data_report_entity_operation_alter(array &$operations, Enti
 
   if ($entity->bundle() === 'annual_foia_report_data') {
 
-    // Start by setting the edit operation - takes a long time to load.
-    if (!empty('edit')) {
-      $operations['edit']['title'] = 'FULL EDIT';
-      $operations['edit']['weight'] = 1000;
-    }
-
     // Look for this string to match an Annual Data Report (ADR).
     $adr_string = 'annual_report_';
 
@@ -668,8 +662,8 @@ function foia_annual_data_report_entity_operation_alter(array &$operations, Enti
         }
         // If this is the "agency info" make this the only ADR link.
         else {
-          $operations[$key]['title'] = 'Edit';
-          $operations[$key]['weight'] = 10;
+          $operations[$key]['title'] = 'Edit by Section';
+          $operations[$key]['weight'] = 11;
         }
       }
     }
