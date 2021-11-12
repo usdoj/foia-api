@@ -50,8 +50,8 @@ class CFOController extends ControllerBase {
     // Initialize the response.
     $response = [];
 
-    // Array to hold cache dependent node id's.
-    $cache_nids = [];
+    // Array to hold cache tags for this feed.
+    $cache_tags = [];
 
     // Wrap Query in render context.
     $context = new RenderContext();
@@ -71,7 +71,7 @@ class CFOController extends ControllerBase {
       $council_nid = array_shift($council_nids);
 
       // Add the node id of the council page.
-      $cache_nids[] = 'node:' . $council_nid;
+      $cache_tags[] = 'node:' . $council_nid;
 
       // Load the council node.
       $council_node = $this->nodeStorage->load($council_nid);
@@ -92,6 +92,11 @@ class CFOController extends ControllerBase {
 
       if (!empty($committees)) {
 
+        // If there are attached committees, need to add to cache tags.
+        // Set to all nodes of this type because if a new committee is
+        // added the cache will not update.
+        $cache_tags[] = 'node_list:cfo_committee';
+
         // Store committees as array elements.
         $response['committees'] = [];
 
@@ -102,13 +107,14 @@ class CFOController extends ControllerBase {
           // Add the node id of the committee page.
           $committee_node = $this->nodeStorage->load($nid);
           if (!empty($committee_node)) {
-            $cache_nids[] = 'node:' . $nid;
-            $committee = ['committee_title' => $committee_node->label()];
-            if (!empty($committee_node->body->getValue())) {
-              $committee_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee_node->body->getValue()[0]['value']);
-              $committee['committee_body'] = $committee_body;
+            if ($committee_node->isPublished()) {
+              $committee = ['committee_title' => $committee_node->label()];
+              if (!empty($committee_node->body->getValue())) {
+                $committee_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee_node->body->getValue()[0]['value']);
+                $committee['committee_body'] = $committee_body;
+              }
+              $response['committees'][] = $committee;
             }
-            $response['committees'][] = $committee;
           }
         }
 
@@ -129,6 +135,9 @@ class CFOController extends ControllerBase {
 
     if (!empty($meetings_nids)) {
 
+      // All meetings are on this feed - cache tag to reflect that.
+      $cache_tags[] = 'node_list:cfo_meeting';
+
       // Store meetings as array elements.
       $response['meetings'] = [];
 
@@ -137,9 +146,6 @@ class CFOController extends ControllerBase {
 
         // Initialize this meeting.
         $meeting = [];
-
-        // Add the node id of the meeting.
-        $cache_nids[] = 'node:' . $meeting_nid;
 
         // Load the meeting node.
         $meeting_node = $this->nodeStorage->load($meeting_nid);
@@ -190,7 +196,7 @@ class CFOController extends ControllerBase {
 
     // Set up the Cache Meta.
     $cacheMeta = (new CacheableMetadata())
-      ->setCacheTags($cache_nids)
+      ->setCacheTags($cache_tags)
       ->setCacheMaxAge(Cache::PERMANENT);
 
     // Set the JSON response from our response of council data.
