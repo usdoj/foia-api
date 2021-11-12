@@ -1,6 +1,7 @@
 #adr-form-section-nav {
   cursor: pointer;
   position: relative;
+  width: 500px;
 }
 #block-seven-secondary-local-tasks ul.secondary {
   display: none;
@@ -11,7 +12,6 @@ ul.form-section-nav {
   padding: 0;
   margin-bottom: 25px;
   position: relative;
-  width: 60%;
 }
 ul.form-section-nav li {
   visibility: hidden;
@@ -50,6 +50,8 @@ ul.form-section-nav li.is-active {
   position: absolute;
   top: 10px;
   width: 100%;
+}
+ul.form-section-nav li.is-active > span {
   padding-left: 20px;
 }
 ul.form-section-nav li:last-of-type {

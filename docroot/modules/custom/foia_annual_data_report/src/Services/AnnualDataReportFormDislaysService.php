@@ -99,7 +99,7 @@ class AnnualDataReportFormDislaysService {
           $form_nav .= $label . '</a></li>';
         }
         else {
-          $form_nav .= '<li class="is-active">' . $label . '</li>';
+          $form_nav .= '<li class="is-active"><span>' . $label . '</span></li>';
         }
       }
       $form_nav .= '</ul></div>';
