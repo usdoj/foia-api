@@ -865,6 +865,8 @@ display:
             description: null
             use_operator: false
             operator: request_status_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: request_status
             required: false
             remember: false
@@ -874,8 +876,6 @@ display:
             placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: true
           group_info:
             label: 'Request Status'
@@ -910,7 +910,7 @@ display:
                   min: ''
                   max: ''
               4:
-                title: 'Email in transit'
+                title: 'Delete after 7 days'
                 operator: '='
                 value:
                   value: '4'
