@@ -53,6 +53,9 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       // Attach the css for the "dropdown" form section navigation.
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
+      // Attach node edit protection js.
+      $form['#attached']['library'][] = 'foia_annual_data_report/foia_node_edit_protection';
+
       // Add validation for specific annual report sections.
       $validate_sections = [
         'edit',
