@@ -85,12 +85,13 @@ class AnnualDataReportFormDislaysService {
       $form_nav .= '<ul class="form-section-nav">';
 
       // Manually add link for default/full edit mode.
-      $li_tag = '<li>';
-      if ($current_mode === 'edit') {
-        $li_tag = '<li class="is-active">';
+      if ($current_mode != 'edit') {
+        $form_nav .= '<li><a href="' . $path_part . '">';
+        $form_nav .= 'Default/Full Mode</a></li>';
       }
-      $form_nav .= $li_tag . '<a href="' . $path_part . '">';
-      $form_nav .= 'Default/Full Mode</a></li>';
+      else {
+        $form_nav .= '<li class="is-active"><span>Default/Full Mode</span></li>';
+      }
 
       // Loop through the modes adding li's which are styled as dropdown items.
       foreach ($modes as $key => $label) {
