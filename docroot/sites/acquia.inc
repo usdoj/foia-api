@@ -12,10 +12,10 @@ function ac_protect_this_site() {
   // Create the Request object and whitelist Acquia load balancers.
   $request = Request::createFromGlobals();
   if (!empty($config['ah_trusted_proxies'])) {
-    Request::setTrustedProxies($config['ah_trusted_proxies']);
+    Request::setTrustedProxies($config['ah_trusted_proxies'], Request::HEADER_X_FORWARDED_ALL);
   }
   else {
-    Request::setTrustedProxies(array($request->server->get('REMOTE_ADDR')));
+    Request::setTrustedProxies(array($request->server->get('REMOTE_ADDR')), Request::HEADER_X_FORWARDED_ALL);
   }
 
   $denied_response = !empty($config['ah_denied_not_found']) ? 404 : 403;
