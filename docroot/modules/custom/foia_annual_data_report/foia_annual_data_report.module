@@ -5,6 +5,8 @@
  * Primary module hooks for foia_annual_data_report module.
  */
 
+use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -171,11 +173,6 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
         }
         else {
 
-//          if ($key === 'field_admin_app_viie') {
-//            dump($form_value);
-//            die();
-//          }
-
           // Determine first if this is a subform of the field to be validated.
           if (!empty($form_value['widget'][0]['subform'])) {
             // Get the type of subform.
@@ -292,6 +289,14 @@ function _form_annual_data_report_validate(array &$form, FormStateInterface $for
     $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'];
   }
 
+  // Check for an existing report.
+  if ($form_state->getFormObject() instanceof EntityForm) {
+    $current_nid = $form_state->getformObject()->getEntity()->id();
+  }
+  else {
+    $current_nid = 0;
+  }
+
   // With the agency id and report year, query the nodes to find one that
   // has the same agency id and year.  If found through and error allowing
   // the user to update the existing report or change the values.
@@ -300,6 +305,7 @@ function _form_annual_data_report_validate(array &$form, FormStateInterface $for
       ->condition('type', 'annual_foia_report_data')
       ->condition('field_agency', $agency_id)
       ->condition('field_foia_annual_report_yr', $report_year)
+      ->condition('nid', $current_nid, '!=')
       ->sort('created', 'DESC')
       ->range(0, 1);
     $results = $query->execute();
