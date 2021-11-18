@@ -88,8 +88,10 @@
           field: 'field_foia_requests_vb1',
           paragraph: 'foia_req_vb1',
         },
+        // This has field has and underscore at the end of it but needs to be removed
+        // in this case to get the placeholders field to show up.
         {
-          field: 'field_pending_requests_vii_d_',
+          field: 'field_pending_requests_vii_d',
           paragraph: 'pending_requests_viid',
         },
         {
