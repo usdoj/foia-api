@@ -108,6 +108,15 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     }
 
     $valuesToSubmit = $this->assembleRequestData($foiaRequest);
+    if (empty($valuesToSubmit)) {
+      // If no request data was found, raise a special exception.
+      $error = [
+        'message' => 'Webform submission could not be loaded.',
+      ];
+      $this->addSubmissionError($error);
+      $this->log('error', $error['message']);
+      return FALSE;
+    }
     return $this->submitToComponentEndpoint($componentEndpoint, $valuesToSubmit);
   }
 
@@ -123,6 +132,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected function assembleRequestData(FoiaRequestInterface $foiaRequest) {
     // Get the webform submission values.
     $formValues = $this->getSubmissionValues($foiaRequest);
+
+    if (empty($formValues)) {
+      return [];
+    }
 
     // Get the agency information.
     $agencyInfo = $this->getAgencyInfo();
@@ -147,10 +160,9 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
     $webformSubmission = WebformSubmission::load($webformSubmissionId);
     if (empty($webformSubmission)) {
-      $this->log('error', "Webform submission could not be loaded. Id: {$webformSubmissionId}.");
       return [];
     }
-
+    $webform = $webformSubmission->getWebform();
     $submissionValues = $webformSubmission->getData();
     // If there are files attached, load the files and add the file metadata.
     if ($webform->hasManagedFile()) {
