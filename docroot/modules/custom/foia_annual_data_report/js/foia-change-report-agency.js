@@ -88,10 +88,8 @@
           field: 'field_foia_requests_vb1',
           paragraph: 'foia_req_vb1',
         },
-        // This has field has and underscore at the end of it but needs to be removed
-        // in this case to get the placeholders field to show up.
         {
-          field: 'field_pending_requests_vii_d',
+          field: 'field_pending_requests_vii_d_',
           paragraph: 'pending_requests_viid',
         },
         {
@@ -193,7 +191,9 @@
     },
 
     addPopulateComponentsButton: function(section) {
-      var fieldWrapperId = 'edit-' + section.field.replace(/_/g, '-') + '-wrapper',
+      // Anomaly - if a field ends in an underscore needs to be removed for the wrapper but maintained for other uses.
+      var wrapperVar = section.field.replace(/_$/, '');
+      var fieldWrapperId = 'edit-' + wrapperVar.replace(/_/g, '-') + '-wrapper',
           addMoreName = section.field + '_' + section.paragraph + '_add_more',
           fieldWrapperSelector = '#' + fieldWrapperId,
           addMoreSelector = 'input[name="' + addMoreName + '"]',
