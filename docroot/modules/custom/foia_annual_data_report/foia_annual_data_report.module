@@ -23,6 +23,9 @@ use Drupal\Core\Ajax\RedirectCommand;
  */
 function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
+  // Attach form style updates.
+  $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_style_updates';
+
   // Look for this string to match an Annual Data Report (ADR).
   $adr_string = 'node_annual_foia_report_data_';
 
