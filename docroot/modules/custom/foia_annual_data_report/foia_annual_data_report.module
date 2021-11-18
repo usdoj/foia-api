@@ -52,6 +52,9 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       foia_annual_data_report_ajax_existing_node($form);
       foia_annual_data_report_set_default_report_year($form);
 
+      // Hidden fields should not be required.
+      foia_annual_data_report_unrequire_hidden_fields($form);
+
       // Attach the css for the "dropdown" form section navigation.
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
 
@@ -488,6 +491,43 @@ function foia_annual_data_report_set_default_report_year(array &$form) {
   if (!$default_value) {
     $form['field_foia_annual_report_yr']['widget'][0]['value']['#default_value'] = date('Y');
   }
+}
+
+/**
+ * FOIA annual report year form split un-require hidden fields.
+ *
+ * When updating an annual report by section, any required fields that
+ * are in the hidden region should not be required as the user has no
+ * way to update them on this form.
+ *
+ * @param array $form
+ *   The annual_foia_report_data node add or edit form array.
+ */
+function foia_annual_data_report_unrequire_hidden_fields(array &$form) {
+
+  // Look first for the hidden field group.
+  if (!empty($form['#fieldgroups']['group_hidden'])) {
+
+    // Get the fieldnames in the hidden fieldgroup.
+    $hidden_fields = $form['#fieldgroups']['group_hidden']->children;
+
+    // Loop through all fields in the form.
+    foreach ($form as $key => $form_item) {
+
+      // Take action if this form field is in the hidden group.
+      if (in_array($key, $hidden_fields)) {
+
+        // Un-require this field, since it is hidden and no way to update.
+        if (!empty($form_item['widget']['#required'])) {
+          $form[$key]['widget']['#required'] = FALSE;
+        }
+
+      }
+
+    }
+
+  }
+
 }
 
 /**
