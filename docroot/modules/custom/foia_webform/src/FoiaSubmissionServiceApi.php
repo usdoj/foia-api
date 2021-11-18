@@ -15,7 +15,7 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class FoiaSubmissionServiceApi.
+ * Class FoiaSubmissionServiceApi for API request submissions.
  */
 class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
 
@@ -146,7 +146,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected function getSubmissionValues(FoiaRequestInterface $foiaRequest) {
     $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
     $webformSubmission = WebformSubmission::load($webformSubmissionId);
-    $webform = $webformSubmission->getWebform();
+    if (empty($webformSubmission)) {
+      $this->log('error', "Webform submission could not be loaded. Id: {$webformSubmissionId}.");
+      return [];
+    }
 
     $submissionValues = $webformSubmission->getData();
     // If there are files attached, load the files and add the file metadata.
@@ -489,7 +492,7 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   An associative array containing error information.
    */
   protected function addSubmissionError(array $error) {
-    $this->errors['response_code'] = isset($error['http_code']) ? $error['http_code'] : '';;
+    $this->errors['response_code'] = isset($error['http_code']) ? $error['http_code'] : '';
     $this->errors['code'] = isset($error['code']) ? $error['code'] : '';
     $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
     $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
