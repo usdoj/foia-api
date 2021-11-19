@@ -58,7 +58,7 @@ function foia_webform_webform_insert(WebformInterface $webform) {
  */
 function foia_webform_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   $user = \Drupal::currentUser();
-  if (!$user->hasPermission('use webforms in backstage')) {
+  if (!$form_state->isProgrammed() && !$user->hasPermission('use webforms in backstage')) {
     $form['#access'] = FALSE;
     $form['#markup'] = '<p>This form is only available via API.</p>';
   }
