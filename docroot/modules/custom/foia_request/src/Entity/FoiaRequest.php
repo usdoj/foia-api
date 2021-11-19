@@ -222,7 +222,7 @@ class FoiaRequest extends ContentEntityBase implements FoiaRequestInterface {
       FoiaRequestInterface::STATUS_SUBMITTED => 'Submitted to component',
       FoiaRequestInterface::STATUS_FAILED => 'Failed submission to component',
       FoiaRequestInterface::STATUS_SCAN => 'Pending virus scan',
-      FoiaRequestInterface::STATUS_IN_TRANSIT => 'Email in transit',
+      FoiaRequestInterface::STATUS_IN_TRANSIT => 'Delete after 7 days',
     ];
     $fields['request_status'] = BaseFieldDefinition::create('list_integer')
       ->setLabel(t('Request Status'))
