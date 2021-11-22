@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_agency_components
     - field.field.node.annual_foia_report_data.field_date_prepared
     - field.field.node.annual_foia_report_data.field_fees_x
+    - field.field.node.annual_foia_report_data.field_field_validation
     - field.field.node.annual_foia_report_data.field_foia_annual_report_yr
     - field.field.node.annual_foia_report_data.field_foia_pers_costs_ix
     - field.field.node.annual_foia_report_data.field_foia_requests_va
@@ -320,6 +321,7 @@ dependencies:
     - node.type.annual_foia_report_data
     - workflows.workflow.annual_report_workflow
   module:
+    - allow_only_one
     - content_moderation
     - entity_reference_views_select
     - field_group
@@ -2014,6 +2016,13 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
+    region: content
+  field_field_validation:
+    weight: 162
+    settings:
+      size: 1
+    third_party_settings: {  }
+    type: allow_only_one_widget
     region: content
   field_foia_annual_report_yr:
     weight: 5

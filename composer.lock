@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae6b1179dcfe66691ea85a59302e479b",
+    "content-hash": "d2d4f516dddf3f419318148e79b68abe",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3564,6 +3564,54 @@
             "homepage": "http://drupal.org/project/address",
             "support": {
                 "source": "https://git.drupalcode.org/project/address"
+            }
+        },
+        {
+            "name": "drupal/allow_only_one",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/allow_only_one.git",
+                "reference": "1.0.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/allow_only_one-1.0.0-alpha1.zip",
+                "reference": "1.0.0-alpha1",
+                "shasum": "c0d680668bcc8365e552eaed31a0a358d42dffcf"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.0-alpha1",
+                    "datestamp": "1622133534",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "kaise.lafrai",
+                    "homepage": "https://www.drupal.org/user/3628898"
+                },
+                {
+                    "name": "swirt",
+                    "homepage": "https://www.drupal.org/user/138230"
+                }
+            ],
+            "description": "The Allow Only One module allows administrators to require that values supplied for specified fields is a unique combination. Validation will throw an error if another content item exists with the same field value combination.",
+            "homepage": "https://www.drupal.org/project/allow_only_one",
+            "support": {
+                "source": "https://git.drupalcode.org/project/allow_only_one"
             }
         },
         {
@@ -21477,6 +21525,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/allow_only_one": 15,
         "drupal/auto_entitylabel": 10,
         "drupal/entity_clone": 10,
         "drupal/feeds": 15,
@@ -21498,5 +21547,5 @@
         "php": ">=7.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
