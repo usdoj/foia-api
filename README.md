@@ -8,7 +8,7 @@ The backend is currently implemented on the [Lightning distro](https://github.co
 
 Please see the [BLT documentation](http://blt.readthedocs.io/en/latest/) for information on build, testing, and deployment processes.
 
-### Local setup
+### Local setups
 
 Follow steps 1-5 from the [initial setup section](https://docs.acquia.com/blt/developer/onboarding/#initial-set-up) in BLT's docs, as well as 1-3 from the VM steps. Note that you do not need to follow the steps to install npm/nvm on your host machine. If we end up working frontend tasks, these steps can take place within the VM.
 
@@ -28,7 +28,7 @@ Also, be sure to have Vagrant plugins installed:
 To export to Word docs via PHPDocX locally:
 - Replace the symlink in docroot/libraries with a downloaded copy of [PHPDocX](https://www.phpdocx.com/) which supports PHP namespaces.
 - Ensure an activated license key is set in the phpdocxconfig.ini file.
-- You may also need to reprovision your environment to ensure that the ZipArchive and Tidy PHP extensions are enabled  
+- You may also need to reprovision your environment to ensure that the ZipArchive and Tidy PHP extensions are enabled
   `vagrant reload --provision`
 
 ## Resources
