@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_agency_components
     - field.field.node.annual_foia_report_data.field_date_prepared
     - field.field.node.annual_foia_report_data.field_fees_x
+    - field.field.node.annual_foia_report_data.field_field_combination_validati
     - field.field.node.annual_foia_report_data.field_foia_annual_report_yr
     - field.field.node.annual_foia_report_data.field_foia_pers_costs_ix
     - field.field.node.annual_foia_report_data.field_foia_requests_va
@@ -319,6 +320,7 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_sub_xib
     - node.type.annual_foia_report_data
   module:
+    - allow_only_one
     - entity_reference_revisions
     - panelizer
     - text
@@ -451,6 +453,13 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    region: content
+  field_field_combination_validati:
+    weight: 331
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: allow_only_one
     region: content
   field_foia_annual_report_yr:
     weight: 72

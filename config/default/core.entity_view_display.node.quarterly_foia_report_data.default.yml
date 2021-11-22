@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.quarterly_foia_report_data.field_agency
     - field.field.node.quarterly_foia_report_data.field_agency_components
+    - field.field.node.quarterly_foia_report_data.field_field_combination_validati
     - field.field.node.quarterly_foia_report_data.field_quarterly_backlogged_oa
     - field.field.node.quarterly_foia_report_data.field_quarterly_closed
     - field.field.node.quarterly_foia_report_data.field_quarterly_component_data
@@ -15,6 +16,7 @@ dependencies:
     - field.field.node.quarterly_foia_report_data.field_quarterly_year
     - node.type.quarterly_foia_report_data
   module:
+    - allow_only_one
     - entity_reference_revisions
     - options
     - user
@@ -43,6 +45,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_field_combination_validati:
+    weight: 112
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: allow_only_one
     region: content
   field_quarterly_backlogged_oa:
     weight: 109
