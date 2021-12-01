@@ -7,31 +7,34 @@ dependencies:
     - node.type.agency_component
   module:
     - address
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.agency_component.field_submission_address
 field_name: field_submission_address
 entity_type: node
 bundle: agency_component
 label: 'Submission Address'
 description: 'Note: If the zip-code provided is not valid for that State, an error message saying the zip-code format is invalid will be displayed.'
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
   available_countries:
     US: US
-  fields:
-    administrativeArea: administrativeArea
-    locality: locality
-    dependentLocality: dependentLocality
-    postalCode: postalCode
-    sortingCode: sortingCode
-    addressLine1: addressLine1
-    addressLine2: addressLine2
-    organization: '0'
-    givenName: '0'
-    additionalName: '0'
-    familyName: '0'
   langcode_override: ''
-  field_overrides: {  }
+  field_overrides:
+    givenName:
+      override: hidden
+    additionalName:
+      override: hidden
+    familyName:
+      override: hidden
+    organization:
+      override: hidden
+  fields: {  }
 field_type: address
