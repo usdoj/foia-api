@@ -93,6 +93,11 @@ AddEncoding gzip svgz
   RewriteCond %{HTTPS} on
   RewriteRule ^ - [E=protossl:s]
 
+  # Proxy all requests for /api/*.html to strip the .html ( for the react
+  # frontend fetching the CFO Council pages ).
+  RewriteCond %{REQUEST_URI} ^/api/(.*)?.html
+  RewriteRule "^/api/(.*).html$"  "http%{ENV:protossl}://%{HTTP_HOST}/api/$1"  [P]
+
   # Make sure Authorization HTTP header is available to PHP
   # even when running as CGI or FastCGI.
   RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
