@@ -150,6 +150,14 @@ class CFOController extends ControllerBase {
         // Load the meeting node.
         $meeting_node = $this->nodeStorage->load($meeting_nid);
 
+        // Add Meeting Timestamp.
+        if (
+          !empty($meeting_node->get('field_meeting_date'))
+          && !empty($meeting_node->get('field_meeting_date')->getValue()[0]['value'])
+        ) {
+          $meeting['meeting_timestamp'] = strtotime($meeting_node->get('field_meeting_date')->getValue()[0]['value']);
+        }
+
         // Add title and body for the meeting.
         $meeting['meeting_title'] = $meeting_node->label();
         if (!empty($meeting_node->body->getValue()[0]['value'])) {
