@@ -74,6 +74,46 @@ class CFOService {
 
   }
 
+
+  /**
+   * Formats "Working Group" paragraph type.
+   *
+   * @param \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $field
+   *   The field.
+   *
+   * @return array
+   *   Labels and links to either the url or the file.
+   */
+  public function workingGroupFieldFormatter(EntityReferenceRevisionsFieldItemList $field): array {
+
+    // Initialize return array.
+    $return = [];
+
+    // Loop over the referenced paragraph entities.
+    foreach ($field->referencedEntities() as $item) {
+
+      // Initialize this item.
+      $return_item = [];
+
+
+      // File Attachements.
+//      dump($item->get('field_attachement')->getValue());die();
+      $attachments =  $item->get('field_attachment')->getValue();
+      $return_item['item_attachments'] = [];
+
+
+      // Add this item to the return array.
+      if (!empty($return_item)) {
+        $return[] = $return_item;
+      }
+
+    }
+
+    // Returns array of items with labels and links.
+    return $return;
+
+  }
+
   /**
    * Adds the absolute path to src and href parameter values.
    *

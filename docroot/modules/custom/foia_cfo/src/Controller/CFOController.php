@@ -113,11 +113,15 @@ class CFOController extends ControllerBase {
                 $committee_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee_node->body->getValue()[0]['value']);
                 $committee['committee_body'] = $committee_body;
               }
+
+              // Add working groups.
+              if ($committee_node->field_working_groups->count()) {
+                $committee['working_groups'] = \Drupal::service('foia_cfo.default')->workingGroupFieldFormatter($committee_node->field_working_groups);
+              }
               $response['committees'][] = $committee;
             }
           }
         }
-
       }
 
     }
