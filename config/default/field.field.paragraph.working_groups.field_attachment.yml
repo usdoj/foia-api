@@ -1,0 +1,33 @@
+uuid: 5b452d46-228a-4e86-8a9e-c01a964331f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_attachment
+    - paragraphs.paragraphs_type.working_groups
+  module:
+    - file
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.working_groups.field_attachment
+field_name: field_attachment
+entity_type: paragraph
+bundle: working_groups
+label: Attachment
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'pdf jpg jpeg png doc docx txt'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

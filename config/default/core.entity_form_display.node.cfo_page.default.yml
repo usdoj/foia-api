@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.cfo_page.body
+    - field.field.node.cfo_page.field_attachment
     - field.field.node.cfo_page.field_cfo_slug
     - node.type.cfo_page
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - file
     - path
     - text
 id: node.cfo_page.default
@@ -32,6 +34,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_attachment:
+    weight: 26
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
   field_cfo_slug:
     weight: 1
     settings:

@@ -4,11 +4,20 @@ status: true
 dependencies:
   config:
     - field.field.node.cfo_page.body
+    - field.field.node.cfo_page.field_attachment
     - field.field.node.cfo_page.field_cfo_slug
     - node.type.cfo_page
   module:
+    - file
+    - panelizer
     - text
     - user
+third_party_settings:
+  panelizer:
+    enable: false
+    custom: false
+    allow: false
+    default: default
 id: node.cfo_page.default
 targetEntityType: node
 bundle: cfo_page
@@ -23,12 +32,19 @@ content:
     region: content
   content_moderation_control:
     weight: -20
+    region: content
     settings: {  }
     third_party_settings: {  }
+  field_attachment:
+    weight: 103
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: file_url_plain
     region: content
   field_cfo_slug:
     weight: 102
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -36,8 +52,8 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   search_api_excerpt: true
