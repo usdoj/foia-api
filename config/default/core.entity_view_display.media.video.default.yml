@@ -15,40 +15,40 @@ bundle: video
 mode: default
 content:
   created:
-    label: hidden
     type: timestamp
-    weight: 1
+    label: hidden
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
+    weight: 1
     region: content
   field_media_video_embed_field:
     type: video_embed_field_video
-    weight: 3
     label: hidden
     settings:
+      autoplay: true
       responsive: true
       width: 854
       height: 480
-      autoplay: true
     third_party_settings: {  }
+    weight: 3
     region: content
   name:
-    label: hidden
     type: string
-    weight: 0
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
     region: content
   uid:
-    label: hidden
     type: author
-    weight: 2
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   field_media_in_library: true

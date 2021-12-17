@@ -19,21 +19,21 @@ plugin: 'views_block:annual_foia_report_data_content_1-annual_foia_report_data_b
 settings:
   id: 'views_block:annual_foia_report_data_content_1-annual_foia_report_data_block'
   label: ''
-  provider: views
   label_display: '0'
+  provider: views
+  context_mapping: {  }
   views_label: ''
   items_per_page: none
-  context_mapping: {  }
 visibility:
   request_path:
     id: request_path
-    pages: '/user/*'
     negate: false
     context_mapping: {  }
+    pages: '/user/*'
   user_role:
     id: user_role
-    roles:
-      agency_manager: agency_manager
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      agency_manager: agency_manager

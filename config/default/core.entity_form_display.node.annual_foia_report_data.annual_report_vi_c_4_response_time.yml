@@ -335,38 +335,38 @@ third_party_settings:
         - field_overall_vic4_low_num_days
         - field_overall_vic4_high_num_days
         - field_footnotes_vic4
+      label: 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative numeric values, or the special values "<1" or "N/A." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS'
-      region: content
+        id: ''
+        open: true
+        description: 'Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative numeric values, or the special values "<1" or "N/A." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        required_fields: true
     group_hidden:
       children:
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_vi_c_4_response_time
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -375,6 +375,7 @@ content:
   field_admin_app_vic4:
     type: entity_reference_paragraphs
     weight: 23
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -383,7 +384,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_agency_components:
     type: erviews_options_buttons
     weight: 1
@@ -399,42 +399,42 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vic4_avg_num_days:
+    type: string_textfield
     weight: 25
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_vic4_high_num_days:
+    type: string_textfield
     weight: 27
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_vic4_low_num_days:
+    type: string_textfield
     weight: 26
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_vic4_med_num_days:
+    type: string_textfield
     weight: 24
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

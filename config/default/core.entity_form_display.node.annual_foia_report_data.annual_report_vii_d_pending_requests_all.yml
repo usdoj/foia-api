@@ -332,100 +332,100 @@ third_party_settings:
         - field_overall_viid_comp_pend
         - field_overall_viid_comp_med
         - field_overall_viid_comp_avg
+      label: 'Agency Overall -- Complex'
+      region: content
       parent_name: group_vii_d_pending_requests_all
       weight: 22
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall -- Complex'
-      region: content
     group_vii_d_pending_requests_all:
       children:
         - group_vii_d_pending_requests_sim
         - group_vii_d_pending_requests_com
         - group_vii_d_pending_requests_exp
+      label: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
+      region: content
       parent_name: group_vii_d_pending_req_wrap
       weight: 21
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
-      region: content
     group_vii_d_pending_requests_exp:
       children:
         - field_overall_viid_exp_pend
         - field_overall_viid_exp_med
         - field_overall_viid_exp_avg
+      label: 'Agency Overall -- Expedited Processing'
+      region: content
       parent_name: group_vii_d_pending_requests_all
       weight: 23
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall -- Expedited Processing'
-      region: content
     group_vii_d_pending_requests_sim:
       children:
         - field_overall_viid_sim_pend
         - field_overall_viid_sim_med
         - field_overall_viid_sim_avg
+      label: 'Agency Overall -- Simple'
+      region: content
       parent_name: group_vii_d_pending_requests_all
       weight: 21
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall -- Simple'
-      region: content
     group_vii_d_pending_req_wrap:
       children:
         - field_pending_requests_vii_d_
         - group_vii_d_pending_requests_all
         - field_footnotes_viid
+      label: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
+        classes: ''
+        id: ''
         open: true
         description: 'Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Pending" fields must contain non-negative integer, or the special value "N/A". "Median" and "Average" fields must contain non-negative decimal numbers, or the special value "N/A". If there are no pending requests for a track, enter “0” for number pending and “N/A” for Median and Average Number of Days. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
         required_fields: true
-        id: ''
-        classes: ''
-      label: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
-      region: content
     group_hidden:
       children:
         - field_agency_components
         - field_foia_requests_va
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_vii_d_pending_requests_all
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -458,29 +458,29 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_viid_comp_avg:
+    type: string_textfield
     weight: 39
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viid_comp_med:
+    type: string_textfield
     weight: 38
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viid_comp_pend:
+    type: string_textfield
     weight: 37
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viid_exp_avg:
     type: string_textfield
     weight: 2
@@ -506,32 +506,33 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_viid_sim_avg:
+    type: string_textfield
     weight: 113
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viid_sim_med:
+    type: string_textfield
     weight: 112
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viid_sim_pend:
+    type: string_textfield
     weight: 111
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_pending_requests_vii_d_:
     type: entity_reference_paragraphs
     weight: 20
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -540,12 +541,11 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

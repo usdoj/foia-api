@@ -19,84 +19,84 @@ third_party_settings:
         - group_number_received
         - group_number_processed_p_wrap
         - group_agency_component
+      label: 'FOIA Requests and Administrative Appeals XII. Received and Processed'
+      region: content
       parent_name: ''
       weight: 1
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'FOIA Requests and Administrative Appeals XII. Received and Processed'
-      region: content
     group_number_received:
       children:
         - field_received_last_yr
         - field_received_cur_yr
+      label: 'NUMBER RECEIVED'
+      region: content
       parent_name: group_req_adm_app_rec_proc
       weight: 20
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'NUMBER RECEIVED'
-      region: content
     group_number_processed_p_wrap:
       children:
         - field_proc_last_yr
         - field_proc_cur_yr
+      label: 'NUMBER PROCESSED'
+      region: content
       parent_name: group_req_adm_app_rec_proc
       weight: 21
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'NUMBER PROCESSED'
-      region: content
 id: paragraph.foia_xii_received_proc.default
 targetEntityType: paragraph
 bundle: foia_xii_received_proc
 mode: default
 content:
   field_agency_component:
+    type: erviews_options_select
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: erviews_options_select
-    region: content
   field_proc_cur_yr:
+    type: number
     weight: 5
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_proc_last_yr:
+    type: number
     weight: 4
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_received_cur_yr:
+    type: number
     weight: 2
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_received_last_yr:
+    type: number
     weight: 1
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
 hidden:
   created: true
   status: true

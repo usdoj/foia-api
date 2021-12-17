@@ -27,15 +27,15 @@ third_party_settings:
       children:
         - group_main
         - group_num_full_denials_ex
+      label: 'FOIA Requests V. B. (1)'
+      region: content
       parent_name: ''
       weight: 0
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'FOIA Requests V. B. (1)'
-      region: content
     group_main:
       children:
         - field_agency_component
@@ -43,18 +43,18 @@ third_party_settings:
         - field_part_grants_denials
         - field_full_denials_ex
         - field_total
+      label: Agency/Component
+      region: content
       parent_name: group_foia_requests_v_b_1
       weight: 0
       format_type: tab
       format_settings:
         label: Agency/Component
+        classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-        id: ''
-        classes: ''
-      label: Agency/Component
-      region: content
     group_num_full_denials_ex:
       children:
         - field_no_rec
@@ -66,119 +66,119 @@ third_party_settings:
         - field_not_agency_record
         - field_dup_request
         - field_oth
+      label: 'Number of Full Denials Based on Reasons Other than Exemptions'
+      region: content
       parent_name: group_foia_requests_v_b_1
       weight: 1
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Number of Full Denials Based on Reasons Other than Exemptions'
-      region: content
 id: paragraph.foia_req_vb1.default
 targetEntityType: paragraph
 bundle: foia_req_vb1
 mode: default
 content:
   field_agency_component:
+    type: erviews_options_select
     weight: 18
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: erviews_options_select
-    region: content
   field_dup_request:
+    type: number
     weight: 16
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_fee_related_reason:
+    type: number
     weight: 12
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_full_denials_ex:
+    type: number
     weight: 21
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_full_grants:
+    type: number
     weight: 19
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_imp_req_oth_reason:
+    type: number
     weight: 14
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_no_rec:
+    type: number
     weight: 9
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_not_agency_record:
+    type: number
     weight: 15
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_oth:
+    type: number
     weight: 17
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_part_grants_denials:
+    type: number
     weight: 20
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_rec_not_desc:
+    type: number
     weight: 13
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_rec_ref_to_an_comp:
+    type: number
     weight: 10
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_req_withdrawn:
+    type: number
     weight: 11
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_total:
+    type: number
     weight: 22
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
 hidden:
   created: true
   status: true

@@ -29,174 +29,174 @@ third_party_settings:
         - group_simple
         - group_complex
         - group_expedited_processing
+      label: 'Processed Requests VII.'
+      region: content
       parent_name: ''
       weight: 1
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Processed Requests VII.'
-      region: content
     group_simple:
       children:
         - field_sim_med
         - field_sim_avg
         - field_sim_low
         - field_sim_high
+      label: Simple
+      region: content
       parent_name: group_processed_requests_vii
       weight: 1
       format_type: tab
       format_settings:
         label: Simple
+        classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-        id: ''
-        classes: ''
-      label: Simple
-      region: content
     group_complex:
       children:
         - field_comp_med
         - field_comp_avg
         - field_comp_low
         - field_comp_high
+      label: Complex
+      region: content
       parent_name: group_processed_requests_vii
       weight: 2
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: Complex
-      region: content
     group_expedited_processing:
       children:
         - field_exp_med
         - field_exp_avg
         - field_exp_low
         - field_exp_high
+      label: 'Expedited Processing'
+      region: content
       parent_name: group_processed_requests_vii
       weight: 3
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Expedited Processing'
-      region: content
 id: paragraph.processed_requests_vii.default
 targetEntityType: paragraph
 bundle: processed_requests_vii
 mode: default
 content:
   field_agency_component:
+    type: erviews_options_select
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: erviews_options_select
-    region: content
   field_comp_avg:
+    type: text_textfield
     weight: 14
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_comp_high:
+    type: text_textfield
     weight: 16
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_comp_low:
+    type: text_textfield
     weight: 15
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_comp_med:
+    type: text_textfield
     weight: 12
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_exp_avg:
+    type: text_textfield
     weight: 14
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_exp_high:
+    type: text_textfield
     weight: 16
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_exp_low:
+    type: text_textfield
     weight: 15
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_exp_med:
+    type: text_textfield
     weight: 13
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_sim_avg:
+    type: text_textfield
     weight: 25
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_sim_high:
+    type: text_textfield
     weight: 27
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_sim_low:
+    type: text_textfield
     weight: 26
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
   field_sim_med:
+    type: text_textfield
     weight: 24
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: text_textfield
-    region: content
 hidden:
   created: true
   status: true

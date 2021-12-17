@@ -332,102 +332,102 @@ third_party_settings:
         - group_vii_a_foia_requests_simple
         - group_vii_a_foia_requests_comple
         - group_vii_a_foia_requests_expedi
+      label: 'Agency Overall VII.A'
+      region: content
       parent_name: group_vii_a_foia_requests_wrap
       weight: 23
       format_type: tabs
       format_settings:
-        direction: vertical
-        id: ''
         classes: ''
-      label: 'Agency Overall VII.A'
-      region: content
+        id: ''
+        direction: vertical
     group_vii_a_foia_requests_simple:
       children:
         - field_overall_viia_sim_med
         - field_overall_viia_sim_avg
         - field_overall_viia_sim_low
         - field_overall_viia_sim_high
+      label: 'Agency Overall -- Simple'
+      region: content
       parent_name: group_vii_a_foia_requests_respon
       weight: 13
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall -- Simple'
-      region: content
     group_vii_a_foia_requests_comple:
       children:
         - field_overall_viia_comp_med
         - field_overall_viia_comp_avg
         - field_overall_viia_comp_low
         - field_overall_viia_comp_high
+      label: 'Agency Overall -- Complex'
+      region: content
       parent_name: group_vii_a_foia_requests_respon
       weight: 14
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall -- Complex'
-      region: content
     group_vii_a_foia_requests_expedi:
       children:
         - field_overall_viia_exp_med
         - field_overall_viia_exp_avg
         - field_overall_viia_exp_low
         - field_overall_viia_exp_high
+      label: 'Agency Overall -- Expedited Processing'
+      region: content
       parent_name: group_vii_a_foia_requests_respon
       weight: 15
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall -- Expedited Processing'
-      region: content
     group_vii_a_foia_requests_wrap:
       children:
         - field_proc_req_viia
         - group_vii_a_foia_requests_respon
         - field_footnotes_viia
+      label: 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
+        classes: ''
+        id: ''
         open: true
         description: "<p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
         required_fields: true
-        id: ''
-        classes: ''
-      label: 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
-      region: content
     group_hidden:
       children:
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_vii_a_foia_requests_response_time
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -448,104 +448,105 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_viia_comp_avg:
+    type: string_textfield
     weight: 62
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_comp_high:
+    type: string_textfield
     weight: 64
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_comp_low:
+    type: string_textfield
     weight: 63
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_comp_med:
+    type: string_textfield
     weight: 61
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_exp_avg:
+    type: string_textfield
     weight: 66
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_exp_high:
+    type: string_textfield
     weight: 68
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_exp_low:
+    type: string_textfield
     weight: 67
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_exp_med:
+    type: string_textfield
     weight: 65
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_sim_avg:
+    type: string_textfield
     weight: 58
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_sim_high:
+    type: string_textfield
     weight: 60
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_sim_low:
+    type: string_textfield
     weight: 59
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viia_sim_med:
+    type: string_textfield
     weight: 57
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_proc_req_viia:
     type: entity_reference_paragraphs
     weight: 22
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -554,12 +555,11 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

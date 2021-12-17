@@ -332,84 +332,84 @@ third_party_settings:
         - field_foia_xiie1
         - group_xii_e_1_comparison_of_numb
         - field_footnotes_xiie1
+      label: 'XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC''D AND PROC''D'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC''D AND PROC''D'
-      region: content
+        id: ''
+        open: true
+        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        required_fields: true
     group_xii_e_1_comparison_of_numb:
       children:
         - group_xiie1_num_appeals_recd
         - group_xiie1_num_appeals_proc
+      label: 'XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT'
+      region: content
       parent_name: group_xii_e_1_comparison_of_wrap
       weight: 4
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT'
-      region: content
     group_xiie1_num_appeals_recd:
       children:
         - field_overall_xiie1_received_las
         - field_overall_xiie1_received_cur
+      label: 'Agency Overall NUMBER OF APPEALS RECEIVED'
+      region: content
       parent_name: group_xii_e_1_comparison_of_numb
       weight: 40
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall NUMBER OF APPEALS RECEIVED'
-      region: content
     group_xiie1_num_appeals_proc:
       children:
         - field_overall_xiie1_proc_last_yr
         - field_overall_xiie1_proc_cur_yr
+      label: 'Agency Overall NUMBER OF APPEALS PROCESSED'
+      region: content
       parent_name: group_xii_e_1_comparison_of_numb
       weight: 41
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall NUMBER OF APPEALS PROCESSED'
-      region: content
     group_hidden:
       children:
         - field_admin_app_via
         - field_overall_via_app_proc_yr
         - field_overall_via_app_recd_yr
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_xii_e_1_comparison
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -436,6 +436,7 @@ content:
   field_foia_xiie1:
     type: entity_reference_paragraphs
     weight: 3
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -444,7 +445,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_footnotes_xiie1:
     type: string_textarea
     weight: 5
@@ -468,38 +468,38 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xiie1_proc_cur_yr:
+    type: number
     weight: 47
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_xiie1_proc_last_yr:
+    type: number
     weight: 46
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_xiie1_received_cur:
+    type: number
     weight: 46
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_xiie1_received_las:
+    type: number
     weight: 45
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield
