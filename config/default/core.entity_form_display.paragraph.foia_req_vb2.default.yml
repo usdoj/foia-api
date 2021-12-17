@@ -17,59 +17,60 @@ third_party_settings:
       children:
         - group_agency_component
         - group__other_reasons
+      label: 'Tabs Wrapper'
+      region: content
       parent_name: ''
       weight: 0
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Tabs Wrapper'
-      region: content
     group__other_reasons:
       children:
         - field_foia_req_vb2_info
+      label: '"Other" Reasons for Denials'
+      region: content
       parent_name: group_tabs_wrapper
       weight: 23
       format_type: tab
       format_settings:
         label: '"Other" Reasons for Denials'
+        classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-        id: ''
-        classes: ''
-      label: '"Other" Reasons for Denials'
-      region: content
     group_agency_component:
       children:
         - field_agency_component
         - field_total
+      label: Agency/Component
+      region: content
       parent_name: group_tabs_wrapper
       weight: 20
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: Agency/Component
-      region: content
 id: paragraph.foia_req_vb2.default
 targetEntityType: paragraph
 bundle: foia_req_vb2
 mode: default
 content:
   field_agency_component:
+    type: erviews_options_select
     weight: 21
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: erviews_options_select
-    region: content
   field_foia_req_vb2_info:
     type: entity_reference_paragraphs
     weight: 3
+    region: content
     settings:
       title: 'Other Denial'
       title_plural: 'Other Denials'
@@ -78,14 +79,13 @@ content:
       form_display_mode: default
       default_paragraph_type: foia_req_vb2_other_details
     third_party_settings: {  }
-    region: content
   field_total:
+    type: number
     weight: 22
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
 hidden:
   created: true
   status: true

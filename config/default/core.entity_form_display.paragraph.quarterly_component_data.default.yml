@@ -16,33 +16,33 @@ bundle: quarterly_component_data
 mode: default
 content:
   field_agency_component:
+    type: erviews_options_select
     weight: 0
+    region: content
     settings:
       empty_value: '- None -'
     third_party_settings: {  }
-    type: erviews_options_select
-    region: content
   field_quarterly_backlogged:
+    type: number
     weight: 3
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_quarterly_processed:
+    type: number
     weight: 2
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_quarterly_received:
+    type: number
     weight: 1
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
 hidden:
   created: true
   status: true

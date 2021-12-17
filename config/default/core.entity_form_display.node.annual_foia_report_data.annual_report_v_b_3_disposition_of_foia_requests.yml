@@ -332,18 +332,18 @@ third_party_settings:
         - field_foia_requests_vb3
         - group_agency_overall_v_b_3_wrapp
         - field_footnotes_vb3
+      label: 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED'
+      region: content
       parent_name: ''
       weight: 7
       format_type: details
       format_settings:
-        description: 'Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED'
-      region: content
+        id: ''
+        open: true
+        description: 'Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        required_fields: true
     group_agency_overall_v_b_3_:
       children:
         - field_overall_vb3_ex_1
@@ -360,49 +360,49 @@ third_party_settings:
         - field_overall_vb3_ex_7_f
         - field_overall_vb3_ex_8
         - field_overall_vb3_ex_9
+      label: 'Agency Overall V. B. (3)'
+      region: content
       parent_name: group_agency_overall_v_b_3_wrapp
       weight: 22
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall V. B. (3)'
-      region: content
     group_agency_overall_v_b_3_wrapp:
       children:
         - group_agency_overall_v_b_3_
+      label: 'Agency Overall V. B. (3) wrapper'
+      region: content
       parent_name: group_v_b_3_disposition_of_foia_
       weight: 23
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Agency Overall V. B. (3) wrapper'
-      region: content
     group_hidden:
       children:
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_v_b_3_disposition_of_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -477,47 +477,47 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vb3_ex_7_a:
+    type: number
     weight: 27
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_vb3_ex_7_b:
+    type: number
     weight: 28
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_vb3_ex_7_c:
+    type: number
     weight: 29
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_vb3_ex_7_d:
+    type: number
     weight: 30
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_vb3_ex_7_e:
+    type: number
     weight: 31
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_vb3_ex_7_f:
+    type: number
     weight: 32
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_vb3_ex_8:
     type: number
     weight: 33
@@ -535,8 +535,8 @@ content:
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

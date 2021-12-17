@@ -24,50 +24,12 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: role
-        options:
-          role:
-            authenticated: authenticated
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: some
-        options:
-          items_per_page: 1
-          offset: 0
-      style:
-        type: default
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-      row:
-        type: fields
+      title: 'CFO Council'
       fields:
         title:
           id: title
@@ -76,6 +38,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -131,9 +96,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         changed:
           id: changed
           table: node_field_revision
@@ -141,6 +103,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: changed
+          plugin_id: field
           label: Changed
           exclude: false
           alter:
@@ -198,9 +163,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: changed
-          plugin_id: field
         field_council_committees:
           id: field_council_committees
           table: node__field_council_committees
@@ -208,6 +170,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Committees
           exclude: false
           alter:
@@ -263,7 +226,48 @@ display:
           multi_type: ul
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 1
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: role
+        options:
+          role:
+            authenticated: authenticated
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts:
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: created
+          exposed: false
+          granularity: second
+      arguments: {  }
       filters:
         type:
           id: type
@@ -272,6 +276,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
           operator: in
           value:
             cfo_council: cfo_council
@@ -291,8 +298,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
             argument: null
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -305,31 +312,25 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-      sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
-          entity_type: node
-          entity_field: created
-          plugin_id: date
-      title: 'CFO Council'
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
       header: {  }
       footer: {  }
-      empty: {  }
-      relationships: {  }
-      arguments: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -341,35 +342,12 @@ display:
       tags:
         - 'config:field.storage.node.field_council_committees'
   committees:
-    display_plugin: attachment
     id: committees
     display_title: Committees
+    display_plugin: attachment
     position: 2
     display_options:
-      display_extenders: {  }
       title: 'CFO Committees'
-      defaults:
-        title: false
-        style: false
-        row: false
-        fields: false
-        filters: false
-        filter_groups: false
-        sorts: false
-        relationships: false
-        header: false
-      style:
-        type: html_list
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          type: ul
-          wrapper_class: item-list
-          class: ''
-      row:
-        type: fields
-        options: {  }
       fields:
         edit_node:
           id: edit_node
@@ -378,6 +356,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: entity_link_edit
           label: ''
           exclude: true
           alter:
@@ -422,8 +402,6 @@ display:
           text: edit
           output_url_as_text: true
           absolute: false
-          entity_type: node
-          plugin_id: entity_link_edit
         status:
           id: status
           table: node_field_data
@@ -431,6 +409,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: status
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -476,8 +457,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_true: ''
             format_custom_false: (UNPUBLISHED)
+            format_custom_true: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -488,9 +469,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: status
-          plugin_id: field
         field_cfo_slug:
           id: field_cfo_slug
           table: node__field_cfo_slug
@@ -498,6 +476,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -553,7 +532,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -561,6 +539,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -616,9 +597,26 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      pager:
+        type: none
+        options:
+          offset: 0
+      sorts:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: node
           entity_field: title
-          plugin_id: field
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title
+          exposed: false
       filters:
         type:
           id: type
@@ -627,6 +625,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
           operator: in
           value:
             cfo_committee: cfo_committee
@@ -646,8 +647,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
             argument: null
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -660,78 +661,10 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
       filter_groups:
         operator: AND
         groups:
           1: AND
-      sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-      relationships: {  }
-      displays:
-        page_1: page_1
-      attachment_position: after
-      pager:
-        type: none
-        options:
-          offset: 0
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: '<h3>Committees (full list)</h3>'
-            format: rich_text
-          plugin_id: text
-      display_description: ''
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - 'user.node_grants:view'
-        - user.roles
-      tags:
-        - 'config:field.storage.node.field_cfo_slug'
-  meetings:
-    display_plugin: attachment
-    id: meetings
-    display_title: Meetings
-    position: 3
-    display_options:
-      display_extenders: {  }
-      title: 'CFO Meetings'
-      defaults:
-        title: false
-        style: false
-        row: false
-        fields: false
-        filters: false
-        filter_groups: false
-        sorts: false
-        relationships: false
-        header: false
       style:
         type: html_list
         options:
@@ -744,6 +677,52 @@ display:
       row:
         type: fields
         options: {  }
+      defaults:
+        title: false
+        style: false
+        row: false
+        relationships: false
+        fields: false
+        sorts: false
+        filters: false
+        filter_groups: false
+        header: false
+      relationships: {  }
+      display_description: ''
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: '<h3>Committees (full list)</h3>'
+            format: rich_text
+          tokenize: false
+      display_extenders: {  }
+      displays:
+        page_1: page_1
+      attachment_position: after
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.roles
+      tags:
+        - 'config:field.storage.node.field_cfo_slug'
+  meetings:
+    id: meetings
+    display_title: Meetings
+    display_plugin: attachment
+    position: 3
+    display_options:
+      title: 'CFO Meetings'
       fields:
         edit_node:
           id: edit_node
@@ -752,6 +731,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: entity_link_edit
           label: ''
           exclude: true
           alter:
@@ -796,8 +777,6 @@ display:
           text: edit
           output_url_as_text: true
           absolute: false
-          entity_type: node
-          plugin_id: entity_link_edit
         status:
           id: status
           table: node_field_data
@@ -805,6 +784,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: status
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -850,8 +832,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_true: ''
             format_custom_false: (UNPUBLISHED)
+            format_custom_true: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -862,9 +844,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: status
-          plugin_id: field
         nid:
           id: nid
           table: node_field_data
@@ -872,6 +851,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -926,9 +908,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
         field_meeting_date:
           id: field_meeting_date
           table: node__field_meeting_date
@@ -936,6 +915,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -992,7 +972,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -1000,6 +979,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1055,9 +1037,25 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
+      pager:
+        type: none
+        options:
+          offset: 0
+      sorts:
+        field_meeting_date_value:
+          id: field_meeting_date_value
+          table: node__field_meeting_date
+          field: field_meeting_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: datetime
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: field_meeting_date_value
+          exposed: false
+          granularity: second
       filters:
         type:
           id: type
@@ -1066,6 +1064,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
           operator: in
           value:
             cfo_meeting: cfo_meeting
@@ -1085,8 +1086,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
             argument: null
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1099,35 +1100,34 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
       filter_groups:
         operator: AND
         groups:
           1: AND
-      sorts:
-        field_meeting_date_value:
-          id: field_meeting_date_value
-          table: node__field_meeting_date
-          field: field_meeting_date_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
-          plugin_id: datetime
-      relationships: {  }
-      displays:
-        page_1: page_1
-      attachment_position: after
-      pager:
-        type: none
+      style:
+        type: html_list
         options:
-          offset: 0
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          type: ul
+          wrapper_class: item-list
+          class: ''
+      row:
+        type: fields
+        options: {  }
+      defaults:
+        title: false
+        style: false
+        row: false
+        relationships: false
+        fields: false
+        sorts: false
+        filters: false
+        filter_groups: false
+        header: false
+      relationships: {  }
+      display_description: ''
       header:
         area:
           id: area
@@ -1136,13 +1136,16 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: '<h3>Meetings</h3>'
             format: rich_text
-          plugin_id: text
-      display_description: ''
+          tokenize: false
+      display_extenders: {  }
+      displays:
+        page_1: page_1
+      attachment_position: after
     cache_metadata:
       max-age: -1
       contexts:
@@ -1153,23 +1156,11 @@ display:
       tags:
         - 'config:field.storage.node.field_meeting_date'
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Admin
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
-      path: admin/content/cfo-council
-      menu:
-        type: tab
-        title: 'CFO Council'
-        description: ''
-        expanded: false
-        parent: ''
-        weight: 10
-        context: '0'
-        menu_name: main
-      display_description: ''
       fields:
         edit_node:
           id: edit_node
@@ -1178,6 +1169,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: entity_link_edit
           label: ''
           exclude: true
           alter:
@@ -1222,8 +1215,6 @@ display:
           text: edit
           output_url_as_text: true
           absolute: false
-          entity_type: node
-          plugin_id: entity_link_edit
         title:
           id: title
           table: node_field_data
@@ -1231,6 +1222,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1286,9 +1280,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         changed:
           id: changed
           table: node_field_revision
@@ -1296,6 +1287,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: changed
+          plugin_id: field
           label: 'Last Modified'
           exclude: false
           alter:
@@ -1353,9 +1347,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: changed
-          plugin_id: field
         field_council_committees:
           id: field_council_committees
           table: node__field_council_committees
@@ -1363,6 +1354,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Committees (assigned to the Council)'
           exclude: false
           alter:
@@ -1418,10 +1410,10 @@ display:
           multi_type: ul
           separator: ', '
           field_api_classes: false
-          plugin_id: field
       defaults:
         fields: false
         header: false
+      display_description: ''
       header:
         area:
           id: area
@@ -1430,12 +1422,23 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: "<strong>ADD CONTENT: </strong>&nbsp;&nbsp;\r\n<a href=\"/node/add/cfo_committee?destination=/admin/content/cfo-council\">click here to add a committee</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/node/add/cfo_meeting?destination=/admin/content/cfo-council\">click here to add a meeting</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/node/add/cfo_page?destination=/admin/content/cfo-council\">click here to add a page</a>\r\n<br>\r\n<strong>JSON FEEDS: </strong>&nbsp;&nbsp;\r\n<a href=\"/api/cfo/council\" target=\"_blank\">council page</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/api/cfo/committees\" target=\"_blank\">committees list</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/api/cfo/meetings\" target=\"_blank\">meetings list</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/api/cfo/pages\" target=\"_blank\">pages list</a>\r\n<br><br>"
             format: rich_text
-          plugin_id: text
+          tokenize: false
+      display_extenders: {  }
+      path: admin/content/cfo-council
+      menu:
+        type: tab
+        title: 'CFO Council'
+        description: ''
+        weight: 10
+        expanded: false
+        menu_name: main
+        parent: ''
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:
@@ -1446,35 +1449,12 @@ display:
       tags:
         - 'config:field.storage.node.field_council_committees'
   pages:
-    display_plugin: attachment
     id: pages
     display_title: Pages
+    display_plugin: attachment
     position: 4
     display_options:
-      display_extenders: {  }
       title: 'CFO Pages'
-      defaults:
-        title: false
-        style: false
-        row: false
-        fields: false
-        filters: false
-        filter_groups: false
-        sorts: false
-        relationships: false
-        header: false
-      style:
-        type: html_list
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          type: ul
-          wrapper_class: item-list
-          class: ''
-      row:
-        type: fields
-        options: {  }
       fields:
         edit_node:
           id: edit_node
@@ -1483,6 +1463,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: entity_link_edit
           label: ''
           exclude: true
           alter:
@@ -1527,8 +1509,6 @@ display:
           text: edit
           output_url_as_text: true
           absolute: false
-          entity_type: node
-          plugin_id: entity_link_edit
         status:
           id: status
           table: node_field_data
@@ -1536,6 +1516,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: status
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1581,8 +1564,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_true: ''
             format_custom_false: (UNPUBLISHED)
+            format_custom_true: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1593,9 +1576,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: status
-          plugin_id: field
         field_cfo_slug:
           id: field_cfo_slug
           table: node__field_cfo_slug
@@ -1603,6 +1583,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1658,7 +1639,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -1666,6 +1646,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1721,9 +1704,26 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      pager:
+        type: none
+        options:
+          offset: 0
+      sorts:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: node
           entity_field: title
-          plugin_id: field
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title
+          exposed: false
       filters:
         type:
           id: type
@@ -1732,6 +1732,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
           operator: in
           value:
             cfo_page: cfo_page
@@ -1751,8 +1754,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
             argument: null
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1765,36 +1768,34 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
       filter_groups:
         operator: AND
         groups:
           1: AND
-      sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-      relationships: {  }
-      displays:
-        page_1: page_1
-      attachment_position: after
-      pager:
-        type: none
+      style:
+        type: html_list
         options:
-          offset: 0
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          type: ul
+          wrapper_class: item-list
+          class: ''
+      row:
+        type: fields
+        options: {  }
+      defaults:
+        title: false
+        style: false
+        row: false
+        relationships: false
+        fields: false
+        sorts: false
+        filters: false
+        filter_groups: false
+        header: false
+      relationships: {  }
+      display_description: ''
       header:
         area:
           id: area
@@ -1803,13 +1804,16 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: true
-          tokenize: false
           content:
             value: '<h3>Pages</h3>'
             format: rich_text
-          plugin_id: text
-      display_description: ''
+          tokenize: false
+      display_extenders: {  }
+      displays:
+        page_1: page_1
+      attachment_position: after
     cache_metadata:
       max-age: -1
       contexts:

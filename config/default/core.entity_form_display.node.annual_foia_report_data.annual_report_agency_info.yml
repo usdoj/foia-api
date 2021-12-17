@@ -333,66 +333,66 @@ third_party_settings:
         - field_agency_components
         - field_foia_annual_report_yr
         - field_date_prepared
+      label: 'Agency Info'
+      region: content
       parent_name: ''
       weight: 2
       format_type: details
       format_settings:
+        classes: ''
+        id: ''
         open: true
         description: 'If the agency''s FOIA information is reported by ''component'' (sub-organization, office, division), the components must be defined here. Component abbreviations entered here are available throughout this workbook in drop-down lists, allowing entry of information for each component. Select all active components that should appear in your agency''s report. If a component is missing please inform OIP. If a component is added, data must be entered in all fields for that component. Clicking "Remove" in any tab will remove all data fields for the component.'
         required_fields: true
-        id: ''
-        classes: ''
-      label: 'Agency Info'
-      region: content
 id: node.annual_foia_report_data.annual_report_agency_info
 targetEntityType: node
 bundle: annual_foia_report_data
 mode: annual_report_agency_info
 content:
   field_agency:
+    type: entity_reference_autocomplete
     weight: 2
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_agency_abbr:
+    type: string_textfield
     weight: 3
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_agency_components:
+    type: erviews_options_buttons
     weight: 4
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: erviews_options_buttons
-    region: content
   field_date_prepared:
+    type: string_textfield
     weight: 161
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_foia_annual_report_yr:
+    type: number
     weight: 5
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

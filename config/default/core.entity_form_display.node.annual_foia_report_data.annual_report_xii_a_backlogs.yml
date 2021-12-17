@@ -333,18 +333,18 @@ third_party_settings:
         - field_overall_xiia_back_req_end_
         - field_overall_xiia_back_app_end_
         - field_footnotes_xiia
+      label: 'XII.A. Backlogs of FOIA Requests and Administrative Appeals'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'If the component field is filled in, all other editable columns must be filled in. "Number of Backlogged Requests" column must contain non-negative integers. "Number of Backlogged Appeals" column must contain non-negative integers, or the special value "N/A". Users should enter "N/A" for any components of their agency that do not process appeals. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'XII.A. Backlogs of FOIA Requests and Administrative Appeals'
-      region: content
+        id: ''
+        open: true
+        description: 'If the component field is filled in, all other editable columns must be filled in. "Number of Backlogged Requests" column must contain non-negative integers. "Number of Backlogged Appeals" column must contain non-negative integers, or the special value "N/A". Users should enter "N/A" for any components of their agency that do not process appeals. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        required_fields: true
     group_hidden:
       children:
         - field_admin_app_via
@@ -354,23 +354,23 @@ third_party_settings:
         - field_overall_viid_exp_pend
         - field_overall_viid_sim_pend
         - field_overall_via_app_pend_endyr
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 2
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_xii_a_backlogs
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -397,6 +397,7 @@ content:
   field_foia_xiia:
     type: entity_reference_paragraphs
     weight: 38
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -405,7 +406,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_footnotes_xiia:
     type: string_textarea
     weight: 41
@@ -446,20 +446,20 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xiia_back_app_end_:
+    type: string_textfield
     weight: 40
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_xiia_back_req_end_:
+    type: number
     weight: 39
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_pending_requests_vii_d_:
     type: entity_reference_paragraphs
     weight: 2
@@ -475,8 +475,8 @@ content:
   moderation_state:
     type: moderation_state_default
     weight: 3
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

@@ -19,29 +19,29 @@ bundle: landing_page
 mode: default
 content:
   body:
-    weight: 102
+    type: text_summary_or_trimmed
     label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
-    type: text_summary_or_trimmed
+    weight: 102
     region: content
   field_meta_tags:
-    weight: 101
+    type: metatag_empty_formatter
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: metatag_empty_formatter
+    weight: 101
     region: content
   links:
-    weight: 100
     settings: {  }
     third_party_settings: {  }
+    weight: 100
     region: content
   workbench_moderation_control:
-    weight: -20
     settings: {  }
     third_party_settings: {  }
+    weight: -20
     region: content
 hidden:
   panelizer: true

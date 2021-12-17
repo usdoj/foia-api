@@ -333,40 +333,40 @@ third_party_settings:
         - field_overall_xiie2_back_prev_yr
         - field_overall_xiie2_back_cur_yr
         - field_footnotes_xiie2
+      label: 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
-      region: content
+        id: ''
+        open: true
+        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        required_fields: true
     group_hidden:
       children:
         - field_foia_xiia
         - field_overall_xiia_back_app_end_
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_xii_e_2_comparison
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -393,6 +393,7 @@ content:
   field_foia_xiie2:
     type: entity_reference_paragraphs
     weight: 147
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -401,7 +402,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_footnotes_xiie2:
     type: string_textarea
     weight: 150
@@ -419,24 +419,24 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xiie2_back_cur_yr:
+    type: number
     weight: 149
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_xiie2_back_prev_yr:
+    type: number
     weight: 148
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 2
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

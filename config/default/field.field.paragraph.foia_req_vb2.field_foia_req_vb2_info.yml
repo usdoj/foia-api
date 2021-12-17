@@ -21,13 +21,10 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       foia_req_vb2_other_details: foia_req_vb2_other_details
+    negate: 0
     target_bundles_drag_drop:
-      foia_xii_backlogged:
-        weight: 30
-        enabled: false
       admin_app_via:
         weight: 31
         enabled: false
@@ -68,10 +65,16 @@ settings:
         weight: 43
         enabled: false
       foia_req_vb2_other_details:
-        enabled: true
         weight: 44
+        enabled: true
       foia_req_vb3:
         weight: 45
+        enabled: false
+      foia_xii_backlogged:
+        weight: 30
+        enabled: false
+      foia_xii_received_proc:
+        weight: 48
         enabled: false
       foia_xiia:
         weight: 46
@@ -79,20 +82,17 @@ settings:
       foia_xiib:
         weight: 47
         enabled: false
-      foia_xii_received_proc:
-        weight: 48
-        enabled: false
       oldest_days:
         weight: 49
         enabled: false
       pending_requests_viid:
         weight: 50
         enabled: false
-      processed_requests_vii:
-        weight: 51
-        enabled: false
       proc_req_viic:
         weight: 52
+        enabled: false
+      processed_requests_vii:
+        weight: 51
         enabled: false
       req_viiia:
         weight: 53

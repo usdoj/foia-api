@@ -332,38 +332,38 @@ third_party_settings:
         - field_sub_xia
         - field_overall_xia_sub_used
         - field_footnotes_xia
+      label: 'XI.A. Number of Times Subsection (C) Used'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'XI.A. Number of Times Subsection (C) Used'
-      region: content
+        id: ''
+        open: true
+        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        required_fields: true
     group_hidden:
       children:
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_xi_a_number_of_times_subsection_c_used
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -384,15 +384,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xia_sub_used:
+    type: number
     weight: 22
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_sub_xia:
     type: entity_reference_paragraphs
     weight: 21
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -401,12 +402,11 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

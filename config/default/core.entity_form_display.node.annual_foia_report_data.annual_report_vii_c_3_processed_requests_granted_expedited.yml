@@ -345,37 +345,37 @@ third_party_settings:
         - field_overall_viic3_400_up_days
         - field_overall_viic3_total
         - field_footnotes_viic3
+      label: 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS '
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
+        classes: ''
+        id: ''
         open: true
         description: "<p>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
         required_fields: true
-        id: ''
-        classes: ''
-      label: 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS '
-      region: content
     group_hidden:
       children:
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_vii_c_3_processed_requests_granted_expedited
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -396,106 +396,107 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_viic3_101_120_days:
+    type: number
     weight: 55
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_121_140_days:
+    type: number
     weight: 56
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_141_160_days:
+    type: number
     weight: 57
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_161_180_days:
+    type: number
     weight: 58
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_181_200_days:
+    type: number
     weight: 59
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_1_20_days:
+    type: number
     weight: 49
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_201_300_days:
+    type: number
     weight: 60
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_21_40_days:
+    type: number
     weight: 50
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_301_400_days:
+    type: number
     weight: 61
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_400_up_days:
+    type: number
     weight: 62
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_41_60_days:
+    type: number
     weight: 52
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_61_80_days:
+    type: number
     weight: 53
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_81_100_days:
+    type: number
     weight: 54
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viic3_total:
+    type: number
     weight: 63
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_proc_req_viic3:
     type: entity_reference_paragraphs
     weight: 48
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -504,12 +505,11 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

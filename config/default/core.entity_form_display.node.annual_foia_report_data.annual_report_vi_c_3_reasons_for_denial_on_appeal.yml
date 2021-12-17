@@ -332,39 +332,39 @@ third_party_settings:
         - field_admin_app_vic3
         - field_overall_vic3_total
         - field_footnotes_vic3
+      label: 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS '
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'Only those components that process administrative appeals should be entered in this section. If a component or the agency does not have other reasons to list, users should enter “N/A” for the Description and “0” for the Number of Times “Other” Reason was Relied Upon. Each agency/component may have more than one "Other Reason." To add another reason for a component click "Add Admin. Appeals VI.C.3. Other Denials Detail." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The calculated column titled ''COMPONENT TOTAL'' must match the number entered on tab VI.C.2., column ''Other'' for the component, and for the agency overall.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS '
-      region: content
+        id: ''
+        open: true
+        description: 'Only those components that process administrative appeals should be entered in this section. If a component or the agency does not have other reasons to list, users should enter “N/A” for the Description and “0” for the Number of Times “Other” Reason was Relied Upon. Each agency/component may have more than one "Other Reason." To add another reason for a component click "Add Admin. Appeals VI.C.3. Other Denials Detail." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The calculated column titled ''COMPONENT TOTAL'' must match the number entered on tab VI.C.2., column ''Other'' for the component, and for the agency overall.'
+        required_fields: true
     group_hidden:
       children:
         - field_overall_vic2_oth
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_vi_c_3_reasons_for_denial_on_appeal
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -404,17 +404,17 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_vic3_total:
+    type: number
     weight: 27
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 2
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield
