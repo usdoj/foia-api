@@ -95,12 +95,28 @@ class CFOService {
       // Initialize this item.
       $return_item = [];
 
+      // Title
+      if (
+        $item->hasField('field_title')
+        && ! empty($item->get('field_title')->getValue()[0]['value'])
+      ) {
+        $return_item['item_title'] = $item->get('field_title')->getValue()[0]['value'];
+      }
+
+      // Body
+      if (
+        $item->hasField('field_body')
+        && ! empty($item->get('field_body')->getValue()[0]['value'])
+      ) {
+        $return_item['field_body'] = $item->get('field_body')->getValue()[0]['value'];
+      }
 
       // File Attachements.
-//      dump($item->get('field_attachement')->getValue());die();
-      $attachments =  $item->get('field_attachment')->getValue();
-      $return_item['item_attachments'] = [];
 
+      if ( $item->hasField('field_attachment') ) {
+        $attachments =  $item->get('field_attachment')->getValue();
+        $return_item['item_attachments'] = $this->buildAttachmentList($attachments);
+      }
 
       // Add this item to the return array.
       if (!empty($return_item)) {
@@ -217,4 +233,26 @@ class CFOService {
 
   }
 
+  /**
+   * Returns array of attachment urls.
+   * @param $attachmentData
+   * @return array
+   */
+  public function buildAttachmentList($attachmentData): array {
+    $attachmentResultList = [];
+    if ( !empty($attachmentData) ) {
+      $attachments =  $attachmentData;
+      if ( !empty( $attachments ) ) {
+        foreach($attachments as $attachment) {
+          $target_id = $attachment['target_id'];
+          if ( empty($target_id)) {
+            continue;
+          }
+          $file = File::load($target_id);
+          array_push( $attachmentResultList, $file->createFileUrl(FALSE));
+        }
+      }
+    }
+    return $attachmentResultList;
+  }
 }

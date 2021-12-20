@@ -13,6 +13,7 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\RenderContext;
+use Drupal\file\Entity\File;
 
 /**
  * Controller routines for foia_cfo routes.
@@ -112,6 +113,11 @@ class CFOController extends ControllerBase {
               if (!empty($committee_node->body->getValue())) {
                 $committee_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee_node->body->getValue()[0]['value']);
                 $committee['committee_body'] = $committee_body;
+              }
+
+              if ($committee_node->hasField('field_attachment')) {
+                $committee_attachments = \Drupal::service('foia_cfo.default')->buildAttachmentList($committee_node->get('field_attachment')->getValue());
+                $committee['committee_attachments'] = $committee_attachments;
               }
 
               // Add working groups.
