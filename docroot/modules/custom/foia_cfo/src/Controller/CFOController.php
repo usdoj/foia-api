@@ -115,9 +115,10 @@ class CFOController extends ControllerBase {
                 $committee['committee_body'] = $committee_body;
               }
 
-              if ($committee_node->hasField('field_attachment')) {
-                $committee_attachments = \Drupal::service('foia_cfo.default')->buildAttachmentList($committee_node->get('field_attachment')->getValue());
-                $committee['committee_attachments'] = $committee_attachments;
+              // Add Committee attachments.
+              if ( $committee_node->hasField('field_attachments') ) {
+                $attachments =  $committee->get('field_attachments');
+                $committee['committee_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
               }
 
               // Add working groups.
@@ -345,9 +346,15 @@ class CFOController extends ControllerBase {
         $response['committee_body'] = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee->get('body')->getValue()[0]['value']);
       }
 
-      if ($committee->hasField('field_attachment')) {
-        $committee_attachments = \Drupal::service('foia_cfo.default')->buildAttachmentList($committee->get('field_attachment')->getValue());
-        $response['committee_attachments'] = $committee_attachments;
+      // Attachments.
+      if ( $committee->hasField('field_attachments') ) {
+        $attachments =  $committee->get('field_attachments');
+        $response['committee_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
+      }
+
+      // Add working groups.
+      if ($committee->field_working_groups->count()) {
+        $response['working_groups'] = \Drupal::service('foia_cfo.default')->workingGroupFieldFormatter($committee->field_working_groups);
       }
 
       // Set up the Cache Meta.

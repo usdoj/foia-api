@@ -111,10 +111,9 @@ class CFOService {
         $return_item['field_body'] = $item->get('field_body')->getValue()[0]['value'];
       }
 
-      // File Attachements.
-
-      if ( $item->hasField('field_attachment') ) {
-        $attachments =  $item->get('field_attachment')->getValue();
+      // File Attachments.
+      if ( $item->hasField('field_attachments') ) {
+        $attachments =  $item->get('field_attachments');
         $return_item['item_attachments'] = $this->buildAttachmentList($attachments);
       }
 
@@ -234,25 +233,42 @@ class CFOService {
   }
 
   /**
-   * Returns array of attachment urls.
-   * @param $attachmentData
+   * Returns array of attachment titles & urls.
+   * @param $field
    * @return array
    */
-  public function buildAttachmentList($attachmentData): array {
+  public function buildAttachmentList(EntityReferenceRevisionsFieldItemList $field): array {
     $attachmentResultList = [];
-    if ( !empty($attachmentData) ) {
-      $attachments =  $attachmentData;
-      if ( !empty( $attachments ) ) {
-        foreach($attachments as $attachment) {
-          $target_id = $attachment['target_id'];
-          if ( empty($target_id)) {
-            continue;
-          }
-          $file = File::load($target_id);
-          array_push( $attachmentResultList, $file->createFileUrl(FALSE));
+
+    foreach ($field->referencedEntities() as $item) {
+
+      $fileItems = [];
+
+      // Title
+      if (
+        $item->hasField('field_title')
+        && ! empty($item->get('field_title')->getValue()[0]['value'])
+      ) {
+        $fileItems['attachment_title'] = $item->get('field_title')->getValue()[0]['value'];
+      }
+
+
+      // File
+      if ( $item->hasField('field_attachment') ) {
+        $attachment = $item->get('field_attachment')->getValue();
+        $fid = $attachment[0]['target_id'];
+        if ( empty($fid)) {
+          continue;
         }
+        $file = File::load($fid);
+        $fileItems['attachment_file'] = $file->createFileUrl(FALSE);
+      }
+
+      if ( ! empty($fileItems) ) {
+        $attachmentResultList[] = $fileItems;
       }
     }
+
     return $attachmentResultList;
   }
 }
