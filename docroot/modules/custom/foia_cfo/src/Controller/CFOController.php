@@ -345,6 +345,11 @@ class CFOController extends ControllerBase {
         $response['committee_body'] = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee->get('body')->getValue()[0]['value']);
       }
 
+      if ($committee->hasField('field_attachment')) {
+        $committee_attachments = \Drupal::service('foia_cfo.default')->buildAttachmentList($committee->get('field_attachment')->getValue());
+        $response['committee_attachments'] = $committee_attachments;
+      }
+
       // Set up the Cache Meta.
       $cacheMeta = (new CacheableMetadata())
         ->setCacheTags(['node:' . $committee->id()])
