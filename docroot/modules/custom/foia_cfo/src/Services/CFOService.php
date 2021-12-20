@@ -108,7 +108,7 @@ class CFOService {
         $item->hasField('field_body')
         && ! empty($item->get('field_body')->getValue()[0]['value'])
       ) {
-        $return_item['field_body'] = $item->get('field_body')->getValue()[0]['value'];
+        $return_item['item_body'] = $item->get('field_body')->getValue()[0]['value'];
       }
 
       // File Attachments.
