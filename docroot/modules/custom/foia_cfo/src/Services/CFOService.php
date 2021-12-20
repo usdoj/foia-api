@@ -114,7 +114,10 @@ class CFOService {
       // File Attachments.
       if ( $item->hasField('field_attachments') ) {
         $attachments =  $item->get('field_attachments');
-        $return_item['item_attachments'] = $this->buildAttachmentList($attachments);
+        $list = $this->buildAttachmentList($attachments);
+        if ( ! empty($list) ) {
+          $return_item['item_attachments'] = $list;
+        }
       }
 
       // Add this item to the return array.
@@ -241,7 +244,6 @@ class CFOService {
     $attachmentResultList = [];
 
     foreach ($field->referencedEntities() as $item) {
-
       $fileItems = [];
 
       // Title
