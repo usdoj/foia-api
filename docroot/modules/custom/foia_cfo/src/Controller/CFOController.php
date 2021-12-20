@@ -117,7 +117,7 @@ class CFOController extends ControllerBase {
 
               // Add Committee attachments.
               if ( $committee_node->hasField('field_attachments') ) {
-                $attachments =  $committee->get('field_attachments');
+                $attachments =  $committee_node->get('field_attachments');
                 $committee['committee_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
               }
 
