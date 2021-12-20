@@ -4,14 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.cfo_committee.body
-    - field.field.node.cfo_committee.field_attachment
+    - field.field.node.cfo_committee.field_attachments
     - field.field.node.cfo_committee.field_cfo_slug
     - field.field.node.cfo_committee.field_working_groups
     - node.type.cfo_committee
     - workflows.workflow.editorial
   module:
     - content_moderation
-    - file
     - paragraphs
     - path
     - text
@@ -36,12 +35,17 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_attachment:
+  field_attachments:
+    type: entity_reference_paragraphs
     weight: 26
     settings:
-      progress_indicator: throbber
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
-    type: file_generic
     region: content
   field_cfo_slug:
     weight: 1

@@ -1,10 +1,10 @@
-uuid: 1e980312-865e-48fc-baf3-25ef705fe16d
+uuid: 5712e154-4192-4b80-9d6e-134d2fdcf6b6
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_attachment
-    - node.type.cfo_committee
+    - field.storage.paragraph.field_attachment
+    - paragraphs.paragraphs_type.attachments
   module:
     - file
     - foia_autocalc
@@ -13,14 +13,14 @@ third_party_settings:
     autocalc_settings:
       description: ''
       autocalc_config: ''
-id: node.cfo_committee.field_attachment
+id: paragraph.attachments.field_attachment
 field_name: field_attachment
-entity_type: node
-bundle: cfo_committee
-label: Attachment
+entity_type: paragraph
+bundle: attachments
+label: 'Attachment File'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

@@ -3,24 +3,26 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.working_groups.field_attachment
+    - field.field.paragraph.working_groups.field_attachments
     - field.field.paragraph.working_groups.field_body
     - field.field.paragraph.working_groups.field_title
     - paragraphs.paragraphs_type.working_groups
   module:
-    - file
+    - entity_reference_revisions
     - text
 id: paragraph.working_groups.default
 targetEntityType: paragraph
 bundle: working_groups
 mode: default
 content:
-  field_attachment:
+  field_attachments:
+    type: entity_reference_revisions_entity_view
     weight: 2
     label: hidden
-    settings: {  }
+    settings:
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    type: file_url_plain
     region: content
   field_body:
     weight: 1

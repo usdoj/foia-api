@@ -3,24 +3,29 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.working_groups.field_attachment
+    - field.field.paragraph.working_groups.field_attachments
     - field.field.paragraph.working_groups.field_body
     - field.field.paragraph.working_groups.field_title
     - paragraphs.paragraphs_type.working_groups
   module:
-    - file
+    - paragraphs
     - text
 id: paragraph.working_groups.default
 targetEntityType: paragraph
 bundle: working_groups
 mode: default
 content:
-  field_attachment:
+  field_attachments:
+    type: entity_reference_paragraphs
     weight: 2
     settings:
-      progress_indicator: throbber
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
-    type: file_generic
     region: content
   field_body:
     weight: 1
