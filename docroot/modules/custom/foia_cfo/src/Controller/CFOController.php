@@ -158,6 +158,7 @@ class CFOController extends ControllerBase {
 
         // Initialize this meeting.
         $meeting = [];
+        $is_upcoming_meeting = false;
 
         // Load the meeting node.
         $meeting_node = $this->nodeStorage->load($meeting_nid);
@@ -168,6 +169,7 @@ class CFOController extends ControllerBase {
           && !empty($meeting_node->get('field_meeting_date')->getValue()[0]['value'])
         ) {
           $meeting['meeting_timestamp'] = strtotime($meeting_node->get('field_meeting_date')->getValue()[0]['value']);
+          $is_upcoming_meeting = (int) $meeting['meeting_timestamp'] > time();
         }
 
         // Add title and body for the meeting.
@@ -208,7 +210,11 @@ class CFOController extends ControllerBase {
         }
 
         // Add this meeting to the return meeting array.
-        $response['meetings'][] = $meeting;
+        if ($is_upcoming_meeting) {
+          $response['meetings']['upcoming'][] = $meeting;
+        } else {
+          $response['meetings']['past'][] = $meeting;
+        }
 
       }
 
