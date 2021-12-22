@@ -332,84 +332,84 @@ third_party_settings:
         - field_foia_xiid1
         - group_xii_d_1_comparison_of_numb
         - field_footnotes_xiid1
+      label: 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered on tab V.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED'
-      region: content
+        id: ''
+        open: true
+        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered on tab V.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        required_fields: true
     group_xii_d_1_comparison_of_numb:
       children:
         - group_xiid1_num_reqs_recd
         - group_xiid1_num_reqs_proc
+      label: 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT'
+      region: content
       parent_name: group_xii_d_1_comparison_wrap
       weight: 8
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT'
-      region: content
     group_xiid1_num_reqs_recd:
       children:
         - field_overall_xiid1_received_las
         - field_overall_xiid1_received_cur
+      label: 'Agency Overall NUMBER OF REQUESTS RECEIVED'
+      region: content
       parent_name: group_xii_d_1_comparison_of_numb
       weight: 37
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall NUMBER OF REQUESTS RECEIVED'
-      region: content
     group_xiid1_num_reqs_proc:
       children:
         - field_overall_xiid1_proc_last_yr
         - field_overall_xiid1_proc_cur_yr
+      label: 'Agency Overall NUMBER OF REQUESTS PROCESSED'
+      region: content
       parent_name: group_xii_d_1_comparison_of_numb
       weight: 38
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall NUMBER OF REQUESTS PROCESSED'
-      region: content
     group_hidden:
       children:
         - field_foia_requests_va
         - field_overall_req_processed_yr
         - field_overall_req_received_yr
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_xii_d_1_comparison
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -436,6 +436,7 @@ content:
   field_foia_xiid1:
     type: entity_reference_paragraphs
     weight: 6
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -444,7 +445,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_footnotes_xiid1:
     type: string_textarea
     weight: 9
@@ -468,38 +468,38 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_xiid1_proc_cur_yr:
+    type: number
     weight: 38
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_xiid1_proc_last_yr:
+    type: number
     weight: 37
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_xiid1_received_cur:
+    type: number
     weight: 43
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_xiid1_received_las:
+    type: number
     weight: 42
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

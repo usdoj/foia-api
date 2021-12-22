@@ -332,70 +332,70 @@ third_party_settings:
         - field_foia_requests_va
         - group_agency_overall_v_a_wrapper
         - field_footnotes_va
+      label: 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS '
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Requests Pending as of End of Fiscal Year" field(s) will be autocalculated as you enter data in this section.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS '
-      region: content
+        id: ''
+        open: true
+        description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Requests Pending as of End of Fiscal Year" field(s) will be autocalculated as you enter data in this section.'
+        required_fields: true
     group_agency_overall_v_a_wrapper:
       children:
         - group_agency_overall_v_a_
+      label: 'Agency Overall V. A. Wrapper'
+      region: content
       parent_name: group_v_a_foia_requests_received
       weight: 159
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Agency Overall V. A. Wrapper'
-      region: content
     group_agency_overall_v_a_:
       children:
         - field_overall_req_pend_start_yr
         - field_overall_req_received_yr
         - field_overall_req_processed_yr
         - field_overall_req_pend_end_yr
+      label: 'Agency Overall V. A.'
+      region: content
       parent_name: group_agency_overall_v_a_wrapper
       weight: 20
       format_type: tab
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
-        description: ''
         formatter: closed
+        description: ''
         required_fields: true
-      label: 'Agency Overall V. A.'
     group_hidden:
       children:
         - field_agency_components
         - field_foia_requests_vb1
         - field_overall_vb1_total
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_v_a_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -477,8 +477,8 @@ content:
   moderation_state:
     type: moderation_state_default
     weight: 2
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

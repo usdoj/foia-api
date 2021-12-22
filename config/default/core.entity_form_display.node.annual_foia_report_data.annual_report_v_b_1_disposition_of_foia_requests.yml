@@ -332,48 +332,48 @@ third_party_settings:
         - field_foia_requests_vb1
         - group_agency_overall_v_b_1_
         - field_footnotes_vb1
+      label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
+      region: content
       parent_name: ''
       weight: 2
       format_type: details
       format_settings:
-        description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The sum of all columns (calculated column titled ''TOTAL'') must match the number entered in V.A., column ''Number of Requests Processed in Fiscal Year'' for the component, and for the agency overall.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
-      region: content
+        id: ''
+        open: true
+        description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The sum of all columns (calculated column titled ''TOTAL'') must match the number entered in V.A., column ''Number of Requests Processed in Fiscal Year'' for the component, and for the agency overall.'
+        required_fields: true
     group_agency_overall_v_b_1_:
       children:
         - group_agency_overall_main
         - group_agency_overall_number_of_f
+      label: 'Agency Overall V. B. (1).'
+      region: content
       parent_name: group_overall_vb1_main
       weight: 10
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Agency Overall V. B. (1).'
-      region: content
     group_agency_overall_main:
       children:
         - field_overall_vb1_full_grants
         - field_overall_vb1_part_grants_de
         - field_overall_vb1_full_denials_e
         - field_overall_vb1_total
+      label: 'Agency Overall'
+      region: content
       parent_name: group_agency_overall_v_b_1_
       weight: 21
       format_type: tab
       format_settings:
+        classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-        id: ''
-        classes: ''
-      label: 'Agency Overall'
-      region: content
     group_agency_overall_number_of_f:
       children:
         - field_overall_vb1_no_rec
@@ -385,17 +385,17 @@ third_party_settings:
         - field_overall_vb1_not_agency_rec
         - field_overall_vb1_dup_request
         - field_overall_vb1_oth
+      label: 'Agency Overall Number of Full Denials Based on Reasons Other than Exemptions'
+      region: content
       parent_name: group_agency_overall_v_b_1_
       weight: 22
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall Number of Full Denials Based on Reasons Other than Exemptions'
-      region: content
     group_hidden:
       children:
         - field_agency_components
@@ -417,23 +417,23 @@ third_party_settings:
         - field_overall_vb3_ex_9
         - field_overall_vb2_total
         - field_overall_req_processed_yr
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 4
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_v_b_1_disposition_of_foia_requests
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -695,8 +695,8 @@ content:
   moderation_state:
     type: moderation_state_default
     weight: 3
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

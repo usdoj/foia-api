@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "webform_submission",
  *   label = @Translation("Webform submission"),
  *   uri_paths = {
- *     "https://www.drupal.org/link-relations/create" = "/api/webform/submit",
+ *     "create" = "/api/webform/submit",
  *   },
  * )
  */

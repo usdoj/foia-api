@@ -17,44 +17,44 @@ third_party_settings:
       children:
         - group_vic3_agency_component_p_wr
         - group__other_reasons_info_p_wrap
+      label: 'Administrative Appeals VI. C (3)'
+      region: content
       parent_name: ''
       weight: 0
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Administrative Appeals VI. C (3)'
-      region: content
     group_vic3_agency_component_p_wr:
       children:
         - field_agency_component
         - field_total
+      label: Agency/Component
+      region: content
       parent_name: group_admin_appeals_vi_wrapper_p
       weight: 4
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: Agency/Component
-      region: content
     group__other_reasons_info_p_wrap:
       children:
         - field_admin_app_vic3_info
+      label: '"Other" Reasons Information'
+      region: content
       parent_name: group_admin_appeals_vi_wrapper_p
       weight: 5
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: '"Other" Reasons Information'
-      region: content
 id: paragraph.admin_app_vic3.default
 targetEntityType: paragraph
 bundle: admin_app_vic3
@@ -63,6 +63,7 @@ content:
   field_admin_app_vic3_info:
     type: entity_reference_paragraphs
     weight: 2
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -71,20 +72,19 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_agency_component:
+    type: erviews_options_select
     weight: 1
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: erviews_options_select
-    region: content
   field_total:
+    type: number
     weight: 2
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
 hidden:
   created: true
   status: true

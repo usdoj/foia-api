@@ -332,84 +332,84 @@ third_party_settings:
         - field_foia_pers_costs_ix
         - group_ix_foia_personnel_and_cost
         - field_footnotes_ix
+      label: 'IX. FOIA Personnel and Costs'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
-        description: 'Every component that  processes requests or appeals should be listed, even if they do not have data to report in this section. If the component processed requests in V.A. there must be a value entered for personnel and costs. If the component field is filled in, all other editable columns must be filled in. All values must be non-negative numeric integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section.'
-        open: true
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'IX. FOIA Personnel and Costs'
-      region: content
+        id: ''
+        open: true
+        description: 'Every component that  processes requests or appeals should be listed, even if they do not have data to report in this section. If the component processed requests in V.A. there must be a value entered for personnel and costs. If the component field is filled in, all other editable columns must be filled in. All values must be non-negative numeric integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section.'
+        required_fields: true
     group_ix_foia_personnel_and_cost:
       children:
         - group_ix_personnel
         - group_ix_costs
+      label: 'IX. FOIA Personnel and Costs'
+      region: content
       parent_name: group_ix_foia_personnel_cost_wra
       weight: 28
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'IX. FOIA Personnel and Costs'
-      region: content
     group_ix_personnel:
       children:
         - field_overall_ix_full_emp
         - field_overall_ix_eq_full_emp
         - field_overall_ix_total_staff
+      label: 'Agency Overall PERSONNEL'
+      region: content
       parent_name: group_ix_foia_personnel_and_cost
       weight: 28
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall PERSONNEL'
-      region: content
     group_ix_costs:
       children:
         - field_overall_ix_proc_costs
         - field_overall_ix_lit_costs
         - field_overall_ix_total_costs
+      label: 'Agency Overall COSTS'
+      region: content
       parent_name: group_ix_foia_personnel_and_cost
       weight: 29
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Agency Overall COSTS'
-      region: content
     group_hidden:
       children:
         - field_agency_components
         - field_foia_requests_vb1
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_x_0_ix_foia_personnel_and_costs
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -424,6 +424,7 @@ content:
   field_foia_pers_costs_ix:
     type: entity_reference_paragraphs
     weight: 27
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -432,7 +433,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_foia_requests_vb1:
     type: entity_reference_paragraphs
     weight: 2
@@ -454,52 +454,52 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_ix_eq_full_emp:
+    type: number
     weight: 36
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_ix_full_emp:
+    type: number
     weight: 35
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_ix_lit_costs:
+    type: number
     weight: 38
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_ix_proc_costs:
+    type: number
     weight: 37
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_ix_total_costs:
+    type: number
     weight: 39
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_ix_total_staff:
+    type: number
     weight: 37
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

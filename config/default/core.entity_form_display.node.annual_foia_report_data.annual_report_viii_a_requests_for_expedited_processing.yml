@@ -336,37 +336,37 @@ third_party_settings:
         - field_overall_viiia_avg_days_jud
         - field_overall_viiia_num_jud_w10
         - field_footnotes_viiia
+      label: 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING'
+      region: content
       parent_name: ''
       weight: 1
       format_type: details
       format_settings:
+        classes: ''
+        id: ''
         open: true
         description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A". Enter “N/A” for Median and Average if the component did not adjudicate any requests for expedited processing during the fiscal year. "Number Adjudicated within Ten Calendar Days" column must contain non-negative integers, or the special value "N/A". To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
         required_fields: true
-        id: ''
-        classes: ''
-      label: 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING'
-      region: content
     group_hidden:
       children:
         - field_agency_components
+      label: HIDDEN
+      region: content
       parent_name: ''
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
         show_empty_fields: false
         id: ''
-        classes: ''
         element: div
         show_label: false
         label_element: h3
         label_element_classes: ''
-        required_fields: true
         attributes: 'style="display:none;"'
         effect: none
         speed: fast
-      label: HIDDEN
+        required_fields: true
 id: node.annual_foia_report_data.annual_report_viii_a_requests_for_expedited_processing
 targetEntityType: node
 bundle: annual_foia_report_data
@@ -387,46 +387,47 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_overall_viiia_avg_days_jud:
+    type: string_textfield
     weight: 49
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viiia_med_days_jud:
+    type: string_textfield
     weight: 48
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_overall_viiia_num_denied:
+    type: number
     weight: 47
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viiia_num_grant:
+    type: number
     weight: 46
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_overall_viiia_num_jud_w10:
+    type: string_textfield
     weight: 50
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_req_viiia:
     type: entity_reference_paragraphs
     weight: 45
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -435,12 +436,11 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

@@ -15,27 +15,27 @@ bundle: agenda_item
 mode: default
 content:
   field_agenda_item_description:
-    weight: 2
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 2
     region: content
   field_agenda_item_time:
-    weight: 3
+    type: time_formatter
     label: above
     settings:
       time_format: 'h:i a'
     third_party_settings: {  }
-    type: time_formatter
+    weight: 3
     region: content
   field_agenda_item_title:
-    weight: 1
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
 hidden:
   search_api_excerpt: true

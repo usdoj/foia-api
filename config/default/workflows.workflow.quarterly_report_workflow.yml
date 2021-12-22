@@ -13,19 +13,19 @@ type_settings:
   states:
     draft:
       label: Draft
+      weight: -2
       published: false
       default_revision: false
-      weight: -2
     published:
       label: Published
+      weight: 0
       published: true
       default_revision: true
-      weight: 0
     submitted_to_oip:
-      published: false
-      default_revision: true
       label: 'Submitted to OIP'
       weight: -1
+      published: false
+      default_revision: true
   transitions:
     back_to_submitted:
       label: 'Back to submitted'
@@ -35,17 +35,17 @@ type_settings:
       weight: 2
     create_new_draft:
       label: 'Create New Draft'
-      to: draft
-      weight: -2
       from:
         - draft
+      to: draft
+      weight: -2
     publish:
       label: Publish
-      to: published
-      weight: 0
       from:
         - published
         - submitted_to_oip
+      to: published
+      weight: 0
     send_back_to_agency:
       label: 'Back to draft'
       from:
