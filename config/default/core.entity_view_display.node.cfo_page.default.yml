@@ -4,11 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.cfo_page.body
-    - field.field.node.cfo_page.field_attachment
+    - field.field.node.cfo_page.field_attachments
     - field.field.node.cfo_page.field_cfo_slug
     - node.type.cfo_page
   module:
-    - file
+    - entity_reference_revisions
     - panelizer
     - text
     - user
@@ -35,12 +35,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_attachment:
+  field_attachments:
     weight: 103
-    label: hidden
-    settings: {  }
+    label: above
+    settings:
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    type: file_url_plain
+    type: entity_reference_revisions_entity_view
     region: content
   field_cfo_slug:
     weight: 102
