@@ -74,6 +74,13 @@ class CFOPagesController extends ControllerBase {
             'page_updated' => $page_node->changed->value,
             'page_slug' => $page_node->get('field_cfo_slug')->getValue()[0]['value'],
           ];
+
+          // Add Page attachments.
+          if ( $page_node->hasField('field_attachments') ) {
+            $attachments =  $page_node->get('field_attachments');
+            $page['page_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
+          }
+
           $response[] = $page;
         }
 
@@ -139,6 +146,12 @@ class CFOPagesController extends ControllerBase {
         && !empty($page->get('body')->getValue()[0]['value'])
       ) {
         $response['page_body'] = \Drupal::service('foia_cfo.default')->absolutePathFormatter($page->get('body')->getValue()[0]['value']);
+      }
+
+      // Add Page attachments.
+      if ( $page->hasField('field_attachments') ) {
+        $attachments =  $page->get('field_attachments');
+        $response['page_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
       }
 
       // Set up the Cache Meta.
