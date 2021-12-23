@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.cfo_page.body
+    - field.field.node.cfo_page.field_attachments
     - field.field.node.cfo_page.field_cfo_slug
     - node.type.cfo_page
   module:
@@ -34,5 +35,6 @@ content:
     weight: 100
     region: content
 hidden:
+  field_attachments: true
   field_cfo_slug: true
   search_api_excerpt: true

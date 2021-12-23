@@ -142,6 +142,15 @@ class CFOMeetingsController extends ControllerBase {
         'meeting_updated' => $meeting->changed->value,
       ];
 
+      // Add Timestamp from meeting date.
+      if (
+        $meeting->hasField('field_meeting_date')
+        && !empty($meeting->get('field_meeting_date'))
+        && !empty($meeting->get('field_meeting_date')->getValue()[0]['value'])
+      ) {
+        $response['meeting_timestamp'] = strtotime($meeting->get('field_meeting_date')->getValue()[0]['value']);
+      }
+
       // Add body HTML if any - use absolute links.
       if (
         $meeting->hasField('body')

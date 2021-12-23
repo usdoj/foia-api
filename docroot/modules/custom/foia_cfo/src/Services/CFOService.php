@@ -74,6 +74,64 @@ class CFOService {
 
   }
 
+
+  /**
+   * Formats "Working Group" paragraph type.
+   *
+   * @param \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $field
+   *   The field.
+   *
+   * @return array
+   *   Labels and links to either the url or the file.
+   */
+  public function workingGroupFieldFormatter(EntityReferenceRevisionsFieldItemList $field): array {
+
+    // Initialize return array.
+    $return = [];
+
+    // Loop over the referenced paragraph entities.
+    foreach ($field->referencedEntities() as $item) {
+
+      // Initialize this item.
+      $return_item = [];
+
+      // Title
+      if (
+        $item->hasField('field_title')
+        && ! empty($item->get('field_title')->getValue()[0]['value'])
+      ) {
+        $return_item['item_title'] = $item->get('field_title')->getValue()[0]['value'];
+      }
+
+      // Body
+      if (
+        $item->hasField('field_body')
+        && ! empty($item->get('field_body')->getValue()[0]['value'])
+      ) {
+        $return_item['item_body'] = $item->get('field_body')->getValue()[0]['value'];
+      }
+
+      // File Attachments.
+      if ( $item->hasField('field_attachments') ) {
+        $attachments =  $item->get('field_attachments');
+        $list = $this->buildAttachmentList($attachments);
+        if ( ! empty($list) ) {
+          $return_item['item_attachments'] = $list;
+        }
+      }
+
+      // Add this item to the return array.
+      if (!empty($return_item)) {
+        $return[] = $return_item;
+      }
+
+    }
+
+    // Returns array of items with labels and links.
+    return $return;
+
+  }
+
   /**
    * Adds the absolute path to src and href parameter values.
    *
@@ -177,4 +235,42 @@ class CFOService {
 
   }
 
+  /**
+   * Returns array of attachment titles & urls.
+   * @param $field
+   * @return array
+   */
+  public function buildAttachmentList(EntityReferenceRevisionsFieldItemList $field): array {
+    $attachmentResultList = [];
+
+    foreach ($field->referencedEntities() as $item) {
+      $fileItems = [];
+
+      // Title
+      if (
+        $item->hasField('field_title')
+        && ! empty($item->get('field_title')->getValue()[0]['value'])
+      ) {
+        $fileItems['attachment_title'] = $item->get('field_title')->getValue()[0]['value'];
+      }
+
+
+      // File
+      if ( $item->hasField('field_attachment') ) {
+        $attachment = $item->get('field_attachment')->getValue();
+        $fid = $attachment[0]['target_id'];
+        if ( empty($fid)) {
+          continue;
+        }
+        $file = File::load($fid);
+        $fileItems['attachment_file'] = $file->createFileUrl(FALSE);
+      }
+
+      if ( ! empty($fileItems) ) {
+        $attachmentResultList[] = $fileItems;
+      }
+    }
+
+    return $attachmentResultList;
+  }
 }

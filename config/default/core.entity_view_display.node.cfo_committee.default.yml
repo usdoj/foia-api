@@ -4,9 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.cfo_committee.body
+    - field.field.node.cfo_committee.field_attachments
     - field.field.node.cfo_committee.field_cfo_slug
+    - field.field.node.cfo_committee.field_working_groups
     - node.type.cfo_committee
   module:
+    - entity_reference_revisions
     - panelizer
     - text
     - user
@@ -28,13 +31,31 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  field_attachments:
+    type: entity_reference_revisions_entity_view
+    weight: 4
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_cfo_slug:
-    type: string
-    label: above
+    weight: 1
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
+    type: string
+    region: content
+  field_working_groups:
+    type: entity_reference_revisions_entity_view
+    weight: 3
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
     region: content
 hidden:
   content_moderation_control: true

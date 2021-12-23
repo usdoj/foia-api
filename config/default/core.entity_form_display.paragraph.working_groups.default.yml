@@ -1,0 +1,48 @@
+uuid: d7a3215f-2aac-4448-b781-212af0decd3b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.working_groups.field_attachments
+    - field.field.paragraph.working_groups.field_body
+    - field.field.paragraph.working_groups.field_title
+    - paragraphs.paragraphs_type.working_groups
+  module:
+    - paragraphs
+    - text
+id: paragraph.working_groups.default
+targetEntityType: paragraph
+bundle: working_groups
+mode: default
+content:
+  field_attachments:
+    type: entity_reference_paragraphs
+    weight: 2
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_body:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

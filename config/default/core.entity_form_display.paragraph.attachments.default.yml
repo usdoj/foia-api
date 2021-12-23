@@ -1,0 +1,33 @@
+uuid: b46da6f7-d555-482f-9073-6224399b5910
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.attachments.field_attachment
+    - field.field.paragraph.attachments.field_title
+    - paragraphs.paragraphs_type.attachments
+  module:
+    - file
+id: paragraph.attachments.default
+targetEntityType: paragraph
+bundle: attachments
+mode: default
+content:
+  field_attachment:
+    weight: 1
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
+  field_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

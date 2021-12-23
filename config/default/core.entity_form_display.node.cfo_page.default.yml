@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.cfo_page.body
+    - field.field.node.cfo_page.field_attachments
     - field.field.node.cfo_page.field_cfo_slug
     - node.type.cfo_page
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - paragraphs
     - path
     - text
 id: node.cfo_page.default
@@ -32,6 +34,18 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_attachments:
+    weight: 26
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    type: entity_reference_paragraphs
+    region: content
   field_cfo_slug:
     type: string_textfield
     weight: 1

@@ -13,6 +13,7 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\RenderContext;
+use Drupal\file\Entity\File;
 
 /**
  * Controller routines for foia_cfo routes.
@@ -113,11 +114,22 @@ class CFOController extends ControllerBase {
                 $committee_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee_node->body->getValue()[0]['value']);
                 $committee['committee_body'] = $committee_body;
               }
+
+              // Add Committee attachments.
+              if ( $committee_node->hasField('field_attachments') ) {
+                $attachments =  $committee_node->get('field_attachments');
+                $committee['committee_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
+              }
+
+              // Add working groups.
+              if ($committee_node->field_working_groups->count()) {
+                $committee['working_groups'] = \Drupal::service('foia_cfo.default')->workingGroupFieldFormatter($committee_node->field_working_groups);
+              }
+
               $response['committees'][] = $committee;
             }
           }
         }
-
       }
 
     }
@@ -146,9 +158,19 @@ class CFOController extends ControllerBase {
 
         // Initialize this meeting.
         $meeting = [];
+        $is_upcoming_meeting = false;
 
         // Load the meeting node.
         $meeting_node = $this->nodeStorage->load($meeting_nid);
+
+        // Add Meeting Timestamp.
+        if (
+          !empty($meeting_node->get('field_meeting_date'))
+          && !empty($meeting_node->get('field_meeting_date')->getValue()[0]['value'])
+        ) {
+          $meeting['meeting_timestamp'] = strtotime($meeting_node->get('field_meeting_date')->getValue()[0]['value']);
+          $is_upcoming_meeting = (int) $meeting['meeting_timestamp'] > time();
+        }
 
         // Add title and body for the meeting.
         $meeting['meeting_title'] = $meeting_node->label();
@@ -188,7 +210,11 @@ class CFOController extends ControllerBase {
         }
 
         // Add this meeting to the return meeting array.
-        $response['meetings'][] = $meeting;
+        if ($is_upcoming_meeting) {
+          $response['meetings']['upcoming'][] = $meeting;
+        } else {
+          $response['meetings']['past'][] = $meeting;
+        }
 
       }
 
@@ -325,6 +351,17 @@ class CFOController extends ControllerBase {
         && !empty($committee->get('body')->getValue()[0]['value'])
       ) {
         $response['committee_body'] = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee->get('body')->getValue()[0]['value']);
+      }
+
+      // Attachments.
+      if ( $committee->hasField('field_attachments') ) {
+        $attachments =  $committee->get('field_attachments');
+        $response['committee_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
+      }
+
+      // Add working groups.
+      if ($committee->field_working_groups->count()) {
+        $response['working_groups'] = \Drupal::service('foia_cfo.default')->workingGroupFieldFormatter($committee->field_working_groups);
       }
 
       // Set up the Cache Meta.
