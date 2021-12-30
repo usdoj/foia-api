@@ -110,7 +110,10 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
  *   Drupal form state.
  */
 function _foia_annual_data_report_section_redirect(array &$form, FormStateInterface $form_state): void {
-  // This section's part of the route was saved in the form.
+  // This section's part of the route was saved in the form.  If deleting, don't redirect.
+  if ( 'delete' == $form['form_section']['#value'] ) {
+    return;
+  }
   $route = 'entity.node.edit_form.' . $form['form_section']['#value'];
   // Redirect back to this page / section of the form.
   $form_state->setRedirect($route, ['node' => $form_state->getformObject()->getEntity()->id()]);
