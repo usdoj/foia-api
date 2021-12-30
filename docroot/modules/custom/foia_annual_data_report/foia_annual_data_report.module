@@ -266,7 +266,9 @@ function _foia_annual_data_report_text_as_integer_validation(FormStateInterface 
   if (!empty($value)) {
     // Check of value is greater than or equal to 0.
     if (!ctype_digit($value) || (int) $value < 0) {
-      $form_state->setErrorByName($key, $error_message);
+      // These should be warnings but not stop the user from saving (FE2-77).
+      //$form_state->setErrorByName($key, $error_message);
+      \Drupal::messenger()->addWarning($error_message);
     }
   }
 }
