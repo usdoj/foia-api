@@ -215,8 +215,8 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
                       $this_key = $key . '][' . $pos . '][subform][' . $this_fieldname;
                       $this_value = $value['subform'][$this_fieldname][0]['value'];
                       $element_title = 'Oldest Days agency component #' . ($pos + 1) . ' day #' . $i;
-                      $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero."),
-                        [':element_title:' => $element_title];
+                      $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
+                        [':element_title:' => $element_title]);
                       _foia_annual_data_report_text_as_integer_validation($form_state, $this_key, $this_value, $error_msg);
                     }
                   }
@@ -229,8 +229,8 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
             $value = $form_value[0]['value'];
             $element = $form[$key];
             $element_title = $element['widget'][0]['#title'];
-            $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero."),
-              [':element_title:' => $element_title];
+            $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
+              [':element_title:' => $element_title]);
             _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
           }
 
