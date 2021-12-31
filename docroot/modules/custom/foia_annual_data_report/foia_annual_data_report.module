@@ -26,11 +26,21 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
   // Attach form style updates.
   $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_style_updates';
 
-  // Look for this string to match an Annual Data Report (ADR).
+
+  // Look for this string to match an Annual Data Report (ADR), section.
   $adr_string = 'node_annual_foia_report_data_';
 
   // Look for the adr string in the form id.
   if (substr($form_id, 0, strlen($adr_string)) === $adr_string) {
+
+    // Add the AJAX save callbacks.
+    $node = $form_state->getFormObject()->getEntity();
+    if ($node->isNew()) {
+      foia_annual_data_report_ajax_new_node($form);
+    }
+    else {
+      foia_annual_data_report_ajax_existing_node($form);
+    }
 
     // Use the Service to get info for an annual data report form.
     $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info($form_id);
@@ -51,8 +61,6 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
         ];
       }
 
-      // Add the AJAX save callbacks.
-      foia_annual_data_report_ajax_existing_node($form);
       foia_annual_data_report_set_default_report_year($form);
 
       // Hidden fields should not be required.
