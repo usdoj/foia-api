@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Entity\EntityForm;
-use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -26,11 +25,20 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
   // Attach form style updates.
   $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_style_updates';
 
-  // Look for this string to match an Annual Data Report (ADR).
+  // Look for this string to match an Annual Data Report (ADR), section.
   $adr_string = 'node_annual_foia_report_data_';
 
   // Look for the adr string in the form id.
   if (substr($form_id, 0, strlen($adr_string)) === $adr_string) {
+
+    // Add the AJAX save callbacks.
+    $node = $form_state->getFormObject()->getEntity();
+    if ($node->isNew()) {
+      foia_annual_data_report_ajax_new_node($form);
+    }
+    else {
+      foia_annual_data_report_ajax_existing_node($form);
+    }
 
     // Use the Service to get info for an annual data report form.
     $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info($form_id);
@@ -51,8 +59,6 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
         ];
       }
 
-      // Add the AJAX save callbacks.
-      foia_annual_data_report_ajax_existing_node($form);
       foia_annual_data_report_set_default_report_year($form);
 
       // Hidden fields should not be required.
@@ -109,16 +115,27 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Drupal form state.
  */
-function _foia_annual_data_report_section_redirect(array &$form, FormStateInterface $form_state): void {
-  // This section's part of the route was saved in the form.
+function _foia_annual_data_report_section_redirect(
+  array &$form,
+  FormStateInterface $form_state): void {
+
+  // This section's part of the route was saved in the form.  If deleting,
+  // don't redirect.
+  if ('delete' == $form['form_section']['#value']) {
+    return;
+  }
   $route = 'entity.node.edit_form.' . $form['form_section']['#value'];
   // Redirect back to this page / section of the form.
   $form_state->setRedirect($route, ['node' => $form_state->getformObject()->getEntity()->id()]);
 }
 
 /**
+ * Apply validation on specific fields in specific sections.
+ *
  * @param array $form
- * @param FormStateInterface $form_state
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
  */
 function _form_annual_data_report_section_validate(array &$form, FormStateInterface $form_state): void {
 
@@ -198,7 +215,8 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
                       $this_key = $key . '][' . $pos . '][subform][' . $this_fieldname;
                       $this_value = $value['subform'][$this_fieldname][0]['value'];
                       $element_title = 'Oldest Days agency component #' . ($pos + 1) . ' day #' . $i;
-                      $error_msg = t("Invalid input for {$element_title}, please use number greater or equal to zero.");
+                      $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero."),
+                        [':element_title:' => $element_title];
                       _foia_annual_data_report_text_as_integer_validation($form_state, $this_key, $this_value, $error_msg);
                     }
                   }
@@ -211,7 +229,8 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
             $value = $form_value[0]['value'];
             $element = $form[$key];
             $element_title = $element['widget'][0]['#title'];
-            $error_msg = t("Invalid input for {$element_title}, please use number greater or equal to zero.");
+            $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero."),
+              [':element_title:' => $element_title];
             _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
           }
 
@@ -223,25 +242,32 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
 
 /**
  * Validation function to check paragraph text fields.
+ *
  * @param array $form
- * @param FormStateInterface $form_state
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
  * @param string $parent_key
+ *   Parent form element key.
  * @param array $parent_array
+ *   Parent array of paragraphs.
  * @param array $fields_to_validate
+ *   List of fields to check.
  */
 function _foia_annual_data_report_validate_paragraph_fields(array &$form, FormStateInterface $form_state, string $parent_key, array $parent_array, array $fields_to_validate): void {
   if (!empty($parent_array)) {
-    foreach($parent_array as $paragraph_key => $paragraph_value) {
-      if($paragraph_key === 'add_more') {
+    foreach ($parent_array as $paragraph_key => $paragraph_value) {
+      if ($paragraph_key === 'add_more') {
         continue;
       }
       $paragraph_items = $paragraph_value['subform'];
-      foreach($paragraph_items as $key => $field_value) {
-        if(in_array($key, $fields_to_validate) && !empty($field_value[0]['value'])) {
+      foreach ($paragraph_items as $key => $field_value) {
+        if (in_array($key, $fields_to_validate) && !empty($field_value[0]['value'])) {
           $value = $field_value[0]['value'];
           $element = $form[$parent_key];
           $element_title = $element['widget']['#title'];
-          $error_msg = t("Invalid input for {$element_title} item(s), please use number greater or equal to zero.");
+          $error_msg = t("Invalid input for :element_title: item(s), please use number greater or equal to zero.",
+            [':element_title:' => $element_title]);
           $key_path = "{$parent_key}][{$paragraph_key}][subform][{$key}";
           _foia_annual_data_report_text_as_integer_validation($form_state, $key_path, $value, $error_msg);
         }
@@ -267,12 +293,11 @@ function _foia_annual_data_report_text_as_integer_validation(FormStateInterface 
     // Check of value is greater than or equal to 0.
     if (!ctype_digit($value) || (int) $value < 0) {
       // These should be warnings but not stop the user from saving (FE2-77).
-      //$form_state->setErrorByName($key, $error_message);
+      // Used to be: $form_state->setErrorByName($key, $error_message); .
       \Drupal::messenger()->addWarning($error_message);
     }
   }
 }
-
 
 /**
  * Validation for the annual report.
@@ -692,7 +717,6 @@ function foia_annual_data_report_menu_local_actions_alter(&$local_actions) {
   }
 
 }
-
 
 /**
  * Implements hook_entity_operation_alter().
