@@ -88,7 +88,7 @@ class CFOController extends ControllerBase {
         $render_service = \Drupal::service('renderer');
 	$pre_render = $view_builder->view($council_node, 'full');
         // $build[] = $pre_render;
-	$html = $render_service->renderPlain($pre_render);
+	$html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($render_service->renderPlain($pre_render));
         // $body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($council_node->get('body')->getValue()[0]['value']);
 	// $response['body'] = $body;
         $response['body'] = $html;
