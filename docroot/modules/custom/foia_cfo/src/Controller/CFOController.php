@@ -84,8 +84,14 @@ class CFOController extends ControllerBase {
         !empty($council_node->get('body'))
         && !empty($council_node->get('body')->getValue()[0]['value'])
       ) {
-        $body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($council_node->get('body')->getValue()[0]['value']);
-        $response['body'] = $body;
+        $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+        $render_service = \Drupal::service('renderer');
+	$pre_render = $view_builder->view($council_node, 'full');
+        // $build[] = $pre_render;
+	$html = $render_service->renderPlain($pre_render);
+        // $body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($council_node->get('body')->getValue()[0]['value']);
+	// $response['body'] = $body;
+        $response['body'] = $html;
       }
 
       /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $committees */
