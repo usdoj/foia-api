@@ -13,8 +13,15 @@ dependencies:
   module:
     - datetime
     - entity_reference_revisions
+    - panelizer
     - text
     - user
+third_party_settings:
+  panelizer:
+    enable: false
+    custom: false
+    allow: false
+    default: default
 id: node.cfo_meeting.default
 targetEntityType: node
 bundle: cfo_meeting
@@ -25,12 +32,12 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 101
+    weight: 2
     region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: -20
+    weight: 0
     region: content
   field_meeting_agenda:
     type: entity_reference_revisions_entity_view
@@ -39,7 +46,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 104
+    weight: 5
     region: content
   field_meeting_date:
     type: datetime_default
@@ -48,14 +55,14 @@ content:
       timezone_override: ''
       format_type: medium
     third_party_settings: {  }
-    weight: 102
+    weight: 3
     region: content
   field_meeting_heading:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 105
+    weight: 6
     region: content
   field_meeting_materials:
     type: entity_reference_revisions_entity_view
@@ -64,12 +71,12 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 103
+    weight: 4
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 1
     region: content
 hidden:
   field_meeting_documents: true
