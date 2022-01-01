@@ -101,7 +101,7 @@ class CFOController extends ControllerBase {
         !empty($council_node->get('body'))
         && !empty($council_node->get('body')->getValue()[0]['value'])
       ) {
-	$pre_render = $this->view_builder->view($council_node, 'full');
+	$pre_render = $this->view_builder->view($council_node, 'cfo_body_only');
 	$html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
         $response['body'] = $html;
       }
@@ -129,7 +129,7 @@ class CFOController extends ControllerBase {
             if ($committee_node->isPublished()) {
               $committee = ['committee_title' => $committee_node->label()];
               if (!empty($committee_node->body->getValue())) {
-	        $pre_render = $this->view_builder->view($committee_node, 'full');
+	        $pre_render = $this->view_builder->view($committee_node, 'cfo_body_only');
 	        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
                 $committee['committee_body'] = $html;
               }
@@ -194,7 +194,7 @@ class CFOController extends ControllerBase {
         // Add title and body for the meeting.
         $meeting['meeting_title'] = $meeting_node->label();
         if (!empty($meeting_node->body->getValue()[0]['value'])) {
-          $pre_render = $this->view_builder->view($meeting_node, 'full');
+          $pre_render = $this->view_builder->view($meeting_node, 'cfo_body_only');
           $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
           $meeting['meeting_body'] = $html;
 
@@ -371,7 +371,7 @@ class CFOController extends ControllerBase {
         && !empty($committee->get('body'))
         && !empty($committee->get('body')->getValue()[0]['value'])
       ) {
-        $pre_render = $this->view_builder->view($committee, 'full');
+        $pre_render = $this->view_builder->view($committee, 'cfo_body_only');
         $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
         $response['committee_body'] = $html;
       }
