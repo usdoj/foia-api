@@ -373,7 +373,7 @@ class CFOController extends ControllerBase {
       ) {
         $pre_render = $this->view_builder->view($committee, 'full');
         $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
-        $responses['committee_body'] = $html;
+        $response['committee_body'] = $html;
       }
 
       // Attachments.
