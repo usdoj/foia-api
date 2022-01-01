@@ -28,13 +28,30 @@ class CFOController extends ControllerBase {
   private $nodeStorage;
 
   /**
+   * View Builder.
+   *
+   * @var \Drupal\Core\Entity\EntityViewBuilderInterface
+   */
+  private $view_builder;
+
+  /**
+   * Render Service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  private $render_service;
+
+  /**
    * Constructor for this class.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function __construct() {
+    // @todo: These should be passed in to the constructor in the usual style.
     $this->nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
+    $this->view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+    $this->render_service = \Drupal::service('renderer');
   }
 
   /**
@@ -84,13 +101,8 @@ class CFOController extends ControllerBase {
         !empty($council_node->get('body'))
         && !empty($council_node->get('body')->getValue()[0]['value'])
       ) {
-        $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
-        $render_service = \Drupal::service('renderer');
-	$pre_render = $view_builder->view($council_node, 'full');
-        // $build[] = $pre_render;
-	$html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($render_service->renderPlain($pre_render));
-        // $body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($council_node->get('body')->getValue()[0]['value']);
-	// $response['body'] = $body;
+	$pre_render = $this->view_builder->view($council_node, 'full');
+	$html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
         $response['body'] = $html;
       }
 
@@ -117,8 +129,9 @@ class CFOController extends ControllerBase {
             if ($committee_node->isPublished()) {
               $committee = ['committee_title' => $committee_node->label()];
               if (!empty($committee_node->body->getValue())) {
-                $committee_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee_node->body->getValue()[0]['value']);
-                $committee['committee_body'] = $committee_body;
+	        $pre_render = $this->view_builder->view($committee_node, 'full');
+	        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+                $committee['committee_body'] = $html;
               }
 
               // Add Committee attachments.
@@ -181,8 +194,10 @@ class CFOController extends ControllerBase {
         // Add title and body for the meeting.
         $meeting['meeting_title'] = $meeting_node->label();
         if (!empty($meeting_node->body->getValue()[0]['value'])) {
-          $meeting_body = \Drupal::service('foia_cfo.default')->absolutePathFormatter($meeting_node->body->getValue()[0]['value']);
-          $meeting['meeting_body'] = $meeting_body;
+          $pre_render = $this->view_builder->view($meeting_node, 'full');
+          $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+          $meeting['meeting_body'] = $html;
+
         }
 
         // Meeting materials.
@@ -356,7 +371,9 @@ class CFOController extends ControllerBase {
         && !empty($committee->get('body'))
         && !empty($committee->get('body')->getValue()[0]['value'])
       ) {
-        $response['committee_body'] = \Drupal::service('foia_cfo.default')->absolutePathFormatter($committee->get('body')->getValue()[0]['value']);
+        $pre_render = $this->view_builder->view($committee, 'full');
+        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+        $responses['committee_body'] = $html;
       }
 
       // Attachments.
