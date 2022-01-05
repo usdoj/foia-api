@@ -1,7 +1,12 @@
 uuid: 3e1ab9d3-ff68-4e46-abd0-bd450e5f4942
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.cfo_meeting
+  module:
+    - content_moderation
+    - node
 id: cfo_meeting_reviewer
 label: 'CFO Meeting reviewer'
 weight: 16
