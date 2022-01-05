@@ -1,7 +1,18 @@
 uuid: 6269385c-89bd-40ca-b9dc-f7bc4bd0013c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.rich_text
+    - node.type.cfo_committee
+  module:
+    - content_moderation
+    - entity_browser
+    - filter
+    - node
+    - panelizer
+    - panels_ipe
+    - path
 id: cfo_committee_creator
 label: 'CFO Committee creator'
 weight: 17

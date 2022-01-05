@@ -1,7 +1,12 @@
 uuid: 0bd16333-b7ea-4403-b19b-6e68da45a084
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.cfo_committee
+  module:
+    - content_moderation
+    - node
 id: cfo_committee_reviewer
 label: 'CFO Committee reviewer'
 weight: 18

@@ -1,7 +1,18 @@
 uuid: 6af9c031-22a4-4d8c-ae4d-b5cdcd9c5519
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.rich_text
+    - node.type.cfo_meeting
+  module:
+    - content_moderation
+    - entity_browser
+    - filter
+    - node
+    - panelizer
+    - panels_ipe
+    - path
 id: cfo_meeting_creator
 label: 'CFO Meeting creator'
 weight: 15

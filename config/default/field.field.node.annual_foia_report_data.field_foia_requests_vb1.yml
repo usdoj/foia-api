@@ -20,7 +20,7 @@ entity_type: node
 bundle: annual_foia_report_data
 label: 'FOIA Requests V. B. (1)'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -51,6 +51,12 @@ settings:
         enabled: false
       admin_app_vic4:
         weight: 37
+        enabled: false
+      agenda_item:
+        weight: 41
+        enabled: false
+      attachments:
+        weight: 42
         enabled: false
       fees_x:
         weight: 39
@@ -85,6 +91,9 @@ settings:
       foia_xiib:
         weight: 47
         enabled: false
+      link_or_file:
+        weight: 54
+        enabled: false
       oldest_days:
         weight: 49
         enabled: false
@@ -117,5 +126,8 @@ settings:
         enabled: false
       sub_xib:
         weight: 58
+        enabled: false
+      working_groups:
+        weight: 66
         enabled: false
 field_type: entity_reference_revisions

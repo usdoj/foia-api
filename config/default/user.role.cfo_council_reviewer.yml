@@ -1,7 +1,12 @@
 uuid: 5417c1aa-dd79-430f-84da-de8b119d2d38
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.cfo_council
+  module:
+    - content_moderation
+    - node
 id: cfo_council_reviewer
 label: 'CFO Council reviewer'
 weight: 20

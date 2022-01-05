@@ -1,7 +1,12 @@
 uuid: 7d2e3356-bbad-47fb-b80e-9733fba038c5
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.cfo_page
+  module:
+    - content_moderation
+    - node
 id: cfo_page_reviewer
 label: 'CFO Page reviewer'
 weight: 22
