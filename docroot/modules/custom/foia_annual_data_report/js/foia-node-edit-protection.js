@@ -32,6 +32,12 @@
           });
         });
 
+        // Let all vertical tabs through ( for full edit mode ).
+        var tabs = document.querySelector('.js-vertical-tabs--main > .vertical-tabs > .vertical-tabs__menu');
+        $('> .vertical-tabs__menu-item', tabs).each(function (index, menuItem) {
+          $(menuItem).addClass('node-edit-protection-processed');
+        });
+
         $("a, button, input[type='submit']:not(.node-edit-protection-processed), button[type='submit']:not(.node-edit-protection-processed)")
           .each(function() {
             $(this).click(function(e) {
