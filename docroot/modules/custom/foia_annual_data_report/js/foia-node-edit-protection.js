@@ -14,6 +14,13 @@
           return false;
         }
 
+        // Don't run on full edit mode page, i.e. if there is anything after
+        // /edit on the path.
+	if (window.location.pathname.substr(-5) == '/edit' ||
+          window.location.pathname.substr(-5) == 'edit/') {
+          return false;
+	}
+
         $(".node-form :input").each(function() {
           var oVal = $(this).val();
           $(this).blur(function(e) {
@@ -32,13 +39,20 @@
           });
         });
 
-        // Let all vertical tabs through ( for full edit mode ).
+        // Let all vertical tabs through ( for full edit mode ). Not sure this
+        // completely works, note code above to bail out on /edit urls.
         var tabs = document.querySelector('.js-vertical-tabs--main > .vertical-tabs > .vertical-tabs__menu');
         $('> .vertical-tabs__menu-item', tabs).each(function (index, menuItem) {
           $(menuItem).addClass('node-edit-protection-processed');
         });
 
-        $("a, button, input[type='submit']:not(.node-edit-protection-processed), button[type='submit']:not(.node-edit-protection-processed)")
+        $(".vertical-tabs__menu-item > a").each(function() {
+          $(this).addClass('node-edit-protection-processed');
+        });
+
+
+
+        $("a:not(.node-edit-protection-processed), button, input[type='submit']:not(.node-edit-protection-processed), button[type='submit']:not(.node-edit-protection-processed)")
           .each(function() {
             $(this).click(function(e) {
 
