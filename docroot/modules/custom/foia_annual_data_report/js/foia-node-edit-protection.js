@@ -26,10 +26,89 @@
           $(this).blur(function(e) {
             var nVal = e.target.value;
             if (oVal !== nVal) {
+              console.log("Setting edit.");
               edit = true;
             }
           });
+          $(this).on('change input keyup formUpdated', function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit-c.");
+              edit = true;
+            }
+          });
+/*          $(this).oninput(function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit-i.");
+              edit = true;
+            }
+          });
+          $(this).keyup(function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit-k.");
+              edit = true;
+            }
+          }); */
         });
+
+        $(".vertical-tabs__pane").each(function() {
+            $(this).click(function(e) {
+
+        
+        $(".node-form :input").each(function() {
+          var oVal = $(this).val();
+          $(this).blur(function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit2.");
+              edit = true;
+            }
+          });
+          $(this).on('change input keyup formUpdated', function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit-c.");
+              edit = true;
+            }
+          });
+/*          $(this).change(function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit2-c.");
+              edit = true;
+            }
+          });
+          $(this).oninput(function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit2-i.");
+              edit = true;
+            }
+          });
+          $(this).keyup(function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit2-k.");
+              edit = true;
+            }
+          }); */
+
+        });
+	    })});
+
+/*        $("[id^='edit-field']").each(function() {
+          var oVal = $(this).val();
+          $(this).blur(function(e) {
+            var nVal = e.target.value;
+            if (oVal !== nVal) {
+              console.log("Setting edit on edit-field.");
+              edit = true;
+            }
+          });
+        }); */
+
 
         // Let all form submit buttons through.
         $(".node-form input[type='submit'], .node-form button[type='submit']").each(function() {
@@ -71,7 +150,7 @@
                 var target = e.target,
                   tagName = target.tagName,
                   isLink = tagName === 'A',
-                  _confirm = window.confirm(Drupal.t("You have unsaved changes on this page!"));
+                  _confirm = window.confirm(Drupal.t("You have unsaved changes on this page!  To return to this page so that you can save your changes, click Cancel.  To navigate away from this page without saving your changes, click OK."));
 
                 if (_confirm) {
                   if (isLink) {
