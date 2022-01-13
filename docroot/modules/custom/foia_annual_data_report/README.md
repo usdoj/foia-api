@@ -55,3 +55,24 @@ capitalized M as the unit symbol, with no space between the two, e.g. `1024M`.
  * Check the `Debug Annual Report memory limit` checkbox to log the memory
 limit before the node is saved, while it is being saved, and after it has been
 saved.
+
+NODE SAVE PROTECTION
+--------------------
+
+The newer split form has a reminder to save when moving from one section to
+another.  We had to disable this because it did not trigger reliably, and
+sometimes triggered when it shouldn't.
+
+If revisited, look a the JS file in the form_autosave contrib module for what
+might be a good example of detecting when a drupal form has changed.
+
+This feature was disabled by just removing the js file from the
+foia_annual_data_report.libraries.yml file.  To restore it, add these lines
+back in:
+
+foia_node_edit_protection:
+  js:
+    js/foia-node-edit-protection.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

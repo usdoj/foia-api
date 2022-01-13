@@ -9,6 +9,12 @@
 
   Drupal.behaviors.foiaNodeEditProtection = {
     attach: function(context) {
+      var $context = $(context);
+      var $form = $context.find('form.autosave-form');
+      if ($form.length === 0) {
+        var $form = $context.parents('form.autosave-form');
+      }
+
       $(context).find('form').once('form').each(function(index, element) {
         if (!$(element).length) {
           return false;
@@ -20,6 +26,37 @@
           window.location.pathname.substr(-5) == 'edit/') {
           return false;
 	}
+
+        // Copied and modified from the autosave_form contrib module; may be
+        // redundant with some of the stuff after.
+        // Detect new elements added through field widgets.
+        if ($context.find('.ajax-new-content').length > 0) {
+          console.log("Setting edit based on ajax.");
+          edit = true;
+        }
+        // Add a change handler that will help us determine if any inputs
+        // inside the entity forms have changed values.
+        $form.find(':input, [contenteditable="true"]')
+          .on('change textInput input', function (event) {
+            var $form = $(event.target).parents('.autosave-form').first();
+            if ($form.length) {
+              var val = $(this).val();
+              if(val != $(this).attr('autosave-old-val') ){
+                $(this).attr('autosave-old-val',val);
+                console.log("Setting edit based on form1.");
+                edit = true;
+              }
+            }
+          })
+          // Detect Ajax changes e.g. removing an element.
+          .on('mousedown', function (event) {
+            if (event.target.type === 'submit') {
+              console.log("setting edit based on from2.");
+              edit = true;
+            }
+          });
+	// End of autosave_form copy.
+
 
         $(".node-form :input").each(function() {
           var oVal = $(this).val();
@@ -37,78 +74,31 @@
               edit = true;
             }
           });
-/*          $(this).oninput(function(e) {
-            var nVal = e.target.value;
-            if (oVal !== nVal) {
-              console.log("Setting edit-i.");
-              edit = true;
-            }
-          });
-          $(this).keyup(function(e) {
-            var nVal = e.target.value;
-            if (oVal !== nVal) {
-              console.log("Setting edit-k.");
-              edit = true;
-            }
-          }); */
         });
 
         $(".vertical-tabs__pane").each(function() {
-            $(this).click(function(e) {
+          $(this).click(function(e) {
 
-        
-        $(".node-form :input").each(function() {
-          var oVal = $(this).val();
-          $(this).blur(function(e) {
-            var nVal = e.target.value;
-            if (oVal !== nVal) {
-              console.log("Setting edit2.");
-              edit = true;
-            }
-          });
-          $(this).on('change input keyup formUpdated', function(e) {
-            var nVal = e.target.value;
-            if (oVal !== nVal) {
-              console.log("Setting edit-c.");
-              edit = true;
-            }
-          });
-/*          $(this).change(function(e) {
-            var nVal = e.target.value;
-            if (oVal !== nVal) {
-              console.log("Setting edit2-c.");
-              edit = true;
-            }
-          });
-          $(this).oninput(function(e) {
-            var nVal = e.target.value;
-            if (oVal !== nVal) {
-              console.log("Setting edit2-i.");
-              edit = true;
-            }
-          });
-          $(this).keyup(function(e) {
-            var nVal = e.target.value;
-            if (oVal !== nVal) {
-              console.log("Setting edit2-k.");
-              edit = true;
-            }
-          }); */
+            $(".node-form :input").each(function() {
+              var oVal = $(this).val();
+              $(this).blur(function(e) {
+                var nVal = e.target.value;
+                if (oVal !== nVal) {
+                  console.log("Setting edit2.");
+                  edit = true;
+                }
+              });
+              $(this).on('change input keyup formUpdated', function(e) {
+                var nVal = e.target.value;
+                if (oVal !== nVal) {
+                  console.log("Setting edit-c.");
+                  edit = true;
+                }
+              });
 
-        });
-	    })});
-
-/*        $("[id^='edit-field']").each(function() {
-          var oVal = $(this).val();
-          $(this).blur(function(e) {
-            var nVal = e.target.value;
-            if (oVal !== nVal) {
-              console.log("Setting edit on edit-field.");
-              edit = true;
-            }
-          });
-        }); */
-
+            });
+          })
+	});
 
         // Let all form submit buttons through.
         $(".node-form input[type='submit'], .node-form button[type='submit']").each(function() {
