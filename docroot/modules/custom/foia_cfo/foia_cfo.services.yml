@@ -1,0 +1,7 @@
+services:
+  logger.channel.foia_cfo:
+    parent: logger.channel_base
+    arguments: ['foia_cfo']
+  foia_cfo.default:
+    class: Drupal\foia_cfo\Services\CFOService
+    arguments: []

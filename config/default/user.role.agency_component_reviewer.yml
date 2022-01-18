@@ -1,7 +1,13 @@
 uuid: c1390f7b-ed74-4abc-90d4-c7921fe5c501
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.agency_component
+  module:
+    - content_moderation
+    - file_entity
+    - node
 id: agency_component_reviewer
 label: 'Agency Component reviewer'
 weight: 10

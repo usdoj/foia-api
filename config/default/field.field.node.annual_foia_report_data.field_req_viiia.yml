@@ -8,6 +8,12 @@ dependencies:
     - paragraphs.paragraphs_type.req_viiia
   module:
     - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.annual_foia_report_data.field_req_viiia
 field_name: field_req_viiia
 entity_type: node
@@ -21,9 +27,9 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       req_viiia: req_viiia
+    negate: 0
     target_bundles_drag_drop:
       admin_app_via:
         weight: 30
@@ -46,8 +52,11 @@ settings:
       admin_app_vic4:
         weight: 36
         enabled: false
-      component_details:
-        weight: 37
+      agenda_item:
+        weight: 41
+        enabled: false
+      attachments:
+        weight: 42
         enabled: false
       fees_x:
         weight: 38
@@ -82,6 +91,9 @@ settings:
       foia_xiib:
         weight: 48
         enabled: false
+      link_or_file:
+        weight: 54
+        enabled: false
       oldest_days:
         weight: 49
         enabled: false
@@ -94,9 +106,12 @@ settings:
       processed_requests_vii:
         weight: 52
         enabled: false
+      quarterly_component_data:
+        weight: 52
+        enabled: false
       req_viiia:
-        enabled: true
         weight: 53
+        enabled: true
       req_viiib:
         weight: 54
         enabled: false
@@ -111,5 +126,8 @@ settings:
         enabled: false
       sub_xib:
         weight: 58
+        enabled: false
+      working_groups:
+        weight: 66
         enabled: false
 field_type: entity_reference_revisions

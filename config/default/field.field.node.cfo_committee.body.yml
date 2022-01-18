@@ -1,0 +1,29 @@
+uuid: 1fa6272f-487a-41ae-9ae6-c77be9989927
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.cfo_committee
+  module:
+    - foia_autocalc
+    - text
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.cfo_committee.body
+field_name: body
+entity_type: node
+bundle: cfo_committee
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

@@ -4,9 +4,9 @@ status: open
 dependencies:
   module:
     - foia_webform
+weight: 0
 open: null
 close: null
-weight: 0
 uid: 66
 template: false
 archive: false
@@ -14,7 +14,98 @@ id: doj_oasg
 title: DOJ-OASG
 description: ''
 category: ''
-elements: "name_first:\n  '#type': textfield\n  '#title': 'First name'\nname_last:\n  '#type': textfield\n  '#title': 'Last name'\ncompany_organization:\n  '#type': textfield\n  '#title': 'Your organization'\nemail:\n  '#type': email\n  '#title': 'Email address'\n  '#help': \"In order for us to communicate with you about your request,<br />\\nyou must provide at least one form of contact information.\"\nphone_number:\n  '#type': tel\n  '#title': 'Phone number'\nfax_number:\n  '#type': tel\n  '#title': 'Fax number'\naddress_line1:\n  '#type': textfield\n  '#title': 'Mailing address 1'\naddress_line2:\n  '#type': textfield\n  '#title': 'Mailing address 2'\naddress_city:\n  '#type': textfield\n  '#title': City\naddress_state_province:\n  '#type': textfield\n  '#title': 'State or province'\naddress_zip_postal_code:\n  '#type': textfield\n  '#title': 'Zip or postal code'\naddress_country:\n  '#type': select\n  '#title': Country\n  '#default_value': 'United States'\n  '#options': country_names\nrequest_category:\n  '#type': select\n  '#title': 'What type of requester are you?'\n  '#help': 'Please select the category that best fits you. This information helps FOIA personnel determine what fees, if any, may be applicable.'\n  '#options':\n    media: 'Representative of the news media'\n    educational: 'Educational Institution'\n    scientific: 'Non-commercial scientific institution'\n    commercial: 'Commercial-use requester'\n    other: 'All other requester'\nrequest_description:\n  '#type': textarea\n  '#maxlength': 10000\n  '#title': 'Your request'\n  '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'\n  '#required': true\nfee_waiver:\n  '#type': select\n  '#title': 'Fee waiver'\n  '#default_value': 'no'\n  '#options':\n    'no': 'No'\n    'yes': 'Yes'\nfee_waiver_explanation:\n  '#type': textarea\n  '#maxlength': 10000\n  '#title': 'Fee waiver justification'\n  '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'\nfee_amount_willing:\n  '#type': textfield\n  '#title': 'The amount of money you’re willing to pay in fees, if any'\n  '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'\n  '#pattern': '^(?=.)([+\\-\\$]?([0-9]*)(\\.([0-9]+))?)$'\n  '#counter_type': word\n  '#counter_maximum': 1\nexpedited_processing:\n  '#type': select\n  '#title': 'Expedited processing'\n  '#default_value': 'no'\n  '#options':\n    'no': 'No'\n    'yes': 'Yes'\nexpedited_processing_explanation:\n  '#type': textarea\n  '#maxlength': 10000\n  '#title': 'Justification for expedited processing'\n  '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.&nbsp;&nbsp;This agency has additional criteria for expedited processing detailed at <a href=\"https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&amp;SID=a41b3b79fe629d968f90008e116d5f2e&amp;mc=true&amp;n=pt28.1.16&amp;r=PART&amp;ty=HTML#se28.1.16_15\">28&nbsp;C.F.R. &sect; 16.5(e).</a>'\nattachments_supporting_documentation:\n  '#type': managed_file\n  '#title': 'Upload additional documentation'\n  '#help': \"If you are seeking records about yourself, additional documentation<br />\\nis required to verify your identity. <a href=\\\"https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13\\\">28&nbsp;C.F.R. &sect; 16.3(a)(3).</a>&nbsp;You can use this&nbsp;<a href=\\\"https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf\\\">form</a>&nbsp;to verify your identity.\"\n  '#multiple': true\n"
+elements: |
+  name_first:
+    '#type': textfield
+    '#title': 'First name'
+  name_last:
+    '#type': textfield
+    '#title': 'Last name'
+  company_organization:
+    '#type': textfield
+    '#title': 'Your organization'
+  email:
+    '#type': email
+    '#title': 'Email address'
+    '#help': "In order for us to communicate with you about your request,<br />\nyou must provide at least one form of contact information."
+  phone_number:
+    '#type': tel
+    '#title': 'Phone number'
+  fax_number:
+    '#type': tel
+    '#title': 'Fax number'
+  address_line1:
+    '#type': textfield
+    '#title': 'Mailing address 1'
+  address_line2:
+    '#type': textfield
+    '#title': 'Mailing address 2'
+  address_city:
+    '#type': textfield
+    '#title': City
+  address_state_province:
+    '#type': textfield
+    '#title': 'State or province'
+  address_zip_postal_code:
+    '#type': textfield
+    '#title': 'Zip or postal code'
+  address_country:
+    '#type': select
+    '#title': Country
+    '#default_value': 'United States'
+    '#options': country_names
+  request_category:
+    '#type': select
+    '#title': 'What type of requester are you?'
+    '#help': 'Please select the category that best fits you. This information helps FOIA personnel determine what fees, if any, may be applicable.'
+    '#options':
+      media: 'Representative of the news media'
+      educational: 'Educational Institution'
+      scientific: 'Non-commercial scientific institution'
+      commercial: 'Commercial-use requester'
+      other: 'All other requester'
+  request_description:
+    '#type': textarea
+    '#maxlength': 10000
+    '#title': 'Your request'
+    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
+    '#required': true
+  fee_waiver:
+    '#type': select
+    '#title': 'Fee waiver'
+    '#default_value': 'no'
+    '#options':
+      'no': 'No'
+      'yes': 'Yes'
+  fee_waiver_explanation:
+    '#type': textarea
+    '#maxlength': 10000
+    '#title': 'Fee waiver justification'
+    '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'
+  fee_amount_willing:
+    '#type': textfield
+    '#title': 'The amount of money you’re willing to pay in fees, if any'
+    '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'
+    '#pattern': '^(?=.)([+\-\$]?([0-9]*)(\.([0-9]+))?)$'
+    '#counter_type': word
+    '#counter_maximum': 1
+  expedited_processing:
+    '#type': select
+    '#title': 'Expedited processing'
+    '#default_value': 'no'
+    '#options':
+      'no': 'No'
+      'yes': 'Yes'
+  expedited_processing_explanation:
+    '#type': textarea
+    '#maxlength': 10000
+    '#title': 'Justification for expedited processing'
+    '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.&nbsp;&nbsp;This agency has additional criteria for expedited processing detailed at <a href="https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&amp;SID=a41b3b79fe629d968f90008e116d5f2e&amp;mc=true&amp;n=pt28.1.16&amp;r=PART&amp;ty=HTML#se28.1.16_15">28&nbsp;C.F.R. &sect; 16.5(e).</a>'
+  attachments_supporting_documentation:
+    '#type': managed_file
+    '#title': 'Upload additional documentation'
+    '#help': "If you are seeking records about yourself, additional documentation<br />\nis required to verify your identity. <a href=\"https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13\">28&nbsp;C.F.R. &sect; 16.3(a)(3).</a>&nbsp;You can use this&nbsp;<a href=\"https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf\">form</a>&nbsp;to verify your identity."
+    '#multiple': true
 css: ''
 javascript: ''
 settings:
@@ -29,28 +120,28 @@ settings:
   page_theme_name: ''
   form_title: both
   form_submit_once: false
-  form_exception_message: ''
   form_open_message: ''
   form_close_message: ''
+  form_exception_message: ''
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
-  form_remote_addr: true
+  form_disable_remote_addr: false
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
   form_prepopulate_source_entity_required: false
   form_prepopulate_source_entity_type: ''
-  form_reset: false
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
   form_disable_autocomplete: false
   form_novalidate: false
   form_disable_inline_errors: false
   form_required: false
-  form_unsaved: false
-  form_disable_back: false
-  form_submit_back: false
   form_autofocus: false
   form_details_toggle: false
+  form_reset: false
   form_access_denied: default
   form_access_denied_title: ''
   form_access_denied_message: ''
@@ -62,7 +153,12 @@ settings:
   share_title: true
   share_page_body_attributes: {  }
   submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
   submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
   submission_views: {  }
   submission_views_replace: {  }
   submission_user_columns: {  }
@@ -71,11 +167,6 @@ settings:
   submission_access_denied_title: ''
   submission_access_denied_message: ''
   submission_access_denied_attributes: {  }
-  submission_exception_message: ''
-  submission_locked_message: ''
-  submission_excluded_elements: {  }
-  submission_exclude_empty: false
-  submission_exclude_empty_checkbox: false
   previous_submission_message: ''
   previous_submissions_message: ''
   autofill: false
@@ -86,13 +177,13 @@ settings:
   wizard_progress_percentage: false
   wizard_progress_link: false
   wizard_progress_states: false
-  wizard_auto_forward: true
-  wizard_auto_forward_hide_next_button: false
-  wizard_keyboard: true
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
   wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
   wizard_track: ''
   wizard_prev_button_label: ''
   wizard_next_button_label: ''
@@ -115,9 +206,9 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: page
+  confirmation_url: ''
   confirmation_title: ''
   confirmation_message: ''
-  confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
@@ -144,6 +235,7 @@ settings:
   results_customize: false
   token_view: false
   token_update: false
+  token_delete: false
   serial_disabled: false
 access:
   create:
@@ -195,9 +287,9 @@ access:
 handlers:
   foia_submission_queue:
     id: foia_submission_queue
+    handler_id: foia_submission_queue
     label: 'FOIA Submission Queue'
     notes: ''
-    handler_id: foia_submission_queue
     status: true
     conditions: {  }
     weight: 0
@@ -206,25 +298,25 @@ handlers:
         - completed
       to_mail: ''
       to_options: {  }
-      cc_mail: ''
-      cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
       from_mail: _default
       from_options: {  }
       from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
       subject: 'FOIA Request Submission'
       body: '[webform_submission:values:message:value]'
       excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
       html: true
       attachments: false
       debug: false
-      reply_to: ''
-      return_path: ''
-      ignore_access: false
-      exclude_empty: true
-      sender_mail: ''
-      sender_name: ''
       exclude_empty_checkbox: false
       twig: false
       theme_name: ''

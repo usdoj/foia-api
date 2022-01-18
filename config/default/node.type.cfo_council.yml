@@ -1,0 +1,21 @@
+uuid: 752582a9-d6b7-44ec-a225-9418d8abbb6f
+langcode: en
+status: true
+dependencies:
+  module:
+    - lightning_workflow
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  lightning_workflow:
+    workflow: editorial
+name: 'CFO Council'
+type: cfo_council
+description: 'The main page for the Chief FOIA Officers Council.  Assign committees to the council.  Meetings will be automatically attached.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

@@ -1,0 +1,14 @@
+uuid: a3ae1fc5-7889-4e93-a576-578f0b7530de
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_committee_creator
+  module:
+    - user
+id: user_remove_role_action.cfo_committee_creator
+label: 'Remove the CFO Committee creator role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cfo_committee_creator

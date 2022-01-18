@@ -1,0 +1,14 @@
+uuid: 255458f4-c7cb-4a25-8cc5-3a294b663ede
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_meeting_reviewer
+  module:
+    - user
+id: user_add_role_action.cfo_meeting_reviewer
+label: 'Add the CFO Meeting reviewer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cfo_meeting_reviewer

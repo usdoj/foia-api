@@ -1,0 +1,14 @@
+uuid: 224a683d-58a6-4f41-9479-6e340f19077f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_page_creator
+  module:
+    - user
+id: user_add_role_action.cfo_page_creator
+label: 'Add the CFO Page creator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cfo_page_creator

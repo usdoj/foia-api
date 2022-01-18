@@ -1,0 +1,99 @@
+#adr-form-section-nav {
+  cursor: pointer;
+  position: relative;
+  width: 500px;
+}
+#block-seven-secondary-local-tasks ul.secondary {
+  display: none;
+}
+ul.form-section-nav {
+  height: 2.5rem;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 25px 0;
+  position: relative;
+}
+ul.form-section-nav li {
+  visibility: hidden;
+  position: relative;
+  z-index: 10;
+  margin: 0;
+  background-color: #e0e0d8;
+  border-right: 1px solid #e0e0d8;
+  border-left: 1px solid #e0e0d8;
+  box-shadow: 0px 0px 20px -3px #e0e0d8;
+  display: block;
+  width: 100%;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: font-size 200ms, background-color 200ms;
+}
+ul.form-section-nav li a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+  padding-right: 100px;
+  padding-left: 20px;
+}
+ul.form-section-nav li a:active {
+  font-size: 0.8em;
+  background-color: #dddddd;
+}
+ul.form-section-nav li.is-active {
+  visibility: visible;
+  border-top: 1px solid #e0e0d8;
+  border-radius: 0.3rem;
+  transition: background-color 200ms;
+  position: absolute;
+  top: 10px;
+  width: 100%;
+}
+ul.form-section-nav li.is-active > span {
+  padding-left: 20px;
+}
+ul.form-section-nav li:last-of-type {
+  border-bottom: 1px solid #e0e0d8;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+
+ul.form-section-nav.clicked li {
+  visibility: visible;
+}
+ul.form-section-nav.clicked li.is-active {
+  position: relative;
+  top: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #fff;
+  color: #0074bd;
+  font-weight: 600;
+  cursor: default;
+}
+ul.form-section-nav.clicked li:hover {
+  background-color: white !important;
+  z-index: 15;
+}
+ul.form-section-nav.clicked li:hover a {
+  color: #0074bd;
+}
+#form-section-nav-close {
+  display: none;
+  border: 2px solid black;
+  width: 20px;
+  border-radius: 15px;
+  font-size: 25px;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  position: absolute;
+  left: 550px;
+  z-index: 1;
+  margin-top: 10px;
+}
+#form-section-nav-close:hover {
+  background-color: rgba(242, 242, 240, 0.7);
+}

@@ -4,7 +4,8 @@
  * Module code for FOIA Agency Component.
  */
 
-use \Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -14,4 +15,40 @@ function foia_agency_component_entity_bundle_field_info_alter(array &$fields, En
   if ($entity_type->id() === 'node' && $bundle === 'agency_component') {
     $fields['field_agency_comp_abbreviation']->addConstraint('AgencyComponentUniqueAbbreviation', []);
   }
+}
+
+/**
+ * Implements hook_form_form_alter().
+ */
+function foia_agency_component_form_node_agency_component_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  // Processing data gets updated automatically on existing agency components
+  // from the matching entry in the Annual Report.
+  // See foia_annual_data_report.module foia_annual_data_report_node_presave().
+  $form['#fieldgroups']['group_processing_data']->format_settings['description'] = 'This data will be automatically populated from the annual report for this agency component.  The data will be fetched from Section VII.A. -
+Processed Requests.';
+
+  // These are the fields to disable.
+  $fields_disable = [
+    'field_request_data_year',
+    'field_complex_average_days',
+    'field_complex_average_days',
+    'field_complex_highest_days',
+    'field_complex_lowest_days',
+    'field_complex_median_days',
+    'field_expedited_average_days',
+    'field_expedited_highest_days',
+    'field_expedited_lowest_days',
+    'field_expedited_median_days',
+    'field_simple_average_days',
+    'field_simple_highest_days',
+    'field_simple_lowest_days',
+    'field_simple_median_days',
+  ];
+
+  // Loop through the fields and disable each one.
+  foreach ($fields_disable as $field) {
+    $form[$field]['#disabled'] = TRUE;
+  }
+
 }

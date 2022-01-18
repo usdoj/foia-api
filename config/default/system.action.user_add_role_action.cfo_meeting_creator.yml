@@ -1,0 +1,14 @@
+uuid: 966a4ec7-4bc9-4535-bce9-b55ca18d7718
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_meeting_creator
+  module:
+    - user
+id: user_add_role_action.cfo_meeting_creator
+label: 'Add the CFO Meeting creator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cfo_meeting_creator

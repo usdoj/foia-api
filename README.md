@@ -28,8 +28,15 @@ Also, be sure to have Vagrant plugins installed:
 To export to Word docs via PHPDocX locally:
 - Replace the symlink in docroot/libraries with a downloaded copy of [PHPDocX](https://www.phpdocx.com/) which supports PHP namespaces.
 - Ensure an activated license key is set in the phpdocxconfig.ini file.
-- You may also need to reprovision your environment to ensure that the ZipArchive and Tidy PHP extensions are enabled  
+- You may also need to reprovision your environment to ensure that the ZipArchive and Tidy PHP extensions are enabled
   `vagrant reload --provision`
+
+### Local setup - Docker
+
+As an alternative to Drupal VM, Docker can be used to spin up this project.
+- Install "Docker" and run the "Docker Desktop".
+- From the repo root, run the command "ddev start".
+- Import the database through drush.
 
 ## Resources
 

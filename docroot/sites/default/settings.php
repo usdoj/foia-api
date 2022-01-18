@@ -791,6 +791,15 @@ $settings['entity_update_batch_size'] = 50;
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 $settings['install_profile'] = 'lightning';
 
+$settings['trusted_host_patterns'] = array(
+  '^foia\.gov$',
+  '^.+\.foia\.gov$',
+  '^.+\.local$',
+  '^.+\.doj.gov$',
+  '^.+\.acquia-sites\.com$',
+);
+
+
 if ($is_ah_env) {
   if ($_ENV['AH_SITE_ENVIRONMENT'] == 'ide') {
     $settings['file_temp_path'] = '/mnt/tmp/foia';

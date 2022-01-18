@@ -1,0 +1,25 @@
+uuid: 0bd16333-b7ea-4403-b19b-6e68da45a084
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.cfo_committee
+  module:
+    - content_moderation
+    - node
+id: cfo_committee_reviewer
+label: 'CFO Committee reviewer'
+weight: 18
+is_admin: false
+permissions:
+  - 'access content overview'
+  - 'delete any cfo_committee content'
+  - 'edit any cfo_committee content'
+  - 'use draft_published transition'
+  - 'use needs_review_draft transition'
+  - 'use needs_review_published transition'
+  - 'use published_archived transition'
+  - 'use published_published transition'
+  - 'view any unpublished content'
+  - 'view latest version'
+  - 'view moderation states'

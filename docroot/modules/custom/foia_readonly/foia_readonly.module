@@ -11,17 +11,21 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
 /**
- * Implements hook_form_form_id_alter().
+ * Implements hook_form_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
  */
-function foia_readonly_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  foia_readonly_disable_node_field($form, $form_state, $form_id);
-}
+function foia_readonly_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-/**
- * Implements hook_form_form_id_alter().
- */
-function foia_readonly_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  foia_readonly_disable_node_field($form, $form_state, $form_id);
+  // Look for this string to match an Annual Data Report (ADR).
+  $adr_string = 'node_annual_foia_report_data_';
+
+  // Look for the adr string in the form id and add readonly logic.
+  if (substr($form_id, 0, strlen($adr_string)) === $adr_string) {
+    foia_readonly_disable_node_field($form, $form_state, $form_id);
+  }
+
 }
 
 /**

@@ -1,0 +1,25 @@
+uuid: 5417c1aa-dd79-430f-84da-de8b119d2d38
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.cfo_council
+  module:
+    - content_moderation
+    - node
+id: cfo_council_reviewer
+label: 'CFO Council reviewer'
+weight: 20
+is_admin: false
+permissions:
+  - 'access content overview'
+  - 'delete any cfo_council content'
+  - 'edit any cfo_council content'
+  - 'use draft_published transition'
+  - 'use needs_review_draft transition'
+  - 'use needs_review_published transition'
+  - 'use published_archived transition'
+  - 'use published_published transition'
+  - 'view any unpublished content'
+  - 'view latest version'
+  - 'view moderation states'

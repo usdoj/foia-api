@@ -1,7 +1,12 @@
 uuid: fc96b8ed-d810-4287-8750-825683240489
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.quarterly_foia_report_data
+  module:
+    - content_moderation
+    - node
 id: quarterly_foia_report_data_reviewer
 label: 'Quarterly FOIA Report Data reviewer'
 weight: 14

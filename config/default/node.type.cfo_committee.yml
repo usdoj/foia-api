@@ -1,0 +1,21 @@
+uuid: 07aaf791-e099-477b-89cc-e5ffc94a34c6
+langcode: en
+status: true
+dependencies:
+  module:
+    - lightning_workflow
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  lightning_workflow:
+    workflow: editorial
+name: 'CFO Committee'
+type: cfo_committee
+description: 'Committees of the Chief FOIA Officers Council.  Includes title and WYSIWYG description fields.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

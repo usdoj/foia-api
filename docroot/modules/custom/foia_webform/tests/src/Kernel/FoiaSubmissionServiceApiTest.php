@@ -520,14 +520,16 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
    * Sets up logger mock.
    */
   protected function setupLoggerMock() {
-    $this->logger = $this->getMock('\Psr\Log\LoggerInterface');
+    $this->logger = $this->createMock('\Psr\Log\LoggerInterface');
   }
 
   /**
    * Sets up a webform submission.
    */
   protected function setupWebformSubmission() {
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
+    $webformSubmission = WebformSubmission::create(
+      ['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]
+    );
     $webformSubmission->save();
     $this->webformSubmission = $webformSubmission;
   }

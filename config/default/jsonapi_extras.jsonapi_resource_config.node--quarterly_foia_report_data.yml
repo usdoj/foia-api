@@ -8,12 +8,12 @@ dependencies:
     - jsonapi_defaults
 third_party_settings:
   jsonapi_defaults:
-    default_filter:
-      'filter:status': '1'
     default_include:
       - field_agency
       - field_agency_components
       - field_quarterly_component_data
+    default_filter:
+      'filter:status': '1'
     page_limit: 50
 id: node--quarterly_foia_report_data
 disabled: false
@@ -69,11 +69,11 @@ resourceFields:
     enhancer:
       id: ''
   status:
+    disabled: false
     fieldName: status
     publicName: status
     enhancer:
       id: ''
-    disabled: false
   uid:
     disabled: true
     fieldName: uid
@@ -81,11 +81,11 @@ resourceFields:
     enhancer:
       id: ''
   title:
+    disabled: false
     fieldName: title
     publicName: title
     enhancer:
       id: ''
-    disabled: false
   created:
     disabled: true
     fieldName: created
@@ -177,44 +177,44 @@ resourceFields:
     enhancer:
       id: ''
   field_agency:
+    disabled: false
     fieldName: field_agency
     publicName: field_agency
     enhancer:
       id: ''
-    disabled: false
   field_agency_components:
+    disabled: false
     fieldName: field_agency_components
     publicName: field_agency_components
     enhancer:
       id: ''
-    disabled: false
   field_quarterly_closed:
+    disabled: false
     fieldName: field_quarterly_closed
     publicName: field_quarterly_closed
     enhancer:
       id: ''
-    disabled: false
   field_quarterly_component_data:
+    disabled: false
     fieldName: field_quarterly_component_data
     publicName: field_quarterly_component_data
     enhancer:
       id: ''
-    disabled: false
   field_quarterly_pending:
+    disabled: false
     fieldName: field_quarterly_pending
     publicName: field_quarterly_pending
     enhancer:
       id: ''
-    disabled: false
   field_quarterly_quarter:
+    disabled: false
     fieldName: field_quarterly_quarter
     publicName: field_quarterly_quarter
     enhancer:
       id: ''
-    disabled: false
   field_quarterly_year:
+    disabled: false
     fieldName: field_quarterly_year
     publicName: field_quarterly_year
     enhancer:
       id: ''
-    disabled: false

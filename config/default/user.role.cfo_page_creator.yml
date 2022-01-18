@@ -1,0 +1,37 @@
+uuid: 8485f6e1-71fb-410c-bd3e-46a38aee431e
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.rich_text
+    - node.type.cfo_page
+  module:
+    - content_moderation
+    - entity_browser
+    - filter
+    - node
+    - panelizer
+    - panels_ipe
+    - path
+id: cfo_page_creator
+label: 'CFO Page creator'
+weight: 21
+is_admin: false
+permissions:
+  - 'access image_browser entity browser pages'
+  - 'access media_browser entity browser pages'
+  - 'access panels in-place editing'
+  - 'administer panelizer node cfo_page content'
+  - 'administer panelizer node cfo_page layout'
+  - 'change layouts in place editing'
+  - 'create cfo_page content'
+  - 'create url aliases'
+  - 'edit own cfo_page content'
+  - 'use draft_draft transition'
+  - 'use draft_needs_review transition'
+  - 'use needs_review_needs_review transition'
+  - 'use text format rich_text'
+  - 'view any unpublished content'
+  - 'view cfo_page revisions'
+  - 'view latest version'
+  - 'view own unpublished content'

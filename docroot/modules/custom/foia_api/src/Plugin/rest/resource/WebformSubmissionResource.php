@@ -3,7 +3,9 @@
 namespace Drupal\foia_api\Plugin\rest\resource;
 
 use Drupal\Component\Utility\Bytes;
+use Drupal\Component\Utility\Environment;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\file\Entity\File;
 use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file_entity\Entity\FileEntity;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
@@ -25,7 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "webform_submission",
  *   label = @Translation("Webform submission"),
  *   uri_paths = {
- *     "https://www.drupal.org/link-relations/create" = "/api/webform/submit",
+ *     "create" = "/api/webform/submit",
  *   },
  * )
  */
@@ -392,7 +394,7 @@ class WebformSubmissionResource extends ResourceBase {
     $fileSize = isset($fileAttachment['filesize']) ? $fileAttachment['filesize'] : '';
     $fileName = isset($fileAttachment['filename']) ? $fileAttachment['filename'] : '';
     $destination = \Drupal::service('file_system')->tempnam('temporary://', 'foiaAttach');
-    $fileUri = file_unmanaged_save_data($fileContents, $destination);
+    $fileUri = \Drupal::service('file_system')->saveData($fileContents, $destination);
     if ($fileUri) {
       $file = FileEntity::create([
         'type' => 'attachment_support_document',
@@ -442,7 +444,7 @@ class WebformSubmissionResource extends ResourceBase {
         }
       }
       if (empty($maxFileSize)) {
-        $maxFileSize = file_upload_max_size();
+        $maxFileSize = Environment::getUploadMaxSize();
       }
 
       $fileExtensions = isset($element['#file_extensions']) ? $element['#file_extensions'] : $defaultProperties['file_extensions'];
@@ -543,12 +545,15 @@ class WebformSubmissionResource extends ResourceBase {
    *
    * @param array $filesByFieldName
    *   Array of file entities to be deleted.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function deleteFilesFromTemporaryStorage(array $filesByFieldName) {
     foreach ($filesByFieldName as $files) {
       /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {
-        file_delete($file->id());
+        $file_obj = File::load($file->id());
+        $file_obj->delete();
       }
     }
   }
@@ -577,8 +582,8 @@ class WebformSubmissionResource extends ResourceBase {
         $sourceUri = $file->getFileUri();
         $destinationUri = "{$uriScheme}://webform/{$webform->id()}/{$webformSubmission->id()}/{$file->getFilename()}";
         $destinationDirectory = $this->fileSystem->dirname($destinationUri);
-        file_prepare_directory($destinationDirectory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
-        $destinationUri = file_unmanaged_move($sourceUri, $destinationUri);
+        \Drupal::service('file_system')->prepareDirectory($destinationDirectory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+        $destinationUri = \Drupal::service('file_system')->move($sourceUri, $destinationUri);
         // Update the file's uri and save.
         $file->setFileUri($destinationUri);
         $file->save();
