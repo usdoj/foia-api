@@ -182,7 +182,17 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "simplesamlphp/composer-module-installer": true,
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "drupal/core-composer-scaffold": true,
+            "oomphinc/composer-installers-extender": true,
+            "acquia/blt": true,
+            "acquia/blt-phpcs": true
+        }
     },
     "autoload": {
         "psr-4": {
