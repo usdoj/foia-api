@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - node.type.annual_foia_report_data
+    - node.type.quarterly_foia_report_data
   module:
     - node
     - taxonomy
@@ -226,6 +227,7 @@ display:
           operator: 'not in'
           value:
             annual_foia_report_data: annual_foia_report_data
+            quarterly_foia_report_data: quarterly_foia_report_data
           group: 1
           exposed: false
           expose:
