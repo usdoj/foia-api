@@ -6,6 +6,7 @@ dependencies:
     - field.field.user.user.field_agency
     - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
   module:
     - user
 id: user.user.default
@@ -29,5 +30,6 @@ content:
 hidden:
   field_last_password_reset: true
   field_password_expiration: true
+  field_pending_expire_sent: true
   name: true
   search_api_excerpt: true
