@@ -797,6 +797,7 @@ $settings['trusted_host_patterns'] = array(
   '^.+\.local$',
   '^.+\.doj.gov$',
   '^.+\.acquia-sites\.com$',
+  '^.+\.web\.ahdev\.cloud$',
 );
 
 
