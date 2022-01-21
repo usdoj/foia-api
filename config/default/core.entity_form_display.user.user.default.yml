@@ -6,6 +6,7 @@ dependencies:
     - field.field.user.user.field_agency
     - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
   module:
     - datetime
     - user
@@ -62,4 +63,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_pending_expire_sent: true
