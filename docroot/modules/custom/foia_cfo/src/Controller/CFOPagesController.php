@@ -76,8 +76,8 @@ class CFOPagesController extends ControllerBase {
           ];
 
           // Add Page attachments.
-          if ( $page_node->hasField('field_attachments') ) {
-            $attachments =  $page_node->get('field_attachments');
+          if ($page_node->hasField('field_attachments')) {
+            $attachments = $page_node->get('field_attachments');
             $page['page_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
           }
 
@@ -149,8 +149,8 @@ class CFOPagesController extends ControllerBase {
       }
 
       // Add Page attachments.
-      if ( $page->hasField('field_attachments') ) {
-        $attachments =  $page->get('field_attachments');
+      if ($page->hasField('field_attachments')) {
+        $attachments = $page->get('field_attachments');
         $response['page_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
       }
 

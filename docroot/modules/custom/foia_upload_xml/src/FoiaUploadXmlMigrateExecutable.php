@@ -61,4 +61,5 @@ class FoiaUploadXmlMigrateExecutable extends MigrateExecutable {
 
     return new DefaultHandler($e, $container->get('messenger'), $this->migration, $container->get('string_translation'));
   }
+
 }

@@ -16,7 +16,7 @@ class DefaultHandler implements FailedMigrationHandlerInterface {
   /**
    * The exception.
    *
-   * @var \Exception;
+   * @var \Exception
    */
   protected $exception;
 
@@ -66,4 +66,5 @@ class DefaultHandler implements FailedMigrationHandlerInterface {
       '@file' => $sourceFile['basename'],
     ]));
   }
+
 }

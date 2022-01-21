@@ -15,8 +15,6 @@ use Drupal\migrate\Event\MigratePreRowSaveEvent;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
  * FOIA Upload XML event subscriber.
@@ -80,7 +78,7 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
       return;
     }
 
-    /** @var Row $row */
+    /** @var \Drupal\migrate\Row $row */
     $row = $migration->foiaErrorInformation['row'] ?? FALSE;
     if (!$row) {
       return;

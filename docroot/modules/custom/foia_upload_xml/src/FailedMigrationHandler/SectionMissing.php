@@ -128,4 +128,5 @@ class SectionMissing extends DefaultHandler implements FailedMigrationHandlerInt
       return $process['source'] ?? $sourceField;
     }, FALSE);
   }
+
 }

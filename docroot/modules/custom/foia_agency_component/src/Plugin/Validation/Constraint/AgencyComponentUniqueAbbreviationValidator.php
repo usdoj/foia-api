@@ -1,12 +1,7 @@
 <?php
-/**
- * @file
- * AgencyComponentUniqueAbbreviationValidator class.
- */
 
 namespace Drupal\foia_agency_component\Plugin\Validation\Constraint;
 
-use Drupal\Core\Entity\EntityPublishedInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -44,4 +39,5 @@ class AgencyComponentUniqueAbbreviationValidator extends ConstraintValidator {
       ]);
     }
   }
+
 }

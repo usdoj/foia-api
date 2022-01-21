@@ -58,7 +58,7 @@ class MemoryLimitForm extends ConfigFormBase {
     $this->config('foia_annual_data_report.settings')
       ->set('annual_report_memory_limit', $form_state->getValue('annual_report_memory_limit'))
       ->save();
-      $this->config('foia_annual_data_report.settings')
+    $this->config('foia_annual_data_report.settings')
       ->set('annual_report_max_execution_time', $form_state->getValue('annual_report_max_execution_time'))
       ->save();
     $this->config('foia_annual_data_report.settings')
