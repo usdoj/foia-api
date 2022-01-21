@@ -13,7 +13,6 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\RenderContext;
-use Drupal\file\Entity\File;
 
 /**
  * Controller routines for foia_cfo routes.
@@ -48,7 +47,7 @@ class CFOController extends ControllerBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function __construct() {
-    // @todo: These should be passed in to the constructor in the usual style.
+    // @todo These should be passed in to the constructor in the usual style.
     $this->nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
     $this->view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
     $this->render_service = \Drupal::service('renderer');
@@ -101,8 +100,8 @@ class CFOController extends ControllerBase {
         !empty($council_node->get('body'))
         && !empty($council_node->get('body')->getValue()[0]['value'])
       ) {
-	$pre_render = $this->view_builder->view($council_node, 'cfo_body_only');
-	$html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+        $pre_render = $this->view_builder->view($council_node, 'cfo_body_only');
+        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
         $response['body'] = $html;
       }
 
@@ -129,14 +128,14 @@ class CFOController extends ControllerBase {
             if ($committee_node->isPublished()) {
               $committee = ['committee_title' => $committee_node->label()];
               if (!empty($committee_node->body->getValue())) {
-	        $pre_render = $this->view_builder->view($committee_node, 'cfo_body_only');
-	        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+                $pre_render = $this->view_builder->view($committee_node, 'cfo_body_only');
+                $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
                 $committee['committee_body'] = $html;
               }
 
               // Add Committee attachments.
-              if ( $committee_node->hasField('field_attachments') ) {
-                $attachments =  $committee_node->get('field_attachments');
+              if ($committee_node->hasField('field_attachments')) {
+                $attachments = $committee_node->get('field_attachments');
                 $committee['committee_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
               }
 
@@ -177,7 +176,7 @@ class CFOController extends ControllerBase {
 
         // Initialize this meeting.
         $meeting = [];
-        $is_upcoming_meeting = false;
+        $is_upcoming_meeting = FALSE;
 
         // Load the meeting node.
         $meeting_node = $this->nodeStorage->load($meeting_nid);
@@ -233,7 +232,8 @@ class CFOController extends ControllerBase {
         // Add this meeting to the return meeting array.
         if ($is_upcoming_meeting) {
           $response['meetings']['upcoming'][] = $meeting;
-        } else {
+        }
+        else {
           $response['meetings']['past'][] = $meeting;
         }
 
@@ -377,8 +377,8 @@ class CFOController extends ControllerBase {
       }
 
       // Attachments.
-      if ( $committee->hasField('field_attachments') ) {
-        $attachments =  $committee->get('field_attachments');
+      if ($committee->hasField('field_attachments')) {
+        $attachments = $committee->get('field_attachments');
         $response['committee_attachments'] = \Drupal::service('foia_cfo.default')->buildAttachmentList($attachments);
       }
 

@@ -4,7 +4,7 @@
  * @file
  * Primary module hooks for FOIA Readonly module.
  *
- * @todo: Replace static lists used here with a config form for better control.
+ * @todo Replace static lists used here with a config form for better control.
  */
 
 use Drupal\Core\Form\FormStateInterface;
@@ -12,8 +12,9 @@ use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_alter().
+ *
  * @param $form
- * @param FormStateInterface $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  * @param $form_id
  */
 function foia_readonly_form_alter(&$form, FormStateInterface $form_state, $form_id) {

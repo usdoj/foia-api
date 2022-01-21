@@ -9,11 +9,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 
 /**
- * Gets jsonapi data
+ * Gets jsonapi data.
  *
  * @package Drupal\foia_api\Controller
  */
-class FoiaApiFiscalYearController extends ControllerBase  implements ContainerInjectionInterface  {
+class FoiaApiFiscalYearController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * The number of seconds in a day, for use with the cache max age.
@@ -63,4 +63,5 @@ class FoiaApiFiscalYearController extends ControllerBase  implements ContainerIn
 
     return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
   }
+
 }

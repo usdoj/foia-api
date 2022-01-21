@@ -78,7 +78,7 @@ class WebformTemplateController {
   public function webformImplementsTemplate(WebformInterface $webform) {
     // Multiple webforms are failing this check at the moment, so we need to
     // sidestep.
-    // @TODO: Remove this hack and fix the webforms.
+    // @todo Remove this hack and fix the webforms.
     return TRUE;
 
     // If (!$templateElements = $this->getTemplateDecoded()) {

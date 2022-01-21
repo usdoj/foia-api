@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * AgencyComponentUniqueAbbreviation class.
- */
 
 namespace Drupal\foia_agency_component\Plugin\Validation\Constraint;
 
@@ -20,4 +16,5 @@ use Symfony\Component\Validator\Constraint;
 class AgencyComponentUniqueAbbreviation extends Constraint {
 
   public $notUnique = 'The abbreviation %abbreviation is already being used by another component within the agency. Please try a different abbreviation.';
+
 }

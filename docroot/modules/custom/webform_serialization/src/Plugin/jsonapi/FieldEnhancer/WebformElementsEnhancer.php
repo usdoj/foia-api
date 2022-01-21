@@ -32,7 +32,7 @@ class WebformElementsEnhancer extends ResourceFieldEnhancerBase {
    */
   protected function doTransform($data, Context $context) {
     $yaml = Yaml::encode($data);
-    // @TODO: Do we need to do the reverse of populateSelectFieldsWithOptions?
+    // @todo Do we need to do the reverse of populateSelectFieldsWithOptions?
     return $yaml;
   }
 

@@ -74,7 +74,6 @@ class CFOService {
 
   }
 
-
   /**
    * Formats "Working Group" paragraph type.
    *
@@ -95,27 +94,27 @@ class CFOService {
       // Initialize this item.
       $return_item = [];
 
-      // Title
+      // Title.
       if (
         $item->hasField('field_title')
-        && ! empty($item->get('field_title')->getValue()[0]['value'])
+        && !empty($item->get('field_title')->getValue()[0]['value'])
       ) {
         $return_item['item_title'] = $item->get('field_title')->getValue()[0]['value'];
       }
 
-      // Body
+      // Body.
       if (
         $item->hasField('field_body')
-        && ! empty($item->get('field_body')->getValue()[0]['value'])
+        && !empty($item->get('field_body')->getValue()[0]['value'])
       ) {
         $return_item['item_body'] = $item->get('field_body')->getValue()[0]['value'];
       }
 
       // File Attachments.
-      if ( $item->hasField('field_attachments') ) {
-        $attachments =  $item->get('field_attachments');
+      if ($item->hasField('field_attachments')) {
+        $attachments = $item->get('field_attachments');
         $list = $this->buildAttachmentList($attachments);
-        if ( ! empty($list) ) {
+        if (!empty($list)) {
           $return_item['item_attachments'] = $list;
         }
       }
@@ -237,7 +236,9 @@ class CFOService {
 
   /**
    * Returns array of attachment titles & urls.
+   *
    * @param $field
+   *
    * @return array
    */
   public function buildAttachmentList(EntityReferenceRevisionsFieldItemList $field): array {
@@ -246,31 +247,31 @@ class CFOService {
     foreach ($field->referencedEntities() as $item) {
       $fileItems = [];
 
-      // Title
+      // Title.
       if (
         $item->hasField('field_title')
-        && ! empty($item->get('field_title')->getValue()[0]['value'])
+        && !empty($item->get('field_title')->getValue()[0]['value'])
       ) {
         $fileItems['attachment_title'] = $item->get('field_title')->getValue()[0]['value'];
       }
 
-
-      // File
-      if ( $item->hasField('field_attachment') ) {
+      // File.
+      if ($item->hasField('field_attachment')) {
         $attachment = $item->get('field_attachment')->getValue();
         $fid = $attachment[0]['target_id'];
-        if ( empty($fid)) {
+        if (empty($fid)) {
           continue;
         }
         $file = File::load($fid);
         $fileItems['attachment_file'] = $file->createFileUrl(FALSE);
       }
 
-      if ( ! empty($fileItems) ) {
+      if (!empty($fileItems)) {
         $attachmentResultList[] = $fileItems;
       }
     }
 
     return $attachmentResultList;
   }
+
 }

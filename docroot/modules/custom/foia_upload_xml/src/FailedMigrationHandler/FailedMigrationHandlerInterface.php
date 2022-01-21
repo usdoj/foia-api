@@ -15,4 +15,5 @@ interface FailedMigrationHandlerInterface {
    * Useful to display more informative messaging or logging.
    */
   public function handle();
+
 }

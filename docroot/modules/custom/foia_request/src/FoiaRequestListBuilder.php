@@ -24,7 +24,7 @@ class FoiaRequestListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\foia_request\Entity\FoiaRequest */
+    /** @var \Drupal\foia_request\Entity\FoiaRequest $entity */
     $row['id'] = $entity->id();
     return $row + parent::buildRow($entity);
   }
