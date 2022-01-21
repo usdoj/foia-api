@@ -14,7 +14,7 @@ id: hhs_fda_form
 title: 'HHS-FDA Form'
 description: ''
 category: ''
-elements: |
+elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -68,16 +68,37 @@ elements: |
     '#title': 'What type of requester are you?'
     '#help': 'Please select the category that best fits you. This information helps FOIA personnel determine what fees, if any, may be applicable.'
     '#options':
+      commercial: 'Commercial-use requester'
       media: 'Representative of the news media'
       educational: 'Educational Institution'
       scientific: 'Non-commercial scientific institution'
-      commercial: 'Commercial-use requester'
       other: 'All other requester'
+    '#default_value': commercial
+  requester_internal_reference_:
+    '#type': textfield
+    '#title': 'Requester Internal Reference # '
+  requester_name:
+    '#type': textfield
+    '#title': 'Requester Name'
+  date_range_start:
+    '#type': textfield
+    '#title': 'Date Range Start'
+    '#description': 'Please enter the date in MM/DD/YYYY format.'
+    '#help': 'Please enter the date in MM/DD/YYYY format.'
+    '#pattern': '^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$'
+    '#pattern_error': 'Please enter the date in MM/DD/YYYY format.'
+  date_range_end:
+    '#type': textfield
+    '#title': 'Date Range End'
+    '#description': 'Please enter the date in MM/DD/YYYY format.'
+    '#help': 'Please enter the date in MM/DD/YYYY format.'
+    '#pattern': '^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$'
+    '#pattern_error': 'Please enter the date in MM/DD/YYYY format.'
   request_description:
     '#type': textarea
-    '#maxlength': 10000
     '#title': 'Your request'
     '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
+    '#maxlength': 4000
     '#required': true
   fee_waiver:
     '#type': select
@@ -88,9 +109,9 @@ elements: |
       'yes': 'Yes'
   fee_waiver_explanation:
     '#type': textarea
-    '#maxlength': 10000
     '#title': 'Fee waiver justification'
     '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'
+    '#maxlength': 4000
   fee_amount_willing:
     '#type': textfield
     '#title': 'The amount of money you’re willing to pay in fees, if any'
@@ -101,15 +122,24 @@ elements: |
   expedited_processing:
     '#type': select
     '#title': 'Expedited processing'
-    '#default_value': 'no'
+    '#help': '<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:12.0pt">Please make a selection for the expedite reason in Step 3 above if you are requesting expedited processing.</span></span></span>'
     '#options':
       'no': 'No'
       'yes': 'Yes'
+    '#default_value': 'no'
   expedited_processing_explanation:
     '#type': textarea
-    '#maxlength': 10000
     '#title': 'Justification for expedited processing'
     '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.'
+    '#maxlength': 4000
+  expedite_reason:
+    '#type': checkboxes
+    '#title': 'Expedite Reason'
+    '#help': '<span style="font-size:12.0pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Please select an expedite reason only if you are requesting expedited processing in Step 5 below.</span></span>'
+    '#options':
+      'Need to Inform Public': 'Need to Inform Public'
+      'Danger to Human Life': 'Danger to Human Life'
+      Other: Other
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
