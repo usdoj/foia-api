@@ -19,6 +19,7 @@ dependencies:
     - foia_personnel
     - foia_request
     - foia_webform
+    - form_mode_manager
     - lightning_core
     - migrate_tools
     - node
@@ -26,7 +27,6 @@ dependencies:
     - paragraphs
     - password_policy
     - roleassign
-    - simplesamlphp_auth
     - system
     - taxonomy
     - toolbar
@@ -51,7 +51,6 @@ permissions:
   - 'administer taxonomy'
   - 'administer users'
   - 'assign roles'
-  - 'change saml authentication setting'
   - 'clone foia_personnel entity'
   - 'clone node entity'
   - 'clone paragraph entity'
@@ -109,6 +108,42 @@ permissions:
   - 'use annual_report_workflow transition publish'
   - 'use annual_report_workflow transition reject'
   - 'use annual_report_workflow transition submit_to_oip'
+  - 'use media.default form mode'
+  - 'use media.media_browser form mode'
+  - 'use media.media_library form mode'
+  - 'use node.annual_report_agency_info form mode'
+  - 'use node.annual_report_iv_exemption_3_statutes form mode'
+  - 'use node.annual_report_v_a_foia_requests form mode'
+  - 'use node.annual_report_v_b_1_disposition_of_foia_requests form mode'
+  - 'use node.annual_report_v_b_2_disposition_of_foia_requests form mode'
+  - 'use node.annual_report_v_b_3_disposition_of_foia_requests form mode'
+  - 'use node.annual_report_vi_a_administrative_appeals form mode'
+  - 'use node.annual_report_vi_b_disposition_of_administrative_appeals form mode'
+  - 'use node.annual_report_vi_c_1_reasons_for_denial_on_appeal form mode'
+  - 'use node.annual_report_vi_c_2_reasons_for_denial_on_appeal form mode'
+  - 'use node.annual_report_vi_c_3_reasons_for_denial_on_appeal form mode'
+  - 'use node.annual_report_vi_c_4_response_time form mode'
+  - 'use node.annual_report_vi_c_5_ten_oldest_pending form mode'
+  - 'use node.annual_report_vii_a_foia_requests_response_time form mode'
+  - 'use node.annual_report_vii_b_processed_requests_response_time form mode'
+  - 'use node.annual_report_vii_c_1_processed_simple_requests_response_time form mode'
+  - 'use node.annual_report_vii_c_2_processed_complex_requests_response_time form mode'
+  - 'use node.annual_report_vii_c_3_processed_requests_granted_expedited form mode'
+  - 'use node.annual_report_vii_d_pending_requests_all form mode'
+  - 'use node.annual_report_vii_e_pending_requests_ten_oldest form mode'
+  - 'use node.annual_report_viii_a_requests_for_expedited_processing form mode'
+  - 'use node.annual_report_viii_b_requests_for_fee_waiver form mode'
+  - 'use node.annual_report_x_0_ix_foia_personnel_and_costs form mode'
+  - 'use node.annual_report_x_fees_collected_for_processing_requests form mode'
+  - 'use node.annual_report_xi_a_number_of_times_subsection_c_used form mode'
+  - 'use node.annual_report_xi_b_number_of_subsection_a_2_postings form mode'
+  - 'use node.annual_report_xii_a_backlogs form mode'
+  - 'use node.annual_report_xii_b_consultations form mode'
+  - 'use node.annual_report_xii_c_consultations form mode'
+  - 'use node.annual_report_xii_d_1_comparison form mode'
+  - 'use node.annual_report_xii_d_2_comparison form mode'
+  - 'use node.annual_report_xii_e_1_comparison form mode'
+  - 'use node.annual_report_xii_e_2_comparison form mode'
   - 'use quarterly_report_workflow transition back_to_submitted'
   - 'use quarterly_report_workflow transition create_new_draft'
   - 'use quarterly_report_workflow transition publish'
