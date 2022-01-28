@@ -6,7 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\NodeInterface;
 
 /**
- * Class NodeToDocxController.
+ * To Generate docx.
  */
 class NodeToDocxController extends ControllerBase {
 

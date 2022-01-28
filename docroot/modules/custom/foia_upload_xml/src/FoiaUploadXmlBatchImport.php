@@ -11,7 +11,7 @@ use Drupal\migrate\MigrateMessage;
 /**
  * Class FoiaUploadXmlBatchImport.
  *
- * @package Drupal\foia_upload_xml
+ * Upload the xml.
  */
 class FoiaUploadXmlBatchImport {
 

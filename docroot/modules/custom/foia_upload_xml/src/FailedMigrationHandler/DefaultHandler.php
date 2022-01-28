@@ -16,7 +16,7 @@ class DefaultHandler implements FailedMigrationHandlerInterface {
   /**
    * The exception.
    *
-   * @var \Exception;
+   * @var \Exception
    */
   protected $exception;
 
@@ -45,9 +45,13 @@ class DefaultHandler implements FailedMigrationHandlerInterface {
    * BaseHandler constructor.
    *
    * @param \Exception $e
+   *   Exception.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   Messenger.
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   Migration plugin.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $translation
+   *   Translation.
    */
   public function __construct(\Exception $e, MessengerInterface $messenger, MigrationInterface $migration, TranslationInterface $translation) {
     $this->exception = $e;
@@ -66,4 +70,5 @@ class DefaultHandler implements FailedMigrationHandlerInterface {
       '@file' => $sourceFile['basename'],
     ]));
   }
+
 }

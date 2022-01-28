@@ -9,7 +9,7 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 /**
  * Class FoiaRequestTest.
  *
- * @package Drupal\Tests\foia_request\Kernel
+ * Using package for FOIA request.
  */
 class FoiaRequestTest extends EntityKernelTestBase {
 

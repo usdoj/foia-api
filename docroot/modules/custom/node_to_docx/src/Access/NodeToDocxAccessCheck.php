@@ -9,7 +9,7 @@ use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\Routing\Route;
 
 /**
- * Class NodeToDocxAccessCheck.
+ * Docx Access check.
  */
 class NodeToDocxAccessCheck implements AccessCheckInterface {
 

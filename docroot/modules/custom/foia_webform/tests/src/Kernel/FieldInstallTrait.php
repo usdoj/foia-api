@@ -8,7 +8,7 @@ use Drupal\field\Entity\FieldConfig;
 /**
  * Trait FieldInstallTrait.
  *
- * @package Drupal\Tests\foia_webform\Kernel
+ * Webform Kernel.
  */
 trait FieldInstallTrait {
 

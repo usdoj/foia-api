@@ -8,7 +8,7 @@ use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 
 /**
- * Class AgencyLookupService.
+ * The Lookup Service.
  */
 class AgencyLookupService implements AgencyLookupServiceInterface {
 

@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Class FoiaRequestSettingsForm.
  *
- * @ingroup foia_request
+ * Form renders the FOIA request.
  */
 class FoiaRequestSettingsForm extends FormBase {
 

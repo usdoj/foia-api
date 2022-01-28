@@ -12,7 +12,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @package Drupal\Tests\webform_template\Kernel
  */
-class RequestTemplateTest extends KernelTestBase {
+class WebformTemplateControllerTest extends KernelTestBase {
 
   /**
    * Modules to enable.

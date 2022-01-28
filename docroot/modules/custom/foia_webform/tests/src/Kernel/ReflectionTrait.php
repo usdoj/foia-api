@@ -5,7 +5,7 @@ namespace Drupal\Tests\foia_webform\Kernel;
 /**
  * Trait ReflectionTrait.
  *
- * @package Drupal\Tests\foia_webform\Kernel
+ * Package for webform.
  */
 trait ReflectionTrait {
 

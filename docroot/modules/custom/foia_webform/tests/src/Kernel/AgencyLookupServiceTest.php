@@ -14,7 +14,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
 /**
  * Class AgencyLookupServiceTest.
  *
- * @package Drupal\Tests\foia_webform\Kernel
+ * Webform Kernel.
  */
 class AgencyLookupServiceTest extends KernelTestBase {
 

@@ -15,8 +15,6 @@ use Drupal\migrate\Event\MigratePreRowSaveEvent;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
  * FOIA Upload XML event subscriber.
@@ -80,7 +78,7 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
       return;
     }
 
-    /** @var Row $row */
+    /** @var \Drupal\migrate\Row $row */
     $row = $migration->foiaErrorInformation['row'] ?? FALSE;
     if (!$row) {
       return;
@@ -89,7 +87,7 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
     // The listener is being run multiple times, but cannot be removed b/c
     // it has to work with the bulk uploader as well.  This ensures that
     // it only attempts to save the partial report once.
-    $saved = &drupal_static(__FUNCTION__ . md5(join('.', $row->getSourceIdValues())), FALSE);
+    $saved = &drupal_static(__FUNCTION__ . md5(implode('.', $row->getSourceIdValues())), FALSE);
     if ($saved) {
       return;
     }
@@ -145,6 +143,7 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
    * Gets the event dispatcher.
    *
    * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   *   Returns the value
    */
   private function getEventDispatcher() {
     if (!$this->eventDispatcher) {
@@ -164,7 +163,7 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  private function setPartialNodeModerationState($destination_ids = []) {
+  private function setPartialNodeModerationState(array $destination_ids = []) {
     if (empty($destination_ids)) {
       return;
     }
