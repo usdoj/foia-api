@@ -2,7 +2,7 @@
 
 namespace Drupal\foia_export_xml;
 
-use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Entity\Node;
 
@@ -225,7 +225,7 @@ EOS;
       's' => 'http://niem.gov/niem/structures/2.0',
       'xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
     ];
-    list($prefix, $local_name) = explode(':', $tag, 2);
+    [$prefix, $local_name] = explode(':', $tag, 2);
     if (empty($namespaces[$prefix])) {
       throw new \Exception("Unrecognized prefix: $prefix");
     }
@@ -250,7 +250,7 @@ EOS;
   protected function addFootnote($field, \DOMElement $parent) {
     $footnote = trim(strip_tags($this->node->get($field)->value));
     if ($footnote && !empty($footnote)) {
-      $this->addElementNs('foia:FootnoteText', $parent, SafeMarkup::checkPlain($footnote));
+      $this->addElementNs('foia:FootnoteText', $parent, Html::escape($footnote));
     }
   }
 
@@ -804,7 +804,7 @@ EOS;
       $suborg = $this->addElementNs('foia:ReliedUponStatute', $statuteSection);
       $suborg->setAttribute('s:id', $local_id);
       $this->addElementNs('j:StatuteDescriptionText', $suborg, $statute->field_statute->value);
-      $info_withheld = SafeMarkup::checkPlain($statute->field_type_of_info_withheld->value);
+      $info_withheld = Html::escape($statute->field_type_of_info_withheld->value);
       $this->addElementNs('foia:ReliedUponStatuteInformationWithheldText', $suborg, $info_withheld);
       $itemCase = $this->addElementNs('nc:Case', $suborg);
       $this->addElementNs('nc:CaseTitleText', $itemCase, $statute->field_case_citation->value);
@@ -841,7 +841,7 @@ EOS;
     // Add footnote.
     if ($this->node->field_footnotes_iv->value) {
       foreach ($this->node->field_footnotes_iv as $footnote) {
-        $footnote = SafeMarkup::checkPlain($footnote->value);
+        $footnote = Html::escape($footnote->value);
         if ($footnote) {
           $this->addElementNs('foia:FootnoteText', $statuteSection, $footnote);
         }

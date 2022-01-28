@@ -20,97 +20,100 @@ third_party_settings:
       children:
         - group_personnel
         - group_costs
+      label: 'Tabs Wrapper'
+      region: content
       parent_name: ''
       weight: 1
       format_type: tabs
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Tabs Wrapper'
     group_personnel:
       children:
         - field_full_emp
         - field_eq_full_emp
         - field_total_staff
+      label: PERSONNEL
+      region: content
       parent_name: group_tabs_wrapper
       weight: 7
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: PERSONNEL
     group_costs:
       children:
         - field_proc_costs
         - field_lit_costs
         - field_total_costs
+      label: COSTS
+      region: content
       parent_name: group_tabs_wrapper
       weight: 8
       format_type: tab
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: COSTS
 id: paragraph.foia_pers_costs_ix.default
 targetEntityType: paragraph
 bundle: foia_pers_costs_ix
 mode: default
 content:
   field_agency_component:
+    type: erviews_options_select
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: erviews_options_select
-    region: content
   field_eq_full_emp:
+    type: number
     weight: 2
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_full_emp:
+    type: number
     weight: 1
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_lit_costs:
+    type: number
     weight: 5
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_proc_costs:
+    type: number
     weight: 4
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_total_costs:
+    type: number
     weight: 6
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_total_staff:
+    type: number
     weight: 3
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
 hidden:
   created: true
   status: true

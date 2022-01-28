@@ -55,7 +55,6 @@ function template_preprocess_node_to_docx(array &$variables) {
 
 /**
  * Duplicate template variables for quarterly reports.
- *
  */
 function template_preprocess_node_to_docx_quarterly(array &$variables) {
   template_preprocess_node_to_docx($variables);

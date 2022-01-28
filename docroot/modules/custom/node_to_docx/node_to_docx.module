@@ -35,7 +35,7 @@ function node_to_docx_help($route_name) {
     $help_template = [
       '#theme' => 'node_to_docx_help_admin',
     ];
-    $output = drupal_render($help_template);
+    $output = \Drupal::service('renderer')->render($help_template);
   }
   return $output;
 }

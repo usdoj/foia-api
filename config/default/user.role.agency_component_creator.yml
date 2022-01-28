@@ -1,7 +1,19 @@
 uuid: 39342285-7127-47b4-b4eb-3896b28f8655
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.rich_text
+    - node.type.agency_component
+  module:
+    - content_moderation
+    - entity_browser
+    - file_entity
+    - filter
+    - node
+    - panelizer
+    - panels_ipe
+    - path
 id: agency_component_creator
 label: 'Agency Component creator'
 weight: 9

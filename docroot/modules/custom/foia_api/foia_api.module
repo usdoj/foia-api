@@ -67,6 +67,7 @@ function foia_api_query_alter(AlterableInterface $query) {
  * @param \Drupal\Core\Database\Query\AlterableInterface $query
  *   The query being altered, used to build the placeholder id.
  */
+
 function _foia_api_cast_condition_values($parent, AlterableInterface $query) {
   foreach ($parent->conditions() as $delta => &$condition) {
     if (!is_array($condition)) {

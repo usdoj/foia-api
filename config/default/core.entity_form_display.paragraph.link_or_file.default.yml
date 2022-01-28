@@ -1,0 +1,43 @@
+uuid: 10c53275-16e5-4763-8066-545ad15fd20e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.link_or_file.field_link_file
+    - field.field.paragraph.link_or_file.field_link_label
+    - field.field.paragraph.link_or_file.field_link_link
+    - paragraphs.paragraphs_type.link_or_file
+  module:
+    - file
+    - link
+id: paragraph.link_or_file.default
+targetEntityType: paragraph
+bundle: link_or_file
+mode: default
+content:
+  field_link_file:
+    type: file_generic
+    weight: 3
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_link_label:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_link_link:
+    type: link_default
+    weight: 2
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

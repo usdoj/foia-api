@@ -1,0 +1,29 @@
+uuid: 3b80edac-cb9f-4006-9985-a143b051b3fe
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_link_link
+    - paragraphs.paragraphs_type.link_or_file
+  module:
+    - foia_autocalc
+    - link
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.link_or_file.field_link_link
+field_name: field_link_link
+entity_type: paragraph
+bundle: link_or_file
+label: Link
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 0
+  link_type: 17
+field_type: link

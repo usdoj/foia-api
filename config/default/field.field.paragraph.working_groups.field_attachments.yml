@@ -1,0 +1,133 @@
+uuid: a52e4168-29d6-46f8-9086-97854ee4228d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_attachments
+    - paragraphs.paragraphs_type.attachments
+    - paragraphs.paragraphs_type.working_groups
+  module:
+    - entity_reference_revisions
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.working_groups.field_attachments
+field_name: field_attachments
+entity_type: paragraph
+bundle: working_groups
+label: Attachments
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      attachments: attachments
+    negate: 0
+    target_bundles_drag_drop:
+      admin_app_via:
+        weight: 35
+        enabled: false
+      admin_app_vib:
+        weight: 36
+        enabled: false
+      admin_app_vic1:
+        weight: 37
+        enabled: false
+      admin_app_vic2:
+        weight: 38
+        enabled: false
+      admin_app_vic3:
+        weight: 39
+        enabled: false
+      admin_app_vic3_oth_details:
+        weight: 40
+        enabled: false
+      admin_app_vic4:
+        weight: 41
+        enabled: false
+      agenda_item:
+        weight: 42
+        enabled: false
+      attachments:
+        weight: 34
+        enabled: true
+      fees_x:
+        weight: 43
+        enabled: false
+      foia_pers_costs_ix:
+        weight: 44
+        enabled: false
+      foia_req_va:
+        weight: 45
+        enabled: false
+      foia_req_vb1:
+        weight: 46
+        enabled: false
+      foia_req_vb2:
+        weight: 47
+        enabled: false
+      foia_req_vb2_other_details:
+        weight: 48
+        enabled: false
+      foia_req_vb3:
+        weight: 49
+        enabled: false
+      foia_xii_backlogged:
+        weight: 52
+        enabled: false
+      foia_xii_received_proc:
+        weight: 53
+        enabled: false
+      foia_xiia:
+        weight: 50
+        enabled: false
+      foia_xiib:
+        weight: 51
+        enabled: false
+      link_or_file:
+        weight: 54
+        enabled: false
+      oldest_days:
+        weight: 55
+        enabled: false
+      pending_requests_viid:
+        weight: 56
+        enabled: false
+      proc_req_viic:
+        weight: 58
+        enabled: false
+      processed_requests_vii:
+        weight: 57
+        enabled: false
+      quarterly_component_data:
+        weight: 59
+        enabled: false
+      req_viiia:
+        weight: 60
+        enabled: false
+      req_viiib:
+        weight: 61
+        enabled: false
+      statute:
+        weight: 62
+        enabled: false
+      statute_agency_details:
+        weight: 63
+        enabled: false
+      sub_xia:
+        weight: 64
+        enabled: false
+      sub_xib:
+        weight: 65
+        enabled: false
+      working_groups:
+        weight: 66
+        enabled: false
+field_type: entity_reference_revisions

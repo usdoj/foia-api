@@ -1,0 +1,14 @@
+uuid: 985bd7a4-5312-4fc5-aa78-5e9e9485e2c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_meeting_creator
+  module:
+    - user
+id: user_remove_role_action.cfo_meeting_creator
+label: 'Remove the CFO Meeting creator role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cfo_meeting_creator

@@ -1,0 +1,40 @@
+uuid: 7609b2a7-dac4-4fd9-b296-aa1d801458a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.cfo_body_only
+    - field.field.node.cfo_council.body
+    - field.field.node.cfo_council.field_council_committees
+    - node.type.cfo_council
+  module:
+    - layout_builder
+    - panelizer
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+  panelizer:
+    enable: false
+    custom: false
+    allow: false
+    default: default
+id: node.cfo_council.cfo_body_only
+targetEntityType: node
+bundle: cfo_council
+mode: cfo_body_only
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  content_moderation_control: true
+  field_council_committees: true
+  links: true
+  search_api_excerpt: true

@@ -19,43 +19,43 @@ mode: default
 content:
   field_agency_component_inf:
     type: entity_reference_revisions_entity_view
-    weight: 9
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 9
     region: content
   field_case_citation:
-    weight: 10
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 10
     region: content
   field_statute:
-    weight: 0
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   field_total_num_relied_by_agency:
-    weight: 8
+    type: number_integer
     label: above
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_integer
+    weight: 8
     region: content
   field_type_of_info_withheld:
-    weight: 1
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 1
     region: content
 hidden:
   search_api_excerpt: true

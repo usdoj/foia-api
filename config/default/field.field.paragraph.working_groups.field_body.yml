@@ -1,0 +1,27 @@
+uuid: 23e05f60-26af-4ba4-8684-b6b3051d8eba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_body
+    - paragraphs.paragraphs_type.working_groups
+  module:
+    - foia_autocalc
+    - text
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.working_groups.field_body
+field_name: field_body
+entity_type: paragraph
+bundle: working_groups
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

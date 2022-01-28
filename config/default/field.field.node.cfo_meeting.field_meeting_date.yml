@@ -1,0 +1,27 @@
+uuid: b7792db1-e698-43eb-958c-639899cc9ed7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_date
+    - node.type.cfo_meeting
+  module:
+    - datetime
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.cfo_meeting.field_meeting_date
+field_name: field_meeting_date
+entity_type: node
+bundle: cfo_meeting
+label: 'Meeting Date'
+description: 'Enter the required meeting date.  This will control the sort order of all meetings on the council page.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

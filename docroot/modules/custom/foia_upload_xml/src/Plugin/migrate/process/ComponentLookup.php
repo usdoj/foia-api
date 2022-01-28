@@ -56,7 +56,7 @@ class ComponentLookup extends ProcessPluginBase implements ContainerFactoryPlugi
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity.manager')
+      $container->get('entity_type.manager')
     );
   }
 

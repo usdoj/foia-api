@@ -27,125 +27,12 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'use annual_report_workflow transition publish'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: true
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: mini
-        options:
-          items_per_page: 50
-          offset: 0
-          id: 0
-          total_pages: null
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
-            title: title
-            created: created
-            changed: changed
-            moderation_state: moderation_state
-            field_agency: field_agency
-            field_foia_annual_report_yr: field_foia_annual_report_yr
-          info:
-            views_bulk_operations_bulk_form:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            created:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            changed:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            moderation_state:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_agency:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_foia_annual_report_yr:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: field_foia_annual_report_yr
-          empty_table: false
-      row:
-        type: fields
+      title: 'Annual Report moderation'
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -154,6 +41,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: node_bulk_form
           label: 'Node operations bulk form'
           exclude: false
           alter:
@@ -199,8 +88,6 @@ display:
           include_exclude: include
           selected_actions:
             - change_moderation_state_of_content
-          entity_type: node
-          plugin_id: node_bulk_form
         title:
           id: title
           table: node_field_data
@@ -208,6 +95,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: Title
           exclude: false
           alter:
@@ -263,9 +153,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         created:
           id: created
           table: node_field_data
@@ -273,6 +160,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: created
+          plugin_id: field
           label: Authored
           exclude: false
           alter:
@@ -330,9 +220,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: created
-          plugin_id: field
         changed:
           id: changed
           table: node_field_data
@@ -340,6 +227,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: changed
+          plugin_id: field
           label: Changed
           exclude: false
           alter:
@@ -397,9 +287,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: changed
-          plugin_id: field
         moderation_state:
           id: moderation_state
           table: node_field_revision
@@ -407,6 +294,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: moderation_state_field
           label: 'Moderation state'
           exclude: false
           alter:
@@ -461,8 +350,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          plugin_id: moderation_state_field
         field_agency:
           id: field_agency
           table: node__field_agency
@@ -470,6 +357,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Agency
           exclude: false
           alter:
@@ -525,7 +413,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_foia_annual_report_yr:
           id: field_foia_annual_report_yr
           table: node__field_foia_annual_report_yr
@@ -533,6 +420,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Year
           exclude: false
           alter:
@@ -589,7 +477,44 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+      pager:
+        type: mini
+        options:
+          offset: 0
+          items_per_page: 50
+          total_pages: null
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'use annual_report_workflow transition publish'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts: {  }
+      arguments: {  }
       filters:
         moderation_state:
           id: moderation_state
@@ -598,6 +523,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: moderation_state_filter
           operator: in
           value:
             annual_report_workflow-draft: annual_report_workflow-draft
@@ -650,8 +577,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          plugin_id: moderation_state_filter
         type:
           id: type
           table: node_field_data
@@ -659,6 +584,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
           operator: in
           value:
             annual_foia_report_data: annual_foia_report_data
@@ -692,8 +620,8 @@ display:
               agency_administrator: '0'
               agency_manager: '0'
               non_sso: '0'
-            reduce: false
             argument: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -706,9 +634,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
         field_agency_target_id:
           id: field_agency_target_id
           table: node__field_agency
@@ -716,6 +641,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value: {  }
           group: 1
@@ -762,12 +688,11 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: select
-          limit: true
           vid: agency
+          type: select
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
         field_foia_annual_report_yr_value:
           id: field_foia_annual_report_yr_value
           table: node__field_foia_annual_report_yr
@@ -775,6 +700,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: '='
           value:
             min: ''
@@ -810,9 +736,9 @@ display:
               agency_administrator: '0'
               agency_manager: '0'
               non_sso: '0'
-            placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -825,14 +751,88 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
-      sorts: {  }
-      title: 'Annual Report moderation'
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
+            title: title
+            created: created
+            changed: changed
+            moderation_state: moderation_state
+            field_agency: field_agency
+            field_foia_annual_report_yr: field_foia_annual_report_yr
+          default: field_foia_annual_report_yr
+          info:
+            views_bulk_operations_bulk_form:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            title:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            created:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            changed:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            moderation_state:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_agency:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_foia_annual_report_yr:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
       header: {  }
       footer: {  }
-      empty: {  }
-      relationships: {  }
-      arguments: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: 0
@@ -849,23 +849,23 @@ display:
         - 'config:field.storage.node.field_foia_annual_report_yr'
         - 'config:workflow_list'
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Annual
+    display_plugin: page
     position: 1
     display_options:
+      display_description: ''
       display_extenders: {  }
       path: admin/content/reports
       menu:
         type: tab
         title: 'Annual reports'
         description: ''
-        expanded: false
-        parent: system.admin_content
         weight: 0
-        context: '0'
+        expanded: false
         menu_name: admin
-      display_description: ''
+        parent: system.admin_content
+        context: '0'
     cache_metadata:
       max-age: 0
       contexts:
@@ -881,30 +881,12 @@ display:
         - 'config:field.storage.node.field_foia_annual_report_yr'
         - 'config:workflow_list'
   page_2:
-    display_plugin: page
     id: page_2
     display_title: Quarterly
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
-      path: admin/content/reports-quarterly
-      menu:
-        type: tab
-        title: 'Quarterly reports'
-        description: ''
-        expanded: false
-        parent: system.admin_content
-        weight: 0
-        context: '0'
-        menu_name: admin
       title: 'Quarterly Report moderation'
-      defaults:
-        title: false
-        fields: false
-        filters: false
-        filter_groups: false
-        access: false
-      display_description: ''
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -913,6 +895,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: node_bulk_form
           label: 'Node operations bulk form'
           exclude: false
           alter:
@@ -958,8 +942,6 @@ display:
           include_exclude: exclude
           selected_actions:
             - publish_quarterly_reports
-          entity_type: node
-          plugin_id: node_bulk_form
         title:
           id: title
           table: node_field_data
@@ -967,6 +949,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: Title
           exclude: false
           alter:
@@ -1022,9 +1007,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         created:
           id: created
           table: node_field_data
@@ -1032,6 +1014,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: created
+          plugin_id: field
           label: Authored
           exclude: false
           alter:
@@ -1089,9 +1074,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: created
-          plugin_id: field
         changed:
           id: changed
           table: node_field_data
@@ -1099,6 +1081,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: changed
+          plugin_id: field
           label: Changed
           exclude: false
           alter:
@@ -1156,9 +1141,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: changed
-          plugin_id: field
         moderation_state:
           id: moderation_state
           table: node_field_revision
@@ -1166,6 +1148,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: moderation_state_field
           label: 'Moderation state'
           exclude: false
           alter:
@@ -1220,8 +1204,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          plugin_id: moderation_state_field
         field_agency:
           id: field_agency
           table: node__field_agency
@@ -1229,6 +1211,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Agency
           exclude: false
           alter:
@@ -1284,7 +1267,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_quarterly_year:
           id: field_quarterly_year
           table: node__field_quarterly_year
@@ -1292,6 +1274,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Year
           exclude: false
           alter:
@@ -1348,7 +1331,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_quarterly_quarter:
           id: field_quarterly_quarter
           table: node__field_quarterly_quarter
@@ -1356,6 +1338,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Quarter
           exclude: false
           alter:
@@ -1410,7 +1393,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+      access:
+        type: perm
+        options:
+          perm: 'use quarterly_report_workflow transition publish'
       filters:
         moderation_state:
           id: moderation_state
@@ -1419,6 +1405,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: moderation_state_filter
           operator: in
           value:
             quarterly_report_workflow-draft: quarterly_report_workflow-draft
@@ -1469,8 +1457,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          plugin_id: moderation_state_filter
         type:
           id: type
           table: node_field_data
@@ -1478,6 +1464,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
           operator: in
           value:
             quarterly_foia_report_data: quarterly_foia_report_data
@@ -1511,8 +1500,8 @@ display:
               agency_administrator: '0'
               agency_manager: '0'
               non_sso: '0'
-            reduce: false
             argument: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1525,9 +1514,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
         field_agency_target_id:
           id: field_agency_target_id
           table: node__field_agency
@@ -1535,6 +1521,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: taxonomy_index_tid
           operator: or
           value: {  }
           group: 1
@@ -1581,12 +1568,11 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: select
-          limit: true
           vid: agency
+          type: select
           hierarchy: false
+          limit: true
           error_message: true
-          plugin_id: taxonomy_index_tid
         field_quarterly_year_value:
           id: field_quarterly_year_value
           table: node__field_quarterly_year
@@ -1594,6 +1580,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: '='
           value:
             min: ''
@@ -1631,9 +1618,9 @@ display:
               non_sso: '0'
               quarterly_foia_report_data_creator: '0'
               quarterly_foia_report_data_reviewer: '0'
-            placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -1646,7 +1633,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
         field_quarterly_quarter_value:
           id: field_quarterly_quarter_value
           table: node__field_quarterly_quarter
@@ -1654,6 +1640,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: list_field
           operator: or
           value: {  }
           group: 1
@@ -1702,15 +1689,28 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          plugin_id: list_field
       filter_groups:
         operator: AND
         groups:
           1: AND
-      access:
-        type: perm
-        options:
-          perm: 'use quarterly_report_workflow transition publish'
+      defaults:
+        access: false
+        title: false
+        fields: false
+        filters: false
+        filter_groups: false
+      display_description: ''
+      display_extenders: {  }
+      path: admin/content/reports-quarterly
+      menu:
+        type: tab
+        title: 'Quarterly reports'
+        description: ''
+        weight: 0
+        expanded: false
+        menu_name: admin
+        parent: system.admin_content
+        context: '0'
     cache_metadata:
       max-age: 0
       contexts:

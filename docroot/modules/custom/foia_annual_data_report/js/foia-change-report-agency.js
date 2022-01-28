@@ -191,7 +191,9 @@
     },
 
     addPopulateComponentsButton: function(section) {
-      var fieldWrapperId = 'edit-' + section.field.replace(/_/g, '-') + '-wrapper',
+      // Anomaly - if a field ends in an underscore needs to be removed for the wrapper but maintained for other uses.
+      var wrapperVar = section.field.replace(/_$/, '');
+      var fieldWrapperId = 'edit-' + wrapperVar.replace(/_/g, '-') + '-wrapper',
           addMoreName = section.field + '_' + section.paragraph + '_add_more',
           fieldWrapperSelector = '#' + fieldWrapperId,
           addMoreSelector = 'input[name="' + addMoreName + '"]',

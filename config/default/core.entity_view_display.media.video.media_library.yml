@@ -17,31 +17,31 @@ bundle: video
 mode: media_library
 content:
   created:
-    label: hidden
     type: timestamp
-    weight: 0
-    region: content
+    label: hidden
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
+    weight: 0
+    region: content
   thumbnail:
     type: image
-    region: content
     label: hidden
     settings:
-      image_style: thumbnail
       image_link: ''
-    weight: 0
+      image_style: thumbnail
     third_party_settings: {  }
-  uid:
-    label: hidden
-    type: author
     weight: 0
     region: content
+  uid:
+    type: author
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_media_in_library: true
   field_media_video_embed_field: true
