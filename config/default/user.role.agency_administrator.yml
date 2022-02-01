@@ -21,6 +21,7 @@ dependencies:
     - foia_webform
     - form_mode_manager
     - lightning_core
+    - masquerade
     - migrate_tools
     - node
     - node_to_docx
@@ -100,6 +101,7 @@ permissions:
   - 'generate docx using node to docx: annual_foia_report_data'
   - 'generate docx using node to docx: quarterly_foia_report_data'
   - 'manage password reset'
+  - 'masquerade as any user'
   - 'revert agency_component revisions'
   - 'revert all foia personnel revisions'
   - 'revert all revisions'
