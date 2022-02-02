@@ -145,7 +145,10 @@ class WebformTemplateController {
   public function preprocessWebformForm(array &$form, FormStateInterface $form_state) {
     $webform_id = $form_state->getFormObject()->getEntity()->id();
     $templated = $this->getTemplateConfiguration($webform_id);
-    $form['actions']['submit']['#submit'][] = [get_class($this), 'processWebformForm'];
+    $form['actions']['submit']['#submit'][] = [
+      get_class($this),
+      'processWebformForm',
+    ];
     $form['foia_template'] = [
       '#type' => 'checkbox',
       '#title' => t("Use FOIA Agency template"),

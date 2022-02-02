@@ -7,7 +7,7 @@ use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
- * Class FoiaRequestTest.
+ * Foia Request Test.
  *
  * @package Drupal\Tests\foia_request\Kernel
  */

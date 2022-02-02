@@ -8,6 +8,8 @@ use Drupal\field\Entity\FieldConfig;
 /**
  * Trait FieldInstallTrait.
  *
+ * Fields to install.
+ *
  * @package Drupal\Tests\foia_webform\Kernel
  */
 trait FieldInstallTrait {

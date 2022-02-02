@@ -7,7 +7,7 @@ use Drupal\Core\Queue\QueueFactory;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class FoiaSubmissionQueueingService.
+ * Submission Queuing service.
  */
 class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInterface {
 

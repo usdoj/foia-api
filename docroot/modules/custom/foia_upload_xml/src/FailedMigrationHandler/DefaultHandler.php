@@ -45,9 +45,13 @@ class DefaultHandler implements FailedMigrationHandlerInterface {
    * BaseHandler constructor.
    *
    * @param \Exception $e
+   *   Exception.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   Messenger.
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   Migration Plugin.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $translation
+   *   Translation.
    */
   public function __construct(\Exception $e, MessengerInterface $messenger, MigrationInterface $migration, TranslationInterface $translation) {
     $this->exception = $e;

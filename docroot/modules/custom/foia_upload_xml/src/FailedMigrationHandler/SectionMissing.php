@@ -42,12 +42,13 @@ class SectionMissing extends DefaultHandler implements FailedMigrationHandlerInt
    *   [
    *     'name' => 'component_xiic',
    *     'label' => 'Internal index of the agency component',
-   *     'selector' => 'foia:OldestPendingConsultationSection/foia:OldestPendingItems/@s:id',
+   *     'selector' =>
+   *     'foia:OldestPendingConsultationSection/foia:OldestPendingItems/@s:id',
    *   ]
    *
-   * @see source.fields in migrate_plus.migration.foia_agency_report.yml.
+   * @see migrate_plus.migration.foia_agency_report.yml
    */
-  private function extractSourceDefinition($e) {
+  private function extractSourceDefinition(Exception $e) {
     // The first transform should be the Extract::transform() method.  The
     // pattern when importing section data is to have a sub process that
     // extracts a target id and target revision id from a source array.
@@ -90,7 +91,7 @@ class SectionMissing extends DefaultHandler implements FailedMigrationHandlerInt
    *   An array of method call information where the function call was to the
    *   transform() function.
    */
-  private function getTransforms($e) {
+  private function getTransforms(Exception $e) {
     return array_filter($e->getTrace(), function ($methodCall) {
       return $methodCall['function'] === 'transform';
     });

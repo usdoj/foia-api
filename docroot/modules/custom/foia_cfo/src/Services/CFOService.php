@@ -237,9 +237,11 @@ class CFOService {
   /**
    * Returns array of attachment titles & urls.
    *
-   * @param $field
+   * @var array $field
+   *   Field.
    *
    * @return array
+   *   Return the array.
    */
   public function buildAttachmentList(EntityReferenceRevisionsFieldItemList $field): array {
     $attachmentResultList = [];

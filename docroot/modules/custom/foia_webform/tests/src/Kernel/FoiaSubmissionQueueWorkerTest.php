@@ -8,7 +8,7 @@ use Drupal\foia_webform\Plugin\QueueWorker\FoiaSubmissionQueueWorker;
 use Drupal\foia_request\Entity\FoiaRequest;
 
 /**
- * Class FoiaSubmissionQueueWorkerTest.
+ * Submission Test.
  */
 class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
 

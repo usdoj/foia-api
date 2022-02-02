@@ -14,7 +14,12 @@ use Symfony\Component\Validator\Constraint;
  * )
  */
 class AgencyComponentUniqueAbbreviation extends Constraint {
-
+  /**
+   * Try different abbrevation.
+   *
+   * @var string
+   *   Different value must be added.
+   */
   public $notUnique = 'The abbreviation %abbreviation is already being used by another component within the agency. Please try a different abbreviation.';
 
 }

@@ -3,7 +3,7 @@
 namespace Drupal\foia_upload_xml\FailedMigrationHandler;
 
 /**
- * Interface FailedMigrationHandlerInterface.
+ * It handles the failed migration.
  *
  * @package Drupal\foia_upload_xml\FailedMigrationHandler
  */

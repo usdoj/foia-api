@@ -38,9 +38,13 @@ class FoiaApiFiscalYearController extends ControllerBase implements ContainerInj
   }
 
   /**
+   * Controller and DependencyInjection.
+   *
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   Container.
    *
    * @return \Drupal\Core\Controller\ControllerBase|void
+   *   Void
    */
   public static function create(ContainerInterface $container) {
     return new static(
@@ -52,6 +56,7 @@ class FoiaApiFiscalYearController extends ControllerBase implements ContainerInj
    * Get an array of report years for published Annual FOIA Report Data nodes.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Return JSOn Response.
    */
   public function get() {
     $query = $this->connection->select('node__field_foia_annual_report_yr', 'y')

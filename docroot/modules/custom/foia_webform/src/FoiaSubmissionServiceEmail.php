@@ -10,7 +10,7 @@ use Egulias\EmailValidator\EmailValidator;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class FoiaSubmissionServiceEmail.
+ * Email service.
  */
 class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
 

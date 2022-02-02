@@ -8,6 +8,8 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Class FoiaPersonnelSettingsForm.
  *
+ * FOIA Personnel.
+ *
  * @ingroup foia_personnel
  */
 class FoiaPersonnelSettingsForm extends FormBase {

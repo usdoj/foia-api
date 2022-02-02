@@ -31,14 +31,14 @@ class CFOController extends ControllerBase {
    *
    * @var \Drupal\Core\Entity\EntityViewBuilderInterface
    */
-  private $view_builder;
+  private $viewbuilder;
 
   /**
    * Render Service.
    *
    * @var \Drupal\Core\Render\RendererInterface
    */
-  private $render_service;
+  private $renderservice;
 
   /**
    * Constructor for this class.

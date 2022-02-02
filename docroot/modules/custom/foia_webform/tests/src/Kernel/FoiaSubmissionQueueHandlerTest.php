@@ -20,7 +20,7 @@ use Drupal\file\Entity\File;
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */
-class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
+class FoiaSubmissionQueueHandlerTest extends KernelTestBase {
 
   use ReflectionTrait;
   use FieldInstallTrait;
@@ -218,7 +218,11 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
    */
   public function testQueuedFoiaRequestContainsRequesterEmailAddress() {
     $testRequesterEmailAddress = 'requester@requester.com';
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['email' => $testRequesterEmailAddress]]);
+    $webformSubmission = WebformSubmission::create(
+      [
+        'webform_id' => $this->webform->id(),
+        'data' => ['email' => $testRequesterEmailAddress],
+      ]);
     $webformSubmission->save();
     $this->webformSubmission = $webformSubmission;
 
@@ -291,7 +295,11 @@ class FoiaSubmissionServiceQueueHandlerTest extends KernelTestBase {
    * Sets up a webform submission.
    */
   protected function setupWebformSubmission() {
-    $webformSubmission = WebformSubmission::create(['webform_id' => $this->webform->id(), 'data' => ['custom' => 'value']]);
+    $webformSubmission = WebformSubmission::create(
+      [
+        'webform_id' => $this->webform->id(),
+        'data' => ['custom' => 'value'],
+      ]);
     $webformSubmission->save();
     $this->webformSubmission = $webformSubmission;
   }

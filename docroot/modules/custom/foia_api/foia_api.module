@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * To access the unpublished.
  */
 
 use Drupal\Core\Session\AccountInterface;
@@ -66,7 +67,7 @@ function foia_api_query_alter(AlterableInterface $query) {
  * @param \Drupal\Core\Database\Query\AlterableInterface $query
  *   The query being altered, used to build the placeholder id.
  */
-function _foia_api_cast_condition_values($parent, $query) {
+function _foia_api_cast_condition_values($parent, AlterableInterface $query) {
   foreach ($parent->conditions() as $delta => &$condition) {
     if (!is_array($condition)) {
       continue;
@@ -105,6 +106,7 @@ function _foia_api_cast_condition_values($parent, $query) {
  *   `paragraph__field_sim_med.field_sim_med_value`.
  *
  * @return bool
+ *   Return value.
  */
 function _foia_api_is_string_field($database_field) {
   $string_fields = _foia_api_get_string_fields('node', 'annual_foia_report_data');
