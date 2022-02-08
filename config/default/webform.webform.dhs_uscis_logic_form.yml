@@ -1,4 +1,4 @@
-uuid: fac25480-e1ef-43d6-ac3f-330d9cd70585
+uuid: ad301d1c-59df-4a81-a62d-037c936642dd
 langcode: en
 status: open
 dependencies:
@@ -7,57 +7,48 @@ dependencies:
 weight: 0
 open: null
 close: null
-uid: 76
+uid: 1701
 template: false
 archive: false
-id: hhs_fda_form
-title: 'HHS-FDA Form'
+id: dhs_uscis_logic_form
+title: 'DHS-USCIS Logic Form'
 description: ''
 category: ''
-elements: |-
+elements: |
   name_first:
     '#type': textfield
     '#title': 'First name'
-    '#help': 'Name is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.'
-    '#required': true
   name_last:
     '#type': textfield
     '#title': 'Last name'
-    '#required': true
   company_organization:
     '#type': textfield
     '#title': 'Your organization'
   email:
     '#type': email
     '#title': 'Email address'
+    '#help': '<p style="margin-top:0pt; margin-bottom:8pt"><span style="font-size:11.0pt"><span style="font-family:Calibri">In order for us to communicate with you about your request, you must provide at least one form of contact information.</span></span></p>'
   phone_number:
     '#type': tel
     '#title': 'Phone number'
-    '#help': 'Phone number is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.'
-    '#required': true
   fax_number:
     '#type': tel
     '#title': 'Fax number'
   address_line1:
     '#type': textfield
     '#title': 'Mailing address 1'
-    '#help': 'Address&nbsp;is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.'
-    '#required': true
   address_line2:
     '#type': textfield
     '#title': 'Mailing address 2'
   address_city:
     '#type': textfield
     '#title': City
-    '#required': true
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
-    '#required': true
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
-    '#required': true
   address_country:
     '#type': select
     '#title': Country
@@ -68,38 +59,16 @@ elements: |-
     '#title': 'What type of requester are you?'
     '#help': 'Please select the category that best fits you. This information helps FOIA personnel determine what fees, if any, may be applicable.'
     '#options':
-      commercial: 'Commercial-use requester'
       media: 'Representative of the news media'
       educational: 'Educational Institution'
       scientific: 'Non-commercial scientific institution'
+      commercial: 'Commercial-use requester'
       other: 'All other requester'
-    '#default_value': commercial
-  requester_internal_reference_:
-    '#type': textfield
-    '#title': 'Requester Internal Reference # '
-    '#maxlength': 20
-  requester_name:
-    '#type': textfield
-    '#title': 'Requester Name'
-  date_range_start:
-    '#type': textfield
-    '#title': 'Date Range Start'
-    '#description': 'Please enter the date in MM/DD/YYYY format.'
-    '#help': 'Please enter the date in MM/DD/YYYY format.'
-    '#pattern': '^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$'
-    '#pattern_error': 'Please enter the date in MM/DD/YYYY format.'
-  date_range_end:
-    '#type': textfield
-    '#title': 'Date Range End'
-    '#description': 'Please enter the date in MM/DD/YYYY format.'
-    '#help': 'Please enter the date in MM/DD/YYYY format.'
-    '#pattern': '^(((0[13-9]|1[012])[-/]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-/]?31|02[-/]?(0[1-9]|1[0-9]|2[0-8]))[-/]?[0-9]{4}|02[-/]?29[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$'
-    '#pattern_error': 'Please enter the date in MM/DD/YYYY format.'
   request_description:
     '#type': textarea
+    '#maxlength': 10000
     '#title': 'Your request'
     '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
-    '#maxlength': 4000
     '#required': true
   fee_waiver:
     '#type': select
@@ -110,9 +79,9 @@ elements: |-
       'yes': 'Yes'
   fee_waiver_explanation:
     '#type': textarea
+    '#maxlength': 10000
     '#title': 'Fee waiver justification'
     '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'
-    '#maxlength': 4000
   fee_amount_willing:
     '#type': textfield
     '#title': 'The amount of money you’re willing to pay in fees, if any'
@@ -123,28 +92,19 @@ elements: |-
   expedited_processing:
     '#type': select
     '#title': 'Expedited processing'
-    '#help': '<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:12.0pt">Please make a selection for the expedite reason in Step 3 above if you are requesting expedited processing.</span></span></span>'
+    '#default_value': 'no'
     '#options':
       'no': 'No'
       'yes': 'Yes'
-    '#default_value': 'no'
   expedited_processing_explanation:
     '#type': textarea
+    '#maxlength': 10000
     '#title': 'Justification for expedited processing'
-    '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.'
-    '#maxlength': 4000
-  expedite_reason:
-    '#type': select
-    '#title': 'Expedite Reason'
-    '#help': 'Please select an expedite reason only if you are requesting expedited processing in Step 5 below.'
-    '#options':
-      'Need to Inform Public': 'Need to Inform Public'
-      'Danger to Human Life': 'Danger to Human Life'
-      Other: Other
+    '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.&nbsp;&nbsp;This agency has additional standards for expedited processing detailed at <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=8455df8748d9b2b7b93316be0dbb344c&amp;mc=true&amp;node=se6.1.5_15&amp;rgn=div8">5 C.F.R. &sect; 5.5(e)</a>.'
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
-    '#help': '<p style="margin-top:0pt; margin-bottom:8pt"><span style="font-size:11.0pt"><span style="font-family:Calibri">If you are seeking records about yourself or medical records of another individual, additional documentation is required.&nbsp; See <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">44 C.F.R. &sect; 5.22(f)</a></span></span></p>'
+    '#help': '<p style="margin-top:0pt; margin-bottom:8pt"><span style="font-size:11.0pt"><span style="font-family:Calibri">If you are seeking records about yourself, additional documentation is required to verify your identity.&nbsp; See <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=780df046c26fe4cd04306470f91da4a9&amp;mc=true&amp;node=se6.1.5_13&amp;rgn=div8">6 C.F.R. &sect; 5.3(a)(3); &sect; 5.21(d), (e), (f).</a></span></span></p>'
     '#multiple': true
 css: ''
 javascript: ''
@@ -187,6 +147,9 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
   share: false
   share_node: false
   share_theme_name: ''
@@ -342,9 +305,9 @@ handlers:
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: _default
+      from_mail: default
       from_options: {  }
-      from_name: _default
+      from_name: default
       reply_to: ''
       return_path: ''
       sender_mail: ''
@@ -358,8 +321,8 @@ handlers:
       attachments: false
       debug: false
       exclude_empty_checkbox: false
+      exclude_attachments: false
       twig: false
       theme_name: ''
       parameters: {  }
-      exclude_attachments: false
 variants: {  }
