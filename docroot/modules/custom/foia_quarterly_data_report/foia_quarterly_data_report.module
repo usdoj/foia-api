@@ -11,6 +11,8 @@ use Drupal\Core\Ajax\AlertCommand;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_form_form_id_alter().
@@ -19,6 +21,8 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_fo
   // Add the AJAX save callbacks.
   foia_quarterly_data_report_ajax_existing_node($form);
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
+  // Add general validation including checkig for existing report.
+  $form['#validate'][] = '_form_quarterly_data_report_validate';
 }
 
 /**
@@ -27,6 +31,8 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_fo
 function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
   foia_quarterly_data_report_ajax_new_node($form);
+  // Add general validation including checkig for existing report.
+  $form['#validate'][] = '_form_quarterly_data_report_validate';
 }
 
 /**
@@ -195,4 +201,70 @@ function foia_quarterly_data_report_set_default_report_values(array &$form, Form
   if (!$default_quarter_value) {
     $form['field_quarterly_quarter']['widget']['#default_value'] = $current_quarter;
   }
+}
+
+/**
+ * Validation for the quarterly report.
+ *
+ * Makes sure there is not already a report for this agency and year and quarter.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function _form_quarterly_data_report_validate(array &$form, FormStateInterface $form_state): void {
+
+  $form_state_values = $form_state->getValues();
+
+  // Get the agency node id from the form state.
+  $agency_id = 0;
+  if (!empty($form_state_values['field_agency'][0]['target_id'])) {
+    $agency_id = $form_state_values['field_agency'][0]['target_id'];
+  }
+
+  // Get the report year from the form state.
+  $report_year = 0;
+  if (!empty($form_state_values['field_quarterly_year'][0]['value'])) {
+    $report_year = $form_state_values['field_quarterly_year'][0]['value'];
+  }
+
+  // Get the report quarter from the format state.
+  $report_quarter = 0;
+  if (!empty($form_state_values['field_quarterly_quarter'][0]['value'])) {
+    $report_quarter = $form_state_values['field_quarterly_quarter'][0]['value'];
+  }
+
+  // Check for an existing report.
+  if ($form_state->getFormObject() instanceof EntityForm) {
+    $current_nid = $form_state->getformObject()->getEntity()->id();
+  }
+  else {
+    $current_nid = 0;
+  }
+
+  // With the agency id and report year, query the nodes to find one that
+  // has the same agency id and year.  If found through and error allowing
+  // the user to update the existing report or change the values.
+  if ($agency_id && $report_year && $report_quarter) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'quarterly_foia_report_data')
+      ->condition('field_agency', $agency_id)
+      ->condition('field_quarterly_year', $report_year)
+      ->condition('field_quarterly_quarter', $report_quarter)
+      ->condition('nid', $current_nid, '!=')
+      ->sort('created', 'DESC')
+      ->range(0, 1);
+    $results = $query->execute();
+    // If there is a duplicate found throw error with link to existing report.
+    if (count($results)) {
+      $nid = array_pop($results);
+      $message = '<a href="/node/' . $nid . '/edit">Click here to edit the existing report</a> or change the values below.';
+      $rendered_message = Markup::create($message);
+      $error_message = new TranslatableMarkup('@message', ['@message' => $rendered_message]);
+      $form_state->setErrorByName('field_agency', 'There is already a report for the agency and year/quarter you specified.');
+      $form_state->setErrorByName('field_quarterly_year', $error_message);
+    }
+  }
+
 }

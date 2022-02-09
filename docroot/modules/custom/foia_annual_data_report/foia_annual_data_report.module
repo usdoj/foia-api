@@ -22,14 +22,14 @@ use Drupal\Core\Ajax\RedirectCommand;
  */
 function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  // Attach form style updates.
-  $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_style_updates';
-
   // Look for this string to match an Annual Data Report (ADR), section.
   $adr_string = 'node_annual_foia_report_data_';
 
   // Look for the adr string in the form id.
   if (substr($form_id, 0, strlen($adr_string)) === $adr_string) {
+
+    // Attach form style updates.
+    $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_style_updates';
 
     // Add the AJAX save callbacks.
     $node = $form_state->getFormObject()->getEntity();
