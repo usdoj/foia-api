@@ -73,6 +73,9 @@ if (!getenv('AH_SITE_ENVIRONMENT')) {
   $config['baseurlpath'] = 'simplesaml/';
   $config['loggingdir'] = '/var/www/simplesamlphp/log/';
 
+  if (file_exists(__DIR__ . '/local_config.php')) {
+    include __DIR__ . '/local_config.php';
+  }
 }
 elseif (getenv('AH_SITE_ENVIRONMENT')) {
   /*
