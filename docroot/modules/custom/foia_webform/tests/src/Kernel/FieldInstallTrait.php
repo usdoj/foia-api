@@ -6,7 +6,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
 
 /**
- * Trait FieldInstallTrait.
+ * Trait FieldInstallTrait installs fields from config.
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */

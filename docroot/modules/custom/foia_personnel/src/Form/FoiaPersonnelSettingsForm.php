@@ -6,7 +6,9 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class FoiaPersonnelSettingsForm.
+ * Class FoiaPersonnelSettingsForm for adding.
+ *
+ * @see /admin/structure/foia_personnel/settings.
  *
  * @ingroup foia_personnel
  */

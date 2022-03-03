@@ -10,7 +10,7 @@ use Egulias\EmailValidator\EmailValidator;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class FoiaSubmissionServiceEmail.
+ * Class FoiaSubmissionServiceEmail for handling email for webform submissions.
  */
 class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
 
@@ -165,8 +165,8 @@ class FoiaSubmissionServiceEmail implements FoiaSubmissionServiceInterface {
    *   An associative array containing error information.
    */
   protected function addSubmissionError(array $error) {
-    $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
-    $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
+    $this->errors['message'] = $error['message'] ?? '';
+    $this->errors['description'] = $error['description'] ?? '';
   }
 
   /**

@@ -129,7 +129,7 @@ class WebformSubmissionResource extends ResourceBase {
       return new ModifiedResourceResponse(['errors' => $message], $statusCode);
     }
 
-    $webformId = isset($data['id']) ? $data['id'] : '';
+    $webformId = $data['id'] ?? '';
     if (!$webformId) {
       $statusCode = 400;
       $message = t("Missing form 'id'.");
@@ -390,9 +390,9 @@ class WebformSubmissionResource extends ResourceBase {
    */
   protected function createFileEntityInTempStorage(array $fileAttachment) {
     $fileContents = isset($fileAttachment['filedata']) ? base64_decode($fileAttachment['filedata']) : '';
-    $mimeType = isset($fileAttachment['content_type']) ? $fileAttachment['content_type'] : '';
-    $fileSize = isset($fileAttachment['filesize']) ? $fileAttachment['filesize'] : '';
-    $fileName = isset($fileAttachment['filename']) ? $fileAttachment['filename'] : '';
+    $mimeType = $fileAttachment['content_type'] ?? '';
+    $fileSize = $fileAttachment['filesize'] ?? '';
+    $fileName = $fileAttachment['filename'] ?? '';
     $destination = \Drupal::service('file_system')->tempnam('temporary://', 'foiaAttach');
     $fileUri = \Drupal::service('file_system')->saveData($fileContents, $destination);
     if ($fileUri) {
@@ -447,7 +447,7 @@ class WebformSubmissionResource extends ResourceBase {
         $maxFileSize = Environment::getUploadMaxSize();
       }
 
-      $fileExtensions = isset($element['#file_extensions']) ? $element['#file_extensions'] : $defaultProperties['file_extensions'];
+      $fileExtensions = $element['#file_extensions'] ?? $defaultProperties['file_extensions'];
       $validators['file_validate_size'] = [$maxFileSize];
       $validators['file_validate_extensions'] = [$fileExtensions];
       /** @var \Drupal\file_entity\FileEntityInterface $file */
@@ -572,7 +572,7 @@ class WebformSubmissionResource extends ResourceBase {
     foreach ($filesByFieldName as $fieldName => $files) {
       $element = $webform->getElementInitialized($fieldName);
       $defaultProperties = $this->getDefaultWebformElementProperties($element);
-      $uriScheme = isset($element['#uri_scheme']) ? $element['#uri_scheme'] : $defaultProperties['uri_scheme'];
+      $uriScheme = $element['#uri_scheme'] ?? $defaultProperties['uri_scheme'];
 
       /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {

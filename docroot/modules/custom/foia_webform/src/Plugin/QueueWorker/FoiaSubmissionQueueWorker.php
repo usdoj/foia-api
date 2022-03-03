@@ -113,8 +113,8 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
       $submissionResponse = ($forceFailures) ? $this->mockFailedSubmissionResponse() : $submissionService->getSubmissionErrors();
       $this->handleFailedSubmission($foiaRequest, $submissionResponse);
     }
-    $submissionMethod = isset($submissionResponse['type']) ? $submissionResponse['type'] : '';
-    $responseCode = isset($submissionResponse['response_code']) ? $submissionResponse['response_code'] : '';
+    $submissionMethod = $submissionResponse['type'] ?? '';
+    $responseCode = $submissionResponse['response_code'] ?? '';
     $foiaRequest->setSubmissionMethod($submissionMethod);
     if ($responseCode) {
       $foiaRequest->set('field_response_code', $responseCode);
@@ -132,14 +132,14 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    */
   protected function handleValidSubmission(FoiaRequestInterface $foiaRequest, array $validSubmissionResponse) {
     $newStatus = FoiaRequestInterface::STATUS_SUBMITTED;
-    $submissionMethod = isset($validSubmissionResponse['type']) ? $validSubmissionResponse['type'] : '';
+    $submissionMethod = $validSubmissionResponse['type'] ?? '';
     if ($submissionMethod == FoiaRequestInterface::METHOD_EMAIL) {
       $newStatus = FoiaRequestInterface::STATUS_IN_TRANSIT;
     }
     $foiaRequest->setRequestStatus($newStatus);
 
-    $caseManagementId = isset($validSubmissionResponse['id']) ? $validSubmissionResponse['id'] : '';
-    $caseManagementStatusTrackingNumber = isset($validSubmissionResponse['status_tracking_number']) ? $validSubmissionResponse['status_tracking_number'] : '';
+    $caseManagementId = $validSubmissionResponse['id'] ?? '';
+    $caseManagementStatusTrackingNumber = $validSubmissionResponse['status_tracking_number'] ?? '';
     if ($caseManagementId) {
       $foiaRequest->set('field_case_management_id', $caseManagementId);
     }
@@ -163,9 +163,9 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    */
   protected function handleFailedSubmission(FoiaRequestInterface $foiaRequest, array $failedSubmissionInfo) {
 
-    $errorCode = isset($failedSubmissionInfo['code']) ? $failedSubmissionInfo['code'] : '';
-    $errorMessage = isset($failedSubmissionInfo['message']) ? $failedSubmissionInfo['message'] : '';
-    $errorDescription = isset($failedSubmissionInfo['description']) ? $failedSubmissionInfo['description'] : '';
+    $errorCode = $failedSubmissionInfo['code'] ?? '';
+    $errorMessage = $failedSubmissionInfo['message'] ?? '';
+    $errorDescription = $failedSubmissionInfo['description'] ?? '';
     if ($errorCode) {
       $foiaRequest->set('field_error_code', $errorCode);
     }

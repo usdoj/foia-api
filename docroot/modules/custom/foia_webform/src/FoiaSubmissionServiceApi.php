@@ -332,8 +332,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       $this->log('warning', $error['message']);
       return FALSE;
     }
-    $id = isset($responseBody['id']) ? $responseBody['id'] : '';
-    $statusTrackingNumber = isset($responseBody['status_tracking_number']) ? $responseBody['status_tracking_number'] : '';
+    $id = $responseBody['id'] ?? '';
+    $statusTrackingNumber = $responseBody['status_tracking_number'] ?? '';
     if (!$id) {
       $error = [
         'http_code' => $responseCode,
@@ -472,8 +472,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected function handleErrorResponseFromComponent(array $response, $responseCode) {
     $error['http_code'] = $responseCode;
     $error['code'] = $response['code'];
-    $error['message'] = isset($response['message']) ? $response['message'] : '';
-    $error['description'] = isset($response['description']) ? $response['description'] : '';
+    $error['message'] = $response['message'] ?? '';
+    $error['description'] = $response['description'] ?? '';
     $this->addSubmissionError($error);
     $context = [
       '@http_code' => $error['http_code'],
@@ -504,10 +504,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   An associative array containing error information.
    */
   protected function addSubmissionError(array $error) {
-    $this->errors['response_code'] = isset($error['http_code']) ? $error['http_code'] : '';
-    $this->errors['code'] = isset($error['code']) ? $error['code'] : '';
-    $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
-    $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
+    $this->errors['response_code'] = $error['http_code'] ?? '';
+    $this->errors['code'] = $error['code'] ?? '';
+    $this->errors['message'] = $error['message'] ?? '';
+    $this->errors['description'] = $error['description'] ?? '';
   }
 
   /**

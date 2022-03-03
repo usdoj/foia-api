@@ -31,14 +31,14 @@ class CFOController extends ControllerBase {
    *
    * @var \Drupal\Core\Entity\EntityViewBuilderInterface
    */
-  private $view_builder;
+  private $viewBuilder;
 
   /**
    * Render Service.
    *
    * @var \Drupal\Core\Render\RendererInterface
    */
-  private $render_service;
+  private $renderService;
 
   /**
    * Constructor for this class.
@@ -49,8 +49,8 @@ class CFOController extends ControllerBase {
   public function __construct() {
     // @todo These should be passed in to the constructor in the usual style.
     $this->nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
-    $this->view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
-    $this->render_service = \Drupal::service('renderer');
+    $this->viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+    $this->renderService = \Drupal::service('renderer');
   }
 
   /**
@@ -100,8 +100,8 @@ class CFOController extends ControllerBase {
         !empty($council_node->get('body'))
         && !empty($council_node->get('body')->getValue()[0]['value'])
       ) {
-        $pre_render = $this->view_builder->view($council_node, 'cfo_body_only');
-        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+        $pre_render = $this->viewBuilder->view($council_node, 'cfo_body_only');
+        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->renderService->renderPlain($pre_render));
         $response['body'] = $html;
       }
 
@@ -128,8 +128,8 @@ class CFOController extends ControllerBase {
             if ($committee_node->isPublished()) {
               $committee = ['committee_title' => $committee_node->label()];
               if (!empty($committee_node->body->getValue())) {
-                $pre_render = $this->view_builder->view($committee_node, 'cfo_body_only');
-                $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+                $pre_render = $this->viewBuilder->view($committee_node, 'cfo_body_only');
+                $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->renderService->renderPlain($pre_render));
                 $committee['committee_body'] = $html;
               }
 
@@ -193,8 +193,8 @@ class CFOController extends ControllerBase {
         // Add title and body for the meeting.
         $meeting['meeting_title'] = $meeting_node->label();
         if (!empty($meeting_node->body->getValue()[0]['value'])) {
-          $pre_render = $this->view_builder->view($meeting_node, 'cfo_body_only');
-          $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+          $pre_render = $this->viewBuilder->view($meeting_node, 'cfo_body_only');
+          $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->renderService->renderPlain($pre_render));
           $meeting['meeting_body'] = $html;
 
         }
@@ -371,8 +371,8 @@ class CFOController extends ControllerBase {
         && !empty($committee->get('body'))
         && !empty($committee->get('body')->getValue()[0]['value'])
       ) {
-        $pre_render = $this->view_builder->view($committee, 'cfo_body_only');
-        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->render_service->renderPlain($pre_render));
+        $pre_render = $this->viewBuilder->view($committee, 'cfo_body_only');
+        $html = \Drupal::service('foia_cfo.default')->absolutePathFormatter($this->renderService->renderPlain($pre_render));
         $response['committee_body'] = $html;
       }
 

@@ -3,7 +3,7 @@
 namespace My\Example\Project\Tests;
 
 /**
- * Class ExampleTest.
+ * An example of a PHPUnit test for FOIA.
  */
 class ExampleTest extends \PHPUnit_Framework_TestCase {
 
