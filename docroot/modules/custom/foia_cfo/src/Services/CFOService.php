@@ -237,9 +237,11 @@ class CFOService {
   /**
    * Returns array of attachment titles & urls.
    *
-   * @param $field
+   * @param \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $field
+   *   Implements entity_reference_revisions.
    *
    * @return array
+   *   List of file attachments using entity_reference_revisions.
    */
   public function buildAttachmentList(EntityReferenceRevisionsFieldItemList $field): array {
     $attachmentResultList = [];

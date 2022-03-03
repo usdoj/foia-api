@@ -6,7 +6,9 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\node\NodeInterface;
 
 /**
- * Class NodeToDocxController.
+ * Class NodeToDocxController controller to generate docx files from nodes.
+ *
+ * @see /node/{node}/convert-node-to-docx
  */
 class NodeToDocxController extends ControllerBase {
 

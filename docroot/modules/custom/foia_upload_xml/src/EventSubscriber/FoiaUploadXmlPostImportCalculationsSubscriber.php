@@ -33,6 +33,8 @@ class FoiaUploadXmlPostImportCalculationsSubscriber implements EventSubscriberIn
    *
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   Entity Manager.
    */
   public function __construct(MessengerInterface $messenger, EntityTypeManagerInterface $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;

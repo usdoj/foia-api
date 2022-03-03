@@ -64,7 +64,7 @@ class ComponentLookup extends ProcessPluginBase implements ContainerFactoryPlugi
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    list($agency, $component) = $value;
+    [$agency, $component] = $value;
     $nid = $this->query($agency, $component);
     if (empty($nid)) {
       return NULL;

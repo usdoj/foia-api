@@ -9,7 +9,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\migrate\MigrateMessage;
 
 /**
- * Class FoiaUploadXmlBatchImport.
+ * Class FoiaUploadXmlBatchImport used for batch transfers of XML.
  *
  * @package Drupal\foia_upload_xml
  */

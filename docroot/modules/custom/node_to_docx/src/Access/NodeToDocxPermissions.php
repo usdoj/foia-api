@@ -5,7 +5,9 @@ namespace Drupal\node_to_docx\Access;
 use Drupal\node\Entity\NodeType;
 
 /**
- * Class NodeToDocxPermissions.
+ * Class NodeToDocxPermissions are permissions for node_to_docx.
+ *
+ * @see /admin/people/permissions/module/node_to_docx
  */
 class NodeToDocxPermissions {
 

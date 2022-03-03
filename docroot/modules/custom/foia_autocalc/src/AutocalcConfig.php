@@ -355,22 +355,22 @@ class AutocalcConfig implements AutocalcConfigInterface {
       '#autocomplete_route_parameters' => [
         'field_config' => $config_info['field_config'],
       ],
-      '#default_value' => isset($row_values['field']) ? $row_values['field'] : NULL,
+      '#default_value' => $row_values['field'] ?? NULL,
       '#validated' => TRUE,
     ];
     $row['this_entity'] = [
       '#type' => 'checkbox',
-      '#default_value' => isset($row_values['this_entity']) ? $row_values['this_entity'] : FALSE,
+      '#default_value' => $row_values['this_entity'] ?? FALSE,
     ];
     $row['weight'] = [
       '#type' => 'weight',
       '#title' => t('Weight for this field'),
       '#title_display' => 'invisible',
-      '#default_value' => isset($row_values['weight']) ? $row_values['weight'] : 99,
+      '#default_value' => $row_values['weight'] ?? 99,
       '#attributes' => ['class' => ['weight']],
     ];
     $row['#attributes']['class'][] = 'draggable';
-    $row['#weight'] = isset($row_values['weight']) ? $row_values['weight'] : 99;
+    $row['#weight'] = $row_values['weight'] ?? 99;
     return $row;
   }
 

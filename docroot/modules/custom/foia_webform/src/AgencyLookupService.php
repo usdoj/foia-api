@@ -8,7 +8,11 @@ use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 
 /**
- * Class AgencyLookupService.
+ * Class AgencyLookupService lookup queries.
+ *
+ * For agency_component and field_agency.
+ *
+ * @package Drupal\foia_webform;
  */
 class AgencyLookupService implements AgencyLookupServiceInterface {
 

@@ -45,7 +45,7 @@ class NewlineToLineBreak extends ProcessPluginBase {
       throw new MigrateException(sprintf('%s cannot be casted to a string', var_export($original, TRUE)));
     }
 
-    $is_xhtml = isset($this->configuration['is_xhtml']) ? $this->configuration['is_xhtml'] : TRUE;
+    $is_xhtml = $this->configuration['is_xhtml'] ?? TRUE;
 
     return nl2br($value, $is_xhtml);
   }

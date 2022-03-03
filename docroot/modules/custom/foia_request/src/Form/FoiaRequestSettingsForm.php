@@ -6,9 +6,10 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class FoiaRequestSettingsForm.
+ * Class FoiaRequestSettingsForm .
  *
  * @ingroup foia_request
+ * @package Drupal\foia_request\Form
  */
 class FoiaRequestSettingsForm extends FormBase {
 

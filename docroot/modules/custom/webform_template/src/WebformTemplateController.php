@@ -150,7 +150,7 @@ class WebformTemplateController {
       '#type' => 'checkbox',
       '#title' => t("Use FOIA Agency template"),
       '#disabled' => TRUE,
-      '#default_value' => $templated === NULL ? $this::TEMPLATESTATUSDEFAULT : $templated,
+      '#default_value' => $templated ?? $this::TEMPLATESTATUSDEFAULT,
     ];
 
     if (\Drupal::currentUser()->hasPermission('bypass foia webform template')) {

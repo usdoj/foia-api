@@ -7,7 +7,7 @@ use Drupal\Core\Queue\QueueFactory;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class FoiaSubmissionQueueingService.
+ * Class FoiaSubmissionQueueingService Queue service for FOIA Requests.
  */
 class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInterface {
 
@@ -58,6 +58,8 @@ class FoiaSubmissionQueueingService implements FoiaSubmissionQueueingServiceInte
    *   The FOIA Request entity.
    * @param mixed $query_id
    *   The queue ID if enqueueing was successful, else NULL.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   protected function logQueuingResult(FoiaRequestInterface $foiaRequest, $query_id) {
     if ($query_id) {

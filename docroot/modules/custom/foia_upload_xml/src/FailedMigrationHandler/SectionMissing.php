@@ -47,7 +47,7 @@ class SectionMissing extends DefaultHandler implements FailedMigrationHandlerInt
    *
    * @see source.fields in migrate_plus.migration.foia_agency_report.yml.
    */
-  private function extractSourceDefinition($e) {
+  private function extractSourceDefinition(\Exception $e) {
     // The first transform should be the Extract::transform() method.  The
     // pattern when importing section data is to have a sub process that
     // extracts a target id and target revision id from a source array.
@@ -90,7 +90,7 @@ class SectionMissing extends DefaultHandler implements FailedMigrationHandlerInt
    *   An array of method call information where the function call was to the
    *   transform() function.
    */
-  private function getTransforms($e) {
+  private function getTransforms(\Exception $e) {
     return array_filter($e->getTrace(), function ($methodCall) {
       return $methodCall['function'] === 'transform';
     });
