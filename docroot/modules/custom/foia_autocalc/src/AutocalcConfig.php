@@ -156,10 +156,14 @@ class AutocalcConfig implements AutocalcConfigInterface {
    */
   public function getAutocalcSettings(array $field_definitions) {
     $autocalc_settings = [];
+    $field_definition_types = [
+      'entity_reference',
+      'entity_reference_revisions',
+    ];
 
     foreach ($field_definitions as $field_name => $field_definition) {
       if ($field_definition instanceof FieldConfigInterface) {
-        if (in_array($field_definition->getType(), ['entity_reference', 'entity_reference_revisions'])) {
+        if (in_array($field_definition->getType(), $field_definition_types)) {
           $target_type = $field_definition->getSetting('target_type');
           $handler_settings = $field_definition->getSetting('handler_settings');
           if ($target_type && $handler_settings && isset($handler_settings['target_bundles'])) {
@@ -257,6 +261,10 @@ class AutocalcConfig implements AutocalcConfigInterface {
    */
   protected function buildNumberFieldOptions(FieldConfigInterface $field_config, $prefix = '') {
     $entity_type = $field_config->getTargetEntityTypeId();
+    $field_definition_types = [
+      'entity_reference',
+      'entity_reference_revisions',
+    ];
 
     if ($entity_type != 'node') {
       $entity_bundles = array_keys($this->entityTypeBundleInfo->getBundleInfo($entity_type));
@@ -270,7 +278,7 @@ class AutocalcConfig implements AutocalcConfigInterface {
       // $prefix = "entity--$entity_type--$entity_bundle:";
       $entity_type_fields = $this->entityFieldManager->getFieldDefinitions($entity_type, $entity_bundle);
       foreach ($entity_type_fields as $field_definition) {
-        if (in_array($field_definition->getType(), ['entity_reference', 'entity_reference_revisions'])) {
+        if (in_array($field_definition->getType(), $field_definition_types)) {
           $field_prefix = $prefix . $field_definition->getName() . ':';
           $number_field_options += $this->buildNumberFieldReferenceOptions($field_definition, $field_config->getName(), $field_prefix);
         }
@@ -298,8 +306,12 @@ class AutocalcConfig implements AutocalcConfigInterface {
    */
   protected function buildNumberFieldReferenceOptions(FieldDefinitionInterface $field_config, $parent_field_name, $prefix = '') {
     $number_field_options = [];
+    $field_definition_types = [
+      'entity_reference',
+      'entity_reference_revisions',
+    ];
     // This function is recursive: check for field type and infinite loops.
-    if (in_array($field_config->getType(), ['entity_reference', 'entity_reference_revisions']) && $parent_field_name != $field_config->getName()) {
+    if (in_array($field_config->getType(), $field_definition_types) && $parent_field_name != $field_config->getName()) {
       $target_type = $field_config->getSetting('target_type');
       $handler_settings = $field_config->getSetting('handler_settings');
       if ($target_type && $handler_settings && isset($handler_settings['target_bundles'])) {

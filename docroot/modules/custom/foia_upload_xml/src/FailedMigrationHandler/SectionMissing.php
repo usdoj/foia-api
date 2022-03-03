@@ -42,10 +42,12 @@ class SectionMissing extends DefaultHandler implements FailedMigrationHandlerInt
    *   [
    *     'name' => 'component_xiic',
    *     'label' => 'Internal index of the agency component',
-   *     'selector' => 'foia:OldestPendingConsultationSection/foia:OldestPendingItems/@s:id',
+   *     'selector' => '
+   *        foia:OldestPendingConsultationSection/foia:OldestPendingItems/@s:id
+   *     ',
    *   ]
    *
-   * @see source.fields in migrate_plus.migration.foia_agency_report.yml.
+   *   See source.fields in migrate_plus.migration.foia_agency_report.yml.
    */
   private function extractSourceDefinition(\Exception $e) {
     // The first transform should be the Extract::transform() method.  The
