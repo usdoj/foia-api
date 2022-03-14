@@ -5,13 +5,19 @@ max_timeout: 900
 padding: 20
 no_individual_logout_threshold: false
 role_logout: false
+role_logout_max: false
 redirect_url: /user/login
 no_dialog: false
 message: 'Your session is about to expire. Do you want to reset it?'
 inactivity_message: 'You have been logged out due to inactivity.'
+inactivity_message_type: status
 enforce_admin: true
 jstimer_format: '%hours%:%mins%:%secs%'
 jstimer_js_load_option: false
 use_alt_logout_method: false
 use_watchdog: true
 dialog_title: 'National FOIA Portal Alert'
+disable_buttons: false
+yes_button: ''
+no_button: ''
+whitelisted_ip_addresses: ''
