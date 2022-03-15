@@ -157,7 +157,10 @@
             },
             "drupal/simplesamlphp_auth": {
                 "For compatibility with Masquerade module": "https://www.drupal.org/files/issues/2022-01-10/3257810-2.patch",
-                "78964: Fixes Logout Infinity Loop": "./patches/78964-logout-infinity-loop.patch"
+                "78964: Fixes Logout Infinity Loop in auth module": "./patches/78964-simplesaml-logout-infinity-loop.patch"
+            },
+            "drupal/autologout": {
+                "78964: Fixes Logout Infinity Loop in autologout module": "./patches/78964-autologout-logout-infinity-loop.patch"
             }
         },
         "installer-types": [
