@@ -1,15 +1,15 @@
 diff --git a/src/AutologoutManager.php b/src/AutologoutManager.php
-index 1ff5603..407fc3f 100644
+index bee781e..45c0338 100644
 --- a/src/AutologoutManager.php
 +++ b/src/AutologoutManager.php
-@@ -173,7 +173,9 @@ class AutologoutManager implements AutologoutManagerInterface {
-                 ['%name' => $user->getAccountName()]
+@@ -174,8 +174,9 @@ class AutologoutManager implements AutologoutManagerInterface {
              );
          }
--
-+
+
 +        // 78964 - logout infinity loop
-+        //$this->moduleHandler->invokeAll('user_logout', [$user]);
++        // $this->moduleHandler->invokeAll('user_logout', [$user]);
+         // Destroy the current session.
+-        $this->moduleHandler->invokeAll('user_logout', [$user]);
          $this->session->destroy();
          $user->setAccount(new AnonymousUserSession());
      }
