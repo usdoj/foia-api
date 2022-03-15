@@ -18,6 +18,19 @@ allow:
   default_login: true
   default_login_roles:
     non_sso: non_sso
+    authenticated: '0'
+    administrator: '0'
+    page_creator: '0'
+    layout_manager: '0'
+    page_reviewer: '0'
+    landing_page_creator: '0'
+    landing_page_reviewer: '0'
+    media_creator: '0'
+    media_manager: '0'
+    agency_component_creator: '0'
+    agency_component_reviewer: '0'
+    agency_administrator: '0'
+    agency_manager: '0'
   default_login_users: '1'
 logout_goto_url: ''
 user_register_original: admin_only
@@ -26,5 +39,3 @@ sync:
   user_name: true
 autoenablesaml: true
 debug: false
-secure: false
-httponly: false
