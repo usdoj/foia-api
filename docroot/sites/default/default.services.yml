@@ -70,7 +70,7 @@ parameters:
     # For more information about debugging Twig templates, see
     # https://www.drupal.org/node/1906392.
     #
-    # Enabling Twig debugging is not recommended in production environments.
+    # Not recommended in production environments
     # @default false
     debug: false
     # Twig auto-reload:
@@ -79,7 +79,7 @@ parameters:
     # If you don't provide a value for auto_reload, it will be determined
     # based on the value of debug.
     #
-    # Enabling auto-reload is not recommended in production environments.
+    # Not recommended in production environments
     # @default null
     auto_reload: null
     # Twig cache:
@@ -90,7 +90,7 @@ parameters:
     # auto_reload setting above should be enabled rather than disabling the
     # Twig cache.
     #
-    # Disabling the Twig cache is not recommended in production environments.
+    # Not recommended in production environments
     # @default true
     cache: true
   renderer.config:
@@ -141,8 +141,7 @@ parameters:
   # For more information about debugging cacheable responses, see
   # https://www.drupal.org/developing/api/8/response/cacheable-response-interface
   #
-  # Enabling cacheability debugging is not recommended in production
-  # environments.
+  # Not recommended in production environments
   # @default false
   http.response.debug_cacheability_headers: false
   factory.keyvalue: {}
@@ -150,11 +149,11 @@ parameters:
     # @default keyvalue.database
     # default: keyvalue.database
     # Collection-specific overrides.
-    # state: keyvalue.database
+  # state: keyvalue.database
   factory.keyvalue.expirable: {}
     # Default key/value expirable storage service to use.
     # @default keyvalue.database.expirable
-    # default: keyvalue.database.expirable
+  # default: keyvalue.database.expirable
   # Allowed protocols for URL generation.
   filter_protocols:
     - http
