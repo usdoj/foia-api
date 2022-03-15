@@ -1,0 +1,14 @@
+diff --git a/simplesamlphp_auth.module b/simplesamlphp_auth.module
+index 3bf4c42..f61b5af 100644
+--- a/simplesamlphp_auth.module
++++ b/simplesamlphp_auth.module
+@@ -76,7 +76,8 @@ function simplesamlphp_auth_user_logout() {
+
+     \Drupal::logger('user')->notice('Session closed for %name.', ['%name' => $user->getAccountName()]);
+
+-    \Drupal::moduleHandler()->invokeAll('user_logout', [$user]);
++    // 78964 logout infinity loop
++    //\Drupal::moduleHandler()->invokeAll('user_logout', [$user]);
+
+     // Destroy the current session, and reset $user to the anonymous user.
+     // Note: In Symfony the session is intended to be destroyed with
