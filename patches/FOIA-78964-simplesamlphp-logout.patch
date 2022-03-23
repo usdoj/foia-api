@@ -1,0 +1,30 @@
+diff --git a/simplesamlphp_auth.module b/simplesamlphp_auth.module
+index 1f4783c..e7057a8 100644
+--- a/simplesamlphp_auth.module
++++ b/simplesamlphp_auth.module
+@@ -51,6 +51,12 @@ function simplesamlphp_auth_help($route_name) {
+  * Implements hook_user_logout().
+  */
+ function simplesamlphp_auth_user_logout(AccountInterface $account) {
++
++  // If this is the masquerade module, skip the logout.
++  if (\Drupal::service('session')->get('masquerading')) {
++    return;
++  }
++
+   $logout_url = \Drupal::config('simplesamlphp_auth.settings')->get('logout_goto_url');
+   /** @var \Drupal\simplesamlphp_auth\Service\SimplesamlphpAuthManager $simplesaml */
+   $simplesaml = \Drupal::service('simplesamlphp_auth.manager');
+@@ -66,13 +72,6 @@ function simplesamlphp_auth_user_logout(AccountInterface $account) {
+     // Copied from user.module method user_logout().
+     $session->destroy();
+     $account->setAccount(new AnonymousUserSession());
+-
+-    if ($logout_url) {
+-      $simplesaml->logout($logout_url);
+-    }
+-    else {
+-      $simplesaml->logout();
+-    }
+   }
+ }
