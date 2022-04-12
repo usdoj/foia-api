@@ -268,4 +268,38 @@ function _form_quarterly_data_report_validate(array &$form, FormStateInterface $
     }
   }
 
+  // Additional validation to avoid incomplete reports from being submitted.
+  $enforce_during_states = ['submitted_to_oip', 'published'];
+  if (in_array($form_state_values['moderation_state'][0]['value'], $enforce_during_states)) {
+    if (!is_numeric($form_state_values['field_quarterly_closed'][0]['value'])) {
+      $form_state->setErrorByName('field_quarterly_closed', 'Please provide a value for "Ten Oldest Requests Closed".');
+    }
+    if (!is_numeric($form_state_values['field_quarterly_pending'][0]['value'])) {
+      $form_state->setErrorByName('field_quarterly_pending', 'Please provide a value for "Ten Oldest Pending Requests".');
+    }
+    $no_component_data = TRUE;
+    foreach ($form_state_values['field_quarterly_component_data'] as $key => $value) {
+      if (is_numeric($key)) {
+        $no_component_data = FALSE;
+        $subform = $form_state_values['field_quarterly_component_data'][$key]['subform'];
+        $prefix = "field_quarterly_component_data][$key][subform][";
+        if (empty($subform['field_agency_component'][0]['target_id'])) {
+          $form_state->setErrorByName("${prefix}field_agency_component", 'Please provide the agency.');
+        }
+        if (!is_numeric($subform['field_quarterly_backlogged'][0]['value'])) {
+          $form_state->setErrorByName("${prefix}field_quarterly_backlogged", 'Please provide a value for "Number of requests backlogged".');
+        }
+        if (!is_numeric($subform['field_quarterly_processed'][0]['value'])) {
+          $form_state->setErrorByName("${prefix}field_quarterly_processed", 'Please provide a value for "Number of requests processed".');
+        }
+        if (!is_numeric($subform['field_quarterly_received'][0]['value'])) {
+          $form_state->setErrorByName("${prefix}field_quarterly_received", 'Please provide a value for "Number of requests received".');
+        }
+      }
+    }
+
+    if ($no_component_data) {
+      $form_state->setErrorByName('field_quarterly_component_data', 'Please add data under "Component data".');
+    }
+  }
 }
