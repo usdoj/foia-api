@@ -99,6 +99,52 @@ function foia_quarterly_data_report_ajax_existing_node(array &$form) {
 function foia_quarterly_data_report_create_node(array $form, FormStateInterface $form_state) {
 
   $response = new AjaxResponse();
+  $form_state_values = $form_state->getValues();
+
+  // Get the agency node id from the form state.
+  $agency_id = 0;
+  if (!empty($form_state_values['field_agency'][0]['target_id'])) {
+    $agency_id = $form_state_values['field_agency'][0]['target_id'];
+  }
+
+  // Get the report year from the form state.
+  $report_year = 0;
+  if (!empty($form_state_values['field_quarterly_year'][0]['value'])) {
+    $report_year = $form_state_values['field_quarterly_year'][0]['value'];
+  }
+
+  // Get the report quarter from the format state.
+  $report_quarter = 0;
+  if (!empty($form_state_values['field_quarterly_quarter'][0]['value'])) {
+    $report_quarter = $form_state_values['field_quarterly_quarter'][0]['value'];
+  }
+
+  // Check for an existing report.
+  if ($form_state->getFormObject() instanceof EntityForm) {
+    $current_nid = $form_state->getformObject()->getEntity()->id();
+  }
+  else {
+    $current_nid = 0;
+  }
+
+  // Check for a duplicate in this AJAX callback before saving a new node.
+  if ($agency_id && $report_year && $report_quarter) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'quarterly_foia_report_data')
+      ->condition('field_agency', $agency_id)
+      ->condition('field_quarterly_year', $report_year)
+      ->condition('field_quarterly_quarter', $report_quarter)
+      ->sort('created', 'DESC')
+      ->range(0, 1);
+    $results = $query->execute();
+    // If there is a duplicate found throw error with link to existing report.
+    if (count($results)) {
+      $nid = array_pop($results);
+      $message = "There is already a report for the agency and year/quarter you specified.  Navigate to this page to change the existing report or change the values below.\n /node/$nid/edit";
+      $response->addCommand(new AlertCommand($message));
+      return $response;
+    }
+  }
 
   $node = \Drupal::entityTypeManager()->getStorage('node')->create([
     'type' => 'quarterly_foia_report_data',
@@ -253,7 +299,6 @@ function _form_quarterly_data_report_validate(array &$form, FormStateInterface $
       ->condition('field_agency', $agency_id)
       ->condition('field_quarterly_year', $report_year)
       ->condition('field_quarterly_quarter', $report_quarter)
-      ->condition('nid', $current_nid, '!=')
       ->sort('created', 'DESC')
       ->range(0, 1);
     $results = $query->execute();
