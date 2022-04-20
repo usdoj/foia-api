@@ -14,6 +14,13 @@ target_env="$2"
 db_name="$3"
 source_env="$4"
 
+# Protection against accidentally copying a database to production.
+if [ "$target_env" = "prod" ]
+then
+echo "Copying database to production is not allowed."
+exit 1
+fi
+
 # Prep for BLT commands.
 repo_root="/var/www/html/$site.$target_env"
 export PATH=$repo_root/vendor/bin:$PATH
@@ -22,6 +29,10 @@ cd $repo_root
 blt artifact:ac-hooks:post-db-copy $site $target_env $db_name $source_env --environment=$target_env -v --no-interaction -D drush.ansi=false
 
 echo "$site.$target_env: Received copy of database $db_name from $source_env."
+
+drush @$site.$target_env cr
+drush @$site.$target_env -y updatedb
+drush @$site.$target_env -y cim
 
 # Only do this when going from prod to something other than prod.
 if [ "$source_env" = "prod" ] && [ "$target_env" != "prod" ]
