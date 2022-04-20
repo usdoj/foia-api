@@ -1,0 +1,27 @@
+name: Deploy to production
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+      - name: Acquia known hosts
+        run: |
+          echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+      - name: Install dev dependencies
+        run: |
+          composer install
+      - name: Build the artifact
+        run: |
+          vendor/bin/blt deploy --branch="main-build" --commit-msg="Automated deployment of main branch" --verbose
