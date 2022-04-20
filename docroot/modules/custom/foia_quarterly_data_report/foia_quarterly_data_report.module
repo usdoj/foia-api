@@ -11,6 +11,7 @@ use Drupal\Core\Ajax\AlertCommand;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Ajax\OpenDialogCommand;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Entity\EntityForm;
@@ -56,7 +57,6 @@ function foia_quarterly_data_report_ajax_new_node(array &$form) {
       'message' => 'Please Wait...',
     ],
   ];
-
   $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_quarterly_data_report/foia_change_report_agency';
 
 }
@@ -107,6 +107,11 @@ function foia_quarterly_data_report_create_node(array $form, FormStateInterface 
     $agency_id = $form_state_values['field_agency'][0]['target_id'];
   }
 
+  if (!$agency_id) {
+    $response->addCommand(new AlertCommand("Please select an Agency first."));
+    return $response;
+  }
+
   // Get the report year from the form state.
   $report_year = 0;
   if (!empty($form_state_values['field_quarterly_year'][0]['value'])) {
@@ -134,14 +139,29 @@ function foia_quarterly_data_report_create_node(array $form, FormStateInterface 
       ->condition('field_agency', $agency_id)
       ->condition('field_quarterly_year', $report_year)
       ->condition('field_quarterly_quarter', $report_quarter)
+    // ->condition('nid', $current_nid, '!=') // not working
       ->sort('created', 'DESC')
       ->range(0, 1);
     $results = $query->execute();
     // If there is a duplicate found throw error with link to existing report.
     if (count($results)) {
       $nid = array_pop($results);
-      $message = "There is already a report for the agency and year/quarter you specified.  Navigate to this page to change the existing report or change the values below.\n /node/$nid/edit";
-      $response->addCommand(new AlertCommand($message));
+      $title = "Duplicate Report";
+      $message = <<<EOS
+<p>There is already a report for Agency $agency_id and Quarter $report_quarter $report_year.</p>
+<p>Navigate to <a href="/node/$nid/edit">/node/$nid/edit</a> to change the existing report or <a href="javascript:void(0);" class="agency-back">try again</a>.</p>
+EOS;
+
+      $options = [
+        'dialogClass' => 'agency-dialog',
+        'closeOnEscape' => TRUE,
+        'width' => '500',
+        'closeText' => '',
+        "resizable" => FALSE,
+        "modal" => TRUE,
+      ];
+
+      $response->addCommand(new OpenDialogCommand('#some-element', $title, $message, $options));
       return $response;
     }
   }
@@ -155,7 +175,6 @@ function foia_quarterly_data_report_create_node(array $form, FormStateInterface 
   $node->save();
 
   $url = $node->toUrl('edit-form')->toString();
-
   $response->addCommand(new RedirectCommand($url));
   $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
 
@@ -169,6 +188,9 @@ function foia_quarterly_data_report_create_node(array $form, FormStateInterface 
  *   Form array passed from hook_form_form_id_alter().
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state passed from hook_form_form_id_alter().
+ *
+ * @return \Drupal\Core\Ajax\AjaxResponse
+ *   Standard Drupal AJAX response to refresh the page.
  */
 function foia_quarterly_data_report_refresh(array $form, FormStateInterface $form_state) {
 
@@ -299,6 +321,7 @@ function _form_quarterly_data_report_validate(array &$form, FormStateInterface $
       ->condition('field_agency', $agency_id)
       ->condition('field_quarterly_year', $report_year)
       ->condition('field_quarterly_quarter', $report_quarter)
+      ->condition('nid', $current_nid, '!=')
       ->sort('created', 'DESC')
       ->range(0, 1);
     $results = $query->execute();
