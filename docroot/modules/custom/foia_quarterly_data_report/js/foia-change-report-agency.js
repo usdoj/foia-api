@@ -3,14 +3,12 @@
  */
 
 (function ($, drupalSettings) {
-  console.log("drupalSettings");
   let fieldAgency = $('#edit-field-agency-0-target-id');
   Drupal.behaviors.foia_change_report_agency = {
     attach: function attach() {
       this.triggerNodeRefreshOnUpdate();
       this.addPopulateComponentsButton();
       this.modalButton();
-
     },
     /**
      * Clears out Agency field on modal close
@@ -37,20 +35,16 @@
      * @see foia_annual_data_report_ajax_new_node()
      */
     triggerNodeRefreshOnUpdate: function () {
-      console.log("triggerNodeRefreshOnUpdate");
       drupalSettings.foiaReportAgencyInitialValue = fieldAgency.val();
 
       fieldAgency.once('foia-trigger-agency-change').blur(function (event) {
-        console.log("#edit-field-agency-0-target-id value", $(this).val())
         if ($(this).val() !== drupalSettings.foiaReportAgencyInitialValue) {
-          console.log("triggerNodeRefreshOnUpdate trigger: change.agency")
           fieldAgency.trigger('change.agency');
         }
       });
     },
 
     addPopulateComponentsButton: function() {
-      console.log("addPopulateComponentsButton")
       var fieldWrapperSelector = '#edit-field-quarterly-component-data-wrapper',
         addMoreSelector = 'input[name="field_quarterly_component_data_quarterly_component_data_add_more"]',
         existingComponentSelector = '#edit-field-quarterly-component-data-wrapper tbody tr',
@@ -63,7 +57,6 @@
         $button.click(function(evt) {
           evt.preventDefault();
           if ($(existingComponentSelector).length > 0) {
-            //$(existingComponentSelector).remove();
             alert('Placeholders cannot be added while there are existing entries. Please remove all entries and try again.');
             return;
           }
