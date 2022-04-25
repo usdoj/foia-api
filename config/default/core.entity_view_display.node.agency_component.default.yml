@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.agency_component.field_agency
     - field.field.node.agency_component.field_agency_comp_abbreviation
     - field.field.node.agency_component.field_agency_comp_telephone
+    - field.field.node.agency_component.field_agency_component_inactive
     - field.field.node.agency_component.field_complex_average_days
     - field.field.node.agency_component.field_complex_highest_days
     - field.field.node.agency_component.field_complex_lowest_days
@@ -17,6 +18,9 @@ dependencies:
     - field.field.node.agency_component.field_expedited_lowest_days
     - field.field.node.agency_component.field_expedited_median_days
     - field.field.node.agency_component.field_foia_officers
+    - field.field.node.agency_component.field_interop_exception
+    - field.field.node.agency_component.field_interop_planned_method
+    - field.field.node.agency_component.field_interop_status
     - field.field.node.agency_component.field_is_centralized
     - field.field.node.agency_component.field_misc
     - field.field.node.agency_component.field_portal_submission_format
@@ -98,7 +102,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 23
+    weight: 20
     region: content
   field_complex_highest_days:
     type: string
@@ -106,7 +110,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 24
+    weight: 21
     region: content
   field_complex_lowest_days:
     type: string
@@ -114,7 +118,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 25
+    weight: 22
     region: content
   field_complex_median_days:
     type: string
@@ -122,7 +126,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 26
+    weight: 23
     region: content
   field_email:
     type: basic_string
@@ -137,7 +141,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 31
+    weight: 28
     region: content
   field_expedited_highest_days:
     type: string
@@ -145,7 +149,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 32
+    weight: 29
     region: content
   field_expedited_lowest_days:
     type: string
@@ -153,7 +157,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 33
+    weight: 30
     region: content
   field_expedited_median_days:
     type: string
@@ -161,7 +165,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 34
+    weight: 31
     region: content
   field_foia_officers:
     type: entity_reference_label
@@ -231,7 +235,7 @@ content:
       timezone_override: ''
       format_type: medium
     third_party_settings: {  }
-    weight: 36
+    weight: 33
     region: content
   field_rep_start:
     type: datetime_default
@@ -240,7 +244,7 @@ content:
       timezone_override: ''
       format_type: medium
     third_party_settings: {  }
-    weight: 35
+    weight: 32
     region: content
   field_request_data_year:
     type: string
@@ -248,15 +252,17 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 22
+    weight: 19
     region: content
   field_request_submission_form:
     type: webform_entity_reference_link
     label: above
     settings:
       label: '[webform:title]'
+      dialog: ''
+      attributes: {  }
     third_party_settings: {  }
-    weight: 21
+    weight: 18
     region: content
   field_service_centers:
     type: entity_reference_label
@@ -272,7 +278,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 27
+    weight: 24
     region: content
   field_simple_highest_days:
     type: string
@@ -280,7 +286,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 28
+    weight: 25
     region: content
   field_simple_lowest_days:
     type: string
@@ -288,7 +294,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 29
+    weight: 26
     region: content
   field_simple_median_days:
     type: string
@@ -296,7 +302,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 30
+    weight: 27
     region: content
   field_submission_address:
     type: address_default
@@ -304,33 +310,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 14
-    region: content
-  field_submission_api:
-    type: link
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    weight: 19
-    region: content
-  field_submission_api_secret:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 20
-    region: content
-  field_submission_email:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 18
     region: content
   field_submission_fax:
     type: telephone_link
@@ -370,4 +349,11 @@ content:
     weight: 0
     region: content
 hidden:
+  field_agency_component_inactive: true
+  field_interop_exception: true
+  field_interop_planned_method: true
+  field_interop_status: true
+  field_submission_api: true
+  field_submission_api_secret: true
+  field_submission_email: true
   search_api_excerpt: true

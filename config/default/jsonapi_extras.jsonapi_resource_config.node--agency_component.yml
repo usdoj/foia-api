@@ -4,6 +4,11 @@ status: true
 dependencies:
   config:
     - node.type.agency_component
+  module:
+    - jsonapi_defaults
+third_party_settings:
+  jsonapi_defaults:
+    page_limit: 50
 id: node--agency_component
 disabled: false
 path: agency_components
@@ -189,6 +194,12 @@ resourceFields:
     publicName: telephone
     enhancer:
       id: ''
+  field_agency_component_inactive:
+    disabled: true
+    fieldName: field_agency_component_inactive
+    publicName: field_agency_component_inactive
+    enhancer:
+      id: ''
   field_complex_average_days:
     disabled: false
     fieldName: field_complex_average_days
@@ -247,6 +258,24 @@ resourceFields:
     disabled: false
     fieldName: field_foia_officers
     publicName: foia_officers
+    enhancer:
+      id: ''
+  field_interop_exception:
+    disabled: true
+    fieldName: field_interop_exception
+    publicName: field_interop_exception
+    enhancer:
+      id: ''
+  field_interop_planned_method:
+    disabled: true
+    fieldName: field_interop_planned_method
+    publicName: field_interop_planned_method
+    enhancer:
+      id: ''
+  field_interop_status:
+    disabled: true
+    fieldName: field_interop_status
+    publicName: field_interop_status
     enhancer:
       id: ''
   field_is_centralized:
