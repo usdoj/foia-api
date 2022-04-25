@@ -5,6 +5,13 @@ dependencies:
   config:
     - field.storage.node.field_submission_email
     - node.type.agency_component
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.agency_component.field_submission_email
 field_name: field_submission_email
 entity_type: node

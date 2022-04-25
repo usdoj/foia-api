@@ -1,0 +1,30 @@
+uuid: ac03fa3a-2b69-4c7a-8642-8beca83d67a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_agency_component_inactive
+    - node.type.agency_component
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.agency_component.field_agency_component_inactive
+field_name: field_agency_component_inactive
+entity_type: node
+bundle: agency_component
+label: Inactive
+description: 'Whether this agency is inactice (no longer exist).'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

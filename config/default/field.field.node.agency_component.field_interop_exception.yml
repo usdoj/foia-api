@@ -1,0 +1,27 @@
+uuid: a3fadb89-cfa4-4b3a-af0d-5795e5fddfd1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_interop_exception
+    - node.type.agency_component
+  module:
+    - foia_autocalc
+    - options
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.agency_component.field_interop_exception
+field_name: field_interop_exception
+entity_type: node
+bundle: agency_component
+label: 'Interopability exception'
+description: 'This data is used in the interoperability report. This data will not be available to the general public.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
