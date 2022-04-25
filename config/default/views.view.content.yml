@@ -1551,6 +1551,260 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_agency_component_inactive_value:
+          id: field_agency_component_inactive_value
+          table: node__field_agency_component_inactive
+          field: field_agency_component_inactive_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: Inactive
+            description: ''
+            use_operator: false
+            operator: field_agency_component_inactive_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_agency_component_inactive_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_interop_exception_value:
+          id: field_interop_exception_value
+          table: node__field_interop_exception
+          field: field_interop_exception_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_interop_exception_value_op
+            label: Exception
+            description: ''
+            use_operator: false
+            operator: field_interop_exception_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_interop_exception_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        field_interop_status_value:
+          id: field_interop_status_value
+          table: node__field_interop_status
+          field: field_interop_status_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_interop_status_value_op
+            label: 'Interopability status'
+            description: ''
+            use_operator: false
+            operator: field_interop_status_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_interop_status_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        field_interop_planned_method_value:
+          id: field_interop_planned_method_value
+          table: node__field_interop_planned_method
+          field: field_interop_planned_method_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_interop_planned_method_value_op
+            label: 'Planned submission method'
+            description: ''
+            use_operator: false
+            operator: field_interop_planned_method_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_interop_planned_method_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:
