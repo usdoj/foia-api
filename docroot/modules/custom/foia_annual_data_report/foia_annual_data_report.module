@@ -7,9 +7,11 @@
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\AlertCommand;
+use Drupal\Core\Ajax\OpenDialogCommand;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
@@ -421,6 +423,67 @@ function foia_annual_data_report_ajax_existing_node(array &$form) {
 function foia_annual_data_report_create_node(array $form, FormStateInterface $form_state) {
 
   $response = new AjaxResponse();
+  $form_state_values = $form_state->getValues();
+
+  // Get the agency node id from the form state.
+  $agency_id = 0;
+  if (!empty($form_state_values['field_agency'][0]['target_id'])) {
+    $agency_id = $form_state_values['field_agency'][0]['target_id'];
+  }
+
+  if (!$agency_id) {
+    $response->addCommand(new AlertCommand("Please select an Agency first."));
+    return $response;
+  }
+
+  // Make sure there's a year so we can do a proper lookup.
+  // Get the report year from the form state.
+  $report_year = 0;
+  if (!empty($form_state_values['field_foia_annual_report_yr'][0]['value'])) {
+    $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'];
+  }
+  else {
+    $response->addCommand(new AlertCommand("Please select a Report Year first."));
+    return $response;
+  }
+
+  // Check for a duplicate in this AJAX callback before saving a new node.
+  if ($agency_id && $report_year) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'annual_foia_report_data')
+      ->condition('field_agency', $agency_id)
+      ->condition('field_foia_annual_report_yr', $report_year)
+      ->sort('created', 'DESC')
+      ->range(0, 1);
+    $results = $query->execute();
+
+    // If there is a duplicate found throw error with link to existing report.
+    if (count($results)) {
+      $nid = array_pop($results);
+      $title = "Duplicate Report";
+      $agency_name = Term::load($agency_id)->get('name')->value;
+      $message = <<<EOS
+<p>There is already a report for <b>$agency_name</b> and the year <b>$report_year.</b></p>
+<p>Navigate to <a href="/node/$nid/edit">/node/$nid/edit</a> to change the existing report or <a href="javascript:void(0);" class="agency-back">choose a different year</a> before entering your agency.</p>
+<div class="form-actions js-form-wrapper form-wrapper">
+  <button type="button" class="button button--secondary agency-back">Add New</button>
+  <a href="/node/$nid/edit"><button type="button" class="button button--primary">Edit Existing</button></a>
+</div>
+EOS;
+
+      $options = [
+        'dialogClass' => 'agency-dialog',
+        'closeOnEscape' => TRUE,
+        'width' => '500',
+        'closeText' => '',
+        "resizable" => FALSE,
+        "modal" => TRUE,
+      ];
+
+      $response->addCommand(new OpenDialogCommand('#agency-modal', $title, $message, $options));
+      return $response;
+    }
+  }
 
   $node = \Drupal::entityTypeManager()->getStorage('node')->create([
     'type' => 'annual_foia_report_data',

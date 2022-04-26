@@ -3,9 +3,11 @@
  */
 
 (function ($, drupalSettings) {
+  let fieldAgency = $('#edit-field-agency-0-target-id');
   Drupal.behaviors.foia_change_report_agency = {
     attach: function attach() {
       this.triggerNodeRefreshOnUpdate();
+      this.modalButton();
 
       var sections = [
         {
@@ -143,7 +145,21 @@
 
       this.addClearDataButton();
     },
-
+    /**
+     * Clears out Agency field on modal close
+     * @see foia_quarterly_data_report_create_node()
+     */
+    modalButton: function () {
+      //   let fieldAgency = $('#edit-field-agency-0-target-id');
+      $( ".agency-dialog" ).on( "dialogbeforeclose", function( e, ui ) {
+        fieldAgency.val('');
+      });
+      $('.agency-back').click(function(e) {
+        fieldAgency.val('');
+        $('.ui-icon-closethick').trigger('click');
+        e.preventDefault();
+      });
+    },
     /**
      * Triggers the change.agency event which is listened for by the form element's ajax handler.
      *
@@ -157,9 +173,9 @@
     triggerNodeRefreshOnUpdate: function () {
       drupalSettings.foiaReportAgencyInitialValue = $('#edit-field-agency-0-target-id').val();
 
-      $('#edit-field-agency-0-target-id').once('foia-trigger-agency-change').blur(function (event) {
+      fieldAgency.once('foia-trigger-agency-change').blur(function (event) {
         if ($(this).val() !== drupalSettings.foiaReportAgencyInitialValue) {
-          $('#edit-field-agency-0-target-id').trigger('change.agency');
+          fieldAgency.trigger('change.agency');
         }
       });
     },

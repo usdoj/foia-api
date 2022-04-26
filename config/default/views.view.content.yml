@@ -4,14 +4,21 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_agency
+    - field.storage.node.field_agency_component_inactive
     - field.storage.node.field_foia_annual_report_yr
+    - field.storage.node.field_interop_exception
+    - field.storage.node.field_interop_planned_method
     - node.type.agency_component
   module:
     - content_moderation
+    - csv_serialization
     - node
     - options
+    - rest
+    - serialization
     - taxonomy
     - user
+    - views_data_export
 _core:
   default_config_hash: tS8PbpJX90aRFC3-UTgXzdqkq7_2frk2pz4TMijEebM
 id: content
@@ -575,6 +582,771 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
+  data_export_1:
+    id: data_export_1
+    display_title: 'Data export'
+    display_plugin: data_export
+    position: 3
+    display_options:
+      fields:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
+          label: Title
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_agency:
+          id: field_agency
+          table: node__field_agency
+          field: field_agency
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Agency
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_agency_component_inactive:
+          id: field_agency_component_inactive
+          table: node__field_agency_component_inactive
+          field: field_agency_component_inactive
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Inactive
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_false: ''
+            format_custom_true: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_interop_exception:
+          id: field_interop_exception
+          table: node__field_interop_exception
+          field: field_interop_exception
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Interopability exception'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_interop_planned_method:
+          id: field_interop_planned_method
+          table: node__field_interop_planned_method
+          field: field_interop_planned_method
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Planned submission method'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      filters:
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          operator: in
+          value:
+            agency_component: agency_component
+          group: 1
+          exposed: false
+          expose:
+            operator_id: type_op
+            label: 'Content type'
+            description: ''
+            use_operator: false
+            operator: type_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: type
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            argument: ''
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_agency_component_inactive_value:
+          id: field_agency_component_inactive_value
+          table: node__field_agency_component_inactive
+          field: field_agency_component_inactive_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Inactive (field_agency_component_inactive)'
+            description: ''
+            use_operator: false
+            operator: field_agency_component_inactive_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_agency_component_inactive_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_interop_exception_value:
+          id: field_interop_exception_value
+          table: node__field_interop_exception
+          field: field_interop_exception_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_interop_exception_value_op
+            label: 'Interopability exception (field_interop_exception)'
+            description: ''
+            use_operator: false
+            operator: field_interop_exception_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_interop_exception_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        field_interop_planned_method_value:
+          id: field_interop_planned_method_value
+          table: node__field_interop_planned_method
+          field: field_interop_planned_method_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_interop_planned_method_value_op
+            label: 'Planned submission method (field_interop_planned_method)'
+            description: ''
+            use_operator: false
+            operator: field_interop_planned_method_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_interop_planned_method_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        field_portal_submission_format_value:
+          id: field_portal_submission_format_value
+          table: node__field_portal_submission_format
+          field: field_portal_submission_format_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_portal_submission_format_value_op
+            label: 'Portal Submission Format (field_portal_submission_format)'
+            description: ''
+            use_operator: false
+            operator: field_portal_submission_format_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_portal_submission_format_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        field_request_submission_form_target_id:
+          id: field_request_submission_form_target_id
+          table: node__field_request_submission_form
+          field: field_request_submission_form_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_request_submission_form_target_id_op
+            label: 'Request Submission Form (field_request_submission_form:target_id)'
+            description: null
+            use_operator: false
+            operator: field_request_submission_form_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_request_submission_form_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: null
+          is_grouped: true
+          group_info:
+            label: 'Request Submission Form (field_request_submission_form:target_id)'
+            description: ''
+            identifier: field_request_submission_form_target_id
+            optional: false
+            widget: radios
+            multiple: false
+            remember: false
+            default_group: '1'
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Interoperable
+                operator: 'not empty'
+                value: ''
+              2:
+                title: Redirect
+                operator: empty
+                value: ''
+              3:
+                title: ''
+                operator: '='
+                value: ''
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: true
+            trim: true
+            encoding: utf8
+            utf8_bom: '0'
+            use_serializer_encode_only: false
+      defaults:
+        relationships: false
+        fields: false
+        filters: false
+        filter_groups: false
+      relationships:
+        uid:
+          id: uid
+          table: node_field_data
+          field: uid
+          admin_label: author
+          plugin_id: standard
+          required: true
+        field_agency:
+          id: field_agency
+          table: node__field_agency
+          field: field_agency
+          relationship: none
+          group_type: group
+          admin_label: 'field_agency: Taxonomy term'
+          plugin_id: standard
+          required: false
+      display_extenders: {  }
+      path: admin/content/interoperability_report/export
+      displays:
+        page_2: page_2
+        default: '0'
+        page_1: '0'
+      filename: interoperability-report.csv
+      automatic_download: true
+      export_method: batch
+      export_batch_size: 1000
+      store_in_public_file_directory: false
+      custom_redirect_path: false
+      redirect_to_display: page_2
+      include_query_params: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - url
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_agency'
+        - 'config:field.storage.node.field_agency_component_inactive'
+        - 'config:field.storage.node.field_interop_exception'
+        - 'config:field.storage.node.field_interop_planned_method'
   page_1:
     id: page_1
     display_title: Page
@@ -635,10 +1407,8 @@ display:
           action_title: Action
           include_exclude: include
           selected_actions:
-            - change_moderation_state_of_content
             - node_delete_action
             - node_save_action
-            - publish_quarterly_reports
         title:
           id: title
           table: node_field_data
@@ -1029,49 +1799,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        langcode:
-          id: langcode
-          table: node_field_data
-          field: langcode
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: langcode
-          plugin_id: language
-          operator: in
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: langcode_op
-            label: Language
-            description: ''
-            use_operator: false
-            operator: langcode_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: langcode
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
         moderation_state:
           id: moderation_state
           table: node_field_data
@@ -1114,64 +1841,6 @@ display:
               agency_manager: '0'
               non_sso: '0'
             reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_foia_annual_report_yr_value:
-          id: field_foia_annual_report_yr_value
-          table: node__field_foia_annual_report_yr
-          field: field_foia_annual_report_yr_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: numeric
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_foia_annual_report_yr_value_op
-            label: 'Report Year'
-            description: ''
-            use_operator: false
-            operator: field_foia_annual_report_yr_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_foia_annual_report_yr_value
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              page_creator: '0'
-              layout_manager: '0'
-              page_reviewer: '0'
-              landing_page_creator: '0'
-              landing_page_reviewer: '0'
-              media_creator: '0'
-              media_manager: '0'
-              agency_component_creator: '0'
-              agency_component_reviewer: '0'
-              agency_administrator: '0'
-              agency_manager: '0'
-              non_sso: '0'
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -1236,7 +1905,7 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-          label: ''
+          label: Component
           exclude: false
           alter:
             alter_text: false
@@ -1269,7 +1938,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1280,7 +1949,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: false
+            link_to_entity: true
           group_column: null
           group_columns: null
           group_rows: true
@@ -1306,8 +1975,8 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: ''
-          exclude: true
+          label: Agency
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -1339,7 +2008,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1350,8 +2019,197 @@ display:
           click_sort_column: target_id
           type: entity_reference_label
           settings:
-            link: false
+            link: true
           group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_agency_component_inactive:
+          id: field_agency_component_inactive
+          table: node__field_agency_component_inactive
+          field: field_agency_component_inactive
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Inactive
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_false: ''
+            format_custom_true: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_interop_exception:
+          id: field_interop_exception
+          table: node__field_interop_exception
+          field: field_interop_exception
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Interopability exception'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_interop_planned_method:
+          id: field_interop_planned_method
+          table: node__field_interop_planned_method
+          field: field_interop_planned_method
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Planned submission method'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1551,25 +2409,263 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_agency_component_inactive_value:
+          id: field_agency_component_inactive_value
+          table: node__field_agency_component_inactive
+          field: field_agency_component_inactive_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: Inactive
+            description: ''
+            use_operator: false
+            operator: field_agency_component_inactive_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_agency_component_inactive_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_interop_exception_value:
+          id: field_interop_exception_value
+          table: node__field_interop_exception
+          field: field_interop_exception_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_interop_exception_value_op
+            label: Exception
+            description: ''
+            use_operator: false
+            operator: field_interop_exception_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_interop_exception_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        field_interop_planned_method_value:
+          id: field_interop_planned_method_value
+          table: node__field_interop_planned_method
+          field: field_interop_planned_method_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_interop_planned_method_value_op
+            label: 'Planned submission method'
+            description: ''
+            use_operator: false
+            operator: field_interop_planned_method_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_interop_planned_method_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              page_creator: '0'
+              layout_manager: '0'
+              page_reviewer: '0'
+              landing_page_creator: '0'
+              landing_page_reviewer: '0'
+              media_creator: '0'
+              media_manager: '0'
+              agency_component_creator: '0'
+              agency_component_reviewer: '0'
+              agency_administrator: '0'
+              agency_manager: '0'
+              non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:
           1: AND
       style:
-        type: grid
+        type: table
         options:
-          grouping:
-            -
-              field: field_agency
-              rendered: true
-              rendered_strip: false
-          columns: 4
-          automatic_width: true
-          alignment: horizontal
-          row_class_custom: ''
-          row_class_default: true
-          col_class_custom: ''
-          col_class_default: true
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            title: title
+            field_agency: field_agency
+            field_agency_component_inactive: field_agency_component_inactive
+            field_interop_exception: field_interop_exception
+            field_interop_status: field_interop_status
+            field_interop_planned_method: field_interop_planned_method
+          default: '-1'
+          info:
+            title:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_agency:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_agency_component_inactive:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_interop_exception:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_interop_status:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_interop_planned_method:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
       row:
         type: fields
         options:
@@ -1640,3 +2736,6 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_agency'
+        - 'config:field.storage.node.field_agency_component_inactive'
+        - 'config:field.storage.node.field_interop_exception'
+        - 'config:field.storage.node.field_interop_planned_method'
