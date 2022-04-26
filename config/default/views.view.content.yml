@@ -1,6 +1,6 @@
 uuid: 076733cc-d3c0-4f67-94e4-9f54c59fe6a5
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - field.storage.node.field_agency
@@ -1407,10 +1407,8 @@ display:
           action_title: Action
           include_exclude: include
           selected_actions:
-            - change_moderation_state_of_content
             - node_delete_action
             - node_save_action
-            - publish_quarterly_reports
         title:
           id: title
           table: node_field_data
@@ -1801,49 +1799,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        langcode:
-          id: langcode
-          table: node_field_data
-          field: langcode
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: langcode
-          plugin_id: language
-          operator: in
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: langcode_op
-            label: Language
-            description: ''
-            use_operator: false
-            operator: langcode_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: langcode
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
         moderation_state:
           id: moderation_state
           table: node_field_data
@@ -1886,64 +1841,6 @@ display:
               agency_manager: '0'
               non_sso: '0'
             reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_foia_annual_report_yr_value:
-          id: field_foia_annual_report_yr_value
-          table: node__field_foia_annual_report_yr
-          field: field_foia_annual_report_yr_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: numeric
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_foia_annual_report_yr_value_op
-            label: 'Report Year'
-            description: ''
-            use_operator: false
-            operator: field_foia_annual_report_yr_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_foia_annual_report_yr_value
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              page_creator: '0'
-              layout_manager: '0'
-              page_reviewer: '0'
-              landing_page_creator: '0'
-              landing_page_reviewer: '0'
-              media_creator: '0'
-              media_manager: '0'
-              agency_component_creator: '0'
-              agency_component_reviewer: '0'
-              agency_administrator: '0'
-              agency_manager: '0'
-              non_sso: '0'
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
