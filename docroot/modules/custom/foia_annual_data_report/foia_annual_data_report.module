@@ -463,7 +463,7 @@ function foia_annual_data_report_create_node(array $form, FormStateInterface $fo
       $title = "Duplicate Report";
       $agency_name = Term::load($agency_id)->get('name')->value;
       $message = <<<EOS
-<p>There is already a report for <b>$agency_name</b> and the year <b>$report_year.</b></p>
+<p>There is already a report for <b>$agency_name</b> and the <b>year $report_year.</b></p>
 <p>Navigate to <a href="/node/$nid/edit">/node/$nid/edit</a> to change the existing report or <a href="javascript:void(0);" class="agency-back">choose a different year</a> before entering your agency.</p>
 <div class="form-actions js-form-wrapper form-wrapper">
   <button type="button" class="button button--secondary agency-back">Add New</button>
