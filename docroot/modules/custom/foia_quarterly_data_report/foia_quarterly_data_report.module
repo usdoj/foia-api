@@ -150,7 +150,7 @@ function foia_quarterly_data_report_create_node(array $form, FormStateInterface 
       $agency_name = Term::load($agency_id)->get('name')->value;
       $message = <<<EOS
 <p>There is already a report for <b>$agency_name</b> and <b>Quarter $report_quarter $report_year</b>.</p>
-<p>Navigate to <a href="/node/$nid/edit">/node/$nid/edit</a> to change the existing report or <a href="javascript:void(0);" class="agency-back">choose a different year</a> before entering your agency.</p>
+<p>Navigate to <a href="/node/$nid/edit">/node/$nid/edit</a> to change the existing report or <a href="javascript:void(0);" class="agency-back">choose a different year or quarter</a> before entering your agency.</p>
 <div class="form-actions js-form-wrapper form-wrapper">
   <button type="button" class="button button--secondary agency-back">Add New</button>
   <a href="/node/$nid/edit"><button type="button" class="button button--primary">Edit Existing</button></a>
