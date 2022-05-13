@@ -6,7 +6,7 @@ use Drupal\node\NodeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class FoiaSubmissionServiceFactory.
+ * Class FoiaSubmissionServiceFactory used for FOIA submissions.
  */
 class FoiaSubmissionServiceFactory implements FoiaSubmissionServiceFactoryInterface {
 

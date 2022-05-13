@@ -1,0 +1,123 @@
+uuid: 637a2792-e4df-421d-a718-78204930e41b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.quarterly_foia_report_data.field_agency
+    - field.field.node.quarterly_foia_report_data.field_agency_components
+    - field.field.node.quarterly_foia_report_data.field_quarterly_backlogged_oa
+    - field.field.node.quarterly_foia_report_data.field_quarterly_closed
+    - field.field.node.quarterly_foia_report_data.field_quarterly_component_data
+    - field.field.node.quarterly_foia_report_data.field_quarterly_pending
+    - field.field.node.quarterly_foia_report_data.field_quarterly_processed_oa
+    - field.field.node.quarterly_foia_report_data.field_quarterly_quarter
+    - field.field.node.quarterly_foia_report_data.field_quarterly_received_oa
+    - field.field.node.quarterly_foia_report_data.field_quarterly_year
+    - node.type.quarterly_foia_report_data
+  module:
+    - entity_reference_revisions
+    - options
+    - user
+id: node.quarterly_foia_report_data.default
+targetEntityType: node
+bundle: quarterly_foia_report_data
+mode: default
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_agency:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_agency_components:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_quarterly_backlogged_oa:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 109
+    region: content
+  field_quarterly_closed:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_quarterly_component_data:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_quarterly_pending:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_quarterly_processed_oa:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 110
+    region: content
+  field_quarterly_quarter:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_quarterly_received_oa:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 111
+    region: content
+  field_quarterly_year:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  search_api_excerpt: true

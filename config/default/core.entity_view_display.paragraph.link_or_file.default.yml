@@ -1,0 +1,47 @@
+uuid: 71fb1647-938c-4ebd-9b2c-b0ce8e821a03
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.link_or_file.field_link_file
+    - field.field.paragraph.link_or_file.field_link_label
+    - field.field.paragraph.link_or_file.field_link_link
+    - paragraphs.paragraphs_type.link_or_file
+  module:
+    - file
+    - link
+id: paragraph.link_or_file.default
+targetEntityType: paragraph
+bundle: link_or_file
+mode: default
+content:
+  field_link_file:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_link_label:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_link_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  search_api_excerpt: true

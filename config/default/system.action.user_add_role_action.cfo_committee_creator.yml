@@ -1,0 +1,14 @@
+uuid: afd47e77-3668-40d7-b184-addf1cfb80a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_committee_creator
+  module:
+    - user
+id: user_add_role_action.cfo_committee_creator
+label: 'Add the CFO Committee creator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cfo_committee_creator

@@ -1,0 +1,14 @@
+uuid: 9a47bbb3-3f70-4321-9582-5bea30119308
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_page_reviewer
+  module:
+    - user
+id: user_add_role_action.cfo_page_reviewer
+label: 'Add the CFO Page reviewer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cfo_page_reviewer

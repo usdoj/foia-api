@@ -2,15 +2,15 @@
 
 namespace Drupal\node_to_docx\EventSubscriber;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Phpdocx\AutoLoader;
-use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Logger\RfcLogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Class AutoloaderSubscriber.
+ * Class AutoloaderSubscriber - register with the Autoloader.
  */
 class AutoloaderSubscriber implements EventSubscriberInterface {
   /**
@@ -58,7 +58,7 @@ class AutoloaderSubscriber implements EventSubscriberInterface {
       }
       $filepath = $this->getAutoloadFilepath();
       if (!is_file($filepath)) {
-        throw new \RuntimeException(SafeMarkup::format('Autoloader not found: @filepath', ['@filepath' => $filepath]));
+        throw new \RuntimeException(new FormattableMarkup('Autoloader not found: @filepath', ['@filepath' => $filepath]));
       }
       if (($filepath != DRUPAL_ROOT . '/core/vendor/autoload.php')) {
         $this->autoloaderRegistered = TRUE;

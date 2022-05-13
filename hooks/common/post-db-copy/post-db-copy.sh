@@ -23,6 +23,10 @@ blt artifact:ac-hooks:post-db-copy $site $target_env $db_name $source_env --envi
 
 echo "$site.$target_env: Received copy of database $db_name from $source_env."
 
+drush @$site.$target_env cr
+drush @$site.$target_env -y updatedb
+drush @$site.$target_env -y cim
+
 # Only do this when going from prod to something other than prod.
 if [ "$source_env" = "prod" ] && [ "$target_env" != "prod" ]
 then

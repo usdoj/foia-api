@@ -1,0 +1,50 @@
+diff --git a/src/Plugin/Field/FieldWidget/InlineParagraphsWidget.php b/src/Plugin/Field/FieldWidget/InlineParagraphsWidget.php
+index d90cb147..0d36371f 100644
+--- a/src/Plugin/Field/FieldWidget/InlineParagraphsWidget.php
++++ b/src/Plugin/Field/FieldWidget/InlineParagraphsWidget.php
+@@ -276,25 +276,6 @@ public function formElement(FieldItemListInterface $items, $delta, array $elemen
+       $item_mode = $default_edit_mode;
+     }
+ 
+-    if ($item_mode == 'closed') {
+-      // Validate closed paragraphs and expand if needed.
+-      // @todo Consider recursion.
+-      $violations = $paragraphs_entity->validate();
+-      $violations->filterByFieldAccess();
+-      if (count($violations) > 0) {
+-        $item_mode = 'edit';
+-        $messages = [];
+-        foreach ($violations as $violation) {
+-          $messages[] = $violation->getMessage();
+-        }
+-        $info['validation_error'] = array(
+-          '#type' => 'container',
+-          '#markup' => $this->t('@messages', ['@messages' => strip_tags(implode('\n', $messages))]),
+-          '#attributes' => ['class' => ['messages', 'messages--warning']],
+-        );
+-      }
+-    }
+-
+     if ($paragraphs_entity) {
+       // Detect if we are translating.
+       $this->initIsTranslating($form_state, $host);
+@@ -408,7 +389,9 @@ public function formElement(FieldItemListInterface $items, $delta, array $elemen
+             '#name' => strtr($id_prefix, '-', '_') . '_remove',
+             '#weight' => 501,
+             '#submit' => [[get_class($this), 'paragraphsItemSubmit']],
+-            '#limit_validation_errors' => [array_merge($parents, [$field_name, 'add_more'])],
++            // Ignore all validation errors because deleting invalid paragraphs
++            // is allowed.
++            '#limit_validation_errors' => [],
+             '#delta' => $delta,
+             '#ajax' => [
+               'callback' => [get_class($this), 'itemAjax'],
+@@ -436,7 +419,7 @@ public function formElement(FieldItemListInterface $items, $delta, array $elemen
+               '#weight' => 499,
+               '#submit' => array(array(get_class($this), 'paragraphsItemSubmit')),
+               '#delta' => $delta,
+-              '#limit_validation_errors' => [array_merge($parents, [$field_name, 'add_more'])],
++              '#limit_validation_errors' => [array_merge($parents, [$field_name, $delta])],
+               '#ajax' => array(
+                 'callback' => array(get_class($this), 'itemAjax'),
+                 'wrapper' => $widget_state['ajax_wrapper_id'],

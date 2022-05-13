@@ -1,11 +1,15 @@
 <?php
 
+/**
+ * @file
+ * Main module file for FOIA API.
+ */
+
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\ConditionInterface;
-use Drupal\Core\Database\Query\QueryConditionTrait;
 
 /**
  * Implements hook_jsonapi_ENTITY_TYPE_filter_access().
@@ -58,13 +62,13 @@ function foia_api_query_alter(AlterableInterface $query) {
 /**
  * Alter query conditions that compare numeric values to string fields.
  *
- * @param ConditionInterface|QueryConditionTrait $parent
+ * @param \Drupal\Core\Database\Query\ConditionInterface|QueryConditionTrait $parent
  *   A query or condition group that has conditions which may be alterable.
- * @param AlterableInterface $query
+ * @param \Drupal\Core\Database\Query\AlterableInterface $query
  *   The query being altered, used to build the placeholder id.
  */
-function _foia_api_cast_condition_values($parent, $query) {
-  foreach($parent->conditions() as $delta => &$condition) {
+function _foia_api_cast_condition_values($parent, AlterableInterface $query) {
+  foreach ($parent->conditions() as $delta => &$condition) {
     if (!is_array($condition)) {
       continue;
     }
@@ -87,7 +91,7 @@ function _foia_api_cast_condition_values($parent, $query) {
       $if_not_numeric_expression = "{$condition['field']} $operator $placeholder";
 
       // Set the new condition values.
-      $condition['field'] = "IF($is_numeric_expression, $if_numeric_expression, $if_not_numeric_expression)" ;
+      $condition['field'] = "IF($is_numeric_expression, $if_numeric_expression, $if_not_numeric_expression)";
       $condition['value'] = [$placeholder => $value];
       unset($condition['operator']);
     }
@@ -102,12 +106,13 @@ function _foia_api_cast_condition_values($parent, $query) {
  *   `paragraph__field_sim_med.field_sim_med_value`.
  *
  * @return bool
+ *   Returns false
  */
 function _foia_api_is_string_field($database_field) {
   $string_fields = _foia_api_get_string_fields('node', 'annual_foia_report_data');
-  $matches = array_filter($string_fields, function($field) use ($database_field) {
+  $matches = array_filter($string_fields, function ($field) use ($database_field) {
     if (strpos($database_field, $field->getTargetEntityTypeId()) !== 0) {
-      return false;
+      return FALSE;
     }
 
     return strstr($database_field, $field->getName()) !== FALSE;
@@ -139,21 +144,21 @@ function _foia_api_get_string_fields($entity_type, $bundle) {
     ->getFieldDefinitions($entity_type, $bundle);
 
   // Builds the base list of string fields attached to this bundle.
-  $string_fields = array_filter($bundle_fields, function($field) {
+  $string_fields = array_filter($bundle_fields, function ($field) {
     return $field->getType() === 'string';
   });
 
   // Add string fields from entity types that are referenced by this
   // bundle.
-  $entity_reference_fields = array_filter($bundle_fields, function($field) {
+  $entity_reference_fields = array_filter($bundle_fields, function ($field) {
     return $field->getType() === 'entity_reference_revisions';
   });
-  $string_fields = array_reduce($entity_reference_fields, function($string_fields, $field) {
+  $string_fields = array_reduce($entity_reference_fields, function ($string_fields, $field) {
     $settings = $field->getSettings();
     $bundles = $settings['handler_settings']['target_bundles'] ?? [];
     $type = $settings['target_type'];
 
-    $new_string_fields = array_reduce($bundles, function($child_string_fields, $bundle) use ($type) {
+    $new_string_fields = array_reduce($bundles, function ($child_string_fields, $bundle) use ($type) {
       $child_string_fields += _foia_api_get_string_fields($type, $bundle);
 
       return $child_string_fields;
@@ -162,7 +167,7 @@ function _foia_api_get_string_fields($entity_type, $bundle) {
   }, $string_fields);
 
   // Remove system fields.
-  $system_keys = array_filter(array_keys($string_fields), function($field_name) {
+  $system_keys = array_filter(array_keys($string_fields), function ($field_name) {
     return strpos($field_name, 'field_') === FALSE;
   });
   $string_fields = array_diff_key($string_fields, array_flip($system_keys));

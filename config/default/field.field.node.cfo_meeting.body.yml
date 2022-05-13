@@ -1,0 +1,23 @@
+uuid: a1fc5bd1-3821-46b9-949c-9849d9f11138
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.cfo_meeting
+  module:
+    - text
+id: node.cfo_meeting.body
+field_name: body
+entity_type: node
+bundle: cfo_meeting
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

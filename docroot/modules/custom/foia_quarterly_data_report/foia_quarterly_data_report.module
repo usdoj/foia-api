@@ -1,0 +1,378 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for foia_quarterly_data_report module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\AlertCommand;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Url;
+use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Ajax\OpenDialogCommand;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Entity\EntityForm;
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add the AJAX save callbacks.
+  foia_quarterly_data_report_ajax_existing_node($form);
+  foia_quarterly_data_report_set_default_report_values($form, $form_state);
+  // Add general validation including checkig for existing report.
+  $form['#validate'][] = '_form_quarterly_data_report_validate';
+}
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_quarterly_data_report_set_default_report_values($form, $form_state);
+  foia_quarterly_data_report_ajax_new_node($form);
+  // Add general validation including checkig for existing report.
+  $form['#validate'][] = '_form_quarterly_data_report_validate';
+}
+
+/**
+ * Add ajax to a new quarterly report node to submit on agency field is set.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_ajax_new_node(array &$form) {
+
+  // The 'change.agency' event corresponds to the event triggered in
+  // the foia_change_report_agency library that is attached to this element.
+  // This is a workaround for IE11, which does not fire the change event on
+  // this input when selecting a value from the autocomplete dropdown list.
+  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
+    'callback' => 'foia_quarterly_data_report_create_node',
+    'event' => 'change.agency',
+    'progress' => [
+      'type' => 'throbber',
+      'message' => 'Please Wait...',
+    ],
+  ];
+  $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_quarterly_data_report/foia_change_report_agency';
+
+}
+
+/**
+ * Add ajax to a existing quarterly report to submit on agency field is set.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_ajax_existing_node(array &$form) {
+
+  // The 'change.agency' event corresponds to the event triggered in
+  // the foia_change_report_agency library that is attached to this element.
+  // This is a workaround for IE11, which does not fire the change event on
+  // this input when selecting a value from the autocomplete dropdown list.
+  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
+    'callback' => 'foia_quarterly_data_report_refresh',
+    'event' => 'change.agency',
+    'progress' => [
+      'type' => 'throbber',
+      'message' => 'Please Wait...',
+    ],
+  ];
+  $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_quarterly_data_report/foia_change_report_agency';
+
+}
+
+/**
+ * Save the node and redirect back to the edit page for the node.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state passed from hook_form_form_id_alter().
+ *
+ * @return \Drupal\Core\Ajax\AjaxResponse
+ *   AjaxResponse object to alert user and redirect them.
+ */
+function foia_quarterly_data_report_create_node(array $form, FormStateInterface $form_state) {
+
+  $response = new AjaxResponse();
+  $form_state_values = $form_state->getValues();
+
+  // Get the agency node id from the form state.
+  $agency_id = 0;
+  if (!empty($form_state_values['field_agency'][0]['target_id'])) {
+    $agency_id = $form_state_values['field_agency'][0]['target_id'];
+  }
+
+  if (!$agency_id) {
+    $response->addCommand(new AlertCommand("Please select an Agency first."));
+    return $response;
+  }
+
+  // Get the report year from the form state.
+  $report_year = 0;
+  if (!empty($form_state_values['field_quarterly_year'][0]['value'])) {
+    $report_year = $form_state_values['field_quarterly_year'][0]['value'];
+  }
+
+  // Get the report quarter from the format state.
+  $report_quarter = 0;
+  if (!empty($form_state_values['field_quarterly_quarter'][0]['value'])) {
+    $report_quarter = $form_state_values['field_quarterly_quarter'][0]['value'];
+  }
+
+  // Check for an existing report.
+  if ($form_state->getFormObject() instanceof EntityForm) {
+    $current_nid = $form_state->getformObject()->getEntity()->id();
+  }
+  else {
+    $current_nid = 0;
+  }
+
+  // Check for a duplicate in this AJAX callback before saving a new node.
+  if ($agency_id && $report_year && $report_quarter) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'quarterly_foia_report_data')
+      ->condition('field_agency', $agency_id)
+      ->condition('field_quarterly_year', $report_year)
+      ->condition('field_quarterly_quarter', $report_quarter)
+      ->sort('created', 'DESC')
+      ->range(0, 1);
+    $results = $query->execute();
+    // If there is a duplicate found throw error with link to existing report.
+    if (count($results)) {
+      $nid = array_pop($results);
+      $title = "Duplicate Report";
+      $agency_name = Term::load($agency_id)->get('name')->value;
+      $message = <<<EOS
+<p>There is already a report for <b>$agency_name</b> and <b>Quarter $report_quarter $report_year</b>.</p>
+<p>Navigate to <a href="/node/$nid/edit">/node/$nid/edit</a> to change the existing report or <a href="javascript:void(0);" class="agency-back">choose a different year or quarter</a> before entering your agency.</p>
+<div class="form-actions js-form-wrapper form-wrapper">
+  <button type="button" class="button button--secondary agency-back">Add New</button>
+  <a href="/node/$nid/edit"><button type="button" class="button button--primary">Edit Existing</button></a>
+</div>
+EOS;
+
+      $options = [
+        'dialogClass' => 'agency-dialog',
+        'closeOnEscape' => TRUE,
+        'width' => '500',
+        'closeText' => '',
+        "resizable" => FALSE,
+        "modal" => TRUE,
+      ];
+
+      $response->addCommand(new OpenDialogCommand('#agency-modal', $title, $message, $options));
+      return $response;
+    }
+  }
+
+  $node = \Drupal::entityTypeManager()->getStorage('node')->create([
+    'type' => 'quarterly_foia_report_data',
+    'field_agency' => $form_state->getValue('field_agency'),
+    'field_quarterly_year' => $form_state->getValue('field_quarterly_year'),
+    'field_quarterly_quarter' => $form_state->getValue('field_quarterly_quarter'),
+  ]);
+  $node->save();
+
+  $url = $node->toUrl('edit-form')->toString();
+  $response->addCommand(new RedirectCommand($url));
+  $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
+
+  return $response;
+}
+
+/**
+ * Do all the magic to get the component list and update the Component options.
+ *
+ * @param array $form
+ *   Form array passed from hook_form_form_id_alter().
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state passed from hook_form_form_id_alter().
+ *
+ * @return \Drupal\Core\Ajax\AjaxResponse
+ *   Standard Drupal AJAX response to refresh the page.
+ */
+function foia_quarterly_data_report_refresh(array $form, FormStateInterface $form_state) {
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $response = new AjaxResponse();
+  $currentURL = Url::fromRoute('<current>');
+
+  if ($node instanceof NodeInterface) {
+    $nid = $node->id();
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+
+    // @todo If users change anything else it doesnt persist.
+    $node->set('field_agency', $form_state->getValue('field_agency'));
+
+    // Set as new revision.
+    $node->setNewRevision(TRUE);
+    $node->revision_log = 'Updated Agency for report';
+    $node->setRevisionUserId(\Drupal::currentUser()->id());
+
+    $node->save();
+
+    $response->addCommand(new RedirectCommand($currentURL->toString()));
+    $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
+  }
+
+  return $response;
+}
+
+/**
+ * Set the FOIA quarterly report year field's default values.
+ *
+ * Works for both the year and quarter fields.
+ *
+ * This allows the auto_entitylabel module to rely on the field_quarterly_year
+ * and field_quarterly_quarter when setting the title.
+ *
+ * @param array $form
+ *   The quarterly_foia_report_data node add or edit form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state passed from hook_form_form_id_alter().
+ */
+function foia_quarterly_data_report_set_default_report_values(array &$form, FormStateInterface $form_state) {
+
+  // We only do the following for new nodes.
+  $node = $form_state->getFormObject()->getEntity();
+  if (!$node->isNew()) {
+    return;
+  }
+
+  $current_year = intval(date('Y'));
+  $current_month = intval(date('n'));
+
+  // Fiscal year.
+  if ($current_month >= 10) {
+    $current_year += 1;
+  }
+
+  // Decide on quarter.
+  $current_quarter = 1;
+  if ($current_month <= 3) {
+    $current_quarter = 2;
+  }
+  elseif ($current_month <= 6) {
+    $current_quarter = 3;
+  }
+  elseif ($current_month <= 9) {
+    $current_quarter = 4;
+  }
+
+  $default_year_value = $form['field_quarterly_year']['widget'][0]['value']['#default_value'] ?? FALSE;
+  $default_quarter_value = $form['field_quarterly_quarter']['widget'][0]['value']['#default_value'] ?? FALSE;
+
+  if (!$default_year_value) {
+    $form['field_quarterly_year']['widget'][0]['value']['#default_value'] = $current_year;
+  }
+
+  if (!$default_quarter_value) {
+    $form['field_quarterly_quarter']['widget']['#default_value'] = $current_quarter;
+  }
+}
+
+/**
+ * Validation for the quarterly report.
+ *
+ * Makes sure there is not already a report for this agency, year, and quarter.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function _form_quarterly_data_report_validate(array &$form, FormStateInterface $form_state): void {
+
+  $form_state_values = $form_state->getValues();
+
+  // Get the agency node id from the form state.
+  $agency_id = 0;
+  if (!empty($form_state_values['field_agency'][0]['target_id'])) {
+    $agency_id = $form_state_values['field_agency'][0]['target_id'];
+  }
+
+  // Get the report year from the form state.
+  $report_year = 0;
+  if (!empty($form_state_values['field_quarterly_year'][0]['value'])) {
+    $report_year = $form_state_values['field_quarterly_year'][0]['value'];
+  }
+
+  // Get the report quarter from the format state.
+  $report_quarter = 0;
+  if (!empty($form_state_values['field_quarterly_quarter'][0]['value'])) {
+    $report_quarter = $form_state_values['field_quarterly_quarter'][0]['value'];
+  }
+
+  // Check for an existing report.
+  if ($form_state->getFormObject() instanceof EntityForm) {
+    $current_nid = $form_state->getformObject()->getEntity()->id();
+  }
+  else {
+    $current_nid = 0;
+  }
+
+  // With the agency id and report year, query the nodes to find one that
+  // has the same agency id and year.  If found through and error allowing
+  // the user to update the existing report or change the values.
+  if ($agency_id && $report_year && $report_quarter) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'quarterly_foia_report_data')
+      ->condition('field_agency', $agency_id)
+      ->condition('field_quarterly_year', $report_year)
+      ->condition('field_quarterly_quarter', $report_quarter)
+      ->condition('nid', $current_nid, '!=')
+      ->sort('created', 'DESC')
+      ->range(0, 1);
+    $results = $query->execute();
+    // If there is a duplicate found throw error with link to existing report.
+    if (count($results)) {
+      $nid = array_pop($results);
+      $message = '<a href="/node/' . $nid . '/edit">Click here to edit the existing report</a> or change the values below.';
+      $rendered_message = Markup::create($message);
+      $error_message = new TranslatableMarkup('@message', ['@message' => $rendered_message]);
+      $form_state->setErrorByName('field_agency', 'There is already a report for the agency and year/quarter you specified.');
+      $form_state->setErrorByName('field_quarterly_year', $error_message);
+    }
+  }
+
+  // Additional validation to avoid incomplete reports from being submitted.
+  $enforce_during_states = ['submitted_to_oip', 'published'];
+  if (in_array($form_state_values['moderation_state'][0]['value'], $enforce_during_states)) {
+    if (!is_numeric($form_state_values['field_quarterly_closed'][0]['value'])) {
+      $form_state->setErrorByName('field_quarterly_closed', 'Please provide a value for "Ten Oldest Requests Closed".');
+    }
+    if (!is_numeric($form_state_values['field_quarterly_pending'][0]['value'])) {
+      $form_state->setErrorByName('field_quarterly_pending', 'Please provide a value for "Ten Oldest Pending Requests".');
+    }
+    $no_component_data = TRUE;
+    foreach ($form_state_values['field_quarterly_component_data'] as $key => $value) {
+      if (is_numeric($key)) {
+        $no_component_data = FALSE;
+        $subform = $form_state_values['field_quarterly_component_data'][$key]['subform'];
+        $prefix = "field_quarterly_component_data][$key][subform][";
+        if (empty($subform['field_agency_component'][0]['target_id'])) {
+          $form_state->setErrorByName("${prefix}field_agency_component", 'Please provide the agency.');
+        }
+        if (!is_numeric($subform['field_quarterly_backlogged'][0]['value'])) {
+          $form_state->setErrorByName("${prefix}field_quarterly_backlogged", 'Please provide a value for "Number of requests backlogged".');
+        }
+        if (!is_numeric($subform['field_quarterly_processed'][0]['value'])) {
+          $form_state->setErrorByName("${prefix}field_quarterly_processed", 'Please provide a value for "Number of requests processed".');
+        }
+        if (!is_numeric($subform['field_quarterly_received'][0]['value'])) {
+          $form_state->setErrorByName("${prefix}field_quarterly_received", 'Please provide a value for "Number of requests received".');
+        }
+      }
+    }
+
+    if ($no_component_data) {
+      $form_state->setErrorByName('field_quarterly_component_data', 'Please add data under "Component data".');
+    }
+  }
+}

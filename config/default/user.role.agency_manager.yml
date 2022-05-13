@@ -2,8 +2,26 @@ uuid: ff65c9be-7506-4fdc-8e26-2580b74c4b84
 langcode: en
 status: true
 dependencies:
+  config:
+    - filter.format.rich_text
+    - node.type.agency_component
+    - node.type.annual_foia_report_data
+    - node.type.quarterly_foia_report_data
+    - workflows.workflow.annual_report_workflow
+    - workflows.workflow.quarterly_report_workflow
   module:
+    - content_moderation
+    - field_permissions
+    - file_entity
+    - filter
+    - foia_personnel
+    - form_mode_manager
     - lightning_core
+    - migrate_tools
+    - node
+    - node_to_docx
+    - system
+    - view_unpublished
 third_party_settings:
   lightning_core:
     description: ''
@@ -15,23 +33,69 @@ permissions:
   - 'add foia personnel entities'
   - 'administer migrations'
   - 'create annual_foia_report_data content'
+  - 'create field_interop_status'
   - 'create field_request_submission_form'
   - 'create field_submission_api'
   - 'create field_submission_api_secret'
+  - 'create field_submission_email'
+  - 'create quarterly_foia_report_data content'
   - 'delete foia personnel entities'
+  - 'download own document files'
   - 'edit any annual_foia_report_data content'
+  - 'edit any quarterly_foia_report_data content'
+  - 'edit field_interop_status'
   - 'edit field_request_submission_form'
   - 'edit field_submission_api'
   - 'edit field_submission_api_secret'
+  - 'edit field_submission_email'
   - 'edit foia personnel entities'
   - 'edit own annual_foia_report_data content'
+  - 'edit own field_interop_status'
   - 'edit own field_request_submission_form'
   - 'edit own field_submission_api'
   - 'edit own field_submission_api_secret'
+  - 'edit own field_submission_email'
+  - 'edit own quarterly_foia_report_data content'
   - 'generate docx using node to docx: annual_foia_report_data'
+  - 'generate docx using node to docx: quarterly_foia_report_data'
   - 'revert all revisions'
   - 'use annual_report_workflow transition create_new_draft'
   - 'use annual_report_workflow transition submit_to_oip'
+  - 'use node.annual_report_agency_info form mode'
+  - 'use node.annual_report_iv_exemption_3_statutes form mode'
+  - 'use node.annual_report_v_a_foia_requests form mode'
+  - 'use node.annual_report_v_b_1_disposition_of_foia_requests form mode'
+  - 'use node.annual_report_v_b_2_disposition_of_foia_requests form mode'
+  - 'use node.annual_report_v_b_3_disposition_of_foia_requests form mode'
+  - 'use node.annual_report_vi_a_administrative_appeals form mode'
+  - 'use node.annual_report_vi_b_disposition_of_administrative_appeals form mode'
+  - 'use node.annual_report_vi_c_1_reasons_for_denial_on_appeal form mode'
+  - 'use node.annual_report_vi_c_2_reasons_for_denial_on_appeal form mode'
+  - 'use node.annual_report_vi_c_3_reasons_for_denial_on_appeal form mode'
+  - 'use node.annual_report_vi_c_4_response_time form mode'
+  - 'use node.annual_report_vi_c_5_ten_oldest_pending form mode'
+  - 'use node.annual_report_vii_a_foia_requests_response_time form mode'
+  - 'use node.annual_report_vii_b_processed_requests_response_time form mode'
+  - 'use node.annual_report_vii_c_1_processed_simple_requests_response_time form mode'
+  - 'use node.annual_report_vii_c_2_processed_complex_requests_response_time form mode'
+  - 'use node.annual_report_vii_c_3_processed_requests_granted_expedited form mode'
+  - 'use node.annual_report_vii_d_pending_requests_all form mode'
+  - 'use node.annual_report_vii_e_pending_requests_ten_oldest form mode'
+  - 'use node.annual_report_viii_a_requests_for_expedited_processing form mode'
+  - 'use node.annual_report_viii_b_requests_for_fee_waiver form mode'
+  - 'use node.annual_report_x_0_ix_foia_personnel_and_costs form mode'
+  - 'use node.annual_report_x_fees_collected_for_processing_requests form mode'
+  - 'use node.annual_report_xi_a_number_of_times_subsection_c_used form mode'
+  - 'use node.annual_report_xi_b_number_of_subsection_a_2_postings form mode'
+  - 'use node.annual_report_xii_a_backlogs form mode'
+  - 'use node.annual_report_xii_b_consultations form mode'
+  - 'use node.annual_report_xii_c_consultations form mode'
+  - 'use node.annual_report_xii_d_1_comparison form mode'
+  - 'use node.annual_report_xii_d_2_comparison form mode'
+  - 'use node.annual_report_xii_e_1_comparison form mode'
+  - 'use node.annual_report_xii_e_2_comparison form mode'
+  - 'use quarterly_report_workflow transition create_new_draft'
+  - 'use quarterly_report_workflow transition submit_to_oip'
   - 'use text format rich_text'
   - 'view agency_component revisions'
   - 'view all revisions'
@@ -46,6 +110,7 @@ permissions:
   - 'view field_expedited_highest_days'
   - 'view field_expedited_lowest_days'
   - 'view field_expedited_median_days'
+  - 'view field_interop_status'
   - 'view field_request_data_year'
   - 'view field_request_submission_form'
   - 'view field_simple_average_days'
@@ -54,9 +119,13 @@ permissions:
   - 'view field_simple_median_days'
   - 'view field_submission_api'
   - 'view field_submission_api_secret'
+  - 'view field_submission_email'
   - 'view files'
+  - 'view own field_interop_status'
   - 'view own field_request_submission_form'
   - 'view own field_submission_api'
   - 'view own field_submission_api_secret'
+  - 'view own field_submission_email'
   - 'view own unpublished content'
+  - 'view quarterly_foia_report_data revisions'
   - 'view the administration theme'

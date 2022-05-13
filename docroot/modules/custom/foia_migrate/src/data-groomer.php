@@ -221,13 +221,13 @@ function set_personnel_id(&$personnel, &$component, $personnel_type, &$id, $misc
  *   Numerical ID of existing matching personnel, FALSE otherwise.
  */
 function get_existing_personnel_id(array $existing_personnel, $component, $individual_personnel) {
-  $name_to_check = isset($individual_personnel->name) ? $individual_personnel->name : '';
-  $phone_numbers_to_check = isset($individual_personnel->phone) ? $individual_personnel->phone : [];
-  $agency_to_check = isset($component->agency_name) ? $component->agency_name : '';
+  $name_to_check = $individual_personnel->name ?? '';
+  $phone_numbers_to_check = $individual_personnel->phone ?? [];
+  $agency_to_check = $component->agency_name ?? '';
   foreach ($existing_personnel as $existing_individual_personnel) {
-    $existing_name = isset($existing_individual_personnel->name) ? $existing_individual_personnel->name : '';
-    $existing_phone_numbers = isset($existing_individual_personnel->phone) ? $existing_individual_personnel->phone : [];
-    $existing_agency_name = isset($existing_individual_personnel->agency_name) ? $existing_individual_personnel->agency_name : '';
+    $existing_name = $existing_individual_personnel->name ?? '';
+    $existing_phone_numbers = $existing_individual_personnel->phone ?? [];
+    $existing_agency_name = $existing_individual_personnel->agency_name ?? '';
     if (
       $name_to_check == $existing_name
       && $phone_numbers_to_check == $existing_phone_numbers

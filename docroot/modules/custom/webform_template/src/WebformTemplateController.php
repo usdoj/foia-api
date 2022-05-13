@@ -78,7 +78,7 @@ class WebformTemplateController {
   public function webformImplementsTemplate(WebformInterface $webform) {
     // Multiple webforms are failing this check at the moment, so we need to
     // sidestep.
-    // @TODO: Remove this hack and fix the webforms.
+    // @todo Remove this hack and fix the webforms.
     return TRUE;
 
     // If (!$templateElements = $this->getTemplateDecoded()) {
@@ -145,12 +145,15 @@ class WebformTemplateController {
   public function preprocessWebformForm(array &$form, FormStateInterface $form_state) {
     $webform_id = $form_state->getFormObject()->getEntity()->id();
     $templated = $this->getTemplateConfiguration($webform_id);
-    $form['actions']['submit']['#submit'][] = [get_class($this), 'processWebformForm'];
+    $form['actions']['submit']['#submit'][] = [
+      get_class($this),
+      'processWebformForm',
+    ];
     $form['foia_template'] = [
       '#type' => 'checkbox',
       '#title' => t("Use FOIA Agency template"),
       '#disabled' => TRUE,
-      '#default_value' => $templated === NULL ? $this::TEMPLATESTATUSDEFAULT : $templated,
+      '#default_value' => $templated ?? $this::TEMPLATESTATUSDEFAULT,
     ];
 
     if (\Drupal::currentUser()->hasPermission('bypass foia webform template')) {

@@ -107,7 +107,7 @@ class FoiaRequestCommands extends DrushCommands {
    * Query for FOIA requests whose status is set to "To Be Scanned".
    */
   public function toBeScanned() {
-    $query = db_select('foia_request', 'fr');
+    $query = \Drupal::database()->select('foia_request', 'fr');
     $query->addField('fr', 'id');
     $query->join('foia_request__field_webform_submission_id', 'frid', 'frid.entity_id = fr.id');
     $query->addField('frid', 'field_webform_submission_id_value', 'sid');
@@ -124,7 +124,7 @@ class FoiaRequestCommands extends DrushCommands {
    * FoiaRequestInterface::ASSUME_DELIVERED_AFTER constant.
    */
   public function deliveredEmails() {
-    $query = db_select('foia_request', 'fr');
+    $query = \Drupal::database()->select('foia_request', 'fr');
     $query->addField('fr', 'id');
     $query->condition('fr.request_status', FoiaRequestInterface::STATUS_IN_TRANSIT);
     $query->condition('fr.created', time() - FoiaRequestInterface::ASSUME_DELIVERED_AFTER, '<');

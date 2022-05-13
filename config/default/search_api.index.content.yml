@@ -2,12 +2,12 @@ uuid: 933b9c1d-a432-440d-9eed-da07e353308c
 langcode: en
 status: true
 dependencies:
-  module:
-    - node
-    - search_api
   config:
     - search_api.server.database
     - core.entity_view_mode.node.full
+  module:
+    - node
+    - search_api
 _core:
   default_config_hash: 5oGmbthAOm65ilSVAb2fnEb6u3IBMfKIw3sPA8KuqXU
 id: content
@@ -41,8 +41,12 @@ field_settings:
         'entity:node':
           agency_component: default
           annual_foia_report_data: default
+          cfo_committee: default
+          cfo_council: default
+          cfo_meeting: default
           landing_page: full
           page: default
+          quarterly_foia_report_data: default
   status:
     label: null
     datasource_id: 'entity:node'
@@ -78,6 +82,10 @@ processor_settings:
     weights:
       preprocess_query: -10
   html_filter:
+    weights:
+      preprocess_index: -10
+      preprocess_query: -9
+    all_fields: false
     fields:
       - label
       - rendered
@@ -89,21 +97,21 @@ processor_settings:
       h2: 3
       h3: 2
       strong: 2
-    weights:
-      preprocess_index: -10
-      preprocess_query: -9
-    all_fields: false
   ignorecase:
-    fields:
-      - label
-      - rendered
     weights:
       preprocess_index: -9
       preprocess_query: -8
     all_fields: false
+    fields:
+      - label
+      - rendered
   language_with_fallback: {  }
   rendered_item: {  }
   stopwords:
+    weights:
+      preprocess_index: -5
+      preprocess_query: -4
+    all_fields: false
     fields:
       - label
       - rendered
@@ -143,33 +151,30 @@ processor_settings:
       - was
       - will
       - with
-    weights:
-      preprocess_index: -5
-      preprocess_query: -4
-    all_fields: false
   tokenizer:
-    fields:
-      - label
-      - rendered
-    spaces: ''
-    overlap_cjk: 1
-    minimum_word_size: '3'
     weights:
       preprocess_index: -6
       preprocess_query: -5
     all_fields: false
-  transliteration:
     fields:
       - label
       - rendered
+    spaces: ''
+    ignored: ._-
+    overlap_cjk: 1
+    minimum_word_size: '3'
+  transliteration:
     weights:
       preprocess_index: -4
       preprocess_query: -3
     all_fields: false
+    fields:
+      - label
+      - rendered
 tracker_settings:
   default:
     indexing_order: fifo
 options:
-  index_directly: true
   cron_limit: 50
+  index_directly: true
 server: database

@@ -1,0 +1,26 @@
+uuid: 35562acf-e08c-4122-915d-bbb43e83ba64
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_link_label
+    - paragraphs.paragraphs_type.link_or_file
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.link_or_file.field_link_label
+field_name: field_link_label
+entity_type: paragraph
+bundle: link_or_file
+label: Label
+description: "Using the fields below, enter either:\r\n<ul>\r\n<li>a link/URL to an existing piece of content or other external webpage.</li>\r\n<li>upload a file using the \"Choose File\" browser</li>\r\n</ul>"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

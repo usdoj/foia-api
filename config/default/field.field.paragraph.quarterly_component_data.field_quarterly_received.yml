@@ -1,0 +1,30 @@
+uuid: 10b7cef0-988c-4beb-95f8-4af57c5e73ac
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_quarterly_received
+    - paragraphs.paragraphs_type.quarterly_component_data
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.quarterly_component_data.field_quarterly_received
+field_name: field_quarterly_received
+entity_type: paragraph
+bundle: quarterly_component_data
+label: 'Number of requests received'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

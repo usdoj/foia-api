@@ -18,12 +18,16 @@ dependencies:
     - field.field.node.agency_component.field_expedited_lowest_days
     - field.field.node.agency_component.field_expedited_median_days
     - field.field.node.agency_component.field_foia_officers
+    - field.field.node.agency_component.field_interop_exception
+    - field.field.node.agency_component.field_interop_planned_method
     - field.field.node.agency_component.field_is_centralized
     - field.field.node.agency_component.field_misc
     - field.field.node.agency_component.field_portal_submission_format
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
     - field.field.node.agency_component.field_receiver
+    - field.field.node.agency_component.field_rep_exp
+    - field.field.node.agency_component.field_rep_start
     - field.field.node.agency_component.field_request_data_year
     - field.field.node.agency_component.field_request_submission_form
     - field.field.node.agency_component.field_service_centers
@@ -48,18 +52,18 @@ bundle: agency_component
 mode: teaser
 content:
   body:
-    label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
+    weight: 101
     region: content
   links:
-    weight: 100
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 100
+    region: content
 hidden:
   field_agency: true
   field_agency_comp_abbreviation: true
@@ -75,6 +79,8 @@ hidden:
   field_expedited_lowest_days: true
   field_expedited_median_days: true
   field_foia_officers: true
+  field_interop_exception: true
+  field_interop_planned_method: true
   field_is_centralized: true
   field_misc: true
   field_portal_submission_format: true

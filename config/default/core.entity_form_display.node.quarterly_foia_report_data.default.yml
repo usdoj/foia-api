@@ -1,0 +1,203 @@
+uuid: a1551351-2dbc-46f1-aab6-22271e3b9124
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.quarterly_foia_report_data.field_agency
+    - field.field.node.quarterly_foia_report_data.field_agency_components
+    - field.field.node.quarterly_foia_report_data.field_quarterly_backlogged_oa
+    - field.field.node.quarterly_foia_report_data.field_quarterly_closed
+    - field.field.node.quarterly_foia_report_data.field_quarterly_component_data
+    - field.field.node.quarterly_foia_report_data.field_quarterly_pending
+    - field.field.node.quarterly_foia_report_data.field_quarterly_processed_oa
+    - field.field.node.quarterly_foia_report_data.field_quarterly_quarter
+    - field.field.node.quarterly_foia_report_data.field_quarterly_received_oa
+    - field.field.node.quarterly_foia_report_data.field_quarterly_year
+    - node.type.quarterly_foia_report_data
+    - workflows.workflow.quarterly_report_workflow
+  module:
+    - content_moderation
+    - entity_reference_views_select
+    - field_group
+    - paragraphs
+third_party_settings:
+  field_group:
+    group_quarterly_tabs:
+      children:
+        - group_agency_info
+        - group_agency_data
+        - group_component_data
+        - group_agency_overall
+      label: Tabs
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: tabs
+      format_settings:
+        classes: js-vertical-tabs--main
+        id: ''
+        direction: vertical
+    group_agency_info:
+      children:
+        - field_agency
+        - field_agency_components
+        - field_quarterly_year
+        - field_quarterly_quarter
+      label: 'Agency info'
+      region: content
+      parent_name: group_quarterly_tabs
+      weight: 11
+      format_type: tab
+      format_settings:
+        classes: ''
+        id: ''
+        formatter: open
+        description: ''
+        required_fields: true
+    group_agency_data:
+      children:
+        - field_quarterly_pending
+        - field_quarterly_closed
+      label: 'Agency data'
+      region: content
+      parent_name: group_quarterly_tabs
+      weight: 12
+      format_type: tab
+      format_settings:
+        classes: ''
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_component_data:
+      children:
+        - field_quarterly_component_data
+      label: 'Component data'
+      region: content
+      parent_name: group_quarterly_tabs
+      weight: 13
+      format_type: tab
+      format_settings:
+        classes: ''
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_agency_overall:
+      children:
+        - field_quarterly_received_oa
+        - field_quarterly_processed_oa
+        - field_quarterly_backlogged_oa
+      label: 'Agency Overall'
+      region: content
+      parent_name: group_quarterly_tabs
+      weight: 14
+      format_type: tab
+      format_settings:
+        classes: ''
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+id: node.quarterly_foia_report_data.default
+targetEntityType: node
+bundle: quarterly_foia_report_data
+mode: default
+content:
+  field_agency:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_agency_components:
+    type: erviews_options_buttons
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_quarterly_backlogged_oa:
+    type: number
+    weight: 30
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_quarterly_closed:
+    type: number
+    weight: 5
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_quarterly_component_data:
+    type: entity_reference_paragraphs
+    weight: 8
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_quarterly_pending:
+    type: number
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_quarterly_processed_oa:
+    type: number
+    weight: 29
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_quarterly_quarter:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_quarterly_received_oa:
+    type: number
+    weight: 28
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_quarterly_year:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true

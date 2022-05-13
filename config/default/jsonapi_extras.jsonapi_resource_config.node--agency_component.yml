@@ -4,6 +4,11 @@ status: true
 dependencies:
   config:
     - node.type.agency_component
+  module:
+    - jsonapi_defaults
+third_party_settings:
+  jsonapi_defaults:
+    page_limit: 50
 id: node--agency_component
 disabled: false
 path: agency_components
@@ -58,11 +63,11 @@ resourceFields:
     enhancer:
       id: ''
   status:
+    disabled: false
     fieldName: status
     publicName: status
     enhancer:
       id: ''
-    disabled: false
   uid:
     disabled: true
     fieldName: uid
@@ -70,11 +75,11 @@ resourceFields:
     enhancer:
       id: ''
   title:
+    disabled: false
     fieldName: title
     publicName: title
     enhancer:
       id: ''
-    disabled: false
   created:
     disabled: true
     fieldName: created
@@ -118,11 +123,11 @@ resourceFields:
     enhancer:
       id: ''
   moderation_state:
+    disabled: false
     fieldName: moderation_state
     publicName: moderation_state
     enhancer:
       id: ''
-    disabled: false
   scheduled_transition_date:
     disabled: true
     fieldName: scheduled_transition_date
@@ -166,185 +171,209 @@ resourceFields:
     enhancer:
       id: ''
   body:
+    disabled: false
     fieldName: body
     publicName: description
     enhancer:
       id: ''
-    disabled: false
   field_agency:
+    disabled: false
     fieldName: field_agency
     publicName: agency
     enhancer:
       id: ''
-    disabled: false
   field_agency_comp_abbreviation:
+    disabled: false
     fieldName: field_agency_comp_abbreviation
     publicName: abbreviation
     enhancer:
       id: ''
-    disabled: false
   field_agency_comp_telephone:
+    disabled: false
     fieldName: field_agency_comp_telephone
     publicName: telephone
     enhancer:
       id: ''
-    disabled: false
+  field_agency_component_inactive:
+    disabled: true
+    fieldName: field_agency_component_inactive
+    publicName: field_agency_component_inactive
+    enhancer:
+      id: ''
   field_complex_average_days:
+    disabled: false
     fieldName: field_complex_average_days
     publicName: request_data_complex_average_days
     enhancer:
       id: ''
-    disabled: false
   field_complex_highest_days:
+    disabled: false
     fieldName: field_complex_highest_days
     publicName: request_data_complex_highest_days
     enhancer:
       id: ''
-    disabled: false
   field_complex_lowest_days:
+    disabled: false
     fieldName: field_complex_lowest_days
     publicName: request_data_complex_lowest_days
     enhancer:
       id: ''
-    disabled: false
   field_complex_median_days:
+    disabled: false
     fieldName: field_complex_median_days
     publicName: request_data_complex_median_days
     enhancer:
       id: ''
-    disabled: false
   field_email:
+    disabled: false
     fieldName: field_email
     publicName: email
     enhancer:
       id: ''
-    disabled: false
   field_expedited_average_days:
+    disabled: false
     fieldName: field_expedited_average_days
     publicName: request_data_expedited_average_days
     enhancer:
       id: ''
-    disabled: false
   field_expedited_highest_days:
+    disabled: false
     fieldName: field_expedited_highest_days
     publicName: request_data_expedited_highest_days
     enhancer:
       id: ''
-    disabled: false
   field_expedited_lowest_days:
+    disabled: false
     fieldName: field_expedited_lowest_days
     publicName: request_data_expedited_lowest_days
     enhancer:
       id: ''
-    disabled: false
   field_expedited_median_days:
+    disabled: false
     fieldName: field_expedited_median_days
     publicName: request_data_expedited_median_days
     enhancer:
       id: ''
-    disabled: false
   field_foia_officers:
+    disabled: false
     fieldName: field_foia_officers
     publicName: foia_officers
     enhancer:
       id: ''
-    disabled: false
+  field_interop_exception:
+    disabled: true
+    fieldName: field_interop_exception
+    publicName: field_interop_exception
+    enhancer:
+      id: ''
+  field_interop_planned_method:
+    disabled: true
+    fieldName: field_interop_planned_method
+    publicName: field_interop_planned_method
+    enhancer:
+      id: ''
+  field_interop_status:
+    disabled: true
+    fieldName: field_interop_status
+    publicName: field_interop_status
+    enhancer:
+      id: ''
   field_is_centralized:
+    disabled: false
     fieldName: field_is_centralized
     publicName: is_centralized
     enhancer:
       id: ''
-    disabled: false
   field_misc:
+    disabled: false
     fieldName: field_misc
     publicName: field_misc
     enhancer:
       id: ''
-    disabled: false
   field_portal_submission_format:
+    disabled: false
     fieldName: field_portal_submission_format
     publicName: portal_submission_format
     enhancer:
       id: ''
-    disabled: false
   field_public_liaisons:
+    disabled: false
     fieldName: field_public_liaisons
     publicName: public_liaisons
     enhancer:
       id: ''
-    disabled: false
   field_reading_rooms:
+    disabled: false
     fieldName: field_reading_rooms
     publicName: reading_rooms
     enhancer:
       id: ''
-    disabled: false
   field_receiver:
+    disabled: false
     fieldName: field_receiver
     publicName: paper_receiver
     enhancer:
       id: ''
-    disabled: false
   field_rep_exp:
+    disabled: false
     fieldName: field_rep_exp
     publicName: field_rep_exp
     enhancer:
       id: ''
-    disabled: false
   field_rep_start:
+    disabled: false
     fieldName: field_rep_start
     publicName: field_rep_start
     enhancer:
       id: ''
-    disabled: false
   field_request_data_year:
+    disabled: false
     fieldName: field_request_data_year
     publicName: request_data_year
     enhancer:
       id: ''
-    disabled: false
   field_request_submission_form:
+    disabled: false
     fieldName: field_request_submission_form
     publicName: request_form
     enhancer:
       id: ''
-    disabled: false
   field_service_centers:
+    disabled: false
     fieldName: field_service_centers
     publicName: service_centers
     enhancer:
       id: ''
-    disabled: false
   field_simple_average_days:
+    disabled: false
     fieldName: field_simple_average_days
     publicName: request_data_simple_average_days
     enhancer:
       id: ''
-    disabled: false
   field_simple_highest_days:
+    disabled: false
     fieldName: field_simple_highest_days
     publicName: request_data_simple_highest_days
     enhancer:
       id: ''
-    disabled: false
   field_simple_lowest_days:
+    disabled: false
     fieldName: field_simple_lowest_days
     publicName: request_data_simple_lowest_days
     enhancer:
       id: ''
-    disabled: false
   field_simple_median_days:
+    disabled: false
     fieldName: field_simple_median_days
     publicName: request_data_simple_median_days
     enhancer:
       id: ''
-    disabled: false
   field_submission_address:
+    disabled: false
     fieldName: field_submission_address
     publicName: submission_address
     enhancer:
       id: ''
-    disabled: false
   field_submission_api:
     disabled: true
     fieldName: field_submission_api
@@ -364,20 +393,20 @@ resourceFields:
     enhancer:
       id: ''
   field_submission_fax:
+    disabled: false
     fieldName: field_submission_fax
     publicName: submission_fax
     enhancer:
       id: ''
-    disabled: false
   field_submission_web:
+    disabled: false
     fieldName: field_submission_web
     publicName: submission_web
     enhancer:
       id: ''
-    disabled: false
   field_website:
+    disabled: false
     fieldName: field_website
     publicName: website
     enhancer:
       id: ''
-    disabled: false

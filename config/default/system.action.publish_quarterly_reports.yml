@@ -1,0 +1,16 @@
+uuid: 86bad41a-bdde-4029-8a3e-b4159dd07430
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflows.workflow.quarterly_report_workflow
+  module:
+    - content_moderation
+    - node
+id: publish_quarterly_reports
+label: 'Publish quarterly reports'
+type: node
+plugin: 'moderation_state_change:node'
+configuration:
+  workflow: quarterly_report_workflow
+  state: published

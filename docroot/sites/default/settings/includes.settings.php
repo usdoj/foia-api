@@ -30,7 +30,7 @@ if (EnvironmentDetector::isAhEnv()) {
     }
 
     if (file_exists(DRUPAL_ROOT . '/sites/acquia.inc')) {
-      require DRUPAL_ROOT . '/sites/acquia.inc';
+      require_once DRUPAL_ROOT . '/sites/acquia.inc';
       ac_protect_this_site();
     }
   }

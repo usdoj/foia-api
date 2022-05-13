@@ -35,7 +35,7 @@ function node_to_docx_help($route_name) {
     $help_template = [
       '#theme' => 'node_to_docx_help_admin',
     ];
-    $output = drupal_render($help_template);
+    $output = \Drupal::service('renderer')->render($help_template);
   }
   return $output;
 }
@@ -50,6 +50,11 @@ function node_to_docx_theme($existing, $type, $theme, $path) {
     ],
     'node_to_docx' => [
       'template' => 'node--node-to-docx',
+      'render element' => 'elements',
+      'file' => 'node_to_docx.theme.inc',
+    ],
+    'node_to_docx_quarterly' => [
+      'template' => 'node--quarterly-foia-report-data--node-to-docx',
       'render element' => 'elements',
       'file' => 'node_to_docx.theme.inc',
     ],

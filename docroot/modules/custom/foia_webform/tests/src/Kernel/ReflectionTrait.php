@@ -3,7 +3,7 @@
 namespace Drupal\Tests\foia_webform\Kernel;
 
 /**
- * Trait ReflectionTrait.
+ * Trait ReflectionTrait testing private and protected methods.
  *
  * @package Drupal\Tests\foia_webform\Kernel
  */

@@ -15,7 +15,7 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class FoiaSubmissionServiceApi.
+ * Class FoiaSubmissionServiceApi for API request submissions.
  */
 class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
 
@@ -108,6 +108,15 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     }
 
     $valuesToSubmit = $this->assembleRequestData($foiaRequest);
+    if (empty($valuesToSubmit)) {
+      // If no request data was found, raise a special exception.
+      $error = [
+        'message' => 'Webform submission could not be loaded.',
+      ];
+      $this->addSubmissionError($error);
+      $this->log('error', $error['message']);
+      return FALSE;
+    }
     return $this->submitToComponentEndpoint($componentEndpoint, $valuesToSubmit);
   }
 
@@ -123,6 +132,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected function assembleRequestData(FoiaRequestInterface $foiaRequest) {
     // Get the webform submission values.
     $formValues = $this->getSubmissionValues($foiaRequest);
+
+    if (empty($formValues)) {
+      return [];
+    }
 
     // Get the agency information.
     $agencyInfo = $this->getAgencyInfo();
@@ -146,8 +159,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected function getSubmissionValues(FoiaRequestInterface $foiaRequest) {
     $webformSubmissionId = $foiaRequest->get('field_webform_submission_id')->value;
     $webformSubmission = WebformSubmission::load($webformSubmissionId);
+    if (empty($webformSubmission)) {
+      return [];
+    }
     $webform = $webformSubmission->getWebform();
-
     $submissionValues = $webformSubmission->getData();
     // If there are files attached, load the files and add the file metadata.
     if ($webform->hasManagedFile()) {
@@ -317,8 +332,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       $this->log('warning', $error['message']);
       return FALSE;
     }
-    $id = isset($responseBody['id']) ? $responseBody['id'] : '';
-    $statusTrackingNumber = isset($responseBody['status_tracking_number']) ? $responseBody['status_tracking_number'] : '';
+    $id = $responseBody['id'] ?? '';
+    $statusTrackingNumber = $responseBody['status_tracking_number'] ?? '';
     if (!$id) {
       $error = [
         'http_code' => $responseCode,
@@ -457,8 +472,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
   protected function handleErrorResponseFromComponent(array $response, $responseCode) {
     $error['http_code'] = $responseCode;
     $error['code'] = $response['code'];
-    $error['message'] = isset($response['message']) ? $response['message'] : '';
-    $error['description'] = isset($response['description']) ? $response['description'] : '';
+    $error['message'] = $response['message'] ?? '';
+    $error['description'] = $response['description'] ?? '';
     $this->addSubmissionError($error);
     $context = [
       '@http_code' => $error['http_code'],
@@ -489,10 +504,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   An associative array containing error information.
    */
   protected function addSubmissionError(array $error) {
-    $this->errors['response_code'] = isset($error['http_code']) ? $error['http_code'] : '';;
-    $this->errors['code'] = isset($error['code']) ? $error['code'] : '';
-    $this->errors['message'] = isset($error['message']) ? $error['message'] : '';
-    $this->errors['description'] = isset($error['description']) ? $error['description'] : '';
+    $this->errors['response_code'] = $error['http_code'] ?? '';
+    $this->errors['code'] = $error['code'] ?? '';
+    $this->errors['message'] = $error['message'] ?? '';
+    $this->errors['description'] = $error['description'] ?? '';
   }
 
   /**

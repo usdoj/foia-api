@@ -1,0 +1,27 @@
+uuid: 9f0843bc-b8cc-496c-bc24-113f745fbca9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_quarterly_quarter
+    - node.type.quarterly_foia_report_data
+  module:
+    - foia_autocalc
+    - options
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.quarterly_foia_report_data.field_quarterly_quarter
+field_name: field_quarterly_quarter
+entity_type: node
+bundle: quarterly_foia_report_data
+label: Quarter
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

@@ -1,0 +1,27 @@
+uuid: ec493fe4-e3fc-450c-93f5-93e8514f2ac2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meeting_heading
+    - node.type.cfo_meeting
+  module:
+    - foia_autocalc
+    - text
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.cfo_meeting.field_meeting_heading
+field_name: field_meeting_heading
+entity_type: node
+bundle: cfo_meeting
+label: Heading
+description: 'The heading will appear at the top of the agenda page for this meeting.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

@@ -1,0 +1,39 @@
+uuid: 10b4b99d-5131-457f-ad8f-ac50677208f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.quarterly_foia_report_data_content_1
+  module:
+    - system
+    - user
+    - views
+  theme:
+    - bartik
+id: views_block__quarterly_foia_report_data_block
+theme: bartik
+region: content
+weight: 0
+provider: null
+plugin: 'views_block:quarterly_foia_report_data_content_1-quarterly_foia_report_data_block'
+settings:
+  id: 'views_block:quarterly_foia_report_data_content_1-quarterly_foia_report_data_block'
+  label: ''
+  label_display: '0'
+  provider: views
+  context_mapping: {  }
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/user/*'
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      agency_manager: agency_manager

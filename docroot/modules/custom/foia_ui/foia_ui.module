@@ -79,10 +79,12 @@ function foia_ui_form_node_form_alter(&$form, FormStateInterface $form_state, $f
         ],
       ],
     ];
-    foreach ($form['field_foia_xiie2']['widget'] as $key => &$element) {
-      if (is_int($key)) {
-        $element['subform']['field_back_cur_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report";
-        $element['subform']['field_back_prev_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report";
+    if (!empty($form['field_foia_xiie2']['widget'])) {
+      foreach ($form['field_foia_xiie2']['widget'] as $key => &$element) {
+        if (is_int($key)) {
+          $element['subform']['field_back_cur_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report";
+          $element['subform']['field_back_prev_yr']['widget']['0']['value']['#title'] = "Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report";
+        }
       }
     }
     $form['meta']['changed']['#markup'] = "<h4 class='label inline'>" . $form['meta']['changed']['#title'] . "</h4> " . $form['meta']['changed']['#markup'];

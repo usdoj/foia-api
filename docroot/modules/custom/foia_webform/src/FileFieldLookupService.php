@@ -5,7 +5,7 @@ namespace Drupal\foia_webform;
 use Drupal\webform\WebformInterface;
 
 /**
- * Class FileFieldLookupService.
+ * Class FileFieldLookupService file attachments in webforms.
  */
 class FileFieldLookupService {
 

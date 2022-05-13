@@ -27,13 +27,10 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       admin_app_vic1: admin_app_vic1
+    negate: 0
     target_bundles_drag_drop:
-      foia_xii_backlogged:
-        weight: 30
-        enabled: false
       admin_app_via:
         weight: 31
         enabled: false
@@ -41,8 +38,8 @@ settings:
         weight: 32
         enabled: false
       admin_app_vic1:
-        enabled: true
         weight: 33
+        enabled: true
       admin_app_vic2:
         weight: 34
         enabled: false
@@ -55,8 +52,11 @@ settings:
       admin_app_vic4:
         weight: 37
         enabled: false
-      component_details:
-        weight: 38
+      agenda_item:
+        weight: 41
+        enabled: false
+      attachments:
+        weight: 42
         enabled: false
       fees_x:
         weight: 39
@@ -79,14 +79,20 @@ settings:
       foia_req_vb3:
         weight: 45
         enabled: false
+      foia_xii_backlogged:
+        weight: 30
+        enabled: false
+      foia_xii_received_proc:
+        weight: 48
+        enabled: false
       foia_xiia:
         weight: 46
         enabled: false
       foia_xiib:
         weight: 47
         enabled: false
-      foia_xii_received_proc:
-        weight: 48
+      link_or_file:
+        weight: 54
         enabled: false
       oldest_days:
         weight: 49
@@ -94,10 +100,13 @@ settings:
       pending_requests_viid:
         weight: 50
         enabled: false
+      proc_req_viic:
+        weight: 52
+        enabled: false
       processed_requests_vii:
         weight: 51
         enabled: false
-      proc_req_viic:
+      quarterly_component_data:
         weight: 52
         enabled: false
       req_viiia:
@@ -117,5 +126,8 @@ settings:
         enabled: false
       sub_xib:
         weight: 58
+        enabled: false
+      working_groups:
+        weight: 66
         enabled: false
 field_type: entity_reference_revisions

@@ -1,0 +1,22 @@
+uuid: 94b79e28-4a62-44d6-af50-cd40e2f07e93
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.quarterly_foia_report_data
+id: node.quarterly_foia_report_data.status
+field_name: status
+entity_type: node
+bundle: quarterly_foia_report_data
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -107,7 +107,7 @@ class FoiaSubmissionPrettyFormatter {
   protected function updateSubmissionWithFileAttachmentNames(array $fileAttachmentElementKeys, array &$submissionContents) {
     foreach ($fileAttachmentElementKeys as $fileAttachmentElementKey) {
       $fileAttachmentNames = [];
-      $fids = isset($submissionContents[$fileAttachmentElementKey]) ? $submissionContents[$fileAttachmentElementKey] : '';
+      $fids = $submissionContents[$fileAttachmentElementKey] ?? '';
       if (empty($fids)) {
         continue;
       }

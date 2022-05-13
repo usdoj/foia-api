@@ -5,36 +5,359 @@
  * Primary module hooks for foia_annual_data_report module.
  */
 
+use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\AlertCommand;
+use Drupal\Core\Ajax\OpenDialogCommand;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Ajax\RedirectCommand;
 
 /**
- * Implements hook_form_form_id_alter().
+ * Implements hook_form_form_alter().
  */
-function foia_annual_data_report_form_node_annual_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Add the AJAX save callbacks.
-  foia_annual_data_report_ajax_existing_node($form);
-  foia_annual_data_report_set_default_report_year($form);
+function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  // Force a submit function to increase memory limit before core's submit.
-  foreach (array_keys($form['actions']) as $action) {
-    if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
-      array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
+  // Look for this string to match an Annual Data Report (ADR), section.
+  $adr_string = 'node_annual_foia_report_data_';
+
+  // Look for the adr string in the form id.
+  if (substr($form_id, 0, strlen($adr_string)) === $adr_string) {
+
+    // Attach form style updates.
+    $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_style_updates';
+
+    // Add the AJAX save callbacks.
+    $node = $form_state->getFormObject()->getEntity();
+    if ($node->isNew()) {
+      foia_annual_data_report_ajax_new_node($form);
     }
+    else {
+      foia_annual_data_report_ajax_existing_node($form);
+    }
+
+    // Use the Service to get info for an annual data report form.
+    $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info($form_id);
+
+    // This is an Annual Data Report form.
+    if ($adr_form_info['is_adr_form']) {
+
+      $form_section = $adr_form_info['form_section'];
+
+      // Add in the previous and next links if there are any.
+      if (!empty($adr_form_info['form_nav'])) {
+        $form['form_section'] = [
+          '#type' => 'value',
+          '#value' => $form_section,
+        ];
+        $form['form_section_links'] = [
+          '#markup' => $adr_form_info['form_nav'],
+        ];
+      }
+
+      foia_annual_data_report_set_default_report_year($form);
+
+      // Hidden fields should not be required.
+      foia_annual_data_report_unrequire_hidden_fields($form);
+
+      // Attach the css for the "dropdown" form section navigation.
+      $form['#attached']['library'][] = 'foia_annual_data_report/foia_annual_data_report_form_display_links';
+
+      // Attach node edit protection js.
+      $form['#attached']['library'][] = 'foia_annual_data_report/foia_node_edit_protection';
+
+      // Add validation for specific annual report sections.
+      $validate_sections = [
+        'edit',
+        'annual_report_vi_c_5_ten_oldest_pending',
+        'annual_report_vii_e_pending_requests_ten_oldest',
+        'annual_report_vii_d_pending_requests_all',
+        'annual_report_viii_a_requests_for_expedited_processing',
+      ];
+
+      if (in_array($form_section, $validate_sections)) {
+        $form['#validate'][] = '_form_annual_data_report_section_validate';
+      }
+
+      // Add general validation including checkig for existing report.
+      $form['#validate'][] = '_form_annual_data_report_validate';
+
+      // Don't try to alter redirect on default form display.
+      if ($form_section != 'edit') {
+        // Add a submit handler to redirect back to this section.
+        $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
+      }
+
+    }
+
+    // Force a submit function to increase memory limit before core's submit.
+    if ($form_id === 'node_annual_foia_report_data_edit_form') {
+      foreach (array_keys($form['actions']) as $action) {
+        if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+          array_unshift($form['actions'][$action]['#submit'], 'foia_annual_data_report_early_submit');
+        }
+      }
+    }
+
   }
 
 }
 
 /**
- * Implements hook_form_form_id_alter().
+ * For the Annual Data Report, redirect back to the section that was submitted.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
  */
-function foia_annual_data_report_form_node_annual_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  foia_annual_data_report_set_default_report_year($form);
-  foia_annual_data_report_ajax_new_node($form);
+function _foia_annual_data_report_section_redirect(
+  array &$form,
+  FormStateInterface $form_state): void {
+
+  // This section's part of the route was saved in the form.  If deleting,
+  // don't redirect.
+  if ('delete' == $form['form_section']['#value']) {
+    return;
+  }
+  $route = 'entity.node.edit_form.' . $form['form_section']['#value'];
+  // Redirect back to this page / section of the form.
+  $form_state->setRedirect($route, ['node' => $form_state->getformObject()->getEntity()->id()]);
+}
+
+/**
+ * Apply validation on specific fields in specific sections.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function _form_annual_data_report_section_validate(array &$form, FormStateInterface $form_state): void {
+
+  // Fields for validation.
+  $fields_to_validate = [
+    'field_admin_app_vic5',
+    'field_admin_app_viie',
+    'field_overall_vic5_num_day_1',
+    'field_overall_vic5_num_day_2',
+    'field_overall_vic5_num_day_3',
+    'field_overall_vic5_num_day_4',
+    'field_overall_vic5_num_day_5',
+    'field_overall_vic5_num_day_6',
+    'field_overall_vic5_num_day_7',
+    'field_overall_vic5_num_day_8',
+    'field_overall_vic5_num_day_9',
+    'field_overall_vic5_num_day_10',
+    'field_overall_viid_sim_pend',
+    'field_overall_viid_comp_pend',
+    'field_overall_viid_exp_pend',
+    'field_overall_viie_num_days_1',
+    'field_overall_viie_num_days_2',
+    'field_overall_viie_num_days_3',
+    'field_overall_viie_num_days_4',
+    'field_overall_viie_num_days_5',
+    'field_overall_viie_num_days_6',
+    'field_overall_viie_num_days_7',
+    'field_overall_viie_num_days_8',
+    'field_overall_viie_num_days_9',
+    'field_overall_viie_num_days_10',
+    'field_overall_viiia_num_jud_w10',
+    'field_pending_requests_vii_d_',
+    'field_req_viiia',
+  ];
+
+  $paragraph_parent_fields = [
+    'field_req_viiia',
+    'field_pending_requests_vii_d_',
+  ];
+
+  $paragraph_fields_for_validation = [
+    'field_sim_pend',
+    'field_comp_pend',
+    'field_exp_pend',
+    'field_num_jud_w10',
+    'field_num_grant',
+    'field_num_denied',
+  ];
+
+  $form_state_values = $form_state->getValues();
+
+  if (!empty($form_state_values)) {
+
+    foreach ($form_state_values as $key => $form_value) {
+
+      if (in_array($key, $fields_to_validate)) {
+
+        // Check if field is a selected paragraph field.
+        if (in_array($key, $paragraph_parent_fields)) {
+          _foia_annual_data_report_validate_paragraph_fields($form, $form_state, $key, $form_value, $paragraph_fields_for_validation);
+        }
+        else {
+
+          // Determine first if this is a subform of the field to be validated.
+          if (!empty($form_value['widget'][0]['subform'])) {
+            // Get the type of subform.
+            $subform = array_keys($form_value['widget'][0]['subform'])[0];
+            switch ($subform) {
+              case "group_oldest_days":
+                // Loop over each agency component.
+                foreach ($form_value as $pos => $value) {
+                  // Just get the values not widgets etc.
+                  if (is_numeric($pos)) {
+                    // Loop over 10 days.
+                    for ($i = 1; $i <= 10; $i++) {
+                      $this_fieldname = 'field_num_days_' . $i;
+                      $this_key = $key . '][' . $pos . '][subform][' . $this_fieldname;
+                      $this_value = $value['subform'][$this_fieldname][0]['value'];
+                      $element_title = 'Oldest Days agency component #' . ($pos + 1) . ' day #' . $i;
+                      $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
+                        [':element_title:' => $element_title]);
+                      _foia_annual_data_report_text_as_integer_validation($form_state, $this_key, $this_value, $error_msg);
+                    }
+                  }
+                }
+                break;
+            }
+          }
+
+          else {
+            $value = $form_value[0]['value'];
+            $element = $form[$key];
+            $element_title = $element['widget'][0]['#title'];
+            $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
+              [':element_title:' => $element_title]);
+            _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
+          }
+
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Validation function to check paragraph text fields.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ * @param string $parent_key
+ *   Parent form element key.
+ * @param array $parent_array
+ *   Parent array of paragraphs.
+ * @param array $fields_to_validate
+ *   List of fields to check.
+ */
+function _foia_annual_data_report_validate_paragraph_fields(array &$form, FormStateInterface $form_state, string $parent_key, array $parent_array, array $fields_to_validate): void {
+  if (!empty($parent_array)) {
+    foreach ($parent_array as $paragraph_key => $paragraph_value) {
+      if ($paragraph_key === 'add_more') {
+        continue;
+      }
+      $paragraph_items = $paragraph_value['subform'];
+      foreach ($paragraph_items as $key => $field_value) {
+        if (in_array($key, $fields_to_validate) && !empty($field_value[0]['value'])) {
+          $value = $field_value[0]['value'];
+          $element = $form[$parent_key];
+          $element_title = $element['widget']['#title'];
+          $error_msg = t("Invalid input for :element_title: item(s), please use number greater or equal to zero.",
+            [':element_title:' => $element_title]);
+          $key_path = "{$parent_key}][{$paragraph_key}][subform][{$key}";
+          _foia_annual_data_report_text_as_integer_validation($form_state, $key_path, $value, $error_msg);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Handles Validation check value is greater or equal to zero for text fields.
+ *
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ * @param string $key
+ *   Field key.
+ * @param string $value
+ *   Field Value.
+ * @param string $error_message
+ *   Error.
+ */
+function _foia_annual_data_report_text_as_integer_validation(FormStateInterface $form_state, $key, $value, $error_message): void {
+  if (!empty($value)) {
+    // Check of value is greater than or equal to 0.
+    if (!ctype_digit($value) || (int) $value < 0) {
+      // These should be warnings but not stop the user from saving (FE2-77).
+      // Used to be: $form_state->setErrorByName($key, $error_message); .
+      \Drupal::messenger()->addWarning($error_message);
+    }
+  }
+}
+
+/**
+ * Validation for the annual report.
+ *
+ * Makes sure there is not already a report for this agency and year.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function _form_annual_data_report_validate(array &$form, FormStateInterface $form_state): void {
+
+  $form_state_values = $form_state->getValues();
+
+  // Get the agency node id from the form state.
+  $agency_id = 0;
+  if (!empty($form_state_values['field_agency'][0]['target_id'])) {
+    $agency_id = $form_state_values['field_agency'][0]['target_id'];
+  }
+
+  // Get the report year from the form state.
+  $report_year = 0;
+  if (!empty($form_state_values['field_foia_annual_report_yr'][0]['value'])) {
+    $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'];
+  }
+
+  // Check for an existing report.
+  if ($form_state->getFormObject() instanceof EntityForm) {
+    $current_nid = $form_state->getformObject()->getEntity()->id();
+  }
+  else {
+    $current_nid = 0;
+  }
+
+  // With the agency id and report year, query the nodes to find one that
+  // has the same agency id and year.  If found through and error allowing
+  // the user to update the existing report or change the values.
+  if ($agency_id && $report_year) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'annual_foia_report_data')
+      ->condition('field_agency', $agency_id)
+      ->condition('field_foia_annual_report_yr', $report_year)
+      ->condition('nid', $current_nid, '!=')
+      ->sort('created', 'DESC')
+      ->range(0, 1);
+    $results = $query->execute();
+    // If there is a duplicate found throw error with link to existing report.
+    if (count($results)) {
+      $nid = array_pop($results);
+      $message = '<a href="/node/' . $nid . '/edit/annual_report_agency_info">Click here to edit the existing report</a> or change the values below.';
+      $rendered_message = Markup::create($message);
+      $error_message = new TranslatableMarkup('@message', ['@message' => $rendered_message]);
+      $form_state->setErrorByName('field_agency', 'There is already a report for the agency and year you specified.');
+      $form_state->setErrorByName('field_foia_annual_report_yr', $error_message);
+    }
+  }
+
 }
 
 /**
@@ -97,10 +420,70 @@ function foia_annual_data_report_ajax_existing_node(array &$form) {
  * @return \Drupal\Core\Ajax\AjaxResponse
  *   AjaxResponse object to alert user and redirect them.
  */
-function foia_annual_data_report_create_node(array $form, FormStateInterface
- $form_state) {
+function foia_annual_data_report_create_node(array $form, FormStateInterface $form_state) {
 
   $response = new AjaxResponse();
+  $form_state_values = $form_state->getValues();
+
+  // Get the agency node id from the form state.
+  $agency_id = 0;
+  if (!empty($form_state_values['field_agency'][0]['target_id'])) {
+    $agency_id = $form_state_values['field_agency'][0]['target_id'];
+  }
+
+  if (!$agency_id) {
+    $response->addCommand(new AlertCommand("Please select an Agency first."));
+    return $response;
+  }
+
+  // Make sure there's a year so we can do a proper lookup.
+  // Get the report year from the form state.
+  $report_year = 0;
+  if (!empty($form_state_values['field_foia_annual_report_yr'][0]['value'])) {
+    $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'];
+  }
+  else {
+    $response->addCommand(new AlertCommand("Please select a Report Year first."));
+    return $response;
+  }
+
+  // Check for a duplicate in this AJAX callback before saving a new node.
+  if ($agency_id && $report_year) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'annual_foia_report_data')
+      ->condition('field_agency', $agency_id)
+      ->condition('field_foia_annual_report_yr', $report_year)
+      ->sort('created', 'DESC')
+      ->range(0, 1);
+    $results = $query->execute();
+
+    // If there is a duplicate found throw error with link to existing report.
+    if (count($results)) {
+      $nid = array_pop($results);
+      $title = "Duplicate Report";
+      $agency_name = Term::load($agency_id)->get('name')->value;
+      $message = <<<EOS
+<p>There is already a report for <b>$agency_name</b> and the <b>year $report_year.</b></p>
+<p>Navigate to <a href="/node/$nid/edit">/node/$nid/edit</a> to change the existing report or <a href="javascript:void(0);" class="agency-back">choose a different year</a> before entering your agency.</p>
+<div class="form-actions js-form-wrapper form-wrapper">
+  <button type="button" class="button button--secondary agency-back">Add New</button>
+  <a href="/node/$nid/edit"><button type="button" class="button button--primary">Edit Existing</button></a>
+</div>
+EOS;
+
+      $options = [
+        'dialogClass' => 'agency-dialog',
+        'closeOnEscape' => TRUE,
+        'width' => '500',
+        'closeText' => '',
+        "resizable" => FALSE,
+        "modal" => TRUE,
+      ];
+
+      $response->addCommand(new OpenDialogCommand('#agency-modal', $title, $message, $options));
+      return $response;
+    }
+  }
 
   $node = \Drupal::entityTypeManager()->getStorage('node')->create([
     'type' => 'annual_foia_report_data',
@@ -125,8 +508,7 @@ function foia_annual_data_report_create_node(array $form, FormStateInterface
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state passed from hook_form_form_id_alter().
  */
-function foia_annual_data_report_refresh(array $form, FormStateInterface
- $form_state) {
+function foia_annual_data_report_refresh(array $form, FormStateInterface $form_state) {
 
   $node = \Drupal::routeMatch()->getParameter('node');
   $response = new AjaxResponse();
@@ -136,7 +518,7 @@ function foia_annual_data_report_refresh(array $form, FormStateInterface
     $nid = $node->id();
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
 
-    // @todo: If users change anything else it doesnt persist.
+    // @todo If users change anything else it doesn't persist.
     $node->set('field_agency', $form_state->getValue('field_agency'));
 
     // Set as new revision.
@@ -202,6 +584,43 @@ function foia_annual_data_report_set_default_report_year(array &$form) {
   if (!$default_value) {
     $form['field_foia_annual_report_yr']['widget'][0]['value']['#default_value'] = date('Y');
   }
+}
+
+/**
+ * FOIA annual report year form split un-require hidden fields.
+ *
+ * When updating an annual report by section, any required fields that
+ * are in the hidden region should not be required as the user has no
+ * way to update them on this form.
+ *
+ * @param array $form
+ *   The annual_foia_report_data node add or edit form array.
+ */
+function foia_annual_data_report_unrequire_hidden_fields(array &$form) {
+
+  // Look first for the hidden field group.
+  if (!empty($form['#fieldgroups']['group_hidden'])) {
+
+    // Get the fieldnames in the hidden fieldgroup.
+    $hidden_fields = $form['#fieldgroups']['group_hidden']->children;
+
+    // Loop through all fields in the form.
+    foreach ($form as $key => $form_item) {
+
+      // Take action if this form field is in the hidden group.
+      if (in_array($key, $hidden_fields)) {
+
+        // Un-require this field, since it is hidden and no way to update.
+        if (!empty($form_item['widget']['#required'])) {
+          $form[$key]['widget']['#required'] = FALSE;
+        }
+
+      }
+
+    }
+
+  }
+
 }
 
 /**
@@ -275,4 +694,121 @@ function foia_annual_data_report_debug_log(string $message_base) {
 
     \Drupal::logger('foia_annual_data_report')->debug($msg);
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function foia_annual_data_report_node_presave($entity) {
+
+  // Extra logic if Annual Report and published.
+  if (
+    $entity->getType() === 'annual_foia_report_data'
+    && $entity->isPublished()
+    && !empty($entity->field_proc_req_viia)
+  ) {
+
+    // Create a mapping of report fieldname to agency component node fieldname.
+    $field_mapping = [
+      'field_comp_avg' => 'field_complex_average_days',
+      'field_comp_high' => 'field_complex_highest_days',
+      'field_comp_low' => 'field_complex_lowest_days',
+      'field_comp_med' => 'field_complex_median_days',
+      'field_exp_avg' => 'field_expedited_average_days',
+      'field_exp_high' => 'field_expedited_highest_days',
+      'field_exp_low' => 'field_expedited_lowest_days',
+      'field_exp_med' => 'field_expedited_median_days',
+      'field_sim_avg' => 'field_simple_average_days',
+      'field_sim_high' => 'field_simple_highest_days',
+      'field_sim_low' => 'field_simple_lowest_days',
+      'field_sim_med' => 'field_simple_median_days',
+    ];
+
+    // Update all agency components with the report year.
+    $report_year = $entity->get('field_foia_annual_report_yr')->getValue()[0]['value'];
+
+    // For each agency in section VII.A., update the agency component node
+    // with processed requests data from this section.
+    foreach ($entity->field_proc_req_viia->referencedEntities() as $agency) {
+
+      // Node id for this agency component.
+      $ac_nid = $agency->get('field_agency_component')->getValue()[0]['target_id'];
+
+      // Node object - Agency Component.
+      $ac_node = Node::load($ac_nid);
+
+      // Loop over our field map and update ac node from the annual report.
+      foreach ($field_mapping as $field_report => $field_ac_node) {
+        $val = $agency->get($field_report)->getValue()[0]['value'];
+        $ac_node->set($field_ac_node, $val);
+      }
+      // Update the report year.
+      $ac_node->set('field_request_data_year', $report_year);
+
+      // Save the node.
+      $ac_node->save();
+
+    }
+
+  }
+
+}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ *
+ * Removes all the "Add As..." form display links for the annual
+ * report data.  Also renames the default link for adding a new report.
+ */
+function foia_annual_data_report_menu_local_actions_alter(&$local_actions) {
+
+  // Look for this string to match an Annual Data Report (ADR).
+  $adr_string = 'form_mode_manager.action:node.annual_report_';
+
+  foreach ($local_actions as $key => $action) {
+    // Look for the adr string in the key.
+    if (substr($key, 0, strlen($adr_string)) === $adr_string) {
+      // Unset if this is one of the form modes for the annual report.
+      if ($key != 'form_mode_manager.action:node.annual_report_agency_info') {
+        unset($local_actions[$key]);
+      }
+      // If this is the "agency info" make this the only ADR link.
+      else {
+        $local_actions[$key]['title'] = t('Add Annual Report Data');
+      }
+    }
+  }
+
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ *
+ * Removes the extra "Edit As..." form modes for annual data reports.
+ * Also removes the edit and renames the "agency info" form mode to edit.
+ */
+function foia_annual_data_report_entity_operation_alter(array &$operations, EntityInterface $entity) {
+
+  if ($entity->bundle() === 'annual_foia_report_data') {
+
+    // Look for this string to match an Annual Data Report (ADR).
+    $adr_string = 'annual_report_';
+
+    foreach ($operations as $key => $operation) {
+      // Look for the adr string in the key.
+      if (substr($key, 0, strlen($adr_string)) === $adr_string) {
+        // Unset if this is one of the form modes for the annual report.
+        if ($key != 'annual_report_agency_info') {
+          unset($operations[$key]);
+        }
+        // If this is the "agency info" make this the only ADR link.
+        else {
+          $operations[$key]['title'] = 'Edit by Section';
+          $operations[$key]['weight'] = 11;
+        }
+      }
+    }
+
+  }
+
 }

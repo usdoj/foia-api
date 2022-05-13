@@ -1,0 +1,37 @@
+uuid: 6af9c031-22a4-4d8c-ae4d-b5cdcd9c5519
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.rich_text
+    - node.type.cfo_meeting
+  module:
+    - content_moderation
+    - entity_browser
+    - filter
+    - node
+    - panelizer
+    - panels_ipe
+    - path
+id: cfo_meeting_creator
+label: 'CFO Meeting creator'
+weight: 15
+is_admin: false
+permissions:
+  - 'access image_browser entity browser pages'
+  - 'access media_browser entity browser pages'
+  - 'access panels in-place editing'
+  - 'administer panelizer node cfo_meeting content'
+  - 'administer panelizer node cfo_meeting layout'
+  - 'change layouts in place editing'
+  - 'create cfo_meeting content'
+  - 'create url aliases'
+  - 'edit own cfo_meeting content'
+  - 'use draft_draft transition'
+  - 'use draft_needs_review transition'
+  - 'use needs_review_needs_review transition'
+  - 'use text format rich_text'
+  - 'view any unpublished content'
+  - 'view cfo_meeting revisions'
+  - 'view latest version'
+  - 'view own unpublished content'

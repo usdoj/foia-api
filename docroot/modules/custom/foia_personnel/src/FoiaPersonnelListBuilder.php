@@ -26,7 +26,7 @@ class FoiaPersonnelListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\foia_personnel\Entity\FoiaPersonnel */
+    /** @var \Drupal\foia_personnel\Entity\FoiaPersonnel $entity */
     $row['id'] = $entity->id();
     $row['name'] = Link::createFromRoute(
       $entity->label(),

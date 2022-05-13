@@ -1,0 +1,26 @@
+uuid: 77696b40-a5ff-449b-99fa-81b573f05779
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_agenda_item_description
+    - paragraphs.paragraphs_type.agenda_item
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.agenda_item.field_agenda_item_description
+field_name: field_agenda_item_description
+entity_type: paragraph
+bundle: agenda_item
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

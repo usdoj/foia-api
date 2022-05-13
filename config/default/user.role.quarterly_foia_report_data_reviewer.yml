@@ -1,0 +1,25 @@
+uuid: fc96b8ed-d810-4287-8750-825683240489
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.quarterly_foia_report_data
+  module:
+    - content_moderation
+    - node
+id: quarterly_foia_report_data_reviewer
+label: 'Quarterly FOIA Report Data reviewer'
+weight: 14
+is_admin: false
+permissions:
+  - 'access content overview'
+  - 'delete any quarterly_foia_report_data content'
+  - 'edit any quarterly_foia_report_data content'
+  - 'use draft_published transition'
+  - 'use needs_review_draft transition'
+  - 'use needs_review_published transition'
+  - 'use published_archived transition'
+  - 'use published_published transition'
+  - 'view any unpublished content'
+  - 'view latest version'
+  - 'view moderation states'

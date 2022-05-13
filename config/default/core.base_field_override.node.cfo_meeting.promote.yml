@@ -1,0 +1,22 @@
+uuid: 2f6b0192-8395-470a-8456-8fa1efb33777
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.cfo_meeting
+id: node.cfo_meeting.promote
+field_name: promote
+entity_type: node
+bundle: cfo_meeting
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

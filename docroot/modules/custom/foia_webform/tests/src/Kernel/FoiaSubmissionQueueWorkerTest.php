@@ -9,6 +9,10 @@ use Drupal\foia_request\Entity\FoiaRequest;
 
 /**
  * Class FoiaSubmissionQueueWorkerTest.
+ *
+ * Testing of webform submission.
+ *
+ * @package Drupal\Tests\foia_webform\Kernel
  */
 class FoiaSubmissionQueueWorkerTest extends FoiaSubmissionServiceApiTest {
 

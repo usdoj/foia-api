@@ -1,0 +1,14 @@
+uuid: e7e93b42-4bb7-4618-8b6d-7a8cf6a7b9a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_page_reviewer
+  module:
+    - user
+id: user_remove_role_action.cfo_page_reviewer
+label: 'Remove the CFO Page reviewer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cfo_page_reviewer

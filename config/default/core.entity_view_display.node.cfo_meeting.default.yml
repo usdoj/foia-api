@@ -1,0 +1,83 @@
+uuid: f0a5ea2b-bfd5-4e6d-a0ff-402e6ac4adc2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.cfo_meeting.body
+    - field.field.node.cfo_meeting.field_meeting_agenda
+    - field.field.node.cfo_meeting.field_meeting_date
+    - field.field.node.cfo_meeting.field_meeting_documents
+    - field.field.node.cfo_meeting.field_meeting_heading
+    - field.field.node.cfo_meeting.field_meeting_materials
+    - node.type.cfo_meeting
+  module:
+    - datetime
+    - entity_reference_revisions
+    - panelizer
+    - text
+    - user
+third_party_settings:
+  panelizer:
+    enable: false
+    custom: false
+    allow: false
+    default: default
+id: node.cfo_meeting.default
+targetEntityType: node
+bundle: cfo_meeting
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_meeting_agenda:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_meeting_date:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_meeting_heading:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_meeting_materials:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_meeting_documents: true
+  search_api_excerpt: true

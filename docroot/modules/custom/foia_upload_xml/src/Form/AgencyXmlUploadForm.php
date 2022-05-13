@@ -184,7 +184,7 @@ class AgencyXmlUploadForm extends FormBase {
     // This is fine when the file is being processed immediately.
     $user_agency_nid = $user->get('field_agency')->target_id;
     $xml_upload_filename = "$directory/report_" . date('Y') . "_" . $user_agency_nid . ".xml";
-    $file = file_move($file, $xml_upload_filename, FILE_EXISTS_REPLACE);
+    $file = file_move($file, $xml_upload_filename, FileSystemInterface::EXISTS_REPLACE);
 
     $batch = [
       'title' => $this->t('Importing Annual Report XML Data...'),
@@ -282,7 +282,7 @@ class AgencyXmlUploadForm extends FormBase {
   protected function prepareDirectory(string $file_scheme = 'temporary') {
     $directory = $file_scheme . '://foia-xml';
     \Drupal::service('file_system')
-      ->prepareDirectory($directory, FILE_CREATE_DIRECTORY);
+      ->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
 
     return $directory;
   }

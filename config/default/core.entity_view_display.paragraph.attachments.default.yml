@@ -1,0 +1,32 @@
+uuid: 6c24f1c1-21b9-4fd8-a5ea-e8f7910513be
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.attachments.field_attachment
+    - field.field.paragraph.attachments.field_title
+    - paragraphs.paragraphs_type.attachments
+  module:
+    - file
+id: paragraph.attachments.default
+targetEntityType: paragraph
+bundle: attachments
+mode: default
+content:
+  field_attachment:
+    type: file_url_plain
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

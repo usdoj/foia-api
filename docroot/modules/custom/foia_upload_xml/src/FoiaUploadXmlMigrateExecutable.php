@@ -52,7 +52,7 @@ class FoiaUploadXmlMigrateExecutable extends MigrateExecutable {
    *   this exception, or the DefaultHandler which will output a generic failed
    *   message.
    */
-  protected function getFailureHandler($e) {
+  protected function getFailureHandler(\Exception $e) {
     $failedMethod = reset($e->getTrace());
     $container = \Drupal::getContainer();
     if ($failedMethod['class'] === Extract::class && $e->getMessage() == 'Input should be an array.') {
@@ -61,4 +61,5 @@ class FoiaUploadXmlMigrateExecutable extends MigrateExecutable {
 
     return new DefaultHandler($e, $container->get('messenger'), $this->migration, $container->get('string_translation'));
   }
+
 }

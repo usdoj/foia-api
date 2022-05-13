@@ -1,0 +1,14 @@
+uuid: 1900340d-5a98-4928-918a-11f3a06d03b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cfo_meeting_reviewer
+  module:
+    - user
+id: user_remove_role_action.cfo_meeting_reviewer
+label: 'Remove the CFO Meeting reviewer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cfo_meeting_reviewer

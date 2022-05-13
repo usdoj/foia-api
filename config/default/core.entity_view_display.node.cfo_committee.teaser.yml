@@ -1,0 +1,42 @@
+uuid: 9c0dc38e-5380-4765-aec1-2f5c48912ac5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.cfo_committee.body
+    - field.field.node.cfo_committee.field_attachments
+    - field.field.node.cfo_committee.field_cfo_slug
+    - field.field.node.cfo_committee.field_working_groups
+    - node.type.cfo_committee
+  module:
+    - text
+    - user
+id: node.cfo_committee.teaser
+targetEntityType: node
+bundle: cfo_committee
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_attachments: true
+  field_cfo_slug: true
+  field_working_groups: true
+  search_api_excerpt: true

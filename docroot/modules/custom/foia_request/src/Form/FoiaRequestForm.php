@@ -22,11 +22,11 @@ class FoiaRequestForm extends ContentEntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the FOIA Request.'));
+        $this->messenger()->addStatus($this->t('Created the FOIA Request.'));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the FOIA Request.'));
+        $this->messenger()->addStatus($this->t('Saved the FOIA Request.'));
     }
     $form_state->setRedirect('entity.foia_request.canonical', ['foia_request' => $entity->id()]);
   }

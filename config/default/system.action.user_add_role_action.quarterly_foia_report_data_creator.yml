@@ -1,0 +1,14 @@
+uuid: 4f6cd81a-d369-4031-9a2f-d7e16fa109c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.quarterly_foia_report_data_creator
+  module:
+    - user
+id: user_add_role_action.quarterly_foia_report_data_creator
+label: 'Add the Quarterly FOIA Report Data creator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: quarterly_foia_report_data_creator
