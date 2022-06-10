@@ -330,7 +330,18 @@ display:
           query_tags: {  }
       relationships: {  }
       header: {  }
-      footer: {  }
+      footer:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: false
+          content: '<hr>'
+          tokenize: false
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -480,9 +491,9 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: true
-            text: ' (json)'
-            make_link: true
+            alter_text: false
+            text: 'API Endpoint'
+            make_link: false
             path: '/api/cfo/committee/{{ field_cfo_slug }}'
             absolute: false
             external: false
@@ -546,8 +557,8 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ title }} {{ status }} {{ field_cfo_slug }}'
-            make_link: true
+            text: "<div class=\"card\">\r\n    <div class=\"card-body\">\r\n        <h5>{{ title }}  {{ status }}</h5>\r\n        <p><a href=\"/api/cfo/committee/{{ field_cfo_slug }}\" target=\"_blank\">API Endpoint</a></p>\r\n        <p><a href=\"https://www.foia.gov/chief-foia-officers-council/committee/{{ field_cfo_slug }}\" target=\"_blank\">Frontend</a></p>\r\n        <p><a href=\"{{ edit_node }}?destination=/admin/content/cfo-council\" target=\"_blank\">Backend</a></p>\r\n    </div>\r\n</div>\r\n"
+            make_link: false
             path: '{{ edit_node }}?destination=/admin/content/cfo-council'
             absolute: false
             external: false
@@ -571,18 +582,18 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: ''
+          element_type: div
           element_class: ''
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
+          element_default_classes: false
+          empty: 'Nothing Found'
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: true
+          hide_alter_empty: false
           click_sort_column: value
           type: string
           settings:
@@ -666,14 +677,16 @@ display:
         groups:
           1: AND
       style:
-        type: html_list
+        type: grid
         options:
           grouping: {  }
-          row_class: ''
-          default_row_class: true
-          type: ul
-          wrapper_class: item-list
-          class: ''
+          columns: 4
+          automatic_width: true
+          alignment: horizontal
+          row_class_custom: ''
+          row_class_default: true
+          col_class_custom: ''
+          col_class_default: true
       row:
         type: fields
         options: {  }
@@ -700,7 +713,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: '<h3>Committees (full list)</h3>'
+            value: "<br>\r\n<h2>Committees (full list)</h2>"
             format: rich_text
           tokenize: false
       display_extenders: {  }
@@ -919,9 +932,9 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: true
-            text: ' (json)'
-            make_link: true
+            alter_text: false
+            text: 'API Endpoint'
+            make_link: false
             path: '/api/cfo/meeting/{{ field_meeting_date }}'
             absolute: false
             external: false
@@ -986,8 +999,8 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ title }} {{ status }} {{ field_meeting_date }}'
-            make_link: true
+            text: "<div class=\"card\">\r\n    <div class=\"card-body\">\r\n        <h5>{{ title }}  {{ status }}</h5>\r\n        <p><a href=\"/api/cfo/meeting/{{ field_meeting_date }}\" target=\"_blank\">API Endpoint</a></p>\r\n        <p><a href=\"https://www.foia.gov/chief-foia-officers-council/meeting/{{ field_meeting_date }}\" target=\"_blank\">Frontend</a></p>\r\n        <p><a href=\"{{ edit_node }}?destination=/admin/content/cfo-council\" target=\"_blank\">Backend</a></p>\r\n    </div>\r\n</div>\r\n\r\n"
+            make_link: false
             path: '{{ edit_node }}?destination=/admin/content/cfo-council'
             absolute: false
             external: false
@@ -1019,7 +1032,7 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: 'Nothing Found'
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -1105,17 +1118,23 @@ display:
         groups:
           1: AND
       style:
-        type: html_list
+        type: grid
         options:
           grouping: {  }
-          row_class: ''
-          default_row_class: true
-          type: ul
-          wrapper_class: item-list
-          class: ''
+          columns: 4
+          automatic_width: true
+          alignment: horizontal
+          row_class_custom: ''
+          row_class_default: true
+          col_class_custom: ''
+          col_class_default: true
       row:
         type: fields
-        options: {  }
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: '<hr>'
+          hide_empty: false
       defaults:
         title: false
         style: false
@@ -1139,7 +1158,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: '<h3>Meetings</h3>'
+            value: "<br>\r\n<h2>Meetings</h2>"
             format: rich_text
           tokenize: false
       display_extenders: {  }
@@ -1228,9 +1247,9 @@ display:
           label: ''
           exclude: false
           alter:
-            alter_text: false
-            text: ''
-            make_link: true
+            alter_text: true
+            text: "<h3>CFO Council Main Page</h3>\r\n<div class=\"views-label\"><a href=\"{{ edit_node }}?destination=/admin/content/cfo-council\">Backend</a></div>\r\n<div class=\"views-label\"><a href=\"https://www.foia.gov/chief-foia-officers-council\">Frontend</a></div>\r\n<br><br>\r\n"
+            make_link: false
             path: '{{ edit_node }}?destination=/admin/content/cfo-council'
             absolute: false
             external: false
@@ -1259,7 +1278,7 @@ display:
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
-          element_wrapper_type: h2
+          element_wrapper_type: div
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
@@ -1392,7 +1411,7 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: 'Nothing Found'
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -1425,7 +1444,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: "<strong>ADD CONTENT: </strong>&nbsp;&nbsp;\r\n<a href=\"/node/add/cfo_committee?destination=/admin/content/cfo-council\">click here to add a committee</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/node/add/cfo_meeting?destination=/admin/content/cfo-council\">click here to add a meeting</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/node/add/cfo_page?destination=/admin/content/cfo-council\">click here to add a page</a>\r\n<br>\r\n<strong>JSON FEEDS: </strong>&nbsp;&nbsp;\r\n<a href=\"/api/cfo/council\" target=\"_blank\">council page</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/api/cfo/committees\" target=\"_blank\">committees list</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/api/cfo/meetings\" target=\"_blank\">meetings list</a>\r\n&nbsp;&nbsp;|&nbsp;&nbsp;\r\n<a href=\"/api/cfo/pages\" target=\"_blank\">pages list</a>\r\n<br><br>"
+            value: "<table>\r\n    <tr>\r\n        <td>\r\n            <h3>ADD CONTENT:</h3>\r\n            <ul>\r\n                <li><a href=\"/node/add/cfo_page?destination=/admin/content/cfo-council\">Add CFO Council Page</a></li>\r\n                <li><a href=\"/node/add/cfo_committee?destination=/admin/content/cfo-council\">Add a Committee</a></li>\r\n                <li><a href=\"/node/add/cfo_meeting?destination=/admin/content/cfo-council\">Add a Meeting</a></li>\r\n            </ul>\r\n        </td>\r\n\r\n        <td>\r\n\r\n            <h3>JSON FEEDS: </h3>\r\n\r\n            <ul>\r\n                <li><a href=\"/api/cfo/council\" target=\"_blank\">Council Page</a></li>\r\n                <li><a href=\"/api/cfo/committees\" target=\"_blank\">Committees List</a></li>\r\n                <li><a href=\"/api/cfo/meetings\" target=\"_blank\">Meetings List</a></li>\r\n                <li><a href=\"/api/cfo/pages\" target=\"_blank\">Page List</a></li>\r\n            </ul>\r\n        </td>\r\n    </tr>\r\n</table>\r\n<p>NOTE: Front-end links may not work if the page has not been hardcoded into the front-end.</p>"
             format: rich_text
           tokenize: false
       display_extenders: {  }
@@ -1587,9 +1606,9 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: true
-            text: ' (json)'
-            make_link: true
+            alter_text: false
+            text: 'API Endpoint'
+            make_link: false
             path: '/api/cfo/page/{{ field_cfo_slug }}'
             absolute: false
             external: false
@@ -1653,8 +1672,8 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ title }} {{ status }} {{ field_cfo_slug }}'
-            make_link: true
+            text: "<div class=\"card\">\r\n    <div class=\"card-body\">\r\n        <h5>{{ title }}  {{ status }}</h5>\r\n        <p><a href=\"/api/cfo/page/{{ field_cfo_slug }}\" target=\"_blank\">API Endpoint</a></p>\r\n        <p><a href=\"https://www.foia.gov/chief-foia-officers-council/{{ field_cfo_slug }}\" target=\"_blank\">Frontend</a></p>\r\n        <p><a href=\"{{ edit_node }}?destination=/admin/content/cfo-council\" target=\"_blank\">Backend</a></p>\r\n    </div>\r\n</div>\r\n"
+            make_link: false
             path: '{{ edit_node }}?destination=/admin/content/cfo-council'
             absolute: false
             external: false
@@ -1686,7 +1705,7 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: 'Nothing Found'
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -1773,14 +1792,16 @@ display:
         groups:
           1: AND
       style:
-        type: html_list
+        type: grid
         options:
           grouping: {  }
-          row_class: ''
-          default_row_class: true
-          type: ul
-          wrapper_class: item-list
-          class: ''
+          columns: 4
+          automatic_width: true
+          alignment: horizontal
+          row_class_custom: ''
+          row_class_default: true
+          col_class_custom: ''
+          col_class_default: true
       row:
         type: fields
         options: {  }
@@ -1807,7 +1828,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: '<h3>Pages</h3>'
+            value: "<br>\r\n<h2>Pages</h2>"
             format: rich_text
           tokenize: false
       display_extenders: {  }
