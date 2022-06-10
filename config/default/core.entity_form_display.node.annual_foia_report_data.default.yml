@@ -318,7 +318,7 @@ dependencies:
     - field.field.node.annual_foia_report_data.field_sub_xia
     - field.field.node.annual_foia_report_data.field_sub_xib
     - node.type.annual_foia_report_data
-    - workflows.workflow.quarterly_report_workflow
+    - workflows.workflow.annual_report_workflow
   module:
     - content_moderation
     - entity_reference_views_select
@@ -353,9 +353,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Requests Pending as of End of Fiscal Year" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Requests Pending as of End of Fiscal Year" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_overall_vb1_main:
       children:
@@ -368,11 +369,11 @@ third_party_settings:
       weight: 5
       format_type: tab
       format_settings:
-        label: 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS '
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The sum of all columns (calculated column titled ''TOTAL'') must match the number entered in V.A., column ''Number of Requests Processed in Fiscal Year'' for the component, and for the agency overall.'
+        description: '<h3>V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The sum of all columns (calculated column titled ''TOTAL'') must match the number entered in V.A., column ''Number of Requests Processed in Fiscal Year'' for the component, and for the agency overall. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_agency_info:
       children:
@@ -387,7 +388,6 @@ third_party_settings:
       weight: 2
       format_type: tab
       format_settings:
-        label: 'Agency Info'
         classes: ''
         id: ''
         formatter: open
@@ -405,9 +405,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, at least one description must also be entered. If a description is entered, an associated count must be entered. Counts must be non-negative integers. For each agency/component enter any "Other Reasons for Denials" from Chart V.B.1. Each agency/component may have more than one "Other Reason." To add another reason for a component click "Add FOIA Requests V.B.2. Other Denials Detail." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The calculated column titled ''COMPONENT TOTAL'' must match the number entered in V.B.1., column ''Other'' for the component, and for the agency overall. If a component or the agency does not have other reasons to list, users should enter “N/A” for the Description and “0” for the Number of Times “Other” Reason was Relied Upon.'
+        description: '<h3>V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, at least one description must also be entered. If a description is entered, an associated count must be entered. Counts must be non-negative integers. For each agency/component enter any "Other Reasons for Denials" from Chart V.B.1. Each agency/component may have more than one "Other Reason." To add another reason for a component click "Add FOIA Requests V.B.2. Other Denials Detail." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The calculated column titled ''COMPONENT TOTAL'' must match the number entered in V.B.1., column ''Other'' for the component, and for the agency overall. If a component or the agency does not have other reasons to list, users should enter “N/A” for the Description and “0” for the Number of Times “Other” Reason was Relied Upon. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_v_b_3_disposition_of_foia_:
       children:
@@ -421,9 +422,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vi_a_administrative_appeal:
       children:
@@ -433,16 +435,17 @@ third_party_settings:
         - field_overall_via_app_proc_yr
         - field_overall_via_app_pend_endyr
         - field_footnotes_via
-      label: 'VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL'
+      label: 'VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS - RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL'
       region: content
       parent_name: group_tabs
       weight: 8
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers.  To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Appeals Pending as of End of Fiscal Year" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers.  To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Appeals Pending as of End of Fiscal Year" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vi_c_2_reasons_for_denial_:
       children:
@@ -466,9 +469,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vi_c_1_reasons_for_denial_:
       children:
@@ -495,9 +499,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vi_b_disposition_of_admini:
       children:
@@ -515,9 +520,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The "Total" must match the "Number of Appeals Processed in Fiscal Year" for the component and "Agency Overall Number of Appeals Processed in Fiscal Year" in section VI.A.'
+        description: '<h3>VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The "Total" must match the "Number of Appeals Processed in Fiscal Year" for the component and "Agency Overall Number of Appeals Processed in Fiscal Year" in section VI.A. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vi_c_3_reasons_for_denial_:
       children:
@@ -531,9 +537,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS</h3>Only those components that process administrative appeals should be entered in this section. If a component or the agency does not have other reasons to list, users should enter “N/A” for the Description and “0” for the Number of Times “Other” Reason was Relied Upon. Each agency/component may have more than one "Other Reason." To add another reason for a component click "Add Admin. Appeals VI.C.3. Other Denials Detail." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The calculated column titled ''COMPONENT TOTAL'' must match the number entered on tab VI.C.2., column ''Other'' for the component, and for the agency overall.'
+        description: '<h3>VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS</h3>Only those components that process administrative appeals should be entered in this section. If a component or the agency does not have other reasons to list, users should enter “N/A” for the Description and “0” for the Number of Times “Other” Reason was Relied Upon. Each agency/component may have more than one "Other Reason." To add another reason for a component click "Add Admin. Appeals VI.C.3. Other Denials Detail." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. The calculated column titled ''COMPONENT TOTAL'' must match the number entered on tab VI.C.2., column ''Other'' for the component, and for the agency overall. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vi_c_4_response_time_for_a:
       children:
@@ -550,9 +557,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative numeric values, or the special values "<1" or "N/A." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: '<h3>VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS</h3>Only those components that process administrative appeals should be entered in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative numeric values, or the special values "<1" or "N/A." To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vi_c_5_ten_oldest_pending_:
       children:
@@ -572,7 +580,6 @@ third_party_settings:
       weight: 30
       format_type: tabs
       format_settings:
-        label: 'Agency Overall VI.C.(5).'
         classes: ''
         id: ''
         direction: vertical
@@ -631,7 +638,6 @@ third_party_settings:
       weight: 17
       format_type: tab
       format_settings:
-        label: 'Agency Overall 7th'
         classes: ''
         id: ''
         formatter: closed
@@ -647,7 +653,6 @@ third_party_settings:
       weight: 16
       format_type: tab
       format_settings:
-        label: 'Agency Overall 6th'
         classes: ''
         id: ''
         formatter: closed
@@ -663,7 +668,6 @@ third_party_settings:
       weight: 15
       format_type: tab
       format_settings:
-        label: 'Agency Overall 5th'
         classes: ''
         id: ''
         formatter: closed
@@ -679,7 +683,6 @@ third_party_settings:
       weight: 14
       format_type: tab
       format_settings:
-        label: 'Agency Overall 4th'
         classes: ''
         id: ''
         formatter: closed
@@ -695,7 +698,6 @@ third_party_settings:
       weight: 13
       format_type: tab
       format_settings:
-        label: 'Agency Overall 3rd'
         classes: ''
         id: ''
         formatter: closed
@@ -711,7 +713,6 @@ third_party_settings:
       weight: 12
       format_type: tab
       format_settings:
-        label: 'Agency Overall 2nd'
         classes: ''
         id: ''
         formatter: closed
@@ -727,7 +728,6 @@ third_party_settings:
       weight: 11
       format_type: tab
       format_settings:
-        label: 'Agency Overall Oldest Appeal'
         classes: ''
         id: ''
         formatter: closed
@@ -744,7 +744,6 @@ third_party_settings:
       weight: 23
       format_type: tabs
       format_settings:
-        label: 'Agency Overall VII.A'
         classes: ''
         id: ''
         direction: vertical
@@ -888,11 +887,11 @@ third_party_settings:
       weight: 17
       format_type: tab
       format_settings:
-        label: 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: "<h3>VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
+        description: "<h3>VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p> <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>"
         required_fields: true
     group_vii_c_2_processed_complex_:
       children:
@@ -918,11 +917,11 @@ third_party_settings:
       weight: 18
       format_type: tab
       format_settings:
-        label: 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS '
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: "<h3>VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
+        description: "<h3>VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p> <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>"
         required_fields: true
     group_vii_c_3_processed_requests:
       children:
@@ -948,11 +947,11 @@ third_party_settings:
       weight: 19
       format_type: tab
       format_settings:
-        label: 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS '
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: "<h3>VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
+        description: "<h3>VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS</h3><p>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. All values must be non-negative integers. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" field(s) will be autocalculated as you enter data in this section.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p> <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>"
         required_fields: true
     group_vii_d_pending_requests_all:
       children:
@@ -1202,11 +1201,11 @@ third_party_settings:
       weight: 22
       format_type: tab
       format_settings:
-        label: 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VIII.A. REQUESTS FOR EXPEDITED PROCESSING</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A". Enter “N/A” for Median and Average if the component did not adjudicate any requests for expedited processing during the fiscal year. "Number Adjudicated within Ten Calendar Days" column must contain non-negative integers, or the special value "N/A". To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: '<h3>VIII.A. REQUESTS FOR EXPEDITED PROCESSING</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A". Enter “N/A” for Median and Average if the component did not adjudicate any requests for expedited processing during the fiscal year. "Number Adjudicated within Ten Calendar Days" column must contain non-negative integers, or the special value "N/A". To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_viii_b_requests_for_fee_wa:
       children:
@@ -1222,11 +1221,11 @@ third_party_settings:
       weight: 23
       format_type: tab
       format_settings:
-        label: 'VIII.B. Requests for Fee Waiver'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VIII.B. Requests for Fee Waiver</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A." Enter “0” for number granted and denied and “N/A” for Median and Average Number of Days if the component did not adjudicate any requests for fee waiver during the fiscal year. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: '<h3>VIII.B. Requests for Fee Waiver</h3>Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A." Enter “0” for number granted and denied and “N/A” for Median and Average Number of Days if the component did not adjudicate any requests for fee waiver during the fiscal year. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_ix_foia_personnel_and_cost:
       children:
@@ -1286,9 +1285,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>X. Fees Collected for Processing Requests</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Total Amount of Fees Collected" value must be non-negative numeric. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Percentage of Total Cost" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>X. Fees Collected for Processing Requests</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Total Amount of Fees Collected" value must be non-negative numeric. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Percentage of Total Cost" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xi_a_number_of_times_subse:
       children:
@@ -1302,9 +1302,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XI.A. Number of Times Subsection (C) Used</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>XI.A. Number of Times Subsection (C) Used</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xi_b_number_of_subsection_:
       children:
@@ -1319,9 +1320,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XI.B. Number of Subsection (A)(2) Postings</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>XI.B. Number of Subsection (A)(2) Postings</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_a_backlogs_of_foia_req:
       children:
@@ -1336,9 +1338,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XII.A. Backlogs of FOIA Requests and Administrative Appeals</h3>If the component field is filled in, all other editable columns must be filled in. "Number of Backlogged Requests" column must contain non-negative integers. "Number of Backlogged Appeals" column must contain non-negative integers, or the special value "N/A". Users should enter "N/A" for any components of their agency that do not process appeals. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>XII.A. Backlogs of FOIA Requests and Administrative Appeals</h3>If the component field is filled in, all other editable columns must be filled in. "Number of Backlogged Requests" column must contain non-negative integers. "Number of Backlogged Appeals" column must contain non-negative integers, or the special value "N/A". Users should enter "N/A" for any components of their agency that do not process appeals. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_b_consultations_on_foi:
       children:
@@ -1355,9 +1358,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Number of Consultations Received from Other Agencies that were Pending at the Agency as of End of the Fiscal Year" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_c_consultations_on_foi:
       children:
@@ -1586,9 +1590,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XII.D.(2). COMPARISON OF BACKLOGGED REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>XII.D.(2). COMPARISON OF BACKLOGGED REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_e_1_comparison_of_numb:
       children:
@@ -1616,9 +1621,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xiie1_num_appeals_recd:
       children:
@@ -1719,7 +1725,6 @@ third_party_settings:
       weight: 21
       format_type: tab
       format_settings:
-        label: 'Agency Overall'
         classes: ''
         id: ''
         formatter: closed
@@ -1826,11 +1831,11 @@ third_party_settings:
       weight: 14
       format_type: tab
       format_settings:
-        label: 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS</h3>Only those components that process administrative appeals should be entered in this section. If a component or the agency overall does not have ten or more appeals pending as of the end of the fiscal year, complete the excess cells by listing "N/A" for the "Date of Appeal" and "0" for the "Number of Days Pending." If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days Pending" values must be non-negative integers. Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.\r\n\r\nIn the date field enter the date the appeal was received.'
+        description: '<h3>VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS</h3>Only those components that process administrative appeals should be entered in this section. If a component or the agency overall does not have ten or more appeals pending as of the end of the fiscal year, complete the excess cells by listing "N/A" for the "Date of Appeal" and "0" for the "Number of Days Pending." If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days Pending" values must be non-negative integers. Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.\r\n\r\nIn the date field enter the date the appeal was received. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vii_a_foia_requests_wrap:
       children:
@@ -1843,11 +1848,11 @@ third_party_settings:
       weight: 15
       format_type: tab
       format_settings:
-        label: 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: "<h3>VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
+        description: "<h3>VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p> <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>"
         required_fields: true
     group_vii_b_processed_req_wrap:
       children:
@@ -1860,11 +1865,11 @@ third_party_settings:
       weight: 16
       format_type: tab
       format_settings:
-        label: 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: "<h3>VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p>"
+        description: "<h3>VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED</h3><p>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. Values must either be non-negative numeric values, the special value \"<1\", or the special value \"N/A\". Enter “N/A” for Median, Average, Lowest or Highest Number of Days if there are no requests for that track. To add a component click \"Add\" above the \"Agency Overall\" fields. The \"Agency Overall\" fields must be manually entered, they are not autocalculated.</p>\r\n<p>Only processed perfected requests should be included in this section. Requests with dispositions \"Not Reasonably Described\" and \"Improper\" should not be included in this section.</p> <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>"
         required_fields: true
     group_vii_d_pending_req_wrap:
       children:
@@ -1877,11 +1882,11 @@ third_party_settings:
       weight: 20
       format_type: tab
       format_settings:
-        label: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Pending" fields must contain non-negative integer, or the special value "N/A". "Median" and "Average" fields must contain non-negative decimal numbers, or the special value "N/A". If there are no pending requests for a track, enter “0” for number pending and “N/A” for Median and Average Number of Days. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: '<h3>VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Pending" fields must contain non-negative integer, or the special value "N/A". "Median" and "Average" fields must contain non-negative decimal numbers, or the special value "N/A". If there are no pending requests for a track, enter “0” for number pending and “N/A” for Median and Average Number of Days. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_vii_e_pending_req_wrap:
       children:
@@ -1894,11 +1899,11 @@ third_party_settings:
       weight: 21
       format_type: tab
       format_settings:
-        label: 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If there are no pending perfected requests for a component, enter “N/A” for Date of Receipt and “0” for Days Pending. If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days Pending" values must be non-negative integers.Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: '<h3>VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS</h3>Every component that  processes requests should be listed, even if they do not have data to report in this section. If there are no pending perfected requests for a component, enter “N/A” for Date of Receipt and “0” for Days Pending. If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days Pending" values must be non-negative integers.Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_ix_foia_personnel_cost_wra:
       children:
@@ -1912,9 +1917,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>IX. FOIA Personnel and Costs</h3>Every component that  processes requests or appeals should be listed, even if they do not have data to report in this section. If the component processed requests in V.A. there must be a value entered for personnel and costs. If the component field is filled in, all other editable columns must be filled in. All values must be non-negative numeric integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>IX. FOIA Personnel and Costs</h3>Every component that  processes requests or appeals should be listed, even if they do not have data to report in this section. If the component processed requests in V.A. there must be a value entered for personnel and costs. If the component field is filled in, all other editable columns must be filled in. All values must be non-negative numeric integers. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" and "Total" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_c_consultations_wrap:
       children:
@@ -1927,11 +1933,11 @@ third_party_settings:
       weight: 30
       format_type: tab
       format_settings:
-        label: 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY'
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY</h3>A component, or the agency overall, may not have ten consultations pending. Thus, some columns may be not applicable. If there are no pending consultations for a component, enter “N/A” for Date of Receipt and “0” for Days Pending. If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days" values must be non-negative integers. "Number of Days Pending" values must be non-negative integers. Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: '<h3>XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY</h3>A component, or the agency overall, may not have ten consultations pending. Thus, some columns may be not applicable. If there are no pending consultations for a component, enter “N/A” for Date of Receipt and “0” for Days Pending. If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days" values must be non-negative integers. "Number of Days Pending" values must be non-negative integers. Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_d_1_comparison_wrap:
       children:
@@ -1945,9 +1951,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered on tab V.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered on tab V.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_e_1_comparison_of_wrap:
       children:
@@ -1961,9 +1968,10 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         formatter: closed
-        description: '<h3>XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: '<h3>XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC</h3>If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
 id: node.annual_foia_report_data.default
 targetEntityType: node
