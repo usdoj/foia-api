@@ -343,13 +343,13 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         open: true
-        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in XII.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_hidden:
       children:
+        - field_agency_components
         - field_foia_xiia
         - field_overall_xiia_back_req_end_
-        - field_agency_components
       label: HIDDEN
       region: content
       parent_name: ''

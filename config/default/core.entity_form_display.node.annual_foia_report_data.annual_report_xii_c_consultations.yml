@@ -342,7 +342,7 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         open: true
-        description: 'A component, or the agency overall, may not have ten consultations pending. Thus, some columns may be not applicable. If there are no pending consultations for a component, enter “N/A” for Date of Receipt and “0” for Days Pending. If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days" values must be non-negative integers. "Number of Days Pending" values must be non-negative integers. Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: 'A component, or the agency overall, may not have ten consultations pending. Thus, some columns may be not applicable. If there are no pending consultations for a component, enter “N/A” for Date of Receipt and “0” for Days Pending. If a date is filled in, the number of days associated with the date must also be filled in. "Number of Days" values must be non-negative integers. "Number of Days Pending" values must be non-negative integers. Working day calculations should include only working days (excluding weekends and public holidays) as of the end of the fiscal year (i.e., September 30). There are working day calculators that may be helpful in calculating these dates. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_c_consultations_on_foi:
       children:
@@ -517,8 +517,8 @@ third_party_settings:
         required_fields: true
     group_hidden:
       children:
-        - field_foia_xiib
         - field_agency_components
+        - field_foia_xiib
       label: HIDDEN
       region: content
       parent_name: ''

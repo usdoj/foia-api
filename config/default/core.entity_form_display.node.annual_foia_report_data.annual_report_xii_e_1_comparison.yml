@@ -342,7 +342,7 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         open: true
-        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: 'If the component field is filled in, all other editable columns must be filled in. All values must be non-negative integers. The values entered for the current fiscal year must match those entered in VI.A. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_xii_e_1_comparison_of_numb:
       children:
@@ -389,10 +389,10 @@ third_party_settings:
         required_fields: true
     group_hidden:
       children:
+        - field_agency_components
         - field_admin_app_via
         - field_overall_via_app_proc_yr
         - field_overall_via_app_recd_yr
-        - field_agency_components
       label: HIDDEN
       region: content
       parent_name: ''
