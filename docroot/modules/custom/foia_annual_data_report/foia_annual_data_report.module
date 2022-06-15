@@ -215,7 +215,7 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
                     for ($i = 1; $i <= 10; $i++) {
                       $this_fieldname = 'field_num_days_' . $i;
                       $this_key = $key . '][' . $pos . '][subform][' . $this_fieldname;
-                      $this_value = $value['subform'][$this_fieldname][0]['value'];
+                      $this_value = $value['subform'][$this_fieldname][0]['value'] ?: NULL;
                       $element_title = 'Oldest Days agency component #' . ($pos + 1) . ' day #' . $i;
                       $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
                         [':element_title:' => $element_title]);
@@ -228,7 +228,7 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
           }
 
           else {
-            $value = $form_value[0]['value'];
+            $value = $form_value[0]['value'] ?: 0;
             $element = $form[$key];
             $element_title = $element['widget'][0]['#title'];
             $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
@@ -262,16 +262,18 @@ function _foia_annual_data_report_validate_paragraph_fields(array &$form, FormSt
       if ($paragraph_key === 'add_more') {
         continue;
       }
-      $paragraph_items = $paragraph_value['subform'];
-      foreach ($paragraph_items as $key => $field_value) {
-        if (in_array($key, $fields_to_validate) && !empty($field_value[0]['value'])) {
-          $value = $field_value[0]['value'];
-          $element = $form[$parent_key];
-          $element_title = $element['widget']['#title'];
-          $error_msg = t("Invalid input for :element_title: item(s), please use number greater or equal to zero.",
-            [':element_title:' => $element_title]);
-          $key_path = "{$parent_key}][{$paragraph_key}][subform][{$key}";
-          _foia_annual_data_report_text_as_integer_validation($form_state, $key_path, $value, $error_msg);
+      $paragraph_items = $paragraph_value['subform'] ?? NULL;
+      if (!empty($paragraph_items)) {
+        foreach ($paragraph_items as $key => $field_value) {
+          $value = isset($field_value[0]['value']) ?: 0;
+          if (in_array($key, $fields_to_validate) && !empty($value)) {
+            $element = $form[$parent_key];
+            $element_title = $element['widget']['#title'];
+            $error_msg = t("Invalid input for :element_title: item(s), please use number greater or equal to zero.",
+              [':element_title:' => $element_title]);
+            $key_path = "{$parent_key}][{$paragraph_key}][subform][{$key}";
+            _foia_annual_data_report_text_as_integer_validation($form_state, $key_path, $value, $error_msg);
+          }
         }
       }
     }
@@ -322,11 +324,7 @@ function _form_annual_data_report_validate(array &$form, FormStateInterface $for
   }
 
   // Get the report year from the form state.
-  $report_year = 0;
-  if (!empty($form_state_values['field_foia_annual_report_yr'][0]['value'])) {
-    $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'];
-  }
-
+  $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'] ?: NULL;
   // Check for an existing report.
   if ($form_state->getFormObject() instanceof EntityForm) {
     $current_nid = $form_state->getformObject()->getEntity()->id();
