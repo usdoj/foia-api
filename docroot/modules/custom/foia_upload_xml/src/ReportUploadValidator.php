@@ -58,9 +58,9 @@ class ReportUploadValidator {
     $file_data = $this->foiaUploadXmlReportParser->parse($file);
     $report_year = isset($file_data['report_year']) && !empty($file_data['report_year']) ? (int) $file_data['report_year'] : (int) date('Y');
 
-    // If an agency can't be found, allow the upload to continue.
     if (!$file_data['agency_tid']) {
-      return;
+      $form_state->setErrorByName('submit', \Drupal::translation()
+        ->translate("We cannot figure out the agency from the abbreviation in the report. Please try adjusting the agency abbreviation in the report, or contact OIP for more help."));
     }
 
     if ($this->agencyReportYearIsLocked($file_data['agency_tid'], $report_year)) {
