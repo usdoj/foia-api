@@ -60,7 +60,7 @@ class ReportUploadValidator {
 
     if (!$file_data['agency_tid']) {
       $form_state->setErrorByName('submit', \Drupal::translation()
-        ->translate("We cannot figure out the agency from the abbreviation in the report. Please try adjusting the agency abbreviation in the report, or contact OIP for more help."));
+        ->translate("The agency or component abbreviation in the XML does not match the abbreviation in FOIA.gov. Please ensure the agency and component abbreviations match those listed in FOIA.gov. If you are still having trouble, please contact OIP."));
     }
 
     if ($this->agencyReportYearIsLocked($file_data['agency_tid'], $report_year)) {
