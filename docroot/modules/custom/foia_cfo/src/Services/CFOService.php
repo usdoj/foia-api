@@ -110,6 +110,11 @@ class CFOService {
         $return_item['item_body'] = $item->get('field_body')->getValue()[0]['value'];
       }
 
+      // Active.
+      if ($item->hasField('field_cfo_group_active')) {
+        $return_item['item_active'] = (boolean)$item->get('field_cfo_group_active')->getValue()[0]['value'];
+      }
+
       // File Attachments.
       if ($item->hasField('field_attachments')) {
         $attachments = $item->get('field_attachments');
@@ -260,6 +265,9 @@ class CFOService {
       // File.
       if ($item->hasField('field_attachment')) {
         $attachment = $item->get('field_attachment')->getValue();
+        if (empty($attachment)) {
+          continue;
+        }
         $fid = $attachment[0]['target_id'];
         if (empty($fid)) {
           continue;
