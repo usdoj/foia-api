@@ -1,0 +1,30 @@
+uuid: 745fb4dc-13e2-4f0f-811d-211200e63fa0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_cfo_group_active
+    - paragraphs.paragraphs_type.working_groups
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: paragraph.working_groups.field_cfo_group_active
+field_name: field_cfo_group_active
+entity_type: paragraph
+bundle: working_groups
+label: Active
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: Active
+  off_label: Inactive
+field_type: boolean
