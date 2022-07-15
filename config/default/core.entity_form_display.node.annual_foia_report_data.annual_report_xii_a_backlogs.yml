@@ -343,17 +343,17 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         open: true
-        description: 'If the component field is filled in, all other editable columns must be filled in. "Number of Backlogged Requests" column must contain non-negative integers. "Number of Backlogged Appeals" column must contain non-negative integers, or the special value "N/A". Users should enter "N/A" for any components of their agency that do not process appeals. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section.'
+        description: 'If the component field is filled in, all other editable columns must be filled in. "Number of Backlogged Requests" column must contain non-negative integers. "Number of Backlogged Appeals" column must contain non-negative integers, or the special value "N/A". Users should enter "N/A" for any components of their agency that do not process appeals. To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" field(s) will be autocalculated as you enter data in this section. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_hidden:
       children:
-        - field_admin_app_via
         - field_agency_components
         - field_pending_requests_vii_d_
         - field_overall_viid_comp_pend
         - field_overall_viid_exp_pend
         - field_overall_viid_sim_pend
         - field_overall_via_app_pend_endyr
+        - field_admin_app_via
       label: HIDDEN
       region: content
       parent_name: ''

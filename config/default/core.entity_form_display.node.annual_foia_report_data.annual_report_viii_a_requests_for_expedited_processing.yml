@@ -343,9 +343,10 @@ third_party_settings:
       format_type: details
       format_settings:
         classes: ''
+        show_empty_fields: false
         id: ''
         open: true
-        description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A". Enter “N/A” for Median and Average if the component did not adjudicate any requests for expedited processing during the fiscal year. "Number Adjudicated within Ten Calendar Days" column must contain non-negative integers, or the special value "N/A". To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated.'
+        description: 'Every component that processes requests should be listed, even if they do not have data to report in this section. If the component field is filled in, all other editable fields must be filled in. "Number Granted" and "Number Denied" columns must contain non-negative integers. "Median" and "Average" columns must contain non-negative decimal numbers, or the special value "N/A". Enter “N/A” for Median and Average if the component did not adjudicate any requests for expedited processing during the fiscal year. "Number Adjudicated within Ten Calendar Days" column must contain non-negative integers, or the special value "N/A". To add a component click "Add" above the "Agency Overall" fields. The "Agency Overall" fields must be manually entered, they are not autocalculated. <p><strong>Reminder: All agencies, including centralized agencies, must add at least one component entry.</strong></p>'
         required_fields: true
     group_hidden:
       children:
