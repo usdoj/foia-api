@@ -19,6 +19,8 @@
       var getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
       var hasAgencyComponent = Drupal.FoiaUI.hasAgencyComponent;
 
+      let field_admin_app_vic5 = $("input[name*='field_admin_app_vic5']");
+
       /**
        * Added for ie11 compatibility.
        *
@@ -614,7 +616,14 @@
           });
 
        // V.A. FOIA Requests.
+      // loop through Number of Requests Processed in Fiscal Year
       $("input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function () {
+
+        // console.log("field_foia_requests_vb1: ", $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']").val());
+        // console.log("Number of Requests Processed in Fiscal Year greaterThanEqualSumComp: ", $("input[name*='field_proc_req_viic1']").filter("input[name*='field_total']").val());
+        // console.log("field_proc_req_viic2: ", $("input[name*='field_proc_req_viic2']").filter("input[name*='field_total']").val());
+        // console.log("field_proc_req_viic3: ", $("input[name*='field_proc_req_viic3']").filter("input[name*='field_total']").val());
+
         $(this).rules("add", {
           equalToComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
           greaterThanEqualSumComp: $("input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
@@ -763,7 +772,11 @@
       });
 
       // VI.A. Administrative Appeals Processed During Fiscal Year from Current Annual Report.
+      //TODO: this will not work, since input[name*='field_admin_app_vib'] IS THE REMOVE BUTTON ON VI. B
       $("input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']").each(function () {
+        console.log("found: input[name*='field_total']", $("input[name*='field_total']").val());
+        console.log("found: input[name*='field_admin_app_vib']", $("input[name*='field_admin_app_vib']").val());
+
         $(this).rules("add", {
           equalToComp: $("input[name*='field_admin_app_vib']").filter("input[name*='field_total']"),
           messages: {
@@ -776,16 +789,16 @@
       $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']").each(function () {
         $(this).rules("add", {
           greaterThanZeroSumComp: [
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_1']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_2']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_3']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_4']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_5']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_6']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_7']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_8']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_9']"),
-            $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_10']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_1']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_2']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_3']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_4']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_5']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_6']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_7']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_8']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_9']"),
+            field_admin_app_vic5.filter("input[name*='field_num_days_10']"),
           ],
           messages: {
             greaterThanZeroSumComp: "Must match VI.C.5. must have values > 0."
@@ -903,7 +916,7 @@
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++) {
         var priorOrdinal = oldestOrdinal(i - 1);
-        $("input[name*='field_admin_app_vic5']").filter("input[name*='field_num_days_" + i + "']").each(function () {
+        field_admin_app_vic5.filter("input[name*='field_num_days_" + i + "']").each(function () {
           $(this).rules("add", {
             lessThanEqualOlderComp: 'field_num_days_' + String(i - 1),
             messages: {
