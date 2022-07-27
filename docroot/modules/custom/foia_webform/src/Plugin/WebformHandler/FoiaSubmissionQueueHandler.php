@@ -74,11 +74,6 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
       ],
     ]);
 
-    $requesterEmailAddress = $webformSubmission->getElementData('email');
-    if ($requesterEmailAddress) {
-      $foiaRequest->set('field_requester_email', $requesterEmailAddress);
-    }
-
     if ($this->fileAttachmentSubmitted($webformSubmission)) {
       $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_SCAN);
     }

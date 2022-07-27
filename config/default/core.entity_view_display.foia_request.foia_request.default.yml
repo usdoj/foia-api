@@ -8,7 +8,6 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_code
     - field.field.foia_request.foia_request.field_error_description
     - field.field.foia_request.foia_request.field_error_message
-    - field.field.foia_request.foia_request.field_requester_email
     - field.field.foia_request.foia_request.field_response_code
     - field.field.foia_request.foia_request.field_submission_failures
     - field.field.foia_request.foia_request.field_submission_method
@@ -62,13 +61,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 9
-    region: content
-  field_requester_email:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
     region: content
   field_response_code:
     type: number_integer
