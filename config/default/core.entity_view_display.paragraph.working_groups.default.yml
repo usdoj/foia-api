@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.paragraph.working_groups.field_attachments
     - field.field.paragraph.working_groups.field_body
-    - field.field.paragraph.working_groups.field_cfo_group_active
     - field.field.paragraph.working_groups.field_title
     - paragraphs.paragraphs_type.working_groups
   module:
@@ -31,16 +30,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
-    region: content
-  field_cfo_group_active:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 3
     region: content
   field_title:
     type: string
