@@ -7,7 +7,6 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_code
     - field.field.foia_request.foia_request.field_error_description
     - field.field.foia_request.foia_request.field_error_message
-    - field.field.foia_request.foia_request.field_requester_email
     - field.field.foia_request.foia_request.field_response_code
     - field.field.foia_request.foia_request.field_submission_method
     - field.field.foia_request.foia_request.field_submission_time
@@ -62,14 +61,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
-    region: content
-  field_requester_email:
-    weight: 2
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: email_default
     region: content
   field_response_code:
     weight: 13
