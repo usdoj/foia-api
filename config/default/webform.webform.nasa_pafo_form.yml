@@ -14,7 +14,7 @@ id: nasa_pafo_form
 title: 'NASA-PAFO Form'
 description: ''
 category: ''
-elements: |
+elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -30,6 +30,17 @@ elements: |
   email:
     '#type': email
     '#title': 'Email address'
+    '#required_error': 'Please provide either an email or a mailing address.'
+    '#states':
+      required:
+        - ':input[name="address_line1"]':
+            empty: true
+        - or
+        - ':input[name="address_city"]':
+            empty: true
+        - or
+        - ':input[name="address_state_province"]':
+            empty: true
   phone_number:
     '#type': tel
     '#title': 'Phone number'
@@ -40,28 +51,48 @@ elements: |
     '#type': textfield
     '#title': 'Mailing address 1'
     '#help': 'Mailing Address is required. <a href="https://www.ecfr.gov/cgi-bin/text-idx?c=ecfr&amp;sid=97fb51c6e62b667333b7f1645d203f11&amp;rgn=div5&amp;view=text&amp;node=14:5.0.1.1.8&amp;idno=14#se14.5.1206_1300">14 C.F.R.&nbsp;&sect; 1206.300.</a>'
-    '#required': true
+    '#required_error': 'Please provide either an email or a mailing address.'
+    '#states':
+      required:
+        ':input[name="email"]':
+          empty: true
   address_line2:
     '#type': textfield
     '#title': 'Mailing address 2'
   address_city:
     '#type': textfield
     '#title': City
-    '#required': true
+    '#required_error': 'Please provide either an email or a mailing address.'
+    '#states':
+      required:
+        ':input[name="email"]':
+          empty: true
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
-    '#required': true
+    '#required_error': 'Please provide either an email or a mailing address.'
+    '#states':
+      required:
+        ':input[name="email"]':
+          empty: true
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
-    '#required': true
+    '#required_error': 'Please provide either an email or a mailing address.'
+    '#states':
+      required:
+        ':input[name="email"]':
+          empty: true
   address_country:
     '#type': select
     '#title': Country
-    '#default_value': 'United States'
     '#options': country_names
-    '#required': true
+    '#required_error': 'Please provide either an email or a mailing address.'
+    '#states':
+      required:
+        ':input[name="email"]':
+          empty: true
+    '#default_value': 'United States'j
   request_category:
     '#type': select
     '#title': 'What type of requester are you?'
