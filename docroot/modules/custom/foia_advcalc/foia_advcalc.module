@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile
 
 /**
  * @file
@@ -10,6 +11,8 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Field\FieldFilteredMarkup;
 
 /**
+ * UPDATE AUTO SAVE THEN PATCH.
+ *
  * @todo AJAX ISSUE NEEDS FIX WITH A PATCH
  * UPDATE AUTO SAVE THEN PATCH
  * https://www.drupal.org/project/multistep_form_framework/issues/3214588
@@ -22,7 +25,7 @@ use Drupal\Core\Field\FieldFilteredMarkup;
  * \nResponseText: TypeError: Argument 1 passed to
  * Drupal\\Core\\Form\\FormState::setSubmitHandlers()
  * must be of the type array, null given,
- * called in /var/www/html/docroot/modules/contrib/autosave_form/src/Form/AutosaveFormBuilder.php on
+ * /var/www/html/docroot/modules/contrib/autosave_form/src/Form/AutosaveFormBuilder.php
  * line 139 in Drupal\\Core\\Form\\FormState-&gt;setSubmitHandlers()
  * (line 742 of /var/www/html/docroot/core/lib/Drupal/Core/Form/FormState.php)."
  * name: "AjaxError"
@@ -31,7 +34,11 @@ use Drupal\Core\Field\FieldFilteredMarkup;
 /**
  * Get "Processing Costs" from section IX and return Percentage of Total Costs.
  *
+ * @param string $nid
+ *   NID of node used for calculations.
+ *
  * @return array
+ *   Array of values to use
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
@@ -60,7 +67,7 @@ function calculate_x($nid) {
         "agency" => $agency[0]['target_id'],
         "field_total_fees" => $total_fees,
         "field_overall_ix_proc_costs" => $overall[0]['value'],
-        "field_perc_costs" => round(($total_fees / $proc_costs * 10000) / 100, 4),
+        'field_perc_costs' => round(($total_fees / $proc_costs * 10000) / 100, 4),
       ];
     }
     else {
@@ -68,7 +75,7 @@ function calculate_x($nid) {
       $p_array[] = [
         "field_proc_costs" => 0,
         "field_fees_x" => 0,
-        "field_perc_costs" => '',
+        'field_perc_costs' => '',
         "field_overall_ix_proc_costs" => '',
       ];
     }
@@ -105,18 +112,7 @@ function foia_advcalc_field_widget_multivalue_entity_reference_paragraphs_form_a
 }
 
 /**
- * @todo setting values is not working
- * Pre-Calculate any available calculations by form ID
  * Implements hook_form_node_form_alter().
- *
- * @param $form
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- * @param $form_id
- *
- * @return void
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
@@ -148,7 +144,8 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       // VI.A: Agency Overall Number of Appeals Processed in Fiscal Year.
       'field_overall_via_app_proc_yr',
 
-      // XII.B: Agency Overall Number of Consultations Received from Other Agencies During the Fiscal Year.
+      // XII.B: Agency Overall Number of Consultations Received from
+      // Other Agencies During the Fiscal Year.
       'field_overall_xiib_con_during_yr',
 
       // VA: Agency Overall Number of Requests Received in Fiscal Year.
@@ -225,34 +222,19 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       // 'edit-field-overall-viib-exp-high-0-value',.
       'field_overall_viib_exp_high',
 
-      // XII.B: Agency Overall Number of Consultations Received from Other Agencies During the Fiscal Year.
+      // XII.B: Agency Overall Number of Consultations Received from
+      // Other Agencies During the Fiscal Year.
       'field_overall_xiib_con_during_yr',
 
-      // XII.B: Agency Overall Number of Consultations Received from Other Agencies that were Processed by the Agency During the Fiscal Year.
+      // XII.B: Agency Overall Number of Consultations Received from
+      // Other Agencies that were Processed by the Agency During the Fiscal Year.
       'field_overall_xiib_proc_start_yr',
 
-      // XIIB: Agency Overall Number of Consultations Received from Other Agencies that were Pending at the Agency as of Start of Fiscal Year.
+      // XIIB: Agency Overall Number of Consultations Received from
+      // Other Agencies that were Pending at the Agency as of Start of Fiscal Year.
       'field_overall_xiib_pend_start_yr',
     ];
 
-    // 'field_req_pend_start_yr',
-    //      'field_req_received_yr',
-    //      'field_req_processed_yr',
-    //      'field_req_pend_end_yr',
-    // if($widget)
-    // $field_high_num_days = $form_all['field_low_num_days']['widget'][$i]['subform']['field_total']['widget'];
-    //
-    //      $viic1 = $form_all['field_proc_req_viic1']['widget'][$i]['subform']['field_total']['widget'];
-    //      $viic2 = $form_all['field_proc_req_viic2']['widget'][$i]['subform']['field_total']['widget'];
-    //      $viic3 = $form_all['field_proc_req_viic3']['widget'][$i]['subform']['field_total']['widget'];
-    // FOIA Requests V. B. (1) TOTAL.
-    // #edit-field-overall-req-pend-start-yr-0-value
-    // Agency Overall Number of Requests Pending as of End of Fiscal Year 16055.
-    // $i = 0;
-    //      foreach($vic4_targets as $widget) {
-    //
-    //        $i++;
-    //      }.
     switch ($form_id) {
 
       // IV: EXEMPTION 3 STATUTES.
@@ -324,33 +306,38 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
 
         // V.B.2: DISPOSITION OF FOIA REQUESTS.
       case'node_annual_foia_report_data_annual_report_v_b_2_disposition_of_foia_requests_form':
+
         // V.B.3: DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED.
       case'node_annual_foia_report_data_annual_report_v_b_3_disposition_of_foia_requests_form':
 
-        $overall_fields = [
-          // VA: Agency Overall Number of Requests Pending as of Start of Fiscal Year.
-          'field_overall_req_pend_start_yr',
-          // VI.A: Agency Overall Number of Appeals Pending as of Start of Fiscal Year.
-          'field_overall_via_app_pend_start',
-          // VI.A: Agency Overall Number of Appeals Received in Fiscal Year.
-          'field_overall_via_app_recd_yr',
-          // VI.A: Agency Overall Number of Appeals Pending as of End of Fiscal Year.
-          'field_overall_via_app_pend_endyr',
-          // VI.A: Agency Overall Number of Appeals Processed in Fiscal Year.
-          'field_overall_via_app_proc_yr',
-          // XII.B: Agency Overall Number of Consultations Received from Other Agencies that were Processed by the Agency During the Fiscal Year.
-          'field_overall_xiib_proc_start_yr',
-          // XII.B: Agency Overall Number of Consultations Received from Other Agencies During the Fiscal Year.
-          'field_overall_xiib_con_during_yr',
-          // XII.B: Agency Overall Number of Consultations Received from Other Agencies that were Processed by the Agency During the Fiscal Year.
-          'field_overall_xiib_proc_start_yr',
-          // VA: Agency Overall Number of Requests Received in Fiscal Year.
-          'field_overall_req_received_yr',
-          // VA: Agency Overall Number of Requests Processed in Fiscal Year.
-          'field_overall_req_processed_yr',
-          // XIIB: Agency Overall Number of Consultations Received from Other Agencies that were Pending at the Agency as of Start of Fiscal Year.
-          'field_overall_xiib_pend_start_yr',
-        ];
+//        $overall_fields = [
+//          // VA: Agency Overall Number of Requests Pending as of Start of Fiscal Year.
+//          'field_overall_req_pend_start_yr',
+//          // VI.A: Agency Overall Number of Appeals Pending as of Start of Fiscal Year.
+//          'field_overall_via_app_pend_start',
+//          // VI.A: Agency Overall Number of Appeals Received in Fiscal Year.
+//          'field_overall_via_app_recd_yr',
+//          // VI.A: Agency Overall Number of Appeals Pending as of End of Fiscal Year.
+//          'field_overall_via_app_pend_endyr',
+//          // VI.A: Agency Overall Number of Appeals Processed in Fiscal Year.
+//          'field_overall_via_app_proc_yr',
+//          // XII.B: Agency Overall Number of Consultations Received from
+//          // Other Agencies that were Processed by the Agency During the Fiscal Year.
+//          'field_overall_xiib_proc_start_yr',
+//          // XII.B: Agency Overall Number of Consultations Received from
+//          // Other Agencies During the Fiscal Year.
+//          'field_overall_xiib_con_during_yr',
+//          // XII.B: Agency Overall Number of Consultations Received from
+//          // Other Agencies that were Processed by the Agency During the Fiscal Year.
+//          'field_overall_xiib_proc_start_yr',
+//          // VA: Agency Overall Number of Requests Received in Fiscal Year.
+//          'field_overall_req_received_yr',
+//          // VA: Agency Overall Number of Requests Processed in Fiscal Year.
+//          'field_overall_req_processed_yr',
+//          // XIIB: Agency Overall Number of Consultations Received from
+//          // Other Agencies that were Pending at the Agency as of Start of Fiscal Year.
+//          'field_overall_xiib_pend_start_yr',
+//        ];
 
         break;
 
@@ -366,9 +353,9 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       case 'node_annual_foia_report_data_annual_report_x_fees_collected_for_processing_requests_form':
 
         // Description is updated based on calculation.
-        $description = isset($form['field_fees_x']['widget'][0]["subform"]["field_perc_costs"]['widget']["#description"])
-        && !is_null($form['field_fees_x']['widget'][0]["subform"]["field_perc_costs"]['widget']["#description"])
-          ? $form['field_fees_x']['widget'][0]["subform"]["field_perc_costs"]['widget']["#description"]
+        $description = isset($form['field_fees_x']['widget'][0]['subform']['field_perc_costs']['widget']['#description'])
+        && !is_null($form['field_fees_x']['widget'][0]['subform']['field_perc_costs']['widget']['#description'])
+          ? $form['field_fees_x']['widget'][0]['subform']['field_perc_costs']['widget']['#description']
           : NULL;
 
         $results = calculate_x($form_state->getformObject()->getEntity()->id());
@@ -377,10 +364,10 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
         $i = 0;
         foreach ($results as $fees_x) {
 
-          $field_total_fees = $fees_x["field_total_fees"];
+          $field_total_fees = $fees_x['field_total_fees'];
           $field_proc_costs = $fees_x['field_proc_costs'];
-          $new_description = "$description<br> Total Amount of Fees from Section X ($field_total_fees) / Processing Costs from Section IX ($field_proc_costs) ";
-          $form['field_fees_x']['widget'][0]["subform"]["field_perc_costs"]['widget'][$i]["value"]["#description"] = FieldFilteredMarkup::create(t($new_description));
+          $new_description = t(`$description<br> Total Amount of Fees from Section X ($field_total_fees) / Processing Costs from Section IX ($field_proc_costs) `);
+          $form['field_fees_x']['widget'][0]['subform']['field_perc_costs']['widget'][$i]["value"]['#description'] = FieldFilteredMarkup::create(t($new_description));
 
           // For now, only add to form if there's values.
           if ($field_proc_costs > 0) {
@@ -393,7 +380,7 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
                 // 'class' => array('proc_cost_hidden'),
                 'data-fees' => $fees_x['field_total_fees'],
                 'data-agency' => $fees_x['agency'],
-                'data-percent' => $fees_x["field_perc_costs"],
+                'data-percent' => $fees_x['field_perc_costs'],
               ],
             ];
           }
@@ -419,14 +406,4 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
     }
   }
 
-}
-
-/**
- * @todo perhaps hidden fields are being saved, which causes --2 on some hidden fields.
- */
-function foia_advcalc_submit_function($form, &$form_state) {
-
-  // $field_overall_x_perc_costs = $form->getValue('field_overall_x_perc_costs');
-  //  $field_overall_x_total_fees = $form->getValue('field_overall_x_total_fees');
-  //  $a1 = $form->getValues();
 }
