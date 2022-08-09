@@ -3,7 +3,10 @@
 namespace Drupal\foia_advcalc\Controller;
 
 /**
- * TODO: may not need this, but will be used for any AJAX
+ * Field controller that may not be used.
+ *
+ * @todo may not need this, but will be used for any AJAX.
+ *
  * @file
  * Contains \Drupal\foia_advcalc\Controller\FieldController.
  */
