@@ -41,7 +41,6 @@ TRUNCATE foia_request__field_case_management_id;
 TRUNCATE foia_request__field_error_code;
 TRUNCATE foia_request__field_error_description;
 TRUNCATE foia_request__field_error_message;
-TRUNCATE foia_request__field_requester_email;
 TRUNCATE foia_request__field_response_code;
 TRUNCATE foia_request__field_submission_failures;
 TRUNCATE foia_request__field_submission_method;

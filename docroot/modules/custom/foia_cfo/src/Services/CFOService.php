@@ -112,7 +112,7 @@ class CFOService {
 
       // Active.
       if ($item->hasField('field_cfo_group_active')) {
-        $return_item['item_active'] = (boolean)$item->get('field_cfo_group_active')->getValue()[0]['value'];
+        $return_item['item_active'] = (boolean) $item->get('field_cfo_group_active')->getValue()[0]['value'];
       }
 
       // File Attachments.
