@@ -116,7 +116,7 @@ function foia_advcalc_field_widget_multivalue_entity_reference_paragraphs_form_a
  */
 function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  $form['actions']['submit']['#submit'][] = 'foia_advcalc_submit_function';
+  // $form['actions']['submit']['#submit'][] = 'foia_advcalc_submit_function';
   $form['#validate'][] = 'starting_drupal_dev_form_validate';
   $form['#attached']['library'][] = 'foia_advcalc/advcalc_field';
 
@@ -235,6 +235,8 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       'field_overall_xiib_pend_start_yr',
     ];
 
+
+
     switch ($form_id) {
 
       // IV: EXEMPTION 3 STATUTES.
@@ -345,7 +347,64 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       case 'node_annual_foia_report_data_annual_report_vi_a_administrative_appeals_form':
         // VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS.
       case 'node_annual_foia_report_data_annual_report_vi_c_4_response_time_form':
-        // VII.C.1.
+
+
+        $a1 = 1;
+        $a2 = 1;
+
+
+
+      // ADMINISTRATIVE APPEALS VI. C. (4)
+      // field_admin_app_vic4[0][subform][field_low_num_days][0][value]
+      // Lowest Number of Days
+      // edit-field-admin-app-vic4
+      // field_low_num_days
+
+      // field_proc_req_viia[0][subform][field_sim_low][0][value]
+
+
+      //edit-field-admin-app-vic4
+      // field_high_num_days
+
+      // edit-field-proc-req-viia
+      // field_sim_low
+
+      // edit-field-proc-req-viia
+      // field_sim_high
+
+      // edit-field-proc-req-viia
+      // field_comp_low
+
+
+      // edit-field-proc-req-viia
+      // field_comp_high
+
+
+
+
+      // @todo these fields
+
+      // 'field_req_pend_start_yr',
+      //      'field_req_received_yr',
+      //      'field_req_processed_yr',
+      //      'field_req_pend_end_yr',
+      // if($widget)
+      // $field_high_num_days = $form_all['field_low_num_days']['widget'][$i]['subform']['field_total']['widget'];
+      //
+      //      $viic1 = $form_all['field_proc_req_viic1']['widget'][$i]['subform']['field_total']['widget'];
+      //      $viic2 = $form_all['field_proc_req_viic2']['widget'][$i]['subform']['field_total']['widget'];
+      //      $viic3 = $form_all['field_proc_req_viic3']['widget'][$i]['subform']['field_total']['widget'];
+      // FOIA Requests V. B. (1) TOTAL.
+      // #edit-field-overall-req-pend-start-yr-0-value
+      // Agency Overall Number of Requests Pending as of End of Fiscal Year 16055.
+      // $i = 0;
+      //      foreach($vic4_targets as $widget) {
+      //
+      //        $i++;
+      //      }.
+
+
+      // VII.C.1.
       case 'node_annual_foia_report_data_annual_report_vii_c_1_processed_simple_requests_response_time_form':
         // IX: FOIA PERSONNEL AND COSTS.
       case 'node_annual_foia_report_data_annual_report_x_0_ix_foia_personnel_and_costs_form':
@@ -366,7 +425,7 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
 
           $field_total_fees = $fees_x['field_total_fees'];
           $field_proc_costs = $fees_x['field_proc_costs'];
-          $new_description = t(`$description<br> Total Amount of Fees from Section X ($field_total_fees) / Processing Costs from Section IX ($field_proc_costs) `);
+          $new_description = "$description<br> Total Amount of Fees from Section X ($field_total_fees) / Processing Costs from Section IX ($field_proc_costs)";
           $form['field_fees_x']['widget'][0]['subform']['field_perc_costs']['widget'][$i]["value"]['#description'] = FieldFilteredMarkup::create(t($new_description));
 
           // For now, only add to form if there's values.
