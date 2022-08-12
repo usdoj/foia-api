@@ -385,6 +385,7 @@
 
             // VI.C.(4) Lowest Number of Days.
             calculate.calculateOverall('edit-field-admin-app-vic4', 'field_low_num_days', 'edit-field-overall-vic4-low-num-days-0-value', '<');
+
             // VI.C.(4) Highest Number of Days.
             calculate.calculateOverall('edit-field-admin-app-vic4', 'field_high_num_days', 'edit-field-overall-vic4-high-num-days-0-value', '>');
 
@@ -395,6 +396,7 @@
 
             // VII.A. Lowest Number of Days (complex).
             calculate.calculateOverall('edit-field-proc-req-viia', 'field_comp_low', 'edit-field-overall-viia-comp-low-0-value', '<');
+
             // VII.A. Highest Number of Days (complex).
             calculate.calculateOverall('edit-field-proc-req-viia', 'field_comp_high', 'edit-field-overall-viia-comp-high-0-value', '>');
 
@@ -405,16 +407,19 @@
 
             // VII.B. Lowest Number of Days.
             calculate.calculateOverall('edit-field-proc-req-viib', 'field_sim_low', 'edit-field-overall-viib-sim-low-0-value', '<');
+
             // VII.B. Highest Number of Days.
             calculate.calculateOverall('edit-field-proc-req-viib', 'field_sim_high', 'edit-field-overall-viib-sim-high-0-value', '>');
 
             // VII.B. Lowest Number of Days (complex).
             calculate.calculateOverall('edit-field-proc-req-viib', 'field_comp_low', 'edit-field-overall-viib-comp-low-0-value', '<');
+
             // VII.B. Highest Number of Days (complex).
             calculate.calculateOverall('edit-field-proc-req-viib', 'field_comp_high', 'edit-field-overall-viib-comp-high-0-value', '>');
 
             // VII.B. Lowest Number of Days (expedited).
             calculate.calculateOverall('edit-field-proc-req-viib', 'field_exp_low', 'edit-field-overall-viib-exp-low-0-value', '<');
+
             // VII.B. Highest Number of Days (expedited).
             calculate.calculateOverall('edit-field-proc-req-viib', 'field_exp_high', 'edit-field-overall-viib-exp-high-0-value', '>');
 
