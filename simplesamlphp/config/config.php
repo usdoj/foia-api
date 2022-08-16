@@ -1117,5 +1117,5 @@ include 'acquia_config.php';
  * FOIA specific customization so that saml admin credentials are not exposed.
  */
 if (file_exists('/var/www/site-php')) {
-  include '/mnt/gfs/home/foia/config/saml/acquia_config.php';
+  include_once '/mnt/gfs/home/foia/config/saml/acquia_config.php';
 }
