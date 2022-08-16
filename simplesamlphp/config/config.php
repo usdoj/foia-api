@@ -1111,7 +1111,7 @@ $config = [
     'store.redis.prefix' => 'SimpleSAMLphp',
 ];
 
-include 'acquia_config.php';
+include_once 'acquia_config.php';
 
 /**
  * FOIA specific customization so that saml admin credentials are not exposed.
