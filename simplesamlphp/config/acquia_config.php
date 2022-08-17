@@ -81,7 +81,8 @@ elseif (getenv('AH_SITE_ENVIRONMENT')) {
    * Overide $config['baseurlpath'] = "https://{yourdomain}/simplesaml/"
    * to customize the default Acquia configuration.
    */
-  $config['baseurlpath'] = $protocol . $_SERVER['HTTP_HOST'] . $port . '/simplesaml/';
+//  $config['baseurlpath'] = $protocol . $_SERVER['HTTP_HOST'] . $port . '/simplesaml/';
+  $config['baseurlpath'] = $protocol . $_SERVER['HTTP_HOST'] .  '/simplesaml/';
   // Set ACE and ACSF sites based on hosting database and site name.
   $config['certdir'] = "/mnt/www/html/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/simplesamlphp/cert/";
   $config['metadatadir'] = "/mnt/www/html/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/simplesamlphp/metadata";
