@@ -7,13 +7,13 @@
 
 use Drupal\core\Access\AccessResult;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\User;
 
 /**
  * Implements hook_node_access().
  */
-function foia_workflow_node_access(NodeInterface $node, $op, AccountProxy $account) {
+function foia_workflow_node_access(NodeInterface $node, $op, AccountInterface $account) {
   $type = $node->bundle();
   $workflow_state = $node->get('moderation_state')->getString();
   $author = $node->getOwner()->id();

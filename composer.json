@@ -78,6 +78,7 @@
         "drupal/views_data_export": "^1.1",
         "drupal/views_infinite_scroll": "^1.9",
         "drupal/webform": "^6.1.3",
+        "drupal/xmlsitemap": "^1.3",
         "drush/drush": "^10.6.2",
         "npm-asset/jquery-validation": "^1.19.5",
         "simplesamlphp/simplesamlphp": "^1.19.6"
@@ -221,6 +222,9 @@
             "rm -rf vendor composer.lock docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
             "@composer clearcache --ansi",
             "@composer install --ansi"
+        ],
+        "post-drupal-scaffold-cmd": [
+            "cd docroot && patch -p1 < ../patches/siteimprove-robots-txt.patch"
         ]
     }
 }
