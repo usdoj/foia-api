@@ -224,7 +224,7 @@
             "@composer install --ansi"
         ],
         "post-drupal-scaffold-cmd": [
-            "git apply patches/siteimprove-robots-txt.patch"
+            "cd docroot && patch -p2 <../patches/siteimprove-robots-txt.patch"
         ]
     }
 }
