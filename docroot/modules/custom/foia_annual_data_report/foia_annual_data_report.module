@@ -104,7 +104,6 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
         }
       }
     }
-
   }
 
 }
@@ -228,9 +227,9 @@ function _form_annual_data_report_section_validate(array &$form, FormStateInterf
           }
 
           else {
-            $value = $form_value[0]['value'] ?: 0;
+            $value = isset($form_value[0]['value']) ?: 0;
             $element = $form[$key];
-            $element_title = $element['widget'][0]['#title'];
+            $element_title = isset($element['widget'][0]['#title']) ?: NULL;
             $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
               [':element_title:' => $element_title]);
             _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
@@ -295,7 +294,7 @@ function _foia_annual_data_report_validate_paragraph_fields(array &$form, FormSt
 function _foia_annual_data_report_text_as_integer_validation(FormStateInterface $form_state, $key, $value, $error_message): void {
   if (!empty($value)) {
     // Check of value is greater than or equal to 0.
-    if (!ctype_digit($value) || (int) $value < 0) {
+    if (!ctype_digit((string) $value) || (int) $value < 0) {
       // These should be warnings but not stop the user from saving (FE2-77).
       // Used to be: $form_state->setErrorByName($key, $error_message); .
       \Drupal::messenger()->addWarning($error_message);

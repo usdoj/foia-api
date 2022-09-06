@@ -3,7 +3,7 @@
  * Provide client-side validation for FOIA Annual Report.
  */
 
- (function ($, drupalSettings, Drupal) {
+(function ($, drupalSettings, Drupal) {
 
   Drupal.behaviors.foia_ui_validation = {
     attach: function attach() {
@@ -19,9 +19,26 @@
       var getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
       var hasAgencyComponent = Drupal.FoiaUI.hasAgencyComponent;
 
-      let field_admin_app_vic5 = $("input[name*='field_admin_app_vic5']");
+      let form_id = $("input[name='form_id']").val();
 
+      let field_admin_app_vic5 = $("input[name*='field_admin_app_vic5']");
+      let field_overall_via_app_proc_yr = $("#edit-field-overall-via-app-proc-yr-0-value");
+      let field_overall_req_proc_yr = $("#edit-field-overall-req-processed-yr-0-value");
+      let field_foia_requests_vb3 = $("input[name*='field_foia_requests_vb3']");
+
+      let split_form;
+      if((form_id === 'node_annual_foia_report_data_edit_form')
+        || (form_id === 'node_annual_foia_report_data_annual_report_agency_info_form')) {
+        console.log("FULL FORM:  ",form_id);
+        split_form = 0;
+      } else {
+        console.log("SPLIT FORM: ",form_id);
+        split_form = 1;
+      }
+      //console.log("field_admin_app_vic5", field_admin_app_vic5);
       /**
+       * Added for ie11 compatibility.
+       * Added for ie11 compatibility.
        * Added for ie11 compatibility.
        *
        * @param value
@@ -29,8 +46,8 @@
        */
       function isInteger(value) {
         return typeof value === 'number' &&
-            isFinite(value) &&
-            Math.floor(value) === value;
+          isFinite(value) &&
+          Math.floor(value) === value;
       }
 
       /**
@@ -69,8 +86,8 @@
        */
       function isoDateStringIsValidDate(isoDateString) {
         var year = Number(isoDateString.substr(0, 4)),
-            month = Number(isoDateString.substr(5, 2)),
-            day = Number(isoDateString.substr(8, 2));
+          month = Number(isoDateString.substr(5, 2)),
+          day = Number(isoDateString.substr(8, 2));
 
         if (!isInteger(year) || !isInteger(month) || !isInteger(day)) {
           return false;
@@ -132,20 +149,20 @@
         return value <= target;
       }, "Please enter a lesser value.");
 
-       // greaterThanEqualTo.
+      // greaterThanEqualTo.
       $.validator.addMethod("greaterThanEqualTo", function (value, element, param) {
         value = specialNumber(value);
         var target = specialNumber($(param).val());
         return value >= target;
       }, "Please enter a greater value.");
 
-       // greaterThanZero.
-       $.validator.addMethod("greaterThanZero", function (value, element, param) {
+      // greaterThanZero.
+      $.validator.addMethod("greaterThanZero", function (value, element, param) {
         return value > 0;
       }, "Please enter a value greater than zero.");
 
-       // greaterThanZeroOrNA.
-       $.validator.addMethod("greaterThanZeroOrNA", function (value, element, param) {
+      // greaterThanZeroOrNA.
+      $.validator.addMethod("greaterThanZeroOrNA", function (value, element, param) {
         switch (String(value).toLowerCase()) {
           case "n/a":
           case "<1":
@@ -196,6 +213,7 @@
         params.forEach(function (param) {
           sum += Number($(param).val());
         });
+        console.log("value", value);
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
@@ -213,10 +231,14 @@
               }
             }
           }
+          console.log("********sum",sum)
+          console.log("params",params)
+          console.log("value",value)
+          console.log("elementAgencyComponent",elementAgencyComponent)
           return this.optional(element) || value <= sum;
         }
         else {
-            return 'dependency-mismatch';
+          return 'dependency-mismatch';
         }
       }, "Must be less than or equal to a field.");
 
@@ -240,7 +262,7 @@
           return this.optional(element) || sum <= target;
         }
         else {
-            return 'dependency-mismatch';
+          return 'dependency-mismatch';
         }
       }, "Sum of fields must be less than or equal to a field.");
 
@@ -275,7 +297,7 @@
           }
         }
         else {
-            return 'dependency-mismatch';
+          return 'dependency-mismatch';
         }
       }, "Must be less than or equal to a field.");
 
@@ -299,7 +321,7 @@
           }
         }
         else {
-            return 'dependency-mismatch';
+          return 'dependency-mismatch';
         }
       }, "Must be greater than or equal to a field.");
 
@@ -329,6 +351,10 @@
         }
         var min = Math.min.apply(null, valuesArray);
         var max = Math.max.apply(null, valuesArray);
+        console.log("min", min)
+        console.log("max", max)
+        console.log("valuesArray", valuesArray)
+        console.log("params", params)
         return this.optional(element) || (value >= min) && (value <= max);
       }, "Must be between the smallest and largest values.");
 
@@ -428,7 +454,7 @@
           return valueIsNa;
         }
         else {
-            return 'dependency-mismatch';
+          return 'dependency-mismatch';
         }
       }, "Must be N/A when comparison value is missing.");
 
@@ -448,7 +474,7 @@
           return true;
         }
         else {
-            return 'dependency-mismatch';
+          return 'dependency-mismatch';
         }
       }, "Must be a non-negative number that is less than or equal to the comparison value.");
 
@@ -466,7 +492,7 @@
           return true;
         }
         else {
-            return 'dependency-mismatch';
+          return 'dependency-mismatch';
         }
       }, "Must not be N/A if there is a comparison value.");
 
@@ -531,7 +557,7 @@
           $('> .vertical-tabs__menu-item', tabs).each(function (index, menuItem) {
             try {
               var link = $('> a', menuItem).get(0),
-                  tabId = link.getAttribute('href') || false;
+                tabId = link.getAttribute('href') || false;
             }
             catch (error) {
               tabId = false;
@@ -544,30 +570,33 @@
             // Attempt to get the first form element that is a child of
             // the current tab.  If there is at least one form element that has
             // the class .error, highlight this tab.
-            var tab = document.getElementById(tabId.substr(1)),
+            let tab = document.getElementById(tabId.slice(1)),
               error = tab.querySelector('.error:not(label)');
-
             if (error) {
               $(menuItem).addClass('has-validation-error');
             }
             else {
               $(menuItem).removeClass('has-validation-error');
             }
-        });
+          });
         }
       });
 
       if ($('#validation-overlay').length === 0) {
         $('body').append('<div id="validation-overlay"' +
-            ' class="validation-overlay hidden">' +
-            '<div class="ajax-progress ajax-progress-fullscreen">' +
-            '<img src="/core/misc/loading-small.gif" />' +
-            '</div></div>');
+          ' class="validation-overlay hidden">' +
+          '<div class="ajax-progress ajax-progress-fullscreen">' +
+          '<img src="/core/misc/loading-small.gif" />' +
+          '</div></div>');
       }
 
-      $('input#edit-validate-button').once('foia-validation').on('click', function (event) {
+      //      $('input[id^=edit-validate-button]').once('foia-validation').on('click', function (event) {
+      //$('input#edit-validate-button').once('foia-validation').on('click', function (event) {
+      $('input[id^=edit-validate-button]').once('foia-validation').on('click', function (event) {
+        // $('input#edit-validate-button').once('foia-validation').on('click', function (event) {
         event.preventDefault();
 
+        console.log("edit-validate-button: " + drupalSettings.foiaUI.foiaUISettings.formID);
         $('.validation-overlay').removeClass('hidden');
 
         // To validate select drop-downs as required, they must have an
@@ -578,7 +607,7 @@
         setTimeout(function () {
           // Validate form.
           $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
-
+          console.log("in timeout: " + drupalSettings.foiaUI.foiaUISettings.formID);
           $('.validation-overlay').addClass('hidden');
 
           // Empty drop-downs can still be submitted though, so restore
@@ -596,54 +625,95 @@
       // Require all Annual Report fields.
       $(".form-text, .form-textarea, .form-select, .form-number, .form-date").not('#edit-field-agency-abbr-0-value').not('#edit-revision-log-0-value').not('[readonly]').not('[id*="footnote"]').each(function () {
         $(this).rules("add", {
-        required: true,
+          required: true,
         });
       });
 
       // Formatting and validity of date fields that accept text.
       $("input[name^='field_admin_app_vic5']").filter('input[name*="field_date_"]')
-          .add("input[name^='field_admin_app_viie']").filter('input[name*="field_date_"]')
-          .add("input[name^='field_foia_xiic']").filter('input[name*="field_date_"]')
-          .add("input[name^='field_overall_vic5_date']")
-          .add("input[name^='field_overall_viie_date']")
-          .add("input[name^='field_overall_xiic_date']")
-          .filter('.form-text')
-          .each(function () {
-            $(this).rules("add", {
-              isoDateFormattedOrNA: true,
-              isoDateStringIsValid: true,
-            });
+        .add("input[name^='field_admin_app_viie']").filter('input[name*="field_date_"]')
+        .add("input[name^='field_foia_xiic']").filter('input[name*="field_date_"]')
+        .add("input[name^='field_overall_vic5_date']")
+        .add("input[name^='field_overall_viie_date']")
+        .add("input[name^='field_overall_xiic_date']")
+        .filter('.form-text')
+        .each(function () {
+          $(this).rules("add", {
+            isoDateFormattedOrNA: true,
+            isoDateStringIsValid: true,
           });
+        });
 
-       // V.A. FOIA Requests.
-      // loop through Number of Requests Processed in Fiscal Year
-      $("input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function () {
+      // TODO: check agency on other pages?
+
+      // V.A. FOIA Requests.
+      // Loops through Number of Requests Processed in Fiscal Year
+      // But does not check to see if agency matches
+      // check agency field_foia_requests_va[0][subform][field_agency_component]
+      // check agency field_foia_requests_va[1][subform][field_agency_component]
+
+      $("input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function (i) {
+
+
+        // TODO: not returning correct values from vb1, after they are changed
+        //let agency = $("select[name*='field_foia_requests_va']").filter("select[name*='field_agency_component']").val();
+        //agency = $("select[name*='field_foia_requests_va']").filter("select[name*='field_agency_component']").val();
+        let v_foia_requests;
+        //console.log("**********: " + i);
+        let vb1_total = $(`input[name='field_foia_requests_vb1[${i}][subform][field_total][0][value]']`).val();
+
+        // even though vb1 agency deleted, shows up as Adj Bds instead of nothing, since PHP is setting it
+        let va_agency_el = $(`select[name='field_foia_requests_va[${i}][subform][field_agency_component]']`);
+        let va_agency = va_agency_el.find(":selected").text();
+        let vb1_agency_el = $(`select[name='field_foia_requests_vb1[${i}][subform][field_agency_component]']`);
+        let vb1_agency = vb1_agency_el.find(":selected").text();
+
+
+        if (typeof vb1_total === "undefined") {
+          v_foia_requests = `Agency and "Total" field must match corresponding agency in section V.B.(1)`;
+        }
+        else {
+          v_foia_requests = `Agency and "Total" field must match corresponding agency in section V.B.(1) which is "${vb1_agency}" and "Total" of ${vb1_total}`;
+        }
+        // field_foia_requests_vb1[0][subform][field_total][0][value]
+        // field_foia_requests_vb1[1][subform][field_total][0][value]
+
 
         // console.log("field_foia_requests_vb1: ", $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']").val());
         // console.log("Number of Requests Processed in Fiscal Year greaterThanEqualSumComp: ", $("input[name*='field_proc_req_viic1']").filter("input[name*='field_total']").val());
         // console.log("field_proc_req_viic2: ", $("input[name*='field_proc_req_viic2']").filter("input[name*='field_total']").val());
         // console.log("field_proc_req_viic3: ", $("input[name*='field_proc_req_viic3']").filter("input[name*='field_total']").val());
+        //
 
+        // get agency
+        // 7, 11, 7
+        // field_foia_requests_vb1[0][subform][field_total][0][value] =
         $(this).rules("add", {
           equalToComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
           greaterThanEqualSumComp: $("input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
             .add("input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
             .add("input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
           messages: {
-            equalToComp: "Must match corresponding agency V.B.(1) Total",
+            equalToComp: v_foia_requests,
             greaterThanEqualSumComp: "Must be greater than or equal to sum of all of the Totals of VII.C.1, 2, and 3 for the corresponding agency/component"
           }
         });
       });
 
+      // TODO: split form issues with --2 edit-field-overall-vb1-total-0-value--2
+      // field_overall_vb1_total
       // V.A. Agency Overall Number of Requests Processed in Fiscal Year.
-      $("#edit-field-overall-req-processed-yr-0-value").rules("add", {
-        equalTo: "#edit-field-overall-vb1-total-0-value",
-        messages: {
-          equalTo: "Must match V.B.(1) Agency Overall Total"
-        }
-      });
-
+      if(field_overall_req_proc_yr.val()) {
+        console.log("field_overall_req_proc_yr exist: " + field_overall_req_proc_yr.val())
+        console.log("check edit-field-overall-vb1-total-0-value: " + $("input[data-field-id='edit-field-overall-vb1-total-0-value']").val()); // TODO: 13
+        field_overall_req_proc_yr.rules("add", {
+          //equalTo: "#edit-field-overall-vb1-total-0-value",
+          equalTo: "input[data-field-id='edit-field-overall-vb1-total-0-value']",
+          messages: {
+            equalTo: "Must match V.B.(1) Agency Overall Total"
+          }
+        });
+      }
       // V.B.(1) Records Not Reasonably Described.
       // Removing this for now, but we need to fix and add back soon.
       /*
@@ -722,35 +792,48 @@
 
       // V.B.(1) Agency Component Other*.
       $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_oth']").each(function () {
-          $(this).rules("add", {
-              equalToComp: $("input[name*='field_foia_requests_vb2']").filter("input[name*='field_total']"),
-              messages: {
-                  equalToComp: "Must match V.B.2. \"Total\" Other Reasons"
-              }
-          });
-      });
-
-      // V.B.(1) Agency Number of Full Denials Based on Exemptions.
-        $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_full_denials_ex']").each(function () {
-          $(this).rules("add", {
-            lessThanEqualSumComp: [
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_1']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_2']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_3']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_4']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_5']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_6']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_a']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_b']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_c']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_d']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_e']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_f']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_8']"),
-              $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_9']"),
-            ],
+        $(this).rules("add", {
+          equalToComp: $("input[name*='field_foia_requests_vb2']").filter("input[name*='field_total']"),
           messages: {
-              lessThanEqualSumComp: "This field should be no more than the sum of the fields V.B.(3) Ex.1 through V.B.(3) Ex.9. for the corresponding agency."
+            equalToComp: "Must match V.B.2. \"Total\" Other Reasons"
+          }
+        });
+      });
+      // V.B.(1) Agency Number of Full Denials Based on Exemptions.
+      $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_full_denials_ex']").each(function () {
+
+        let foia_requests_vb3_error;
+
+        // Check for undefined, but cannot return sum in message without calculating again.
+        let field_ex_1 = field_foia_requests_vb3.filter("input[name*='field_ex_1']");
+
+        // If undefined, the fields have not been filled out yet on V.B.(3)
+        if (typeof field_ex_1.val() === "undefined") {
+          foia_requests_vb3_error = `This field should be no more than the sum of the fields V.B.(3) Ex.1 through V.B.(3) Ex.9. for the corresponding agency which has not been filled out yet.`;
+        } else {
+          foia_requests_vb3_error  = `This field should be no more than the sum of the fields V.B.(3) Ex.1 through V.B.(3) Ex.9. for the corresponding agency.`;
+        }
+
+        $(this).rules("add", {
+          lessThanEqualSumComp: [
+            field_foia_requests_vb3.filter("input[name*='field_ex_1']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_2']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_3']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_4']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_5']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_6']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_7_a']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_7_b']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_7_c']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_7_d']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_7_e']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_7_f']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_8']"),
+            field_foia_requests_vb3.filter("input[name*='field_ex_9']"),
+          ],
+          messages: {
+            lessThanEqualSumComp: foia_requests_vb3_error
+            //lessThanEqualSumComp: `This field should be no more than the sum of the fields V.B.(3) Ex.1 through V.B.(3) Ex.9. for the corresponding agency.`
           }
         })
       });
@@ -763,29 +846,47 @@
         }
       });
 
+
+      //
+
+      // full form: edit-field-overall-vib-total-0-value
+      // split form: edit-field-overall-vib-total
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year.
-      $("#edit-field-overall-via-app-proc-yr-0-value").rules("add", {
-        equalTo: "#edit-field-overall-vib-total-0-value",
-        messages: {
-          equalTo: "Must match VI.B. Agency Overall Total"
-        }
-      });
+      console.log("checking edit-field-overall-via-app-proc-yr-0-value: " + field_overall_via_app_proc_yr.val())
+      if(field_overall_via_app_proc_yr.val()) {
+        console.log("must match edit-field-overall-vib-total-0-value:  " + $("input[data-field-id='edit-field-overall-vib-total-0-value']").val())
+        field_overall_via_app_proc_yr.rules("add", {
+          // equalTo: "#edit-field-overall-vib-total-0-value",
+          equalTo: "input[data-field-id='edit-field-overall-vib-total-0-value']",
+          messages: {
+            equalTo: "Must match VI.B. Agency Overall Total"
+          }
+        });
+      } else {
+        console.log("Skip validation if it hasn't been filled out in sp")
+      }
+
 
       // VI.A. Administrative Appeals Processed During Fiscal Year from Current Annual Report.
-      //TODO: this will not work, since input[name*='field_admin_app_vib'] IS THE REMOVE BUTTON ON VI. B
       $("input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']").each(function () {
-        console.log("found: input[name*='field_total']", $("input[name*='field_total']").val());
-        console.log("found: input[name*='field_admin_app_vib']", $("input[name*='field_admin_app_vib']").val());
+        let field_total_msg;
+        let vib_total = $("input[name*='field_admin_app_vib']").filter("input[name*='field_total']");
+        if(typeof vib_total.val() === "undefined") {
+          field_total_msg = "Must match VI.B. Total Processed Appeals in Fiscal Year for corresponding agency/component which has not yet been filled out.";
+        } else {
+          field_total_msg = "Must match VI.B. Total Processed Appeals in Fiscal Year for corresponding agency/component";
+        }
 
         $(this).rules("add", {
           equalToComp: $("input[name*='field_admin_app_vib']").filter("input[name*='field_total']"),
           messages: {
-            equalToComp: "Must match VI.B. Total Processed Appeals in Fiscal Year for corresponding agency/component"
+            equalToComp: field_total_msg
           }
         });
       });
 
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year.
+      // TODO: need
       $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']").each(function () {
         $(this).rules("add", {
           greaterThanZeroSumComp: [
@@ -858,13 +959,15 @@
       });
 
       // VI.C.(4) - Administrative Appeals.
-      $("input[name*='field_admin_app_vic4']").filter("input[name*='field_low_num_days']").rules("add", {
-        lessThanEqualComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
-        greaterThanZeroOrNA: true,
-        messages: {
-          lessThanEqualComp: "Must be lower than or equal to the highest number of days.",
-          greaterThanZeroOrNA: "Please enter a value greater than zero. If your agency processed any appeals during the FY, please enter a value greater than zero or the value <1. If your agency didn't process any appeals, enter N/A."
-        }
+      $("input[name*='field_admin_app_vic4']").filter("input[name*='field_low_num_days']").each(function () {
+        $(this).rules("add", {
+          lessThanEqualComp: $("input[name*='field_admin_app_vic4']").filter("input[name*='field_high_num_days']"),
+          greaterThanZeroOrNA: true,
+          messages: {
+            lessThanEqualComp: "Must be lower than or equal to the highest number of days.",
+            greaterThanZeroOrNA: "Please enter a value greater than zero. If your agency processed any appeals during the FY, please enter a value greater than zero or the value <1. If your agency didn't process any appeals, enter N/A."
+          }
+        });
       });
 
       // VI.C.(4) - Agency Overall Median Number of Days.
@@ -880,8 +983,8 @@
       // the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++) {
         var prior = oldestOrdinal(i - 1),
-            inputId = "#edit-field-overall-vic5-num-day-" + i + "-0-value",
-            comparisonId = "#edit-field-overall-vic5-num-day-" + (i - 1) + "-0-value";
+          inputId = "#edit-field-overall-vic5-num-day-" + i + "-0-value",
+          comparisonId = "#edit-field-overall-vic5-num-day-" + (i - 1) + "-0-value";
         $(inputId).rules("add", {
           lessThanEqualTo: $(comparisonId),
           messages: {
@@ -1175,8 +1278,8 @@
       // comparing the value to the one before it, e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++) {
         var prior = oldestOrdinal(i - 1),
-            inputId = "#edit-field-overall-viie-num-days-" + i + "-0-value",
-            comparisonId = "#edit-field-overall-viie-num-days-" + (i - 1) + "-0-value";
+          inputId = "#edit-field-overall-viie-num-days-" + i + "-0-value",
+          comparisonId = "#edit-field-overall-viie-num-days-" + (i - 1) + "-0-value";
         $(inputId).rules("add", {
           lessThanEqualTo: $(comparisonId),
           messages: {
@@ -1214,16 +1317,15 @@
         });
       }
 
-      // VIII.A. Agency Overall Median Number of Days to Adjudicate.
-      $("#edit-field-overall-viiia-med-days-jud-0-value").rules("add", {
+      // VIII.A. Agency Overall Median Number of Days to Adjudicate; account for --2
+      $("[id^=edit-field-overall-viiia-med-days-jud-0-value]").rules("add", {
         betweenMinMaxCompNA: $("input[name*='field_req_viiia']").filter("input[name*='field_med_days_jud']"),
         messages: {
           betweenMinMaxCompNA: "This field should be between the largest and smallest values of Median Number of Days"
         }
       });
-
       // VIII.A. Agency Overall Number Adjudicated Within Ten Calendar Days.
-      $("#edit-field-overall-viiia-num-jud-w10-0-value").rules("add", {
+      $("[id^=edit-field-overall-viiia-num-jud-w10-0-value]").rules("add", {
         lessThanEqualSum: [
           "#edit-field-overall-viiia-num-grant-0-value",
           "#edit-field-overall-viiia-num-denied-0-value"
@@ -1356,14 +1458,14 @@
       // e.g. value of 9th <= 8th.
       for (var i = 2; i <= 10; i++) {
         var prior = oldestOrdinal(i - 1),
-            inputId = "#edit-field-overall-xiic-num-days-" + i + "-0-value",
-            comparisonId = "#edit-field-overall-xiic-num-days-" + (i - 1) + "-0-value";
+          inputId = "#edit-field-overall-xiic-num-days-" + i + "-0-value",
+          comparisonId = "#edit-field-overall-xiic-num-days-" + (i - 1) + "-0-value";
         $(inputId).rules("add", {
-            lessThanEqualTo: $(comparisonId),
-            messages: {
-              lessThanEqualTo: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
-            }
-          });
+          lessThanEqualTo: $(comparisonId),
+          messages: {
+            lessThanEqualTo: "This should be less than or equal to the number of days for <em>" + prior + "</em>."
+          }
+        });
       }
 
       // XII.C. FOIA Requests and Administrative Appeals - Oldest Days component/ 2nd-10th

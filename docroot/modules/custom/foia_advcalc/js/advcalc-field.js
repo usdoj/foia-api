@@ -114,12 +114,12 @@
             var receivedVal = Number($(received).val());
             var processedVal = Number($(processed).val());
             var endVal = startVal + receivedVal - processedVal;
-            console.log("calculateOverallPendEndYr start: ", start, startVal)
-            //console.log("calculateOverallPendEndYr startVal: ", startVal)
-            console.log("calculateOverallPendEndYr receivedVal: ", received, receivedVal)
-
-            console.log("calculateOverallPendEndYr processedVal: ", processed, processedVal)
-            console.log("calculateOverallPendEndYr endVal: ", end, endVal)
+            // console.log("calculateOverallPendEndYr start: ", start, startVal)
+            // //console.log("calculateOverallPendEndYr startVal: ", startVal)
+            // console.log("calculateOverallPendEndYr receivedVal: ", received, receivedVal)
+            //
+            // console.log("calculateOverallPendEndYr processedVal: ", processed, processedVal)
+            // console.log("calculateOverallPendEndYr endVal: ", end, endVal)
 
 
             // TODO: if calculation is wrong, then nan instead of 0 in field value is input here
@@ -141,11 +141,11 @@
             // Calculate the initial value of the field.
             var fields = $("input[id^='" + componentId + "']").filter("input[name*='" + componentFieldName + "']");
             //console.log("fields", fields.attr('value'));
-            console.log("componentId", componentId);
-            console.log("componentFieldName", componentFieldName);
+            //console.log("componentId", componentId);
+            //console.log("componentFieldName", componentFieldName);
             if (!util.fieldIsInitialized('#' + overallFieldID)) {
               var value = calculate.calculateBoundaryOfSet(fields, operator);
-              console.log("value", value);
+              //console.log("value", value);
               $('#' + overallFieldID).val(value);
               util.markFieldInitialized('#' + overallFieldID);
             }
@@ -226,10 +226,10 @@
 
             // console.log("calculatePendEndYr element", element);
             // console.log("calculatePendEndYr component", component);
-            console.log("calculatePendEndYr startVal", startVal);
-            console.log("calculatePendEndYr receivedVal", receivedVal);
-            console.log("calculatePendEndYr processedVal", processedVal);
-            console.log("calculatePendEndYr endVal", endVal);
+            // console.log("calculatePendEndYr startVal", startVal);
+            // console.log("calculatePendEndYr receivedVal", receivedVal);
+            // console.log("calculatePendEndYr processedVal", processedVal);
+            // console.log("calculatePendEndYr endVal", endVal);
             component.find("input[name*='" + end + "']").val(endVal);
           },
           /**
@@ -368,9 +368,6 @@
             /**
              * VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Yr
              */
-
-            // TODO: DONE
-
             // Initialize on load:
             // VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Yr.
             if (!util.fieldIsInitialized('#edit-field-overall-via-app-pend-endyr-0-value')) {
@@ -426,7 +423,7 @@
           },
           calcOnChange: function() {
 
-            console.log("V.A. Number of Requests Pending as of End of Fiscal Year.");
+            // console.log("V.A. Number of Requests Pending as of End of Fiscal Year.");
 
             // V.A. Number of Requests Pending as of End of Fiscal Year.
             $("input[name*='field_foia_requests_va']")
@@ -438,7 +435,7 @@
                 });
               });
 
-            console.log("V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year.")
+            // console.log("V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year.")
 
             // Calculate on change:
             // V.A. Agency Overall Number of Requests Pending as of End of Fiscal Year.
@@ -454,7 +451,7 @@
               });
 
 
-            console.log("VI.A. Number of Appeals Pending as of End of Fiscal Year.: ")
+            // console.log("VI.A. Number of Appeals Pending as of End of Fiscal Year.: ")
             // Calculate on change:
             // VI.A. Number of Appeals Pending as of End of Fiscal Year.
             $("input[name*='field_admin_app_via']")
@@ -516,21 +513,14 @@
 
             // Calculate on change: X. Percentage of Total Costs per agency/component.
             let processingCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
-
-
-            console.log("calcPercentageChange:" , processingCostsElements);
             fieldFeesElement
               .filter("input[name*='field_total_fees']")
               .add(processingCostsElements)
               .each(function () {
                 // If X. Total Fees or IX. Processing Costs change, calculate % costs.
                 $(this).once('advCalcXPercCosts').change(function () {
-
-
                   var processingCostsAgency = getAgencyComponent($(this));
 
-
-                  console.log("CHANGE: advCalcXPercCosts processingCostsAgency: ", processingCostsAgency);
                   if (processingCostsAgency !== '_none') {
                     // calculate.calculatePercentTotalCosts(processingCostsAgency);
                     calculate.calculatePercentTotalCosts(processingCostsAgency);
@@ -566,17 +556,6 @@
                 advcalcX.calculateOverallPercentCosts();
               });
 
-          },
-          ixCalc: function (e) {
-
-            //console.log("calc1",calc1);
-          },
-          xCalc: function (e) {
-
-            //console.log("calc1",calc1);
-          },
-          getBehavior: function () {
-            return "test";
           },
           /**
            * Get input field based on changed field ID and Agency/Component value.
