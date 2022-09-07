@@ -222,9 +222,6 @@
             "rm -rf vendor composer.lock docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
             "@composer clearcache --ansi",
             "@composer install --ansi"
-        ],
-        "post-drupal-scaffold-cmd": [
-            "cd docroot && patch -p2 <../patches/siteimprove-robots-txt.patch"
         ]
     }
 }
