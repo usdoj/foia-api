@@ -11,7 +11,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.5.4
         with:
@@ -24,4 +24,4 @@ jobs:
           composer install
       - name: Build the artifact
         run: |
-          vendor/bin/blt deploy --branch="main-build" --commit-msg="Automated deployment of main branch" --verbose
+          vendor/bin/blt deploy --branch="main-build" --commit-msg="Automated deployment of main branch" --verbose --ignore-dirty

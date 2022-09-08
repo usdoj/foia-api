@@ -1,4 +1,4 @@
-uuid: 397f26b0-e035-4974-a14b-b9ef3a05d90e
+uuid: e4a74399-19db-4c17-9f0b-ec3df98c7297
 langcode: en
 status: open
 dependencies:
@@ -7,14 +7,14 @@ dependencies:
 weight: 0
 open: null
 close: null
-uid: 76
+uid: 1701
 template: false
 archive: false
-id: va_oasrha_form
-title: 'VA-OASRHA Form'
+id: fpisc_form
+title: FPISC-Form
 description: ''
 category: ''
-elements: |-
+elements: |
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -27,7 +27,7 @@ elements: |-
   email:
     '#type': email
     '#title': 'Email address'
-    '#help': 'In order for us to communicate with you about your request, you must provide at least one form of contact information.&nbsp;'
+    '#help': '<div style="margin: 0in 0in 8pt;"><span style="font-size:11pt"><span style="line-height:105%"><span style="font-family:Calibri,sans-serif">In order for us to communicate with you about your request, you must provide at least one form of contact information.</span></span></span></div>'
   phone_number:
     '#type': tel
     '#title': 'Phone number'
@@ -66,10 +66,13 @@ elements: |-
       other: 'All other requester'
   request_description:
     '#type': textarea
-    '#title': 'Your request'
-    '#help': 'A brief and clear description of the information you&#39;d like to receive. Please be as specific as possible.&nbsp;&nbsp;<strong>ATTENTION:&nbsp; We</strong>&nbsp;<strong>do not</strong>&nbsp;<strong>create or store any</strong>&nbsp;<strong>personnel records</strong>&nbsp;<strong>for VA</strong>.&nbsp;<strong>Please consult the relevant regional operational Human Resources office for personnel records inquiries.</strong>'
     '#maxlength': 10000
+    '#title': 'Your request'
+    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
     '#required': true
+    '#counter_type': character
+    '#counter_minimum': 1
+    '#counter_maximum': 10000
   fee_waiver:
     '#type': select
     '#title': 'Fee waiver'
@@ -148,6 +151,9 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
   share: false
   share_node: false
   share_theme_name: ''
@@ -303,9 +309,9 @@ handlers:
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: _default
+      from_mail: default
       from_options: {  }
-      from_name: _default
+      from_name: default
       reply_to: ''
       return_path: ''
       sender_mail: ''
@@ -319,8 +325,8 @@ handlers:
       attachments: false
       debug: false
       exclude_empty_checkbox: false
+      exclude_attachments: false
       twig: false
       theme_name: ''
       parameters: {  }
-      exclude_attachments: false
 variants: {  }
