@@ -24,4 +24,4 @@ jobs:
           composer install
       - name: Build the artifact
         run: |
-          vendor/bin/blt deploy --branch="uat-build" --commit-msg="Automated deployment of a UAT branch" --verbose
+          vendor/bin/blt deploy --branch="uat-build" --commit-msg="Automated deployment of a UAT branch" --verbose --ignore-dirty

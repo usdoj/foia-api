@@ -24,4 +24,4 @@ jobs:
           composer install
       - name: Build the artifact
         run: |
-          vendor/bin/blt deploy --branch="develop-build" --commit-msg="Automated deployment of develop branch" --verbose
+          vendor/bin/blt deploy --branch="develop-build" --commit-msg="Automated deployment of develop branch" --verbose --ignore-dirty
