@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 
 /**
  * @file
@@ -7,32 +7,10 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Field\FieldFilteredMarkup;
 
 /**
- * UPDATE AUTO SAVE THEN PATCH.
- * phpcs:ignoreFile
- * @todo AJAX ISSUE NEEDS FIX WITH A PATCH
- * UPDATE AUTO SAVE THEN PATCH
- * https://www.drupal.org/project/multistep_form_framework/issues/3214588
- * https://www.drupal.org/files/issues/2021-05-18/type-error-3214588-2.patch
- *
- * docroot/modules/contrib/autosave_form/src/Form/AutosaveFormBuilder.php
- * http://foia-api.ddev.site:7070/node/23966/edit/annual_report_v_a_foia_requests
- *
- * \nStatusText: OK
- * \nResponseText: TypeError: Argument 1 passed to
- * Drupal\\Core\\Form\\FormState::setSubmitHandlers()
- * must be of the type array, null given,
- * /var/www/html/docroot/modules/contrib/autosave_form/src/Form/AutosaveFormBuilder.php
- * line 139 in Drupal\\Core\\Form\\FormState-&gt;setSubmitHandlers()
- * (line 742 of /var/www/html/docroot/core/lib/Drupal/Core/Form/FormState.php)."
- * name: "AjaxError"
- */
-
-/**
- * Get "Processing Costs" from section IX and return Percentage of Total Costs.
+ * Get IX "Processing Costs" and  X "Fees Collected" and return Percentage of Total Costs.
  *
  * @param string $nid
  *   NID of node used for calculations.
@@ -44,74 +22,43 @@ use Drupal\Core\Field\FieldFilteredMarkup;
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function calculate_x($nid) {
+  $node      = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+  $x_targets = $node->field_fees_x->getValue();
+  $overall   = $node->field_overall_ix_proc_costs->getValue();
+  $form_all  = \Drupal::service('entity.form_builder')->getForm($node, 'default');
 
-  $node       = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-  $ix_targets = $node->field_foia_pers_costs_ix->getValue();
-  $x_targets  = $node->field_fees_x->getValue();
-  $overall    = $node->field_overall_ix_proc_costs->getValue();
+  // IX. Agency Overall Total Costs.
+  $field_overall_ix_total_costs = $form_all['field_overall_ix_total_costs']['widget'][0]['value']['#value'] ?? NULL;
+
+  // IX. Agency Overall Processing Costs.
+  $field_overall_ix_proc_costs = $form_all['field_overall_ix_proc_costs']['widget'][0]['value']['#value'] ?? NULL;
 
   // Loop through each paragraph subform and get Processing Costs from Section IX.
-  $p_array = [];
-  $i = 0;
-  foreach ($ix_targets as $field) {
-    $ix_data = Paragraph::load($field['target_id']);
+  if ($x_targets) {
+    $p_array = [];
+    $i = 0;
+    foreach ($x_targets as $field) {
 
-    if (isset($x_targets[$i]['target_id'])) {
-      $x_data     = Paragraph::load($x_targets[$i]['target_id']);
-      $proc_costs = $ix_data->field_proc_costs->value;
-      $total_fees = $x_data->field_total_fees->value;
-      $agency     = $ix_data->field_agency_component->getValue();
+      // X. Total Amount of Fees Collected.
+      $total_fees = $form_all['field_fees_x']['widget'][$i]['subform']['field_total_fees']['widget'][0]['value']['#value'] ?? NULL;
 
+      // IX. Processing Costs.
+      $field_proc_costs = $form_all['field_foia_pers_costs_ix']['widget'][$i]['subform']['field_proc_costs']['widget'][0]['value']['#value'] ?? NULL;
+
+      // @todo Cannot get agency from IX
       $p_array[] = [
-        "field_proc_costs" => $proc_costs,
-        "agency" => $agency[0]['target_id'],
+        "field_proc_costs" => $field_proc_costs,
+        "agency" => $agency[0]['target_id'] ?? NULL,
         "field_total_fees" => $total_fees,
-        "field_overall_ix_proc_costs" => $overall[0]['value'],
-        'field_perc_costs' => round(($total_fees / $proc_costs * 10000) / 100, 4),
+        "field_overall_ix_total_costs" => $field_overall_ix_total_costs,
+        "field_overall_ix_proc_costs" => $field_overall_ix_proc_costs,
+        "field_overall_ix_proc_costs2" => $overall[0]['value'] ?? NULL,
+        'field_perc_costs' => round(($total_fees / $field_proc_costs * 10000) / 100, 2),
       ];
+      $i++;
     }
-    else {
-      // @todo delete after testing
-      $p_array[] = [
-        "field_proc_costs" => 0,
-        "field_fees_x" => 0,
-        'field_perc_costs' => '',
-        "field_overall_ix_proc_costs" => '',
-      ];
-    }
-
-    $i++;
   }
   return $p_array;
-}
-//
-///**
-// * Not using as of now.
-// */
-//function starting_drupal_dev_form_validate($form, &$form_state) {
-//
-//  // edit-field-foia-requests-vb1-0-subform-field-full-grants-0-value--2
-//  // field_foia_requests_vb1[0][subform][field_full_grants][0][value]
-//  // @todo test validation
-//  // $form_state_values = $form_state->getValues();
-//   $a1 = $form['field_overall_x_total_fees']['widget'][0]['target_id']['#default_value'];
-//   $a2 = $form['field_overall_x_total_fees']['widget'][0]['target_id']['#default_value'];
-//}
-
-/**
- * Implements hook_field_widget_multivalue_WIDGET_TYPE_form_alter().
- */
-function foia_advcalc_field_widget_multivalue_entity_reference_paragraphs_form_alter(array &$elements, FormStateInterface $form_state, array $context) {
-
-  $a1 = $elements['#field_name'];
-  // Set the field names to disable, based on the paragraph element field name.
-  switch ($elements['#field_name']) {
-    case 'field_statute_iv':
-      $field_names = ['field_total_num_relied_by_agency'];
-      break;
-
-  }
-
 }
 
 /**
@@ -119,52 +66,17 @@ function foia_advcalc_field_widget_multivalue_entity_reference_paragraphs_form_a
  */
 function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  //$form['#validate'][] = 'starting_drupal_dev_form_validate';
+  // $form['#validate'][] = 'starting_drupal_dev_form_validate';
   $form['#attached']['library'][] = 'foia_advcalc/advcalc_field';
 
-
-  //
-  // node_annual_foia_report_data_annual_report_v_b_2_disposition_of_foia_requests_form
   // Completely skip over switch statement if we are on full form.
   if ($form_id !== 'node_annual_foia_report_data_edit_form'
     && $form_id !== 'node_annual_foia_report_data_form'
     && $form_id !== 'node_annual_foia_report_data_annual_report_agency_info_form') {
 
-    // TODO: --2 issue being caused here with $form_all   drupal-form-fields
-//    FOIA REQUESTS V. B. (1)
-//
-//When saving on either VB1 or VB3, extra form fields from other section
-//are being saved.
-//
-//    causing some --2 issues
-//
-//Then calculations are wrong.
-
-    // ON VB1: no form_all
-    // edit-group-num-full-denials-ex--2
-
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($form_state->getformObject()->getEntity()->id());
-    $form_modes = \Drupal::service('entity_display.repository')->getAllFormModes();
-
-    //$node = $form_state->getFormObject()->getEntity();
-    //$form_all = \Drupal::service('entity.form_builder')->getForm($node, 'default');
-    //$form_all = [];
-    //$form_all = \Drupal::service('entity.form_builder')->getForm($node, 'default');
-    //$AddAnnuaireForm = \Drupal::formBuilder()->getForm('Drupal\foia_annual_data_report\Form\annual_report_xii_e_2_comparison');
-
     $form_all = \Drupal::service('entity.form_builder')->getForm($node, 'default');
-    //  FormBuilderInterface::getForm
 
-
-    // edit-field-overall-via-app-pend-start-0-value
-    // edit-field-agency-components-8331--2
-    // edit-field-overall-via-app-pend-start-0-value,edit-field-overall-via-app-recd-yr-0-value,edit-field-overall-via-app-pend-endyr-0-value,edit-field-overall-via-app-proc-yr-0-value,edit-field-overall-xiib-con-during-yr-0-value,edit-field-overall-vib-total-0-value,edit-field-overall-ix-proc-costs-0-value,edit-field-overall-vic4-low-num-days-0-value,edit-field-overall-vic4-high-num-days-0-value,edit-field-overall-viia-sim-low-0-value,edit-field-overall-viia-sim-high-0-value,edit-field-overall-viia-comp-low-0-value,edit-field-overall-viia-comp-high-0-value,edit-field-overall-viia-exp-low-0-value,edit-field-overall-viia-exp-high-0-value,edit-field-overall-viib-sim-low-0-value,edit-field-overall-viib-sim-high-0-value,edit-field-overall-viib-comp-low-0-value,edit-field-overall-viib-comp-high-0-value,edit-field-overall-viib-exp-low-0-value,edit-field-overall-viib-exp-high-0-value,edit-field-overall-xiib-proc-start-yr-0-value,edit-field-overall-xiib-pend-start-yr-0-value,edit-field-foia-requests-va-add-more-add-more-button-foia-req-va--2,edit-field-footnotes-va-0-value--2,edit-field-footnotes-va-0-weight--2,edit-field-footnotes-va-add-more--2,edit-moderation-state-0-state--2,edit-field-agency-components-8271--2,edit-field-agency-components-8276--2,edit-field-agency-components-10406--2,edit-field-agency-components-8281--2,edit-field-agency-components-9761--2,edit-field-agency-components-10401--2,edit-field-agency-components-8301--2,edit-field-agency-components-10396--2,edit-field-agency-components-8291--2,edit-field-agency-components-8306--2,edit-field-agency-components-8286--2,edit-field-agency-components-8296--2,edit-field-agency-components-8766--2,edit-field-agency-components-8316--2,edit-field-agency-components-8326--2,edit-field-agency-components-8346--2,edit-field-agency-components-8331--2,edit-field-agency-components-8336--2,edit-field-agency-components-8351--2,edit-field-agency-components-22261--2,edit-field-agency-components-8356--2,edit-field-agency-components-10411--2,edit-field-agency-components-10466--2,edit-field-agency-components-8361--2,edit-field-agency-components-8376--2,edit-field-agency-components-8371--2,edit-field-agency-components-8366--2,edit-field-foia-requests-vb1-0-top-links-remove-button--2,edit-field-foia-requests-vb1-0-subform-field-agency-component--2,edit-field-foia-requests-vb1-0-subform-field-full-grants-0-value--2,edit-field-foia-requests-vb1-0-subform-field-part-grants-denials-0-value--2,edit-field-foia-requests-vb1-0-subform-field-full-denials-ex-0-value--2,edit-field-foia-requests-vb1-0-subform-field-total-0-value--2,edit-field-foia-requests-vb1-0-subform-field-no-rec-0-value--2,edit-field-foia-requests-vb1-0-subform-field-rec-ref-to-an-comp-0-value--2,edit-field-foia-requests-vb1-0-subform-field-req-withdrawn-0-value--2,edit-field-foia-requests-vb1-0-subform-field-fee-related-reason-0-value--2,edit-field-foia-requests-vb1-0-subform-field-rec-not-desc-0-value--2,edit-field-foia-requests-vb1-0-subform-field-imp-req-oth-reason-0-value--2,edit-field-foia-requests-vb1-0-subform-field-not-agency-record-0-value--2,edit-field-foia-requests-vb1-0-subform-field-dup-request-0-value--2,edit-field-foia-requests-vb1-0-subform-field-oth-0-value--2,edit-field-foia-requests-vb1-0-weight--2,edit-field-foia-requests-vb1-add-more-add-more-button-foia-req-vb1--2,edit-field-foia-requests-vb1-0-subform-field-total-0-value,edit-field-overall-vb1-total-0-value--2,edit-field-overall-req-pend-start-yr-0-value,edit-field-overall-req-received-yr-0-value,edit-field-overall-req-processed-yr-0-value,edit-field-overall-req-pend-end-yr-0-value,edit-revision--2,edit-revision-log-0-value--2,edit-validate-button--2,edit-submit--2,edit-preview--2
-    $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info($form_id);
-
-    // node_annual_foia_report_data_annual_report_v_a_foia_requests_form
-    //     $node = $form_state->getFormObject()->getEntity();
-    // field_agency_components[8331]
-    // edit-field-agency-components-8271
     // All pages need overall numbers.
     $overall_fields = [
       // VA: Agency Overall Number of Requests Pending as of Start of Fiscal Year.
@@ -182,8 +94,7 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       // VI.A: Agency Overall Number of Appeals Processed in Fiscal Year.
       'field_overall_via_app_proc_yr',
 
-      // XII.B: Agency Overall Number of Consultations Received from
-      // Other Agencies During the Fiscal Year.
+      // XII.B: Agency Overall Number of Consultations Received.
       'field_overall_xiib_con_during_yr',
 
       // VA: Agency Overall Number of Requests Received in Fiscal Year.
@@ -195,13 +106,11 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       // VA: Agency Overall Number of Requests Received in Fiscal Year.
       'field_overall_req_received_yr',
 
-
-      // edit-field-overall-vib-total-0-value
-      // VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS
+      // VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS.
       'field_overall_vib_total',
 
-      // edit-field-overall-vb1-total-0-value
-      //'field_overall_vb1_total',
+      // VB.1 Agency Overall Total.
+      'field_overall_vb1_total',
 
       // VI.A: Agency Overall Number of Appeals Received in Fiscal Year.
       'field_overall_via_app_recd_yr',
@@ -213,71 +122,54 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       'field_overall_ix_proc_costs',
 
       // VI.C.(4) Lowest Number of Days.
-      // edit-field-overall-vic4-low-num-days-0-value.
       'field_overall_vic4_low_num_days',
 
       // VI.C.(4) Highest Number of Days.
-      // 'edit-field-overall-vic4-high-num-days-0-value',.
       'field_overall_vic4_high_num_days',
 
       // VII.A. Lowest Number of Days.
-      // edit-field-overall-viia-sim-low-0-value.
       'field_overall_viia_sim_low',
 
       // VII.A. Highest Number of Days.
-      // 'edit-field-overall-viia-sim-high-0-value',.
       'field_overall_viia_sim_high',
 
       // VII.A. Lowest Number of Days (complex).
-      // 'edit-field-overall-viia-comp-low-0-value',.
       'field_overall_viia_comp_low',
 
       // VII.A. Highest Number of Days (complex).
-      // 'edit-field-overall-viia-comp-high-0-value',.
       'field_overall_viia_comp_high',
 
       // VII.A. Lowest Number of Days (expedited).
-      // 'edit-field-overall-viia-exp-low-0-value',.
       'field_overall_viia_exp_low',
 
       // VII.A. Highest Number of Days (expedited).
-      // 'edit-field-overall-viia-exp-high-0-value',.
       'field_overall_viia_exp_high',
 
       // VII.B. Lowest Number of Days.
-      // 'edit-field-overall-viib-sim-low-0-value',.
       'field_overall_viib_sim_low',
 
       // VII.B. Highest Number of Days.
-      // 'edit-field-overall-viib-sim-high-0-value',.
       'field_overall_viib_sim_high',
 
       // VII.B. Lowest Number of Days (complex).
-      // 'edit-field-overall-viib-comp-low-0-value',.
       'field_overall_viib_comp_low',
 
       // VII.B. Highest Number of Days (complex).
-      // 'edit-field-overall-viib-comp-high-0-value',.
       'field_overall_viib_comp_high',
 
       // VII.B. Lowest Number of Days (expedited).
-      // 'edit-field-overall-viib-exp-low-0-value',.
       'field_overall_viib_exp_low',
 
       // VII.B. Highest Number of Days (expedited).
-      // 'edit-field-overall-viib-exp-high-0-value',.
       'field_overall_viib_exp_high',
 
-      // XII.B: Agency Overall Number of Consultations Received from
-      // Other Agencies During the Fiscal Year.
+      // XII.B: Agency Overall Number of Consultations Received from.
       'field_overall_xiib_con_during_yr',
 
-      // XII.B: Agency Overall Number of Consultations Received from
-      // Other Agencies that were Processed by the Agency During the Fiscal Year.
+      // XII.B: Agency Overall Number of Consultations Received from.
       'field_overall_xiib_proc_start_yr',
 
-      // XIIB: Agency Overall Number of Consultations Received from
-      // Other Agencies that were Pending at the Agency as of Start of Fiscal Year.
+      // XIIB: Agency Overall Number of Consultations Received from.
       'field_overall_xiib_pend_start_yr',
 
       'field_overall_xiie2_back_prev_yr',
@@ -285,37 +177,17 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
       'field_overall_xiie1_received_las',
 
       'field_overall_xiie1_received_cur',
+
+      // IX. FOIA PERSONNEL AND COSTS Agency Overall Total Costs.
+      'field_overall_ix_total_costs',
     ];
 
     switch ($form_id) {
-      // IV: EXEMPTION 3 STATUTES.
-      case 'node_annual_foia_report_data_annual_report_iv_exemption_3_statutes_form':
-        break;
-
-      // VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS.
-      case 'node_annual_foia_report_data_annual_report_vi_a_administrative_appeals_form':
-
-        // TODO: need to do field_num_days_1
-        $vb1_targets = $node->field_admin_app_vib->getValue();
-
-        // [$i]['subform']['field_total']['widget']
-        $a1 = $form_all['field_admin_app_vib'] ?? null;
-        foreach($form_all['field_admin_app_vib']["widget"] as $w) {
-
-
-          $a2 = $w['subform']['field_total']['widget'] ?? null;
-
-
-
-        }
-
-        $vb1_targets = $node->field_admin_app_vib->getValue();
-        break;
 
       // V.A. FOIA Requests.
       case 'node_annual_foia_report_data_annual_report_v_a_foia_requests_form':
 
-        // Get all values needed for jquery validation in foia_ui.validation.js
+        // Get all values needed for jquery validation in foia_ui.validation.js.
         $vb1_targets = $node->field_foia_requests_vb1->getValue();
 
         // Loop through form and create needed fields for each agency.
@@ -323,8 +195,8 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
         foreach ($vb1_targets as $widget) {
 
           // V.B.1: FOIA Requests TOTAL.
-          $vb1 = $form_all['field_foia_requests_vb1']['widget'][$i]['subform']['field_total']['widget'] ?? null;
-          if($vb1) {
+          $vb1 = $form_all['field_foia_requests_vb1']['widget'][$i]['subform']['field_total']['widget'] ?? NULL;
+          if ($vb1) {
             $form['field_foia_requests_vb1'][$i] = [
               '#type' => "hidden",
               '#attributes' => [
@@ -336,10 +208,8 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
             ];
           }
 
-          // TODO: check for nulls
-          // VII.C.1: need field_proc_req_viic1 field_total.
-          $viic1 = $form_all['field_proc_req_viic1']['widget'][$i]['subform']['field_total']['widget'] ?? null;
-          if($viic1) {
+          $viic1 = $form_all['field_proc_req_viic1']['widget'][$i]['subform']['field_total']['widget'] ?? NULL;
+          if ($viic1) {
             $form['field_proc_req_viic1'][$i] = [
               '#type' => "hidden",
               '#attributes' => [
@@ -349,8 +219,9 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
               ],
             ];
           }
-          $viic2 = $form_all['field_proc_req_viic2']['widget'][$i]['subform']['field_total']['widget'] ?? null;
-          if($viic2) {
+
+          $viic2 = $form_all['field_proc_req_viic2']['widget'][$i]['subform']['field_total']['widget'] ?? NULL;
+          if ($viic2) {
             $form['field_proc_req_viic2'][$i] = [
               '#type' => "hidden",
               '#attributes' => [
@@ -361,8 +232,8 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
             ];
           }
 
-          $viic3 = $form_all['field_proc_req_viic3']['widget'][$i]['subform']['field_total']['widget'] ?? null;
-          if($viic3) {
+          $viic3 = $form_all['field_proc_req_viic3']['widget'][$i]['subform']['field_total']['widget'] ?? NULL;
+          if ($viic3) {
             $form['field_proc_req_viic3'][$i] = [
               '#type' => "hidden",
               '#attributes' => [
@@ -374,239 +245,9 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
           }
           $i++;
         }
-
         break;
-      // TODO: field_overall_vb1_total not in OVERALL ARRAY
-      // but --2 added to field edit-field-overall-vb1-total-0-value--2
 
-      // so jquery validation and get value using
-
-      // <input readonly="" data-drupal-selector="edit-field-overall-vb1-total-0-value" type="number" id="edit-field-overall-vb1-total-0-value--2" name="field_overall_vb1_total[0][value]" value="13" step="1" placeholder="" class="form-number">
-      //field_foia_requests_vb1
-
-      // creating edit-field-foia-requests-vb1-0-subform-field-total-0-value
-
-
-      //  TODO: need foreach
-
-      /*
-       *
-        $vb1_targets = $node->field_foia_requests_vb1->getValue();
-
-        $i = 0;
-        foreach ($vb1_targets as $widget) {
-
-          $form['field_overall_vb1_total'][$i] = [
-            '#type' => "input",
-            '#attributes' => [
-              'name' => $form_all['field_overall_vb1_total']['widget'][0]['value']['#name'],
-              'type' => 'number',
-              'readonly' => true,
-              'value' => $form_all['field_overall_vb1_total']['widget'][0]['value']['#value'],
-              'id' => $form_all['field_overall_vb1_total']['widget'][0]['value']['#id'],
-              'data-drupal-selector' => $form_all['field_overall_vb1_total']['widget'][0]['value']['#id'],  // not working
-              'data-field-id' => $form_all['field_overall_vb1_total']['widget'][0]['value']['#id'],
-            ],
-          ];
-
-        }
-       */
-
-      // V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS
-      case'node_annual_foia_report_data_annual_report_v_b_1_disposition_of_foia_requests_form':
-
-        // Need to get all "Number of Times Exemptions Applied" fielids on FOIA REQUESTS V. B (3)
-        // $vb3_targets = $node->field_foia_requests_vb3->getValue();
-        $vb1_targets = $node->field_foia_requests_vb1->getValue();
-        $vb3_targets = $node->field_foia_requests_vb3->getValue(); // why is this blank?
-
-
-        // TODO: may not always exist yet!
-
-        $vb1 = $form_all['field_foia_requests_vb3'][0]["subform"]["field_ex_1"][0]["value"] ?? null;
-        $vb2 = $form_all['field_foia_requests_vb3'][0]["subform"] ?? null;
-        $vb4 = $form_all['field_foia_requests_vb3'] ?? null;
-        $vb223 = $form_all['field_foia_requests_vb3'][0] ?? null;
-
-        $a1 = $form_all['field_foia_requests_vb3']['widget'] ?? null;
-        // $vb3 = $form_all['field_foia_requests_vb3']['widget'][$i]['subform']['field_ex_1']['widget'] ?? null;
-
-      // field_foia_requests_vb3[1][subform][field_ex_3][0][value]
-        // field_foia_requests_vb3[0][subform][field_ex_1][0][value]
-
-      // $form_all["field_foia_requests_vb3"]
-
-
-      // TODO: can't even find vb3 numbers
-      //    $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_2']"),
-      // field_foia_requests_vb3[0][subform][field_agency_component]
-
-
-      // TODO: put all values OR TOTAL into one field
-
-      // TODO: may be causing issues with adding --2
-      // edit-field-foia-requests-vb3-0-subform-field-ex-1-0-value
-      // VB III section may not be filled out just yet
-//      if($vb1_targets) {
-//        $i = 0;
-//        foreach ($vb1_targets as $widget) {
-//          $vb3 = $form_all['field_foia_requests_vb3']['widget'][$i]['subform']['field_ex_1']['widget'] ?? null;
-//          $B1 = $form_all['field_foia_requests_vb3']['widget'][$i] ?? null;
-//          $B2 = $form_all['field_foia_requests_vb3']['widget'] ?? null;
-//          // TODO: PROBLEM HERE. VB3 IS NULL
-//          if($vb3) {
-//            $form['field_foia_requests_vb3'][$i] = [
-//              '#type' => "hidden",
-//              '#attributes' => [
-//                'name' => "field_foia_requests_vb3[$i][subform][field_ex_1][0][value]",
-//                'value' => $vb3[0]["value"]["#value"],
-//                'id' => $vb3[0]["value"]["#id"],
-////                'class' => $vb3[0]["value"]["#name"],
-//                'class' => 'blahhere',
-//                //'data-agency' => $vb3[0]["value"]["#name"],
-//              ],
-//            ];
-//          }
-//
-//
-//        }
-//      }
-
-
-        // $vb3 = $form_all->field_foia_requests_vb3->getValue();
-
-
-        $a1 = 1;
-
-
-        // field_overall_vb3_ex_3
-        // is already on page field_overall_vb3_ex_1
-        // TODO:            lessThanEqualSumComp: "This field should be no more than the sum of the fields V.B.(3) Ex.1 through V.B.(3) Ex.9. for the corresponding agency."
-//        $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_1']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_2']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_3']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_4']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_5']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_6']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_a']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_b']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_c']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_d']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_e']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_7_f']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_8']"),
-//            $("input[name*='field_foia_requests_vb3']").filter("input[name*='field_ex_9']"),
-//        $a1 = $node->field_foia_requests_vb1->getValue();
-//        $vb1_targets = $node->field_foia_requests_vb1->getValue();
-
-        // field edit-field-overall-vb1-total-0-value--2
-
-      break;
-
-
-      // V.B.1  DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS.
-        // TODO: add field_overall_vb1_total
-        // V.B.2: DISPOSITION OF FOIA REQUESTS.
-      case'node_annual_foia_report_data_annual_report_v_b_2_disposition_of_foia_requests_form':
-
-        // V.B.3: DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED.
-      case'node_annual_foia_report_data_annual_report_v_b_3_disposition_of_foia_requests_form':
-
-//        $overall_fields = [
-//          // VA: Agency Overall Number of Requests Pending as of Start of Fiscal Year.
-//          'field_overall_req_pend_start_yr',
-//          // VI.A: Agency Overall Number of Appeals Pending as of Start of Fiscal Year.
-//          'field_overall_via_app_pend_start',
-//          // VI.A: Agency Overall Number of Appeals Received in Fiscal Year.
-//          'field_overall_via_app_recd_yr',
-//          // VI.A: Agency Overall Number of Appeals Pending as of End of Fiscal Year.
-//          'field_overall_via_app_pend_endyr',
-//          // VI.A: Agency Overall Number of Appeals Processed in Fiscal Year.
-//          'field_overall_via_app_proc_yr',
-//          // XII.B: Agency Overall Number of Consultations Received from
-//          // Other Agencies that were Processed by the Agency During the Fiscal Year.
-//          'field_overall_xiib_proc_start_yr',
-//          // XII.B: Agency Overall Number of Consultations Received from
-//          // Other Agencies During the Fiscal Year.
-//          'field_overall_xiib_con_during_yr',
-//          // XII.B: Agency Overall Number of Consultations Received from
-//          // Other Agencies that were Processed by the Agency During the Fiscal Year.
-//          'field_overall_xiib_proc_start_yr',
-//          // VA: Agency Overall Number of Requests Received in Fiscal Year.
-//          'field_overall_req_received_yr',
-//          // VA: Agency Overall Number of Requests Processed in Fiscal Year.
-//          'field_overall_req_processed_yr',
-//          // XIIB: Agency Overall Number of Consultations Received from
-//          // Other Agencies that were Pending at the Agency as of Start of Fiscal Year.
-//          'field_overall_xiib_pend_start_yr',
-//        ];
-
-         break;
-
-
-
-      // VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS.
-      case 'node_annual_foia_report_data_annual_report_vi_c_4_response_time_form':
-
-
-        $a1 = 1;
-        $a2 = 1;
-
-
-
-      // ADMINISTRATIVE APPEALS VI. C. (4)
-      // field_admin_app_vic4[0][subform][field_low_num_days][0][value]
-      // Lowest Number of Days
-      // edit-field-admin-app-vic4
-      // field_low_num_days
-
-      // field_proc_req_viia[0][subform][field_sim_low][0][value]
-
-
-      //edit-field-admin-app-vic4
-      // field_high_num_days
-
-      // edit-field-proc-req-viia
-      // field_sim_low
-
-      // edit-field-proc-req-viia
-      // field_sim_high
-
-      // edit-field-proc-req-viia
-      // field_comp_low
-
-
-      // edit-field-proc-req-viia
-      // field_comp_high
-
-
-
-
-      // 'field_req_pend_start_yr',
-      //      'field_req_received_yr',
-      //      'field_req_processed_yr',
-      //      'field_req_pend_end_yr',
-      // if($widget)
-      // $field_high_num_days = $form_all['field_low_num_days']['widget'][$i]['subform']['field_total']['widget'];
-      //
-      //      $viic1 = $form_all['field_proc_req_viic1']['widget'][$i]['subform']['field_total']['widget'];
-      //      $viic2 = $form_all['field_proc_req_viic2']['widget'][$i]['subform']['field_total']['widget'];
-      //      $viic3 = $form_all['field_proc_req_viic3']['widget'][$i]['subform']['field_total']['widget'];
-      // FOIA Requests V. B. (1) TOTAL.
-      // #edit-field-overall-req-pend-start-yr-0-value
-      // Agency Overall Number of Requests Pending as of End of Fiscal Year 16055.
-      // $i = 0;
-      //      foreach($vic4_targets as $widget) {
-      //
-      //        $i++;
-      //      }.
-
-
-      // VII.C.1.
-      case 'node_annual_foia_report_data_annual_report_vii_c_1_processed_simple_requests_response_time_form':
-        // IX: FOIA PERSONNEL AND COSTS.
-      case 'node_annual_foia_report_data_annual_report_x_0_ix_foia_personnel_and_costs_form':
-        // X. FEES COLLECTED FOR PROCESSING REQUESTS.
+      // X. FEES COLLECTED FOR PROCESSING REQUESTS.
       case 'node_annual_foia_report_data_annual_report_x_fees_collected_for_processing_requests_form':
 
         // Description is updated based on calculation.
@@ -620,55 +261,50 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
         // Loop through all agencies and calculate.
         $i = 0;
         foreach ($results as $fees_x) {
-
-          $field_total_fees = $fees_x['field_total_fees'];
-          $field_proc_costs = $fees_x['field_proc_costs'];
+          $field_total_fees = $fees_x['field_total_fees'] ?? NULL;
+          $field_proc_costs = $fees_x['field_proc_costs'] ?? NULL;
           $new_description = "$description<br> Total Amount of Fees from Section X ($field_total_fees) / Processing Costs from Section IX ($field_proc_costs)";
           $form['field_fees_x']['widget'][0]['subform']['field_perc_costs']['widget'][$i]["value"]['#description'] = FieldFilteredMarkup::create(t($new_description));
 
           // For now, only add to form if there's values.
           if ($field_proc_costs > 0) {
-
-            $form['field_foia_pers_costs_ix'] = [
+            $form['x_temp'][$i] = [
               '#type' => "hidden",
-              '#default_value' => $field_proc_costs,
+              '#default_value' => $fees_x['field_perc_costs'],
               '#attributes' => [
-                'name' => "field_foia_pers_costs_ix[$i][subform][field_proc_costs][0][value]",
-                // 'class' => array('proc_cost_hidden'),
+                'name' => "x_temp[$i]",
                 'data-fees' => $fees_x['field_total_fees'],
                 'data-agency' => $fees_x['agency'],
                 'data-percent' => $fees_x['field_perc_costs'],
+                'data-proc' => $field_proc_costs,
               ],
             ];
           }
 
           $i++;
         }
-        //break;
+        break;
     }
 
     // Loop through all fields for overall numbers if there are any.
     if (isset($overall_fields)) {
 
       foreach ($overall_fields as $field) {
-
-        $a1 = $form_all[$field]['widget'][0]['value']['#id'];
-
-        if (str_contains($a1, '--2')) {
-          $a2 = 1;
-          $a3 = 1;
+        $exists = $form[$field] ?? NULL;
+        // Check to make sure this field doesn't already exist on this page.
+        if (!$exists) {
+          $form[$field] = [
+            '#type' => "hidden",
+            '#attributes' => [
+              'name' => $form_all[$field]['widget'][0]['value']['#name'],
+              'value' => $form_all[$field]['widget'][0]['value']['#value'],
+              'id' => $form_all[$field]['widget'][0]['value']['#id'],
+              'data-drupal-selector' => $form_all[$field]['widget'][0]['value']['#id'],
+              'data-field-id' => $form_all[$field]['widget'][0]['value']['#id'],
+              // 'readonly' => true, // May fix --2 issue
+            ],
+          ];
         }
-        $form[$field] = [
-          '#type' => "hidden",
-          '#attributes' => [
-            'name' => $form_all[$field]['widget'][0]['value']['#name'],
-            'value' => $form_all[$field]['widget'][0]['value']['#value'],
-            'id' => $form_all[$field]['widget'][0]['value']['#id'],
-            'data-drupal-selector' => $form_all[$field]['widget'][0]['value']['#id'],  // not working
-            'data-field-id' => $form_all[$field]['widget'][0]['value']['#id'],
-            'class' => "testing",
-          ],
-        ];
       }
     }
   }

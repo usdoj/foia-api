@@ -26,16 +26,6 @@
       let field_overall_req_proc_yr = $("#edit-field-overall-req-processed-yr-0-value");
       let field_foia_requests_vb3 = $("input[name*='field_foia_requests_vb3']");
 
-      let split_form;
-      if((form_id === 'node_annual_foia_report_data_edit_form')
-        || (form_id === 'node_annual_foia_report_data_annual_report_agency_info_form')) {
-        console.log("FULL FORM:  ",form_id);
-        split_form = 0;
-      } else {
-        console.log("SPLIT FORM: ",form_id);
-        split_form = 1;
-      }
-      //console.log("field_admin_app_vic5", field_admin_app_vic5);
       /**
        * Added for ie11 compatibility.
        * Added for ie11 compatibility.
@@ -207,13 +197,26 @@
         return this.optional(element) || value == sum;
       }, "Must equal sum of fields.");
 
-      // lessThanEqualSum.
+      // lessThanEqualSum. 711 should be 13
+      // Agency Overall Total should be 12
       jQuery.validator.addMethod("lessThanEqualSum", function (value, element, params) {
         var sum = 0;
+        console.log("lessThanEqualSum",params);
         params.forEach(function (param) {
-          sum += Number($(param).val());
+          if($(param).length) {
+            console.log("param EXISTS",param);
+            sum += Number($(param).val());
+          }
+          else {
+            console.log("param NOT EXISTS",param);
+            sum += Number($("input[data-drupal-selector='" + param.substring(1) + "']").val());
+          }
+
+          console.log("sum",sum);
         });
-        console.log("value", value);
+        console.log("element",element);
+        console.log("value",value);
+        console.log("total sum",sum);
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
@@ -231,10 +234,6 @@
               }
             }
           }
-          console.log("********sum",sum)
-          console.log("params",params)
-          console.log("value",value)
-          console.log("elementAgencyComponent",elementAgencyComponent)
           return this.optional(element) || value <= sum;
         }
         else {
@@ -351,10 +350,6 @@
         }
         var min = Math.min.apply(null, valuesArray);
         var max = Math.max.apply(null, valuesArray);
-        console.log("min", min)
-        console.log("max", max)
-        console.log("valuesArray", valuesArray)
-        console.log("params", params)
         return this.optional(element) || (value >= min) && (value <= max);
       }, "Must be between the smallest and largest values.");
 
@@ -595,8 +590,6 @@
       $('input[id^=edit-validate-button]').once('foia-validation').on('click', function (event) {
         // $('input#edit-validate-button').once('foia-validation').on('click', function (event) {
         event.preventDefault();
-
-        console.log("edit-validate-button: " + drupalSettings.foiaUI.foiaUISettings.formID);
         $('.validation-overlay').removeClass('hidden');
 
         // To validate select drop-downs as required, they must have an
@@ -607,7 +600,6 @@
         setTimeout(function () {
           // Validate form.
           $(drupalSettings.foiaUI.foiaUISettings.formID).valid();
-          console.log("in timeout: " + drupalSettings.foiaUI.foiaUISettings.formID);
           $('.validation-overlay').addClass('hidden');
 
           // Empty drop-downs can still be submitted though, so restore
@@ -644,8 +636,6 @@
           });
         });
 
-      // TODO: check agency on other pages?
-
       // V.A. FOIA Requests.
       // Loops through Number of Requests Processed in Fiscal Year
       // But does not check to see if agency matches
@@ -653,21 +643,16 @@
       // check agency field_foia_requests_va[1][subform][field_agency_component]
 
       $("input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function (i) {
-
-
-        // TODO: not returning correct values from vb1, after they are changed
         //let agency = $("select[name*='field_foia_requests_va']").filter("select[name*='field_agency_component']").val();
         //agency = $("select[name*='field_foia_requests_va']").filter("select[name*='field_agency_component']").val();
         let v_foia_requests;
-        //console.log("**********: " + i);
         let vb1_total = $(`input[name='field_foia_requests_vb1[${i}][subform][field_total][0][value]']`).val();
 
-        // even though vb1 agency deleted, shows up as Adj Bds instead of nothing, since PHP is setting it
+        // Even though vb1 agency deleted, shows up as Adj Bds instead of nothing, since PHP is setting it
         let va_agency_el = $(`select[name='field_foia_requests_va[${i}][subform][field_agency_component]']`);
         let va_agency = va_agency_el.find(":selected").text();
         let vb1_agency_el = $(`select[name='field_foia_requests_vb1[${i}][subform][field_agency_component]']`);
         let vb1_agency = vb1_agency_el.find(":selected").text();
-
 
         if (typeof vb1_total === "undefined") {
           v_foia_requests = `Agency and "Total" field must match corresponding agency in section V.B.(1)`;
@@ -675,19 +660,7 @@
         else {
           v_foia_requests = `Agency and "Total" field must match corresponding agency in section V.B.(1) which is "${vb1_agency}" and "Total" of ${vb1_total}`;
         }
-        // field_foia_requests_vb1[0][subform][field_total][0][value]
-        // field_foia_requests_vb1[1][subform][field_total][0][value]
 
-
-        // console.log("field_foia_requests_vb1: ", $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']").val());
-        // console.log("Number of Requests Processed in Fiscal Year greaterThanEqualSumComp: ", $("input[name*='field_proc_req_viic1']").filter("input[name*='field_total']").val());
-        // console.log("field_proc_req_viic2: ", $("input[name*='field_proc_req_viic2']").filter("input[name*='field_total']").val());
-        // console.log("field_proc_req_viic3: ", $("input[name*='field_proc_req_viic3']").filter("input[name*='field_total']").val());
-        //
-
-        // get agency
-        // 7, 11, 7
-        // field_foia_requests_vb1[0][subform][field_total][0][value] =
         $(this).rules("add", {
           equalToComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
           greaterThanEqualSumComp: $("input[name*='field_proc_req_viic1']").filter("input[name*='field_total']")
@@ -700,14 +673,9 @@
         });
       });
 
-      // TODO: split form issues with --2 edit-field-overall-vb1-total-0-value--2
-      // field_overall_vb1_total
       // V.A. Agency Overall Number of Requests Processed in Fiscal Year.
       if(field_overall_req_proc_yr.val()) {
-        console.log("field_overall_req_proc_yr exist: " + field_overall_req_proc_yr.val())
-        console.log("check edit-field-overall-vb1-total-0-value: " + $("input[data-field-id='edit-field-overall-vb1-total-0-value']").val()); // TODO: 13
         field_overall_req_proc_yr.rules("add", {
-          //equalTo: "#edit-field-overall-vb1-total-0-value",
           equalTo: "input[data-field-id='edit-field-overall-vb1-total-0-value']",
           messages: {
             equalTo: "Must match V.B.(1) Agency Overall Total"
@@ -751,7 +719,7 @@
       */
 
       // V.B.(1) Agency Overall Number of Full Denials Based on Exemptions.
-      $("#edit-field-overall-vb1-full-denials-e-0-value").rules("add", {
+      $("[id^=edit-field-overall-vb1-full-denials-e-0-value]").rules("add", {
         lessThanEqualSum: [
           "#edit-field-overall-vb3-ex-1-0-value",
           "#edit-field-overall-vb3-ex-2-0-value",
@@ -774,17 +742,19 @@
       });
 
       // V.B.(1) Agency Overall Other*.
-      $("#edit-field-overall-vb1-oth-0-value").rules("add", {
-        equalTo: "#edit-field-overall-vb2-total-0-value",
+      $("input[data-drupal-selector='edit-field-overall-vb1-oth-0-value']").rules("add", {
+        //equalTo: "#edit-field-overall-vb2-total-0-value",
+        equalTo: "input[data-drupal-selector='edit-field-overall-vb2-total-0-value']",
         messages: {
-          equalTo: "Must match V.B.(2) Agency Overall Total"
+          equalTo: "Must match V.B.(2) Agency Overall Total: " + $("input[data-drupal-selector='edit-field-overall-vb2-total-0-value']").val()
         }
       });
 
       // V.B.(1) Agency Overall Total.
-      $("#edit-field-overall-vb1-total-0-value").rules("add", {
+      // TODO: Agency Overall Total, could not confirm if fix works
+      $("input[data-drupal-selector='edit-field-overall-vb1-total-0-value']").rules("add", {
         required: true,
-        equalTo: "#edit-field-overall-req-processed-yr-0-value",
+        equalTo: "input[data-drupal-selector='edit-field-overall-req-processed-yr-0-value']",
         messages: {
           equalTo: "Must match V.A. Agency Overall Number of Requests Processed in Fiscal Year"
         }
@@ -846,26 +816,15 @@
         }
       });
 
-
-      //
-
-      // full form: edit-field-overall-vib-total-0-value
-      // split form: edit-field-overall-vib-total
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year.
-      console.log("checking edit-field-overall-via-app-proc-yr-0-value: " + field_overall_via_app_proc_yr.val())
       if(field_overall_via_app_proc_yr.val()) {
-        console.log("must match edit-field-overall-vib-total-0-value:  " + $("input[data-field-id='edit-field-overall-vib-total-0-value']").val())
         field_overall_via_app_proc_yr.rules("add", {
-          // equalTo: "#edit-field-overall-vib-total-0-value",
           equalTo: "input[data-field-id='edit-field-overall-vib-total-0-value']",
           messages: {
             equalTo: "Must match VI.B. Agency Overall Total"
           }
         });
-      } else {
-        console.log("Skip validation if it hasn't been filled out in sp")
       }
-
 
       // VI.A. Administrative Appeals Processed During Fiscal Year from Current Annual Report.
       $("input[name*='field_admin_app_via']").filter("input[name*='field_app_processed_yr']").each(function () {
@@ -886,7 +845,6 @@
       });
 
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year.
-      // TODO: need
       $("input[name*='field_admin_app_via']").filter("input[name*='field_app_pend_end_yr']").each(function () {
         $(this).rules("add", {
           greaterThanZeroSumComp: [
@@ -1105,7 +1063,7 @@
       });
 
       // VII.B. Simple - Agency Overall Median Number of Days.
-      $("#edit-field-overall-viib-sim-med-0-value").rules("add", {
+      $("input[data-drupal-selector='edit-field-overall-viib-sim-med-0-value']").rules("add", {
         betweenMinMaxCompNA: $("input[name*='field_proc_req_viib']").filter("input[name*='field_sim_med']"),
         messages: {
           betweenMinMaxCompNA: "This field should be between the largest and smallest values of Median Number of Days"
@@ -1130,7 +1088,7 @@
       });
 
       // VII.B. Complex - Agency Overall Median Number of Days.
-      $("#edit-field-overall-viib-comp-med-0-value").rules("add", {
+      $("input[data-drupal-selector='edit-field-overall-viib-comp-med-0-value']").rules("add", {
         betweenMinMaxCompNA: $("input[name*='field_proc_req_viib']").filter("input[name*='field_comp_med']"),
         messages: {
           betweenMinMaxCompNA: "This field should be between the largest and smallest values of Median Number of Days"
@@ -1327,8 +1285,8 @@
       // VIII.A. Agency Overall Number Adjudicated Within Ten Calendar Days.
       $("[id^=edit-field-overall-viiia-num-jud-w10-0-value]").rules("add", {
         lessThanEqualSum: [
-          "#edit-field-overall-viiia-num-grant-0-value",
-          "#edit-field-overall-viiia-num-denied-0-value"
+          "input[data-drupal-selector='edit-field-overall-viiia-num-grant-0-value']",
+          "input[data-drupal-selector='edit-field-overall-viiia-num-denied-0-value']",
         ],
         messages: {
           lessThanEqualSum: "This field should be should be equal to or less than the # granted + # denied.",
@@ -1336,7 +1294,7 @@
       });
 
       // VIII.A. Agency Overall number greater or equal to zero validation check for text fields.
-      $('#edit-field-overall-viiia-num-jud-w10-0-value').rules("add", {
+      $('[id^=edit-field-overall-viiia-num-jud-w10-0-value]').rules("add", {
         notNegative: true,
         messages: {
           notNegative: "Please use number greater or equal to zero."
@@ -1361,7 +1319,7 @@
       }
 
       // VIII.B. Agency Overall Median Number of Days to Adjudicate.
-      $("#edit-field-overall-viiib-med-days-jud-0-value").rules("add", {
+      $("[id^=edit-field-overall-viiib-med-days-jud-0-value]").rules("add", {
         betweenMinMaxCompNA: $("input[name*='field_req_viiib']").filter("input[name*='field_med_days_jud']"),
         messages: {
           betweenMinMaxCompNA: "This field should be between the largest and smallest values of Median Number of Days"
@@ -1380,11 +1338,11 @@
 
       // IX. Agency Overall Total Number of "Full-Time FOIA Staff"
       // IX. Agency Overall Processing Costs.
-      $("#edit-field-overall-ix-total-staff-0-value, #edit-field-overall-ix-total-costs-0-value").each(function () {
+      $("[id^=edit-field-overall-ix-total-staff-0-value],[id^=edit-field-overall-ix-total-costs-0-value]").each(function () {
         $(this).rules("add", {
           greaterThanZero: {
             depends: function () {
-              return Number($("#edit-field-overall-vb1-total-0-value").val()) > 0;
+              return Number($("input[data-field-id='edit-field-overall-vb1-total-0-value']").val()) > 0;
             }
           },
           messages: {
@@ -1558,7 +1516,7 @@
       });
 
       // XII.E.(1). Agency Overall Number Received During Fiscal Year from Current Annual Report.
-      $("#edit-field-overall-xiie1-received-cur-0-value").rules("add", {
+      $("input[data-drupal-selector='edit-field-overall-xiie1-received-cur-0-value']").rules("add", {
         equalTo: "#edit-field-overall-via-app-recd-yr-0-value",
         messages: {
           equalTo: "Must match VI.A. Agency Overall Number of Appeals Received in Fiscal Year",
@@ -1566,7 +1524,7 @@
       });
 
       // XII.E.(1). Agency Overall Number Processed During Fiscal Year from Current Annual Report.
-      $("#edit-field-overall-xiie1-proc-cur-yr-0-value").rules("add", {
+      $("input[data-drupal-selector='edit-field-overall-xiie1-proc-cur-yr-0-value']").rules("add", {
         equalTo: "#edit-field-overall-via-app-proc-yr-0-value",
         messages: {
           equalTo: "Must match VI.A. Agency Overall Number of Appeals Processed in Fiscal Year",
