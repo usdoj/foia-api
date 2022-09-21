@@ -817,7 +817,7 @@
       });
 
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year.
-      if(field_overall_via_app_proc_yr.val()) {
+      if (field_overall_via_app_proc_yr.val() && field_overall_via_app_proc_yr.attr('type') !== 'hidden') {
         field_overall_via_app_proc_yr.rules("add", {
           equalTo: "input[data-field-id='edit-field-overall-vib-total-0-value']",
           messages: {
