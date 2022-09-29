@@ -645,21 +645,21 @@
       $("input[name*='field_foia_requests_va']").filter("input[name*='field_req_processed_yr']").each(function (i) {
         //let agency = $("select[name*='field_foia_requests_va']").filter("select[name*='field_agency_component']").val();
         //agency = $("select[name*='field_foia_requests_va']").filter("select[name*='field_agency_component']").val();
-        let v_foia_requests;
-        let vb1_total = $(`input[name='field_foia_requests_vb1[${i}][subform][field_total][0][value]']`).val();
+        //let v_foia_requests;
+        //let vb1_total = $(`input[name='field_foia_requests_vb1[${i}][subform][field_total][0][value]']`).val();
 
         // Even though vb1 agency deleted, shows up as Adj Bds instead of nothing, since PHP is setting it
-        let va_agency_el = $(`select[name='field_foia_requests_va[${i}][subform][field_agency_component]']`);
-        let va_agency = va_agency_el.find(":selected").text();
-        let vb1_agency_el = $(`select[name='field_foia_requests_vb1[${i}][subform][field_agency_component]']`);
-        let vb1_agency = vb1_agency_el.find(":selected").text();
+        //let va_agency_el = $(`select[name='field_foia_requests_va[${i}][subform][field_agency_component]']`);
+        //let va_agency = va_agency_el.find(":selected").text();
+        //let vb1_agency_el = $(`select[name='field_foia_requests_vb1[${i}][subform][field_agency_component]']`);
+        //let vb1_agency = vb1_agency_el.find(":selected").text();
 
-        if (typeof vb1_total === "undefined") {
-          v_foia_requests = `Agency and "Total" field must match corresponding agency in section V.B.(1)`;
-        }
-        else {
-          v_foia_requests = `Agency and "Total" field must match corresponding agency in section V.B.(1) which is "${vb1_agency}" and "Total" of ${vb1_total}`;
-        }
+        //if (typeof vb1_total === "undefined") {
+        //  v_foia_requests = `Agency and "Total" field must match corresponding agency in section V.B.(1)`;
+        //}
+        //else {
+        //  v_foia_requests = `Agency and "Total" field must match corresponding agency in section V.B.(1) which is "${vb1_agency}" and "Total" of ${vb1_total}`;
+        //}
 
         $(this).rules("add", {
           equalToComp: $("input[name*='field_foia_requests_vb1']").filter("input[name*='field_total']"),
@@ -667,7 +667,7 @@
             .add("input[name*='field_proc_req_viic2']").filter("input[name*='field_total']")
             .add("input[name*='field_proc_req_viic3']").filter("input[name*='field_total']"),
           messages: {
-            equalToComp: v_foia_requests,
+            equalToComp: 'Component "Number of Requests Processed in Fiscal Year" in section V.A. should match corresponding component "Total" in section V.B.(1).',
             greaterThanEqualSumComp: "Must be greater than or equal to sum of all of the Totals of VII.C.1, 2, and 3 for the corresponding agency/component"
           }
         });
