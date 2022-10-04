@@ -8,6 +8,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldFilteredMarkup;
+use Drupal\Component\Utility\Html;
 
 /**
  * Get IX "Processing Costs" and  X "Fees Collected" and return Percentage of Total Costs.
@@ -21,11 +22,9 @@ use Drupal\Core\Field\FieldFilteredMarkup;
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
-function calculate_x($nid) {
-  $node      = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+function calculate_x($node, $form_all) {
   $x_targets = $node->field_fees_x->getValue();
   $overall   = $node->field_overall_ix_proc_costs->getValue();
-  $form_all  = \Drupal::service('entity.form_builder')->getForm($node, 'default');
 
   // IX. Agency Overall Total Costs.
   $field_overall_ix_total_costs = $form_all['field_overall_ix_total_costs']['widget'][0]['value']['#value'] ?? NULL;
@@ -76,6 +75,7 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
 
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($form_state->getformObject()->getEntity()->id());
     $form_all = \Drupal::service('entity.form_builder')->getForm($node, 'default');
+    Html::resetSeenIds();
 
     // All pages need overall numbers.
     $overall_fields = [
@@ -256,7 +256,7 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
           ? $form['field_fees_x']['widget'][0]['subform']['field_perc_costs']['widget']['#description']
           : NULL;
 
-        $results = calculate_x($form_state->getformObject()->getEntity()->id());
+        $results = calculate_x($node, $form_all);
 
         // Loop through all agencies and calculate.
         $i = 0;
@@ -301,7 +301,6 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
               'id' => $form_all[$field]['widget'][0]['value']['#id'],
               'data-drupal-selector' => $form_all[$field]['widget'][0]['value']['#id'],
               'data-field-id' => $form_all[$field]['widget'][0]['value']['#id'],
-              // 'readonly' => true, // May fix --2 issue
             ],
           ];
         }
