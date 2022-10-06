@@ -8,6 +8,7 @@ dependencies:
     - paragraphs.paragraphs_type.attachments
   module:
     - file
+    - insert
 id: paragraph.attachments.default
 targetEntityType: paragraph
 bundle: attachments
@@ -19,7 +20,15 @@ content:
     region: content
     settings:
       progress_indicator: throbber
-    third_party_settings: {  }
+    third_party_settings:
+      insert:
+        styles:
+          link: link
+          insert__auto: 0
+          icon_link: 0
+          audio: 0
+          video: 0
+        default: insert__auto
   field_title:
     type: string_textfield
     weight: 0
