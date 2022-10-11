@@ -68,10 +68,46 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
   // $form['#validate'][] = 'starting_drupal_dev_form_validate';
   $form['#attached']['library'][] = 'foia_advcalc/advcalc_field';
 
+  // Array of all split form pages to run this code on, return on everything else
+  $run_on_forms = [
+    'node_annual_foia_report_data_annual_report_agency_info_form',
+    'node_annual_foia_report_data_annual_report_iv_exemption_3_statutes_form',
+    'node_annual_foia_report_data_annual_report_v_a_foia_requests_form',
+    'node_annual_foia_report_data_annual_report_v_b_1_disposition_of_foia_requests_form',
+    'node_annual_foia_report_data_annual_report_v_b_2_disposition_of_foia_requests_form',
+    'node_annual_foia_report_data_annual_report_v_b_3_disposition_of_foia_requests_form',
+    'node_annual_foia_report_data_annual_report_vi_a_administrative_appeals_form',
+    'node_annual_foia_report_data_annual_report_vi_b_disposition_of_administrative_appeals_form',
+    'node_annual_foia_report_data_annual_report_vi_c_1_reasons_for_denial_on_appeal_form',
+    'node_annual_foia_report_data_annual_report_vi_c_2_reasons_for_denial_on_appeal_form',
+    'node_annual_foia_report_data_annual_report_vi_c_3_reasons_for_denial_on_appeal_form',
+    'node_annual_foia_report_data_annual_report_vi_c_4_response_time_form',
+    'node_annual_foia_report_data_annual_report_vi_c_5_ten_oldest_pending_form',
+    'node_annual_foia_report_data_annual_report_vii_a_foia_requests_response_time_form',
+    'node_annual_foia_report_data_annual_report_vii_b_processed_requests_response_time_form',
+    'node_annual_foia_report_data_annual_report_vi_c_3_reasons_for_denial_on_appeal_form',
+    'node_annual_foia_report_data_annual_report_vii_c_1_processed_simple_requests_response_time_form',
+    'node_annual_foia_report_data_annual_report_vii_c_2_processed_complex_requests_response_time_form',
+    'node_annual_foia_report_data_annual_report_vii_c_3_processed_requests_granted_expedited_form',
+    'node_annual_foia_report_data_annual_report_vii_d_pending_requests_all_form',
+    'node_annual_foia_report_data_annual_report_vii_e_pending_requests_ten_oldest_form',
+    'node_annual_foia_report_data_annual_report_viii_a_requests_for_expedited_processing_form',
+    'node_annual_foia_report_data_annual_report_viii_b_requests_for_fee_waiver_form',
+    'node_annual_foia_report_data_annual_report_x_0_ix_foia_personnel_and_costs_form',
+    'node_annual_foia_report_data_annual_report_x_fees_collected_for_processing_requests_form',
+    'node_annual_foia_report_data_annual_report_xi_a_number_of_times_subsection_c_used_form',
+    'node_annual_foia_report_data_annual_report_xi_b_number_of_subsection_a_2_postings_form',
+    'node_annual_foia_report_data_annual_report_xii_a_backlogs_form',
+    'node_annual_foia_report_data_annual_report_xii_b_consultations_form',
+    'node_annual_foia_report_data_annual_report_xii_c_consultations_form',
+    'node_annual_foia_report_data_annual_report_xii_d_1_comparison_form',
+    'node_annual_foia_report_data_annual_report_xii_d_2_comparison_form',
+    'node_annual_foia_report_data_annual_report_xii_e_1_comparison_form',
+    'node_annual_foia_report_data_annual_report_xii_e_2_comparison_form',
+  ];
+
   // Completely skip over switch statement if we are on full form.
-  if ($form_id !== 'node_annual_foia_report_data_edit_form'
-    && $form_id !== 'node_annual_foia_report_data_form'
-    && $form_id !== 'node_annual_foia_report_data_annual_report_agency_info_form') {
+  if (in_array($form_id, $run_on_forms)) {
 
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($form_state->getformObject()->getEntity()->id());
     $form_all = \Drupal::service('entity.form_builder')->getForm($node, 'default');
@@ -284,6 +320,9 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
           $i++;
         }
         break;
+
+      default:
+        return;
     }
 
     // Loop through all fields for overall numbers if there are any.
@@ -306,5 +345,8 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
         }
       }
     }
+  }
+  else {
+    return;
   }
 }
