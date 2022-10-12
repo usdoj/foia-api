@@ -25,7 +25,7 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_fo
   foia_quarterly_data_report_ajax_existing_node($form);
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
   // Add general validation including checkig for existing report.
-  $form['#validate'][] = '_form_quarterly_data_report_validate';
+  $form['#validate'][] = 'foia_quarterly_data_report_form_quarterly_data_report_validate';
 }
 
 /**
@@ -35,7 +35,7 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_al
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
   foia_quarterly_data_report_ajax_new_node($form);
   // Add general validation including checkig for existing report.
-  $form['#validate'][] = '_form_quarterly_data_report_validate';
+  $form['#validate'][] = 'foia_quarterly_data_report_form_quarterly_data_report_validate';
 }
 
 /**
@@ -287,7 +287,7 @@ function foia_quarterly_data_report_set_default_report_values(array &$form, Form
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Drupal form state.
  */
-function _form_quarterly_data_report_validate(array &$form, FormStateInterface $form_state): void {
+function foia_quarterly_data_report_form_quarterly_data_report_validate(array &$form, FormStateInterface $form_state): void {
 
   $form_state_values = $form_state->getValues();
 
