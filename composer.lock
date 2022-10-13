@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6029d49cbc6d86c599b0652825310d47",
+    "content-hash": "80af2f3b6a089928b92155c6361f5fd9",
     "packages": [
         {
             "name": "acquia/blt",
@@ -174,20 +174,20 @@
         },
         {
             "name": "acquia/drupal-environment-detector",
-            "version": "1.5.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acquia/drupal-environment-detector.git",
-                "reference": "ef6e86df2654f93b11062e07a93dbcd941d65176"
+                "reference": "1155ed6cd62cacc4dfa9545a612a4981d6560bcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acquia/drupal-environment-detector/zipball/ef6e86df2654f93b11062e07a93dbcd941d65176",
-                "reference": "ef6e86df2654f93b11062e07a93dbcd941d65176",
+                "url": "https://api.github.com/repos/acquia/drupal-environment-detector/zipball/1155ed6cd62cacc4dfa9545a612a4981d6560bcc",
+                "reference": "1155ed6cd62cacc4dfa9545a612a4981d6560bcc",
                 "shasum": ""
             },
             "require-dev": {
-                "acquia/coding-standards": "^1.0.0",
+                "acquia/coding-standards": "^0.4.3",
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
                 "phpunit/phpunit": "^9.1"
             },
@@ -218,9 +218,9 @@
             "description": "Provides common methods for detecting the current Acquia environment",
             "support": {
                 "issues": "https://github.com/acquia/drupal-environment-detector/issues",
-                "source": "https://github.com/acquia/drupal-environment-detector/tree/1.5.0"
+                "source": "https://github.com/acquia/drupal-environment-detector/tree/1.4.1"
             },
-            "time": "2022-08-23T18:15:55+00:00"
+            "time": "2022-03-15T20:59:14+00:00"
         },
         {
             "name": "acquia/drupal-spec-tool",
@@ -849,7 +849,7 @@
             "version": "3.6.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "3711efedf0ca2e998cd0417324f717f2e0b828ec"
             },
             "dist": {
@@ -2502,34 +2502,35 @@
         },
         {
             "name": "doctrine/event-manager",
-            "version": "1.1.2",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/event-manager.git",
-                "reference": "eb2ecf80e3093e8f3c2769ac838e27d8ede8e683"
+                "reference": "95aa4cb529f1e96576f3fda9f5705ada4056a520"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/event-manager/zipball/eb2ecf80e3093e8f3c2769ac838e27d8ede8e683",
-                "reference": "eb2ecf80e3093e8f3c2769ac838e27d8ede8e683",
+                "url": "https://api.github.com/repos/doctrine/event-manager/zipball/95aa4cb529f1e96576f3fda9f5705ada4056a520",
+                "reference": "95aa4cb529f1e96576f3fda9f5705ada4056a520",
                 "shasum": ""
             },
             "require": {
+                "doctrine/deprecations": "^0.5.3 || ^1",
                 "php": "^7.1 || ^8.0"
             },
             "conflict": {
                 "doctrine/common": "<2.9"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^9",
-                "phpstan/phpstan": "~1.4.10 || ^1.5.4",
+                "doctrine/coding-standard": "^9 || ^10",
+                "phpstan/phpstan": "~1.4.10 || ^1.8.8",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
-                "vimeo/psalm": "^4.22"
+                "vimeo/psalm": "^4.24"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Common\\": "lib/Doctrine/Common"
+                    "Doctrine\\Common\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2573,7 +2574,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/event-manager/issues",
-                "source": "https://github.com/doctrine/event-manager/tree/1.1.2"
+                "source": "https://github.com/doctrine/event-manager/tree/1.2.0"
             },
             "funding": [
                 {
@@ -2589,7 +2590,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-27T22:18:11+00:00"
+            "time": "2022-10-12T20:51:15+00:00"
         },
         {
             "name": "doctrine/inflector",
