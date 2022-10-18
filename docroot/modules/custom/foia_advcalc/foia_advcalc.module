@@ -36,6 +36,7 @@ function calculate_x($node, $form_all) {
   if ($x_targets) {
     $p_array = [];
     $i = 0;
+    $field_perc_costs = '';
     foreach ($x_targets as $field) {
 
       // X. Total Amount of Fees Collected.
@@ -44,7 +45,10 @@ function calculate_x($node, $form_all) {
       // IX. Processing Costs.
       $field_proc_costs = $form_all['field_foia_pers_costs_ix']['widget'][$i]['subform']['field_proc_costs']['widget'][0]['value']['#value'] ?? NULL;
 
-      // @todo Cannot get agency from IX
+      if($field_proc_costs > 0) {
+        $field_perc_costs = round(($total_fees / $field_proc_costs * 10000) / 100, 2);
+      }
+
       $p_array[] = [
         "field_proc_costs" => $field_proc_costs,
         "agency" => $agency[0]['target_id'] ?? NULL,
@@ -52,7 +56,7 @@ function calculate_x($node, $form_all) {
         "field_overall_ix_total_costs" => $field_overall_ix_total_costs,
         "field_overall_ix_proc_costs" => $field_overall_ix_proc_costs,
         "field_overall_ix_proc_costs2" => $overall[0]['value'] ?? NULL,
-        'field_perc_costs' => round(($total_fees / $field_proc_costs * 10000) / 100, 2),
+        'field_perc_costs' => $field_perc_costs,
       ];
       $i++;
     }
