@@ -1333,7 +1333,7 @@
         $(this).rules("add", {
           greaterThanZero: {
             depends: function () {
-              return Number($("input[data-field-id='edit-field-overall-vb1-total-0-value']").val()) > 0;
+              return Number($("#edit-field-overall-vb1-total-0-value").val()) > 0;
             }
           },
           messages: {
