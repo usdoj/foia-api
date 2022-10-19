@@ -18,9 +18,6 @@
       var specialNumber = Drupal.FoiaUI.specialNumber;
       var getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
       var hasAgencyComponent = Drupal.FoiaUI.hasAgencyComponent;
-
-      let form_id = $("input[name='form_id']").val();
-
       let field_admin_app_vic5 = $("input[name*='field_admin_app_vic5']");
       let field_overall_via_app_proc_yr = $("#edit-field-overall-via-app-proc-yr-0-value");
       let field_overall_req_proc_yr = $("#edit-field-overall-req-processed-yr-0-value");
@@ -1333,7 +1330,7 @@
         $(this).rules("add", {
           greaterThanZero: {
             depends: function () {
-              return Number($("#edit-field-overall-vb1-total-0-value").val()) > 0;
+              return Number($("#edit-field-overall-vb1-total-0-value").val()) > 0;//
             }
           },
           messages: {
