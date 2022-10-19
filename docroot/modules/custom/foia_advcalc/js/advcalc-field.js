@@ -16,28 +16,12 @@
       /**
        * Alias Drupal.FoiaUI utility functions
        */
-      var specialNumber = Drupal.FoiaUI.specialNumber;
-      var getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
-      let splitForm  = $(".node-annual-foia-report-data-annual-report-x-fees-collected-for-processing-requests-form").length;
-      let fieldFeesElement  = $("input[name*='field_fees_x']");
+      let specialNumber = Drupal.FoiaUI.specialNumber;
+      let getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
+      let splitForm = $(".node-annual-foia-report-data-annual-report-x-fees-collected-for-processing-requests-form").length;
+      let fieldFeesElement = $("input[name*='field_fees_x']");
 
       const util = {
-        _ajax_helper: function (url) {
-          const splitPath = window.location.pathname.split("/");
-          $.ajax({
-            type: "GET",
-            dataType:"json",
-            url: window.location.protocol + "//" + window.location.host + url + splitPath[2] + "/1,2,3",
-            success : function(response)
-            {
-              return response;
-            },
-            failed : function(e)
-            {
-              return e;
-            }
-          });
-        },
         /**
          * Converts number back to "<1" if between 0 and 1.
          *
@@ -45,7 +29,7 @@
          *
          * @returns {string}
          */
-        displayLessThan: function(number) {
+        displayLessThan: function (number) {
           if (number > 0 && number < 1) {
             return "<1";
           }
@@ -97,7 +81,7 @@
          * @param {string} end
          *  Partial name attribute for selecting calculated end year field.
          */
-        calculateOverallPendEndYr: function(start, received, processed, end) {
+        calculateOverallPendEndYr: function (start, received, processed, end) {
           let startVal = Number($(start).val());
           if(isNaN(startVal)) {
             startVal = Number($("input[data-drupal-selector='" + start.substring(1) + "']").val());
@@ -222,7 +206,7 @@
          * @param {string} end
          *  Partial name attribute for selecting calculated end year field.
          */
-        calculatePendEndYr: function(element, start, received, processed, end) {
+        calculatePendEndYr: function (element, start, received, processed, end) {
           var component = $(element).parents('.paragraphs-subform');
           var startVal = Number(component.find("input[name*='" + start + "']").val());
           var receivedVal = Number(component.find("input[name*='" + received + "']").val());
@@ -232,11 +216,12 @@
         },
         /**
          * Calculate X. Percentage of Total Costs
-         * On Change
          * @param {string} agency
-         *   String representing an agency/component option value.
+         *     String representing an agency/component option value.
+         * @param load
+         *     Different behavior depending on load or change
          */
-        calculatePercentTotalCosts: function(agency, load) {
+        calculatePercentTotalCosts: function (agency, load) {
 
           let procCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
           let totalFeesElements = fieldFeesElement.filter("input[name*='field_total_fees']");
@@ -543,41 +528,11 @@
           return result;
         },
         /**
-         * TODO: Could not get agency in foia_advalc.module
-         * @param elements
-         * @param agency
-         * @param field
-         * @returns {null}
-         */
-        getElementValByAgencySplitForm: function (elements, agency, field) {
-          var result = null;
-          $(elements).each(function () {
-            let elementAgency;
-            if(field === 'fees') {
-              elementAgency = $(this).data("agency");
-            }
-            // Get this from the hidden field
-            if (parseInt(agency) === parseInt(elementAgency)) {
-              result = Number($(this).val());
-            }
-          });
-          return result;
-        },
-        /**
          * Calculate X. Agency Overall Percentage of Total Costs
          */
         calculateOverallPercentCosts: function () {
-
-          let overallProcCosts, overallTotalFees;
-          // Issue with data-drupal-selector leaving out the -value, so using data-field-id
-          if(splitForm) {
-            overallProcCosts = Number($("input[data-field-id='edit-field-overall-ix-proc-costs-0-value']").val());
-            overallTotalFees = Number($("input[data-drupal-selector='edit-field-overall-x-total-fees-0-value']").val());
-          }
-          else {
-            overallProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
-            overallTotalFees = Number($("input[data-drupal-selector='edit-field-overall-x-total-fees-0-value']").val());
-          }
+          let overallProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
+          let overallTotalFees = Number($("input[data-drupal-selector='edit-field-overall-x-total-fees-0-value']").val());
           if(overallTotalFees) {
             let overallPercentCosts = 0;
             let overallDivide;
@@ -585,7 +540,6 @@
               overallDivide = overallTotalFees / overallProcCosts;
               overallPercentCosts = Math.round(overallDivide * 10000) / 100;
             }
-
             $("input[data-drupal-selector='edit-field-overall-x-perc-costs-0-value']").val(overallPercentCosts);
           }
         }
@@ -648,7 +602,7 @@
         xiib_load_field = "#edit-field-overall-xiib-pend-end-yr-0-value";
       }
       else {
-        xiib_load_field =  "input[data-drupal-selector='edit-field-overall-xiib-pend-end-yr-0-value']";
+        xiib_load_field = "input[data-drupal-selector='edit-field-overall-xiib-pend-end-yr-0-value']";
       }
       if (!util.fieldIsInitialized(xiib_load_field)) {
         calculate.calculateOverallPendEndYr(
