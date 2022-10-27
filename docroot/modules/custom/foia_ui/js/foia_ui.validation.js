@@ -18,9 +18,6 @@
       var specialNumber = Drupal.FoiaUI.specialNumber;
       var getAgencyComponent = Drupal.FoiaUI.getAgencyComponent;
       var hasAgencyComponent = Drupal.FoiaUI.hasAgencyComponent;
-
-      let form_id = $("input[name='form_id']").val();
-
       let field_admin_app_vic5 = $("input[name*='field_admin_app_vic5']");
       let field_overall_via_app_proc_yr = $("#edit-field-overall-via-app-proc-yr-0-value");
       let field_overall_req_proc_yr = $("#edit-field-overall-req-processed-yr-0-value");
@@ -201,22 +198,14 @@
       // Agency Overall Total should be 12
       jQuery.validator.addMethod("lessThanEqualSum", function (value, element, params) {
         var sum = 0;
-        console.log("lessThanEqualSum",params);
         params.forEach(function (param) {
           if($(param).length) {
-            console.log("param EXISTS",param);
             sum += Number($(param).val());
           }
           else {
-            console.log("param NOT EXISTS",param);
             sum += Number($("input[data-drupal-selector='" + param.substring(1) + "']").val());
           }
-
-          console.log("sum",sum);
         });
-        console.log("element",element);
-        console.log("value",value);
-        console.log("total sum",sum);
         return this.optional(element) || value <= sum;
       }, "Must equal less than equal a sum of other fields.");
 
@@ -672,11 +661,10 @@
           }
         });
       });
-
       // V.A. Agency Overall Number of Requests Processed in Fiscal Year.
       if(field_overall_req_proc_yr.val()) {
         field_overall_req_proc_yr.rules("add", {
-          equalTo: "input[data-field-id='edit-field-overall-vb1-total-0-value']",
+          equalTo: "#edit-field-overall-vb1-total-0-value",
           messages: {
             equalTo: "Must match V.B.(1) Agency Overall Total"
           }
@@ -819,7 +807,7 @@
       // VI.A. Agency Overall Number of Appeals Processed in Fiscal Year.
       if (field_overall_via_app_proc_yr.val() && field_overall_via_app_proc_yr.attr('type') !== 'hidden') {
         field_overall_via_app_proc_yr.rules("add", {
-          equalTo: "input[data-field-id='edit-field-overall-vib-total-0-value']",
+          equalTo: "#edit-field-overall-vib-total-0-value",
           messages: {
             equalTo: "Must match VI.B. Agency Overall Total"
           }
@@ -1342,7 +1330,7 @@
         $(this).rules("add", {
           greaterThanZero: {
             depends: function () {
-              return Number($("input[data-field-id='edit-field-overall-vb1-total-0-value']").val()) > 0;
+              return Number($("#edit-field-overall-vb1-total-0-value").val()) > 0;//
             }
           },
           messages: {
