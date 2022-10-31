@@ -169,6 +169,7 @@ class WebformSubmissionResource extends ResourceBase {
 
     // Check for file attachments.
     $fileAttachmentsOnSubmission = $this->getSubmittedFileAttachments($webform, $data);
+    $fileErrors = FALSE;
     if ($fileAttachmentsOnSubmission) {
       $fileErrors = $this->validateAttachmentsContainRequiredInfo($fileAttachmentsOnSubmission);
       if (!$fileErrors) {
