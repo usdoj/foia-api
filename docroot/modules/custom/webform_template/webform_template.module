@@ -5,7 +5,6 @@
  * FOIA Webform Template Module.
  */
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -18,28 +17,53 @@ function webform_template_webform_insert(WebformInterface $webform) {
 }
 
 /**
- * Implements hook_entity_presave().
- */
-function webform_template_entity_presave(EntityInterface $entity) {
-
-  if (!($entity->bundle()) || $entity->bundle() !== 'webform') {
-    return;
-  }
-  if ($entity->isNew() && empty($entity->getElementsDecoded())) {
-    return;
-  }
-
-  $templateController = \Drupal::service('webform_template.template_controller');
-  if (!$templateController->webformImplementsTemplate($entity)) {
-    throw new \Exception('The webform does not implement the required template.');
-  }
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  */
 function webform_template_form_webform_form_alter(array &$form, FormStateInterface $form_state) {
   // Remove edit/delete links from fields provided by the template.
   $templateController = \Drupal::service('webform_template.template_controller');
   $templateController->preprocessWebformForm($form, $form_state);
+}
+
+/**
+ * Implements hook_webform_element_configuration_form_alter().
+ */
+function webform_template_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
+  $element['#element_validate'][] = 'webform_template_element_validate';
+  $pattern = '/\/admin\/structure\/webform\/manage\//i';
+  $current_path = \Drupal::service('path.current')->getPath();
+  $url = preg_replace($pattern, '', $current_path);
+  $url_ary = explode('/', $url);
+  // save webform ID for use in validation function
+  $element['#attributes']['webform_id'] = $url_ary[0];
+}
+
+/**
+ * Webform element custom validation for /admin/structure/webform/manage/{webform_id}/element/{element key}/edit
+ *
+ * @param array $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *
+ * @return void
+ */
+function webform_template_element_validate(array &$element, FormStateInterface $formState, array &$form) {
+  $values = $formState->getValues();
+  // get form field key
+  $values = isset($values['key']) ? $values['key'] : $values;
+  $templateController = drupal_static(__FUNCTION__);
+  if (!isset($templateController)) {
+    $templateController = \Drupal::service('webform_template.template_controller');
+  }
+  $use_foia_template = $templateController::TEMPLATESTATUSDEFAULT;
+  if (isset($element['#attributes']['webform_id'])) {
+    $use_foia_template = $templateController->getTemplateConfiguration($element['#attributes']['webform_id']);
+  }
+
+  // Validate if foia template in use
+  if (isset($use_foia_template) && ($use_foia_template == '1')) {
+    $templateElements = array_keys($templateController->templateElements);
+    if (!in_array($values, $templateElements)) {
+      $formState->setErrorByName($values, t('Error field: "@field", Please contact the site administrator.', ["@field" => $values]));
+    }
+  }
 }
