@@ -122,8 +122,12 @@ class WebformTemplateController {
     if ((strpos(strtolower($form_id), 'webform_settings') != FALSE) || !isset($webformElements['webform_ui_elements'])) {
       return $result;
     }
+    // Check if there no fiel element been defined, exit.
+    if (gettype($webformElements['webform_ui_elements']) !== 'array') {
+      return t('There is no field defined: "@field". Please contact the site administrator.', ["@field" => '']);
+    }
 
-    $webformElements = isset($webformElements['webform_ui_elements']) ? array_keys($webformElements['webform_ui_elements']) : $webformElements;
+    $webformElements = ($webformElements['webform_ui_elements'] !== NULL) ? array_keys($webformElements['webform_ui_elements']) : $webformElements;
     $templateElements = array_keys($templateElements);
 
     $webformElements = count(($webformElements)) ? $webformElements : $templateElements;
