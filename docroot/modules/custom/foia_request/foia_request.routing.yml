@@ -1,0 +1,7 @@
+foia_request.purge:
+  path: '/admin/config/system/foia_request_purge'
+  defaults:
+    _title: 'FOIA Request - Purge Failed Requests'
+    _form: 'Drupal\foia_request\Form\FoiaRequestPurgeForm'
+  requirements:
+    _permission: 'administer site configuration'
