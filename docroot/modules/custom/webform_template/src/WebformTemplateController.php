@@ -96,9 +96,10 @@ class WebformTemplateController {
   /**
    * Webform custom validation for /admin/structure/webform/manage/{webform}
    *
-   * @param array $templateElements, $webformElements
+   * @param array $templateElements
+   * @param array $webformElements
    *
-   * @return t(message)
+   * @return tmessage
    */
   protected function validation(array $form, FormStateInterface $form_state) {
     $filtered = [];
@@ -117,7 +118,7 @@ class WebformTemplateController {
     $webformElements = $form_state->getValues();
 
     // Validation skip if it is form setting.
-    $form_id = isset($webformElements['form_id']) ? $webformElements['form_id'] : '';
+    $form_id = $webformElements['form_id'] ?? '';
     if ((strpos(strtolower($form_id), 'webform_settings') != FALSE) || !isset($webformElements['webform_ui_elements'])) {
       return $result;
     }
@@ -132,7 +133,8 @@ class WebformTemplateController {
         return !in_array(strtolower($element), array_map("strtolower", array_values($templateElements)));
       });
       $result = count($filtered) ? t('Error field(s): "@field". Please contact the site administrator.', ["@field" => implode(", ", $filtered)]) : $result;
-    } else {
+    }
+    else {
 
       // When webform elements count less than template elements count, find any difference first.
       $diff_array = array_diff($templateElements, $webformElements);
@@ -144,7 +146,8 @@ class WebformTemplateController {
       // Construck error messages.
       if (count($diff_array) && count($filtered)) {
         $result = t('Error field(s): "@filtered" and the following field(s) missing: "@diff". Please contact the site administrator.', ["@filtered" => implode(", ", $filtered), "@diff" => implode(", ", $diff_array)]);
-      } else {
+      }
+      else {
         if (count($diff_array)) {
           $result = t('The following field(s) missing: "@field". Please contact the site administrator.', ["@field" => implode(", ", $diff_array)]);
         }
@@ -207,7 +210,8 @@ class WebformTemplateController {
     try {
       $decoded = Yaml::decode($this->getTemplate());
       return $decoded;
-    } catch (\Exception $exception) {
+    }
+    catch (\Exception $exception) {
       return FALSE;
     }
   }
@@ -222,7 +226,7 @@ class WebformTemplateController {
    */
   public function preprocessWebformForm(array &$form, FormStateInterface $form_state) {
     $webform_id = $form_state->getFormObject()->getEntity()->id();
-    $isNew = isset($form_state->getFormObject()->getEntity()) ? $form_state->getFormObject()->getEntity()->isNew() : FALSE;
+    $isNew = ($form_state->getFormObject()->getEntity() !== NULL) ? $form_state->getFormObject()->getEntity()->isNew() : FALSE;
     $templated = $this->getTemplateConfiguration($webform_id);
     $form['#validate'][] = [
       get_class($this),

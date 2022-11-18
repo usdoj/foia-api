@@ -34,22 +34,25 @@ function webform_template_webform_element_alter(array &$element, FormStateInterf
   $current_path = \Drupal::service('path.current')->getPath();
   $url = preg_replace($pattern, '', $current_path);
   $url_ary = explode('/', $url);
-  // save webform ID for use in validation function
+  // Save webform ID for use in validation function.
   $element['#attributes']['webform_id'] = $url_ary[0];
 }
 
 /**
- * Webform element custom validation for /admin/structure/webform/manage/{webform_id}/element/{element key}/edit
+ * Webform element custom validation for /admin/structure/webform/manage/{webform_id}/element/{element key}/edit.
  *
  * @param array $form
- * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form array.
  *
- * @return void
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ *
+ * @return none
  */
 function webform_template_element_validate(array &$element, FormStateInterface $formState, array &$form) {
   $values = $formState->getValues();
-  // get form field key
-  $values = isset($values['key']) ? $values['key'] : $values;
+  // Get form field key.
+  $values = ($values['key'] !== NULL) ? $values['key'] : $values;
   $templateController = drupal_static(__FUNCTION__);
   if (!isset($templateController)) {
     $templateController = \Drupal::service('webform_template.template_controller');
@@ -59,7 +62,7 @@ function webform_template_element_validate(array &$element, FormStateInterface $
     $use_foia_template = $templateController->getTemplateConfiguration($element['#attributes']['webform_id']);
   }
 
-  // Validate if foia template in use
+  // Validate if foia template in use.
   if (isset($use_foia_template) && ($use_foia_template == '1')) {
     $templateElements = array_keys($templateController->templateElements);
     if (!in_array($values, $templateElements)) {
