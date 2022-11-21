@@ -76,12 +76,9 @@ class WebformTemplateController {
    * Webform custom validation for /admin/structure/webform/manage/{webform}.
    *
    * @param array $form
-   *   Form object.
-   *
+   *   An associative array containing the structure of the form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   Form state.
-   *
-   * @return void
+   *   The current state of the form.
    */
   public static function customvalidation(array $form, FormStateInterface $form_state) {
 
@@ -94,12 +91,15 @@ class WebformTemplateController {
   }
 
   /**
-   * Webform custom validation for /admin/structure/webform/manage/{webform}
+   * Webform custom validation for /admin/structure/webform/manage/{webform}.
    *
-   * @param array $templateElements
-   * @param array $webformElements
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
    *
-   * @return tmessage
+   * @return string
+   *   Return of translate text message.
    */
   protected function validation(array $form, FormStateInterface $form_state) {
     $filtered = [];
@@ -140,7 +140,8 @@ class WebformTemplateController {
     }
     else {
 
-      // When webform elements count less than template elements count, find any difference first.
+      // When webform elements count less than template elements count,
+      // find any difference first.
       $diff_array = array_diff($templateElements, $webformElements);
       // Find difference from template list.
       $filtered = array_filter($webformElements, function ($element) use ($templateElements) {
@@ -149,7 +150,10 @@ class WebformTemplateController {
 
       // Construck error messages.
       if (count($diff_array) && count($filtered)) {
-        $result = t('Error field(s): "@filtered" and the following field(s) missing: "@diff". Please contact the site administrator.', ["@filtered" => implode(", ", $filtered), "@diff" => implode(", ", $diff_array)]);
+        $result = t('Error field(s): "@filtered" and the following field(s) missing: "@diff". Please contact the site administrator.', [
+          "@filtered" => implode(", ", $filtered),
+          "@diff" => implode(", ", $diff_array),
+        ]);
       }
       else {
         if (count($diff_array)) {
@@ -178,12 +182,8 @@ class WebformTemplateController {
    *
    * @param string $webform_id
    *   Webform id.
-   *
    * @param int $value
-   *   value = 0||1.
-   *
-   * @return void
-   *   The boolean foia template setting, or null if not defined.
+   *   Value = 0||1.
    */
   public function setTemplateConfiguration($webform_id, $value = 0) {
     if ($webform_id) {

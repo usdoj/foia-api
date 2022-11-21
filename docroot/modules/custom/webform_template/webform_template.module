@@ -39,18 +39,17 @@ function webform_template_webform_element_alter(array &$element, FormStateInterf
 }
 
 /**
- * Webform element custom validation for /admin/structure/webform/manage/{webform_id}/element/{element key}/edit.
+ * Webform element custom validation.
  *
- * @param array $form
- *   Form array.
- *
+ * @param array $element
+ *   The element being processed.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   Form state object.
- *
- * @return none
+ *   The current state of the form.
+ * @param array $form
+ *   An associative array containing the structure of the form.
  */
-function webform_template_element_validate(array &$element, FormStateInterface $formState, array &$form) {
-  $values = $formState->getValues();
+function webform_template_element_validate(array &$element, FormStateInterface $form_state, array &$form) {
+  $values = $form_state->getValues();
   // Get form field key.
   $values = ($values['key'] !== NULL) ? $values['key'] : $values;
   $templateController = drupal_static(__FUNCTION__);
@@ -66,7 +65,7 @@ function webform_template_element_validate(array &$element, FormStateInterface $
   if (isset($use_foia_template) && ($use_foia_template == '1')) {
     $templateElements = array_keys($templateController->templateElements);
     if (!in_array($values, $templateElements)) {
-      $formState->setErrorByName($values, t('Error field: "@field", Please contact the site administrator.', ["@field" => $values]));
+      $form_state->setErrorByName($values, t('Error field: "@field", Please contact the site administrator.', ["@field" => $values]));
     }
   }
 }
