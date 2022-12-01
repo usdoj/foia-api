@@ -16,6 +16,8 @@ use Drupal\Core\Form\FormStateInterface;
 class WebformTemplateController {
 
   const TEMPLATESTATUSDEFAULT = 1;
+  const DEFAULT_FIELDS_WILL_BE_ADDED = 'default fields will be added';
+  const CURRENT_TEMPLATE_STATUS_CHOICE = 'current template status choice';
 
   /**
    * Config service.
@@ -76,6 +78,23 @@ class WebformTemplateController {
    *   TRUE if the webform contains all elements defined on the template.
    */
   public function webformImplementsTemplate(WebformInterface $webform) {
+
+    if ($webform->getState($this::DEFAULT_FIELDS_WILL_BE_ADDED)) {
+      $webform->deleteState($this::DEFAULT_FIELDS_WILL_BE_ADDED);
+      return TRUE;
+    }
+
+    $templated = $this->getTemplateConfiguration($webform->id());
+
+    if ($webform->hasState($this::CURRENT_TEMPLATE_STATUS_CHOICE)) {
+      $templated = $webform->getState($this::CURRENT_TEMPLATE_STATUS_CHOICE);
+      $webform->deleteState($this::CURRENT_TEMPLATE_STATUS_CHOICE);
+    }
+
+    if (!$templated) {
+      return TRUE;
+    }
+
     if (!$templateElements = $this->getTemplateDecoded()) {
       // No valid template elements have been configured.
       return TRUE;
@@ -143,6 +162,10 @@ class WebformTemplateController {
       get_class($this),
       'processWebformForm',
     ];
+    array_unshift($form['actions']['submit']['#submit'], [
+      get_class($this),
+      'processWebformFormBeforeSave',
+    ]);
     $form['foia_template'] = [
       '#type' => 'checkbox',
       '#title' => t("Use FOIA Agency template"),
@@ -179,6 +202,25 @@ class WebformTemplateController {
       $form['webform_ui_elements'][$key]['title']['text']['#prefix'] = $prefix;
       unset($form['webform_ui_elements'][$key]['operations']['#links']['edit']);
       unset($form['webform_ui_elements'][$key]['operations']['#links']['delete']);
+    }
+  }
+
+  /**
+   * Additional submit handler to set some state variables before saving.
+   *
+   * @param array $form
+   *   The form render array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The submitted form state.
+   */
+  public static function processWebformFormBeforeSave(array $form, FormStateInterface $form_state) {
+    $webform = $form_state->getFormObject()->getEntity();
+    $templated = $form_state->getValue('foia_template');
+    $templateController = \Drupal::service('webform_template.template_controller');
+    $webform->setState($templateController::CURRENT_TEMPLATE_STATUS_CHOICE, $templated);
+
+    if ($webform->isNew() && $templated) {
+      $webform->setState($templateController::DEFAULT_FIELDS_WILL_BE_ADDED, TRUE);
     }
   }
 
