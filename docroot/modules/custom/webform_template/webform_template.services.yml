@@ -2,3 +2,8 @@ services:
   webform_template.template_controller:
     class: Drupal\webform_template\WebformTemplateController
     arguments: ['@config.factory']
+
+  webform_template.route_subscriber:
+    class: Drupal\webform_template\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

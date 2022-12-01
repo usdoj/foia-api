@@ -236,6 +236,9 @@ class WebformTemplateController {
     $webform_id = $form_state->getFormObject()->getEntity()->id();
     $foia_template = $form_state->getValue('foia_template');
     \Drupal::configFactory()->getEditable('webform_template.webform')->set($webform_id, $foia_template)->save();
+
+    $renderCache = \Drupal::service('cache.render');
+    $renderCache->invalidateAll();
   }
 
 }
