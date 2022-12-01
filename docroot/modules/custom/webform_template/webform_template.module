@@ -43,3 +43,42 @@ function webform_template_form_webform_form_alter(array &$form, FormStateInterfa
   $templateController = \Drupal::service('webform_template.template_controller');
   $templateController->preprocessWebformForm($form, $form_state);
 }
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function webform_template_preprocess_block(&$vars) {
+  // Verify the current page has local actions block.
+  if ($vars['plugin_id'] != 'local_actions_block') {
+    return;
+  }
+  $form_id = '';
+  // Get webform id from current url.
+  $pattern = '/\/admin\/structure\/webform\/manage\//i';
+  $current_path = \Drupal::service('path.current')->getPath();
+  $url = preg_replace($pattern, '', $current_path);
+  $url_ary = explode('/', $url);
+  if (!count($url_ary)) {
+    return;
+  }
+  $form_id = $url_ary[0];
+  // Verify webform exists by form id.
+  $webform = \Drupal::entityTypeManager()->getStorage('webform')->load($form_id);
+  if ($webform === NULL) {
+    return;
+  }
+
+  $use_foia_template = '0';
+  $templateController = drupal_static(__FUNCTION__);
+  if (!isset($templateController)) {
+    $templateController = \Drupal::service('webform_template.template_controller');
+  }
+  // Get current webform use foia template status.
+  $use_foia_template = $templateController->getTemplateConfiguration($form_id);
+  if (!$use_foia_template) {
+    return;
+  }
+  if (isset($vars['content']['entity.webform_ui.element'])) {
+    unset($vars['content']['entity.webform_ui.element']);
+  }
+}

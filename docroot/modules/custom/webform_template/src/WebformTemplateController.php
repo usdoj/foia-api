@@ -105,7 +105,7 @@ class WebformTemplateController {
    * @return bool|null
    *   The boolean foia template setting, or null if not defined.
    */
-  protected function getTemplateConfiguration($webform_id) {
+  public function getTemplateConfiguration($webform_id) {
     if (!$webform_id) {
       return NULL;
     }
@@ -168,6 +168,15 @@ class WebformTemplateController {
       if (isset($form['webform_ui_elements'][$key]['required'])) {
         $form['webform_ui_elements'][$key]['required']['#disabled'] = TRUE;
       }
+      // If foia template in use, diable edit link on form elements.
+      $title = $form['webform_ui_elements'][$key]['title']['link']['#title'];
+      $attributes = $form['webform_ui_elements'][$key]['title']['link']['#attributes'];
+      $prefix = $form['webform_ui_elements'][$key]['title']['link']['#prefix'];
+      unset($form['webform_ui_elements'][$key]['title']['link']);
+      $form['webform_ui_elements'][$key]['title']['text']['#type'] = 'label';
+      $form['webform_ui_elements'][$key]['title']['text']['#title'] = $title;
+      $form['webform_ui_elements'][$key]['title']['text']['#attributes'] = $attributes;
+      $form['webform_ui_elements'][$key]['title']['text']['#prefix'] = $prefix;
       unset($form['webform_ui_elements'][$key]['operations']['#links']['edit']);
       unset($form['webform_ui_elements'][$key]['operations']['#links']['delete']);
     }
