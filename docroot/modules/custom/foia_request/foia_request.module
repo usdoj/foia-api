@@ -83,3 +83,17 @@ function foia_request_foia_request_update(FoiaRequestInterface $entity) {
     \Drupal::logger('foia_request')->notice($notice);
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * When the request is deleted also delete the webform submission.
+ */
+function foia_request_foia_request_delete(FoiaRequestInterface $entity) {
+
+  $webformSubmissionId = $entity->get('field_webform_submission_id')->value;
+  $webformSubmission = WebformSubmission::load($webformSubmissionId);
+  if ($webformSubmission) {
+    $webformSubmission->delete();
+  }
+}
