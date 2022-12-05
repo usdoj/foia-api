@@ -7,8 +7,6 @@ use Drupal\webform\WebformInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\DatabaseException;
 
 /**
  * The Webform Template Controller.
@@ -29,23 +27,13 @@ class WebformTemplateController {
   protected $config;
 
   /**
-   * Database connection service.
-   *
-   * @var Drupal\Core\Database\Connection
-   */
-  protected $db;
-
-  /**
    * WebformTemplateController constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   Config service.
-   * @param \Drupal\Core\Database\Connection $database
-   *   Database service.
    */
-  public function __construct(ConfigFactoryInterface $configFactory, Connection $database) {
+  public function __construct(ConfigFactoryInterface $configFactory) {
     $this->config = $configFactory;
-    $this->db = $database;
   }
 
   /**
@@ -159,32 +147,6 @@ class WebformTemplateController {
       return NULL;
     }
     return $this->config->get('webform_template.webform')->get($webform_id);
-  }
-
-  /**
-   * Retrieve foia template settings from database.
-   *
-   * @return bool|null
-   *   The boolean foia template setting, or null if not defined.
-   */
-  public function getUseTemplateCheckBoxConfiguration($webform_id) {
-    $templated = '0';
-    if (!$webform_id) {
-      return $templated;
-    }
-    try {
-      $query = $this->db->select('config', 'n');
-      $query->fields('n');
-      $query->condition('n.name', 'webform_template.webform');
-      $data = $query->execute()->fetchAll();
-      $data = $data[0]->data;
-      $data_array = unserialize($data);
-      $templated = $data_array[$webform_id] ?? $templated;
-    }
-    catch (DatabaseException $e) {
-      watchdog_exception('get config use template flg error.', $e);
-    }
-    return $templated;
   }
 
   /**

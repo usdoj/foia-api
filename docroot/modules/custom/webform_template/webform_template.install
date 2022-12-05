@@ -8,13 +8,13 @@
 /**
  * Webforms do not match the template, but already have the template enabled.
  */
-function webform_template_update_9101() {
+function webform_template_update_9102() {
   $templateController = \Drupal::service('webform_template.template_controller');
   if ($templateElements = $templateController->getTemplateDecoded()) {
     $templateElements = array_keys($templateElements);
     $webforms = \Drupal::entityTypeManager()->getStorage('webform')->loadMultiple(NULL);
     foreach ($webforms as $form_id => $webform) {
-      $use_foia_template = $templateController->getUseTemplateCheckBoxConfiguration($form_id);
+      $use_foia_template = $templateController->getTemplateConfiguration($form_id);
       $webformElements = $webform->getElementsDecoded();
       if ($use_foia_template) {
         // Case 1. template enabled and can't get decoded elements from webform.
