@@ -7,6 +7,8 @@ use Drupal\webform\WebformInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\DatabaseException;
 
 /**
  * The Webform Template Controller.
@@ -27,13 +29,23 @@ class WebformTemplateController {
   protected $config;
 
   /**
+   * Database connection service.
+   *
+   * @var Drupal\Core\Database\Connection
+   */
+  protected $db;
+
+  /**
    * WebformTemplateController constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   Config service.
+   * @param \Drupal\Core\Database\Connection $database
+   *   Database service.
    */
-  public function __construct(ConfigFactoryInterface $configFactory) {
+  public function __construct(ConfigFactoryInterface $configFactory, Connection $database) {
     $this->config = $configFactory;
+    $this->db = $database;
   }
 
   /**
@@ -52,7 +64,6 @@ class WebformTemplateController {
       $editable->setElements($decoded);
       $editable->save();
     }
-
   }
 
   /**
@@ -100,12 +111,31 @@ class WebformTemplateController {
       return TRUE;
     }
 
+    $templateElements = array_keys($templateElements);
+    return $this->validation($templateElements, $webform);
+  }
+
+  /**
+   * Do validation.
+   *
+   * @param array $templateElements
+   *   Template elements.
+   * @param object $webform
+   *   The webform.
+   *
+   * @return bool
+   *   TRUE if the webform contains all elements defined on the template.
+   */
+  public function validation(array $templateElements, $webform) {
+    $result = FALSE;
+
     $webformElements = $webform->getElementsDecoded();
+    $webformElements = array_keys($webformElements);
     $filtered = array_filter($templateElements, function ($element) use ($webformElements) {
       return in_array($element, $webformElements);
     });
-
-    return count($filtered) === count($templateElements);
+    $result = count($filtered) === count($templateElements);
+    return $result;
   }
 
   /**
@@ -132,12 +162,38 @@ class WebformTemplateController {
   }
 
   /**
+   * Retrieve foia template settings from database.
+   *
+   * @return bool|null
+   *   The boolean foia template setting, or null if not defined.
+   */
+  public function getUseTemplateCheckBoxConfiguration($webform_id) {
+    $templated = '0';
+    if (!$webform_id) {
+      return $templated;
+    }
+    try {
+      $query = $this->db->select('config', 'n');
+      $query->fields('n');
+      $query->condition('n.name', 'webform_template.webform');
+      $data = $query->execute()->fetchAll();
+      $data = $data[0]->data;
+      $data_array = unserialize($data);
+      $templated = $data_array[$webform_id] ?? $templated;
+    }
+    catch (DatabaseException $e) {
+      watchdog_exception('get config use template flg error.', $e);
+    }
+    return $templated;
+  }
+
+  /**
    * The parsed template.
    *
    * @return array|bool
    *   Elements as an associative array. Returns FALSE if YAML is invalid.
    */
-  protected function getTemplateDecoded() {
+  public function getTemplateDecoded() {
     try {
       $decoded = Yaml::decode($this->getTemplate());
       return $decoded;
