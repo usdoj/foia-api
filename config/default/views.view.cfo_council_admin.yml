@@ -10,7 +10,8 @@ dependencies:
     - node.type.cfo_council
     - node.type.cfo_meeting
     - node.type.cfo_page
-    - user.role.authenticated
+    - user.role.administrator
+    - user.role.agency_administrator
   module:
     - datetime
     - node
@@ -245,7 +246,8 @@ display:
         type: role
         options:
           role:
-            authenticated: authenticated
+            administrator: administrator
+            agency_administrator: agency_administrator
       cache:
         type: tag
         options: {  }

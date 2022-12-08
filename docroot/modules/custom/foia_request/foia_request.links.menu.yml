@@ -12,3 +12,10 @@ foia_request.admin.structure.settings:
   description: 'Configure FOIA Request entities'
   route_name: foia_request.settings
   parent: system.admin_structure
+
+foia_request.purge:
+  title: Purge failed FOIA requests
+  description: 'Delete all failed FOIA requests that are more than 2 weeks old.'
+  parent: system.admin_config_system
+  route_name: foia_request.purge
+  weight: 11
