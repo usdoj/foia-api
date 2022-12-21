@@ -48,6 +48,9 @@ function calculate_x($node, $form_all) {
       if($field_proc_costs > 0) {
         $field_perc_costs = round(($total_fees / $field_proc_costs * 10000) / 100, 2);
       }
+//      else {
+//        $field_perc_costs = 0;
+//      }
 
       $p_array[] = [
         "field_proc_costs" => $field_proc_costs,
@@ -69,12 +72,11 @@ function calculate_x($node, $form_all) {
  */
 function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  // $form['#validate'][] = 'starting_drupal_dev_form_validate';
   $form['#attached']['library'][] = 'foia_advcalc/advcalc_field';
 
+  // node_annual_foia_report_data_edit_form main edit form
   // Array of all split form pages to run this code on, return on everything else
   $run_on_forms = [
-    'node_annual_foia_report_data_annual_report_agency_info_form',
     'node_annual_foia_report_data_annual_report_iv_exemption_3_statutes_form',
     'node_annual_foia_report_data_annual_report_v_a_foia_requests_form',
     'node_annual_foia_report_data_annual_report_v_b_1_disposition_of_foia_requests_form',
@@ -112,7 +114,6 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
 
   // Completely skip over switch statement if we are on full form.
   if (in_array($form_id, $run_on_forms)) {
-
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($form_state->getformObject()->getEntity()->id());
     $form_all = \Drupal::service('entity.form_builder')->getForm($node, 'default');
     Html::resetSeenIds();
@@ -306,8 +307,7 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
           $new_description = "$description<br> Total Amount of Fees from Section X ($field_total_fees) / Processing Costs from Section IX ($field_proc_costs)";
           $form['field_fees_x']['widget'][0]['subform']['field_perc_costs']['widget'][$i]["value"]['#description'] = FieldFilteredMarkup::create(t($new_description));
 
-          // For now, only add to form if there's values.
-          if ($field_proc_costs > 0) {
+          if ($field_proc_costs !== NULL) {
             $form['x_temp'][$i] = [
               '#type' => "hidden",
               '#default_value' => $fees_x['field_perc_costs'],
