@@ -48,9 +48,6 @@ function calculate_x($node, $form_all) {
       if($field_proc_costs > 0) {
         $field_perc_costs = round(($total_fees / $field_proc_costs * 10000) / 100, 2);
       }
-//      else {
-//        $field_perc_costs = 0;
-//      }
 
       $p_array[] = [
         "field_proc_costs" => $field_proc_costs,
@@ -74,7 +71,6 @@ function foia_advcalc_form_node_form_alter(&$form, FormStateInterface $form_stat
 
   $form['#attached']['library'][] = 'foia_advcalc/advcalc_field';
 
-  // node_annual_foia_report_data_edit_form main edit form
   // Array of all split form pages to run this code on, return on everything else
   $run_on_forms = [
     'node_annual_foia_report_data_annual_report_iv_exemption_3_statutes_form',
