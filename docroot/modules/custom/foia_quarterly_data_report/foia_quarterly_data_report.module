@@ -372,7 +372,7 @@ function foia_quarterly_data_report_form_quarterly_data_report_validate(array &$
     }
 
     if ($no_component_data) {
-      $form_state->setErrorByName('field_quarterly_component_data', 'Please add data under "Component data".');
+      $form_state->setErrorByName('field_quarterly_component_data', 'The report is missing "Component data". Please enter component data before submitting your report.');
     }
   }
 }
