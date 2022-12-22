@@ -246,9 +246,10 @@ class FoiaSubmissionPrettyFormatter {
    * Create a PDF version of the list output.
    */
   public function formatSubmissionContentsAsPdf() {
+    $style = '<style>table{width:100%;table-layout: fixed;overflow-wrap: break-word;}</style>';
     $header = '<div>FOIA Request ' . $this->foiaRequestId . '</div><br /><br />';
     $dompdf = new Dompdf();
-    $dompdf->loadHtml($header . $this->formatSubmissionContentsAsList());
+    $dompdf->loadHtml($style . $header . $this->formatSubmissionContentsAsList());
     $dompdf->setPaper('letter', 'portrait');
     $dompdf->render();
     return $dompdf->output();
