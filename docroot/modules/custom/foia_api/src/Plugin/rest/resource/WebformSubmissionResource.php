@@ -136,6 +136,26 @@ class WebformSubmissionResource extends ResourceBase {
       $this->logSubmission($statusCode, $message);
       return new ModifiedResourceResponse(['errors' => $message], $statusCode);
     }
+    // Validate emal, phone and address,
+    // any one of those three not blank, it should pass.
+    $email = $addressLine1 = $addressCity = $addressStateProvince = $addressZipPostalCode = $country = $mailingAddress = '';
+    $email = isset($data['email']) ? ($data['email'] ?? '') : $email;
+    $phoneNumber = isset($data['phone_number']) ? ($data['phone_number'] ?? '') : '';
+    if (isset($data['address_line1']) && isset($data['address_city']) && isset($data['address_state_province']) && isset($data['address_zip_postal_code']) && isset($data['address_country'])) {
+      $addressLine1 = $data['address_line1'] ?? '';
+      $addressCity = $data['address_city'] ?? '';
+      $addressStateProvince = $data['address_state_province'] ?? '';
+      $addressZipPostalCode = $data['address_zip_postal_code'] ?? '';
+      $country = $data['address_country'] ?? '';
+      $mailingAddress = (!$addressLine1 || !$addressCity || !$addressStateProvince || !$addressZipPostalCode || !$country) ? '' : 'mailling address';
+    }
+
+    if (!$mailingAddress && !$email && !$phoneNumber) {
+      $statusCode = 422;
+      $message = t("At least Email, Mailing address, or Phone are required.");
+      $this->logSubmission($statusCode, $message);
+      return new ModifiedResourceResponse(['errors' => $message], $statusCode);
+    }
 
     $values = [
       'webform_id' => $webformId,
@@ -227,8 +247,7 @@ class WebformSubmissionResource extends ResourceBase {
     ];
     if ($agencyComponent) {
       $this->logSubmissionWithComponent($context, $agencyComponent);
-    }
-    else {
+    } else {
       $this->logger->info("FOIA API Webform Submission: HTTP Status: %status, Message: %message", $context);
     }
   }
@@ -594,7 +613,5 @@ class WebformSubmissionResource extends ResourceBase {
         $this->fileUsage->add($file, 'webform', 'webform_submission', $webformSubmission->id());
       }
     }
-
   }
-
 }
