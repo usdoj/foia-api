@@ -187,7 +187,6 @@ class WebformSubmissionResource extends ResourceBase {
     if (empty($errors)) {
       // Validate emal, phone and address,
       // any one of those three not blank, it should pass.
-
       $email = isset($data['email']) && $data['email'];
       $phoneNumber = isset($data['phone_number']) && $data['phone_number'];
       $mailingAddress = isset($data['address_line1']) && $data['address_line1']
@@ -197,7 +196,7 @@ class WebformSubmissionResource extends ResourceBase {
       && isset($data['address_country']) && $data['address_country'];
 
       if (!$mailingAddress && !$email && !$phoneNumber) {
-        $message = 'In order to submit your request, you must provide at least one of the following: email address, mailing address, or phone number.';
+        $message = 'Please provide at least one form of contact information.';
         $errors = [
           'email' => $message,
           'phone_number' => $message,
@@ -248,7 +247,8 @@ class WebformSubmissionResource extends ResourceBase {
     ];
     if ($agencyComponent) {
       $this->logSubmissionWithComponent($context, $agencyComponent);
-    } else {
+    }
+    else {
       $this->logger->info("FOIA API Webform Submission: HTTP Status: %status, Message: %message", $context);
     }
   }
@@ -615,4 +615,5 @@ class WebformSubmissionResource extends ResourceBase {
       }
     }
   }
+
 }
