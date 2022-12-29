@@ -136,26 +136,6 @@ class WebformSubmissionResource extends ResourceBase {
       $this->logSubmission($statusCode, $message);
       return new ModifiedResourceResponse(['errors' => $message], $statusCode);
     }
-    // Validate emal, phone and address,
-    // any one of those three not blank, it should pass.
-    $email = $addressLine1 = $addressCity = $addressStateProvince = $addressZipPostalCode = $country = $mailingAddress = '';
-    $email = isset($data['email']) ? ($data['email'] ?? '') : $email;
-    $phoneNumber = isset($data['phone_number']) ? ($data['phone_number'] ?? '') : '';
-    if (isset($data['address_line1']) && isset($data['address_city']) && isset($data['address_state_province']) && isset($data['address_zip_postal_code']) && isset($data['address_country'])) {
-      $addressLine1 = $data['address_line1'] ?? '';
-      $addressCity = $data['address_city'] ?? '';
-      $addressStateProvince = $data['address_state_province'] ?? '';
-      $addressZipPostalCode = $data['address_zip_postal_code'] ?? '';
-      $country = $data['address_country'] ?? '';
-      $mailingAddress = (!$addressLine1 || !$addressCity || !$addressStateProvince || !$addressZipPostalCode || !$country) ? '' : 'mailling address';
-    }
-
-    if (!$mailingAddress && !$email && !$phoneNumber) {
-      $statusCode = 422;
-      $message = t("At least Email, Mailing address, or Phone are required.");
-      $this->logSubmission($statusCode, $message);
-      return new ModifiedResourceResponse(['errors' => $message], $statusCode);
-    }
 
     $values = [
       'webform_id' => $webformId,
@@ -204,6 +184,27 @@ class WebformSubmissionResource extends ResourceBase {
     // Validate submission.
     $submissionErrors = WebformSubmissionForm::validateFormValues($values);
     $errors = $fileErrors ? array_merge((array) $submissionErrors, $fileErrors) : $submissionErrors;
+    if (empty($errors)) {
+      // Validate emal, phone and address,
+      // any one of those three not blank, it should pass.
+
+      $email = isset($data['email']) && $data['email'];
+      $phoneNumber = isset($data['phone_number']) && $data['phone_number'];
+      $mailingAddress = isset($data['address_line1']) && $data['address_line1']
+      && isset($data['address_city']) && $data['address_city']
+      && isset($data['address_state_province']) && $data['address_state_province']
+      && isset($data['address_zip_postal_code']) && $data['address_zip_postal_code']
+      && isset($data['address_country']) && $data['address_country'];
+
+      if (!$mailingAddress && !$email && !$phoneNumber) {
+        $message = 'In order to submit your request, you must provide at least one of the following: email address, mailing address, or phone number.';
+        $errors = [
+          'email' => $message,
+          'phone_number' => $message,
+          'address_line1' => $message,
+        ];
+      }
+    }
     if (!empty($errors)) {
       // Delete any created attachments on invalid submissions.
       if ($fileAttachmentsOnSubmission && $fileEntities) {
