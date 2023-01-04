@@ -1,0 +1,4 @@
+services:
+  vbo.target.states.service:
+    class: Drupal\foia_quarterly_data_report\TargetStates
+    arguments: ['@content_moderation.moderation_information', '@content_moderation.state_transition_validation', '@current_user']

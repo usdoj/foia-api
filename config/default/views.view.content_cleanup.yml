@@ -1387,7 +1387,7 @@ display:
           action_title: Action
           include_exclude: include
           selected_actions:
-            - publish_quarterly_reports
+            - moderation_quarterly_report_action
         title:
           id: title
           table: node_field_data
@@ -1982,7 +1982,7 @@ display:
             operator_list: {  }
             identifier: field_agency_target_id
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
               authenticated: authenticated
@@ -2000,6 +2000,16 @@ display:
               agency_administrator: '0'
               agency_manager: '0'
               non_sso: '0'
+              quarterly_foia_report_data_creator: '0'
+              quarterly_foia_report_data_reviewer: '0'
+              cfo_meeting_creator: '0'
+              cfo_meeting_reviewer: '0'
+              cfo_committee_creator: '0'
+              cfo_committee_reviewer: '0'
+              cfo_council_creator: '0'
+              cfo_council_reviewer: '0'
+              cfo_page_creator: '0'
+              cfo_page_reviewer: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -2013,10 +2023,10 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
+          reduce_duplicates: true
           vid: agency
           type: select
-          hierarchy: false
+          hierarchy: true
           limit: true
           error_message: true
         field_quarterly_year_value:
