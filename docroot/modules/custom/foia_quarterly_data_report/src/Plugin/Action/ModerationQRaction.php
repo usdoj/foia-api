@@ -101,7 +101,7 @@ class ModerationQRaction extends ActionBase implements ContainerFactoryPluginInt
       'init_message' => t('Bulk operation of moderation state change is starting.'),
       'progress_message' => t('Processed @current out of @total. Estimated time: @estimate.'),
       'error_message' => t('The bulk operation process has encountered an error.'),
-      'file' => drupal_get_path('module', 'foia_quarterly_data_report') . '/batch.inc',
+      'file' => \Drupal::service('extension.list.module')->getPath('foia_quarterly_data_report') . '/batch.inc',
     ];
     batch_set($batch);
   }
@@ -135,7 +135,7 @@ class ModerationQRaction extends ActionBase implements ContainerFactoryPluginInt
 
     $target_url = $this->validateModerationOnTargetUrl(\Drupal::service('path.current')->getPath());
     if (!empty($target_url)) {
-      $this->messenger->addError($target_url);
+      $this->messenger->addError($this->t('Can not perform publishing quarterly report on this page.'));
       return FALSE;
     }
 
