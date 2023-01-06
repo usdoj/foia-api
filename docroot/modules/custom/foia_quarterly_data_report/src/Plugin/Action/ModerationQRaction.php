@@ -110,32 +110,31 @@ class ModerationQRaction extends ActionBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
-
-    // Return TRUE;.
-    $result = FALSE;
     $user = !isset($account) ? $this->currentUser : $account;
+    if ($object->getEntityTypeId() !== 'node') {
+      $this->messenger->addError($this->t('Can only perform publishing on FOIA quarterly report node content.'));
+      return FALSE;
+    };
 
-    if ($object->getEntityTypeId() === 'node') {
-      $result = $user->hasPermission('use quarterly report workflow transition publish');
-      if (!$result) {
-        $this->messenger->addError($this->t('User: %name does not have access to execute Moderation state change.', ['%name' => $user->getDisplayName()]));
-        return $result;
-      }
-      if ($object->moderation_state->value != 'submitted_to_oip') {
-        $this->messenger->addError($this->t('Current moderation state is not a valide state for publishing.'));
-        return FALSE;
-      }
-      $field_agency = $object->get('field_agency')->getString();
-      $components = $object->get('field_agency_components')->getString();
-      if (empty($field_agency) || empty($components)) {
-        $this->messenger->addError($this->t('The agency and component field values must be validate for publishing.'));
-        return FALSE;
-      }
+    if ($object->bundle() != 'quarterly_foia_report_data') {
+      $this->messenger->addError($this->t('Can only perform publishing on FOIA quarterly report content.'));
+      return FALSE;
     }
 
-    $target_url = $this->validateModerationOnTargetUrl(\Drupal::service('path.current')->getPath());
-    if (!empty($target_url)) {
-      $this->messenger->addError($this->t('Can not perform publishing quarterly report on this page.'));
+    if ($object->moderation_state->value != 'submitted_to_oip') {
+      $this->messenger->addError($this->t('Current moderation state is not a valide state for publishing.'));
+      return FALSE;
+    }
+
+    if (!$user->hasPermission('use quarterly report workflow transition publish')) {
+      $this->messenger->addError($this->t('User: %name does not have access to execute Moderation state change.', ['%name' => $user->getDisplayName()]));
+      return FALSE;
+    }
+
+    $field_agency = $object->get('field_agency')->getString();
+    $components = $object->get('field_agency_components')->getString();
+    if (empty($field_agency) || empty($components)) {
+      $this->messenger->addError($this->t('The agency and component field values must be validate for publishing.'));
       return FALSE;
     }
 
@@ -143,27 +142,10 @@ class ModerationQRaction extends ActionBase implements ContainerFactoryPluginInt
     $target_state = array_keys($workflows['target_states'])[0];
     $valide_states = ['draft', 'published'];
     if (!in_array($target_state, $valide_states)) {
-      $result = FALSE;
       $this->messenger->addError($this->t('Current target state is not a valide state.'));
+      return FALSE;
     }
-    return $result;
-  }
-
-  /**
-   * Help function for validate action URL.
-   *
-   * @param string $url
-   *   Moderation on target state page by URL.
-   */
-  protected function validateModerationOnTargetUrl($url = '') {
-    $target_urls = [
-      '/admin/content/reports-quarterly',
-    ];
-
-    if (!in_array($url, $target_urls)) {
-      return printf('%s is not validate VBO url.', $url);
-    }
-    return '';
+    return TRUE;
   }
 
 }
