@@ -21,6 +21,7 @@ use Drupal\Core\Entity\EntityForm;
  * Implements hook_form_form_id_alter().
  */
 function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_quarterly_data_report_disable_agency_overall($form, $form_state);
   // Add the AJAX save callbacks.
   foia_quarterly_data_report_ajax_existing_node($form);
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
@@ -32,6 +33,7 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_fo
  * Implements hook_form_form_id_alter().
  */
 function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  foia_quarterly_data_report_disable_agency_overall($form, $form_state);
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
   foia_quarterly_data_report_ajax_new_node($form);
   // Add general validation including checkig for existing report.
@@ -372,7 +374,27 @@ function foia_quarterly_data_report_form_quarterly_data_report_validate(array &$
     }
 
     if ($no_component_data) {
-      $form_state->setErrorByName('field_quarterly_component_data', 'Please add data under "Component data".');
+      $form_state->setErrorByName('field_quarterly_component_data', 'The report is missing "Component data". Please enter component data before submitting your report.');
     }
+  }
+}
+
+/**
+ * Disable some readonly fields for the quarterly report.
+ *
+ * @param array $form
+ *   Drupal form.
+ */
+function foia_quarterly_data_report_disable_agency_overall(array &$form) {
+
+  $fieldsToDisable = [
+    'quarterly_backlogged_oa',
+    'quarterly_processed_oa',
+    'quarterly_received_oa',
+  ];
+
+  foreach ($fieldsToDisable as $fieldName) {
+    $fullFieldName = 'field_' . $fieldName;
+    $form[$fullFieldName]['widget'][0]['value']['#attributes']['readonly'] = TRUE;
   }
 }

@@ -16,6 +16,8 @@ use Drupal\Core\Form\FormStateInterface;
 class WebformTemplateController {
 
   const TEMPLATESTATUSDEFAULT = 1;
+  const DEFAULT_FIELDS_WILL_BE_ADDED = 'default fields will be added';
+  const CURRENT_TEMPLATE_STATUS_CHOICE = 'current template status choice';
 
   /**
    * Config service.
@@ -50,7 +52,6 @@ class WebformTemplateController {
       $editable->setElements($decoded);
       $editable->save();
     }
-
   }
 
   /**
@@ -76,23 +77,53 @@ class WebformTemplateController {
    *   TRUE if the webform contains all elements defined on the template.
    */
   public function webformImplementsTemplate(WebformInterface $webform) {
-    // Multiple webforms are failing this check at the moment, so we need to
-    // sidestep.
-    // @todo Remove this hack and fix the webforms.
-    return TRUE;
 
-    // If (!$templateElements = $this->getTemplateDecoded()) {
-    // No valid template elements have been configured.
-    // return TRUE;
-    // }
-    //
-    //    $webformElements = $webform->getElementsDecoded();
-    //    $filtered = array_filter($templateElements,
-    //    function ($element) use ($webformElements) {
-    //    return in_array($element, $webformElements);
-    //    });
-    //
-    //    return count($filtered) === count($templateElements);
+    if ($webform->getState($this::DEFAULT_FIELDS_WILL_BE_ADDED)) {
+      $webform->deleteState($this::DEFAULT_FIELDS_WILL_BE_ADDED);
+      return TRUE;
+    }
+
+    $templated = $this->getTemplateConfiguration($webform->id());
+
+    if ($webform->hasState($this::CURRENT_TEMPLATE_STATUS_CHOICE)) {
+      $templated = $webform->getState($this::CURRENT_TEMPLATE_STATUS_CHOICE);
+      $webform->deleteState($this::CURRENT_TEMPLATE_STATUS_CHOICE);
+    }
+
+    if (!$templated) {
+      return TRUE;
+    }
+
+    if (!$templateElements = $this->getTemplateDecoded()) {
+      // No valid template elements have been configured.
+      return TRUE;
+    }
+
+    $templateElements = array_keys($templateElements);
+    return $this->validation($templateElements, $webform);
+  }
+
+  /**
+   * Do validation.
+   *
+   * @param array $templateElements
+   *   Template elements.
+   * @param object $webform
+   *   The webform.
+   *
+   * @return bool
+   *   TRUE if the webform contains all elements defined on the template.
+   */
+  public function validation(array $templateElements, $webform) {
+    $result = FALSE;
+
+    $webformElements = $webform->getElementsDecoded();
+    $webformElements = array_keys($webformElements);
+    $filtered = array_filter($templateElements, function ($element) use ($webformElements) {
+      return in_array($element, $webformElements);
+    });
+    $result = count($filtered) === count($templateElements);
+    return $result;
   }
 
   /**
@@ -111,7 +142,7 @@ class WebformTemplateController {
    * @return bool|null
    *   The boolean foia template setting, or null if not defined.
    */
-  protected function getTemplateConfiguration($webform_id) {
+  public function getTemplateConfiguration($webform_id) {
     if (!$webform_id) {
       return NULL;
     }
@@ -124,7 +155,7 @@ class WebformTemplateController {
    * @return array|bool
    *   Elements as an associative array. Returns FALSE if YAML is invalid.
    */
-  protected function getTemplateDecoded() {
+  public function getTemplateDecoded() {
     try {
       $decoded = Yaml::decode($this->getTemplate());
       return $decoded;
@@ -149,6 +180,10 @@ class WebformTemplateController {
       get_class($this),
       'processWebformForm',
     ];
+    array_unshift($form['actions']['submit']['#submit'], [
+      get_class($this),
+      'processWebformFormBeforeSave',
+    ]);
     $form['foia_template'] = [
       '#type' => 'checkbox',
       '#title' => t("Use FOIA Agency template"),
@@ -174,8 +209,36 @@ class WebformTemplateController {
       if (isset($form['webform_ui_elements'][$key]['required'])) {
         $form['webform_ui_elements'][$key]['required']['#disabled'] = TRUE;
       }
+      // If foia template in use, diable edit link on form elements.
+      $title = $form['webform_ui_elements'][$key]['title']['link']['#title'];
+      $attributes = $form['webform_ui_elements'][$key]['title']['link']['#attributes'];
+      $prefix = $form['webform_ui_elements'][$key]['title']['link']['#prefix'];
+      unset($form['webform_ui_elements'][$key]['title']['link']);
+      $form['webform_ui_elements'][$key]['title']['text']['#type'] = 'label';
+      $form['webform_ui_elements'][$key]['title']['text']['#title'] = $title;
+      $form['webform_ui_elements'][$key]['title']['text']['#attributes'] = $attributes;
+      $form['webform_ui_elements'][$key]['title']['text']['#prefix'] = $prefix;
       unset($form['webform_ui_elements'][$key]['operations']['#links']['edit']);
       unset($form['webform_ui_elements'][$key]['operations']['#links']['delete']);
+    }
+  }
+
+  /**
+   * Additional submit handler to set some state variables before saving.
+   *
+   * @param array $form
+   *   The form render array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The submitted form state.
+   */
+  public static function processWebformFormBeforeSave(array $form, FormStateInterface $form_state) {
+    $webform = $form_state->getFormObject()->getEntity();
+    $templated = $form_state->getValue('foia_template');
+    $templateController = \Drupal::service('webform_template.template_controller');
+    $webform->setState($templateController::CURRENT_TEMPLATE_STATUS_CHOICE, $templated);
+
+    if ($webform->isNew() && $templated) {
+      $webform->setState($templateController::DEFAULT_FIELDS_WILL_BE_ADDED, TRUE);
     }
   }
 

@@ -184,6 +184,26 @@ class WebformSubmissionResource extends ResourceBase {
     // Validate submission.
     $submissionErrors = WebformSubmissionForm::validateFormValues($values);
     $errors = $fileErrors ? array_merge((array) $submissionErrors, $fileErrors) : $submissionErrors;
+    if (empty($errors)) {
+      // Validate emal, phone and address,
+      // any one of those three not blank, it should pass.
+      $email = isset($data['email']) && $data['email'];
+      $phoneNumber = isset($data['phone_number']) && $data['phone_number'];
+      $mailingAddress = isset($data['address_line1']) && $data['address_line1']
+      && isset($data['address_city']) && $data['address_city']
+      && isset($data['address_state_province']) && $data['address_state_province']
+      && isset($data['address_zip_postal_code']) && $data['address_zip_postal_code']
+      && isset($data['address_country']) && $data['address_country'];
+
+      if (!$mailingAddress && !$email && !$phoneNumber) {
+        $message = 'Please provide at least one form of contact information.';
+        $errors = [
+          'email' => $message,
+          'phone_number' => $message,
+          'address_line1' => $message,
+        ];
+      }
+    }
     if (!empty($errors)) {
       // Delete any created attachments on invalid submissions.
       if ($fileAttachmentsOnSubmission && $fileEntities) {
@@ -594,7 +614,6 @@ class WebformSubmissionResource extends ResourceBase {
         $this->fileUsage->add($file, 'webform', 'webform_submission', $webformSubmission->id());
       }
     }
-
   }
 
 }
