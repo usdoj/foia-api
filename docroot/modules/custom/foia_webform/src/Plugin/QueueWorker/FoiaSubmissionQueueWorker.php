@@ -206,6 +206,7 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
       $date = date('m/d/Y h:i:s a', $foiaRequest->get('field_submission_time')->getString());
       $errormsg = sprintf('FOIA request failed too many times. Agency: %s, Component: %s, Date: %s, Email: %s', $agencyComponentName, $agencyName, $date, (empty($email) ? '(not provided)' : $email));
       // Log a unique message that this happened.
+      $foiaRequest->set('field_error_message', $errormsg);
       \Drupal::logger('foia_webform')->error($errormsg);
     }
   }
