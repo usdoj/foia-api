@@ -162,7 +162,8 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   An array of failed submission response info.
    */
   protected function handleFailedSubmission(FoiaRequestInterface $foiaRequest, array $failedSubmissionInfo) {
-
+var_dump($foiaRequest->id());
+return;
     $errorCode = $failedSubmissionInfo['code'] ?? '';
     $errorMessage = $failedSubmissionInfo['message'] ?? '';
     $errorDescription = $failedSubmissionInfo['description'] ?? '';
