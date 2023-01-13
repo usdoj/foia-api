@@ -200,8 +200,6 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
       $agencyId = $agencyComponent->get('field_agency')->getString();
       $agencyName = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($agencyId)->getName();
       $subMissionId = $foiaRequest->get('field_webform_submission_id')->getString();
-      var_dump($subMissionId);
-      var_dump($foiaRequest->id());
       $webform_submissions = \Drupal::entityTypeManager()->getStorage('webform_submission')->load($subMissionId);
       $submissionsData = $webform_submissions->getData();
       $email = $submissionsData['email'];
