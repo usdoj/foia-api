@@ -246,10 +246,12 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
         $context['results']['count']++;
         $context['results']['nids_processed'][] = $entity->id();
         $context['message'] = t('Moderation state transition on @nid', ['@nid' => $entity->id()]);
-      } else {
+      }
+      else {
         $context['results']['nids_process_failed'][] = $entity->id();
       }
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
       watchdog_exception('VBO Quartly report moderation', $e);
     }
   }
@@ -270,7 +272,8 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
     if ($success) {
       $message = $results['count'] . ' Quarterly report(s) has been published.';
       \Drupal::messenger()->addMessage($message);
-    } else {
+    }
+    else {
       // An error occurred.
       // $operations contains the operations that remained unprocessed.
       $error_operation = reset($operations);
@@ -279,7 +282,8 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
           '%error_operation' => implode(', ', $results['nids_process_failed']),
           '@arguments' => print_r($error_operation[1], TRUE),
         ]);
-      } else {
+      }
+      else {
         $message = t('An error occurred while processing %error_operation with arguments: @arguments', [
           '%error_operation' => $error_operation[0],
           '@arguments' => print_r($error_operation[1], TRUE),
@@ -288,4 +292,5 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
       \Drupal::messenger()->addError($message);
     }
   }
+
 }
