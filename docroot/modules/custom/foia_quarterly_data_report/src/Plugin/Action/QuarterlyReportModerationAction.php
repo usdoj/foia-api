@@ -89,9 +89,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
    * {@inheritdoc}
    */
   public function execute($entity = NULL) {
-    if (is_array($entity)) {
-      $this->executeMultiple($entity);
-    }
+    $this->executeMultiple($entity);
   }
 
   /**
@@ -125,7 +123,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     $user = !isset($account) ? \Drupal::service('current_user') : $account;
     if ($object->getEntityTypeId() !== 'node') {
-      $this->messenger->addError($this->t('Can only perform publishing on FOIA quarterly report node content.'));
+      $this->messenger->addError($this->t('Can only perform publishing on node content.'));
       return FALSE;
     };
 
@@ -135,7 +133,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
     }
 
     if ($object->moderation_state->value != 'submitted_to_oip') {
-      $this->messenger->addError($this->t('Current moderation state is not a valide state for publishing.'));
+      $this->messenger->addError($this->t("he report must be 'Submitted to OIP' before it can be published."));
       return FALSE;
     }
 
@@ -147,13 +145,13 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
     $field_agency = $object->get('field_agency')->getString();
     $components = $object->get('field_agency_components')->getString();
     if (empty($field_agency) || empty($components)) {
-      $this->messenger->addError($this->t('The agency and component field values must be validate for publishing.'));
+      $this->messenger->addError($this->t('The agency and component field values must be populated for publishing.'));
       return FALSE;
     }
 
     $workflows = $this->getTargetStates($object, $user);
     $target_state = array_keys($workflows['target_states'])[0];
-    $valide_states = ['draft', 'published'];
+    $valide_states = ['published'];
     if (!in_array($target_state, $valide_states)) {
       $this->messenger->addError($this->t('Current target state is not a valide state.'));
       return FALSE;
@@ -239,13 +237,13 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
 
       if (method_exists($entity, 'setRevisionUserId')) {
         $entity->setRevisionCreationTime(REQUEST_TIME);
-        $entity->setRevisionLogMessage('VBO Changed moderation state to published, time:' . date('d/m/Y - h:i', REQUEST_TIME));
+        $entity->setRevisionLogMessage('VBO Published quarterly report, time:' . date('d/m/Y - h:i', REQUEST_TIME));
         $entity->setRevisionUserId(\Drupal::service('current_user')->id());
       }
       if ($entity->save()) {
         $context['results']['count']++;
         $context['results']['nids_processed'][] = $entity->id();
-        $context['message'] = t('Moderation state transition on @nid', ['@nid' => $entity->id()]);
+        $context['message'] = t('Published quarterly report on @nid', ['@nid' => $entity->id()]);
       }
       else {
         $context['results']['nids_process_failed'][] = $entity->id();
