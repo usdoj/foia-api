@@ -12,7 +12,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\workflows\Transition;
 use Drupal\content_moderation\ModerationInformationInterface;
 use Drupal\content_moderation\StateTransitionValidationInterface;
 use Drupal\node\NodeInterface;
@@ -88,13 +87,6 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
   /**
    * {@inheritdoc}
    */
-  public function execute($entity = NULL) {
-    $this->executeMultiple($entity);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function executeMultiple(array $entities) {
     $batches = [];
     foreach ($entities as $entity) {
@@ -133,7 +125,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
     }
 
     if ($object->moderation_state->value != 'submitted_to_oip') {
-      $this->messenger->addError($this->t("he report must be 'Submitted to OIP' before it can be published."));
+      $this->messenger->addError($this->t("The report must be 'Submitted to OIP' before it can be published."));
       return FALSE;
     }
 
@@ -149,13 +141,6 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
       return FALSE;
     }
 
-    $workflows = $this->getTargetStates($object, $user);
-    $target_state = array_keys($workflows['target_states'])[0];
-    $valide_states = ['published'];
-    if (!in_array($target_state, $valide_states)) {
-      $this->messenger->addError($this->t('Current target state is not a valide state.'));
-      return FALSE;
-    }
     return TRUE;
   }
 
@@ -172,41 +157,6 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
     $vids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($object);
     $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision(end($vids));
     return $node;
-  }
-
-  /**
-   * Get node moderation target state.
-   *
-   * @param object $object
-   *   Get the moderation object.
-   * @param object $currentUser
-   *   Get the current user object.
-   */
-  protected function getTargetStates($object, $currentUser) {
-    $result = [];
-    // Get this node latest revision.
-    $node = $this->getLatestRevision($object);
-    $current_state = $node->moderation_state->value;
-    $workflow = $this->moderationInfo->getWorkflowForEntity($node);
-
-    /** @var \Drupal\workflows\Transition[] $transitions */
-    $transitions = $this->validation->getValidTransitions($node, $currentUser);
-
-    // Exclude self-transitions.
-    $transitions = array_filter($transitions, function (Transition $transition) use ($current_state) {
-      return $transition->to()->id() != $current_state;
-    });
-    $target_states = [];
-
-    foreach ($transitions as $transition) {
-      $target_states[$transition->to()->id()] = $transition->to()->label();
-    }
-    $result = [
-      'workflow' => $workflow,
-      'target_states' => $target_states,
-      'current_state' => $current_state,
-    ];
-    return $result;
   }
 
   /**
