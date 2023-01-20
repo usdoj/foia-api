@@ -162,7 +162,6 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   An array of failed submission response info.
    */
   protected function handleFailedSubmission(FoiaRequestInterface $foiaRequest, array $failedSubmissionInfo) {
-
     $errorCode = $failedSubmissionInfo['code'] ?? '';
     $errorMessage = $failedSubmissionInfo['message'] ?? '';
     $errorDescription = $failedSubmissionInfo['description'] ?? '';
@@ -200,7 +199,10 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
       $agencyComponentName = $agencyComponent->getTitle();
       $agencyId = $agencyComponent->get('field_agency')->getString();
       $agencyName = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($agencyId)->getName();
-      $webform_submissions = \Drupal::entityTypeManager()->getStorage('webform_submission')->load($foiaRequest->id());
+      // Get webform submission id.
+      $subMissionId = $foiaRequest->get('field_webform_submission_id')->getString();
+      // Load webform submission data.
+      $webform_submissions = \Drupal::entityTypeManager()->getStorage('webform_submission')->load($subMissionId);
       $submissionsData = $webform_submissions->getData();
       $email = $submissionsData['email'];
       $date = date('m/d/Y h:i:s a', $foiaRequest->get('field_submission_time')->getString());
