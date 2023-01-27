@@ -12,7 +12,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\workflows\Transition;
 use Drupal\content_moderation\ModerationInformationInterface;
 use Drupal\content_moderation\StateTransitionValidationInterface;
 use Drupal\node\NodeInterface;
@@ -125,7 +124,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     $user = !isset($account) ? \Drupal::service('current_user') : $account;
     if ($object->getEntityTypeId() !== 'node') {
-      $this->messenger->addError($this->t('Can only perform publishing on FOIA quarterly report node content.'));
+      $this->messenger->addError($this->t('Can only perform publishing on node content.'));
       return FALSE;
     };
 
@@ -135,7 +134,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
     }
 
     if ($object->moderation_state->value != 'submitted_to_oip') {
-      $this->messenger->addError($this->t('Current moderation state is not a valide state for publishing.'));
+      $this->messenger->addError($this->t("The report must be 'Submitted to OIP' before it can be published."));
       return FALSE;
     }
 
@@ -147,17 +146,10 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
     $field_agency = $object->get('field_agency')->getString();
     $components = $object->get('field_agency_components')->getString();
     if (empty($field_agency) || empty($components)) {
-      $this->messenger->addError($this->t('The agency and component field values must be validate for publishing.'));
+      $this->messenger->addError($this->t('The agency and component field values must be populated for publishing.'));
       return FALSE;
     }
 
-    $workflows = $this->getTargetStates($object, $user);
-    $target_state = array_keys($workflows['target_states'])[0];
-    $valide_states = ['draft', 'published'];
-    if (!in_array($target_state, $valide_states)) {
-      $this->messenger->addError($this->t('Current target state is not a valide state.'));
-      return FALSE;
-    }
     return TRUE;
   }
 
@@ -174,41 +166,6 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
     $vids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($object);
     $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision(end($vids));
     return $node;
-  }
-
-  /**
-   * Get node moderation target state.
-   *
-   * @param object $object
-   *   Get the moderation object.
-   * @param object $currentUser
-   *   Get the current user object.
-   */
-  protected function getTargetStates($object, $currentUser) {
-    $result = [];
-    // Get this node latest revision.
-    $node = $this->getLatestRevision($object);
-    $current_state = $node->moderation_state->value;
-    $workflow = $this->moderationInfo->getWorkflowForEntity($node);
-
-    /** @var \Drupal\workflows\Transition[] $transitions */
-    $transitions = $this->validation->getValidTransitions($node, $currentUser);
-
-    // Exclude self-transitions.
-    $transitions = array_filter($transitions, function (Transition $transition) use ($current_state) {
-      return $transition->to()->id() != $current_state;
-    });
-    $target_states = [];
-
-    foreach ($transitions as $transition) {
-      $target_states[$transition->to()->id()] = $transition->to()->label();
-    }
-    $result = [
-      'workflow' => $workflow,
-      'target_states' => $target_states,
-      'current_state' => $current_state,
-    ];
-    return $result;
   }
 
   /**
@@ -239,7 +196,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
 
       if (method_exists($entity, 'setRevisionUserId')) {
         $entity->setRevisionCreationTime(REQUEST_TIME);
-        $entity->setRevisionLogMessage('VBO Changed moderation state to published, time:' . date('d/m/Y - h:i', REQUEST_TIME));
+        $entity->setRevisionLogMessage('VBO Published quarterly report, time:' . date('d/m/Y - h:i', REQUEST_TIME));
         $entity->setRevisionUserId(\Drupal::service('current_user')->id());
       }
       if ($entity->save()) {
@@ -251,7 +208,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
         $context['results']['nids_process_failed'][] = $entity->id();
       }
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       watchdog_exception('VBO Quartly report moderation', $e);
     }
   }
