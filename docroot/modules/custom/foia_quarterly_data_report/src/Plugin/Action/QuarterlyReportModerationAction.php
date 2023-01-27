@@ -88,9 +88,6 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
    * {@inheritdoc}
    */
   public function execute($entity = NULL) {
-    if (is_array($entity)) {
-      $this->executeMultiple($entity);
-    }
   }
 
   /**
@@ -202,7 +199,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
       if ($entity->save()) {
         $context['results']['count']++;
         $context['results']['nids_processed'][] = $entity->id();
-        $context['message'] = t('Moderation state transition on @nid', ['@nid' => $entity->id()]);
+        $context['message'] = t('Published quarterly report on @nid', ['@nid' => $entity->id()]);
       }
       else {
         $context['results']['nids_process_failed'][] = $entity->id();
