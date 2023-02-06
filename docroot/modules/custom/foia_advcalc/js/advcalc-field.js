@@ -225,7 +225,6 @@
 
           let procCostsElements = $("input[name*='field_foia_pers_costs_ix']").filter("input[name*='field_proc_costs']");
           let totalFeesElements = fieldFeesElement.filter("input[name*='field_total_fees']");
-
           fieldFeesElement.filter("input[name*='field_perc_costs']")
             .each(function (i) {
               let elementAgency = getAgencyComponent($(this));
@@ -235,16 +234,27 @@
                 let totalFees;
                 let percentCosts;
                 if(splitForm) {
+                  // IX: Processing Costs from
                   procCosts = $(`input[name*='x_temp[${i}]']`).data('proc');
+
                   // On load, no need to calculate or get X "Total Amount of Fees Collected"
                   if(load === 'load') {
-                    percentCosts = $(`input[name*='x_temp[${i}]']`).data('percent');
+                    let percentCostsField = $(`input[name*='x_temp[${i}]']`).data('percent');
+
+                    if(percentCostsField) {
+                      percentCosts = percentCostsField;
+                    }
+                    else {
+                      percentCosts = 0;
+                    }
                   }
                   else {
                     // On change, get X "Total Amount of Fees Collected" and recalculate
                     totalFees = $(`input[name*='field_fees_x[${i}][subform][field_total_fees][0][value]']`).val();
-                    if (totalFees > 0) {
+                    if (totalFees > 0 && procCosts > 0) {
                       percentCosts = Math.round(totalFees / procCosts * 10000) / 100;
+                    } else {
+                      percentCosts = 0;
                     }
                   }
                 }
@@ -252,11 +262,14 @@
                   // Calculate normally if not in split form
                   procCosts = advcalcX.getElementValByAgency(procCostsElements, agency);
                   totalFees = advcalcX.getElementValByAgency(totalFeesElements, agency);
-                  if (totalFees > 0) {
+                  if (totalFees > 0 && procCosts > 0) {
                     percentCosts = Math.round(totalFees / procCosts * 10000) / 100;
+                  } else {
+                    percentCosts = 0;
                   }
                 }
                 $(this).val(percentCosts);
+
               }
             });
         },
@@ -533,15 +546,16 @@
         calculateOverallPercentCosts: function () {
           let overallProcCosts = Number($("#edit-field-overall-ix-proc-costs-0-value").val());
           let overallTotalFees = Number($("input[data-drupal-selector='edit-field-overall-x-total-fees-0-value']").val());
-          if(overallTotalFees) {
-            let overallPercentCosts = 0;
-            let overallDivide;
-            if (overallTotalFees > 0) {
-              overallDivide = overallTotalFees / overallProcCosts;
-              overallPercentCosts = Math.round(overallDivide * 10000) / 100;
-            }
-            $("input[data-drupal-selector='edit-field-overall-x-perc-costs-0-value']").val(overallPercentCosts);
+          let overallPercentCosts;
+          let overallDivide;
+          if (overallTotalFees > 0 && overallProcCosts > 0) {
+            overallDivide = overallTotalFees / overallProcCosts;
+            overallPercentCosts = Math.round(overallDivide * 10000) / 100;
           }
+          else {
+            overallPercentCosts = 0;
+          }
+          $("input[data-drupal-selector='edit-field-overall-x-perc-costs-0-value']").val(overallPercentCosts);
         }
       };
 
