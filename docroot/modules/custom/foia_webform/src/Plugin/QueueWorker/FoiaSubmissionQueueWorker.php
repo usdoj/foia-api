@@ -162,7 +162,6 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
    *   An array of failed submission response info.
    */
   protected function handleFailedSubmission(FoiaRequestInterface $foiaRequest, array $failedSubmissionInfo) {
-
     $errorCode = $failedSubmissionInfo['code'] ?? '';
     $errorMessage = $failedSubmissionInfo['message'] ?? '';
     $errorDescription = $failedSubmissionInfo['description'] ?? '';
@@ -194,8 +193,22 @@ class FoiaSubmissionQueueWorker extends QueueWorkerBase implements ContainerFact
     else {
       // No, just set this to failed.
       $foiaRequest->setRequestStatus(FoiaRequestInterface::STATUS_FAILED);
+      // Collect informations to buile Error message.
+      $agencyComponentId = $foiaRequest->get('field_agency_component')->target_id;
+      $agencyComponent = Node::load($agencyComponentId);
+      $agencyComponentName = $agencyComponent->getTitle();
+      $agencyId = $agencyComponent->get('field_agency')->getString();
+      $agencyName = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($agencyId)->getName();
+      // Get webform submission id.
+      $subMissionId = $foiaRequest->get('field_webform_submission_id')->getString();
+      // Load webform submission data.
+      $webform_submissions = \Drupal::entityTypeManager()->getStorage('webform_submission')->load($subMissionId);
+      $submissionsData = $webform_submissions->getData();
+      $email = $submissionsData['email'];
+      $date = date('m/d/Y h:i:s a', $foiaRequest->get('field_submission_time')->getString());
+      $errormsg = sprintf('FOIA request failed too many times. Agency: %s, Component: %s, Date: %s, Email: %s', $agencyComponentName, $agencyName, $date, (empty($email) ? '(not provided)' : $email));
       // Log a unique message that this happened.
-      \Drupal::logger('foia_webform')->error('FOIA request failed too many times. Attention needed. Id: ' . $foiaRequest->id());
+      \Drupal::logger('foia_webform')->error($errormsg);
     }
   }
 
