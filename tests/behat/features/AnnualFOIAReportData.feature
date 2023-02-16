@@ -64,7 +64,6 @@ Feature: Annual FOIA Report Data Feature
     And I click 'Edit'
     And I select "Published" from "Change to"
     And I press the 'Save' button
-    And I output the page
     Then I should see the following success messages:
       | Success messages                                            |
       | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
