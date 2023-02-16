@@ -131,9 +131,18 @@ Feature: Agency Administrator role
 
   @api
   Scenario: Agency Administrator can view unpublished content
-    Given I am logged in as a user with the 'Agency Administrator' role
+    Given "agency" terms:
+      | name  |field_agency_abbreviation| description |format    | language |
+      | test  |DOJ                      | description |plain_text| en       |
+    And I am logged in as a user with the 'Agency Administrator' role
     When I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
+    And for 'Agency' I enter 'test'
+    And for Abbreviation I enter 'TAC'
+    And for 'Street address' I enter '123'
+    And for 'City' I enter '123'
+    And I select "Louisiana" from "State"
+    And for 'Zip code' I enter '12345'
     And I uncheck the box "Published"
     And I press the 'Save' button
     Then I should see the following success messages:

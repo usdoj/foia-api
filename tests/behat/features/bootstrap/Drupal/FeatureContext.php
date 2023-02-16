@@ -88,6 +88,17 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Output the HTML of the page.
+   *
+   * @Then I output the page
+   */
+  public function iOutputThePage()
+  {
+    print PHP_EOL . '******';
+    print $this->getSession()->getPage()->getHtml() . PHP_EOL . '******' . PHP_EOL;
+  }
+
+  /**
    * Retrieves previously saved URL.
    *
    * @When I go to saved URL
