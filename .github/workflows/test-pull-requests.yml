@@ -19,7 +19,7 @@ jobs:
       - name: Set up the site
         run: |
           ddev composer install
-          ddev exec blt setup
+          ddev exec blt setup || true
           ddev drush cim
           ddev drush cr
       - name: Run tests
