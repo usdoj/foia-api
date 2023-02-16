@@ -18,7 +18,7 @@ jobs:
         run: ddev start
       - name: Set up the site
         run: |
-          ddev blt setup
+          ddev exec blt setup
           ddev drush cim
           ddev drush cr
       - name: Run tests
