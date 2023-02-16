@@ -30,7 +30,7 @@ Feature: Annual FOIA Report Data Feature
     And I am on "/node/add"
     Then I should see the link "Annual FOIA Report Data"
 
-  @api @foo
+  @api
   Scenario: Agency Administrator can save Annual FOIA Reports in all workflow
   states
     Given "agency" terms:
