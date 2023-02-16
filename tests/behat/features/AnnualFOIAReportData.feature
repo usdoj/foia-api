@@ -21,6 +21,7 @@ Feature: Annual FOIA Report Data Feature
     And for 'Date Prepared' I enter '08/22/2019'
     When I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                                  |
       | FTA - 2019 - Annual FOIA Report has been created. |
 
   @api
@@ -42,28 +43,33 @@ Feature: Annual FOIA Report Data Feature
     When I press the 'Save' button
     And save the current URL
     Then I should see the following success messages:
+      | Success messages                                        |
       | Annual FOIA Report Data A Test Report has been created. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Submitted to OIP" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                                            |
       | Annual FOIA Report Data test from manager has been updated. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Cleared" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                                            |
       | Annual FOIA Report Data test from manager has been updated. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Published" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                                            |
       | Annual FOIA Report Data test from manager has been updated. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Back with Agency" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                                            |
       | Annual FOIA Report Data test from manager has been updated. |
