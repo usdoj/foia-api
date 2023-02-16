@@ -10,6 +10,8 @@ local:
         # Set features to repo root so that .feature files belonging to contrib
         # modules, themes, and profiles can be discovered.
         features: ${repo.root}
+      #filters:
+      #  tags: "@foo"
       contexts:
         - Drupal\FeatureContext:
           parameters:
