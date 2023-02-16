@@ -30,7 +30,7 @@ Feature: Annual FOIA Report Data Feature
     And I am on "/node/add"
     Then I should see the link "Annual FOIA Report Data"
 
-  @api
+  @api @foo
   Scenario: Agency Administrator can save Annual FOIA Reports in all workflow
   states
     Given "agency" terms:
@@ -38,38 +38,40 @@ Feature: Annual FOIA Report Data Feature
       | test  |DOJ                      | description |plain_text| en       |
     When I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add/annual_foia_report_data"
+    And for 'FOIA Annual Report Year' I enter '2023'
     And for 'Agency' I enter 'test'
     And I select "Draft" from "Save as"
     When I press the 'Save' button
     And save the current URL
     Then I should see the following success messages:
       | Success messages                                        |
-      | Annual FOIA Report Data A Test Report has been created. |
+      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been created. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Submitted to OIP" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                            |
-      | Annual FOIA Report Data test from manager has been updated. |
+      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Cleared" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                            |
-      | Annual FOIA Report Data test from manager has been updated. |
+      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Published" from "Change to"
     And I press the 'Save' button
+    And I output the page
     Then I should see the following success messages:
       | Success messages                                            |
-      | Annual FOIA Report Data test from manager has been updated. |
+      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Back with Agency" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                            |
-      | Annual FOIA Report Data test from manager has been updated. |
+      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
