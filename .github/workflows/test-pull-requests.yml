@@ -18,6 +18,7 @@ jobs:
         run: ddev start
       - name: Set up the site
         run: |
+          ddev composer install
           ddev exec blt setup
           ddev drush cim
           ddev drush cr
