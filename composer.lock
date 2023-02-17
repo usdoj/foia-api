@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "057aaf3e58bdfc13b2ff4124af8cb0c8",
+    "content-hash": "ce5eaef52e9164174ad692c941253e83",
     "packages": [
         {
             "name": "acquia/blt",
@@ -879,6 +879,63 @@
                 "source": "https://github.com/Behat/Transliterator/tree/v1.5.0"
             },
             "time": "2022-03-30T09:27:43+00:00"
+        },
+        {
+            "name": "bower-asset/cropper",
+            "version": "v2.3.4",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:fengyuanchen/cropper.git",
+                "reference": "30c58b29ee21010e17e58ebab165fbd84285c685"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fengyuanchen/cropper/zipball/30c58b29ee21010e17e58ebab165fbd84285c685",
+                "reference": "30c58b29ee21010e17e58ebab165fbd84285c685"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/jquery",
+            "version": "3.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jquery/jquery-dist.git",
+                "reference": "da0f228131a578aea168b799fe4d7fe01764c98b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/da0f228131a578aea168b799fe4d7fe01764c98b",
+                "reference": "da0f228131a578aea168b799fe4d7fe01764c98b"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/slick-carousel",
+            "version": "v1.8.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:kenwheeler/slick.git",
+                "reference": "0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenwheeler/slick/zipball/0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee",
+                "reference": "0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee"
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.7"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "caxy/php-htmldiff",
@@ -3394,6 +3451,98 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/blazy",
                 "issues": "https://drupal.org/project/issues/blazy"
+            }
+        },
+        {
+            "name": "drupal/ckeditor",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/ckeditor.git",
+                "reference": "1.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/ckeditor-1.0.1.zip",
+                "reference": "1.0.1",
+                "shasum": "d3dd8bfb2301b749599ba48cf76208becdf0eeb3"
+            },
+            "require": {
+                "drupal/core": "^9.4 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.1",
+                    "datestamp": "1662977541",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "dczepierga",
+                    "homepage": "https://www.drupal.org/user/911466"
+                },
+                {
+                    "name": "hass",
+                    "homepage": "https://www.drupal.org/user/85918"
+                },
+                {
+                    "name": "jcisio",
+                    "homepage": "https://www.drupal.org/user/210762"
+                },
+                {
+                    "name": "Jorrit",
+                    "homepage": "https://www.drupal.org/user/161217"
+                },
+                {
+                    "name": "lauriii",
+                    "homepage": "https://www.drupal.org/user/1078742"
+                },
+                {
+                    "name": "Magnus",
+                    "homepage": "https://www.drupal.org/user/73919"
+                },
+                {
+                    "name": "mkesicki",
+                    "homepage": "https://www.drupal.org/user/922884"
+                },
+                {
+                    "name": "nod_",
+                    "homepage": "https://www.drupal.org/user/598310"
+                },
+                {
+                    "name": "p.wiaderny",
+                    "homepage": "https://www.drupal.org/user/2956619"
+                },
+                {
+                    "name": "vokiel",
+                    "homepage": "https://www.drupal.org/user/2793801"
+                },
+                {
+                    "name": "Wim Leers",
+                    "homepage": "https://www.drupal.org/user/99777"
+                },
+                {
+                    "name": "wwalc",
+                    "homepage": "https://www.drupal.org/user/184556"
+                },
+                {
+                    "name": "xjm",
+                    "homepage": "https://www.drupal.org/user/65776"
+                }
+            ],
+            "description": "WYSIWYG editing for rich text fields using CKEditor.",
+            "homepage": "https://www.drupal.org/project/ckeditor",
+            "support": {
+                "source": "https://git.drupalcode.org/project/ckeditor"
             }
         },
         {
@@ -7032,20 +7181,23 @@
         },
         {
             "name": "drupal/lightning_media",
-            "version": "4.10.0",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/lightning_media.git",
-                "reference": "8.x-4.10"
+                "reference": "8.x-4.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/lightning_media-8.x-4.10.zip",
-                "reference": "8.x-4.10",
-                "shasum": "0c3daac87173fa2749b7c812f5f0d0e6fae736b3"
+                "url": "https://ftp.drupal.org/files/projects/lightning_media-8.x-4.6.zip",
+                "reference": "8.x-4.6",
+                "shasum": "779bcc254d2d661013c761bedb0003cb39825e42"
             },
             "require": {
-                "drupal/core": "^8.9 || ^9.0.1 || ^10",
+                "bower-asset/cropper": "^2.3",
+                "bower-asset/slick-carousel": "^1.8",
+                "drupal/ckeditor": "*",
+                "drupal/core": "^8.8.8 || ^9.0.1",
                 "drupal/crop": "^2.0.0-rc1",
                 "drupal/dropzonejs": "^2.1",
                 "drupal/embed": "^1.0",
@@ -7053,35 +7205,101 @@
                 "drupal/entity_embed": "^1.0",
                 "drupal/image_widget_crop": "^2.1",
                 "drupal/inline_entity_form": "^1.0-rc7",
-                "drupal/lightning_core": "^5.14",
+                "drupal/lightning_core": "5.*",
                 "drupal/media_entity_instagram": "^3",
                 "drupal/media_entity_twitter": "^2.5",
                 "drupal/slick_entityreference": "^2.0",
                 "drupal/video_embed_field": "^2.0",
-                "drupal/views_infinite_scroll": "^1.6 || ^2",
+                "drupal/views_infinite_scroll": "^1.6",
+                "npm-asset/dropzone": "^5.7.4",
+                "oomphinc/composer-installers-extender": "^1.1 || ^2",
                 "vardot/blazy": "^1.8"
             },
             "require-dev": {
-                "drupal/ckeditor": "^1",
+                "drupal/core-composer-scaffold": "*",
+                "drupal/core-dev": "*",
                 "drupal/dropzonejs": "*",
                 "drupal/media_entity_instagram": "*",
                 "drupal/media_entity_twitter": "*",
                 "drupal/slick_entityreference": "*",
-                "drush/drush": "^11.3",
-                "enyo/dropzone": "^5.7.4"
+                "drush/drush": ">=9.7",
+                "symfony/options-resolver": ">=4",
+                "vijaycs85/drupal-quality-checker": "^1.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-4.10",
-                    "datestamp": "1673372768",
+                    "version": "8.x-4.6",
+                    "datestamp": "1612802524",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                }
+                },
+                "branch-alias": {
+                    "dev-8.x-4.x": "4.x-dev"
+                },
+                "drupal-scaffold": {
+                    "locations": {
+                        "web-root": "docroot/"
+                    },
+                    "file-mapping": {
+                        "[project-root]/.gitattributes": false,
+                        "[project-root]/.editorconfig": false,
+                        "[web-root]/example.gitignore": false,
+                        "[web-root]/.csslintrc": false,
+                        "[web-root]/modules/README.txt": false,
+                        "[web-root]/profiles/README.txt": false,
+                        "[web-root]/sites/README.txt": false,
+                        "[web-root]/themes/README.txt": false,
+                        "[web-root]/INSTALL.txt": false,
+                        "[web-root]/robots.txt": false,
+                        "[web-root]/web.config": false
+                    }
+                },
+                "enable-patching": true,
+                "installer-paths": {
+                    "docroot/core": [
+                        "type:drupal-core"
+                    ],
+                    "docroot/libraries/{$name}": [
+                        "type:drupal-library",
+                        "type:bower-asset",
+                        "type:npm-asset"
+                    ],
+                    "docroot/modules/contrib/{$name}": [
+                        "type:drupal-module"
+                    ],
+                    "docroot/profiles/contrib/{$name}": [
+                        "type:drupal-profile"
+                    ],
+                    "docroot/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ]
+                },
+                "installer-types": [
+                    "bower-asset",
+                    "npm-asset"
+                ]
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
+            "scripts": {
+                "post-install-cmd": [
+                    "@putenv DIR=./docroot/modules/lightning_media",
+                    "mkdir -p $DIR",
+                    "ln -s -f $PWD/config $DIR",
+                    "ln -s -f $PWD/css $DIR",
+                    "ln -s -f $PWD/images $DIR",
+                    "ln -s -f $PWD/modules $DIR",
+                    "ln -s -f $PWD/src $DIR",
+                    "ln -s -f $PWD/tests $DIR",
+                    "find $PWD -name 'lightning_media.*' -depth 1 -exec ln -s -f {} $DIR ';'",
+                    "cp -f phpunit.xml ./docroot/core"
+                ],
+                "nuke": [
+                    "rm -r -f docroot vendor"
+                ]
+            },
             "license": [
                 "GPL-2.0-or-later"
             ],
@@ -7370,17 +7588,17 @@
         },
         {
             "name": "drupal/media_entity_instagram",
-            "version": "3.0.7",
+            "version": "3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_entity_instagram.git",
-                "reference": "3.0.7"
+                "reference": "3.0.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_entity_instagram-3.0.7.zip",
-                "reference": "3.0.7",
-                "shasum": "8a0921b52e28521fef089ba9c98fe4cfb20e249f"
+                "url": "https://ftp.drupal.org/files/projects/media_entity_instagram-3.0.8.zip",
+                "reference": "3.0.8",
+                "shasum": "7e91d3ecd83f8a67b2af1954226c9cf6e6377f5b"
             },
             "require": {
                 "drupal/core": "^9 || ^10"
@@ -7388,8 +7606,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.0.7",
-                    "datestamp": "1647604819",
+                    "version": "3.0.8",
+                    "datestamp": "1676644231",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7402,20 +7620,20 @@
             ],
             "authors": [
                 {
-                    "name": "Drupal Media Team",
-                    "homepage": "https://www.drupal.org/user/3260690"
-                },
-                {
-                    "name": "Primsi",
-                    "homepage": "https://www.drupal.org/user/282629"
-                },
-                {
                     "name": "chr.fritsch",
                     "homepage": "https://www.drupal.org/user/2103716"
                 },
                 {
                     "name": "designesse",
                     "homepage": "https://www.drupal.org/user/854012"
+                },
+                {
+                    "name": "Drupal Media Team",
+                    "homepage": "https://www.drupal.org/user/3260690"
+                },
+                {
+                    "name": "Primsi",
+                    "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
                     "name": "slashrsm",
@@ -10732,26 +10950,26 @@
         },
         {
             "name": "drupal/views_infinite_scroll",
-            "version": "2.0.1",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/views_infinite_scroll.git",
-                "reference": "2.0.1"
+                "reference": "8.x-1.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_infinite_scroll-2.0.1.zip",
-                "reference": "2.0.1",
-                "shasum": "c57a2c63f00c53a9ee7e741c7f37df21eb9e76de"
+                "url": "https://ftp.drupal.org/files/projects/views_infinite_scroll-8.x-1.9.zip",
+                "reference": "8.x-1.9",
+                "shasum": "875d58d317d48036ed1d9ef538bc8a76bc3dcb5b"
             },
             "require": {
-                "drupal/core": "^9.2 || ^10"
+                "drupal/core": "^8.8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.1",
-                    "datestamp": "1664716655",
+                    "version": "8.x-1.9",
+                    "datestamp": "1632421809",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -13844,6 +14062,18 @@
             "time": "2023-01-16T22:05:37+00:00"
         },
         {
+            "name": "npm-asset/dropzone",
+            "version": "5.9.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/dropzone/-/dropzone-5.9.3.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/jquery-validation",
             "version": "1.19.5",
             "dist": {
@@ -13854,6 +14084,63 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "oomphinc/composer-installers-extender",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oomphinc/composer-installers-extender.git",
+                "reference": "cbf4b6f9a24153b785d09eee755b995ba87bd5f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oomphinc/composer-installers-extender/zipball/cbf4b6f9a24153b785d09eee755b995ba87bd5f9",
+                "reference": "cbf4b6f9a24153b785d09eee755b995ba87bd5f9",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1 || ^2.0",
+                "composer/installers": "^1.0 || ^2.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "composer/composer": "^2.0",
+                "phpunit/phpunit": "^7.2",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "OomphInc\\ComposerInstallersExtender\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "OomphInc\\ComposerInstallersExtender\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Beemsterboer",
+                    "email": "stephen@oomphinc.com",
+                    "homepage": "https://github.com/balbuf"
+                },
+                {
+                    "name": "Nathan Dentzau",
+                    "email": "nate@oomphinc.com",
+                    "homepage": "http://oomph.is/ndentzau"
+                }
+            ],
+            "description": "Extend the composer/installers plugin to accept any arbitrary package type.",
+            "homepage": "http://www.oomphinc.com/",
+            "support": {
+                "issues": "https://github.com/oomphinc/composer-installers-extender/issues",
+                "source": "https://github.com/oomphinc/composer-installers-extender/tree/2.0.1"
+            },
+            "time": "2021-12-15T12:32:42+00:00"
         },
         {
             "name": "paragonie/random_compat",
