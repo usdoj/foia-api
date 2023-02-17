@@ -1,7 +1,7 @@
 name: foia-api
-type: drupal9
+type: drupal8
 docroot: docroot
-php_version: "8.0"
+php_version: "8.1"
 webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
@@ -164,13 +164,3 @@ host_db_port: "3306"
 # post-import-db:
 #   - exec: drush cr
 #   - exec: drush updb
-
-# Install Google Chrome for the Behat tests.
-hooks:
-  post-start:
-  - exec: "sudo apt-get update"
-  - exec: "sudo apt-get install -y libappindicator1 fonts-liberation libasound2 libatk-bridge2.0-0 libatspi2.0-0 libdrm2 libgbm1 libgtk-3-0 libnspr4 libnss3 libu2f-udev libvulkan1 libxkbcommon0 xdg-utils"
-  - exec: "sudo apt-get install -f"
-  - exec: "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-  - exec: "sudo dpkg -i google-chrome*.deb"
-  - exec: "rm google-chrome-stable_current_amd64.deb"

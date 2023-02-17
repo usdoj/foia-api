@@ -12,7 +12,6 @@ Feature: Agency Administrator role
     And for 'Name' I enter 'A Test Agency'
     When I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                |
       | Created new term A Test Agency. |
     When I am at 'admin/people/create'
     And for 'Email address' I enter 'alex@alex.com'
@@ -29,13 +28,11 @@ Feature: Agency Administrator role
     When I click 'Edit' in the 'Alex' row
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages             |
       | The changes have been saved. |
     When I click 'Edit' in the 'Alex' row
     And I press the 'Cancel account' button
     And I press the 'Cancel account' button
     Then I should see the following success messages:
-      | Success messages        |
       | Alex has been disabled. |
     And the user 'Alex' is deleted
 
@@ -54,7 +51,6 @@ Feature: Agency Administrator role
     And I uncheck the box 'Agency Manager'
     And I press the 'Create new account' button
     Then I should see the following success messages:
-      | Success messages                                               |
       | Created a new user account for Arthur. No email has been sent. |
     When I am at 'admin/people'
     Then I should see 'Administrator' in the 'Mini' row
@@ -82,14 +78,12 @@ Feature: Agency Administrator role
     And for 'Name' I enter 'A Test Agency'
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                |
       | Created new term A Test Agency. |
     And I am at 'admin/structure/taxonomy/manage/agency/overview'
     When I click 'Edit' in the 'A Test Agency' row
     Then I should see the link 'Delete'
     When I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages            |
       | Updated term A Test Agency. |
 
   @api @experimental
@@ -104,17 +98,14 @@ Feature: Agency Administrator role
     And for Abbreviation I enter 'TAC'
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                           |
       | Agency Component A Test Agency Component has been created. |
     And I click 'Edit'
     When I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                           |
       | Agency Component A Test Agency Component has been updated. |
     When I click 'Delete'
     And I press the 'Delete' button
     Then I should see the following success messages:
-      | Success messages                                               |
       | The Agency Component A Test Agency Component has been deleted. |
 
   @api
@@ -131,22 +122,12 @@ Feature: Agency Administrator role
 
   @api
   Scenario: Agency Administrator can view unpublished content
-    Given "agency" terms:
-      | name  |field_agency_abbreviation| description |format    | language |
-      | test  |DOJ                      | description |plain_text| en       |
-    And I am logged in as a user with the 'Agency Administrator' role
+    Given I am logged in as a user with the 'Agency Administrator' role
     When I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
-    And for 'Agency' I enter 'test'
-    And for Abbreviation I enter 'TAC'
-    And for 'Street address' I enter '123'
-    And for 'City' I enter '123'
-    And I select "Louisiana" from "State"
-    And for 'Zip code' I enter '12345'
     And I uncheck the box "Published"
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                           |
       | Agency Component A Test Agency Component has been created. |
 
   @api @experimental
@@ -157,11 +138,9 @@ Feature: Agency Administrator role
     And for 'Title' I enter 'A Test Webform'
     When I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                |
       | Webform A Test Webform created. |
     When I press the 'Save elements' button
     Then I should see the following success messages:
-      | Success messages                       |
       | Webform A Test Webform elements saved. |
     When I click 'View'
     And for 'First name' I enter 'A Test First name'
@@ -177,7 +156,6 @@ Feature: Agency Administrator role
     And I check the box 'Yes, I want to delete this webform.'
     And I press the 'Delete' button
     Then I should see the following success messages:
-      | Success messages                             |
       | The webform A Test Webform has been deleted. |
 
   @api @experimental
@@ -187,14 +165,12 @@ Feature: Agency Administrator role
     And for 'Agency Component Name' I enter 'A Test Agency Component'
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                           |
       | Agency Component A Test Agency Component has been updated. |
     When I click 'Edit'
     And for 'Agency Component Description' I enter 'change'
     And for 'Revision log message' I enter 'change'
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                           |
       | Agency Component A Test Agency Component has been updated. |
     When I click 'Revisions'
     Then I should not see 'Delete' in the 'change' row
@@ -206,14 +182,12 @@ Feature: Agency Administrator role
     And for 'Name' I enter 'A Test Agency'
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                |
       | Created new term A Test Agency. |
     And I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
     And for 'Agency' I enter 'A Test Agency'
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                           |
       | Agency Component A Test Agency Component has been created. |
     And I should see the link 'A Test Agency'
 

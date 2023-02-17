@@ -61,7 +61,6 @@ Feature: Request information from an agency
     When I press the 'Save' button
     And save the current URL
     Then I should see the following success messages:
-      | Success messages                                         |
       | Agency Component Test agency component has been created. |
     And I am at 'form/test-webform'
     And for "First name" I enter "Ringo"
