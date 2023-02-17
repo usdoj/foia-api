@@ -5,6 +5,42 @@ cron_interval: 30
 cron_interval_override: 0
 hide_signup_messages: 0
 subscription_name: ''
+spi:
+  amplitude_api_key: f32aacddde42ad34f5a3078a621f37a9
+  server: 'https://nspi.acquia.com'
+  ssl_override: false
+  ssl_verify: true
+  admin_priv: 1
+  send_node_user: 1
+  send_watchdog: 1
+  dynamic_banner: 0
+  set_variables_override: 0
+  set_variables_automatic:
+    - acquia_spi_set_variables_automatic
+    - error_level
+    - preprocess_js
+    - page_cache_maximum_age
+    - block_cache
+    - preprocess_css
+    - page_compression
+    - image_allow_insecure_derivatives
+    - googleanalytics_cache
+    - acquia_spi_send_node_user
+    - acquia_spi_admin_priv
+    - acquia_spi_send_watchdog
+    - acquia_spi_use_cron
+  ignored_set_variables: {  }
+  saved_variables:
+    variables: {  }
+    time: 0
+  cron_interval: 28800
+  site_environment: prod
+  site_uuid: f173bc96-8633-49d6-a791-97bcb6db1f42
+  env_detection_enabled: true
+  use_cron: 1
+  def_vars: {  }
+  def_waived_vars: {  }
+  def_timestamp: 0
 mapping:
   acquia_spi_send_node_user:
     - acquia_connector.settings
