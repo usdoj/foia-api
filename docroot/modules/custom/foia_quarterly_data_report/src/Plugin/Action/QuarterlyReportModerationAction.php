@@ -87,12 +87,6 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
   /**
    * {@inheritdoc}
    */
-  public function execute($entity = NULL) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function executeMultiple(array $entities) {
     $batches = [];
     foreach ($entities as $entity) {
@@ -205,7 +199,7 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
         $context['results']['nids_process_failed'][] = $entity->id();
       }
     }
-    catch (\Exception $e) {
+    catch (Exception $e) {
       watchdog_exception('VBO Quartly report moderation', $e);
     }
   }
