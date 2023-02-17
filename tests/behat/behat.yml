@@ -2,32 +2,19 @@ default:
   suites:
     default:
       paths:
-        - "%paths.base%/features"
+        - %paths.base%/features
   extensions:
     Behat\MinkExtension:
       default_session: goutte
-      browser_name: chrome
-      javascript_session: default
+      javascript_session: selenium2
       goutte: ~
       files_path: "%paths.base%/media"
     Drupal\DrupalExtension:
       blackbox: ~
       api_driver: "drupal"
-      region_map:
-        content: "#content"
-        footer: "#footer"
-        navigation: "#nav-header"
-        left header: "#header-left"
-        right header: "#header-right"
-        right sidebar: "#aside-region"
-      selectors:
-        message_selector: '.messages'
-        error_message_selector: '.messages--error'
-        success_message_selector: '.messages--status'
-        warning_message_selector: '.messages--warning'
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
-        outputDir: "%paths.base%/build/tests"
+        outputDir: %paths.base%/build/tests
     Bex\Behat\ScreenshotExtension:
       screenshot_taking_mode: failed_steps
       image_drivers:

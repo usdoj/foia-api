@@ -20,7 +20,6 @@ Feature: Agency Manager role
     And I edit the current entity
     When I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                                         |
       | Agency Component National Energy Technology Laboratory has been updated. |
 
   @api @experimental
@@ -42,7 +41,6 @@ Feature: Agency Manager role
     And I edit the current entity
     And I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                   |
       | Updated term Department of Energy. |
 
   @api @experimental
@@ -98,7 +96,6 @@ Feature: Agency Manager role
     And I select "Draft" from "Save as"
     When I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                        |
       | Annual FOIA Report Data A Test Report has been created. |
 
   @api
@@ -113,5 +110,4 @@ Feature: Agency Manager role
     And I select "Submitted to OIP" from "Save as"
     When I press the 'Save' button
     Then I should see the following success messages:
-      | Success messages                                        |
       | Annual FOIA Report Data A Test Report has been created. |
