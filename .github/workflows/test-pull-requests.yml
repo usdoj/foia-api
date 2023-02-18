@@ -24,6 +24,6 @@ jobs:
           ddev drush cr
       - name: Run tests
         run: |
-          ddev exec ls /var/www/html/docroot/modules/contrib/lightning_core/tests/contexts
+          ls docroot/modules/contrib/lightning_core/tests/contexts
           ddev exec blt tests:behat:init
           ddev exec blt tests:behat
