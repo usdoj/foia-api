@@ -24,6 +24,5 @@ jobs:
           ddev drush cr
       - name: Run tests
         run: |
-          ddev composer show drupal/lightning_core
           ddev exec blt tests:behat:init
           ddev exec blt tests:behat
