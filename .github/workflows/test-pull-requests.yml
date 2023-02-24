@@ -14,8 +14,6 @@ jobs:
           php-version: '8.0'
       - name: Set up ddev
         uses: jonaseberle/github-action-setup-ddev@v1
-      - name: Initialize ddev
-        run: ddev start
       - name: Set up the site
         run: |
           ddev composer install
