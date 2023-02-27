@@ -730,22 +730,24 @@ function foia_annual_data_report_node_presave($entity) {
     foreach ($entity->field_proc_req_viia->referencedEntities() as $agency) {
 
       // Node id for this agency component.
-      $ac_nid = $agency->get('field_agency_component')->getValue()[0]['target_id'];
+      $ac_nid_value = $agency->get('field_agency_component')->getValue();
+      if (!empty($ac_nid_value[0])) {
+        $ac_nid = $ac_nid_value[0]['target_id'];
 
-      // Node object - Agency Component.
-      $ac_node = Node::load($ac_nid);
+        // Node object - Agency Component.
+        $ac_node = Node::load($ac_nid);
 
-      // Loop over our field map and update ac node from the annual report.
-      foreach ($field_mapping as $field_report => $field_ac_node) {
-        $val = $agency->get($field_report)->getValue()[0]['value'];
-        $ac_node->set($field_ac_node, $val);
+        // Loop over our field map and update ac node from the annual report.
+        foreach ($field_mapping as $field_report => $field_ac_node) {
+          $val = $agency->get($field_report)->getValue()[0]['value'];
+          $ac_node->set($field_ac_node, $val);
+        }
+        // Update the report year.
+        $ac_node->set('field_request_data_year', $report_year);
+
+        // Save the node.
+        $ac_node->save();
       }
-      // Update the report year.
-      $ac_node->set('field_request_data_year', $report_year);
-
-      // Save the node.
-      $ac_node->save();
-
     }
 
   }

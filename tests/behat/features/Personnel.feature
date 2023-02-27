@@ -11,6 +11,7 @@ Feature: FOIA Personnel entity
     And for 'Name' I enter 'MAVIurAaQkyfWwpWImuhpKMePsWzmOmomReikiPzxNMmgTsarAuYfYPBfibQydEBoGpwmMzOANkeRthCFsekqfGGqLLqbEzZNwHnpLLpVQSDribbmHhCaFJZueCDXPoTzpyScWynylUMoHCllEWiJuLFTDrgwcDbbwnHyBzzygLjIDHFmHBvjGnwLxArLZVbBYDxkaCvHvQWYtMjcsBtrbVwCWnDAWUXvssUJKmvOgneNBamyzrvrKImLEqolZf'
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                                                                                                                                                                                                                                                                            |
       | Created the MAVIurAaQkyfWwpWImuhpKMePsWzmOmomReikiPzxNMmgTsarAuYfYPBfibQydEBoGpwmMzOANkeRthCFsekqfGGqLLqbEzZNwHnpLLpVQSDribbmHhCaFJZueCDXPoTzpyScWynylUMoHCllEWiJuLFTDrgwcDbbwnHyBzzygLjIDHFmHBvjGnwLxArLZVbBYDxkaCvHvQWYtMjcsBtrbVwCWnDAWUXvssUJKmvOgneNBamyzrvrKImLEqolZf FOIA Personnel. |
 
   @api
@@ -20,26 +21,32 @@ Feature: FOIA Personnel entity
     And for 'Name' I enter 'A Test Personnel'
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                             |
       | Created the A Test Personnel FOIA Personnel. |
     And I click 'Edit'
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                           |
       | Saved the A Test Personnel FOIA Personnel. |
     And I click 'Delete'
     And I press the 'Delete' button
     Then I should see the following success messages:
+      | Success messages                                      |
       | The foia personnel A Test Personnel has been deleted. |
     Given I am logged in as a user with the 'Agency Manager' role
     And I am at 'admin/structure/foia_personnel/add'
     And for 'Name' I enter 'A Test Personnel'
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                             |
       | Created the A Test Personnel FOIA Personnel. |
     And I click 'Edit'
     And I press the 'Save' button
     Then I should see the following success messages:
+      | Success messages                           |
       | Saved the A Test Personnel FOIA Personnel. |
     And I click 'Delete'
     And I press the 'Delete' button
     Then I should see the following success messages:
+      | Success messages                                      |
       | The foia personnel A Test Personnel has been deleted. |
