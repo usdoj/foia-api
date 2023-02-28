@@ -25,6 +25,8 @@ default:
         error_message_selector: '.messages--error'
         success_message_selector: '.messages--status'
         warning_message_selector: '.messages--warning'
+      subcontexts:
+        autoload: 0
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
         outputDir: "%paths.base%/build/tests"
