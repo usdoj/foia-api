@@ -1,16 +1,38 @@
 default:
   suites:
     default:
+      contexts:
+        - Drupal\FeatureContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\ConfigContext
       paths:
         - "%paths.base%/features"
   extensions:
-    Behat\MinkExtension:
+    Drupal\MinkExtension:
       default_session: goutte
       browser_name: chrome
-      javascript_session: default
+      javascript_session: selenium2
       goutte: ~
       files_path: "%paths.base%/media"
+      base_url: https://foia-api.ddev.site
+      selenium2:
+        wd_host: http://selenium-chrome:4444/wd/hub
+        capabilities:
+          chrome:
+            switches:
+              - "--ignore-certificate-errors"
+              - "--disable-gpu"
+              - "--headless"
+              - "--no-sandbox"
+              - "--disable-dev-shm-usage"
     Drupal\DrupalExtension:
+      drupal:
+        drupal_root: /var/www/html/docroot
+      drush:
+        alias: '@self'
       blackbox: ~
       api_driver: "drupal"
       region_map:
@@ -25,8 +47,6 @@ default:
         error_message_selector: '.messages--error'
         success_message_selector: '.messages--status'
         warning_message_selector: '.messages--warning'
-      subcontexts:
-        autoload: 0
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
         outputDir: "%paths.base%/build/tests"
