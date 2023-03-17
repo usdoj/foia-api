@@ -22,3 +22,9 @@ jobs:
           ddev drush cr
       - name: Run tests
         run: ddev exec vendor/bin/behat --config=tests/behat/behat.yml --stop-on-failure --strict
+      - name: Upload screenshots of failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: /var/www/html/tests/behat/screenshots/*.png
