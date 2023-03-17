@@ -80,4 +80,4 @@ Feature: Annual FOIA Report Data Feature
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add/annual_foia_report_data"
     And I click 'IV. Exemption 3 Statutes'
-    Then I should see "Add placeholders for component data below CAUSE FAILURE"
+    Then I should see "Add placeholders for component data below"
