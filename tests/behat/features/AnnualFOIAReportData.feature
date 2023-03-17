@@ -87,4 +87,5 @@ Feature: Annual FOIA Report Data Feature
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add/annual_foia_report_data"
     And I press "Validate"
+    And I wait 3 seconds
     Then I should see "This field is required."
