@@ -74,3 +74,10 @@ Feature: Annual FOIA Report Data Feature
     Then I should see the following success messages:
       | Success messages                                            |
       | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
+
+  @api @javascript
+  Scenario: There is a button for adding placeholders for component data
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/annual_foia_report_data"
+    And I click 'IV. Exemption 3 Statutes'
+    Then I should see "Add placeholders for component data below CAUSE FAILURE"
