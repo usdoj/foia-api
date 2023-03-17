@@ -1,0 +1,21 @@
+# Here is an example file for overriding the Behat configuration in order to
+# use it in a non-ddev environment. To use this, copy this file to "local.yml"
+# (which is not versioned) and then tweak the file as needed. The example
+# below demonstrates how to change the base_url according to your local
+# environment, and how to change some paths according to your project location.
+# When you run the /vendor/bin/behat command, use this configuration instead of
+# behat.yml. For example: vendor/bin/behat --config=tests/behat/local.yml
+imports:
+  - behat.yml
+
+default:
+  extensions:
+    Drupal\MinkExtension:
+      base_url: https://my-local-site.example.com
+    Drupal\DrupalExtension:
+      drupal:
+        drupal_root: /path/to/my/project/docroot
+    Bex\Behat\ScreenshotExtension:
+      image_drivers:
+        local:
+          screenshot_directory: /path/to/my/project/tests/behat/screenshots
