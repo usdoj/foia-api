@@ -26,18 +26,3 @@ function foia_annual_data_report_update_8002(&$sandbox) {
     }
   }
 }
-
-/**
- * Add custom action for node operations bulk form.
- */
-function foia_annual_data_report_update_9001() {
-  $customAction = \Drupal::entityTypeManager()->getStorage('action')->load('moderation_annual_report_action');
-  if ($customAction === NULL) {
-    \Drupal::entityTypeManager()->getStorage('action')->create([
-      'id' => 'moderation_annual_report_action',
-      'label' => 'Publish foia annual reports',
-      'type' => 'node',
-      'plugin' => 'moderation_annual_report_action',
-    ])->save();
-  }
-}
