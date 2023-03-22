@@ -89,3 +89,11 @@ Feature: Annual FOIA Report Data Feature
     And I press "Validate"
     And I wait 3 seconds
     Then I should see "This field is required."
+
+  @api @javascript
+  Scenario: To validate field_agency_components is required field if reports
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/annual_foia_report_data"
+    Then the field "field_agency_components" is required on the "annual_foia_report_data" "node" type
+    And I am on "/node/add/quarterly_foia_report_data"
+    Then the field "field_agency_components" is required on the "quarterly_foia_report_data" "node" type
