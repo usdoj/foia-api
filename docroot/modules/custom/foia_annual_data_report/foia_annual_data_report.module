@@ -320,7 +320,10 @@ function foia_annual_data_report_form_annual_data_report_validate(array &$form, 
   }
 
   // Get the report year from the form state.
-  $report_year = isset($form_state_values['field_foia_annual_report_yr'][0]['value']) ?: NULL;
+  $report_year = NULL;
+  if (isset($form_state_values['field_foia_annual_report_yr'][0]['value'])) {
+    $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'];
+  }
   // Check for an existing report.
   if ($form_state->getFormObject() instanceof EntityForm) {
     $current_nid = $form_state->getformObject()->getEntity()->id();
