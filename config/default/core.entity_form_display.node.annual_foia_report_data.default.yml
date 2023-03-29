@@ -324,6 +324,7 @@ dependencies:
     - entity_reference_views_select
     - field_group
     - paragraphs
+    - select2
 third_party_settings:
   field_group:
     group_iv_exemption_3_statutes:
@@ -2075,14 +2076,14 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
   field_agency:
-    type: entity_reference_autocomplete
+    type: select2_entity_reference
     weight: 2
     region: content
     settings:
+      width: element
+      autocomplete: false
       match_operator: CONTAINS
       match_limit: 10
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   field_agency_abbr:
     type: string_textfield
