@@ -16,6 +16,7 @@ use Drupal\Core\Ajax\OpenDialogCommand;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_form_id_alter().
@@ -33,9 +34,55 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_fo
 function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   foia_quarterly_data_report_disable_agency_overall($form, $form_state);
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
-  foia_quarterly_data_report_ajax_new_node($form);
+
+  $node = $form_state->getFormObject()->getEntity();
+  if ($node->isNew()) {
+    // For new annual reports, we require that the agency be set before continuing.
+    $starting_fields = [
+      'field_agency',
+      'field_agency_components',
+      'field_quarterly_quarter',
+      'field_quarterly_year',
+    ];
+    $hide_elements = [
+      'moderation_state',
+    ];
+    foreach (Element::children($form) as $key) {
+      if (str_starts_with($key, 'field_')) {
+        if (!in_array($key, $starting_fields)) {
+          $form[$key]['#access'] = FALSE;
+        }
+      }
+      else {
+        if (in_array($key, $hide_elements)) {
+          $form[$key]['#access'] = FALSE;
+        }
+      }
+    }
+    $form['actions']['submit']['#submit'][] = 'foia_quarterly_data_report_save_and_continue';
+    $form['actions']['submit']['#value'] = 'Save and continue';
+    $form['actions']['preview']['#access'] = FALSE;
+    $form['#attached']['library'][] = 'foia_quarterly_data_report/foia_form_display_new_reports';
+  }
   // Add general validation including checkig for existing report.
   $form['#validate'][] = 'foia_quarterly_data_report_form_quarterly_data_report_validate';
+}
+
+/**
+ * Submit handler for brand new quarterly reports.
+ *
+ * Redirects to the node edit page for continued editing.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function foia_quarterly_data_report_save_and_continue($form, FormStateInterface $form_state) {
+  $current_route_name = \Drupal::routeMatch()->getRouteName();
+  $destination_route_name = 'entity.node.edit_form';
+  $nid = $form_state->getFormObject()->getEntity()->id();
+  $form_state->setRedirect($destination_route_name, ['node' => $nid]);
 }
 
 /**
@@ -128,6 +175,9 @@ function foia_quarterly_data_report_form_quarterly_data_report_validate(array &$
     $current_nid = $form_state->getformObject()->getEntity()->id();
   }
   else {
+    $current_nid = 0;
+  }
+  if ($current_nid == NULL) {
     $current_nid = 0;
   }
 
