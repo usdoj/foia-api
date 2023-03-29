@@ -18,6 +18,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_form_alter().
@@ -33,10 +34,40 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
     // Attach form style updates.
     $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_style_updates';
 
-    // Add the javascript functionality.
-    $form['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
-
     $node = $form_state->getFormObject()->getEntity();
+
+    if ($node->isNew()) {
+      // For new annual reports, we require that the agency be set before continuing.
+      $starting_fields = [
+        'field_agency',
+        'field_agency_components',
+        'field_date_prepared',
+        'field_foia_annual_report_yr',
+      ];
+      $hide_elements = [
+        'moderation_state',
+      ];
+      foreach (Element::children($form) as $key) {
+        if (str_starts_with($key, 'field_')) {
+          if (!in_array($key, $starting_fields)) {
+            $form[$key]['#access'] = FALSE;
+          }
+        }
+        else {
+          if (in_array($key, $hide_elements)) {
+            $form[$key]['#access'] = FALSE;
+          }
+        }
+      }
+      $form['actions']['submit']['#submit'][] = 'foia_annual_data_report_save_and_continue';
+      $form['actions']['submit']['#value'] = 'Save and continue';
+      $form['actions']['preview']['#access'] = FALSE;
+      $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_display_new_reports';
+    }
+    else {
+      // Add the javascript functionality (only needed for existing nodes).
+      $form['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
+    }
 
     // Use the Service to get info for an annual data report form.
     $adr_form_info = \Drupal::service('annual_data_report.form_displays')->info($form_id);
@@ -89,7 +120,6 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
         // Add a submit handler to redirect back to this section.
         $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
       }
-
     }
 
     // Force a submit function to increase memory limit before core's submit.
@@ -100,9 +130,28 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
         }
       }
     }
-
   }
+}
 
+/**
+ * Submit handler for brand new annual reports.
+ *
+ * Redirects to the node edit page for continued editing.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function foia_annual_data_report_save_and_continue($form, FormStateInterface $form_state) {
+  $current_route_name = \Drupal::routeMatch()->getRouteName();
+  $destination_route_name = 'entity.node.edit_form';
+  if (str_ends_with($current_route_name, 'annual_report_agency_info')) {
+    // Jump to the next section.
+    $destination_route_name .= '.annual_report_iv_exemption_3_statutes';
+  }
+  $nid = $form_state->getFormObject()->getEntity()->id();
+  $form_state->setRedirect($destination_route_name, ['node' => $nid]);
 }
 
 /**
