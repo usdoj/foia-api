@@ -89,3 +89,12 @@ Feature: Annual FOIA Report Data Feature
     And I press "Validate"
     And I wait 3 seconds
     Then I should see "This field is required."
+
+  @api @javascript
+  Scenario: Agency Administrator see the option to bulk-publish annual reports
+    Given annual_foia_report_data content:
+      | field_agency | field_foia_annual_report_yr | moderation_state |
+      | Federal Testing Agency | 2023 | cleared |
+    And I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/admin/content/reports"
+    And I select "Publish foia annual reports" from "Action"
