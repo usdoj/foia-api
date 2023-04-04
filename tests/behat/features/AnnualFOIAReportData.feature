@@ -40,7 +40,7 @@ Feature: Annual FOIA Report Data Feature
     And I am on "/node/add/annual_foia_report_data"
     And for 'FOIA Annual Report Year' I enter '2023'
     And I select "test" from "Agency"
-    And I wait 5 seconds
+    And I wait 3 seconds
     When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                        |
@@ -77,10 +77,9 @@ Feature: Annual FOIA Report Data Feature
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add/annual_foia_report_data"
     And I select "Federal Testing Agency" from "Agency"
-    And I wait 5 seconds
+    And I wait 3 seconds
     And for 'FOIA Annual Report Year' I enter '2019'
     And I press the 'Save and continue' button
-    And I wait 3 seconds
     And I click 'IV. Exemption 3 Statutes'
     Then I should see "Add placeholders for component data below"
 
