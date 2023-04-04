@@ -3,11 +3,8 @@
  */
 
 (function ($, drupalSettings) {
-  let fieldAgency = $('#edit-field-agency-0-target-id');
   Drupal.behaviors.foia_change_report_agency = {
     attach: function attach() {
-      this.triggerNodeRefreshOnUpdate();
-      this.modalButton();
 
       var sections = [
         {
@@ -144,40 +141,6 @@
       }
 
       this.addClearDataButton();
-    },
-    /**
-     * Clears out Agency field on modal close
-     * @see foia_quarterly_data_report_create_node()
-     */
-    modalButton: function () {
-      //   let fieldAgency = $('#edit-field-agency-0-target-id');
-      $( ".agency-dialog" ).on( "dialogbeforeclose", function( e, ui ) {
-        fieldAgency.val('');
-      });
-      $('.agency-back').click(function(e) {
-        fieldAgency.val('');
-        $('.ui-icon-closethick').trigger('click');
-        e.preventDefault();
-      });
-    },
-    /**
-     * Triggers the change.agency event which is listened for by the form element's ajax handler.
-     *
-     * The change event doesn't fire for the autocomplete field in IE11.  To work around this,
-     * this method listens for the blur event on the field, checks if the field value has
-     * changed, and triggers a refresh in all browsers if it has.
-     *
-     * @see foia_annual_data_report_ajax_existing_node()
-     * @see foia_annual_data_report_ajax_new_node()
-     */
-    triggerNodeRefreshOnUpdate: function () {
-      drupalSettings.foiaReportAgencyInitialValue = $('#edit-field-agency-0-target-id').val();
-
-      fieldAgency.once('foia-trigger-agency-change').blur(function (event) {
-        if ($(this).val() !== drupalSettings.foiaReportAgencyInitialValue) {
-          fieldAgency.trigger('change.agency');
-        }
-      });
     },
 
     addClearDataButton: function() {
