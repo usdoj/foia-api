@@ -16,5 +16,11 @@ Feature: Agency Component Feature
     And for 'Agency Component Name' I enter 'My agency name'
     And for 'Agency' I enter 'Federal Testing Agency'
     And for 'Abbreviation' I enter 'ABC'
+    And for 'Street address' I enter 'testing'
+    And for 'City' I enter 'Rockville'
+    And for 'Zip code' I enter "20857'
+    And I select "Maryland" from "State"
+    And I select "Email" from "Portal Submission Format"
+    And for 'Submission Email' I enter 'test@test.com'
     When I press the 'Save' button
     Then I should see "<title>My agency name | Federal Testing Agency | National FOIA Portal</title>"
