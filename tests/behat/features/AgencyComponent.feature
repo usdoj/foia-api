@@ -12,7 +12,7 @@ Feature: Agency Component Feature
   @api
   Scenario: Agency Component name in title tag for Agency Component node.
     Given I am logged in as a user with the 'Administrator' role
-    Given I am on '/node/add/agency_component'
+    And I am at '/node/add/agency_component'
     And for 'Agency Component Name' I enter 'My agency name'
     And for 'Agency' I enter 'Federal Testing Agency'
     And for 'Abbreviation' I enter 'ABC'
