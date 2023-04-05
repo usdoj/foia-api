@@ -99,3 +99,11 @@ Feature: Annual FOIA Report Data Feature
     And I am logged in as a user with the 'Agency Administrator' role
     And I am on "/admin/content/reports"
     And I select "Publish foia annual reports" from "Action"
+
+  @api
+  Scenario: The Components should be required for annual reports
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/annual_foia_report_data"
+    When I press the 'Save and continue' button
+    Then I should see "Components field is required"
+
