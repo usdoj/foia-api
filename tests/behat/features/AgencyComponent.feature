@@ -9,12 +9,6 @@ Feature: Agency Component Feature
       | name                    | field_agency_abbreviation | description |format    | language |
       | Federal Testing Agency  | FTA                       | description |plain_text| en       |
 
-    And a file named "features/bootstrap/CustomFeatureContext.php" with:
-      """
-      <?php
-      use Drupal\FeatureContext;
-
-      """
   @api
   Scenario: Agency Component name in title tag for Agency Component node.
     Given I am logged in as a user with the 'Administrator' role
@@ -29,5 +23,5 @@ Feature: Agency Component Feature
     And I select "Email" from "Portal Submission Format"
     And for 'Submission Email' I enter 'test@test.com'
     When I press the 'Save' button
-    Then this is verify title definition "My agency name | Federal Testing Agency | National FOIA Portal"
+    Then the page title should be "My agency name | Federal Testing Agency | National FOIA Portal"
 

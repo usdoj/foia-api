@@ -214,7 +214,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Check if the given title is expected or not.
    *
-   * @Then this is verify title definition :$expectedTitle
+   * @Then the page title should be :expectedTitle
    */
   public function thePageTitleShouldBe($expectedTitle) {
     $titleElement = $this->getSession()->getPage()->find('css', 'head title');
