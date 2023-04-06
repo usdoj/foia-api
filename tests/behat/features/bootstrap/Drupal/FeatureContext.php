@@ -211,4 +211,22 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       sleep($num);
     }
 
+  /**
+   * Check if the given title is expected or not.
+   *
+   * @Then the page title should be :expectedTitle
+   */
+  public function thePageTitleShouldBe($expectedTitle) {
+    $titleElement = $this->getSession()->getPage()->find('css', 'head title');
+    if ($titleElement === null) {
+      throw new \Exception('Page title element was not found!');
+    }
+    else {
+      $title = $titleElement->getText();
+      if ($expectedTitle !== $title) {
+        throw new \Exception("Incorrect title! Expected:$expectedTitle | Actual:$title ");
+      }
+    }
+  }
+
 }
