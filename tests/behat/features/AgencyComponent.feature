@@ -29,5 +29,5 @@ Feature: Agency Component Feature
     And I select "Email" from "Portal Submission Format"
     And for 'Submission Email' I enter 'test@test.com'
     When I press the 'Save' button
-    Given step # FeatureContext::thePageTitleShouldBe('My agency name | Federal Testing Agency | National FOIA Portal)
+    Given step # FeatureContext::thePageTitleShouldBe('My agency name | Federal Testing Agency | National FOIA Portal')
     # Then I should see "<title>My agency name | Federal Testing Agency | National FOIA Portal</title>"
