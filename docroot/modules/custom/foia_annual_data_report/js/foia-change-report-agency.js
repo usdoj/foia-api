@@ -176,7 +176,7 @@
           addMoreName = section.field + '_' + section.paragraph + '_add_more',
           fieldWrapperSelector = '#' + fieldWrapperId,
           addMoreSelector = 'input[name="' + addMoreName + '"]',
-          existingComponentSelector = fieldWrapperSelector + ' tbody tr',
+          existingComponentSelector = fieldWrapperSelector + ' tbody tr:visible',
           checkedComponentSelector = '#edit-field-agency-components input:checked',
           getComponentDropdownName = function(index) { return section.field + '[' + index + '][subform]' };
       $(fieldWrapperSelector).once('foia-add-populate-button').each(function() {
@@ -185,41 +185,49 @@
         $(this).prepend($button);
         $button.click(function(evt) {
           evt.preventDefault();
-          if ($(existingComponentSelector).length > 0) {
-            alert('Placeholders cannot be added while there are existing entries. Please remove all entries and try again.');
-            return;
-          }
           var $components = $(checkedComponentSelector),
-              numComponents = $components.length;
+              numComponents = $components.length,
+              currentComponent = 0,
+              singleComponent = $(existingComponentSelector).length === 1,
+              componentDropdownName = getComponentDropdownName(currentComponent),
+              componentDropdownSelector = 'select[name^="' + componentDropdownName + '"]',
+              blankComponent = singleComponent && $(componentDropdownSelector).val() === '_none';
           if (numComponents === 0) {
             alert('First select the components you want using the checkboxes above.');
-            return;
           }
-          var currentComponent = 0;
-          function clickAddMoreButton() {
-            $(addMoreSelector).trigger('mousedown');
+          else if ($(existingComponentSelector).length > 0 && !blankComponent) {
+            alert('Placeholders cannot be added while there are existing entries. Please remove all entries and try again.');
           }
-          function populateNextComponent() {
-            var componentNodeId = $components.eq(currentComponent).val();
-            var componentDropdownName = getComponentDropdownName(currentComponent);
-            var componentDropdownSelector = 'select[name^="' + componentDropdownName + '"]';
-            $(componentDropdownSelector).val(componentNodeId);
+          else {
+            function clickAddMoreButton() {
+              $(addMoreSelector).trigger('mousedown');
+            }
+            function populateNextComponent() {
+              var componentNodeId = $components.eq(currentComponent).val();
+              componentDropdownName = getComponentDropdownName(currentComponent);
+              componentDropdownSelector = 'select[name^="' + componentDropdownName + '"]';
+              $(componentDropdownSelector).val(componentNodeId);
 
-            currentComponent += 1;
-            if (currentComponent < numComponents) {
-              clickAddMoreButton();
+              currentComponent += 1;
+              if (currentComponent < numComponents) {
+                clickAddMoreButton();
+              }
+              else {
+                alert('Finished adding placeholders.');
+              }
+            }
+            $(document).on('ajaxStop', function() {
+              if (currentComponent < numComponents) {
+                populateNextComponent(currentComponent);
+              }
+            });
+            if (blankComponent) {
+              populateNextComponent();
             }
             else {
-              alert('Finished adding placeholders.');
+              clickAddMoreButton();
             }
           }
-          $(document).on('ajaxStop', function() {
-            if (currentComponent < numComponents) {
-              populateNextComponent(currentComponent);
-            }
-          });
-          // Kick things off with the first click.
-          clickAddMoreButton();
         });
       });
     }
