@@ -26,6 +26,8 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_fo
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
   // Add general validation including checkig for existing report.
   $form['#validate'][] = 'foia_quarterly_data_report_form_quarterly_data_report_validate';
+  // Add the javascript functionality (only needed for existing nodes).
+  $form['#attached']['library'][] = 'foia_quarterly_data_report/foia_change_report_agency';
 }
 
 /**
