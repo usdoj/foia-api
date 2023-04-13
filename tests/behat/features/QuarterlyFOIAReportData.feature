@@ -59,6 +59,7 @@ Feature: Quarterly FOIA Report Data Feature
     And I click 'Component data'
     And I wait 3 seconds
     And I press the 'Remove' button
+    And I wait 5 seconds
     And I press the 'Confirm removal' button
     And I wait 5 seconds
     And I click 'Agency Overall'

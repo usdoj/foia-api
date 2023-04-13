@@ -8,11 +8,7 @@
       var autocalcSettings = drupalSettings.foiaAutocalc.autocalcSettings;
       Object.keys(autocalcSettings).forEach(function (fieldName, fieldIndex) {
         var fieldSettings = autocalcSettings[fieldName];
-        // Calculate field on initial form load only.
-        var fieldCalculationsInitialized = fieldSettings['fieldCalculationsInitialized'] || false;
-        if (!fieldCalculationsInitialized) {
-          fieldSettings['fieldCalculationsInitialized'] = true;
-        }
+        // Calculate field on ajax each form load.
         calculateAllFieldsWithName(fieldName, fieldSettings, true);
 
         fieldSettings.forEach(function (fieldSetting) {

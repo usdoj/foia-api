@@ -236,8 +236,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function iShouldSeeValueElement($element, $value) {
     $page = $this->getSession()->getPage();
-    // Alternately, substitute with getText() for the label.
-    $element_value = $page->find('css', '#'. $element. '')->getValue();
+    $element_value = $page->find('named', ['field', $element])->getValue();
     if (strpos($element_value, $value) === false) {
       throw new \Exception('Value ' . $value . ' not found in element ' . $element . ', which had a value of ' . $element_value . '.');
     }
