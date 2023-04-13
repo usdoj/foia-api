@@ -21,3 +21,34 @@ Feature: Quarterly FOIA Report Data Feature
     When I press the 'Save and continue' button
     Then I should see "Components field is required"
 
+  @api @javascript
+  Scenario: Quarterly reports - handle case where user removes component data
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/quarterly_foia_report_data"
+    And I select "Federal Testing Agency" from "Agency"
+    And I wait 5 seconds
+    And I check the box "FTA"
+    When I press the 'Save and continue' button
+    And I click 'Component data'
+    And I wait 5 seconds
+    And I select "ABCDEF" from "Agency/Component"
+    And I wait 5 seconds
+    And for 'Number of requests received' I enter '123'
+    And for 'Number of requests processed' I enter '23'
+    And for 'Number of requests backlogged' I enter '3'
+    And I click 'Agency Overall'
+    And I wait 3 seconds
+    Then the "edit-field-quarterly-received-oa-0-value" element should have the value "123"
+    Then the "edit-field-quarterly-processed-oa-0-value" element should have the value "23"
+    Then the "edit-field-quarterly-backlogged-oa-0-value" element should have the value "3"
+    And I click 'Component data'
+    And I wait 3 seconds
+    And I press the 'Remove' button
+    And I press the 'Confirm removal' button
+    And I wait 5 seconds
+    And I click 'Agency Overall'
+    And I wait 3 seconds
+    Then the "edit-field-quarterly-received-oa-0-value" element should have the value "0"
+    Then the "edit-field-quarterly-processed-oa-0-value" element should have the value "0"
+    Then the "edit-field-quarterly-backlogged-oa-0-value" element should have the value "0"
+
