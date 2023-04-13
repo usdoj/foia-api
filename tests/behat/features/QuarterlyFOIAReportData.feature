@@ -22,6 +22,19 @@ Feature: Quarterly FOIA Report Data Feature
     Then I should see "Components field is required"
 
   @api @javascript
+  Scenario: There is a button for adding placeholders for component data
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/quarterly_foia_report_data"
+    And I select "Federal Testing Agency" from "Agency"
+    And I wait 5 seconds
+    And I check the box "ABCDEF"
+    And for 'Fiscal Year' I enter '2024'
+    And I select "Q1" from "Quarter"
+    And I press the 'Save and continue' button
+    And I click 'Component data'
+    Then I should see "Add placeholders for component data below"
+
+  @api @javascript
   Scenario: Quarterly reports - handle case where user removes component data
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add/quarterly_foia_report_data"
