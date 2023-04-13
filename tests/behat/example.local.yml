@@ -1,58 +1,21 @@
-# To generate a local.yml file using this the example template, execute:
-# `blt tests:behat:init` from the project root.
+# Here is an example file for overriding the Behat configuration in order to
+# use it in a non-ddev environment. To use this, copy this file to "local.yml"
+# (which is not versioned) and then tweak the file as needed. The example
+# below demonstrates how to change the base_url according to your local
+# environment, and how to change some paths according to your project location.
+# When you run the /vendor/bin/behat command, use this configuration instead of
+# behat.yml. For example: vendor/bin/behat --config=tests/behat/local.yml
 imports:
   - behat.yml
 
-local:
-  suites:
-    default:
-      paths:
-        # Set features to repo root so that .feature files belonging to contrib
-        # modules, themes, and profiles can be discovered.
-        features: ${repo.root}
-      #filters:
-      #  tags: "@foo"
-      contexts:
-        - Drupal\FeatureContext:
-          parameters:
-            environment:
-              # absolute path to local directory to store screenshots - do not include trailing slash
-              screenshot_dir: ${tests.reports.localDir}
-        - Drupal\DrupalExtension\Context\DrupalContext
-        - Drupal\DrupalExtension\Context\MinkContext
-        - Drupal\DrupalExtension\Context\MessageContext
-        - Drupal\DrupalExtension\Context\DrushContext
-        - Drupal\DrupalExtension\Context\ConfigContext
+default:
   extensions:
-    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
-    Behat\MinkExtension:
-      browser_name: chrome
-      javascript_session: default
-      # configure the base url for your site
-      base_url: ${project.local.uri}
-      # set default command for "Show last response" step.
-      show_cmd: "open %s"
-      # use the following lines to disable SSL authentication for goutte.
-      # goutte:
-      #   guzzle_parameters:
-      #     redirect.disable: true
-      #     ssl.certificate_authority: system
-      #     curl.options:
-      #       CURLOPT_SSL_VERIFYPEER: false
-      #       CURLOPT_SSL_VERIFYHOST: false
-      #       CURLOPT_CERTINFO: false
-      #       CURLOPT_TIMEOUT: 120
-      selenium2:
-        wd_host: ${behat.selenium.url}
-        browser: chrome
-      sessions:
-        default:
-          chrome:
-            api_url: "http://localhost:9222"
-            validate_certificate: false
+    Drupal\MinkExtension:
+      base_url: https://my-local-site.example.com
     Drupal\DrupalExtension:
       drupal:
-        # This must be an absolute path.
-        drupal_root: ${docroot}
-      drush:
-        alias: '@self'
+        drupal_root: /path/to/my/project/docroot
+    Bex\Behat\ScreenshotExtension:
+      image_drivers:
+        local:
+          screenshot_directory: /path/to/my/project/tests/behat/screenshots

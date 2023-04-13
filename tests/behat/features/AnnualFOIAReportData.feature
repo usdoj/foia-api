@@ -9,17 +9,19 @@ Feature: Annual FOIA Report Data Feature
       | name                    | field_agency_abbreviation | description |format    | language |
       | Federal Testing Agency  | FTA                       | description |plain_text| en       |
     Given agency_component content:
-      | title                   | field_agency              |
-      | Test Agency Component 1 | Federal Testing Agency    |
+      | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
+      | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | ABCDEF                         |
 
-  @api
+  @api @javascript
   Scenario: Create an Annual FOIA Report Data node.
     Given I am logged in as a user with the 'Administrator' role
     And I am at 'node/add/annual_foia_report_data'
-    And for 'Agency' I enter 'Federal Testing Agency'
+    And I select "Federal Testing Agency" from "Agency"
+    And I wait 5 seconds
     And for 'FOIA Annual Report Year' I enter '2019'
     And for 'Date Prepared' I enter '08/22/2019'
-    When I press the 'Save' button
+    And I check the box "ABCDEF"
+    When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                  |
       | FTA - 2019 - Annual FOIA Report has been created. |
@@ -30,47 +32,78 @@ Feature: Annual FOIA Report Data Feature
     And I am on "/node/add"
     Then I should see the link "Annual FOIA Report Data"
 
-  @api
-  Scenario: Agency Administrator can save Annual FOIA Reports in all workflow
-  states
-    Given "agency" terms:
-      | name  |field_agency_abbreviation| description |format    | language |
-      | test  |DOJ                      | description |plain_text| en       |
+  @api @javascript
+  Scenario: Agency Administrator can save Annual FOIA Reports in all workflow states
     When I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add/annual_foia_report_data"
     And for 'FOIA Annual Report Year' I enter '2023'
-    And for 'Agency' I enter 'test'
-    And I select "Draft" from "Save as"
-    When I press the 'Save' button
-    And save the current URL
+    And I select "Federal Testing Agency" from "Agency"
+    And I wait 5 seconds
+    And I check the box "ABCDEF"
+    When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                        |
-      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been created. |
-    When I go to saved URL
-    And I click 'Edit'
+      | FTA - 2023 - Annual FOIA Report has been created. |
     And I select "Submitted to OIP" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                            |
-      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
-    When I go to saved URL
+      | FTA - 2023 - Annual FOIA Report has been updated. |
+    And save the current URL
     And I click 'Edit'
     And I select "Cleared" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                            |
-      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
+      | FTA - 2023 - Annual FOIA Report has been updated. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Published" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                            |
-      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
+      | FTA - 2023 - Annual FOIA Report has been updated. |
     When I go to saved URL
     And I click 'Edit'
     And I select "Back with Agency" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                            |
-      | Annual FOIA Report Data DOJ - 2023 - Annual FOIA Report has been updated. |
+      | FTA - 2023 - Annual FOIA Report has been updated. |
+
+  @api @javascript
+  Scenario: There is a button for adding placeholders for component data
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/annual_foia_report_data"
+    And I select "Federal Testing Agency" from "Agency"
+    And I wait 5 seconds
+    And I check the box "ABCDEF"
+    And for 'FOIA Annual Report Year' I enter '2019'
+    And I press the 'Save and continue' button
+    And I click 'IV. Exemption 3 Statutes'
+    Then I should see "Add placeholders for component data below"
+
+  @api @javascript
+  Scenario: The validate button can be used to validate the report
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/annual_foia_report_data"
+    And I press "Validate"
+    And I wait 3 seconds
+    Then I should see "This field is required."
+
+  @api @javascript
+  Scenario: Agency Administrator see the option to bulk-publish annual reports
+    Given annual_foia_report_data content:
+      | field_agency | field_foia_annual_report_yr | moderation_state |
+      | Federal Testing Agency | 2023 | cleared |
+    And I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/admin/content/reports"
+    And I select "Publish foia annual reports" from "Action"
+
+  @api
+  Scenario: The Components should be required for annual reports
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/annual_foia_report_data"
+    When I press the 'Save and continue' button
+    Then I should see "Components field is required"
+
