@@ -7,17 +7,10 @@
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\AlertCommand;
-use Drupal\Core\Ajax\OpenDialogCommand;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
-use Drupal\Core\Url;
-use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Render\Element;
 
 /**
@@ -37,7 +30,8 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
     $node = $form_state->getFormObject()->getEntity();
 
     if ($node->isNew()) {
-      // For new annual reports, we require that the agency be set before continuing.
+      // For new annual reports, we require that the
+      // agency be set before continuing.
       $starting_fields = [
         'field_agency',
         'field_agency_components',
@@ -52,8 +46,7 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
           if (!in_array($key, $starting_fields)) {
             $form[$key]['#access'] = FALSE;
           }
-        }
-        else {
+        } else {
           if (in_array($key, $hide_elements)) {
             $form[$key]['#access'] = FALSE;
           }
@@ -63,8 +56,7 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       $form['actions']['submit']['#value'] = 'Save and continue';
       $form['actions']['preview']['#access'] = FALSE;
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_display_new_reports';
-    }
-    else {
+    } else {
       // Add the javascript functionality (only needed for existing nodes).
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
     }
@@ -143,7 +135,7 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Drupal form state.
  */
-function foia_annual_data_report_save_and_continue($form, FormStateInterface $form_state) {
+function foia_annual_data_report_save_and_continue(array $form, FormStateInterface $form_state) {
   $current_route_name = \Drupal::routeMatch()->getRouteName();
   $destination_route_name = 'entity.node.edit_form';
   if (str_ends_with($current_route_name, 'annual_report_agency_info')) {
@@ -164,7 +156,8 @@ function foia_annual_data_report_save_and_continue($form, FormStateInterface $fo
  */
 function _foia_annual_data_report_section_redirect(
   array &$form,
-  FormStateInterface $form_state): void {
+  FormStateInterface $form_state
+): void {
 
   // This section's part of the route was saved in the form.  If deleting,
   // don't redirect.
@@ -243,8 +236,7 @@ function foia_annual_data_report_form_annual_data_report_section_validate(array 
         // Check if field is a selected paragraph field.
         if (in_array($key, $paragraph_parent_fields)) {
           _foia_annual_data_report_validate_paragraph_fields($form, $form_state, $key, $form_value, $paragraph_fields_for_validation);
-        }
-        else {
+        } else {
 
           // Determine first if this is a subform of the field to be validated.
           if (!empty($form_value['widget'][0]['subform'])) {
@@ -262,25 +254,26 @@ function foia_annual_data_report_form_annual_data_report_section_validate(array 
                       $this_key = $key . '][' . $pos . '][subform][' . $this_fieldname;
                       $this_value = $value['subform'][$this_fieldname][0]['value'] ?: NULL;
                       $element_title = 'Oldest Days agency component #' . ($pos + 1) . ' day #' . $i;
-                      $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
-                        [':element_title:' => $element_title]);
+                      $error_msg = t(
+                        "Invalid input for :element_title:, please use number greater or equal to zero.",
+                        [':element_title:' => $element_title]
+                      );
                       _foia_annual_data_report_text_as_integer_validation($form_state, $this_key, $this_value, $error_msg);
                     }
                   }
                 }
                 break;
             }
-          }
-
-          else {
+          } else {
             $value = isset($form_value[0]['value']) ?: 0;
             $element = $form[$key];
             $element_title = isset($element['widget'][0]['#title']) ?: NULL;
-            $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
-              [':element_title:' => $element_title]);
+            $error_msg = t(
+              "Invalid input for :element_title:, please use number greater or equal to zero.",
+              [':element_title:' => $element_title]
+            );
             _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
           }
-
         }
       }
     }
@@ -314,8 +307,10 @@ function _foia_annual_data_report_validate_paragraph_fields(array &$form, FormSt
           if (in_array($key, $fields_to_validate) && !empty($value)) {
             $element = $form[$parent_key];
             $element_title = $element['widget']['#title'];
-            $error_msg = t("Invalid input for :element_title: item(s), please use number greater or equal to zero.",
-              [':element_title:' => $element_title]);
+            $error_msg = t(
+              "Invalid input for :element_title: item(s), please use number greater or equal to zero.",
+              [':element_title:' => $element_title]
+            );
             $key_path = "{$parent_key}][{$paragraph_key}][subform][{$key}";
             _foia_annual_data_report_text_as_integer_validation($form_state, $key_path, $value, $error_msg);
           }
@@ -376,8 +371,7 @@ function foia_annual_data_report_form_annual_data_report_validate(array &$form, 
   // Check for an existing report.
   if ($form_state->getFormObject() instanceof EntityForm) {
     $current_nid = $form_state->getformObject()->getEntity()->id();
-  }
-  else {
+  } else {
     $current_nid = 0;
   }
 
@@ -403,7 +397,6 @@ function foia_annual_data_report_form_annual_data_report_validate(array &$form, 
       $form_state->setErrorByName('field_foia_annual_report_yr', $error_message);
     }
   }
-
 }
 
 /**
@@ -416,7 +409,6 @@ function foia_annual_data_report_early_submit($form, FormStateInterface $form_st
   foia_annual_data_report_set_memory_limit();
   foia_annual_data_report_set_max_execution_time();
   foia_annual_data_report_debug_log('Submitting Annual Report. After setting memory');
-
 }
 
 /**
@@ -485,13 +477,9 @@ function foia_annual_data_report_unrequire_hidden_fields(array &$form) {
         if (!empty($form_item['widget']['#required'])) {
           $form[$key]['widget']['#required'] = FALSE;
         }
-
       }
-
     }
-
   }
-
 }
 
 /**
@@ -500,8 +488,7 @@ function foia_annual_data_report_unrequire_hidden_fields(array &$form) {
 function foia_annual_data_report_set_memory_limit() {
   try {
     $config_value = foia_annual_data_report_get_config('annual_report_memory_limit');
-  }
-  catch (\InvalidArgumentException $e) {
+  } catch (\InvalidArgumentException $e) {
     \Drupal::logger('foia_annual_data_report')->error('Invalid setting requested.');
   }
 
@@ -516,8 +503,7 @@ function foia_annual_data_report_set_memory_limit() {
 function foia_annual_data_report_set_max_execution_time() {
   try {
     $config_value = foia_annual_data_report_get_config('annual_report_max_execution_time');
-  }
-  catch (\InvalidArgumentException $e) {
+  } catch (\InvalidArgumentException $e) {
     \Drupal::logger('foia_annual_data_report')->error('Invalid setting requested.');
   }
 
@@ -622,9 +608,7 @@ function foia_annual_data_report_node_presave($entity) {
         $ac_node->save();
       }
     }
-
   }
-
 }
 
 /**
@@ -651,7 +635,6 @@ function foia_annual_data_report_menu_local_actions_alter(&$local_actions) {
       }
     }
   }
-
 }
 
 /**
@@ -681,7 +664,5 @@ function foia_annual_data_report_entity_operation_alter(array &$operations, Enti
         }
       }
     }
-
   }
-
 }
