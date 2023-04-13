@@ -53,9 +53,9 @@ Feature: Quarterly FOIA Report Data Feature
     And for 'Number of requests backlogged' I enter '3'
     And I click 'Agency Overall'
     And I wait 3 seconds
-    Then the "edit-field-quarterly-received-oa-0-value" element should have the value "123"
-    Then the "edit-field-quarterly-processed-oa-0-value" element should have the value "23"
-    Then the "edit-field-quarterly-backlogged-oa-0-value" element should have the value "3"
+    Then the "Agency Overall - Number of requests received" element should have the value "123"
+    Then the "Agency Overall - Number of requests processed" element should have the value "23"
+    Then the "Agency Overall - Number of requests backlogged" element should have the value "3"
     And I click 'Component data'
     And I wait 3 seconds
     And I press the 'Remove' button
@@ -63,6 +63,6 @@ Feature: Quarterly FOIA Report Data Feature
     And I wait 5 seconds
     And I click 'Agency Overall'
     And I wait 3 seconds
-    Then the "edit-field-quarterly-received-oa-0-value" element should have the value "0"
-    Then the "edit-field-quarterly-processed-oa-0-value" element should have the value "0"
-    Then the "edit-field-quarterly-backlogged-oa-0-value" element should have the value "0"
+    Then the "Agency Overall - Number of requests received" element should have the value "0"
+    Then the "Agency Overall - Number of requests processed" element should have the value "0"
+    Then the "Agency Overall - Number of requests backlogged" element should have the value "0"
