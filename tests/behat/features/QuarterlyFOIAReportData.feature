@@ -40,8 +40,10 @@ Feature: Quarterly FOIA Report Data Feature
     And I am on "/node/add/quarterly_foia_report_data"
     And I select "Federal Testing Agency" from "Agency"
     And I wait 5 seconds
-    And I check the box "FTA"
-    When I press the 'Save and continue' button
+    And I check the box "ABCDEF"
+    And for 'Fiscal Year' I enter '2024'
+    And I select "Q1" from "Quarter"
+    And I press the 'Save and continue' button
     And I click 'Component data'
     And I wait 5 seconds
     And I select "ABCDEF" from "Agency/Component"
@@ -64,4 +66,3 @@ Feature: Quarterly FOIA Report Data Feature
     Then the "edit-field-quarterly-received-oa-0-value" element should have the value "0"
     Then the "edit-field-quarterly-processed-oa-0-value" element should have the value "0"
     Then the "edit-field-quarterly-backlogged-oa-0-value" element should have the value "0"
-
