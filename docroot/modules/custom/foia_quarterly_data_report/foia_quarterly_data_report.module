@@ -19,6 +19,8 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_edit_fo
   foia_quarterly_data_report_set_default_report_values($form, $form_state);
   // Add general validation including checkig for existing report.
   $form['#validate'][] = 'foia_quarterly_data_report_form_quarterly_data_report_validate';
+  // Add the javascript functionality (only needed for existing nodes).
+  $form['#attached']['library'][] = 'foia_quarterly_data_report/foia_change_report_agency';
 }
 
 /**
@@ -30,8 +32,8 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_al
 
   $node = $form_state->getFormObject()->getEntity();
   if ($node->isNew()) {
-    // For new annual reports, we require that the agency
-    // be set before continuing.
+    // For new annual reports, we require that the
+    // agency be set before continuing.
     $starting_fields = [
       'field_agency',
       'field_agency_components',
@@ -46,7 +48,8 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_al
         if (!in_array($key, $starting_fields)) {
           $form[$key]['#access'] = FALSE;
         }
-      } else {
+      }
+      else {
         if (in_array($key, $hide_elements)) {
           $form[$key]['#access'] = FALSE;
         }
@@ -111,9 +114,11 @@ function foia_quarterly_data_report_set_default_report_values(array &$form, Form
   $current_quarter = 1;
   if ($current_month <= 3) {
     $current_quarter = 2;
-  } elseif ($current_month <= 6) {
+  }
+  elseif ($current_month <= 6) {
     $current_quarter = 3;
-  } elseif ($current_month <= 9) {
+  }
+  elseif ($current_month <= 9) {
     $current_quarter = 4;
   }
 
@@ -164,7 +169,8 @@ function foia_quarterly_data_report_form_quarterly_data_report_validate(array &$
   // Check for an existing report.
   if ($form_state->getFormObject() instanceof EntityForm) {
     $current_nid = $form_state->getformObject()->getEntity()->id();
-  } else {
+  }
+  else {
     $current_nid = 0;
   }
   if ($current_nid == NULL) {
