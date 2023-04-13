@@ -32,7 +32,7 @@
    * @param {array} fieldSettings
    *   Settings for all paragraph component or fields that contain an autocalculated field with the given fieldName.
    */
-  function calculateAllFieldsWithName(fieldName, fieldSettings, initialLoad) {
+  function calculateAllFieldsWithName(fieldName, fieldSettings, ajaxReload) {
     var totalValues = {};
     var idSelector = '';
     var isTotalNA = true;
@@ -74,7 +74,7 @@
         }
       });
     });
-    if (isTotalNA && initialLoad) {
+    if (isTotalNA && ajaxReload) {
       $(convertToFieldSelector({ field: fieldName }) + ' input').val(0).trigger('change');
     }
 
