@@ -21,7 +21,7 @@ jobs:
           ddev drush cim
           ddev drush cr
       - name: Validate code
-        run: blt validate
+        run: ddev exec blt validate
       - name: Run tests
         run: ddev exec vendor/bin/behat --config=tests/behat/behat.yml --stop-on-failure --strict
       - name: Upload screenshots of failure
