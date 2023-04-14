@@ -6,13 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\AlertCommand;
-use Drupal\node\NodeInterface;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\Core\Url;
-use Drupal\Core\Ajax\RedirectCommand;
-use Drupal\Core\Ajax\OpenDialogCommand;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Entity\EntityForm;
@@ -39,7 +32,8 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_al
 
   $node = $form_state->getFormObject()->getEntity();
   if ($node->isNew()) {
-    // For new annual reports, we require that the agency be set before continuing.
+    // For new annual reports, we require that the
+    // agency be set before continuing.
     $starting_fields = [
       'field_agency',
       'field_agency_components',
@@ -80,7 +74,7 @@ function foia_quarterly_data_report_form_node_quarterly_foia_report_data_form_al
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Drupal form state.
  */
-function foia_quarterly_data_report_save_and_continue($form, FormStateInterface $form_state) {
+function foia_quarterly_data_report_save_and_continue(array $form, FormStateInterface $form_state) {
   $current_route_name = \Drupal::routeMatch()->getRouteName();
   $destination_route_name = 'entity.node.edit_form';
   $nid = $form_state->getFormObject()->getEntity()->id();
@@ -220,6 +214,9 @@ function foia_quarterly_data_report_form_quarterly_data_report_validate(array &$
     foreach ($form_state_values['field_quarterly_component_data'] as $key => $value) {
       if (is_numeric($key)) {
         $no_component_data = FALSE;
+        if (!isset($form_state_values['field_quarterly_component_data'][$key]['subform'])) {
+          continue;
+        }
         $subform = $form_state_values['field_quarterly_component_data'][$key]['subform'];
         $prefix = "field_quarterly_component_data][$key][subform][";
         if (empty($subform['field_agency_component'][0]['target_id'])) {

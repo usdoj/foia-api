@@ -229,4 +229,17 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * Check if the given element is expected or not.
+   *
+   * @Then the :element element should have the value :value
+   */
+  public function iShouldSeeValueElement($element, $value) {
+    $page = $this->getSession()->getPage();
+    $element_value = $page->find('named', ['field', $element])->getValue();
+    if (strpos($element_value, $value) === false) {
+      throw new \Exception('Value ' . $value . ' not found in element ' . $element . ', which had a value of ' . $element_value . '.');
+    }
+  }
+
 }
