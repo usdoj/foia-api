@@ -31,6 +31,7 @@ Feature: Quarterly FOIA Report Data Feature
     And for 'Fiscal Year' I enter '2024'
     And I select "Q1" from "Quarter"
     And I press the 'Save and continue' button
+    And I wait 5 seconds
     And I click 'Component data'
     Then I should see "Add placeholders for component data below"
 
