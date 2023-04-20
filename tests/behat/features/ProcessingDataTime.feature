@@ -93,15 +93,4 @@ Feature: Processing Data Time
 # Open Agency Component node by URL alias in edit mode.
     Given I am on "/test-component"
     And I wait 5 seconds
-    And I click 'Edit'
-    And I wait 5 seconds
-    And I check the box "Require manual entry of processing times"
-    And I press the 'Save' button
-    # And I wait 5 seconds
-    # And I click 'Edit'
-    # And I wait 5 seconds
-# Confirm "Simple Median Days" field value is unpacked.
-    # And I click 'ANNUAL FOIA REPORT START/EXPIRATION DATES'
-    # And I wait 3 seconds
-    # Then the 'Simple Median Days' element should have the value '106'
-    # And I wait 5 seconds
+    Then I should see "106"
