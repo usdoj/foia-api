@@ -89,8 +89,9 @@ Feature: Processing Data Time
     And I uncheck the box "Require manual entry of processing times"
     And I press the 'Save' button
     And I wait 5 seconds
+    And save the current URL
 
 # Open Agency Component node by URL alias in edit mode.
-    Given I am at "test-component"
+    When I go to saved URL
     Then I should see "Simple Median Days"
     Then I should see "106"
