@@ -95,5 +95,7 @@ Feature: Processing Data Time
     And I click 'Edit'
     And I wait 5 seconds
 # Confirm "Simple Median Days" field value is unpacked.
-    Then the disabled 'Simple Median Days' element should have the value '106'
+    And I click 'ANNUAL FOIA REPORT START/EXPIRATION DATES'
+    And I wait 3 seconds
+    Then the 'Simple Median Days' element should have the value '106'
     And I wait 5 seconds
