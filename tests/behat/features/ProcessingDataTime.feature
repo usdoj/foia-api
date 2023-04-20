@@ -94,6 +94,11 @@ Feature: Processing Data Time
     And I wait 5 seconds
     And I click 'Edit'
     And I wait 5 seconds
+    And I check the box "Require manual entry of processing times"
+    And I press the 'Save' button
+    And I wait 5 seconds
+    And I click 'Edit'
+    And I wait 5 seconds
 # Confirm "Simple Median Days" field value is unpacked.
     And I click 'ANNUAL FOIA REPORT START/EXPIRATION DATES'
     And I wait 3 seconds
