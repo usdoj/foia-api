@@ -95,4 +95,5 @@ Feature: Processing Data Time
     And I click 'Edit'
     And I wait 5 seconds
 # Confirm "Simple Median Days" field value is unpacked.
-    Then the "Simple Median Days" element should have the value "106"
+    Then the disabled 'Simple Median Days' element should have the value '106'
+    And I wait 5 seconds

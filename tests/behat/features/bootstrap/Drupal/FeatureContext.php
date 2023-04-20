@@ -243,6 +243,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Check if the given disabled element value is expected or not.
+   *
+   * @Then the disabled :element element should have the value :value
+   */
+  public function iShouldSeeValueOnDisabledElement($element, $value) {
+    $page = $this->getSession()->getPage();
+    $element_value = $page->find('named', ['field', $element])->getAttribute('value');
+    if ($element_value !== $value) {
+      throw new \Exception('Value: ' . $value . ' not found in element ' . $element . ', which had a value of ' . $element_value . '.');
+    }
+  }
+  /**
    * Check if the given elementlabel exists or not.
    *
    * @Then the :elementlabel element should exists
