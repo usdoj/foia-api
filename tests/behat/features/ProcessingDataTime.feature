@@ -53,38 +53,38 @@ Feature: Processing Data Time
     And I wait 5 seconds
     And I click 'Edit'
     And I wait 5 seconds
-    The field "Request Data Year" is "disabled"
-    The field "Complex Average Days" is "disabled"
-    The field "Complex Highest Days" is "disabled"
-    The field "Complex Lowest Days" is "disabled"
-    The field "Complex Median Days" is "disabled"
-    The field "Expedited Average Days" is "disabled"
-    The field "Expedited Highest Days" is "disabled"
-    The field "Expedited Lowest Days" is "disabled"
-    The field "Expedited Median Days" is "disabled"
-    The field "Simple Average Days" is "disabled"
-    The field "Simple Highest Days" is "disabled"
-    The field "Simple Lowest Days" is "disabled"
-    The field "Simple Median Days" is "disabled"
+    The field 'Request Data Year' is 'disabled'
+    The field 'Complex Average Days' is 'disabled'
+    The field 'Complex Highest Days' is 'disabled'
+    The field 'Complex Lowest Days' is 'disabled'
+    The field 'Complex Median Days' is 'disabled'
+    The field 'Expedited Average Days' is 'disabled'
+    The field 'Expedited Highest Days' is 'disabled'
+    The field 'Expedited Lowest Days' is 'disabled'
+    The field 'Expedited Median Days' is 'disabled'
+    The field 'Simple Average Days' is 'disabled'
+    The field 'Simple Highest Days' is 'disabled'
+    The field 'Simple Lowest Days' is 'disabled'
+    The field 'Simple Median Days' is 'disabled'
     And I check the box "Require manual entry of processing times"
     And I press the 'Save' button
     And I wait 5 seconds
 # Here is testing when "Require manual entry of processing times" checked.
     And I click 'Edit'
     And I wait 5 seconds
-    The field "Request Data Year" is "enabled"
-    The field "Complex Average Days" is "enabled"
-    The field "Complex Highest Days" is "enabled"
-    The field "Complex Lowest Days" is "enabled"
-    The field "Complex Median Days" is "enabled"
-    The field "Expedited Average Days" is "enabled"
-    The field "Expedited Highest Days" is "enabled"
-    The field "Expedited Lowest Days" is "enabled"
-    The field "Expedited Median Days" is "enabled"
-    The field "Simple Average Days" is "enabled"
-    The field "Simple Highest Days" is "enabled"
-    The field "Simple Lowest Days" is "enabled"
-    The field "Simple Median Days" is "enabled"
+    The field 'Request Data Year' is 'enabled'
+    The field 'Complex Average Days' is 'enabled'
+    The field 'Complex Highest Days' is 'enabled'
+    The field 'Complex Lowest Days' is 'enabled'
+    The field 'Complex Median Days' is 'enabled'
+    The field 'Expedited Average Days' is 'enabled'
+    The field 'Expedited Highest Days' is 'enabled'
+    The field 'Expedited Lowest Days' is 'enabled'
+    The field 'Expedited Median Days' is 'enabled'
+    The field 'Simple Average Days' is 'enabled'
+    The field 'Simple Highest Days' is 'enabled'
+    The field 'Simple Lowest Days' is 'enabled'
+    The field 'Simple Median Days' is 'enabled'
     And I uncheck the box "Require manual entry of processing times"
     And I press the 'Save' button
     And I wait 5 seconds
