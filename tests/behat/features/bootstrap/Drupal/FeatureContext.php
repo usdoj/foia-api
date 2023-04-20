@@ -242,4 +242,42 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * Check if the given elementlabel exists or not.
+   *
+   * @Then the :elementlabel element should exists
+   */
+  public function fieldShouldExists($elementlabel) {
+    $page = $this->getSession()->getPage();
+    $element = $page->find('named', ['field', $elementlabel]);
+    if ($element === NULL) {
+      throw new \Exception('element not found in label ' . $elementlabel);
+    }
+  }
+
+  /**
+   * Check if the given element is enabled or not.
+   *
+   * @param $elementlabel
+   *   string The label of the field
+   *
+   * @param $status
+   *   string of "enabled" or "disabled"
+   *
+   * @The field :elementlabel is :status
+   */
+  public function fieldShouldInputable($elementlabel, $status) {
+    $field = $this->getSession()->getPage()->find('named', ['field', $elementlabel]);
+    if ($status == 'enabled') {
+      if ($field->getAttribute('disabled') == 'disabled') {
+        throw new \Exception('field '. $elementlabel. ' is disabled ');
+      }
+    }
+    if ($status == 'disabled') {
+      if ($field->getAttribute('disabled') != 'disabled') {
+        throw new \Exception('field ' . $elementlabel . ' is enabled ');
+      }
+    }
+  }
+
 }
