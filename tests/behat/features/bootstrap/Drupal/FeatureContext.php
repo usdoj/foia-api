@@ -264,7 +264,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param $status
    *   string of "enabled" or "disabled"
    *
-   * @The field :elementlabel is :status
+   * @Then the element :elementlabel is :status
    */
   public function fieldShouldInputable($elementlabel, $status) {
     $field = $this->getSession()->getPage()->find('named', ['field', $elementlabel]);
