@@ -91,6 +91,6 @@ Feature: Processing Data Time
     And I wait 5 seconds
 
 # Open Agency Component node by URL alias in edit mode.
-    Given I am on "/test-component"
-    And I wait 5 seconds
+    Given I am at "test-component"
+    Then I should see "Simple Median Days"
     Then I should see "106"
