@@ -292,4 +292,23 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * @Then I expand the :section_name sidebar section on the node edit page
+   */
+  public function iExpandTheSidebarSectionOnTheNodeEditPage($section_name) {
+    $summaries = $this->getSession()->getPage()->findAll('css', '.seven-details__summary');
+    $match = FALSE;
+    foreach ($summaries as $summary) {
+      $name = $summary->getText();
+      if ($name == $section_name) {
+        $match = $summary;
+      }
+    }
+    if ($match) {
+      $match->click();
+    }
+    else {
+      throw new \Exception('Node edit section "' . $section_name . '" was not found.');
+    }
+  }
 }
