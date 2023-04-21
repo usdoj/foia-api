@@ -16,15 +16,15 @@ Feature: Processing Data Time
   Scenario: There is check box "Require manual entry of processing times" for Agency Component node.
 # Create testing Agency Component with URL alias: /test-component.
     Given I am logged in as a user with the 'Administrator' role
-    And I am at '/node/add/agency_component'
-    Then the "Require manual entry of processing times" element should exists
+    And I am on '/node/add/agency_component'
+    Then I should see "Require manual entry of processing times"
     And I wait 5 seconds
     And for 'Agency Component Name' I enter 'appraisal subcommitte'
     And for 'Agency' I enter 'appraisal subcommitte'
     And I wait 3 seconds
     And for 'Abbreviation' I enter 'ASC'
     And I check the box "Is Centralized"
-    And I click 'URL ALIAS'
+    And I click 'URL ALIAS (No alias)'
     And I wait 3 seconds
     And for 'URL alias' I enter "/test-component"
     And for 'Street address' I enter '123 testing Address'
