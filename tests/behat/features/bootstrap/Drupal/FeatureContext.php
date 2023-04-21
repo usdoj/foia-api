@@ -254,6 +254,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception('Value: ' . $value . ' not found in element ' . $element . ', which had a value of ' . $element_value . '.');
     }
   }
+
   /**
    * Check if the given elementlabel exists or not.
    *
