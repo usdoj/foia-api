@@ -261,9 +261,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function fieldShouldExists($elementlabel) {
     $page = $this->getSession()->getPage();
-    $element = $page->find('named', ['field', $elementlabel]);
-    if ($element === NULL) {
-      throw new \Exception('element not found in label ' . $elementlabel);
+    $element = $page->findField($elementlabel);
+    if (empty($element)) {
+      throw new \Exception(sprintf("Form element with label '%s' was not found on the page %s", $elementlabel, $this->getSession()->getCurrentUrl()));
     }
   }
 
