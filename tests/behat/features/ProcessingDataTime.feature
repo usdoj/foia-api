@@ -17,7 +17,7 @@ Feature: Processing Data Time
 # Create testing Agency Component with URL alias: /test-component.
     Given I am logged in as a user with the 'Administrator' role
     And I am at '/node/add/agency_component'
-    Then I should see 'Require manual entry of processing times'
+    Then the 'Require manual entry of processing times' element should exists
     And I wait 5 seconds
     And for 'Agency Component Name' I enter 'appraisal subcommitte'
     And for 'Agency' I enter 'appraisal subcommitte'
