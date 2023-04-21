@@ -24,7 +24,8 @@ Feature: Processing Data Time
     And I wait 3 seconds
     And for 'Abbreviation' I enter 'ASC'
     And I check the box "Is Centralized"
-    Then I expand the "URL ALIAS (No alias)"
+    # Then I expand the "URL ALIAS (No alias)"
+    When I click on element "#edit-path-0 summary > span"
     And for 'URL alias' I enter '/test-component'
     And for 'Street address' I enter '123 testing Address'
     And for 'City' I enter 'Rockville'
@@ -46,45 +47,46 @@ Feature: Processing Data Time
     And for 'Simple Lowest Days' I enter '43'
 # The following field will be used to chech testing result.
     And for 'Simple Median Days' I enter '106'
-    Then I expand the "ANNUAL FOIA REPORT START/EXPIRATION DATES"
+    # Then I expand the "ANNUAL FOIA REPORT START/EXPIRATION DATES"
+        When I click on element "#edit-group-annual-foia-report-dates summary > span"
     And I wait 3 seconds
     And for 'Report Start Date' I enter '04/19/2023'
     And I press the "Save" button
     And I wait 5 seconds
     And I click 'Edit'
     And I wait 5 seconds
-    The field "Request Data Year" is "disabled"
-    The field "Complex Average Days" is "disabled"
-    The field "Complex Highest Days" is "disabled"
-    The field "Complex Lowest Days" is "disabled"
-    The field "Complex Median Days" is "disabled"
-    The field "Expedited Average Days" is "disabled"
-    The field "Expedited Highest Days" is "disabled"
-    The field "Expedited Lowest Days" is "disabled"
-    The field "Expedited Median Days" is "disabled"
-    The field "Simple Average Days" is "disabled"
-    The field "Simple Highest Days" is "disabled"
-    The field "Simple Lowest Days" is "disabled"
-    The field "Simple Median Days" is "disabled"
+    Then the element "Request Data Year" is "disabled"
+    Then the element "Complex Average Days" is "disabled"
+    Then the element "Complex Highest Days" is "disabled"
+    Then the element "Complex Lowest Days" is "disabled"
+    Then the element "Complex Median Days" is "disabled"
+    Then the element "Expedited Average Days" is "disabled"
+    Then the element "Expedited Highest Days" is "disabled"
+    Then the element "Expedited Lowest Days" is "disabled"
+    Then the element "Expedited Median Days" is "disabled"
+    Then the element "Simple Average Days" is "disabled"
+    Then the element "Simple Highest Days" is "disabled"
+    Then the element "Simple Lowest Days" is "disabled"
+    Then the element "Simple Median Days" is "disabled"
     And I check the box "Require manual entry of processing times"
     And I press the 'Save' button
     And I wait 5 seconds
 # Here is testing when "Require manual entry of processing times" checked.
     And I click 'Edit'
     And I wait 5 seconds
-    The field "Request Data Year" is "enabled"
-    The field "Complex Average Days" is "enabled"
-    The field "Complex Highest Days" is "enabled"
-    The field "Complex Lowest Days" is "enabled"
-    The field "Complex Median Days" is "enabled"
-    The field "Expedited Average Days" is "enabled"
-    The field "Expedited Highest Days" is "enabled"
-    The field "Expedited Lowest Days" is "enabled"
-    The field "Expedited Median Days" is "enabled"
-    The field "Simple Average Days" is "enabled"
-    The field "Simple Highest Days" is "enabled"
-    The field "Simple Lowest Days" is "enabled"
-    The field "Simple Median Days" is "enabled"
+    Then the element "Request Data Year" is "enabled"
+    Then the element "Complex Average Days" is "enabled"
+    Then the element "Complex Highest Days" is "enabled"
+    Then the element "Complex Lowest Days" is "enabled"
+    Then the element "Complex Median Days" is "enabled"
+    Then the element "Expedited Average Days" is "enabled"
+    Then the element "Expedited Highest Days" is "enabled"
+    Then the element "Expedited Lowest Days" is "enabled"
+    Then the element "Expedited Median Days" is "enabled"
+    Then the element "Simple Average Days" is "enabled"
+    Then the element "Simple Highest Days" is "enabled"
+    Then the element "Simple Lowest Days" is "enabled"
+    Then the element "Simple Median Days" is "enabled"
     And I uncheck the box "Require manual entry of processing times"
     And I press the 'Save' button
     And I wait 5 seconds
