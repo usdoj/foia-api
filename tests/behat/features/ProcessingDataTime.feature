@@ -7,16 +7,16 @@ Feature: Processing Data Time
   Background:
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
-      | appraisal subcommitte  | ASC                       | description |plain_text| en       |
+      | appraisal subcommitte   | ASC                       | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
-      | Test Agency Component 1 | appraisal subcommitte   | 2023-01-01      | ASC                         |
+      | Test Agency Component 1 | appraisal subcommitte     | 2023-01-01      | ASC                            |
 
   @api @javascript
   Scenario: There is check box "Require manual entry of processing times" for Agency Component node.
 # Create testing Agency Component with URL alias: /test-component.
     Given I am logged in as a user with the 'Administrator' role
-    And I am on '/node/add/agency_component'
+    And I am at '/node/add/agency_component'
     Then I should see "Require manual entry of processing times"
     And I wait 5 seconds
     And for 'Agency Component Name' I enter 'appraisal subcommitte'
