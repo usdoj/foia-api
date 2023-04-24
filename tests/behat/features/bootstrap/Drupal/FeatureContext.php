@@ -363,4 +363,21 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->iSetValueTo($dateToSet, $field);
     // $this->getSession()->getPage()->fillField($field, $dateToSet);
   }
+
+  /**
+   * Show field value by field id in the node edit page.
+   *
+   * @Then show field value :field_id
+   */
+  public function showFieldValue($field_id) {
+    $page = $this->getSession()->getPage();
+    $field = $page->find('css', $field_id);
+    $this->getSession()->wait(1000);
+    if (empty($field)) {
+      throw new \Exception('Node edit field "' . $field_id . '" was not found.');
+    } else {
+      $value = $field->getAttribute('value');
+      echo "field value: ". $value;
+    }
+  }
 }

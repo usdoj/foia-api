@@ -91,9 +91,17 @@ Feature: Processing Data Time
     And I uncheck the box "Require manual entry of processing times"
     And I press the 'Save' button
     And I wait 5 seconds
+    # The following block only for verifying field value.
     Given I am on "/test-component"
     And I wait 5 seconds
     And I click 'Edit'
     And I wait 5 seconds
 # Confirm "Simple Median Days" field value is unpacked.
     And the "Simple Median Days" field should contain "106"
+    Then I expand the "Annual FOIA Report Start"
+    And I wait 3 seconds
+    Then show field value "#edit-field-rep-start-0-value-date"
+    And I wait 3 seconds
+    Then I expand the "URL ALIAS"
+    Then show field value "#edit-path-0-alias"
+    And I wait 3 seconds
