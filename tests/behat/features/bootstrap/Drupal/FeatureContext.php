@@ -338,6 +338,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function iSetValueTo($value, $field_id) {
     $page = $this->getSession()->getPage();
     $field = $page->find('css', $field_id);
+    $this->getSession()->wait(1000);
     if (empty($field)) {
       throw new \Exception('Node edit field "' . $field_id . '" was not found.');
     } else {
@@ -359,6 +360,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $newDate = strtotime("$value");
 
     $dateToSet = date("d/m/Y", $newDate);
-    $this->getSession()->getPage()->fillField($field, $dateToSet);
+    $this->iSetValueTo($dateToSet, $field);
+    // $this->getSession()->getPage()->fillField($field, $dateToSet);
   }
 }
