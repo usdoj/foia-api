@@ -344,4 +344,21 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       $field->setValue($value);
     }
   }
+
+  /**
+   * Fills in specified field with date
+   * Example: When I fill in "field_ID" with date "now"
+   * Example: When I fill in "field_ID" with date "-7 days"
+   * Example: When I fill in "field_ID" with date "+7 days"
+   * Example: When I fill in "field_ID" with date "-/+0 weeks"
+   * Example: When I fill in "field_ID" with date "-/+0 years"
+   *
+   * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with date "(?P<value>(?:[^"]|\\")*)"$/
+   */
+  public function fillDateField($field, $value) {
+    $newDate = strtotime("$value");
+
+    $dateToSet = date("d/m/Y", $newDate);
+    $this->getSession()->getPage()->fillField($field, $dateToSet);
+  }
 }

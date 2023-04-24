@@ -19,6 +19,7 @@ Feature: Processing Data Time
     And I am at "/node/add/agency_component"
     Then the "Require manual entry of processing times" element should exists
     And I wait 5 seconds
+    Given I expand all fieldsets
     And for 'Agency Component Name' I enter 'appraisal subcommitte'
     And for 'Agency' I enter 'appraisal subcommitte'
     And I wait 3 seconds
@@ -50,7 +51,8 @@ Feature: Processing Data Time
     And for 'Simple Median Days' I enter '106'
     Then I expand the "Annual FOIA Report Start"
     And I wait 3 seconds
-    Then I set "2023-04-19" to "#edit-field-rep-start-0-value-date"
+    When I fill in "#edit-field-rep-start-0-value-date" with date "now"
+    # Then I set "2023-04-19" to "#edit-field-rep-start-0-value-date"
     And I wait 3 seconds
     And I press the "Save" button
     And I wait 5 seconds
