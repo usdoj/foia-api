@@ -329,4 +329,19 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       $field->setValue($value);
     }
   }
+
+  /**
+   * Set field value by field id in the node edit page.
+   *
+   * @Then I set :value to :field_id
+   */
+  public function iSetValueTo($value, $field_id) {
+    $page = $this->getSession()->getPage();
+    $field = $page->find('css', $field_id);
+    if (empty($field)) {
+      throw new \Exception('Node edit field "' . $field_id . '" was not found.');
+    } else {
+      $field->setValue($value);
+    }
+  }
 }
