@@ -91,3 +91,9 @@ Feature: Processing Data Time
     And I uncheck the box "Require manual entry of processing times"
     And I press the 'Save' button
     And I wait 5 seconds
+    Given I am on "/test-component"
+    And I wait 5 seconds
+    And I click 'Edit'
+    And I wait 5 seconds
+# Confirm "Simple Median Days" field value is unpacked.
+    And the "Simple Median Days" field should contain "106"
