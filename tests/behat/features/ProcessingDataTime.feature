@@ -26,6 +26,7 @@ Feature: Processing Data Time
     And I check the box "Is Centralized"
     # Then I expand the "URL ALIAS (No alias)"
     Then I input the "/test-component" to "URL alias" in the node edit page
+    And I wait 3 seconds
     And for 'Street address' I enter '123 testing Address'
     And for 'City' I enter 'Rockville'
     And for 'Zip code' I enter '0857'
@@ -47,9 +48,9 @@ Feature: Processing Data Time
 # The following field will be used to chech testing result.
     And for 'Simple Median Days' I enter '106'
     # Then I expand the "ANNUAL FOIA REPORT START/EXPIRATION DATES"
-    Then I input the "2023-04-19" to "ANNUAL FOIA REPORT START/EXPIRATION DATES" in the node edit page
+    Then I input the "2023-04-19" to "Report Start Date" in the node edit page
     And I wait 3 seconds
-    And for 'Report Start Date' I enter '04/19/2023'
+    # And for 'Report Start Date' I enter '04/19/2023'
     And I press the "Save" button
     And I wait 5 seconds
     And I click 'Edit'
