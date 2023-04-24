@@ -22,7 +22,7 @@ Feature: Processing Data Time
     And for 'Agency Component Name' I enter 'appraisal subcommitte'
     And for 'Agency' I enter 'appraisal subcommitte'
     And I wait 3 seconds
-    And for 'Abbreviation' I enter 'ASC1'
+    And for 'Abbreviation' I enter 'ASC'
     And I check the box "Is Centralized"
     Then I expand the "URL ALIAS"
     And I wait 3 seconds
