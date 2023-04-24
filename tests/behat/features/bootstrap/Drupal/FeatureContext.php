@@ -316,7 +316,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * @Then I input :value to :field_name in the node edit page
    */
-  public function iInputValueToField($field_name, $value) {
+  public function iInputTheToInTheNodeEditPage($value, $field_name) {
     $page = $this->getSession()->getPage();
     $field = $page->findField($field_name);
     if (empty($field)) {
