@@ -25,7 +25,7 @@ Feature: Processing Data Time
     And for 'Abbreviation' I enter 'ASC'
     And I check the box "Is Centralized"
     # Then I expand the "URL ALIAS (No alias)"
-    And I click on "URL alias"
+    # And I click on "URL alias"
     And for 'URL alias' I enter '/test-component'
     And for 'Street address' I enter '123 testing Address'
     And for 'City' I enter 'Rockville'
@@ -48,7 +48,7 @@ Feature: Processing Data Time
 # The following field will be used to chech testing result.
     And for 'Simple Median Days' I enter '106'
     # Then I expand the "ANNUAL FOIA REPORT START/EXPIRATION DATES"
-    And I click on "ANNUAL FOIA REPORT START/EXPIRATION DATES"
+    # And I click on "ANNUAL FOIA REPORT START/EXPIRATION DATES"
     And I wait 3 seconds
     And for 'Report Start Date' I enter '04/19/2023'
     And I press the "Save" button
