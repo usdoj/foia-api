@@ -48,7 +48,7 @@ Feature: Processing Data Time
     And for 'Simple Lowest Days' I enter '43'
 # The following field will be used to chech testing result.
     And for 'Simple Median Days' I enter '106'
-    Then I expand the "ANNUAL FOIA REPORT START/EXPIRATION DATES"
+    Then I expand the "ANNUAL FOIA REPORT START"
     And I wait 3 seconds
     And for 'Report Start Date' I enter '04/19/2023'
     And I wait 3 seconds
