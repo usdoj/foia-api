@@ -30,7 +30,7 @@ Feature: Processing Data Time
     And I wait 3 seconds
     And for 'Street address' I enter '123 testing Address'
     And for 'City' I enter 'Rockville'
-    And for 'Zip code' I enter '0857'
+    And for 'Zip code' I enter '20857'
     And I select "Maryland" from "State"
     And I select "Email" from "Portal Submission Format"
     And for 'Submission Email' I enter 'test@test.com'
@@ -48,11 +48,11 @@ Feature: Processing Data Time
     And for 'Simple Lowest Days' I enter '43'
 # The following field will be used to chech testing result.
     And for 'Simple Median Days' I enter '106'
-    Then I expand the "Annual FOIA Report Start/Expiration Dates"
+    Then I expand the "Annual FOIA Report Start"
     And I wait 3 seconds
-    Then I set "2023-04-19" to "#edit-field-rep-start-0-value-date"
-    And I wait 3 seconds
-    # And for 'Report Start Date' I enter '04/19/2023'
+    # Then I set "2023-04-19" to "#edit-field-rep-start-0-value-date"
+    # And I wait 3 seconds
+    And for 'Date' I enter '04/19/2023'
     And I press the "Save" button
     And I wait 5 seconds
     And I click 'Edit'
