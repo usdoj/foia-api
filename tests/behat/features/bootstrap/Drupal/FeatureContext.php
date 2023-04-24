@@ -294,15 +294,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * @Then I expand the :section_name sidebar section on the node edit page
+   * Expand the clicable section on the node edit page.
+   *
+   * @Then I expand the :section_name
    */
   public function iExpandThe($section_name) {
     $summaries = $this->getSession()->getPage()->findAll('css', '.seven-details__summary');
     $match = FALSE;
     foreach ($summaries as $summary) {
       $name = $summary->getText();
-      if ($name == $section_name) {
+      if (stripos($name, $section_name) !== false) {
         $match = $summary;
+        break;
       }
     }
     if ($match) {
