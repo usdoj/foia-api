@@ -307,6 +307,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
     if ($match) {
       $match->click();
+      $this->getSession()->wait(1000);
     }
     else {
       throw new \Exception('Node edit section "' . $section_name . '" was not found.');
