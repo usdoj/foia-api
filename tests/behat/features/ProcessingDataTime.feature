@@ -52,7 +52,6 @@ Feature: Processing Data Time
     Then I expand the "Annual FOIA Report Start"
     And I wait 3 seconds
     When I fill in "#edit-field-rep-start-0-value-date" with date "now"
-    # Then I set "2023-04-19" to "#edit-field-rep-start-0-value-date"
     And I wait 3 seconds
     And I press the "Save" button
     And I wait 5 seconds

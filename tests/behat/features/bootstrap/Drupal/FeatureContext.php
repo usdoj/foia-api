@@ -346,7 +346,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Fills in specified field with date
+   * Fills in specified field with date field
    * Example: When I fill in "field_ID" with date "now"
    * Example: When I fill in "field_ID" with date "-7 days"
    * Example: When I fill in "field_ID" with date "+7 days"
