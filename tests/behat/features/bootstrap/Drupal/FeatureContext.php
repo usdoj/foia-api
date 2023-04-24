@@ -312,4 +312,17 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception('Node edit section "' . $section_name . '" was not found.');
     }
   }
+
+  /**
+   * @Then I input :value to :field_name in the node edit page
+   */
+  public function iInputValueToField($field_name, $value) {
+    $page = $this->getSession()->getPage();
+    $field = $page->findField($field_name);
+    if (empty($field)) {
+      throw new \Exception('Node edit field "' . $field_name . '" was not found.');
+    } else {
+      $field->setValue($value);
+    }
+  }
 }
