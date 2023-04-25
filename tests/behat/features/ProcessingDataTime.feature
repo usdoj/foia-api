@@ -28,7 +28,7 @@ Feature: Processing Data Time
 # Section:'IV. Exemption 3 Statutes'.
     And I click 'IV. Exemption 3 Statutes'
     And I wait 3 seconds
-    And I click 'Status'
+    And I click 'Statute'
     And I wait 3 seconds
     And for 'Statute' I enter 'N/A'
     And for 'Type of Information Withheld' I enter 'N/A'
