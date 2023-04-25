@@ -13,7 +13,7 @@ Feature: Processing Data Time
       | Test Agency Component 1 | appraisal subcommitte     | 2023-01-01      | ASC                            |
 
   @api @javascript
-  Scenario: There is check box "Require manual entry of processing times" for Agency Component node.
+  Scenario: Create test for Agency Component node with Annual Report node.
 # Create testing Annual Report node.
     Given I am logged in as a user with the "Administrator" role
     And I am at "node/add/annual_foia_report_data"
@@ -36,12 +36,14 @@ Feature: Processing Data Time
     And I click 'Agency/Component'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Times Relied Upon by Agency/Component' I enter '0'
 
 # Section:'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'.
     And I click 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Requests Pending as of Start of Fiscal Year' I enter '1'
     And for 'Number of Requests Received in Fiscal Year' I enter '21'
     And for 'Number of Requests Processed in Fiscal Year' I enter '16'
@@ -52,6 +54,7 @@ Feature: Processing Data Time
     And I click 'Agency/Component'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Full Grants' I enter '3'
     And for 'Number of Partial Grants/Partial Denials' I enter '1'
     And for 'Number of Full Denials Based on Exemptions' I enter '0'
@@ -73,6 +76,7 @@ Feature: Processing Data Time
     And I click 'Agency/Component'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click '"Other" Reasons for Denials'
     And I wait 3 seconds
     And for 'Description of "Other" Reasons for Denials from Chart B(1)' I enter 'N/A'
@@ -82,6 +86,7 @@ Feature: Processing Data Time
     And I click 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Ex. 1' I enter '0'
     And for 'Ex. 2' I enter '0'
     And for 'Ex. 3' I enter '0'
@@ -101,6 +106,7 @@ Feature: Processing Data Time
     And I click 'VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS - RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Appeals Pending as of Start of Fiscal Year' I enter '0'
     And for 'Number of Appeals Received in Fiscal Year' I enter '0'
     And for 'Number of Appeals Processed in Fiscal Year' I enter '0'
@@ -109,6 +115,7 @@ Feature: Processing Data Time
     And I click 'VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number Affirmed on Appeal' I enter '0'
     And for 'Number Partially Affirmed & Partially Reversed/Remanded on Appeal' I enter '0'
     And for 'Number Completely Reversed/Remanded on Appeal' I enter '0'
@@ -118,6 +125,7 @@ Feature: Processing Data Time
     And I click 'VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Ex. 1' I enter '0'
     And for 'Ex. 2' I enter '0'
     And for 'Ex. 3' I enter '0'
@@ -137,6 +145,7 @@ Feature: Processing Data Time
     And I click 'VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'No Records' I enter '0'
     And for 'Records Referred at Initial Request Level' I enter '0'
     And for 'Request Withdrawn' I enter '0'
@@ -155,6 +164,7 @@ Feature: Processing Data Time
     And I click 'Agency/Component'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click '"Other" Reasons Information'
     And I wait 3 seconds
     And for 'Description of "Other" Reasons for Denials from Chart B(1)' I enter 'N/A'
@@ -164,6 +174,7 @@ Feature: Processing Data Time
     And I click 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Median Number of Days' I enter 'N/A'
     And for 'Average Number of Days' I enter 'N/A'
     And for 'Lowest Number of Days' I enter 'N/A'
@@ -175,6 +186,7 @@ Feature: Processing Data Time
     And I click 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click 'Oldest'
     And I wait 3 seconds
     And for 'Date' I enter 'N/A'
@@ -262,7 +274,8 @@ Feature: Processing Data Time
     And I click 'Simple'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
-# By change the following field it will update
+    And I wait 3 seconds
+# Change the following field value will update
 # the corresponding field in Agency component node.
     And for 'Median Number of Days' I enter '107'
     And for 'Average Number of Days' I enter '103.4'
@@ -271,6 +284,7 @@ Feature: Processing Data Time
     And I click 'Complex'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Median Number of Days' I enter '99'
     And for 'Average Number of Days' I enter '122.2'
     And for 'Lowest Number of Days' I enter '47'
@@ -278,6 +292,7 @@ Feature: Processing Data Time
     And I click 'Expedited Processing'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Median Number of Days' I enter 'N/A'
     And for 'Average Number of Days' I enter 'N/A'
     And for 'Lowest Number of Days' I enter 'N/A'
@@ -301,6 +316,7 @@ Feature: Processing Data Time
     And I click 'Simple'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Median Number of Days' I enter 'N/A'
     And for 'Average Number of Days' I enter 'N/A'
     And for 'Lowest Number of Days' I enter 'N/A'
@@ -308,6 +324,7 @@ Feature: Processing Data Time
     And I click 'Complex'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Median Number of Days' I enter '109'
     And for 'Average Number of Days' I enter '109'
     And for 'Lowest Number of Days' I enter '68'
@@ -315,6 +332,7 @@ Feature: Processing Data Time
     And I click 'Expedited Processing'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Median Number of Days' I enter 'N/A'
     And for 'Average Number of Days' I enter 'N/A'
     And for 'Lowest Number of Days' I enter 'N/A'
@@ -336,6 +354,7 @@ Feature: Processing Data Time
     And I click 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for '<1-20 Days' I enter '0'
     And for '21-40 Days' I enter '0'
     And for '41-60 Days' I enter '2'
@@ -354,6 +373,7 @@ Feature: Processing Data Time
     And I click 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for '<1-20 Days' I enter '0'
     And for '21-40 Days' I enter '0'
     And for '41-60 Days' I enter '1'
@@ -372,6 +392,7 @@ Feature: Processing Data Time
     And I click 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for '<1-20 Days' I enter '0'
     And for '21-40 Days' I enter '0'
     And for '41-60 Days' I enter '0'
@@ -389,6 +410,7 @@ Feature: Processing Data Time
     And I click 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click 'Simple'
     And I wait 3 seconds
     And for 'Number Pending' I enter '1'
@@ -424,6 +446,7 @@ Feature: Processing Data Time
     And I click 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click 'Oldest'
     And I wait 3 seconds
     And for 'Date' I enter '2021-03-25'
@@ -509,6 +532,7 @@ Feature: Processing Data Time
     And I click 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number Granted' I enter '0'
     And for 'Number Denied' I enter '0'
     And for 'Median Number of Days to Adjudicate' I enter 'N/A'
@@ -521,6 +545,7 @@ Feature: Processing Data Time
     And I click 'VIII.B. Requests for Fee Waiver'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number Granted' I enter '15'
     And for 'Number Denied' I enter '0'
     And for 'Median Number of Days to Adjudicate' I enter 'N/A'
@@ -532,6 +557,7 @@ Feature: Processing Data Time
     And I click 'IX. FOIA Personnel and Costs'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click 'PERSONNEL'
     And I wait 3 seconds
     And for 'Number of "Full-Time FOIA Employees"' I enter '0'
@@ -545,18 +571,21 @@ Feature: Processing Data Time
     And I click 'X. Fees Collected for Processing Requests'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Total Amount of Fees Collected' I enter '0.00'
 
 # Section: 'XI.A. Number of Times Subsection (C) Used'
     And I click 'XI.A. Number of Times Subsection (C) Used'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Times Subsection Used' I enter '0'
 
 # Section: 'XI.B. Number of Subsection (A)(2) Postings'
     And I click 'XI.B. Number of Subsection (A)(2) Postings'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Records Posted by the FOIA Office' I enter '0'
     And for 'Number of Records Posted by Program Offices' I enter '50'
 
@@ -564,6 +593,7 @@ Feature: Processing Data Time
     And I click 'XII.A. Backlogs of FOIA Requests and Administrative Appeals'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Backlogged Requests as of End of Fiscal Year' I enter '6'
     And for 'Number of Backlogged Appeals as of End of Fiscal Year' I enter '0'
 
@@ -571,6 +601,7 @@ Feature: Processing Data Time
     And I click 'XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Consultations Received from Other Agencies that were Pending at the Agency as of Start of the Fiscal Year' I enter '0'
     And for 'Number of Consultations Received from Other Agencies During the Fiscal Year' I enter '3'
     And for 'Number of Consultations Received from Other Agencies that were Processed by the Agency During the Fiscal Year' I enter '3'
@@ -579,6 +610,7 @@ Feature: Processing Data Time
     And I click 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click 'Oldest'
     And I wait 3 seconds
     And for 'Date' I enter 'N/A'
@@ -664,6 +696,7 @@ Feature: Processing Data Time
     And I click 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click 'NUMBER RECEIVED'
     And I wait 3 seconds
     And for "Number Received During Fiscal Year from Last Year's Annual Report" I enter '12'
@@ -677,6 +710,7 @@ Feature: Processing Data Time
     And I click 'XII.D.(2). COMPARISON OF BACKLOGGED REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And for 'Number of Backlogged Requests as of End of the Fiscal Year from Previous Annual Report' I enter '1'
     And for 'Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report' I enter '6'
 
@@ -684,6 +718,7 @@ Feature: Processing Data Time
     And I click "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC"
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+    And I wait 3 seconds
     And I click 'NUMBER RECEIVED'
     And I wait 3 seconds
     And for "Number Received During Fiscal Year from Last Year's Annual Report" I enter '0'
@@ -697,23 +732,31 @@ Feature: Processing Data Time
     And I click 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
+        And I wait 3 seconds
+            And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report' I enter '0'
+                And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report' I enter '0'
+                "
+    And I wait 3 seconds
     And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report' I enter '0'
     And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report' I enter '0'
 
 # Save Annual Report in "Draft" state.
     And I select "Draft" from "Change to"
+    And I wait 3 seconds
     And I press the 'Save' button
     And I wait 5 seconds
     And I click 'Edit'
     And I wait 5 seconds
 # Save Annual Report in "Submitted to OIP" state.
     And I select "Submitted to OIP" from "Change to"
+    And I wait 3 seconds
     And I press the 'Save' button
     And I wait 5 seconds
     And I click 'Edit'
     And I wait 5 seconds
 # Save Annual Report in "Cleared" state.
     And I select "Cleared" from "Change to"
+    And I wait 3 seconds
     And I press the 'Save' button
     And I wait 5 seconds
 
