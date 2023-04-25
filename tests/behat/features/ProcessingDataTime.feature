@@ -732,13 +732,10 @@ Feature: Processing Data Time
     And I click 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
-        And I wait 3 seconds
-            And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report' I enter '0'
-                And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report' I enter '0'
-                "
     And I wait 3 seconds
     And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report' I enter '0'
     And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report' I enter '0'
+    And I wait 3 seconds
 
 # Save Annual Report in "Draft" state.
     And I select "Draft" from "Change to"
