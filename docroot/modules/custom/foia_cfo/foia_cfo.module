@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * FOIA CFO module.
+ */
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function foia_cfo_preprocess_node(&$variables) {
+  $view_mode = $variables['view_mode'];
+  if ($view_mode == 'cfo_body_only') {
+    // We don't want the <h2> node title in CFO body content.
+    $variables['label'] = FALSE;
+  }
+}

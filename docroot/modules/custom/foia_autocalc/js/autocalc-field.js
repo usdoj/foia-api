@@ -8,20 +8,15 @@
       var autocalcSettings = drupalSettings.foiaAutocalc.autocalcSettings;
       Object.keys(autocalcSettings).forEach(function (fieldName, fieldIndex) {
         var fieldSettings = autocalcSettings[fieldName];
-
-        // Calculate field on initial form load only.
-        var fieldCalculationsInitialized = fieldSettings['fieldCalculationsInitialized'] || false;
-        if (!fieldCalculationsInitialized) {
-          calculateAllFieldsWithName(fieldName, fieldSettings);
-          fieldSettings['fieldCalculationsInitialized'] = true;
-        }
+        // Calculate field on ajax each form load.
+        calculateAllFieldsWithName(fieldName, fieldSettings, true);
 
         fieldSettings.forEach(function (fieldSetting) {
           var fieldSelector = convertToFieldSelector(fieldSetting);
           $(fieldSelector + ' input').each(function (index) {
             // Bind event listeners to calculate field when input fields are changed.
             $(this).once(fieldSelector + '_' + fieldIndex + '_' + index).on('change', function () {
-              calculateAllFieldsWithName(fieldName, fieldSettings);
+              calculateAllFieldsWithName(fieldName, fieldSettings, false);
             });
           });
         });
@@ -37,11 +32,10 @@
    * @param {array} fieldSettings
    *   Settings for all paragraph component or fields that contain an autocalculated field with the given fieldName.
    */
-  function calculateAllFieldsWithName(fieldName, fieldSettings) {
+  function calculateAllFieldsWithName(fieldName, fieldSettings, ajaxReload) {
     var totalValues = {};
     var idSelector = '';
     var isTotalNA = true;
-    
     if (Number.EPSILON === undefined) {
       Number.EPSILON = Math.pow(2, -52);
     }
@@ -80,6 +74,9 @@
         }
       });
     });
+    if (isTotalNA && ajaxReload) {
+      $(convertToFieldSelector({ field: fieldName }) + ' input').val(0).trigger('change');
+    }
 
     Object.keys(totalValues).forEach(function (selector) {
       // Deal with long decimals.

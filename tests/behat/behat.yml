@@ -10,6 +10,7 @@ default:
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\ConfigContext
+        - Imbo\BehatApiExtension\Context\ApiContext
       paths:
         - "%paths.base%/features"
   extensions:
@@ -59,3 +60,8 @@ default:
       image_drivers:
         local:
           screenshot_directory: /var/www/html/tests/behat/screenshots
+    Imbo\BehatApiExtension:
+      apiClient:
+        base_uri: https://foia-api.ddev.site
+        timeout: 5.0
+        verify: false

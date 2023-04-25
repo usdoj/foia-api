@@ -29,7 +29,42 @@ Feature: Quarterly FOIA Report Data Feature
     And I wait 5 seconds
     And I check the box "ABCDEF"
     And for 'Fiscal Year' I enter '2024'
-    And I select "Q1" from "Quarter" 
+    And I select "Q1" from "Quarter"
     And I press the 'Save and continue' button
+    And I wait 5 seconds
     And I click 'Component data'
     Then I should see "Add placeholders for component data below"
+
+  @api @javascript
+  Scenario: Quarterly reports - handle case where user removes component data
+    Given I am logged in as a user with the 'Agency Administrator' role
+    And I am on "/node/add/quarterly_foia_report_data"
+    And I select "Federal Testing Agency" from "Agency"
+    And I wait 5 seconds
+    And I check the box "ABCDEF"
+    And for 'Fiscal Year' I enter '2024'
+    And I select "Q1" from "Quarter"
+    And I press the 'Save and continue' button
+    And I click 'Component data'
+    And I wait 5 seconds
+    And I select "ABCDEF" from "Agency/Component"
+    And I wait 5 seconds
+    And for 'Number of requests received' I enter '123'
+    And for 'Number of requests processed' I enter '23'
+    And for 'Number of requests backlogged' I enter '3'
+    And I click 'Agency Overall'
+    And I wait 3 seconds
+    Then the "Agency Overall - Number of requests received" element should have the value "123"
+    Then the "Agency Overall - Number of requests processed" element should have the value "23"
+    Then the "Agency Overall - Number of requests backlogged" element should have the value "3"
+    And I click 'Component data'
+    And I wait 3 seconds
+    And I press the 'Remove' button
+    And I wait 5 seconds
+    And I press the 'Confirm removal' button
+    And I wait 5 seconds
+    And I click 'Agency Overall'
+    And I wait 3 seconds
+    Then the "Agency Overall - Number of requests received" element should have the value "0"
+    Then the "Agency Overall - Number of requests processed" element should have the value "0"
+    Then the "Agency Overall - Number of requests backlogged" element should have the value "0"
