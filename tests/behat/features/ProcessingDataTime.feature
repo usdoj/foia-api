@@ -680,8 +680,8 @@ Feature: Processing Data Time
     And for 'Number of Backlogged Requests as of End of the Fiscal Year from Previous Annual Report' I enter '1'
     And for 'Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report' I enter '6'
 
-# Section: 'XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC'
-    And I click 'XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC'
+# Section: "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC"
+    And I click "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC"
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
     And I click 'NUMBER RECEIVED'
