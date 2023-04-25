@@ -15,6 +15,7 @@ Feature: Processing Data Time
   @api @javascript
   Scenario: There is check box "Require manual entry of processing times" for Agency Component node.
 # Create testing Annual Report node.
+    Given I am logged in as a user with the "Administrator" role
     And I am at "node/add/annual_foia_report_data"
     And I select "appraisal subcommitte" from "Agency"
     And I wait 5 seconds
