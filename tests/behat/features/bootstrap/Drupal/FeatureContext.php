@@ -388,7 +388,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \InvalidArgumentException
    */
   public function iClickLiOption($text) {
-    $lis = $this->getSession()->getPage()->findAll('css', '.vertical-tabs__menu li.vertical-tabs__menu-item');
+    $lis = $this->getSession()->getPage()->findAll('css', 'ul.vertical-tabs__menu li.vertical-tabs__menu-item');
     $match = FALSE;
     foreach ($lis as $li) {
       $name = $li->getText();

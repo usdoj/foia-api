@@ -40,8 +40,7 @@ Feature: Processing Data Time
     And for 'Number of Times Relied Upon by Agency/Component' I enter '0'
 
 # Section:'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'.
-    # And I click 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'
-    And I click li option "V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS"
+    And I click li option 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
     And I wait 3 seconds
@@ -50,8 +49,7 @@ Feature: Processing Data Time
     And for 'Number of Requests Processed in Fiscal Year' I enter '16'
 
 # Section:'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS'.
-    # And I click 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS'
-    And I click li option "V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS"
+    And I click li option 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS'
     And I wait 3 seconds
     And I click 'Agency/Component'
     And I wait 3 seconds
