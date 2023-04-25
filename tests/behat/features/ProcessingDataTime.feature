@@ -10,7 +10,7 @@ Feature: Processing Data Time
       | appraisal subcommitte   | ASC                       | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
-      | Test Agency Component 1 | appraisal subcommitte     | 2023-01-01      | ASC                            |
+      | Test Agency Component 1 | appraisal subcommitte     | 2023-04-19      | ASC                            |
 
   @api @javascript
   Scenario: Create test for Agency Component node with Annual Report node.
@@ -40,7 +40,8 @@ Feature: Processing Data Time
     And for 'Number of Times Relied Upon by Agency/Component' I enter '0'
 
 # Section:'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'.
-    And I click 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'
+    # And I click 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'
+    And I click li option "V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS"
     And I wait 3 seconds
     And I select "ASC" from "Agency/Component"
     And I wait 3 seconds
@@ -49,7 +50,8 @@ Feature: Processing Data Time
     And for 'Number of Requests Processed in Fiscal Year' I enter '16'
 
 # Section:'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS'.
-    And I click 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS'
+    # And I click 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS'
+    And I click li option "V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS"
     And I wait 3 seconds
     And I click 'Agency/Component'
     And I wait 3 seconds

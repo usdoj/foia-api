@@ -380,4 +380,25 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       echo "field value: ". $value;
     }
   }
+
+  /**
+   * @When /^I click li option "([^"]*)"$/
+   *
+   * @param $text
+   * @throws \InvalidArgumentException
+   */
+  public function iClickLiOption($text) {
+    $session = $this->getSession();
+    $element = $session->getPage()->find(
+      'xpath',
+      $session->getSelectorsHandler()->selectorToXpath('xpath', '*//*[text()="' . $text . '"]')
+    );
+
+    if (null === $element) {
+      throw new \InvalidArgumentException(sprintf('Cannot find text: "%s"', $text));
+    }
+
+    $element->click();
+    $this->getSession()->wait(1000);
+  }
 }
