@@ -388,17 +388,20 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \InvalidArgumentException
    */
   public function iClickLiOption($text) {
-    $session = $this->getSession();
-    $element = $session->getPage()->find(
-      'xpath',
-      $session->getSelectorsHandler()->selectorToXpath('xpath', '*//*[text()="' . $text . '"]')
-    );
-
-    if (null === $element) {
-      throw new \InvalidArgumentException(sprintf('Cannot find text: "%s"', $text));
+    $lis = $this->getSession()->getPage()->findAll('css', '.vertical-tabs__menu li.vertical-tabs__menu-item');
+    $match = FALSE;
+    foreach ($lis as $li) {
+      $name = $li->getText();
+      if (stripos($name, $text) !== false) {
+        $match = $li;
+        break;
+      }
     }
-
-    $element->click();
-    $this->getSession()->wait(1000);
+    if ($match) {
+      $match->click();
+      $this->getSession()->wait(1000);
+    } else {
+      throw new \InvalidArgumentException(sprintf('Cannot find li section: "%s"', $text));
+    }
   }
 }
