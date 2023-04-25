@@ -666,11 +666,11 @@ Feature: Processing Data Time
     And I select "ASC" from "Agency/Component"
     And I click 'NUMBER RECEIVED'
     And I wait 3 seconds
-    And for 'Number Received During Fiscal Year from Last Year's Annual Report' I enter '12'
+    And for "Number Received During Fiscal Year from Last Year's Annual Report" I enter '12'
     And for 'Number Received During Fiscal Year from Current Annual Report' I enter '21'
     And I click 'NUMBER PROCESSED'
     And I wait 3 seconds
-    And for 'Number Processed During Fiscal Year from Last Year's Annual Report' I enter '19'
+    And for "Number Processed During Fiscal Year from Last Year's Annual Report" I enter '19'
     And for 'Number Processed During Fiscal Year from Current Annual Report' I enter '16'
 
 # Section: 'XII.D.(2). COMPARISON OF BACKLOGGED REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT'
@@ -686,11 +686,11 @@ Feature: Processing Data Time
     And I select "ASC" from "Agency/Component"
     And I click 'NUMBER RECEIVED'
     And I wait 3 seconds
-    And for 'Number Received During Fiscal Year from Last Year's Annual Report' I enter '0'
+    And for "Number Received During Fiscal Year from Last Year's Annual Report" I enter '0'
     And for 'Number Received During Fiscal Year from Current Annual Report' I enter '0'
     And I click 'NUMBER PROCESSED'
     And I wait 3 seconds
-    And for 'Number Processed During Fiscal Year from Last Year's Annual Report' I enter '0'
+    And for "Number Processed During Fiscal Year from Last Year's Annual Report" I enter '0'
     And for 'Number Processed During Fiscal Year from Current Annual Report' I enter '0'
 
 # Section: 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
