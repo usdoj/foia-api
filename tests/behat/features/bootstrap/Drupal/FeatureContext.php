@@ -294,7 +294,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Expand the clicable section on the node edit page.
+   * Expand the clickable section on the node edit page.
    *
    * @Then I expand the :section_name
    */
@@ -382,26 +382,134 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * @When /^I click li option "([^"]*)"$/
-   *
-   * @param $text
-   * @throws \InvalidArgumentException
+   * @Given I ignore the admin menu
    */
-  public function iClickLiOption($text) {
-    $lis = $this->getSession()->getPage()->findAll('css', 'ul.vertical-tabs__menu li.vertical-tabs__menu-item');
-    $match = FALSE;
-    foreach ($lis as $li) {
-      $name = $li->getText();
-      if (stripos($name, $text) !== false) {
-        $match = $li;
-        break;
-      }
+  public function iIgnoreTheAdminMenu() {
+    $this->getSession()->getDriver()->evaluateScript(
+      "jQuery('#toolbar-administration,#toolbar-item-administration').hide();"
+    );
+  }
+
+  /**
+   * @When I click :link in the :section section
+   */
+  public function iClickInTheSection($link, $section) {
+    $page = $this->getSession()->getPage();
+    $sidebar_element = $page->find('css', '.vertical-tabs__menu');
+    $section_link = $page->find('named', ['link', $section]);
+    if (empty($section_link)) {
+      throw new \Exception('Section "' . $section . '" was not found.');
     }
-    if ($match) {
-      $match->click();
-      $this->getSession()->wait(1000);
-    } else {
-      throw new \InvalidArgumentException(sprintf('Cannot find li section: "%s"', $text));
+    $section_id = $section_link->getAttribute('href');
+    $section_element = $page->find('css', $section_id);
+    $link_inside_section = $section_element->find('named', ['link', $link]);
+    if (empty($link_inside_section)) {
+      throw new \Exception('Link "' . $link . '" inside section "' . $section . '" was not found.');
     }
+    $link_inside_section->click();
+  }
+
+  /**
+   * @When I select :option from :select in the :section section
+   */
+  public function iSelectFromInTheSection($option, $select, $section) {
+    $page = $this->getSession()->getPage();
+    $sidebar_element = $page->find('css', '.vertical-tabs__menu');
+    $section_link = $sidebar_element->find('named', ['link', $section]);
+    if (empty($section_link)) {
+      throw new \Exception('Section "' . $section . '" was not found.');
+    }
+    $section_id = $section_link->getAttribute('href');
+    $section_element = $page->find('css', $section_id);
+    $select_inside_section = $section_element->find('named', ['select', $select]);
+    if (empty($select_inside_section)) {
+      throw new \Exception('Select "' . $select . '" inside section "' . $section . '" was not found.');
+    }
+    $select_inside_section->selectOption($option);
+  }
+
+  /**
+   * @When for :input in the :section section I enter :value
+   */
+  public function forInTheSectionIEnter($input, $section, $value) {
+    $page = $this->getSession()->getPage();
+    $sidebar_element = $page->find('css', '.vertical-tabs__menu');
+    $section_link = $sidebar_element->find('named', ['link', $section]);
+    if (empty($section_link)) {
+      throw new \Exception('Section "' . $section . '" was not found.');
+    }
+    $section_id = $section_link->getAttribute('href');
+    $section_element = $page->find('css', $section_id);
+    $input_inside_section = $section_element->find('named', ['field', $input]);
+    if (empty($input_inside_section)) {
+      throw new \Exception('Input "' . $input . '" inside section "' . $section . '" was not found.');
+    }
+    $input_inside_section->setValue($value);
+  }
+
+  /**
+   * @When for :input in the :section section and the :subsection sub-section I enter :value
+   */
+  public function forInTheSectionAndTheSubSectionIEnter($input, $section, $subsection, $value) {
+    $page = $this->getSession()->getPage();
+    $sidebar_element = $page->find('css', '.vertical-tabs__menu');
+    $section_link = $sidebar_element->find('named', ['link', $section]);
+    if (empty($section_link)) {
+      throw new \Exception('Section "' . $section . '" was not found.');
+    }
+    $section_id = $section_link->getAttribute('href');
+    $section_element = $page->find('css', $section_id);
+    $subsection_link = $section_element->find('named', ['link', $subsection]);
+    if (empty($subsection_link)) {
+      throw new \Exception('Sub-section "' . $subsection . '" was not found.');
+    }
+    $subsection_id = $subsection_link->getAttribute('href');
+    $subsection_element = $page->find('css', $subsection_id);
+    $input_inside_subsection = $subsection_element->find('named', ['field', $input]);
+    if (empty($input_inside_subsection)) {
+      throw new \Exception('Input "' . $input . '" inside section "' . $section . '" and sub-section "' . $subsection . '" was not found.');
+    }
+    $input_inside_subsection->setValue($value);
+  }
+
+  /**
+   * @When I select :option from :select in the :section section and the :subsection sub-section
+   */
+  public function iSelectFromInTheSectionAndSubsection($option, $select, $section, $subsection) {
+    $page = $this->getSession()->getPage();
+    $sidebar_element = $page->find('css', '.vertical-tabs__menu');
+    $section_link = $sidebar_element->find('named', ['link', $section]);
+    if (empty($section_link)) {
+      throw new \Exception('Section "' . $section . '" was not found.');
+    }
+    $section_id = $section_link->getAttribute('href');
+    $section_element = $page->find('css', $section_id);
+    $subsection_link = $section_element->find('named', ['link', $subsection]);
+    if (empty($subsection_link)) {
+      throw new \Exception('Sub-section "' . $subsection . '" was not found.');
+    }
+    $subsection_id = $subsection_link->getAttribute('href');
+    $subsection_element = $page->find('css', $subsection_id);
+    $select_inside_subsection = $subsection_element->find('named', ['select', $select]);
+    if (empty($select_inside_subsection)) {
+      throw new \Exception('Select "' . $select . '" inside section "' . $section . '" and sub-section "' . $subsection . '" was not found.');
+    }
+    $select_inside_subsection->selectOption($option);
+  }
+
+  /**
+   * @When I click the section :section
+   */
+  public function iClickTheSection($section) {
+    $page = $this->getSession()->getPage();
+    $sidebar_element = $page->find('css', '.vertical-tabs__menu');
+    if (empty($sidebar_element)) {
+      throw new \Exception('There is no sidebar vertical tabs menu on this page - section not found.');
+    }
+    $section_link = $sidebar_element->find('named', ['link', $section]);
+    if (empty($section_link)) {
+      throw new \Exception('Section "' . $section . '" was not found.');
+    }
+    $section_link->click();
   }
 }
