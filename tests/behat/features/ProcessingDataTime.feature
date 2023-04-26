@@ -459,6 +459,10 @@ Feature: Processing Data Time
     And I wait 5 seconds
     And I click 'Edit'
     And I wait 5 seconds
+# Verify section input field value.
+    And I click the section 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
+    And I click 'Simple' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
+    Then the "Median Number of Days" element should have the value "107"
 # Save Annual Report in "Cleared" state.
     And I select "Cleared" from "Change to"
     And I press the 'Save' button
