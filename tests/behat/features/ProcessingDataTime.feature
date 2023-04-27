@@ -536,6 +536,7 @@ Feature: Processing Data Time
     And I wait 5 seconds
     And I click 'Edit'
     And I wait 5 seconds
+    And I ignore the admin menu
 # Update VII.A. section "Median Number of Days" input field value.
     And I click the section 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
     And I click 'Simple' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
@@ -558,6 +559,6 @@ Feature: Processing Data Time
     And I click 'Edit'
     And I wait 5 seconds
 # Confirm "Simple Median Days" field value is changed.
-    And the "Simple Median Days" field should contain "107"
     Then show field value "#edit-field-simple-median-days-0-value"
+    And the "Simple Median Days" field should contain "107"
     And I wait 3 seconds
