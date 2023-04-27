@@ -91,6 +91,7 @@ Feature: Processing Data Time
 # Create testing Annual Report node.
     Given I am logged in as a user with the "Administrator" role
     And I am at "node/add/annual_foia_report_data"
+    And I ignore the admin menu
     And I select "appraisal subcommitte" from "Agency"
     And I wait 5 seconds
     And for 'FOIA Annual Report Year' I enter '2023'
@@ -100,7 +101,6 @@ Feature: Processing Data Time
     And I wait 5 seconds
 
 # Section:'IV. Exemption 3 Statutes'.
-    And I ignore the admin menu
     And I click the section 'IV. Exemption 3 Statutes'
     And I click 'Statute' in the 'IV. Exemption 3 Statutes' section
     And for 'Statute' in the 'IV. Exemption 3 Statutes' section I enter 'N/A'
