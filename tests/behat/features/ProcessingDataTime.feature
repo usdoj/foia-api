@@ -8,6 +8,9 @@ Feature: Processing Data Time
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
       | appraisal subcommitte   | ASC1                      | description |plain_text| en       |
+    Given agency_component content:
+      | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
+      | Test Agency Component 1 | appraisal subcommitte     | 2023-04-27      | ASC                           |
 
   @api @javascript
   Scenario: Create test for Agency Component node with Annual Report node.
@@ -18,7 +21,7 @@ Feature: Processing Data Time
     And for 'Agency Component Name' I enter 'appraisal subcommitte'
     And for 'Agency' I enter 'appraisal subcommitte'
     And I wait 3 seconds
-    And for 'Abbreviation' I enter 'ASC'
+    And for 'Abbreviation' I enter 'ASC1'
     And I check the box "Is Centralized"
     Then I expand the "URL ALIAS"
     And I wait 3 seconds
