@@ -96,6 +96,8 @@ Feature: Processing Data Time
     Then the "Require manual entry of processing times" checkbox should be unchecked
     Then I expand the "Annual FOIA Report Start"
     Then show field value "#edit-field-rep-start-0-value-date"
+    And I press the 'Save' button
+    And I wait 5 seconds
 
 # Create testing Annual Report node.
     Given I am logged in as a user with the "Administrator" role
@@ -108,6 +110,7 @@ Feature: Processing Data Time
     And I check the box "ASC"
     When I press the 'Save and continue' button
     And I wait 5 seconds
+    And I ignore the admin menu
 
 # Section:'IV. Exemption 3 Statutes'.
     And I click the section 'IV. Exemption 3 Statutes'
