@@ -15,10 +15,10 @@ Feature: Processing Data Time
     And I am at "/node/add/agency_component"
     Then the "Require manual entry of processing times" element should exists
     And I wait 5 seconds
-    And for 'Agency Component Name' I enter 'appraisal subcommitte'
-    And for 'Agency' I enter 'appraisal subcommitte'
+    And for 'Agency Component Name' I enter 'Advisory Council on Historic Preservation'
+    And for 'Agency' I enter 'Advisory Council on Historic Preservation'
     And I wait 3 seconds
-    And for 'Abbreviation' I enter 'ASC'
+    And for 'Abbreviation' I enter 'ACHP'
     And I check the box "Is Centralized"
     Then I expand the "URL ALIAS"
     And I wait 3 seconds
@@ -92,11 +92,11 @@ Feature: Processing Data Time
     Given I am logged in as a user with the "Administrator" role
     And I am at "node/add/annual_foia_report_data"
     And I ignore the admin menu
-    And I select "appraisal subcommitte" from "Agency"
+    And I select "Advisory Council on Historic Preservation" from "Agency"
     And I wait 5 seconds
     And for 'FOIA Annual Report Year' I enter '2023'
     And for 'Date Prepared' I enter '04/19/2023'
-    And I check the box "ASC"
+    And I check the box "ACHP"
     When I press the 'Save and continue' button
     And I wait 5 seconds
 
@@ -107,12 +107,12 @@ Feature: Processing Data Time
     And for 'Type of Information Withheld' in the 'IV. Exemption 3 Statutes' section I enter 'N/A'
     And for 'Case Citation' in the 'IV. Exemption 3 Statutes' section I enter 'N/A'
     And I click 'Agency/Component' in the 'IV. Exemption 3 Statutes' section
-    And I select "ASC" from "Agency/Component" in the 'IV. Exemption 3 Statutes' section
+    And I select "ACHP" from "Agency/Component" in the 'IV. Exemption 3 Statutes' section
     And for 'Number of Times Relied Upon by Agency/Component' in the 'IV. Exemption 3 Statutes' section I enter '0'
 
 # Section:'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'.
     And I click the section 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS'
-    And I select "ASC" from "Agency/Component" in the 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS' section
+    And I select "ACHP" from "Agency/Component" in the 'V.A. FOIA REQUESTS -- RECEIVED, PROCESSED AND PENDING FOIA REQUESTS' section
     And for 'Number of Requests Pending as of Start of Fiscal Year' I enter '1'
     And for 'Number of Requests Received in Fiscal Year' I enter '21'
     And for 'Number of Requests Processed in Fiscal Year' I enter '16'
@@ -120,7 +120,7 @@ Feature: Processing Data Time
 # Section:'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS'.
     And I click the section 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS'
     And I click 'Agency/Component' in the 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS' section
-    And I select "ASC" from "Agency/Component" in the 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS' section
+    And I select "ACHP" from "Agency/Component" in the 'V.B.(1). DISPOSITION OF FOIA REQUESTS -- ALL PROCESSED REQUESTS' section
     And for 'Number of Full Grants' I enter '3'
     And for 'Number of Partial Grants/Partial Denials' I enter '1'
     And for 'Number of Full Denials Based on Exemptions' I enter '0'
@@ -138,14 +138,14 @@ Feature: Processing Data Time
 # Section: 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"'
     And I click the section 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"'
     And I click 'Agency/Component' in the 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"' section
-    And I select "ASC" from "Agency/Component" in the 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"' section
+    And I select "ACHP" from "Agency/Component" in the 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"' section
     And I click '"Other" Reasons for Denials'
     And for 'Description of "Other" Reasons for Denials from Chart B(1)' in the 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"' section and the '"Other" Reasons for Denials' sub-section I enter 'N/A'
     And for 'Number of Times "Other" Reason Was Relied Upon' in the 'V.B.(2). DISPOSITION OF FOIA REQUESTS -- "OTHER" REASONS FOR "FULL DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS"' section and the '"Other" Reasons for Denials' sub-section I enter '0'
 
 # Section: 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED'
     And I click the section 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED'
-    And I select "ASC" from "Agency/Component" in the 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED' section
+    And I select "ACHP" from "Agency/Component" in the 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED' section
     And for 'Ex. 1' in the 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED' section I enter '0'
     And for 'Ex. 2' in the 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED' section I enter '0'
     And for 'Ex. 3' in the 'V.B.(3). DISPOSITION OF FOIA REQUESTS -- NUMBER OF TIMES EXEMPTIONS APPLIED' section I enter '0'
@@ -163,14 +163,14 @@ Feature: Processing Data Time
 
 # Section: 'VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS - RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL'
     And I click the section 'VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS - RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL'
-    And I select "ASC" from "Agency/Component" in the 'VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS - RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL' section
+    And I select "ACHP" from "Agency/Component" in the 'VI.A. ADMINISTRATIVE APPEALS OF INITIAL DETERMINATIONS OF FOIA REQUESTS - RECEIVED, PROCESSED, AND PENDING ADMINISTRATIVE APPEAL' section
     And for 'Number of Appeals Pending as of Start of Fiscal Year' I enter '0'
     And for 'Number of Appeals Received in Fiscal Year' I enter '0'
     And for 'Number of Appeals Processed in Fiscal Year' I enter '0'
 
 # Section: 'VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS'
     And I click the section 'VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS'
-    And I select "ASC" from "Agency/Component" in the 'VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS' section
+    And I select "ACHP" from "Agency/Component" in the 'VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS -- ALL PROCESSED APPEALS' section
     And for 'Number Affirmed on Appeal' I enter '0'
     And for 'Number Partially Affirmed & Partially Reversed/Remanded on Appeal' I enter '0'
     And for 'Number Completely Reversed/Remanded on Appeal' I enter '0'
@@ -178,7 +178,7 @@ Feature: Processing Data Time
 
 # Section: 'VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED'
     And I click the section 'VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED'
-    And I select "ASC" from "Agency/Component" in the 'VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED' section
+    And I select "ACHP" from "Agency/Component" in the 'VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED' section
     And for 'Ex. 1' in the 'VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED' section I enter '0'
     And for 'Ex. 2' in the 'VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED' section I enter '0'
     And for 'Ex. 3' in the 'VI.C.(1). REASONS FOR DENIAL ON APPEAL -- NUMBER OF TIMES EXEMPTIONS APPLIED' section I enter '0'
@@ -196,7 +196,7 @@ Feature: Processing Data Time
 
 # Section: 'VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS'
     And I click the section 'VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS'
-    And I select "ASC" from "Agency/Component" in the 'VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS' section
+    And I select "ACHP" from "Agency/Component" in the 'VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS' section
     And for 'No Records' in the 'VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS' section I enter '0'
     And for 'Records Referred at Initial Request Level' in the 'VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS' section I enter '0'
     And for 'Request Withdrawn' in the 'VI.C.(2). REASONS FOR DENIAL ON APPEAL -- REASONS OTHER THAN EXEMPTIONS' section I enter '0'
@@ -212,14 +212,14 @@ Feature: Processing Data Time
 # Section: 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS'
     And I click the section 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS'
     And I click 'Agency/Component' in the 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS' section
-    And I select "ASC" from "Agency/Component" in the 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS' section
+    And I select "ACHP" from "Agency/Component" in the 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS' section
     And I click '"Other" Reasons Information'
     And for 'Description of "Other" Reasons for Denials from Chart B(1)' in the 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS' section and the '"Other" Reasons Information' sub-section I enter 'N/A'
     And for 'Number of Times "Other" Reason Was Relied Upon' in the 'VI.C.(3). REASONS FOR DENIAL ON APPEAL -- "OTHER" REASONS' section and the '"Other" Reasons Information' sub-section I enter '0'
 
 # Section: 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS'
     And I click the section 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS'
-    And I select "ASC" from "Agency/Component" in the 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS' section
+    And I select "ACHP" from "Agency/Component" in the 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS' section
     And for 'Median Number of Days' in the 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS' section I enter 'N/A'
     And for 'Average Number of Days' in the 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS' section I enter 'N/A'
     And for 'Lowest Number of Days' in the 'VI.C.(4). RESPONSE TIME FOR ADMINISTRATIVE APPEALS' section I enter 'N/A'
@@ -227,7 +227,7 @@ Feature: Processing Data Time
 
 # Section: 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
     And I click the section 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS'
-    And I select "ASC" from "Agency/Component" in the 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS' section
+    And I select "ACHP" from "Agency/Component" in the 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS' section
     And I click 'Oldest' in the 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS' section
     And for 'Date' in the 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS' section and the 'Oldest' sub-section I enter 'N/A'
     And for 'Number of Days Pending' in the 'VI.C.(5). TEN OLDEST PENDING ADMINISTRATIVE APPEALS' section and the 'Oldest' sub-section I enter '0'
@@ -262,7 +262,7 @@ Feature: Processing Data Time
 # Section: 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
     And I click the section 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
     And I click 'Simple' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
-    And I select "ASC" from "Agency/Component" in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
+    And I select "ACHP" from "Agency/Component" in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
 # Change the following field value will update
 # the corresponding field in Agency component node.
     And for 'Median Number of Days' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section and the 'Simple' sub-section I enter '106'
@@ -283,7 +283,7 @@ Feature: Processing Data Time
 # Section: 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED'
     And I click the section 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED'
     And I click 'Simple' in the 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED' section
-    And I select "ASC" from "Agency/Component" in the 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED' section
+    And I select "ACHP" from "Agency/Component" in the 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED' section
     And for 'Median Number of Days' in the 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED' section and the 'Simple' sub-section I enter 'N/A'
     And for 'Average Number of Days' in the 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED' section and the 'Simple' sub-section I enter 'N/A'
     And for 'Lowest Number of Days' in the 'VII.B. PROCESSED REQUESTS -- RESPONSE TIME FOR PERFECTED REQUESTS IN WHICH INFORMATION WAS GRANTED' section and the 'Simple' sub-section I enter 'N/A'
@@ -301,7 +301,7 @@ Feature: Processing Data Time
 
 # Section: 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
     And I click the section 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
-    And I select "ASC" from "Agency/Component" in the 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section
+    And I select "ACHP" from "Agency/Component" in the 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section
     And for '<1-20 Days' in the 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section I enter '0'
     And for '21-40 Days' in the 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section I enter '0'
     And for '41-60 Days' in the 'VII.C.(1). PROCESSED SIMPLE REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section I enter '2'
@@ -318,7 +318,7 @@ Feature: Processing Data Time
 
 # Section: 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
     And I click the section 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS'
-    And I select "ASC" from "Agency/Component" in the 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section
+    And I select "ACHP" from "Agency/Component" in the 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section
     And for '<1-20 Days' in the 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section I enter '0'
     And for '21-40 Days' in the 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section I enter '0'
     And for '41-60 Days' in the 'VII.C.(2). PROCESSED COMPLEX REQUESTS -- RESPONSE TIME IN DAY INCREMENTS' section I enter '1'
@@ -335,7 +335,7 @@ Feature: Processing Data Time
 
 # Section: 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS'
     And I click the section 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS'
-    And I select "ASC" from "Agency/Component" in the 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS' section
+    And I select "ACHP" from "Agency/Component" in the 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS' section
     And for '<1-20 Days' in the 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS' section I enter '0'
     And for '21-40 Days' in the 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS' section I enter '0'
     And for '41-60 Days' in the 'VII.C.(3). PROCESSED REQUESTS GRANTED EXPEDITED PROCESSING -- RESPONSE TIME IN DAY INCREMENTS' section I enter '0'
@@ -351,7 +351,7 @@ Feature: Processing Data Time
 
 # Section: 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
     And I click the section 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS'
-    And I select "ASC" from "Agency/Component" in the 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS' section
+    And I select "ACHP" from "Agency/Component" in the 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS' section
     And I click 'Simple' in the 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS' section
     And for 'Number Pending' in the 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS' section and the 'Simple' sub-section I enter '1'
     And for 'Median Number of Days' in the 'VII.D. PENDING REQUESTS -- ALL PENDING PERFECTED REQUESTS' section and the 'Simple' sub-section I enter '58'
@@ -367,7 +367,7 @@ Feature: Processing Data Time
 
 # Section: 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS'
     And I click the section 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS'
-    And I select "ASC" from "Agency/Component" in the 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS' section
+    And I select "ACHP" from "Agency/Component" in the 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS' section
     And I click 'Oldest' in the 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS' section
     And for 'Date' in the 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS' section and the 'Oldest' sub-section I enter '2021-03-25'
     And for 'Number of Days Pending' in the 'VII.E. PENDING REQUESTS -- TEN OLDEST PENDING PERFECTED REQUESTS' section and the 'Oldest' sub-section I enter '132'
@@ -401,7 +401,7 @@ Feature: Processing Data Time
 
 # Section: 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING'
     And I click the section 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING'
-    And I select "ASC" from "Agency/Component" in the 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING' section
+    And I select "ACHP" from "Agency/Component" in the 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING' section
     And for 'Number Granted' in the 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING' section I enter '0'
     And for 'Number Denied' in the 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING' section I enter '0'
     And for 'Median Number of Days to Adjudicate' in the 'VIII.A. REQUESTS FOR EXPEDITED PROCESSING' section I enter 'N/A'
@@ -410,7 +410,7 @@ Feature: Processing Data Time
 
 # Section: 'VIII.B. Requests for Fee Waiver'
     And I click the section 'VIII.B. Requests for Fee Waiver'
-    And I select "ASC" from "Agency/Component" in the 'VIII.B. Requests for Fee Waiver' section
+    And I select "ACHP" from "Agency/Component" in the 'VIII.B. Requests for Fee Waiver' section
     And for 'Number Granted' in the 'VIII.B. Requests for Fee Waiver' section I enter '15'
     And for 'Number Denied' in the 'VIII.B. Requests for Fee Waiver' section I enter '0'
     And for 'Median Number of Days to Adjudicate' in the 'VIII.B. Requests for Fee Waiver' section I enter 'N/A'
@@ -418,7 +418,7 @@ Feature: Processing Data Time
 
 # Section: 'IX. FOIA Personnel and Costs'
     And I click the section 'IX. FOIA Personnel and Costs'
-    And I select "ASC" from "Agency/Component" in the 'IX. FOIA Personnel and Costs' section
+    And I select "ACHP" from "Agency/Component" in the 'IX. FOIA Personnel and Costs' section
     And I click 'PERSONNEL'
     And for 'Number of "Full-Time FOIA Employees"' I enter '0'
     And for 'Number of "Equivalent Full-Time FOIA Employees"' I enter '0.10'
@@ -428,36 +428,36 @@ Feature: Processing Data Time
 
 # Section: 'X. Fees Collected for Processing Request'
     And I click the section 'X. Fees Collected for Processing Requests'
-    And I select "ASC" from "Agency/Component" in the 'X. Fees Collected for Processing Requests' section
+    And I select "ACHP" from "Agency/Component" in the 'X. Fees Collected for Processing Requests' section
     And for 'Total Amount of Fees Collected' I enter '0.00'
 
 # Section: 'XI.A. Number of Times Subsection (C) Used'
     And I click the section 'XI.A. Number of Times Subsection (C) Used'
-    And I select "ASC" from "Agency/Component" in the 'XI.A. Number of Times Subsection (C) Used' section
+    And I select "ACHP" from "Agency/Component" in the 'XI.A. Number of Times Subsection (C) Used' section
     And for 'Number of Times Subsection Used' I enter '0'
 
 # Section: 'XI.B. Number of Subsection (A)(2) Postings'
     And I click the section 'XI.B. Number of Subsection (A)(2) Postings'
-    And I select "ASC" from "Agency/Component" in the 'XI.B. Number of Subsection (A)(2) Postings' section
+    And I select "ACHP" from "Agency/Component" in the 'XI.B. Number of Subsection (A)(2) Postings' section
     And for 'Number of Records Posted by the FOIA Office' I enter '0'
     And for 'Number of Records Posted by Program Offices' I enter '50'
 
 # Section: 'XII.A. Backlogs of FOIA Requests and Administrative Appeals'
     And I click the section 'XII.A. Backlogs of FOIA Requests and Administrative Appeals'
-    And I select "ASC" from "Agency/Component" in the 'XII.A. Backlogs of FOIA Requests and Administrative Appeals' section
+    And I select "ACHP" from "Agency/Component" in the 'XII.A. Backlogs of FOIA Requests and Administrative Appeals' section
     And for 'Number of Backlogged Requests as of End of Fiscal Year' I enter '6'
     And for 'Number of Backlogged Appeals as of End of Fiscal Year' I enter '0'
 
 # Section: 'XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS'
     And I click the section 'XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS'
-    And I select "ASC" from "Agency/Component" in the 'XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS' section
+    And I select "ACHP" from "Agency/Component" in the 'XII.B. CONSULTATIONS ON FOIA REQUESTS -- RECEIVED, PROCESSED, AND PENDING CONSULTATIONS' section
     And for 'Number of Consultations Received from Other Agencies that were Pending at the Agency as of Start of the Fiscal Year' I enter '0'
     And for 'Number of Consultations Received from Other Agencies During the Fiscal Year' I enter '3'
     And for 'Number of Consultations Received from Other Agencies that were Processed by the Agency During the Fiscal Year' I enter '3'
 
 # Section: 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY'
     And I click the section 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY'
-    And I select "ASC" from "Agency/Component" in the 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY' section
+    And I select "ACHP" from "Agency/Component" in the 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY' section
     And I click 'Oldest' in the 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY' section
     And for 'Date' in the 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY' section and the 'Oldest' sub-section I enter 'N/A'
     And for 'Number of Days Pending' in the 'XII.C. CONSULTATIONS ON FOIA REQUESTS -- TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY' section and the 'Oldest' sub-section I enter '0'
@@ -491,7 +491,7 @@ Feature: Processing Data Time
 
 # Section: 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED'
     And I click the section 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED'
-    And I select "ASC" from "Agency/Component" in the 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED' section
+    And I select "ACHP" from "Agency/Component" in the 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED' section
     And I click 'NUMBER RECEIVED' in the 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED' section
     And for "Number Received During Fiscal Year from Last Year's Annual Report" in the 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED' section and the 'NUMBER RECEIVED' sub-section I enter '12'
     And for 'Number Received During Fiscal Year from Current Annual Report' in the 'XII.D.(1). COMPARISON OF NUMBERS OF REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- REQUESTS RECEIVED AND PROCESSED' section and the 'NUMBER RECEIVED' sub-section I enter '21'
@@ -501,13 +501,13 @@ Feature: Processing Data Time
 
 # Section: 'XII.D.(2). COMPARISON OF BACKLOGGED REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT'
     And I click the section 'XII.D.(2). COMPARISON OF BACKLOGGED REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT'
-    And I select "ASC" from "Agency/Component" in the 'XII.D.(2). COMPARISON OF BACKLOGGED REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT' section
+    And I select "ACHP" from "Agency/Component" in the 'XII.D.(2). COMPARISON OF BACKLOGGED REQUESTS FROM PREVIOUS AND CURRENT ANNUAL REPORT' section
     And for 'Number of Backlogged Requests as of End of the Fiscal Year from Previous Annual Report' I enter '1'
     And for 'Number of Backlogged Requests as of End of the Fiscal Year from Current Annual Report' I enter '6'
 
 # Section: "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC"
     And I click the section "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC"
-    And I select "ASC" from "Agency/Component" in the "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC" section
+    And I select "ACHP" from "Agency/Component" in the "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC" section
     And I click 'NUMBER RECEIVED' in the "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC" section
     And for "Number Received During Fiscal Year from Last Year's Annual Report" in the "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC" section and the 'NUMBER RECEIVED' sub-section I enter '0'
     And for 'Number Received During Fiscal Year from Current Annual Report' in the "XII.E.(1). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- APPEALS REC'D AND PROC" section and the 'NUMBER RECEIVED' sub-section I enter '0'
@@ -517,7 +517,7 @@ Feature: Processing Data Time
 
 # Section: 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
     And I click the section 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS'
-    And I select "ASC" from "Agency/Component" in the 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS' section
+    And I select "ACHP" from "Agency/Component" in the 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS' section
     And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report' I enter '0'
     And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report' I enter '0'
 
