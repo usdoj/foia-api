@@ -359,7 +359,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function fillDateField($field, $value) {
     $newDate = strtotime("$value");
 
-    $dateToSet = date("d/m/Y", $newDate);
+    $dateToSet = date("m/d/Y", $newDate);
     $this->iSetValueTo($dateToSet, $field);
     // $this->getSession()->getPage()->fillField($field, $dateToSet);
   }
