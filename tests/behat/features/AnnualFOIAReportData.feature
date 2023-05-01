@@ -107,7 +107,7 @@ Feature: Annual FOIA Report Data Feature
     When I press the 'Save and continue' button
     Then I should see "Components field is required"
 
-  @api @javascript @foo
+  @api @javascript
   Scenario: All of the necessary annual report fields are available.
     Given I am logged in as a user with the "Administrator" role
     And I am at "node/add/annual_foia_report_data"
