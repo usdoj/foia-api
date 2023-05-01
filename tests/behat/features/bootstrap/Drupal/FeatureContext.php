@@ -6,6 +6,11 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Drupal\webform\Entity\Webform;
+use Drupal\DrupalExtension\Hook\Scope\EntityScope;
+use Drupal\DrupalExtension\Hook\Scope\AfterNodeCreateScope;
+use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\path_alias\Entity\PathAlias;
+use Drupal\node\Entity\Node;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -25,6 +30,41 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function __construct() {
 
+  }
+
+  /**
+   * Fix some problems that the Drupal extension causes with date fields.
+   *
+   * @afterNodeCreate
+   */
+  public function fixNodeDateFieldValues(AfterNodeCreateScope $event) {
+    $entity = $event->getEntity();
+    if (isset($entity->field_rep_start) && isset($entity->nid)) {
+      $existing_date = $entity->field_rep_start[0];
+      $fixed_date = str_replace('T06:00:00', '', $entity->field_rep_start[0]);
+      if ($existing_date != $fixed_date) {
+        $node = Node::load($entity->nid);
+        $node->set('field_rep_start', $fixed_date);
+        $node->save();
+      }
+    }
+  }
+
+  /**
+   * Create aliases based on provided path_alias value.
+   *
+   * @afterNodeCreate
+   */
+  public function nodePathAliasPostSave(AfterNodeCreateScope $event) {
+    $entity = $event->getEntity();
+    if (isset($entity->path_alias) && isset($entity->nid)) {
+      $path_alias = PathAlias::create([
+        'path' => '/node/' . $entity->nid,
+        'alias' => $entity->path_alias,
+        'langcode' => 'en',
+      ]);
+      $path_alias->save();
+    }
   }
 
   /**
@@ -511,5 +551,29 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception('Section "' . $section . '" was not found.');
     }
     $section_link->click();
+  }
+
+  /**
+   * @Given I click the edit tab
+   */
+  public function iClickTheEditTab() {
+    $primary_tabs = $this->getSession()->getPage()->find('css', '.tabs.primary');
+    $edit_button = $primary_tabs->find('named', ['link', 'Edit']);
+    if (empty($edit_button)) {
+      throw new \Exception('Edit tab was not found.');
+    }
+    $edit_button->click();
+  }
+
+  /**
+   * @Given I press the save button at the bottom of the page
+   */
+  public function iPressTheSaveButton() {
+    $buttons = $this->getSession()->getPage()->find('css', '#edit-actions');
+    $save_button = $buttons->find('named', ['button', 'Save']);
+    if (empty($save_button)) {
+      throw new \Exception('Save button was not found.');
+    }
+    $save_button->click();
   }
 }
