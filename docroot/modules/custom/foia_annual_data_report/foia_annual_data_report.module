@@ -602,17 +602,21 @@ function foia_annual_data_report_node_presave($entity) {
 
         // Node object - Agency Component.
         $ac_node = Node::load($ac_nid);
+        $requiredManualProcessing = $ac_node->get('field_require_manual_processing')->getString();
+        // The following code should only execute if that "Require manual entry
+        // of processing times" checkbox is not checked.
+        if (!$requiredManualProcessing) {
+          // Loop over our field map and update ac node from the annual report.
+          foreach ($field_mapping as $field_report => $field_ac_node) {
+            $val = $agency->get($field_report)->getString();
+            $ac_node->set($field_ac_node, $val);
+          }
+          // Update the report year.
+          $ac_node->set('field_request_data_year', $report_year);
 
-        // Loop over our field map and update ac node from the annual report.
-        foreach ($field_mapping as $field_report => $field_ac_node) {
-          $val = $agency->get($field_report)->getValue()[0]['value'];
-          $ac_node->set($field_ac_node, $val);
+          // Save the node.
+          $ac_node->save();
         }
-        // Update the report year.
-        $ac_node->set('field_request_data_year', $report_year);
-
-        // Save the node.
-        $ac_node->save();
       }
     }
   }

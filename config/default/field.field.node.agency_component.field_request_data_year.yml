@@ -5,6 +5,13 @@ dependencies:
   config:
     - field.storage.node.field_request_data_year
     - node.type.agency_component
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.agency_component.field_request_data_year
 field_name: field_request_data_year
 entity_type: node
