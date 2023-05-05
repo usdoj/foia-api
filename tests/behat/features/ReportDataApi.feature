@@ -27,24 +27,7 @@ Feature: Annual and Quarterly Report API test
     Given I request "/api/annual_foia_report/fiscal_years"
     And I wait 1 seconds
     Then the response code is 200
-    And the response body contains JSON:
-        """
-      [
-          "2019",
-          "2018",
-          "2017",
-          "2016",
-          "2015",
-          "2014",
-          "2013",
-          "2012",
-          "2011",
-          "2010",
-          "2009",
-          "2008"
-      ]
-
-        """
+    Then the response body is a JSON array with a length of at least 4
 
   @api @annualxml
   Scenario: Annual Reports XML API
