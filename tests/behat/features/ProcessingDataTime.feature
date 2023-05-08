@@ -1,4 +1,4 @@
-@agency_component @annual_foia_report_data
+@processing_data_time
 Feature: Processing Data Time
   In order to create Agency Component and Annual Report
   As an Administrator I should be able to change field(Simple Median Days)
@@ -44,7 +44,7 @@ Feature: Processing Data Time
     And I am at "/test-agency-component"
     Then I should see "Test Agency Component"
     And I should see "123456789"
-  
+
   @api @javascript
   Scenario: The processing time fields can be manually enabled to prevent automatic population
     Given I am at "/test-agency-component"
