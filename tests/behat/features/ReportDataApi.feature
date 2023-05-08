@@ -37,7 +37,6 @@ Feature: Annual and Quarterly Report API test
     Given I request "/api/annual-report-xml/doj/2020"
     And I wait 1 seconds
     Then the response code is 200
-#    And the request body contains "FOIA Annual Report"
     Then the "Content-Type" response header exists
     Then the "Content-Type" response header matches "/(text\/html|charset=UTF-8)/i"
 
