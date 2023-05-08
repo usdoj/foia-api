@@ -59,9 +59,13 @@ class FoiaWizardController extends ControllerBase {
 
     // Get the title.
     $data = [
-      'intro_slide' => $config->get('intro_slide.value'),
-      'foo' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
-      'bar' => 'Lorem ipsum dolor sit amet',
+      'language' => [
+        'es' => [
+          'intro_slide' => $config->get('intro_slide.value'),
+          'foo' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+          'bar' => 'Lorem ipsum dolor sit amet',
+        ]
+      ]
     ];
 
     // Return JSON response.
