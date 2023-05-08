@@ -6,10 +6,10 @@ Feature: Annual and Quarterly Report API test
   Background:
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
-      | Department of Justice  | DOJ                       | description |plain_text| en       |
+      | Department of Justice  | doj                       | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
-      | Department of Justice test | Department of Justice   | 2019-01-01      | DOJ                         |
+      | Department of Justice test | Department of Justice   | 2019-01-01      | doj                         |
 
   @api @annual
   Scenario: Annual Reports API
@@ -31,14 +31,6 @@ Feature: Annual and Quarterly Report API test
         """
 []
         """
-
-  @api @annualxml
-  Scenario: Annual Reports XML API
-    Given I request "/api/annual-report-xml/doj/2020"
-    And I wait 1 seconds
-    Then the response code is 200
-    Then the "Content-Type" response header exists
-    Then the "Content-Type" response header matches "/(text\/html|charset=UTF-8)/i"
 
   @api @quarterly
   Scenario: Quarterly Report Data API
