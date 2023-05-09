@@ -11,6 +11,8 @@ Feature: Quarterly FOIA Report Data Feature
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
       | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | ABCDEF                         |
+      | Test Agency Component 2 | Federal Testing Agency    | 2020-01-01      | ABCDEF                         |
+      | Test Agency Component 3 | Federal Testing Agency    | 2021-01-01      | ABCDEF                         |
 
   @api @javascript
   Scenario: The Components should be required for Quarterly reports
@@ -68,3 +70,27 @@ Feature: Quarterly FOIA Report Data Feature
     Then the "Agency Overall - Number of requests received" element should have the value "0"
     Then the "Agency Overall - Number of requests processed" element should have the value "0"
     Then the "Agency Overall - Number of requests backlogged" element should have the value "0"
+
+
+  @api @quarterly
+  Scenario: Quarterly Report Data API
+    Given I request "/api/quarterly_foia_report?page[limit]=1"
+    Then the response code is 200
+    Then the "Content-Type" response header exists
+    And the response body contains JSON:
+        """
+        {
+            "data": []
+        }
+        """
+  @api @quarterlyfiscal
+  Scenario: Quarterly Report Fiscal Year API
+    Given I request "/api/quarterly_foia_report/fiscal_years"
+    Then the response code is 200
+    Then the "Content-Type" response header exists
+    And the response body contains JSON:
+        """
+[
+    "2021"
+]
+        """

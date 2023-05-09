@@ -509,7 +509,6 @@ Feature: Annual FOIA Report Data Feature
   @api @annual
   Scenario: Annual Reports API
     Given I request "/api/annual_foia_report?page[limit]=1"
-#    And I wait 10 seconds
     Then the response code is 200
     And the response body contains JSON:
         """
@@ -524,28 +523,4 @@ Feature: Annual FOIA Report Data Feature
     And the response body contains JSON:
         """
 []
-        """
-
-  @api @quarterly
-  Scenario: Quarterly Report Data API
-    Given I request "/api/quarterly_foia_report?page[limit]=1"
-    Then the response code is 200
-    Then the "Content-Type" response header exists
-    And the response body contains JSON:
-        """
-        {
-            "data": []
-        }
-        """
-  @api @quarterlyfiscal
-  Scenario: Quarterly Report Fiscal Year API
-    Given I request "/api/quarterly_foia_report/fiscal_years"
-    Then the response code is 200
-    Then the "Content-Type" response header exists
-    And the response body contains JSON:
-        """
-[
-    "2022",
-    "2021"
-]
         """
