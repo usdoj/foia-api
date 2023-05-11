@@ -1,0 +1,30 @@
+uuid: 16fda936-814f-48a8-8c51-2cf970544916
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_require_manual_processing
+    - node.type.agency_component
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.agency_component.field_require_manual_processing
+field_name: field_require_manual_processing
+entity_type: node
+bundle: agency_component
+label: 'Require manual entry of processing times'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
