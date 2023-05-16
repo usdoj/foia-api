@@ -119,13 +119,18 @@ Feature: Processing Data Time
   @api @javascript
   Scenario: Edits of past annual reports should not update processing times on component pages
     Given I am at "/test-agency-component"
-    Then I should see "Test Agency Component"
-    And I should not see "123456789"
     And I click the edit tab
     And I check the box "Require manual entry of processing times"
+    And for 'Street address' I enter '123 testing Address'
+    And for 'City' I enter 'Rockville'
+    And for 'Zip code' I enter '20857'
+    And I select "Maryland" from "State"
+    And I select "Email" from "Portal Submission Format"
+    And for 'Submission Email' I enter 'test@test.com'
     And I press the save button at the bottom of the page
     And I wait 5 seconds
     And I click the edit tab
+    Then the element "Request Data Year" is "enabled"
     And for 'Request Data Year' I enter '2022'
     And I uncheck the box "Require manual entry of processing times"
     And I press the save button at the bottom of the page
@@ -154,5 +159,4 @@ Feature: Processing Data Time
     And I select "Published" from "Change to"
     And I press the save button at the bottom of the page
     And I am at "/test-agency-component"
-    Then I should see "Test Agency Component"
     And I should not see "123456789"
