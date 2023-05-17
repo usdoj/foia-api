@@ -131,14 +131,14 @@ Feature: Processing Data Time
     And I wait 5 seconds
     And I click the edit tab
     Then the element "Request Data Year" is "enabled"
-    And for 'Request Data Year' I enter '2022'
+    And for 'Request Data Year' I enter '2023'
     And I uncheck the box "Require manual entry of processing times"
     And I press the save button at the bottom of the page
     And I wait 5 seconds
     And I am at "node/add/annual_foia_report_data"
     And I select "Test Agency" from "Agency"
     And I wait 5 seconds
-    And for 'FOIA Annual Report Year' I enter '2023'
+    And for 'FOIA Annual Report Year' I enter '2022'
     And I check the box "TESTAGENCYCOMPONENT"
     When I press the 'Save and continue' button
     And I ignore the admin menu

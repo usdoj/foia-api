@@ -606,7 +606,7 @@ function foia_annual_data_report_node_presave($entity) {
         // The following code should only execute if that "Require manual entry
         // of processing times" checkbox is not checked and request year
         // greater than equal to annual report yr.
-        if (!$requiredManualProcessing && ($component_request_data_year >= $report_year)) {
+        if (!$requiredManualProcessing && ($report_year >= $component_request_data_year)) {
           // Loop over our field map and update ac node from the annual report.
           foreach ($field_mapping as $field_report => $field_ac_node) {
             $val = $agency->get($field_report)->getString();
