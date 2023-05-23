@@ -10,3 +10,16 @@ foia_api.quarterly_report_fiscal_years:
     _controller: '\Drupal\foia_api\Controller\FoiaApiQuarterlyFiscalYearController::get'
   requirements:
     _permission: 'access content'
+foia_api.annual_report_all_get:
+  path: '/api/annual_foia_report/all'
+  defaults:
+    _controller: '\Drupal\foia_api\Controller\FoiaApiAnnualAllController::get'
+  requirements:
+    _permission: 'access content'
+foia_api.annual_report_all_callback:
+  path: '/api/annual_foia_report/callback'
+  methods: [POST]
+  defaults:
+    _controller: '\Drupal\foia_api\Controller\FoiaApiAnnualAllController::callback'
+  requirements:
+    _permission: 'access content'

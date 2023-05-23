@@ -53,7 +53,7 @@ class FoiaApiQuarterlyFiscalYearController extends ControllerBase implements Con
   }
 
   /**
-   * Get an array of report years for published Quarterly Report nodes.
+   * Array of report years for published Quarterly Report nodes.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   The response.
