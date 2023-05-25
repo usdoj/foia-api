@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.taxonomy_term.agency.field_agency_abbreviation
     - field.field.taxonomy_term.agency.field_agency_category
+    - field.field.taxonomy_term.agency.field_agency_requested_records
     - field.field.taxonomy_term.agency.field_agency_seal
     - taxonomy.vocabulary.agency
   module:
@@ -37,6 +38,13 @@ content:
       link: true
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_agency_requested_records:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
     region: content
   field_agency_seal:
     type: image
