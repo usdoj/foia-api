@@ -30,12 +30,12 @@ steps:
       - forumone/extract#v0.2.0:
           image: ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}
           from: /var/www/html
-          to: ${DOCKERFILE_LOCATION}
+          to: api/${DOCKERFILE_LOCATION}
 
       # Execute an artifact deployment using the defined branch to
       # environment mapping.
       - forumone/artifact-push#v0.3.1:
-          verbose: false
+          verbose: true
           source-directory: ${DOCKERFILE_LOCATION}
           remote: oafzps2pqxjxw@git.us-2.platform.sh:oafzps2pqxjxw.git
           branches:

@@ -27,7 +27,7 @@ FROM theme-base AS theme
 # Building artifact
 FROM busybox AS artifact
 
-WORKDIR /var/www/html/api
+WORKDIR /var/www/html
 
 COPY --from=base ["/var/www/html", "./"]
 COPY --from=theme ["/app", "docroot/themes"]
