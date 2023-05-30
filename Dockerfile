@@ -4,7 +4,6 @@ ARG NODE_VERSION="16"
 
 FROM forumone/composer:${COMPOSER_VERSION}-php-${PHP_VERSION} AS base
 
-# In some instances this is required.
 WORKDIR /var/www/html
 
 # This will copy everything into the dockerfile other than
@@ -28,7 +27,7 @@ FROM theme-base AS theme
 # Building artifact
 FROM busybox AS artifact
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/api
 
 COPY --from=base ["/var/www/html", "./"]
 COPY --from=theme ["/app", "docroot/themes"]
