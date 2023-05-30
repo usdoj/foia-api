@@ -30,13 +30,13 @@ steps:
       - forumone/extract#v0.2.0:
           image: ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}
           from: /var/www/html
-          to: ${ARTIFACT_LOCATION}
+          to: ${DOCKERFILE_LOCATION}
 
       # Execute an artifact deployment using the defined branch to
       # environment mapping.
       - forumone/artifact-push#v0.3.1:
           verbose: false
-          source-directory: ${ARTIFACT_LOCATION}
+          source-directory: ${DOCKERFILE_LOCATION}
           remote: oafzps2pqxjxw@git.us-2.platform.sh:oafzps2pqxjxw.git
           branches:
             # - match: develop
@@ -53,6 +53,6 @@ steps:
 
           files:
             force-add:
-              - vendor
-              - docroot
-              - docroot/sites/default/settings.php
+              - api/vendor
+              - api/docroot
+              - api/docroot/sites/default/settings.php
