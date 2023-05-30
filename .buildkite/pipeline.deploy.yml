@@ -30,7 +30,7 @@ steps:
       - forumone/extract#v0.2.0:
           image: ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}
           from: /var/www/html
-          to: api/${DOCKERFILE_LOCATION}
+          to: api
 
       # Execute an artifact deployment using the defined branch to
       # environment mapping.
