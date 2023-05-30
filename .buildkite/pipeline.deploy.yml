@@ -56,3 +56,13 @@ steps:
               - api/vendor
               - api/docroot
               - api/docroot/sites/default/settings.php
+            ignore:
+              - .git/
+              - .gitignore
+              - .lando.yml
+              - .platform/
+              - .platform.drupal.yml
+              - Dockerfile
+              - README.md
+              - client/
+              - header.svg
