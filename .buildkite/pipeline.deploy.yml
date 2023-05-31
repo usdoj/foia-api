@@ -30,7 +30,7 @@ steps:
       - forumone/extract#v0.2.0:
           image: ${ECR_NAMESPACE}:${BUILDKITE_PIPELINE_SLUG}-${BUILDKITE_COMMIT}
           from: /var/www/html
-          to: ${DOCKERFILE_LOCATION}
+          to: api
 
       # Execute an artifact deployment using the defined branch to
       # environment mapping.
@@ -53,7 +53,7 @@ steps:
 
           files:
             force-add:
-          #    - api/vendor
+              - api/vendor
               - api/docroot
             ignore:
               - .git/
@@ -65,6 +65,6 @@ steps:
               - README.md
               - client/
               - header.svg
-              - api
+              #- api
               - api/platformsh-scripts/
               - api/docroot/sites/default/
