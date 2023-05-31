@@ -1,10 +1,10 @@
-ARG PHP_VERSION="8.0"
-ARG COMPOSER_VERSION="2.3"
+ARG PHP_VERSION="8.1"
+ARG COMPOSER_VERSION="2.5"
 ARG NODE_VERSION="16"
 
 FROM forumone/composer:${COMPOSER_VERSION}-php-${PHP_VERSION} AS base
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/api
 
 # This will copy everything into the dockerfile other than
 # those excluded in the .dockerignore
@@ -30,6 +30,6 @@ FROM busybox AS artifact
 WORKDIR /var/www/html
 
 COPY --from=base ["/var/www/html", "./"]
-COPY --from=theme ["/app", "docroot/themes"]
+COPY --from=theme ["/app", "api/docroot/themes"]
 
 FROM artifact
