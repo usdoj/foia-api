@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ec41a08b61720ee4b1fd3c740d8a42f",
+    "content-hash": "73c41a8e27d55a89dc55b7df9408c472",
     "packages": [
         {
             "name": "acquia/blt",
@@ -2611,55 +2611,6 @@
             }
         },
         {
-            "name": "drupal/cog",
-            "version": "1.15.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/cog.git",
-                "reference": "8.x-1.15"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cog-8.x-1.15.zip",
-                "reference": "8.x-1.15",
-                "shasum": "4b416ce2957438cbe42e8597fccaf7d208a90534"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9"
-            },
-            "type": "drupal-theme",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.15",
-                    "datestamp": "1643242344",
-                    "security-coverage": {
-                        "status": "revoked",
-                        "message": "Project has been unsupported by the Drupal Security Team"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "natts",
-                    "homepage": "https://www.drupal.org/user/378513"
-                },
-                {
-                    "name": "Unsupported Projects",
-                    "homepage": "https://www.drupal.org/user/291168"
-                }
-            ],
-            "description": "An Acquia-maintained base theme.",
-            "homepage": "https://github.com/acquia-pso/cog",
-            "support": {
-                "source": "https://github.com/acquia-pso/cog",
-                "issues": "https://github.com/acquia-pso/cog/issues"
-            }
-        },
-        {
             "name": "drupal/config_filter",
             "version": "1.10.0",
             "source": {
@@ -2799,54 +2750,6 @@
                 "source": "https://git.drupalcode.org/project/config_split",
                 "issues": "https://www.drupal.org/project/issues/config_split",
                 "slack": "https://drupal.slack.com/archives/C45342CDD"
-            }
-        },
-        {
-            "name": "drupal/config_update",
-            "version": "1.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/config_update.git",
-                "reference": "8.x-1.7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.7.zip",
-                "reference": "8.x-1.7",
-                "shasum": "8f079abf7c2ea826a27fa5224b0770a26404c968"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.7",
-                    "datestamp": "1586355587",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "codebymikey",
-                    "homepage": "https://www.drupal.org/user/3573206"
-                },
-                {
-                    "name": "Pasqualle",
-                    "homepage": "https://www.drupal.org/user/80733"
-                }
-            ],
-            "description": "Provides basic revert and update functionality for other modules",
-            "homepage": "https://www.drupal.org/project/config_update",
-            "support": {
-                "source": "https://git.drupalcode.org/project/config_update"
             }
         },
         {
@@ -4052,88 +3955,6 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/externalauth",
                 "issues": "https://www.drupal.org/project/issues/externalauth"
-            }
-        },
-        {
-            "name": "drupal/features",
-            "version": "3.12.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/features.git",
-                "reference": "8.x-3.12"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/features-8.x-3.12.zip",
-                "reference": "8.x-3.12",
-                "shasum": "f28d6e7d3340e32666a3e8ae515ed746dbe86b98"
-            },
-            "require": {
-                "drupal/config_update": "^1.4",
-                "drupal/core": "^8.8 || ^9"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-3.12",
-                    "datestamp": "1612830531",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^9 || ^10"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "dawehner",
-                    "homepage": "https://www.drupal.org/user/99340"
-                },
-                {
-                    "name": "donquixote",
-                    "homepage": "https://www.drupal.org/user/459338"
-                },
-                {
-                    "name": "e2thex",
-                    "homepage": "https://www.drupal.org/user/189123"
-                },
-                {
-                    "name": "febbraro",
-                    "homepage": "https://www.drupal.org/user/43670"
-                },
-                {
-                    "name": "flocondetoile",
-                    "homepage": "https://www.drupal.org/user/2006064"
-                },
-                {
-                    "name": "jmiccolis",
-                    "homepage": "https://www.drupal.org/user/31731"
-                },
-                {
-                    "name": "joseph.olstad",
-                    "homepage": "https://www.drupal.org/user/1321830"
-                },
-                {
-                    "name": "mpotter",
-                    "homepage": "https://www.drupal.org/user/616192"
-                },
-                {
-                    "name": "nedjo",
-                    "homepage": "https://www.drupal.org/user/4481"
-                }
-            ],
-            "description": "Enables administrators to package configuration into modules",
-            "homepage": "https://www.drupal.org/project/features",
-            "support": {
-                "source": "https://git.drupalcode.org/project/features"
             }
         },
         {
@@ -7594,28 +7415,31 @@
         },
         {
             "name": "drupal/simplesamlphp_auth",
-            "version": "dev-3.x",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simplesamlphp_auth.git",
-                "reference": "8951ac2bdfd84447cdf8dbe9b76e710042ea7fb4"
+                "reference": "8.x-3.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/simplesamlphp_auth-8.x-3.3.zip",
+                "reference": "8.x-3.3",
+                "shasum": "14b33fc4e7c9a6a72de5a4ec32722200e7203d43"
             },
             "require": {
-                "drupal/core": "^9.4",
+                "drupal/core": "^8.7||^9.0",
                 "drupal/externalauth": "^1.1||^2.0",
                 "simplesamlphp/simplesamlphp": "^1.18.2||^1.19"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-3.3+2-dev",
-                    "datestamp": "1674304227",
+                    "version": "8.x-3.3",
+                    "datestamp": "1660687554",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -19344,6 +19168,83 @@
             "time": "2016-01-26T17:05:07+00:00"
         },
         {
+            "name": "palantirnet/drupal-rector",
+            "version": "0.15.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/palantirnet/drupal-rector.git",
+                "reference": "85382a67a07b928f5a963d94fbca11d7be33d6ca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/palantirnet/drupal-rector/zipball/85382a67a07b928f5a963d94fbca11d7be33d6ca",
+                "reference": "85382a67a07b928f5a963d94fbca11d7be33d6ca",
+                "shasum": ""
+            },
+            "require": {
+                "rector/rector": "~0.15.2",
+                "webflo/drupal-finder": "^1.2"
+            },
+            "replace": {
+                "drupal8-rector/drupal8-rector": "*",
+                "palantirnet/drupal8-rector": "*"
+            },
+            "require-dev": {
+                "cweagans/composer-patches": "^1.7.2",
+                "php": "^8.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^1.0",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpunit/phpunit": "^10.0",
+                "rector/rector-src": "dev-main",
+                "symfony/yaml": "^5 || ^6",
+                "symplify/vendor-patches": "^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "enable-patching": true
+            },
+            "autoload": {
+                "psr-4": {
+                    "DrupalRector\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dezső Biczó",
+                    "email": "mxr576@gmail.com"
+                },
+                {
+                    "name": "Ofer Shaal",
+                    "email": "shaal@palantir.net"
+                },
+                {
+                    "name": "Daniel Montgomery",
+                    "email": "montgomery@palantir.net"
+                },
+                {
+                    "name": "Matt Glaman",
+                    "email": "nmd.matt@gmail.com"
+                }
+            ],
+            "description": "Instant fixes for your Drupal code by using Rector.",
+            "keywords": [
+                "Code style",
+                "Drupal 8",
+                "ast",
+                "drupal 9",
+                "rector"
+            ],
+            "support": {
+                "source": "https://github.com/palantirnet/drupal-rector/tree/0.15.1"
+            },
+            "time": "2023-03-23T20:57:43+00:00"
+        },
+        {
             "name": "phpcompatibility/php-compatibility",
             "version": "9.3.5",
             "source": {
@@ -19555,6 +19456,67 @@
                 "source": "https://github.com/sirn-se/phrity-util-errorhandler/tree/1.0.1"
             },
             "time": "2022-10-27T12:14:42+00:00"
+        },
+        {
+            "name": "rector/rector",
+            "version": "0.15.25",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rectorphp/rector.git",
+                "reference": "015935c7ed9e48a4f5895ba974f337e20a263841"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/015935c7ed9e48a4f5895ba974f337e20a263841",
+                "reference": "015935c7ed9e48a4f5895ba974f337e20a263841",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0",
+                "phpstan/phpstan": "^1.10.14"
+            },
+            "conflict": {
+                "rector/rector-doctrine": "*",
+                "rector/rector-downgrade-php": "*",
+                "rector/rector-phpunit": "*",
+                "rector/rector-symfony": "*"
+            },
+            "bin": [
+                "bin/rector"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "0.15-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "keywords": [
+                "automation",
+                "dev",
+                "migration",
+                "refactoring"
+            ],
+            "support": {
+                "issues": "https://github.com/rectorphp/rector/issues",
+                "source": "https://github.com/rectorphp/rector/tree/0.15.25"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-04-20T16:07:39+00:00"
         },
         {
             "name": "sirbrillig/phpcs-variable-analysis",
@@ -19948,8 +19910,7 @@
         "drupal/node_revision_delete": 10,
         "drupal/panelizer": 10,
         "drupal/precision_modifier": 10,
-        "drupal/rules": 20,
-        "drupal/simplesamlphp_auth": 20
+        "drupal/rules": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
