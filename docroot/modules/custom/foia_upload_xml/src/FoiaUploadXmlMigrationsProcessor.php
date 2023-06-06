@@ -36,7 +36,7 @@ class FoiaUploadXmlMigrationsProcessor {
    *
    * @var array
    */
-  protected $sourceOverrides;
+  protected $sourceOverrides = [];
 
   /**
    * FoiaUploadXmlMigrationsProcessor constructor.
@@ -48,7 +48,6 @@ class FoiaUploadXmlMigrationsProcessor {
     $this->migrationPluginManager = $migrationPluginManager;
     $this->migrationPluginManager->setCacheBackend(new NullBackend('discovery'), 'migration_plugins', ['migration_plugins']);
     $this->migrateMessage = new MigrateMessage();
-    $this->sourceOverrides = [];
   }
 
   /**
