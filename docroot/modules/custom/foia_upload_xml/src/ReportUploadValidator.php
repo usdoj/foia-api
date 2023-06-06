@@ -183,6 +183,7 @@ class ReportUploadValidator {
 
     $node_query = $this->entityTypeManager->getStorage('node')
       ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'annual_foia_report_data')
       ->condition('field_agency', $agency_tid)
       ->condition('field_foia_annual_report_yr', $year);
