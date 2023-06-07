@@ -189,5 +189,4 @@ Feature: Processing Data Time
     And I click the edit tab
     And I select "Published" from "Change to"
     And I press the save button at the bottom of the page
-    And I am at "/test-agency-component"
     And I should not see "123456789"
