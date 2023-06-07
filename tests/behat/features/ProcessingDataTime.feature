@@ -160,3 +160,34 @@ Feature: Processing Data Time
     And I press the save button at the bottom of the page
     And I am at "/test-agency-component"
     And I should not see "123456789"
+
+  @api @javascript
+  Scenario: Testing No data to report for this section button
+    Given I am logged in as a user with the 'Administrator' role
+    And I am at "node/add/annual_foia_report_data"
+    And I select "Test Agency" from "Agency"
+    And I wait 5 seconds
+    And for 'FOIA Annual Report Year' I enter '2022'
+    And I check the box "TESTAGENCYCOMPONENT"
+    When I press the 'Save and continue' button
+    And I ignore the admin menu
+    And I click the section 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
+    Then I should see "No data to report for this section"
+    And I click 'Simple' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
+    And I select "TESTAGENCYCOMPONENT" from "Agency/Component" in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
+    And for 'Median Number of Days' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section and the 'Simple' sub-section I enter '123456789'
+    And for 'Average Number of Days' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section and the 'Simple' sub-section I enter '123456789'
+    And I press the 'No data to report for this section' button
+    And I select "Draft" from "Change to"
+    And I press the save button at the bottom of the page
+    And I click the edit tab
+    And I select "Submitted to OIP" from "Change to"
+    And I press the save button at the bottom of the page
+    And I click the edit tab
+    And I select "Cleared" from "Change to"
+    And I press the save button at the bottom of the page
+    And I click the edit tab
+    And I select "Published" from "Change to"
+    And I press the save button at the bottom of the page
+    And I am at "/test-agency-component"
+    And I should not see "123456789"
