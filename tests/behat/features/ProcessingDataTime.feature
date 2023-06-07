@@ -187,9 +187,11 @@ Feature: Processing Data Time
     And for 'FOIA Annual Report Year' I enter '2022'
     And I check the box "TESTAGENCYCOMPONENT"
     When I press the 'Save and continue' button
+    And I wait 3 seconds
+    And I click 'IV. Exemption 3 Statutes'
+    Then I should see "No data to report for this section"
     And I ignore the admin menu
     And I click the section 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
-    Then I should see "No data to report for this section"
     And I click 'Simple' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
     And I select "TESTAGENCYCOMPONENT" from "Agency/Component" in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
     And for 'Median Number of Days' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section and the 'Simple' sub-section I enter '123456789'
