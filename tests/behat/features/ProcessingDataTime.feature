@@ -164,6 +164,23 @@ Feature: Processing Data Time
   @api @javascript
   Scenario: Testing No data to report for this section button
     Given I am logged in as a user with the 'Administrator' role
+    Given I am at "/test-agency-component"
+    And I click the edit tab
+    And I check the box "Require manual entry of processing times"
+    And for 'Street address' I enter '123 testing Address'
+    And for 'City' I enter 'Rockville'
+    And for 'Zip code' I enter '20857'
+    And I select "Maryland" from "State"
+    And I select "Email" from "Portal Submission Format"
+    And for 'Submission Email' I enter 'test@test.com'
+    And I press the save button at the bottom of the page
+    And I wait 5 seconds
+    And I click the edit tab
+    Then the element "Request Data Year" is "enabled"
+    And for 'Request Data Year' I enter '2023'
+    And I uncheck the box "Require manual entry of processing times"
+    And I press the save button at the bottom of the page
+    And I wait 5 seconds
     And I am at "node/add/annual_foia_report_data"
     And I select "Test Agency" from "Agency"
     And I wait 5 seconds
@@ -189,4 +206,5 @@ Feature: Processing Data Time
     And I click the edit tab
     And I select "Published" from "Change to"
     And I press the save button at the bottom of the page
+    And I wait 5 seconds
     And I should not see "123456789"
