@@ -505,7 +505,7 @@
 
       $(fieldWrapperSelector).once('foia-add-populate-button').each(function() {
         // Build buttons contain.
-        var sectionBtns = $('<div class="section-button-group" style="display: flex;padding-top: .5rem;gap: 1rem;"><div class="component-placeholder-button-div"><div class="description">Use this button when starting a new report, to quickly add placeholders for all of the components that you have selected in the checkboxes above.</div></div><div class="no-data-to-report-div"><div class="description">Use this button when No data to report for this section, to quickly fill 0 or N/A for all of the components.</div></div></div>');
+        var sectionBtns = $('<div class="section-button-group" style="display: flex;padding-top: .5rem;gap: 1rem;"><div class="component-placeholder-button-div"><div class="description">Use this button when starting a new report, to quickly add placeholders for all of the components that you have selected in the checkboxes above.</div></div><div class="no-data-to-report-div"><div class="description">Use this button to quickly fill 0 or N/A for components do not apply.</div></div></div>');
         $(this).prepend(sectionBtns);
 
 
