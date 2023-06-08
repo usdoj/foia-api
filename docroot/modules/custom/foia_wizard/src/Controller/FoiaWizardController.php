@@ -2,7 +2,6 @@
 
 namespace Drupal\foia_wizard\Controller;
 
-use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -57,21 +56,58 @@ class FoiaWizardController extends ControllerBase {
     // Get the config.
     $config = $this->configFactory->get('foia_wizard.settings');
 
-    // Get the title.
+    $journey_keys = [
+      'medical_records',
+      'military_records',
+    ];
+
+    $journeys = [];
+
+    foreach ($journey_keys as $key) {
+
+      $journey = $config->get($key);
+
+      // Split the questions string into an array by newlines.
+      $questions = explode("\n", $journey['questions']);
+      // Foreach line, split by pipe.
+      $entry = [];
+      foreach ($questions as $message) {
+        $message = explode('|', $message);
+        $entry[] = [
+          $message[0] => $message[1],
+        ];
+      }
+      $journeys[$key]['questions'] = $entry;
+
+      // Split the messages string into an array by newlines.
+      $messages = explode("\n", $journey['messages']);
+      // Foreach line, split by pipe.
+      $entry = [];
+      foreach ($messages as $message) {
+        $message = explode('|', $message);
+        $entry[] = [
+          $message[0] => $message[1],
+        ];
+      }
+      $journeys[$key]['messages'] = $entry;
+
+      $journeys[$key]['results'] = $journey['results'];
+
+    }
+
     $data = [
       'language' => [
         'es' => [
           'intro_slide' => $config->get('intro_slide.value'),
-          'foo' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
-          'bar' => 'Lorem ipsum dolor sit amet',
-        ]
-      ]
+          'query_slide' => $config->get('query_slide.value'),
+          'journeys' => $journeys,
+        ],
+      ],
     ];
 
     // Return JSON response.
     return new JsonResponse($data);
     //return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
-
   }
 
 }
