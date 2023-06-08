@@ -188,16 +188,16 @@ Feature: Processing Data Time
     And I check the box "TESTAGENCYCOMPONENT"
     When I press the 'Save and continue' button
     And I wait 3 seconds
-    And I click 'IV. Exemption 3 Statutes'
-    Then I should see "No data to report for this section"
     And I ignore the admin menu
+    And I click the section 'IV. Exemption 3 Statutes'
+    Then I should see "No data to report for this section"
     And I click the section 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
     And I click 'Simple' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
     And I select "TESTAGENCYCOMPONENT" from "Agency/Component" in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
     And for 'Median Number of Days' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section and the 'Simple' sub-section I enter '123456789'
     And for 'Average Number of Days' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section and the 'Simple' sub-section I enter '123456789'
     And I ignore the admin menu
-    When I press the 'No data to report for this section' button in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
+    And I press the 'No data to report for this section' button in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
     And I wait 3 seconds
     And I select "Draft" from "Change to"
     And I press the save button at the bottom of the page
