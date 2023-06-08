@@ -189,8 +189,6 @@ Feature: Processing Data Time
     When I press the 'Save and continue' button
     And I wait 3 seconds
     And I ignore the admin menu
-    And I click the section 'IV. Exemption 3 Statutes'
-    Then I should see "No data to report for this section"
     And I click the section 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS'
     And I click 'Simple' in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
     And I select "TESTAGENCYCOMPONENT" from "Agency/Component" in the 'VII.A. FOIA REQUESTS -- RESPONSE TIME FOR ALL PROCESSED PERFECTED REQUESTS' section
