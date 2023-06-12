@@ -20,5 +20,13 @@ jobs:
           ddev exec blt setup || true
           ddev drush cim
           ddev drush cr
+      - name: Validate code
+        run: ddev exec blt validate
       - name: Run tests
-        run: ddev exec blt tests:behat
+        run: ddev exec vendor/bin/behat --config=tests/behat/behat.yml --stop-on-failure --strict
+      - name: Upload screenshots of failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: tests/behat/screenshots/*.png

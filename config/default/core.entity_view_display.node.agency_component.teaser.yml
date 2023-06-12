@@ -30,6 +30,7 @@ dependencies:
     - field.field.node.agency_component.field_rep_start
     - field.field.node.agency_component.field_request_data_year
     - field.field.node.agency_component.field_request_submission_form
+    - field.field.node.agency_component.field_require_manual_processing
     - field.field.node.agency_component.field_service_centers
     - field.field.node.agency_component.field_simple_average_days
     - field.field.node.agency_component.field_simple_highest_days
@@ -44,27 +45,26 @@ dependencies:
     - field.field.node.agency_component.field_website
     - node.type.agency_component
   module:
-    - text
+    - panelizer
     - user
+third_party_settings:
+  panelizer:
+    enable: false
+    custom: false
+    allow: false
+    default: default
 id: node.agency_component.teaser
 targetEntityType: node
 bundle: agency_component
 mode: teaser
 content:
-  body:
-    type: text_summary_or_trimmed
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    weight: 101
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
+  body: true
   field_agency: true
   field_agency_comp_abbreviation: true
   field_agency_comp_telephone: true
@@ -91,6 +91,7 @@ hidden:
   field_rep_start: true
   field_request_data_year: true
   field_request_submission_form: true
+  field_require_manual_processing: true
   field_service_centers: true
   field_simple_average_days: true
   field_simple_highest_days: true

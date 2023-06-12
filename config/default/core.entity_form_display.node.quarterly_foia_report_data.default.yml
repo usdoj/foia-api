@@ -17,9 +17,9 @@ dependencies:
     - workflows.workflow.quarterly_report_workflow
   module:
     - content_moderation
-    - entity_reference_views_select
     - field_group
     - paragraphs
+    - select2
 third_party_settings:
   field_group:
     group_quarterly_tabs:
@@ -105,17 +105,17 @@ bundle: quarterly_foia_report_data
 mode: default
 content:
   field_agency:
-    type: entity_reference_autocomplete
+    type: select2_entity_reference
     weight: 1
     region: content
     settings:
+      width: element
+      autocomplete: false
       match_operator: CONTAINS
       match_limit: 10
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   field_agency_components:
-    type: erviews_options_buttons
+    type: options_buttons
     weight: 2
     region: content
     settings: {  }

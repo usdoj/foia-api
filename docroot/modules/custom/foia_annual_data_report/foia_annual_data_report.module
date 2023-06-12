@@ -7,17 +7,10 @@
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\AlertCommand;
-use Drupal\Core\Ajax\OpenDialogCommand;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
-use Drupal\Core\Url;
-use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_form_alter().
@@ -33,13 +26,40 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
     // Attach form style updates.
     $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_style_updates';
 
-    // Add the AJAX save callbacks.
     $node = $form_state->getFormObject()->getEntity();
+
     if ($node->isNew()) {
-      foia_annual_data_report_ajax_new_node($form);
+      // For new annual reports, we require that the
+      // agency be set before continuing.
+      $starting_fields = [
+        'field_agency',
+        'field_agency_components',
+        'field_date_prepared',
+        'field_foia_annual_report_yr',
+      ];
+      $hide_elements = [
+        'moderation_state',
+      ];
+      foreach (Element::children($form) as $key) {
+        if (str_starts_with($key, 'field_')) {
+          if (!in_array($key, $starting_fields)) {
+            $form[$key]['#access'] = FALSE;
+          }
+        }
+        else {
+          if (in_array($key, $hide_elements)) {
+            $form[$key]['#access'] = FALSE;
+          }
+        }
+      }
+      $form['actions']['submit']['#submit'][] = 'foia_annual_data_report_save_and_continue';
+      $form['actions']['submit']['#value'] = 'Save and continue';
+      $form['actions']['preview']['#access'] = FALSE;
+      $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_display_new_reports';
     }
     else {
-      foia_annual_data_report_ajax_existing_node($form);
+      // Add the javascript functionality (only needed for existing nodes).
+      $form['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
     }
 
     // Use the Service to get info for an annual data report form.
@@ -93,7 +113,6 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
         // Add a submit handler to redirect back to this section.
         $form['actions']['submit']['#submit'][] = '_foia_annual_data_report_section_redirect';
       }
-
     }
 
     // Force a submit function to increase memory limit before core's submit.
@@ -104,9 +123,28 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
         }
       }
     }
-
   }
+}
 
+/**
+ * Submit handler for brand new annual reports.
+ *
+ * Redirects to the node edit page for continued editing.
+ *
+ * @param array $form
+ *   Drupal form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Drupal form state.
+ */
+function foia_annual_data_report_save_and_continue(array $form, FormStateInterface $form_state) {
+  $current_route_name = \Drupal::routeMatch()->getRouteName();
+  $destination_route_name = 'entity.node.edit_form';
+  if (str_ends_with($current_route_name, 'annual_report_agency_info')) {
+    // Jump to the next section.
+    $destination_route_name .= '.annual_report_iv_exemption_3_statutes';
+  }
+  $nid = $form_state->getFormObject()->getEntity()->id();
+  $form_state->setRedirect($destination_route_name, ['node' => $nid]);
 }
 
 /**
@@ -119,7 +157,8 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
  */
 function _foia_annual_data_report_section_redirect(
   array &$form,
-  FormStateInterface $form_state): void {
+  FormStateInterface $form_state
+): void {
 
   // This section's part of the route was saved in the form.  If deleting,
   // don't redirect.
@@ -217,8 +256,10 @@ function foia_annual_data_report_form_annual_data_report_section_validate(array 
                       $this_key = $key . '][' . $pos . '][subform][' . $this_fieldname;
                       $this_value = $value['subform'][$this_fieldname][0]['value'] ?: NULL;
                       $element_title = 'Oldest Days agency component #' . ($pos + 1) . ' day #' . $i;
-                      $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
-                        [':element_title:' => $element_title]);
+                      $error_msg = t(
+                        "Invalid input for :element_title:, please use number greater or equal to zero.",
+                        [':element_title:' => $element_title]
+                      );
                       _foia_annual_data_report_text_as_integer_validation($form_state, $this_key, $this_value, $error_msg);
                     }
                   }
@@ -226,16 +267,16 @@ function foia_annual_data_report_form_annual_data_report_section_validate(array 
                 break;
             }
           }
-
           else {
             $value = isset($form_value[0]['value']) ?: 0;
             $element = $form[$key];
             $element_title = isset($element['widget'][0]['#title']) ?: NULL;
-            $error_msg = t("Invalid input for :element_title:, please use number greater or equal to zero.",
-              [':element_title:' => $element_title]);
+            $error_msg = t(
+              "Invalid input for :element_title:, please use number greater or equal to zero.",
+              [':element_title:' => $element_title]
+                      );
             _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
           }
-
         }
       }
     }
@@ -269,8 +310,10 @@ function _foia_annual_data_report_validate_paragraph_fields(array &$form, FormSt
           if (in_array($key, $fields_to_validate) && !empty($value)) {
             $element = $form[$parent_key];
             $element_title = $element['widget']['#title'];
-            $error_msg = t("Invalid input for :element_title: item(s), please use number greater or equal to zero.",
-              [':element_title:' => $element_title]);
+            $error_msg = t(
+              "Invalid input for :element_title: item(s), please use number greater or equal to zero.",
+              [':element_title:' => $element_title]
+            );
             $key_path = "{$parent_key}][{$paragraph_key}][subform][{$key}";
             _foia_annual_data_report_text_as_integer_validation($form_state, $key_path, $value, $error_msg);
           }
@@ -324,7 +367,10 @@ function foia_annual_data_report_form_annual_data_report_validate(array &$form, 
   }
 
   // Get the report year from the form state.
-  $report_year = isset($form_state_values['field_foia_annual_report_yr'][0]['value']) ?: NULL;
+  $report_year = NULL;
+  if (isset($form_state_values['field_foia_annual_report_yr'][0]['value'])) {
+    $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'];
+  }
   // Check for an existing report.
   if ($form_state->getFormObject() instanceof EntityForm) {
     $current_nid = $form_state->getformObject()->getEntity()->id();
@@ -355,182 +401,6 @@ function foia_annual_data_report_form_annual_data_report_validate(array &$form, 
       $form_state->setErrorByName('field_foia_annual_report_yr', $error_message);
     }
   }
-
-}
-
-/**
- * Add ajax to a new annual report node to submit on agency field is set.
- *
- * @param array $form
- *   Form array passed from hook_form_form_id_alter().
- */
-function foia_annual_data_report_ajax_new_node(array &$form) {
-
-  // The 'change.agency' event corresponds to the event triggered in
-  // the foia_change_report_agency library that is attached to this element.
-  // This is a workaround for IE11, which does not fire the change event on
-  // this input when selecting a value from the autocomplete dropdown list.
-  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
-    'callback' => 'foia_annual_data_report_create_node',
-    'event' => 'change.agency',
-    'progress' => [
-      'type' => 'throbber',
-      'message' => 'Please Wait...',
-    ],
-  ];
-
-  $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
-
-}
-
-/**
- * Add ajax to a existing annual report node to submit on agency field is set.
- *
- * @param array $form
- *   Form array passed from hook_form_form_id_alter().
- */
-function foia_annual_data_report_ajax_existing_node(array &$form) {
-
-  // The 'change.agency' event corresponds to the event triggered in
-  // the foia_change_report_agency library that is attached to this element.
-  // This is a workaround for IE11, which does not fire the change event on
-  // this input when selecting a value from the autocomplete dropdown list.
-  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
-    'callback' => 'foia_annual_data_report_refresh',
-    'event' => 'change.agency',
-    'progress' => [
-      'type' => 'throbber',
-      'message' => 'Please Wait...',
-    ],
-  ];
-  $form['field_agency']['widget'][0]['target_id']['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
-
-}
-
-/**
- * Save the node and redirect back to the edit page for the node.
- *
- * @param array $form
- *   Form array passed from hook_form_form_id_alter().
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   Form state passed from hook_form_form_id_alter().
- *
- * @return \Drupal\Core\Ajax\AjaxResponse
- *   AjaxResponse object to alert user and redirect them.
- */
-function foia_annual_data_report_create_node(array $form, FormStateInterface $form_state) {
-
-  $response = new AjaxResponse();
-  $form_state_values = $form_state->getValues();
-
-  // Get the agency node id from the form state.
-  $agency_id = 0;
-  if (!empty($form_state_values['field_agency'][0]['target_id'])) {
-    $agency_id = $form_state_values['field_agency'][0]['target_id'];
-  }
-
-  if (!$agency_id) {
-    $response->addCommand(new AlertCommand("Please select an Agency first."));
-    return $response;
-  }
-
-  // Make sure there's a year so we can do a proper lookup.
-  // Get the report year from the form state.
-  $report_year = 0;
-  if (!empty($form_state_values['field_foia_annual_report_yr'][0]['value'])) {
-    $report_year = $form_state_values['field_foia_annual_report_yr'][0]['value'];
-  }
-  else {
-    $response->addCommand(new AlertCommand("Please select a Report Year first."));
-    return $response;
-  }
-
-  // Check for a duplicate in this AJAX callback before saving a new node.
-  if ($agency_id && $report_year) {
-    $query = \Drupal::entityQuery('node')
-      ->condition('type', 'annual_foia_report_data')
-      ->condition('field_agency', $agency_id)
-      ->condition('field_foia_annual_report_yr', $report_year)
-      ->sort('created', 'DESC')
-      ->range(0, 1);
-    $results = $query->execute();
-
-    // If there is a duplicate found throw error with link to existing report.
-    if (count($results)) {
-      $nid = array_pop($results);
-      $title = "Duplicate Report";
-      $agency_name = Term::load($agency_id)->get('name')->value;
-      $message = <<<EOS
-<p>There is already a report for <b>$agency_name</b> and the <b>year $report_year.</b></p>
-<p>Navigate to <a href="/node/$nid/edit">/node/$nid/edit</a> to change the existing report or <a href="javascript:void(0);" class="agency-back">choose a different year</a> before entering your agency.</p>
-<div class="form-actions js-form-wrapper form-wrapper">
-  <button type="button" class="button button--secondary agency-back">Add New</button>
-  <a href="/node/$nid/edit"><button type="button" class="button button--primary">Edit Existing</button></a>
-</div>
-EOS;
-
-      $options = [
-        'dialogClass' => 'agency-dialog',
-        'closeOnEscape' => TRUE,
-        'width' => '500',
-        'closeText' => '',
-        "resizable" => FALSE,
-        "modal" => TRUE,
-      ];
-
-      $response->addCommand(new OpenDialogCommand('#agency-modal', $title, $message, $options));
-      return $response;
-    }
-  }
-
-  $node = \Drupal::entityTypeManager()->getStorage('node')->create([
-    'type' => 'annual_foia_report_data',
-    'field_agency' => $form_state->getValue('field_agency'),
-    'field_foia_annual_report_yr' => $form_state->getValue('field_foia_annual_report_yr'),
-  ]);
-  $node->save();
-
-  $url = $node->toUrl('edit-form')->toString();
-
-  $response->addCommand(new RedirectCommand($url));
-  $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
-
-  return $response;
-}
-
-/**
- * Do all the magic to get the component list and update the Component options.
- *
- * @param array $form
- *   Form array passed from hook_form_form_id_alter().
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   Form state passed from hook_form_form_id_alter().
- */
-function foia_annual_data_report_refresh(array $form, FormStateInterface $form_state) {
-
-  $node = \Drupal::routeMatch()->getParameter('node');
-  $response = new AjaxResponse();
-  $currentURL = Url::fromRoute('<current>');
-
-  if ($node instanceof NodeInterface) {
-    $nid = $node->id();
-    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-
-    // @todo If users change anything else it doesn't persist.
-    $node->set('field_agency', $form_state->getValue('field_agency'));
-
-    // Set as new revision.
-    $node->setNewRevision(TRUE);
-    $node->revision_log = 'Updated Agency for report';
-    $node->setRevisionUserId(\Drupal::currentUser()->id());
-
-    $node->save();
-
-    $response->addCommand(new RedirectCommand($currentURL->toString()));
-    $response->addCommand(new AlertCommand("Please wait while the page refreshes"));
-  }
-
-  return $response;
 }
 
 /**
@@ -543,7 +413,6 @@ function foia_annual_data_report_early_submit($form, FormStateInterface $form_st
   foia_annual_data_report_set_memory_limit();
   foia_annual_data_report_set_max_execution_time();
   foia_annual_data_report_debug_log('Submitting Annual Report. After setting memory');
-
 }
 
 /**
@@ -612,13 +481,9 @@ function foia_annual_data_report_unrequire_hidden_fields(array &$form) {
         if (!empty($form_item['widget']['#required'])) {
           $form[$key]['widget']['#required'] = FALSE;
         }
-
       }
-
     }
-
   }
-
 }
 
 /**
@@ -735,23 +600,27 @@ function foia_annual_data_report_node_presave($entity) {
         $ac_nid = $ac_nid_value[0]['target_id'];
 
         // Node object - Agency Component.
-        $ac_node = Node::load($ac_nid);
+        $ac_node = \Drupal::entityTypeManager()->getStorage('node')->load($ac_nid);
+        $component_request_data_year = $ac_node->get('field_request_data_year')->getString();
+        $requiredManualProcessing = $ac_node->get('field_require_manual_processing')->getString();
+        // The following code should only execute if that "Require manual entry
+        // of processing times" checkbox is not checked and request year
+        // greater than equal to annual report yr.
+        if (!$requiredManualProcessing && ($report_year >= $component_request_data_year)) {
+          // Loop over our field map and update ac node from the annual report.
+          foreach ($field_mapping as $field_report => $field_ac_node) {
+            $val = $agency->get($field_report)->getString();
+            $ac_node->set($field_ac_node, $val);
+          }
+          // Update the report year.
+          $ac_node->set('field_request_data_year', $report_year);
 
-        // Loop over our field map and update ac node from the annual report.
-        foreach ($field_mapping as $field_report => $field_ac_node) {
-          $val = $agency->get($field_report)->getValue()[0]['value'];
-          $ac_node->set($field_ac_node, $val);
+          // Save the node.
+          $ac_node->save();
         }
-        // Update the report year.
-        $ac_node->set('field_request_data_year', $report_year);
-
-        // Save the node.
-        $ac_node->save();
       }
     }
-
   }
-
 }
 
 /**
@@ -778,7 +647,6 @@ function foia_annual_data_report_menu_local_actions_alter(&$local_actions) {
       }
     }
   }
-
 }
 
 /**
@@ -808,7 +676,5 @@ function foia_annual_data_report_entity_operation_alter(array &$operations, Enti
         }
       }
     }
-
   }
-
 }

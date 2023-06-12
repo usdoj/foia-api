@@ -14,20 +14,22 @@
         "acquia/memcache-settings": "*",
         "composer/installers": "^1.12.0",
         "cweagans/composer-patches": "^1.7.2",
-        "dompdf/dompdf": "^2.0.1",
+        "dompdf/dompdf": "^2.0.3",
         "drupal/acquia_connector": "^4.0.2",
         "drupal/acquia_purge": "^1.2.0",
         "drupal/address": "^1.10.0",
         "drupal/auto_entitylabel": "^3.0@beta",
         "drupal/autologout": "^1.4",
         "drupal/autosave_form": "^1.4.0",
-        "drupal/cog": "^1.15.0",
+        "drupal/business_rules": "^2.0@beta",
+        "drupal/cog": "^1.15",
         "drupal/config_split": "^1.7.0",
-        "drupal/core": "^9.5.2",
-        "drupal/core-composer-scaffold": "^9.5.2",
-        "drupal/core-recommended": "^9.5.2",
+        "drupal/core": "^9.5.8",
+        "drupal/core-composer-scaffold": "^9.5.8",
+        "drupal/core-project-message": "^9.5.8",
+        "drupal/core-recommended": "^9.5.8",
         "drupal/devel": "^5.0.2",
-        "drupal/entity_clone": "^1.0.0-beta7",
+        "drupal/entity_clone": "^2.0@beta",
         "drupal/entity_embed": "^1.0",
         "drupal/entity_reference_revisions": "^1.10.0",
         "drupal/entity_reference_views_select": "^1.4.0",
@@ -55,7 +57,7 @@
         "drupal/migrate_plus": "^6.0.0",
         "drupal/migrate_tools": "^6.0",
         "drupal/mysql56": "^1.3",
-        "drupal/node_edit_protection": "^1.0",
+        "drupal/node_edit_protection": "^1.1.0",
         "drupal/node_revision_delete": "^1.0@beta",
         "drupal/openapi": "^2.0",
         "drupal/paragraphs": "^1.15.0",
@@ -65,29 +67,32 @@
         "drupal/qa_accounts": "^1.0.0-beta2",
         "drupal/queue_ui": "^3.1",
         "drupal/restui": "^1.20.0",
-        "drupal/roleassign": "^1.0@beta",
+        "drupal/roleassign": "^2.0.0",
         "drupal/rules": "3.x-dev@dev",
         "drupal/seckit": "^2.0",
+        "drupal/select2": "^1.14",
         "drupal/shield": "^1.7.0",
         "drupal/simplesamlphp_auth": "3.x-dev@dev",
         "drupal/swiftmailer": "^2.2",
         "drupal/time_field": "^2.1.0",
-        "drupal/upgrade_status": "^3.17.0",
+        "drupal/upgrade_status": "^3.19.0",
         "drupal/video_embed_field": "^2.4",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_operations": "^4.2.0",
-        "drupal/views_data_export": "^1.1",
+        "drupal/views_data_export": "^1.3.0",
         "drupal/views_infinite_scroll": "^1.6 || ^1.9",
         "drupal/webform": "^6.1.3",
         "drupal/xmlsitemap": "^1.4.0",
         "drush/drush": "^10.6.2",
         "npm-asset/jquery-validation": "^1.19.5",
+        "npm-asset/select2": "^4.0",
         "simplesamlphp/simplesamlphp": "^1.19.6"
     },
     "require-dev": {
         "acquia/blt-behat": "^1.3",
         "acquia/blt-phpcs": "^1.0",
-        "geerlingguy/drupal-vm": "~5.0"
+        "geerlingguy/drupal-vm": "~5.0",
+        "imbo/behat-api-extension": "^2.3"
     },
     "extra": {
         "drupal-scaffold": {
@@ -136,8 +141,10 @@
             ]
         },
         "patches": {
+            "drupal/business_rules": {
+                "Fix for multivalue child dependent fields": "https://www.drupal.org/files/issues/2021-04-27/business_rules-multi_value_child-3014031-41-D8.patch"
+            },
             "drupal/core": {
-                "Account for null triggering element when validating managed file elements": "https://www.drupal.org/files/issues/validating_managed-2910320-2.patch",
                 "FOIA-96: Style read-only inputs as disabled": "./patches/FOIA-96-readonly-inputs.patch",
                 "FOIA-32: Dynamically provide action plugins for every moderation state change": "https://www.drupal.org/files/issues/2019-11-20/2797583_provide_moderation_states_as_actions_128.patch",
                 "FOIA-32: Exclude Agency/Component from validation for bulk publishing": "./patches/FOIA-32-validator.patch",
@@ -195,7 +202,8 @@
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
             "acquia/blt": true,
-            "acquia/blt-phpcs": true
+            "acquia/blt-phpcs": true,
+            "drupal/core-project-message": true
         },
         "platform": {
             "php": "8.0.24"

@@ -18,15 +18,17 @@ entity_type: node
 bundle: quarterly_foia_report_data
 label: Components
 description: 'Select all active components.'
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: views
+  handler: business_rules_views
   handler_settings:
-    view:
-      view_name: agency_component_by_agency
+    business_rules_view:
+      view_name: agency_component_by_agency_2
       display_name: entity_reference_1
+      parent_field: field_agency
+      reference_parent_by_uuid: false
       arguments: {  }
 field_type: entity_reference
