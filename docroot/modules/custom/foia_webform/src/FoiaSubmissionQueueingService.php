@@ -2,8 +2,8 @@
 
 namespace Drupal\foia_webform;
 
-use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\Core\Queue\QueueFactory;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**

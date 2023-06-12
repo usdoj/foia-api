@@ -2,9 +2,9 @@
 
 namespace Drupal\foia_webform;
 
-use Drupal\webform\WebformSubmissionInterface;
 use Dompdf\Dompdf;
 use Drupal\file\Entity\File;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Class FoiaSubmissionPrettyFormatter.

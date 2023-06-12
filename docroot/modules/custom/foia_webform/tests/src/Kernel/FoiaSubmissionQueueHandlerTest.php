@@ -2,16 +2,16 @@
 
 namespace Drupal\Tests\foia_webform\Kernel;
 
+use Drupal\file\Entity\File;
 use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\node\Entity\NodeType;
-use Drupal\node\Entity\Node;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\file\Entity\File;
 
 /**
  * Class FoiaSubmissionQueueHandlerTest testing for FoiaSubmissionQueueHandler.

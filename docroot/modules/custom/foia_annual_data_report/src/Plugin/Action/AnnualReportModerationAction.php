@@ -7,14 +7,14 @@ namespace Drupal\foia_annual_data_report\Plugin\Action;
  * Contains \Drupal\foia_annual_data_report\Plugin\Action\AnnualReportModerationAction.
  */
 
-use Drupal\Core\Action\ActionBase;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\content_moderation\ModerationInformationInterface;
 use Drupal\content_moderation\StateTransitionValidationInterface;
+use Drupal\Core\Action\ActionBase;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a a Publish foia annual reports action.

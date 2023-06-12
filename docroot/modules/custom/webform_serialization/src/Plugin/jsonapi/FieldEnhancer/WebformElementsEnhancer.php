@@ -4,8 +4,8 @@ namespace Drupal\webform_serialization\Plugin\jsonapi\FieldEnhancer;
 
 use Drupal\Core\Serialization\Yaml;
 use Drupal\jsonapi_extras\Plugin\ResourceFieldEnhancerBase;
-use Shaper\Util\Context;
 use Drupal\webform\Entity\WebformOptions;
+use Shaper\Util\Context;
 
 /**
  * Decode YAML content.
