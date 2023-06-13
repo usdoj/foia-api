@@ -384,6 +384,7 @@ function foia_annual_data_report_form_annual_data_report_validate(array &$form, 
   // the user to update the existing report or change the values.
   if ($agency_id && $report_year) {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'annual_foia_report_data')
       ->condition('field_agency', $agency_id)
       ->condition('field_foia_annual_report_yr', $report_year)
