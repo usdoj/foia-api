@@ -56,43 +56,11 @@ class FoiaWizardController extends ControllerBase {
     // Get the config.
     $config = $this->configFactory->get('foia_wizard.settings');
 
-    $journey_keys = [
-      'medical_records',
-      'military_records',
-    ];
+    $messages = [];
 
-    $journeys = [];
-
-    foreach ($journey_keys as $key) {
-
-      $journey = $config->get($key);
-
-      // Split the questions string into an array by newlines.
-      $questions = explode("\n", $journey['questions']);
-      // Foreach line, split by pipe.
-      $entry = [];
-      foreach ($questions as $message) {
-        $message = explode('|', $message);
-        $entry[] = [
-          $message[0] => $message[1],
-        ];
-      }
-      $journeys[$key]['questions'] = $entry;
-
-      // Split the messages string into an array by newlines.
-      $messages = explode("\n", $journey['messages']);
-      // Foreach line, split by pipe.
-      $entry = [];
-      foreach ($messages as $message) {
-        $message = explode('|', $message);
-        $entry[] = [
-          $message[0] => $message[1],
-        ];
-      }
-      $journeys[$key]['messages'] = $entry;
-
-      $journeys[$key]['results'] = $journey['results'];
-
+    // Add rich text fields for messages.
+    for ($i = 1; $i <= FOIA_WIZARD_MCOUNT; $i++) {
+      $messages['m' . $i] = $config->get('messages')['m' . $i]['value'];
     }
 
     $data = [
@@ -100,7 +68,7 @@ class FoiaWizardController extends ControllerBase {
         'es' => [
           'intro_slide' => $config->get('intro_slide.value'),
           'query_slide' => $config->get('query_slide.value'),
-          'journeys' => $journeys,
+          'messages' => $messages,
         ],
       ],
     ];
