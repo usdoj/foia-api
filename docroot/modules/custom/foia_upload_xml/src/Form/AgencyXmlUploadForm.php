@@ -7,6 +7,7 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\foia_upload_xml\ReportUploadValidator;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -147,8 +148,7 @@ class AgencyXmlUploadForm extends FormBase {
     $id = $report_data['agency_tid'] ?? 'user_' . $user->id();
     $year = $report_data['report_year'] ?? date('Y');
     $xml_upload_filename = "$directory/report_" . $year . "_" . $id . ".xml";
-    $file = file_move($file, $xml_upload_filename, FileSystemInterface::EXISTS_RENAME);
-
+    $file = \FileRepositoryInterface::move($file, $xml_upload_filename, FileSystemInterface::EXISTS_RENAME);
     $item = new \stdClass();
     $item->fid = $file->id();
     $item->uid = $user->id();

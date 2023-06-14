@@ -183,6 +183,7 @@ class CFOService {
     $meeting_query = \Drupal::service('renderer')->executeInRenderContext($context_meeting, function () use ($meeting_date_value) {
       // Query for the meeting - match just date (not time) hence "like".
       $meeting_query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', 'cfo_meeting')
         ->condition('status', 1)
         ->condition('field_meeting_date', $meeting_date_value, 'LIKE')
@@ -220,6 +221,7 @@ class CFOService {
     $render_query = \Drupal::service('renderer')->executeInRenderContext($render_context, function () use ($slug, $content_type) {
       // Query for the meeting - match just date (not time) hence "like".
       $query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', $content_type)
         ->condition('status', 1)
         ->condition('field_cfo_slug', $slug)

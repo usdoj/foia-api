@@ -196,9 +196,9 @@ class AnnualReportModerationAction extends ActionBase implements ContainerFactor
       $entity->set('moderation_state', $state);
 
       if (method_exists($entity, 'setRevisionUserId')) {
-        $requesttime = \Drupal::time()->getRequestTime();
-        $entity->setRevisionCreationTime($requesttime);
-        $entity->setRevisionLogMessage('VBO Published annual report, time:' . date('d/m/Y - h:i', $requesttime));
+        $request_time = \Drupal::time()->getRequestTime();
+        $entity->setRevisionCreationTime($request_time);
+        $entity->setRevisionLogMessage('VBO Published annual report, time:' . date('d/m/Y - h:i', $request_time));
         $entity->setRevisionUserId(\Drupal::service('current_user')->id());
       }
       if ($entity->save()) {
