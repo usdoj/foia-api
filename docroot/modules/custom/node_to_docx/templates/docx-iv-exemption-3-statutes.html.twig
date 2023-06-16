@@ -34,7 +34,9 @@
       </td>
     </tr>
 
-    {% for key,value in content.field_statute_iv if key|first != '#' %}
+    {% for key,value in content.field_statute_iv %}
+
+      {% if key|first != '#' %}
       {% for subkey,subvalue in content.field_statute_iv[key]['#paragraph'].field_agency_component_inf %}
         {%  if subkey|first != '#'  %}
           <tr >
@@ -76,6 +78,7 @@
         </tr>
         {% endif %}
       {% endfor %}
+      {% endif %}
     {% endfor %}
   </table>
 

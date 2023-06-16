@@ -30,8 +30,8 @@
           of Fiscal Year<o:p></o:p></p>
       </td>
     </tr>
-    {%  if key|first != '#' %}
-      {% for key,value in content.field_foia_requests_va  %}
+    {% for key,value in content.field_foia_requests_va  %}
+      {%  if key|first != '#' %}
         <tr >
           <td nowrap valign=bottom >
             <p class=MsoNormal >
@@ -59,8 +59,8 @@
               <o:p></o:p></p>
           </td>
         </tr>
-      {% endfor %}
-    {% endif %}
+      {% endif %}
+    {% endfor %}
     <!-- This is the totals row -->
     <tr >
       <td nowrap valign=bottom >
@@ -99,14 +99,16 @@
 <div class=WordSection8>
 
   <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570 >
-    {% for key,value in docx.field_footnotes_va if key|first != '#' %}
-      <tr >
-        <td width=570 nowrap valign=bottom >
-          <p class=MsoNormal align=left><i >
-              {{ docx.field_footnotes_va[key] }}
-              <o:p></o:p></i></p>
-        </td>
-      </tr>
+    {% for key,value in docx.field_footnotes_va %}
+      {%  if key|first != '#' %}
+        <tr >
+          <td width=570 nowrap valign=bottom >
+            <p class=MsoNormal align=left><i >
+                {{ docx.field_footnotes_va[key] }}
+                <o:p></o:p></i></p>
+          </td>
+        </tr>
+      {% endif %}
     {% endfor %}
   </table>
 
