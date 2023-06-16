@@ -195,7 +195,7 @@ class AgencyXmlUploadForm extends FormBase {
       'progress_message' => $this->t('Imported @current out of @total'),
       'error_message' => $this->t('An error occurred during import'),
       'finished' => 'foia_upload_xml_execute_migration_finished',
-      'file' => \Drupal::service('extension.list.foia_upload_xml')->getPath('node') . '/foia_upload_xml.batch.inc',
+      'file' => \Drupal::service('extension.list.module')->getPath('foia_upload_xml') . '/foia_upload_xml.batch.inc',
     ];
     batch_set($batch);
   }

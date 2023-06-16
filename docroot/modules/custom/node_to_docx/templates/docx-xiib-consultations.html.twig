@@ -1,7 +1,7 @@
 <div class=WordSection81>
 
-<p class=MsoNormal ><b>XII.B. CONSULTATIONS ON FOIA REQUESTS --
-RECEIVED, PROCESSED, AND PENDING CONSULTATIONS<o:p></o:p></b></p>
+  <p class=MsoNormal ><b>XII.B. CONSULTATIONS ON FOIA REQUESTS --
+      RECEIVED, PROCESSED, AND PENDING CONSULTATIONS<o:p></o:p></b></p>
 
 </div>
 
@@ -10,68 +10,70 @@ RECEIVED, PROCESSED, AND PENDING CONSULTATIONS<o:p></o:p></b></p>
 
 <div class=WordSection82>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=114 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Number of Consultations Received from
-  Other Agencies that were <u>Pending</u> at the Agency as of <u>Start</u><br>
-  of the Fiscal Year<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Number of<br>
-  Consultations <u>Received</u> from Other Agencies During the Fiscal Year<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Number of Consultations Received from
-  Other Agencies that were <u>Processed</u> by the Agency During the Fiscal
-  Year<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Number of Consultations Received from
-  Other Agencies that were <u>Pending</u> at the Agency as of <u>End</u><br>
-  of the Fiscal Year<o:p></o:p></p>
-  </td>
- </tr>
-{% for key,value in content.field_foia_xiib if key|first != '#' %}
- <tr >
-  <td nowrap valign=bottom >
-  <p class=MsoNormal >{{ content.field_foia_xiib[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiib[key]['#paragraph'].field_pend_start_yr[0].value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiib[key]['#paragraph'].field_con_during_yr[0].value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiib[key]['#paragraph'].field_proc_start_yr[0].value }}<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiib[key]['#paragraph'].field_pend_end_yr[0].value }}<o:p></o:p></p>
-  </td>
- </tr>
-{% endfor %}
- <tr >
-  <td width=114 >
-  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiib_pend_start_yr }}<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiib_con_during_yr }}<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiib_proc_start_yr }}<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiib_pend_end_yr }}<o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=114 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Number of Consultations Received from
+          Other Agencies that were <u>Pending</u> at the Agency as of <u>Start</u><br>
+          of the Fiscal Year<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Number of<br>
+          Consultations <u>Received</u> from Other Agencies During the Fiscal Year<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Number of Consultations Received from
+          Other Agencies that were <u>Processed</u> by the Agency During the Fiscal
+          Year<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Number of Consultations Received from
+          Other Agencies that were <u>Pending</u> at the Agency as of <u>End</u><br>
+          of the Fiscal Year<o:p></o:p></p>
+      </td>
+    </tr>
+    {% for key,value in content.field_foia_xiib %}
+      {% if key|first != '#'  %}
+        <tr >
+          <td nowrap valign=bottom >
+            <p class=MsoNormal >{{ content.field_foia_xiib[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiib[key]['#paragraph'].field_pend_start_yr[0].value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiib[key]['#paragraph'].field_con_during_yr[0].value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiib[key]['#paragraph'].field_proc_start_yr[0].value }}<o:p></o:p></p>
+          </td>
+          <td nowrap >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiib[key]['#paragraph'].field_pend_end_yr[0].value }}<o:p></o:p></p>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+    <tr >
+      <td width=114 >
+        <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiib_pend_start_yr }}<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiib_con_during_yr }}<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiib_proc_start_yr }}<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiib_pend_end_yr }}<o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -79,13 +81,13 @@ RECEIVED, PROCESSED, AND PENDING CONSULTATIONS<o:p></o:p></b></p>
 
 <div class=WordSection83>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535>
- <tr >
-   <td width=570 nowrap valign=bottom >
-   <p class=MsoNormal align=left><i >{{ docx.field_footnotes_xiib }}<o:p></o:p></i></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535>
+    <tr >
+      <td width=570 nowrap valign=bottom >
+        <p class=MsoNormal align=left><i >{{ docx.field_footnotes_xiib }}<o:p></o:p></i></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
