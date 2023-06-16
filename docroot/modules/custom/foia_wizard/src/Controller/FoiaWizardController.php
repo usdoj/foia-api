@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Returns responses for FOIA Request Wizard routes.
@@ -25,13 +26,23 @@ class FoiaWizardController extends ControllerBase {
   protected $configFactory;
 
   /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
    * FoiaWizardController constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
+  public function __construct(ConfigFactoryInterface $config_factory, RequestStack $request_stack) {
     $this->configFactory = $config_factory;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -44,7 +55,8 @@ class FoiaWizardController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('request_stack')
     );
   }
 
@@ -73,8 +85,19 @@ class FoiaWizardController extends ControllerBase {
       ],
     ];
 
+    $valid_origins = [
+      'https://www.foia.gov',
+      'https://main-bvxea6i-oafzps2pqxjxw.us-2.platformsh.site',
+    ];
+
+    $origin = $this->requestStack->getCurrentRequest()->headers->get('Origin', '');
+
+    $headers = in_array($origin, $valid_origins)
+      ? ['Access-Control-Allow-Origin' => $origin]
+      : [];
+
     // Return JSON response.
-    return new JsonResponse($data);
+    return new JsonResponse($data, 200, $headers);
     //return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
   }
 
