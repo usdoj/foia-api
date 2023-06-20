@@ -5,6 +5,13 @@ dependencies:
   config:
     - field.storage.node.field_simple_lowest_days
     - node.type.agency_component
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: node.agency_component.field_simple_lowest_days
 field_name: field_simple_lowest_days
 entity_type: node
