@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.taxonomy_term.agency.field_agency_abbreviation
     - field.field.taxonomy_term.agency.field_agency_category
-    - field.field.taxonomy_term.agency.field_agency_requested_records
     - field.field.taxonomy_term.agency.field_agency_seal
     - image.style.thumbnail
     - taxonomy.vocabulary.agency
@@ -39,14 +38,6 @@ content:
     weight: 6
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_agency_requested_records:
-    type: string_textarea
-    weight: 4
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
     third_party_settings: {  }
   field_agency_seal:
     type: image_image
