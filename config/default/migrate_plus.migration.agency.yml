@@ -1,0 +1,50 @@
+uuid: 03457b10-ad13-4204-9187-ae6890728eda
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 6rWmo9J8Aggg6hx3JNvFRmcaX5M7j6HNyJXeYhXVwnI
+id: agency
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: null
+label: Agencies
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  urls: 'http://foia-api.ddev.site:773/modules/custom/foia_migrate/data/modified/agencies.json'
+  item_selector: agencies
+  fields:
+    -
+      name: abbreviation
+      label: 'Agency Abbreviation'
+      selector: abbreviation
+    -
+      name: name
+      label: 'Agency Name'
+      selector: name
+    -
+      name: description
+      label: Description
+      selector: description
+  ids:
+    name:
+      type: string
+process:
+  name: name
+  vid:
+    plugin: default_value
+    default_value: agency
+  field_agency_abbreviation: abbreviation
+  description/value:
+    plugin: nl2br
+    source: description
+  description/format:
+    plugin: default_value
+    default_value: rich_text
+destination:
+  plugin: 'entity:taxonomy_term'
+migration_dependencies: {  }

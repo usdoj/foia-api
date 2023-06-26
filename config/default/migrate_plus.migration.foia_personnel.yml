@@ -1,0 +1,56 @@
+uuid: 137a34ba-d467-45bc-8af2-31c04831a83d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 67BEq_qwze8srYS2VKE4Q9D9GAhbiLi_vyPISvzbtZY
+id: foia_personnel
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: null
+label: 'FOIA Personnel'
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  urls: 'http://foia-api.ddev.site:773/modules/custom/foia_migrate/data/modified/personnel.json'
+  item_selector: personnel
+  fields:
+    -
+      name: id
+      label: 'FOIA Personnel ID'
+      selector: id
+    -
+      name: name
+      label: 'FOIA Personnel Name'
+      selector: name
+    -
+      name: phone
+      label: 'FOIA Personnel Phone Number'
+      selector: phone
+    -
+      name: agency_name
+      label: 'Agency Name'
+      selector: agency_name
+    -
+      name: title
+      label: Title
+      selector: title
+  ids:
+    id:
+      type: integer
+process:
+  name: name
+  field_foia_personnel_phone: phone
+  field_agency:
+    plugin: migration_lookup
+    migration: agency
+    source: agency_name
+  field_foia_personnel_title: title
+destination:
+  plugin: 'entity:foia_personnel'
+migration_dependencies:
+  required:
+    - agency
