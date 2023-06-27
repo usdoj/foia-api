@@ -508,21 +508,20 @@
         var sectionBtns = $('<div class="section-button-group" style="display: flex;padding-top: .5rem;gap: 1rem;"><div class="component-placeholder-button-div"><div class="description">Use this button when starting a new report, to quickly add placeholders for all of the components that you have selected in the checkboxes above.</div></div><div class="no-data-to-report-div"><div class="description">Use this button to quickly fill 0 or N/A for components do not apply.</div></div></div>');
         $(this).prepend(sectionBtns);
 
-
-        ComponentPlaceholderButtonDiv = $(this).find('.section-button-group .component-placeholder-button-div');
-        NoDataToReportDiv = $(this).find('.section-button-group .no-data-to-report-div');
+        let componentPlaceholderButtonDiv = $(this).find('.section-button-group .component-placeholder-button-div');
+        noDataToReportDiv = $(this).find('.section-button-group .no-data-to-report-div');
         // Build component placeholder button.
-        var $PlaceholderButton = $('<button class="button component-placeholder-button">Add placeholders for component data below</button>');
-        ComponentPlaceholderButtonDiv.prepend($PlaceholderButton);
+        let $placeholderButton = $('<button class="button component-placeholder-button">Add placeholders for component data below</button>');
+        componentPlaceholderButtonDiv.prepend($placeholderButton);
         // Build no data report button.
-        var $NoDataButton = $('<button class="button no-data-report-button">No data to report for this section</button>');
-        NoDataToReportDiv.prepend($NoDataButton);
+        let $noDataButton = $('<button class="button no-data-report-button">No data to report for this section</button>');
+        noDataToReportDiv.prepend($noDataButton);
 
-        $NoDataButton.click(function (evt) {
+        $noDataButton.click(function (evt) {
           evt.preventDefault();
           section.section.fnt();
         });
-        $PlaceholderButton.click(function(evt) {
+        $placeholderButton.click(function(evt) {
           evt.preventDefault();
           var $components = $(checkedComponentSelector),
               numComponents = $components.length,
