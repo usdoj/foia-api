@@ -5,12 +5,69 @@ dependencies:
   config:
     - field.field.node.landing_page.body
     - field.field.node.landing_page.field_meta_tags
-    - field.field.node.landing_page.panelizer
+    - field.field.node.landing_page.layout_selection
     - node.type.landing_page
   module:
+    - layout_builder
+    - layout_discovery
+    - layout_library
     - metatag
     - text
     - user
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          7b377288-af6d-422c-bed7-1fd5cfa5f7b4:
+            uuid: 7b377288-af6d-422c-bed7-1fd5cfa5f7b4
+            region: content
+            configuration:
+              id: 'extra_field_block:node:landing_page:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+          09c43ae1-6934-4f91-a3aa-0d74d0389ffe:
+            uuid: 09c43ae1-6934-4f91-a3aa-0d74d0389ffe
+            region: content
+            configuration:
+              id: 'field_block:node:landing_page:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+          5512f478-bcd6-4c5d-8da2-80499602ce5e:
+            uuid: 5512f478-bcd6-4c5d-8da2-80499602ce5e
+            region: content
+            configuration:
+              id: 'field_block:node:landing_page:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_summary_or_trimmed
+                label: hidden
+                settings:
+                  trim_length: 600
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+        third_party_settings: {  }
+  layout_library:
+    enable: true
 _core:
   default_config_hash: VtoRRpaZ4Fv6BvSXrqsgVf_jyO6mWxMmyMNjkymLh1M
 id: node.landing_page.default
@@ -44,5 +101,5 @@ content:
     weight: -20
     region: content
 hidden:
-  panelizer: true
+  layout_selection: true
   search_api_excerpt: true

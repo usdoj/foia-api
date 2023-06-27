@@ -5,13 +5,11 @@ dependencies:
   config:
     - field.field.node.landing_page.body
     - field.field.node.landing_page.field_meta_tags
-    - field.field.node.landing_page.panelizer
+    - field.field.node.landing_page.layout_selection
     - node.type.landing_page
-    - workflows.workflow.quarterly_report_workflow
   module:
     - content_moderation
     - metatag
-    - panelizer
     - path
     - text
 _core:
@@ -52,12 +50,6 @@ content:
   moderation_state:
     type: moderation_state_default
     weight: 100
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  panelizer:
-    type: panelizer
-    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
