@@ -509,7 +509,7 @@
         $(this).prepend(sectionBtns);
 
         let componentPlaceholderButtonDiv = $(this).find('.section-button-group .component-placeholder-button-div');
-        noDataToReportDiv = $(this).find('.section-button-group .no-data-to-report-div');
+        let noDataToReportDiv = $(this).find('.section-button-group .no-data-to-report-div');
         // Build component placeholder button.
         let $placeholderButton = $('<button class="button component-placeholder-button">Add placeholders for component data below</button>');
         componentPlaceholderButtonDiv.prepend($placeholderButton);
