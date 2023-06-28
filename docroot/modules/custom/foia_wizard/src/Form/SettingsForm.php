@@ -36,6 +36,11 @@ class SettingsForm extends ConfigFormBase {
       '#markup' => $this->t('This form allows you to configure the FOIA Request Wizard.'),
     ];
 
+    // Hacky but huge UX improvement
+    $form['CSS'] = [
+      '#children' => '<style>.foia-wizard-settings .vertical-tabs__menu {max-height: 30rem; overflow-y: auto; overflow-x:hidden}</style>',
+    ];
+
     $form['#tree'] = TRUE;
 
     // Introduction title slide.
