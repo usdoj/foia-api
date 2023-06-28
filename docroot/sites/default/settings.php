@@ -798,6 +798,7 @@ $settings['trusted_host_patterns'] = array(
   '^.+\.doj.gov$',
   '^.+\.acquia-sites\.com$',
   '^.+\.web\.ahdev\.cloud$',
+  '^.+\.us-2\.platformsh\.site$',
 );
 
 
