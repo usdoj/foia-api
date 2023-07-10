@@ -1,0 +1,26 @@
+uuid: 36070d23-92a7-4cd3-bf3e-506a5809a005
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_commonly_requested_records
+    - node.type.agency_component
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.agency_component.field_commonly_requested_records
+field_name: field_commonly_requested_records
+entity_type: node
+bundle: agency_component
+label: 'Commonly Requested Records'
+description: 'Enter a list of commonly requested records, one per line.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long
