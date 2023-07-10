@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66d62fca64553441354da529117bd216",
+    "content-hash": "8cad0e3b5c7692707f8bd9e903e58114",
     "packages": [
         {
             "name": "acquia/blt",
@@ -130,6 +130,48 @@
                 "source": "https://github.com/acquia/blt/tree/13.4.0"
             },
             "time": "2022-03-15T19:49:29+00:00"
+        },
+        {
+            "name": "acquia/blt-simplesamlphp",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acquia/blt-simplesamlphp.git",
+                "reference": "93fc71d128e81d06d1d990a41cde0eca032f16cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acquia/blt-simplesamlphp/zipball/93fc71d128e81d06d1d990a41cde0eca032f16cb",
+                "reference": "93fc71d128e81d06d1d990a41cde0eca032f16cb",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/simplesamlphp_auth": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Acquia\\BltSimplesamlphp\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Acquia Engineering",
+                    "homepage": "https://www.acquia.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "SimpleSAMLPhp integration for Acquia BLT",
+            "support": {
+                "issues": "https://github.com/acquia/blt-simplesamlphp/issues",
+                "source": "https://github.com/acquia/blt-simplesamlphp/tree/v1.0.0"
+            },
+            "abandoned": true,
+            "time": "2020-12-11T17:49:22+00:00"
         },
         {
             "name": "acquia/drupal-environment-detector",
@@ -7636,25 +7678,25 @@
         },
         {
             "name": "drupal/simplesamlphp_auth",
-            "version": "dev-4.x",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simplesamlphp_auth.git",
-                "reference": "666615bd55fd20b1a744ca376765d257093d5538"
+                "reference": "8951ac2bdfd84447cdf8dbe9b76e710042ea7fb4"
             },
             "require": {
-                "drupal/core": "^9.4 || ^10",
+                "drupal/core": "^9.4",
                 "drupal/externalauth": "^1.1||^2.0",
-                "simplesamlphp/simplesamlphp": "^1.19 | dev-master"
+                "simplesamlphp/simplesamlphp": "^1.18.2||^1.19"
             },
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-4.x": "4.x-dev"
+                    "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "4.x-dev",
-                    "datestamp": "1674303908",
+                    "version": "8.x-3.3+2-dev",
+                    "datestamp": "1674304227",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
