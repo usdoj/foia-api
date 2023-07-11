@@ -99,7 +99,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function iViewTheUser($arg1) {
     $user = user_load_by_name($arg1);
     $uid = $user->get('uid')->value;
-    $destinationUrl = "user/{$uid}";
+    $baseUrl = $this->getMinkParameter('base_url');
+    $destinationUrl = "{$baseUrl}/user/{$uid}";
     $this->getSession()->visit($destinationUrl);
   }
 

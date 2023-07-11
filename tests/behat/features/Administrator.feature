@@ -30,15 +30,15 @@ Feature: Agency Administrator role
     And I should not see 'Edit' in the 'Arthur' row
     And I view the user 'Mini'
     And I attempt to delete the current entity
-    Then the response status code should be 404
+    Then I should see "Page not found"
     When I am at 'admin/people'
     And I view the user 'Angus'
     And I attempt to delete the current entity
-    Then the response status code should be 404
+    Then I should see "Page not found"
     When I am at 'admin/people'
     And I view the user 'Arthur'
     And I attempt to delete the current entity
-    Then the response status code should be 404
+    Then I should see "Page not found"
     And the user 'Arthur' is deleted
 
   @api @agency
