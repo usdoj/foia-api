@@ -24,4 +24,3 @@ Feature: Agency Component Feature
     And for 'Submission Email' I enter 'test@test.com'
     When I press the 'Save' button
     Then the page title should be "My agency name | Federal Testing Agency | National FOIA Portal"
-
