@@ -579,24 +579,4 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
     $save_button->click();
   }
-
-  /**
-   * @Given I press the :butName button in the :section section
-   */
-  public function inPressTheButtonInSection($butName, $section) {
-    $page = $this->getSession()->getPage();
-    $sidebar_element = $page->find('css', '.vertical-tabs__menu');
-    $section_link = $sidebar_element->find('named', ['link', $section]);
-    if (empty($section_link)) {
-      throw new \Exception('Section "' . $section . '" was not found.');
-    }
-    $section_id = $section_link->getAttribute('href');
-    $section_element = $page->find('css', $section_id);
-    $button = $section_element->find('named', ['button', $butName]);
-    if (empty($button)) {
-      throw new \Exception('Button "' . $butName . '" was not found.');
-    }
-    $button->click();
-    $this->getSession()->wait(1000);
-  }
 }
