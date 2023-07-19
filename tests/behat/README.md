@@ -4,7 +4,7 @@
 
 Behat can run all tests if you don't use any tags, but can be limited to running one feature or any one scenario by using the ```--tags``` flag.
 
-```
+```bash
 vendor/bin/behat --config=tests/behat/behat.yml
 
 vendor/bin/behat --config=tests/behat/behat.yml --tags @cfocommittee
