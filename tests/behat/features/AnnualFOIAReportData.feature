@@ -83,6 +83,7 @@ Feature: Annual FOIA Report Data Feature
     And I click 'IV. Exemption 3 Statutes'
     Then I should see "Add placeholders for component data below"
 
+# Failing for unknown reason
 #  @api @javascript
 #  Scenario: The validate button can be used to validate the report
 #    Given I am logged in as a user with the 'Agency Administrator' role
