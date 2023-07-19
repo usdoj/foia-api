@@ -7,17 +7,15 @@ Feature: Chief FOIA Officers Meeting
       | title             | body             | moderation_state |
       | CFO Meeting title | CFO Meeting body | published        |
 
-  @api
+  @api @javascript
   Scenario: Add a CFO Meeting
     Given I am logged in as a user with the 'Administrator' role
     And I am at '/node/add/cfo_meeting'
     And for 'Title' I enter 'CFO Meeting title'
     And for 'Body' I enter 'CFO Meeting body'
-     # field_meeting_date
     And for 'Date' I enter '07/04/3000'
     And for 'Time' I enter '03:00:00PM'
     When I press the 'Save' button
-    And I wait 3 seconds
     Then the page title should be "CFO Meeting title | National FOIA Portal"
 
   @api

@@ -6,9 +6,7 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Drupal\webform\Entity\Webform;
-use Drupal\DrupalExtension\Hook\Scope\EntityScope;
 use Drupal\DrupalExtension\Hook\Scope\AfterNodeCreateScope;
-use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\path_alias\Entity\PathAlias;
 use Drupal\node\Entity\Node;
 
@@ -258,16 +256,28 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the page title should be :expectedTitle
    */
   public function thePageTitleShouldBe($expectedTitle) {
-    // This is needed for JS tests
-    $title = $this->getSession()->evaluateScript("return document.title");
-    // $titleElement = $this->getSession()->getPage()->find('css', 'head title');
+
+    $driver = $this->getSession()->getDriver();
+    $class = get_class($driver);
+
+
+    // If javascript is enabled then we need to get the page title using JS
+    switch ($class) {
+      case "Behat\Mink\Driver\Selenium2Driver":
+        $title = $this->getSession()->evaluateScript("return document.title");
+        break;
+      case "Behat\Mink\Driver\GoutteDriver":
+      default:
+        $title = $this->getSession()->getPage()->find('css', 'head title')->getText();
+        break;
+    }
+
     if ($title === null) {
       throw new \Exception('Page title element was not found!');
     }
     else {
-      //$title = $titleElement->getText();
       if ($expectedTitle !== $title) {
-        throw new \Exception("Incorrect title! Expected:$expectedTitle | Actual:$title ");
+        throw new \Exception("Incorrect title! Expected:$expectedTitle | Actual: $title ");
       }
     }
   }
