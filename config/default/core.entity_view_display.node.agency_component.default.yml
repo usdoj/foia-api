@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.agency_component.field_agency
     - field.field.node.agency_component.field_agency_comp_abbreviation
     - field.field.node.agency_component.field_agency_comp_telephone
+    - field.field.node.agency_component.field_commonly_requested_records
     - field.field.node.agency_component.field_complex_average_days
     - field.field.node.agency_component.field_complex_highest_days
     - field.field.node.agency_component.field_complex_lowest_days
@@ -94,6 +95,13 @@ content:
       title: ''
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_commonly_requested_records:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 34
     region: content
   field_complex_average_days:
     type: string
