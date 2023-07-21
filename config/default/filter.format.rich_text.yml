@@ -2,6 +2,9 @@ uuid: 8d2c9ad9-d6f8-470d-8921-938b21cbdab3
 langcode: en
 status: true
 dependencies:
+  config:
+    - core.entity_view_mode.media.embedded
+    - core.entity_view_mode.media.full
   module:
     - editor
     - entity_embed
@@ -48,7 +51,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<cite> <dl> <dt> <dd> <a type title class hreflang href> <blockquote cite> <ul type> <ol type start> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <img title height width class src alt data-entity-type data-entity-uuid data-align data-caption> <drupal-entity data-*> <audio type src controls contenteditable> <span class> <video type src controls contenteditable> <br> <p> <h1> <strong> <em> <code class="language-*"> <pre> <s> <sub> <sup> <li> <hr> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption>'
+      allowed_html: '<cite> <dl> <dt> <dd> <a type title class hreflang href> <blockquote cite> <ul type> <ol type start> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <img title height width class src alt data-entity-type data-entity-uuid data-align data-caption> <drupal-entity data-*> <audio type src controls contenteditable> <span class> <video type src controls contenteditable> <br> <p> <h1> <strong> <em> <code class="language-*"> <pre> <s> <sub> <sup> <li> <hr> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <drupal-media data-entity-type data-entity-uuid alt data-caption data-align>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_autop:
@@ -79,9 +82,15 @@ filters:
   media_embed:
     id: media_embed
     provider: media
-    status: false
+    status: true
     weight: -40
     settings:
       default_view_mode: default
-      allowed_view_modes: {  }
-      allowed_media_types: {  }
+      allowed_view_modes:
+        default: default
+        embedded: embedded
+        full: full
+      allowed_media_types:
+        audio_file: audio_file
+        document: document
+        image: image
