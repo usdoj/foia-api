@@ -6,13 +6,12 @@ Feature: Chief FOIA Officers Meeting
     Given cfo_meeting content:
       | title             | body             | moderation_state |
       | CFO Meeting title | CFO Meeting body | published        |
-
   @api @javascript
   Scenario: Add a CFO Meeting
     Given I am logged in as a user with the 'Administrator' role
     And I am at '/node/add/cfo_meeting'
     And for 'Title' I enter 'CFO Meeting title'
-    And for 'Body' I enter 'CFO Meeting body'
+    And I fill in 'Body' field with 'CFO Meeting Content'
     And for 'Date' I enter '07/04/3000'
     And for 'Time' I enter '03:00:00PM'
     When I press the 'Save' button

@@ -7,13 +7,13 @@ Feature: Chief FOIA Officers Committee
       | title             | body             | moderation_state |
       | CFO committee title | CFO committee body | published        |
 
-  @api
+  @api @javascript
   Scenario: Add a CFO committee
     Given I am logged in as a user with the 'Administrator' role
     And I am at '/node/add/cfo_committee'
     And for 'Title' I enter 'Test CFO Committee'
     And for 'URL Slug' I enter 'test-cfo-committee'
-    And for 'Body' I enter 'Anything'
+    And I fill in 'Body' field with 'CFO Committee Content'
     When I press the 'Save' button
     Then the page title should be "Test CFO Committee | National FOIA Portal"
 

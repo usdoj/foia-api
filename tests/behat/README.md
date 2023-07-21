@@ -2,15 +2,17 @@
 
 ## Usage
 
-Behat can run all tests if you don't use any tags, but can be limited to running one feature or any one scenario by using the ```--tags``` flag.
+Behat needs to be run in the ddev bash environment, and will run every test by default.
+
+You can run only one feature or specific scenario by using the ```--tags``` flag.
 
 ```bash
-vendor/bin/behat --config=tests/behat/behat.yml
+ddev exec vendor/bin/behat --config=tests/behat/behat.yml
 
-vendor/bin/behat --config=tests/behat/behat.yml --tags @cfocommittee
+ddev exec vendor/bin/behat --config=tests/behat/behat.yml --tags @cfocommittee
 
 # use local config
-vendor/bin/behat --config=tests/behat/local.yml --tags @cfocommittee
+ddev exec vendor/bin/behat --config=tests/behat/local.yml --tags @cfocommittee
 ```
 
 In environments with custom ddev configurations, such as Apple computers, you will need a local.yml file with custom options.

@@ -9,12 +9,12 @@ Feature: Chief FOIA Officers Council
       | title             | body             | moderation_state |
       | CFO Council title | CFO Council body | published        |
 
-  @api
+  @api @javascript
   Scenario: Add a CFO Council
     Given I am logged in as a user with the 'Administrator' role
     And I am at '/node/add/cfo_council'
     And for 'Title' I enter 'CFO Council title'
-    And for 'Body' I enter 'CFO Council body'
+    And I fill in 'Body' field with 'CFO Council body'
     When I press the 'Save' button
     And I wait 3 seconds
     Then the page title should be "CFO Council title | National FOIA Portal"
