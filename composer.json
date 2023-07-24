@@ -23,10 +23,10 @@
         "drupal/business_rules": "^2.0.0-beta1",
         "drupal/config_split": "^1.9.0",
         "drupal/consumers": "^1.17",
-        "drupal/core": "*",
-        "drupal/core-composer-scaffold": "*",
-        "drupal/core-project-message": "*",
-        "drupal/core-recommended": "*",
+        "drupal/core-composer-scaffold": "9.5.10",
+        "drupal/core-project-message": "9.5.10",
+        "drupal/core-recommended": "9.5.10",
+        "drupal/core-vendor-hardening": "^10.1.1",
         "drupal/csv_serialization": "^2.0 || ^3.0",
         "drupal/diff": "^1.1",
         "drupal/entity_block": "^1.1",
@@ -93,23 +93,12 @@
         "drupal/views_infinite_scroll": "^2.0.1",
         "drupal/webform": "^6.2.0-beta5",
         "drupal/xmlsitemap": "^1.4.0",
-        "drush/drush": "^10.6.2",
         "npm-asset/jquery-validation": "^1.19.5",
         "npm-asset/select2": "^4.0",
         "simplesamlphp/simplesamlphp": "*"
     },
-    "require-dev": {
-        "acquia/blt-phpcs": "^1.0",
-        "behat/behat": "^3.13",
-        "behat/gherkin": "^4.9",
-        "behat/mink": "^1.10",
-        "behat/mink-goutte-driver": "^2.0",
-        "bex/behat-screenshot": "^2.1",
-        "dmore/behat-chrome-extension": "^1.4",
-        "drupal/drupal-extension": "~5.0",
-        "geerlingguy/drupal-vm": "~5.0",
-        "imbo/behat-api-extension": "2.3.0",
-        "jarnaiz/behat-junit-formatter": "^1.3"
+    "conflict": {
+        "drupal/drupal": "*"
     },
     "extra": {
         "drupal-scaffold": {
@@ -227,6 +216,7 @@
             "oomphinc/composer-installers-extender": true,
             "acquia/blt": true,
             "acquia/blt-phpcs": true,
+            "drupal/core-vendor-hardening": true,
             "drupal/core-project-message": true
         },
         "platform": {
