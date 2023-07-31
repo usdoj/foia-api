@@ -6,7 +6,7 @@ Feature: Chief FOIA Officers Meeting
     Given cfo_meeting content:
       | title             | body             | moderation_state |
       | CFO Meeting title | CFO Meeting body | published        |
-  @api @javascript
+  @api @javascript @blah
   Scenario: Add a CFO Meeting
     Given I am logged in as a user with the 'Administrator' role
     And I am at '/node/add/cfo_meeting'

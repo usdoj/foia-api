@@ -38,3 +38,7 @@ The `cleanTaxonomyTerms` will cleanup any taxonomy terms created but not purged 
 
 The `tests/behat/features/bootstrap/Drupal/FeatureContext.php` may need more cleanup functions in the future if new tests are added.
 
+### Drupal 10 Issues
+
+Several modules depend on symfony/filesystem versuin 6, but bex/
+consolidation/robo 4.0.6 requires symfony/filesystem ^6 ->

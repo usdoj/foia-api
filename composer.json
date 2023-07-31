@@ -8,6 +8,7 @@
         "php": ">=8.1",
         "ext-dom": "*",
         "acquia/blt": "^13.7",
+        "acquia/blt-behat": "dev-master",
         "acquia/blt-phpcs": "^1.0",
         "acquia/drupal-environment-detector": "1.6.0",
         "acquia/memcache-settings": "*",
@@ -21,10 +22,10 @@
         "drupal/autologout": "^1.4",
         "drupal/autosave_form": "^1.4",
         "drupal/consumers": "^1.17",
-        "drupal/core-composer-scaffold": "10.1.1",
-        "drupal/core-project-message": "10.1.1",
-        "drupal/core-recommended": "10.1.1",
-        "drupal/core-vendor-hardening": "^10.1.1",
+        "drupal/core-composer-scaffold": "*",
+        "drupal/core-project-message": "*",
+        "drupal/core-recommended": "*",
+        "drupal/core-vendor-hardening": "*",
         "drupal/ctools": "^4.0",
         "drupal/ctools_block": "^4.0",
         "drupal/diff": "^1.1",
@@ -77,6 +78,7 @@
         "drupal/seckit": "^2.0",
         "drupal/select2": "^1.15",
         "drupal/shield": "^1.7.0",
+        "drupal/symfony_mailer": "^1.3@RC",
         "drupal/time_field": "^2.1.0",
         "drupal/typed_data": "^1.0@beta",
         "drupal/upgrade_status": "^4.0",
@@ -88,16 +90,11 @@
         "drupal/webform": "^6.2.0-beta5",
         "drupal/xmlsitemap": "^1.4.0",
         "drush/drush": "^12.1",
-        "egulias/email-validator": "4.0.1",
+        "egulias/email-validator": "~3",
         "guzzlehttp/guzzle": "^7.7",
         "npm-asset/jquery-validation": "^1.19.5",
         "npm-asset/select2": "^4.0",
-        "simplesamlphp/simplesamlphp": "*",
-        "symfony/filesystem": "^6.3"
-    },
-
-    "conflict": {
-        "drupal/drupal": "*"
+        "simplesamlphp/simplesamlphp": "*"
     },
     "extra": {
         "drupal-scaffold": {
@@ -148,7 +145,7 @@
         "patches": {
             "drupal/business_rules": {
                 "Fix for multivalue child dependent fields": "https://www.drupal.org/files/issues/2021-04-27/business_rules-multi_value_child-3014031-41-D8.patch",
-                "Drupal 10 Update compatibility fixes https://www.drupal.org/project/business_rules/issues/3286389 ": "https://www.drupal.org/files/issues/2023-05-08/3286389-17-drupal-10-compatibility.patch"
+                "Drupal 10 Update compatibility fixes https://www.drupal.org/project/business_rules/issues/3286389": "https://www.drupal.org/files/issues/2023-06-23/business_rules.2.x-dev.rector.patch"
             },
             "drupal/core": {
                 "FOIA-32: Dynamically provide action plugins for every moderation state change": "https://www.drupal.org/files/issues/2019-11-20/2797583_provide_moderation_states_as_actions_128.patch",
@@ -157,7 +154,7 @@
                 "Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2021-10-07/drupal-simple-decimal-validation-ver_9.2.7-2230909-234.patch"
             },
             "drupal/form_mode_manager": {
-                "DRUPAL 10 Rector": "https://www.drupal.org/files/issues/2022-07-18/form_mode_manager.2.x-dev.rector.patch"
+                "DRUPAL 10 Rector": "https://git.drupalcode.org/project/form_mode_manager/-/merge_requests/8.patch"
             },
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/2022-10-04/password_policy_field_last_password_reset_unknown_error_2771129-134.patch"
@@ -250,11 +247,12 @@
         ]
     },
     "require-dev": {
-        "behat/behat": "^3.13",
+        "behat/behat": "*",
         "behat/gherkin": "^4.9",
         "behat/mink": "^1.10",
         "behat/mink-goutte-driver": "^2.0",
         "dmore/behat-chrome-extension": "^1.4",
+        "drevops/behat-screenshot": "^1.2",
         "drupal/drupal-extension": "^5.0@RC",
         "geerlingguy/drupal-vm": "^6.0",
         "imbo/behat-api-extension": "^5.0",

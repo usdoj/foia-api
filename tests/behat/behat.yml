@@ -55,11 +55,11 @@ default:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
         outputDir: "%paths.base%/build/tests"
-    Bex\Behat\ScreenshotExtension:
-      screenshot_taking_mode: failed_steps
-      image_drivers:
-        local:
-          screenshot_directory: /var/www/html/tests/behat/screenshots
+#    Bex\Behat\ScreenshotExtension:
+#      screenshot_taking_mode: failed_steps
+#      image_drivers:
+#        local:
+#          screenshot_directory: /var/www/html/tests/behat/screenshots
     Imbo\BehatApiExtension:
       apiClient:
         base_uri: https://foia-api.ddev.site

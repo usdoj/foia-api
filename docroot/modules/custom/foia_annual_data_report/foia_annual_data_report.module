@@ -8,9 +8,9 @@
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_form_alter().
@@ -274,7 +274,7 @@ function foia_annual_data_report_form_annual_data_report_section_validate(array 
             $error_msg = t(
               "Invalid input for :element_title:, please use number greater or equal to zero.",
               [':element_title:' => $element_title]
-                      );
+            );
             _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
           }
         }
@@ -384,7 +384,6 @@ function foia_annual_data_report_form_annual_data_report_validate(array &$form, 
   // the user to update the existing report or change the values.
   if ($agency_id && $report_year) {
     $query = \Drupal::entityQuery('node')
-      ->accessCheck(TRUE)
       ->condition('type', 'annual_foia_report_data')
       ->condition('field_agency', $agency_id)
       ->condition('field_foia_annual_report_yr', $report_year)
