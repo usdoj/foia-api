@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\node\Entity\Node;
 use Drupal\Core\Render\Element;
 
 /**
@@ -601,18 +600,24 @@ function foia_annual_data_report_node_presave($entity) {
         $ac_nid = $ac_nid_value[0]['target_id'];
 
         // Node object - Agency Component.
-        $ac_node = Node::load($ac_nid);
+        $ac_node = \Drupal::entityTypeManager()->getStorage('node')->load($ac_nid);
+        $component_request_data_year = $ac_node->get('field_request_data_year')->getString();
+        $requiredManualProcessing = $ac_node->get('field_require_manual_processing')->getString();
+        // The following code should only execute if that "Require manual entry
+        // of processing times" checkbox is not checked and request year
+        // greater than equal to annual report yr.
+        if (!$requiredManualProcessing && ($report_year >= $component_request_data_year)) {
+          // Loop over our field map and update ac node from the annual report.
+          foreach ($field_mapping as $field_report => $field_ac_node) {
+            $val = $agency->get($field_report)->getString();
+            $ac_node->set($field_ac_node, $val);
+          }
+          // Update the report year.
+          $ac_node->set('field_request_data_year', $report_year);
 
-        // Loop over our field map and update ac node from the annual report.
-        foreach ($field_mapping as $field_report => $field_ac_node) {
-          $val = $agency->get($field_report)->getValue()[0]['value'];
-          $ac_node->set($field_ac_node, $val);
+          // Save the node.
+          $ac_node->save();
         }
-        // Update the report year.
-        $ac_node->set('field_request_data_year', $report_year);
-
-        // Save the node.
-        $ac_node->save();
       }
     }
   }
