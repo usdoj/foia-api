@@ -11,6 +11,7 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\ConfigContext
         - Imbo\BehatApiExtension\Context\ApiContext
+        - DrevOps\BehatScreenshotExtension\Context\ScreenshotContext
       paths:
         - "%paths.base%/features"
   extensions:
@@ -55,6 +56,12 @@ default:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
         outputDir: "%paths.base%/build/tests"
+    DrevOps\BehatScreenshotExtension:
+      dir: '%paths.base%/screenshots'
+      fail: true
+      fail_prefix: 'failed_'
+      purge: true
+      # BEHAT_SCREENSHOT_DIR
 #    Bex\Behat\ScreenshotExtension:
 #      screenshot_taking_mode: failed_steps
 #      image_drivers:

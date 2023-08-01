@@ -111,6 +111,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function cleanTaxonomyTerms(AfterScenarioScope $scope) {
     $query = \Drupal::entityQuery('taxonomy_term');
     $query->condition('name', "A Test", 'STARTS_WITH');
+    $query->accessCheck(FALSE);
     $tids = $query->execute();
     $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     $entities = $controller->loadMultiple($tids);
