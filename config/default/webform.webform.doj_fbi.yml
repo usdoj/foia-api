@@ -13,8 +13,8 @@ archive: false
 id: doj_fbi
 title: DOJ-FBI
 description: ''
-category: ''
-elements: |
+category: null
+elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -24,10 +24,19 @@ elements: |
   company_organization:
     '#type': textfield
     '#title': 'Your organization'
+    '#states':
+      required:
+        ':input[name="fbi_requester_type"]':
+          value: organization
+      visible:
+        ':input[name="fbi_requester_type"]':
+          value: organization
   email:
     '#type': email
     '#title': 'Email address'
-    '#help': "In order for us to communicate with you about your request,<br />\nyou must provide at least one form of contact information."
+    '#help': |-
+      In order for us to communicate with you about your request,<br />
+      you must provide at least one form of contact information.
   phone_number:
     '#type': tel
     '#title': 'Phone number'
@@ -54,6 +63,26 @@ elements: |
     '#title': Country
     '#default_value': 'United States'
     '#options': country_names
+  request_description:
+    '#type': textarea
+    '#title': 'Your request'
+    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
+    '#maxlength': 3000
+    '#required': true
+  fbi_request_subject:
+    '#type': radios
+    '#title': 'What is the subject of your request?'
+    '#options':
+      myself: Myself
+      deceased: 'Deceased Individual'
+      other: 'All Other Subjects'
+  fbi_requester_type:
+    '#type': radios
+    '#title': 'I am making this request on behalf of'
+    '#options':
+      myself: Myself
+      organization: 'An Organization'
+    '#required': true
   request_category:
     '#type': select
     '#title': 'What type of requester are you?'
@@ -64,24 +93,26 @@ elements: |
       scientific: 'Non-commercial scientific institution'
       commercial: 'Commercial-use requester'
       other: 'All other requester'
-  request_description:
-    '#type': textarea
-    '#maxlength': 10000
-    '#title': 'Your request'
-    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
-    '#required': true
   fee_waiver:
-    '#type': select
+    '#type': radios
     '#title': 'Fee waiver'
-    '#default_value': 'no'
     '#options':
-      'no': 'No'
-      'yes': 'Yes'
+      option1: 'I am requesting a fee waiver for my request and have reviewed the FOIA Reference Guide. If my fee waiver is denied, I would like to limit my request to the two free hours of searching and 100 duplicated pages. (Non-commercial request only)'
+      option2: 'I am requesting a fee waiver for my request and have reviewed the FOIA Reference Guide. If my fee waiver is denied, I am willing to pay additional fees and will enter the maximum amount that I am willing to pay in the box below.'
+      option3: 'I am limiting my request to the two free hours of searching and 100 duplicated pages. I am not willing to pay additional fees. (Non-commercial request only)'
+      option4: 'I am willing to pay additional fees and will enter the maximum amount that I am willing to pay in the box below.'
   fee_waiver_explanation:
     '#type': textarea
-    '#maxlength': 10000
     '#title': 'Fee waiver justification'
     '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'
+    '#maxlength': 4000
+    '#states':
+      required:
+        - ':input[name="fee_waiver"]':
+            value: option1
+        - or
+        - ':input[name="fee_waiver"]':
+            value: option2
   fee_amount_willing:
     '#type': textfield
     '#title': 'The amount of money you’re willing to pay in fees, if any'
@@ -89,6 +120,13 @@ elements: |
     '#pattern': '^(?=.)([+\-\$]?([0-9]*)(\.([0-9]+))?)$'
     '#counter_type': word
     '#counter_maximum': 1
+    '#states':
+      required:
+        - ':input[name="fee_waiver"]':
+            value: option2
+        - or
+        - ':input[name="fee_waiver"]':
+            value: option4
   expedited_processing:
     '#type': select
     '#title': 'Expedited processing'
@@ -98,14 +136,110 @@ elements: |
       'yes': 'Yes'
   expedited_processing_explanation:
     '#type': textarea
-    '#maxlength': 10000
     '#title': 'Justification for expedited processing'
     '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.&nbsp;&nbsp;This agency has additional criteria for expedited processing detailed at <a href="https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&amp;SID=a41b3b79fe629d968f90008e116d5f2e&amp;mc=true&amp;n=pt28.1.16&amp;r=PART&amp;ty=HTML#se28.1.16_15">28&nbsp;C.F.R. &sect; 16.5(e).</a>'
+    '#maxlength': 10000
+    '#states':
+      required:
+        ':input[name="expedited_processing"]':
+          value: 'yes'
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
-    '#help': "If you are seeking records about yourself, additional documentation<br />\nis required to verify your identity. <a href=\"https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13\">28&nbsp;C.F.R. &sect; 16.3(a)(3).</a>&nbsp;You can use this&nbsp;<a href=\"https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf\">form</a>&nbsp;to verify your identity."
     '#multiple': true
+    '#help': |-
+      <ul>
+      	<li>If you are including multiple files, please zip them into a single file.</li>
+      	<li>If you are seeking records about yourself, additional documentation is required to verify your identity. <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13">28&nbsp;C.F.R. &sect; 16.3(a)(3).</a>&nbsp;You can use this&nbsp;<a href="https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf">form</a>&nbsp;to verify your identity.</li>
+      	<li>If the subject of your request is a deceased individual, you can include proof-of-death documentation.</li>
+      </ul>
+    '#states':
+      required:
+        ':input[name="fbi_requester_type"]':
+          value: myself
+    '#max_filesize': '10'
+    '#sanitize': true
+  deceased_name_first:
+    '#type': textfield
+    '#title': 'Deceased Individual''s First Name'
+    '#states':
+      required:
+        ':input[name="fbi_request_subject"]':
+          value: deceased
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: deceased
+  deceased_name_middle:
+    '#type': textfield
+    '#title': 'Deceased Individual''s Middle Name'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: deceased
+  deceased_name_last:
+    '#type': textfield
+    '#title': 'Deceased Individual''s Last Name'
+    '#states':
+      required:
+        ':input[name="fbi_request_subject"]':
+          value: deceased
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: deceased
+  deceased_social_security_number:
+    '#type': textfield
+    '#title': 'Deceased Individual''s Social Security Number'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: decease
+  deceased_alien_registration_number:
+    '#type': textfield
+    '#title': 'Deceased Individual''s Alien Registration Number'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: decease
+  deceased_fbi_number:
+    '#type': textfield
+    '#title': 'Deceased Individual''s FBI Number'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: decease
+  deceased_place_of_birth:
+    '#type': textfield
+    '#title': 'Deceased Individual''s Place of Birth'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: decease
+  deceased_date_of_birth:
+    '#type': textfield
+    '#title': 'Deceased Individual''s Date of Birth'
+    '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d'
+    '#pattern_error': 'Please use the date format: MM/DD/YYYY'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: deceased
+  deceased_date_of_death:
+    '#type': textfield
+    '#title': 'Deceased Individual''s Date of Death'
+    '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d'
+    '#pattern_error': 'Please use the date format: MM/DD/YYYY'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: deceased
+  deceased_additional_information:
+    '#type': textarea
+    '#title': 'Deceased Individual''s Additional Information'
+    '#description': 'Provide additional information about the subject of your request. Please provide as much information as possible.'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: decease
 css: ''
 javascript: ''
 settings:
@@ -147,6 +281,9 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
   share: false
   share_node: false
   share_theme_name: ''
@@ -190,6 +327,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
