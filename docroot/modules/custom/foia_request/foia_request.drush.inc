@@ -5,10 +5,10 @@
  * Drush command to update FOIA request submissions.
  */
 
-use Drupal\webform\Entity\WebformSubmission;
 use Drupal\file_entity\Entity\FileEntity;
-use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_request\Entity\FoiaRequest;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
+use Drupal\webform\Entity\WebformSubmission;
 
 /**
  * Implements hook_drush_command().

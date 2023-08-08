@@ -2,14 +2,14 @@
 
 namespace Drupal\foia_upload_xml\Commands;
 
-use Drupal\file\FileInterface;
-use Drupal\Core\Database\Connection;
-use Drupal\migrate\Plugin\MigrateIdMapInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\foia_upload_xml\FoiaUploadXmlReportParser;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\file\FileInterface;
+use Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor;
+use Drupal\foia_upload_xml\FoiaUploadXmlReportParser;
+use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drush\Commands\DrushCommands;
 
 /**

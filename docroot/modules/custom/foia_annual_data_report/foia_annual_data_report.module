@@ -8,9 +8,9 @@
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_form_alter().
@@ -45,7 +45,8 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
           if (!in_array($key, $starting_fields)) {
             $form[$key]['#access'] = FALSE;
           }
-        } else {
+        }
+        else {
           if (in_array($key, $hide_elements)) {
             $form[$key]['#access'] = FALSE;
           }
@@ -55,7 +56,8 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       $form['actions']['submit']['#value'] = 'Save and continue';
       $form['actions']['preview']['#access'] = FALSE;
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_form_display_new_reports';
-    } else {
+    }
+    else {
       // Add the javascript functionality (only needed for existing nodes).
       $form['#attached']['library'][] = 'foia_annual_data_report/foia_change_report_agency';
     }
@@ -235,7 +237,8 @@ function foia_annual_data_report_form_annual_data_report_section_validate(array 
         // Check if field is a selected paragraph field.
         if (in_array($key, $paragraph_parent_fields)) {
           _foia_annual_data_report_validate_paragraph_fields($form, $form_state, $key, $form_value, $paragraph_fields_for_validation);
-        } else {
+        }
+        else {
 
           // Determine first if this is a subform of the field to be validated.
           if (!empty($form_value['widget'][0]['subform'])) {
@@ -263,14 +266,15 @@ function foia_annual_data_report_form_annual_data_report_section_validate(array 
                 }
                 break;
             }
-          } else {
+          }
+          else {
             $value = isset($form_value[0]['value']) ?: 0;
             $element = $form[$key];
             $element_title = isset($element['widget'][0]['#title']) ?: NULL;
             $error_msg = t(
               "Invalid input for :element_title:, please use number greater or equal to zero.",
               [':element_title:' => $element_title]
-            );
+                      );
             _foia_annual_data_report_text_as_integer_validation($form_state, $key, $value, $error_msg);
           }
         }
@@ -370,7 +374,8 @@ function foia_annual_data_report_form_annual_data_report_validate(array &$form, 
   // Check for an existing report.
   if ($form_state->getFormObject() instanceof EntityForm) {
     $current_nid = $form_state->getformObject()->getEntity()->id();
-  } else {
+  }
+  else {
     $current_nid = 0;
   }
 
@@ -487,7 +492,8 @@ function foia_annual_data_report_unrequire_hidden_fields(array &$form) {
 function foia_annual_data_report_set_memory_limit() {
   try {
     $config_value = foia_annual_data_report_get_config('annual_report_memory_limit');
-  } catch (\InvalidArgumentException $e) {
+  }
+  catch (\InvalidArgumentException $e) {
     \Drupal::logger('foia_annual_data_report')->error('Invalid setting requested.');
   }
 
@@ -502,7 +508,8 @@ function foia_annual_data_report_set_memory_limit() {
 function foia_annual_data_report_set_max_execution_time() {
   try {
     $config_value = foia_annual_data_report_get_config('annual_report_max_execution_time');
-  } catch (\InvalidArgumentException $e) {
+  }
+  catch (\InvalidArgumentException $e) {
     \Drupal::logger('foia_annual_data_report')->error('Invalid setting requested.');
   }
 
@@ -671,4 +678,3 @@ function foia_annual_data_report_entity_operation_alter(array &$operations, Enti
     }
   }
 }
-
