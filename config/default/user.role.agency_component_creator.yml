@@ -1,19 +1,7 @@
 uuid: 39342285-7127-47b4-b4eb-3896b28f8655
 langcode: en
 status: true
-dependencies:
-  config:
-    - filter.format.rich_text
-    - node.type.agency_component
-  module:
-    - content_moderation
-    - entity_browser
-    - file_entity
-    - filter
-    - node
-    - panelizer
-    - panels_ipe
-    - path
+dependencies: {  }
 id: agency_component_creator
 label: 'Agency Component creator'
 weight: 9
@@ -28,13 +16,11 @@ permissions:
   - 'create agency_component content'
   - 'create url aliases'
   - 'edit own agency_component content'
-  - 'revert all revisions'
   - 'use draft_draft transition'
   - 'use draft_needs_review transition'
   - 'use needs_review_needs_review transition'
   - 'use text format rich_text'
   - 'view agency_component revisions'
-  - 'view all revisions'
   - 'view any unpublished content'
   - 'view files'
   - 'view latest version'

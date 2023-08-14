@@ -1,13 +1,7 @@
 uuid: 50cc7b34-53ac-4346-95c7-1ec1c5692758
 langcode: en
 status: true
-dependencies:
-  config:
-    - node.type.page
-  module:
-    - content_moderation
-    - file_entity
-    - node
+dependencies: {  }
 id: page_reviewer
 label: 'Basic page reviewer'
 weight: 3
@@ -21,7 +15,5 @@ permissions:
   - 'use needs_review_published transition'
   - 'use published_archived transition'
   - 'use published_published transition'
-  - 'view any unpublished content'
   - 'view files'
-  - 'view latest version'
   - 'view moderation states'

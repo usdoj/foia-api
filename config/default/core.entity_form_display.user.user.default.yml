@@ -6,7 +6,6 @@ dependencies:
     - field.field.user.user.field_agency
     - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_password_expiration
-    - field.field.user.user.field_pending_expire_sent
   module:
     - datetime
     - user
@@ -26,35 +25,29 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_agency:
-    type: entity_reference_autocomplete
     weight: 5
-    region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_last_password_reset:
     type: datetime_default
     weight: 4
-    region: content
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_password_expiration:
     type: boolean_checkbox
     weight: 3
-    region: content
     settings:
       display_label: true
     third_party_settings: {  }
+    region: content
   language:
     weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  simplesamlphp_auth_user_enable:
-    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -63,5 +56,4 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden:
-  field_pending_expire_sent: true
+hidden: {  }

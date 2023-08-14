@@ -10,17 +10,17 @@ dependencies:
 id: termsofservice
 theme: bartik
 region: content
-weight: 0
+weight: 10
 provider: null
 plugin: foia_users_tos
 settings:
   id: foia_users_tos
   label: 'Terms of Service'
-  label_display: '0'
   provider: foia_users
+  label_display: '0'
 visibility:
   request_path:
     id: request_path
+    pages: /user/login
     negate: false
     context_mapping: {  }
-    pages: /user/login

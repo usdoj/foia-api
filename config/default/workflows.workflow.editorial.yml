@@ -2,11 +2,6 @@ uuid: ae37d41d-2453-474e-8dc6-c12c179c6b02
 langcode: en
 status: true
 dependencies:
-  config:
-    - node.type.cfo_committee
-    - node.type.cfo_council
-    - node.type.cfo_meeting
-    - node.type.cfo_page
   module:
     - content_moderation
 _core:
@@ -23,14 +18,14 @@ type_settings:
       default_revision: true
     draft:
       label: Draft
-      weight: -5
       published: false
       default_revision: false
+      weight: -5
     published:
       label: Published
-      weight: 0
       published: true
       default_revision: true
+      weight: 0
   transitions:
     archive:
       label: Archive
@@ -38,31 +33,30 @@ type_settings:
         - published
       to: archived
       weight: 2
+    archived_draft:
+      label: 'Restore to Draft'
+      from:
+        - archived
+      to: draft
+      weight: 3
     archived_published:
-      label: 'Restore from archive'
+      label: Restore
       from:
         - archived
       to: published
       weight: 4
     create_new_draft:
       label: 'Create New Draft'
-      from:
-        - draft
-        - published
-        - archived
       to: draft
       weight: 0
-    publish:
-      label: Publish
       from:
         - draft
         - published
+    publish:
+      label: Publish
       to: published
       weight: 1
-  entity_types:
-    node:
-      - cfo_committee
-      - cfo_council
-      - cfo_meeting
-      - cfo_page
-  default_moderation_state: draft
+      from:
+        - draft
+        - published
+  entity_types: {  }

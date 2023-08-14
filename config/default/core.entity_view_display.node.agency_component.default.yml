@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.agency_component.field_agency
     - field.field.node.agency_component.field_agency_comp_abbreviation
     - field.field.node.agency_component.field_agency_comp_telephone
-    - field.field.node.agency_component.field_commonly_requested_records
     - field.field.node.agency_component.field_complex_average_days
     - field.field.node.agency_component.field_complex_highest_days
     - field.field.node.agency_component.field_complex_lowest_days
@@ -18,19 +17,14 @@ dependencies:
     - field.field.node.agency_component.field_expedited_lowest_days
     - field.field.node.agency_component.field_expedited_median_days
     - field.field.node.agency_component.field_foia_officers
-    - field.field.node.agency_component.field_interop_exception
-    - field.field.node.agency_component.field_interop_planned_method
     - field.field.node.agency_component.field_is_centralized
     - field.field.node.agency_component.field_misc
     - field.field.node.agency_component.field_portal_submission_format
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
     - field.field.node.agency_component.field_receiver
-    - field.field.node.agency_component.field_rep_exp
-    - field.field.node.agency_component.field_rep_start
     - field.field.node.agency_component.field_request_data_year
     - field.field.node.agency_component.field_request_submission_form
-    - field.field.node.agency_component.field_require_manual_processing
     - field.field.node.agency_component.field_service_centers
     - field.field.node.agency_component.field_simple_average_days
     - field.field.node.agency_component.field_simple_highest_days
@@ -46,7 +40,6 @@ dependencies:
     - node.type.agency_component
   module:
     - address
-    - datetime
     - link
     - options
     - panelizer
@@ -66,157 +59,150 @@ bundle: agency_component
 mode: default
 content:
   body:
-    type: text_default
     label: above
+    type: text_default
+    weight: 4
     settings: {  }
     third_party_settings: {  }
-    weight: 4
     region: content
   field_agency:
-    type: entity_reference_label
+    weight: 1
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 1
+    type: entity_reference_label
     region: content
   field_agency_comp_abbreviation:
-    type: string
+    weight: 3
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 3
+    type: string
     region: content
   field_agency_comp_telephone:
-    type: telephone_link
+    weight: 5
     label: above
     settings:
       title: ''
     third_party_settings: {  }
-    weight: 5
-    region: content
-  field_commonly_requested_records:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 34
+    type: telephone_link
     region: content
   field_complex_average_days:
-    type: string
+    weight: 23
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 20
+    type: string
     region: content
   field_complex_highest_days:
-    type: string
+    weight: 24
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 21
+    type: string
     region: content
   field_complex_lowest_days:
-    type: string
+    weight: 25
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 22
+    type: string
     region: content
   field_complex_median_days:
-    type: string
+    weight: 26
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 23
+    type: string
     region: content
   field_email:
-    type: basic_string
+    weight: 6
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    type: basic_string
     region: content
   field_expedited_average_days:
-    type: string
+    weight: 31
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 28
+    type: string
     region: content
   field_expedited_highest_days:
-    type: string
+    weight: 32
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 29
+    type: string
     region: content
   field_expedited_lowest_days:
-    type: string
+    weight: 33
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 30
+    type: string
     region: content
   field_expedited_median_days:
-    type: string
+    weight: 34
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 31
+    type: string
     region: content
   field_foia_officers:
-    type: entity_reference_label
+    weight: 9
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 9
+    type: entity_reference_label
     region: content
   field_is_centralized:
-    type: boolean
+    weight: 2
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 2
+    type: boolean
     region: content
   field_misc:
-    type: entity_reference_label
+    weight: 12
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 12
+    type: entity_reference_label
     region: content
   field_portal_submission_format:
-    type: list_default
+    weight: 17
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 17
+    type: list_default
     region: content
   field_public_liaisons:
-    type: entity_reference_label
+    weight: 11
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 11
+    type: entity_reference_label
     region: content
   field_reading_rooms:
-    type: link
+    weight: 8
     label: above
     settings:
       trim_length: 80
@@ -225,109 +211,116 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 8
+    type: link
     region: content
   field_receiver:
-    type: entity_reference_label
+    weight: 13
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 13
-    region: content
-  field_rep_exp:
-    type: datetime_default
-    label: above
-    settings:
-      timezone_override: ''
-      format_type: medium
-    third_party_settings: {  }
-    weight: 33
-    region: content
-  field_rep_start:
-    type: datetime_default
-    label: above
-    settings:
-      timezone_override: ''
-      format_type: medium
-    third_party_settings: {  }
-    weight: 32
+    type: entity_reference_label
     region: content
   field_request_data_year:
-    type: string
+    weight: 22
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 19
+    type: string
     region: content
   field_request_submission_form:
-    type: webform_entity_reference_link
+    weight: 21
     label: above
     settings:
       label: '[webform:title]'
-      dialog: ''
-      attributes: {  }
     third_party_settings: {  }
-    weight: 18
+    type: webform_entity_reference_link
     region: content
   field_service_centers:
-    type: entity_reference_label
+    weight: 10
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 10
+    type: entity_reference_label
     region: content
   field_simple_average_days:
-    type: string
+    weight: 27
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 24
+    type: string
     region: content
   field_simple_highest_days:
-    type: string
+    weight: 28
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 25
+    type: string
     region: content
   field_simple_lowest_days:
-    type: string
+    weight: 29
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 26
+    type: string
     region: content
   field_simple_median_days:
-    type: string
+    weight: 30
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 27
+    type: string
     region: content
   field_submission_address:
-    type: address_default
+    weight: 14
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 14
+    type: address_default
+    region: content
+  field_submission_api:
+    weight: 19
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_submission_api_secret:
+    weight: 20
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_submission_email:
+    weight: 18
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_submission_fax:
-    type: telephone_link
+    weight: 16
     label: above
     settings:
       title: ''
     third_party_settings: {  }
-    weight: 16
+    type: telephone_link
     region: content
   field_submission_web:
-    type: link
+    weight: 15
     label: above
     settings:
       trim_length: 80
@@ -336,10 +329,10 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 15
+    type: link
     region: content
   field_website:
-    type: link
+    weight: 7
     label: above
     settings:
       trim_length: 80
@@ -348,18 +341,11 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 7
+    type: link
     region: content
   links:
-    settings: {  }
-    third_party_settings: {  }
     weight: 0
     region: content
-hidden:
-  field_interop_exception: true
-  field_interop_planned_method: true
-  field_require_manual_processing: true
-  field_submission_api: true
-  field_submission_api_secret: true
-  field_submission_email: true
-  search_api_excerpt: true
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

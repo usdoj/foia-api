@@ -4,9 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.user.user.field_agency
-    - field.field.user.user.field_last_password_reset
-    - field.field.user.user.field_password_expiration
-    - field.field.user.user.field_pending_expire_sent
   module:
     - user
 id: user.user.default
@@ -15,21 +12,14 @@ bundle: user
 mode: default
 content:
   field_agency:
-    type: entity_reference_label
+    weight: 6
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 6
+    type: entity_reference_label
     region: content
   member_for:
-    settings: {  }
-    third_party_settings: {  }
     weight: 5
     region: content
-hidden:
-  field_last_password_reset: true
-  field_password_expiration: true
-  field_pending_expire_sent: true
-  name: true
-  search_api_excerpt: true
+hidden: {  }

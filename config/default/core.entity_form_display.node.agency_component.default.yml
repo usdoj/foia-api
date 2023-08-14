@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.agency_component.field_agency
     - field.field.node.agency_component.field_agency_comp_abbreviation
     - field.field.node.agency_component.field_agency_comp_telephone
-    - field.field.node.agency_component.field_commonly_requested_records
     - field.field.node.agency_component.field_complex_average_days
     - field.field.node.agency_component.field_complex_highest_days
     - field.field.node.agency_component.field_complex_lowest_days
@@ -18,19 +17,14 @@ dependencies:
     - field.field.node.agency_component.field_expedited_lowest_days
     - field.field.node.agency_component.field_expedited_median_days
     - field.field.node.agency_component.field_foia_officers
-    - field.field.node.agency_component.field_interop_exception
-    - field.field.node.agency_component.field_interop_planned_method
     - field.field.node.agency_component.field_is_centralized
     - field.field.node.agency_component.field_misc
     - field.field.node.agency_component.field_portal_submission_format
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
     - field.field.node.agency_component.field_receiver
-    - field.field.node.agency_component.field_rep_exp
-    - field.field.node.agency_component.field_rep_start
     - field.field.node.agency_component.field_request_data_year
     - field.field.node.agency_component.field_request_submission_form
-    - field.field.node.agency_component.field_require_manual_processing
     - field.field.node.agency_component.field_service_centers
     - field.field.node.agency_component.field_simple_average_days
     - field.field.node.agency_component.field_simple_highest_days
@@ -46,8 +40,6 @@ dependencies:
     - node.type.agency_component
   module:
     - address
-    - content_moderation
-    - datetime
     - field_group
     - inline_entity_form
     - link
@@ -61,87 +53,80 @@ third_party_settings:
       children:
         - field_receiver
         - field_submission_address
-      label: 'Paper Submissions'
-      region: content
       parent_name: ''
       weight: 18
       format_type: details
       format_settings:
-        classes: ''
         id: ''
+        classes: ''
         open: true
         required_fields: true
+      label: 'Paper Submissions'
     group_email_submissions:
       children:
         - field_submission_email
-      label: 'Email Submissions'
-      region: content
       parent_name: group_portal_submission_options
       weight: 22
       format_type: details
       format_settings:
-        classes: ''
         id: ''
+        classes: ''
         open: true
         required_fields: true
+      label: 'Email Submissions'
     group_web_submissions:
       children:
         - field_submission_web
-      label: 'Web Submissions'
-      region: content
       parent_name: ''
       weight: 20
       format_type: details
       format_settings:
-        classes: ''
         id: ''
+        classes: ''
         open: true
         required_fields: true
+      label: 'Web Submissions'
     group_fax_submissions:
       children:
         - field_submission_fax
-      label: 'Fax Submissions'
-      region: content
       parent_name: ''
       weight: 19
       format_type: details
       format_settings:
-        classes: ''
         id: ''
+        classes: ''
         open: true
         required_fields: true
+      label: 'Fax Submissions'
     group_api_submissions:
       children:
         - field_submission_api
         - field_submission_api_secret
-      label: 'API Submissions'
-      region: content
       parent_name: group_portal_submission_options
       weight: 23
       format_type: details
       format_settings:
-        classes: ''
         id: ''
+        classes: ''
         open: true
         required_fields: true
+      label: 'API Submissions'
     group_portal_submission_options:
       children:
         - field_portal_submission_format
         - group_email_submissions
         - group_api_submissions
-      label: 'Portal Submission Options'
-      region: content
       parent_name: ''
       weight: 21
       format_type: fieldset
       format_settings:
-        classes: ''
         id: ''
+        classes: ''
         description: ''
         required_fields: true
+      label: 'Portal Submission Options'
     group_processing_data:
       children:
-        - field_require_manual_processing
         - field_request_data_year
         - field_complex_average_days
         - field_complex_highest_days
@@ -155,48 +140,15 @@ third_party_settings:
         - field_simple_highest_days
         - field_simple_lowest_days
         - field_simple_median_days
-      label: 'Processing Data'
-      region: content
       parent_name: ''
-      weight: 24
+      weight: 23
       format_type: details
       format_settings:
-        classes: ''
-        show_empty_fields: false
         id: ''
+        classes: ''
         open: true
-        description: 'Unless the checkbox below is checked, this data will be automatically populated from the annual report for this agency component. The data will be fetched from Section VII.A. - Processed Requests.'
         required_fields: true
-    group_annual_foia_report_dates:
-      children:
-        - field_rep_start
-        - field_rep_exp
-      label: 'Annual FOIA Report Start/Expiration Dates'
-      region: content
-      parent_name: ''
-      weight: 25
-      format_type: details
-      format_settings:
-        classes: ''
-        id: ''
-        open: false
-        required_fields: true
-    group_interoperability:
-      children:
-        - field_interop_planned_method
-        - field_interop_exception
-      label: 'FOIA Portal Interoperability'
-      region: content
-      parent_name: ''
-      weight: 26
-      format_type: details
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        open: false
-        description: ''
-        required_fields: true
+      label: 'Processing Data'
 id: node.agency_component.default
 targetEntityType: node
 bundle: agency_component
@@ -205,13 +157,12 @@ content:
   body:
     type: text_textarea_with_summary
     weight: 4
-    region: content
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
-      show_summary: false
     third_party_settings: {  }
+    region: content
   created:
     type: datetime_timestamp
     weight: 13
@@ -219,359 +170,287 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_agency:
-    type: entity_reference_autocomplete
     weight: 1
-    region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_agency_comp_abbreviation:
-    type: string_textfield
     weight: 3
-    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_agency_comp_telephone:
-    type: telephone_default
     weight: 5
-    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-  field_commonly_requested_records:
-    type: string_textarea
-    weight: 37
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-  field_complex_average_days:
-    type: string_textfield
-    weight: 25
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_complex_highest_days:
-    type: string_textfield
-    weight: 26
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_complex_lowest_days:
-    type: string_textfield
-    weight: 27
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_complex_median_days:
-    type: string_textfield
-    weight: 28
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_email:
-    type: email_default
-    weight: 6
-    region: content
-    settings:
-      placeholder: ''
-      size: 60
-    third_party_settings: {  }
-  field_expedited_average_days:
-    type: string_textfield
-    weight: 29
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_expedited_highest_days:
-    type: string_textfield
-    weight: 30
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_expedited_lowest_days:
-    type: string_textfield
-    weight: 31
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_expedited_median_days:
-    type: string_textfield
-    weight: 32
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_foia_officers:
-    type: inline_entity_form_complex
-    weight: 8
-    region: content
-    settings:
-      form_mode: default
-      override_labels: false
-      label_singular: ''
-      label_plural: ''
-      allow_new: true
-      allow_existing: true
-      match_operator: CONTAINS
-      allow_duplicate: false
-      collapsible: false
-      collapsed: false
-      revision: false
-      removed_reference: optional
-    third_party_settings: {  }
-  field_interop_exception:
-    type: options_select
-    weight: 30
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_interop_planned_method:
-    type: options_select
-    weight: 28
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_is_centralized:
-    type: boolean_checkbox
-    weight: 2
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_misc:
-    type: inline_entity_form_complex
-    weight: 11
-    region: content
-    settings:
-      form_mode: default
-      override_labels: false
-      label_singular: ''
-      label_plural: ''
-      allow_new: true
-      allow_existing: true
-      match_operator: CONTAINS
-      allow_duplicate: false
-      collapsible: false
-      collapsed: false
-      revision: false
-      removed_reference: optional
-    third_party_settings: {  }
-  field_portal_submission_format:
-    type: options_select
-    weight: 21
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_public_liaisons:
-    type: inline_entity_form_complex
-    weight: 9
-    region: content
-    settings:
-      form_mode: default
-      override_labels: false
-      label_singular: ''
-      label_plural: ''
-      allow_new: true
-      allow_existing: true
-      match_operator: CONTAINS
-      allow_duplicate: false
-      collapsible: false
-      collapsed: false
-      revision: false
-      removed_reference: optional
-    third_party_settings: {  }
-  field_reading_rooms:
-    type: link_default
-    weight: 7
-    region: content
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-  field_receiver:
-    type: inline_entity_form_complex
-    weight: 6
-    region: content
-    settings:
-      form_mode: default
-      override_labels: false
-      label_singular: ''
-      label_plural: ''
-      allow_new: true
-      allow_existing: true
-      match_operator: CONTAINS
-      allow_duplicate: false
-      collapsible: false
-      collapsed: false
-      revision: false
-      removed_reference: optional
-    third_party_settings: {  }
-  field_rep_exp:
-    type: datetime_default
-    weight: 28
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_rep_start:
-    type: datetime_default
-    weight: 27
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_request_data_year:
-    type: string_textfield
-    weight: 24
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_request_submission_form:
-    type: webform_entity_reference_select
-    weight: 22
-    region: content
-    settings:
-      default_data: true
-      webforms: {  }
-    third_party_settings: {  }
-  field_require_manual_processing:
-    type: boolean_checkbox
-    weight: 23
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_service_centers:
-    type: inline_entity_form_complex
-    weight: 10
-    region: content
-    settings:
-      form_mode: default
-      override_labels: false
-      label_singular: ''
-      label_plural: ''
-      allow_new: true
-      allow_existing: true
-      match_operator: CONTAINS
-      allow_duplicate: false
-      collapsible: false
-      collapsed: false
-      revision: false
-      removed_reference: optional
-    third_party_settings: {  }
-  field_simple_average_days:
-    type: string_textfield
-    weight: 33
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_simple_highest_days:
-    type: string_textfield
-    weight: 34
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_simple_lowest_days:
-    type: string_textfield
-    weight: 35
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_simple_median_days:
-    type: string_textfield
-    weight: 36
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_submission_address:
-    type: address_default
-    weight: 7
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_submission_api:
-    type: link_default
-    weight: 26
-    region: content
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-  field_submission_api_secret:
-    type: string_textfield
-    weight: 27
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_submission_email:
-    type: email_default
-    weight: 16
-    region: content
-    settings:
-      placeholder: ''
-      size: 60
-    third_party_settings: {  }
-  field_submission_fax:
     type: telephone_default
-    weight: 18
     region: content
+  field_complex_average_days:
+    weight: 28
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_complex_highest_days:
+    weight: 29
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_complex_lowest_days:
+    weight: 30
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_complex_median_days:
+    weight: 31
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_email:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_expedited_average_days:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_highest_days:
+    weight: 33
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_lowest_days:
+    weight: 34
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_expedited_median_days:
+    weight: 35
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_foia_officers:
+    weight: 8
+    settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      override_labels: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  field_is_centralized:
+    weight: 2
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_misc:
+    weight: 11
+    settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      override_labels: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  field_portal_submission_format:
+    weight: 21
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_public_liaisons:
+    weight: 9
+    settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      override_labels: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  field_reading_rooms:
+    weight: 7
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_receiver:
+    weight: 6
+    settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      override_labels: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  field_request_data_year:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_request_submission_form:
+    weight: 22
+    settings: {  }
+    third_party_settings: {  }
+    type: webform_entity_reference_select
+    region: content
+  field_service_centers:
+    weight: 10
+    settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      override_labels: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  field_simple_average_days:
+    weight: 36
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_simple_highest_days:
+    weight: 37
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_simple_lowest_days:
+    weight: 38
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_simple_median_days:
+    weight: 39
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_submission_address:
+    weight: 7
+    settings:
+      default_country: null
+    third_party_settings: {  }
+    type: address_default
+    region: content
+  field_submission_api:
+    weight: 26
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_submission_api_secret:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_submission_email:
+    weight: 16
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_submission_fax:
+    weight: 18
     settings:
       placeholder: ''
     third_party_settings: {  }
+    type: telephone_default
+    region: content
   field_submission_web:
-    type: link_default
     weight: 17
-    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+    type: link_default
+    region: content
   field_website:
-    type: link_default
     weight: 17
-    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-  moderation_state:
-    type: moderation_state_default
-    weight: 28
+    type: link_default
     region: content
-    settings: {  }
-    third_party_settings: {  }
   path:
     type: path
     weight: 16
@@ -580,24 +459,24 @@ content:
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 14
-    region: content
     settings:
       display_label: true
+    weight: 14
+    region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 27
-    region: content
     settings:
       display_label: true
+    weight: 24
     third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
-    weight: 15
-    region: content
     settings:
       display_label: true
+    weight: 15
+    region: content
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -610,11 +489,10 @@ content:
   uid:
     type: entity_reference_autocomplete
     weight: 12
-    region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
+    region: content
     third_party_settings: {  }
 hidden: {  }

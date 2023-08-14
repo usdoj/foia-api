@@ -1,15 +1,7 @@
 uuid: eaf483c3-6779-41be-aa50-ae293cc69c80
 langcode: en
 status: true
-dependencies:
-  module:
-    - file_entity
-    - foia_personnel
-    - form_mode_manager
-    - media
-    - shortcut
-    - system
-    - webform
+dependencies: {  }
 _core:
   default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
 id: authenticated
@@ -17,11 +9,10 @@ label: 'Authenticated user'
 weight: 1
 is_admin: false
 permissions:
-  - 'access any webform configuration'
   - 'access content'
   - 'access shortcuts'
   - 'access site-wide contact form'
-  - 'use node.default form mode'
+  - 'view field_agency'
   - 'view files'
   - 'view media'
   - 'view published foia personnel entities'

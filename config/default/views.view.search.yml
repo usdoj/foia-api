@@ -15,25 +15,85 @@ description: ''
 tag: ''
 base_table: search_api_index_content
 base_field: search_api_id
+core: 8.x
 display:
   default:
+    display_plugin: default
     id: default
     display_title: Master
-    display_plugin: default
     position: 0
     display_options:
-      title: Search
+      access:
+        type: none
+        options: {  }
+      cache:
+        type: search_api_time
+        options:
+          results_lifespan: 3600
+          results_lifespan_custom: 0
+          output_lifespan: 3600
+          output_lifespan_custom: 0
+      query:
+        type: views_query
+        options:
+          bypass_access: false
+          skip_access: false
+      exposed_form:
+        type: input_required
+        options:
+          submit_button: Search
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+          text_input_required: 'Enter keywords to search the site.'
+          text_input_required_format: rich_text
+      pager:
+        type: mini
+        options:
+          items_per_page: 10
+          offset: 0
+          id: 0
+          total_pages: null
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          tags:
+            previous: ‹‹
+            next: ››
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          uses_fields: false
+      row:
+        type: search_api
+        options:
+          view_modes:
+            'entity:node':
+              page: teaser
+              landing_page: teaser
+              agency_component: default
       fields:
         rendered:
-          id: rendered
           table: search_api_index_content
           field: rendered
-          relationship: none
-          group_type: group
-          admin_label: ''
+          id: rendered
           entity_type: null
           entity_field: null
           plugin_id: search_api
+          relationship: none
+          group_type: group
+          admin_label: ''
           label: ''
           exclude: false
           alter:
@@ -78,75 +138,6 @@ display:
           link_to_item: false
           multi_type: separator
           multi_separator: ', '
-      pager:
-        type: mini
-        options:
-          offset: 0
-          items_per_page: 10
-          total_pages: null
-          id: 0
-          tags:
-            next: ››
-            previous: ‹‹
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-      exposed_form:
-        type: input_required
-        options:
-          submit_button: Search
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-          text_input_required: 'Enter keywords to search the site.'
-          text_input_required_format: rich_text
-      access:
-        type: none
-        options: {  }
-      cache:
-        type: search_api_time
-        options:
-          results_lifespan: 3600
-          results_lifespan_custom: 0
-          output_lifespan: 3600
-          output_lifespan_custom: 0
-      empty:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text
-          empty: true
-          content:
-            value: 'Your search did not return any results.'
-            format: rich_text
-          tokenize: false
-      sorts:
-        search_api_relevance:
-          id: search_api_relevance
-          table: search_api_index_content
-          field: search_api_relevance
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api
-          order: DESC
-          expose:
-            label: ''
-            field_identifier: search_api_relevance
-          exposed: false
-      arguments: {  }
       filters:
         search_api_fulltext:
           id: search_api_fulltext
@@ -155,7 +146,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: search_api_fulltext
           operator: or
           value: ''
           group: 1
@@ -166,8 +156,6 @@ display:
             description: ''
             use_operator: false
             operator: search_api_fulltext_op
-            operator_limit_selection: false
-            operator_list: {  }
             identifier: keywords
             required: false
             remember: false
@@ -200,60 +188,60 @@ display:
           parse_mode: terms
           min_length: 2
           fields: {  }
-      style:
-        type: default
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          uses_fields: false
-      row:
-        type: search_api
-        options:
-          view_modes:
-            'entity:node':
-              agency_component: default
-              annual_foia_report_data: default
-              cfo_committee: default
-              cfo_council: default
-              cfo_meeting: default
-              cfo_page: default
-              landing_page: teaser
-              page: teaser
-              quarterly_foia_report_data: default
-      query:
-        type: search_api_query
-        options:
-          bypass_access: false
-          skip_access: false
-      relationships: {  }
+          plugin_id: search_api_fulltext
+      sorts:
+        search_api_relevance:
+          id: search_api_relevance
+          table: search_api_index_content
+          field: search_api_relevance
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
       header: {  }
       footer: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'Your search did not return any results.'
+            format: rich_text
+          plugin_id: text
+      relationships: {  }
+      arguments: {  }
       display_extenders: {  }
+      title: Search
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'user.node_grants:view'
-      tags:
-        - 'config:search_api.index.content'
+      tags: {  }
   page:
+    display_plugin: page
     id: page
     display_title: Page
-    display_plugin: page
     position: 1
     display_options:
-      exposed_block: true
       display_extenders: {  }
       path: search
+      exposed_block: true
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'user.node_grants:view'
-      tags:
-        - 'config:search_api.index.content'
+      tags: {  }

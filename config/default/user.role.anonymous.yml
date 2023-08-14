@@ -1,18 +1,7 @@
 uuid: 422c8163-a07f-4842-8da2-1f1849be34f6
 langcode: en
 status: true
-dependencies:
-  config:
-    - rest.resource.webform_submission
-  module:
-    - field_permissions
-    - file_entity
-    - foia_personnel
-    - media
-    - rest
-    - system
-    - view_unpublished
-    - webform
+dependencies: {  }
 _core:
   default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
 id: anonymous
@@ -20,11 +9,10 @@ label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
-  - 'access any webform configuration'
   - 'access content'
   - 'access site-wide contact form'
   - 'restful post webform_submission'
-  - 'view any unpublished agency_component content'
+  - 'view field_agency'
   - 'view field_complex_average_days'
   - 'view field_complex_highest_days'
   - 'view field_complex_lowest_days'
@@ -34,7 +22,6 @@ permissions:
   - 'view field_expedited_lowest_days'
   - 'view field_expedited_median_days'
   - 'view field_is_centralized'
-  - 'view field_rep_start'
   - 'view field_request_data_year'
   - 'view field_request_submission_form'
   - 'view field_simple_average_days'

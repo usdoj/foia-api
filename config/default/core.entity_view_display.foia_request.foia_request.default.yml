@@ -8,8 +8,8 @@ dependencies:
     - field.field.foia_request.foia_request.field_error_code
     - field.field.foia_request.foia_request.field_error_description
     - field.field.foia_request.foia_request.field_error_message
+    - field.field.foia_request.foia_request.field_requester_email
     - field.field.foia_request.foia_request.field_response_code
-    - field.field.foia_request.foia_request.field_submission_failures
     - field.field.foia_request.foia_request.field_submission_method
     - field.field.foia_request.foia_request.field_submission_time
     - field.field.foia_request.foia_request.field_tracking_number
@@ -25,102 +25,99 @@ bundle: foia_request
 mode: default
 content:
   field_agency_component:
-    type: entity_reference_label
+    weight: 1
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 1
+    type: entity_reference_label
     region: content
   field_case_management_id:
-    type: string
+    weight: 6
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 6
+    type: string
     region: content
   field_error_code:
-    type: string
+    weight: 8
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 8
+    type: string
     region: content
   field_error_description:
-    type: basic_string
+    weight: 11
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 11
+    type: basic_string
     region: content
   field_error_message:
-    type: basic_string
+    weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 9
+    type: basic_string
+    region: content
+  field_requester_email:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_response_code:
-    type: number_integer
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
     weight: 5
-    region: content
-  field_submission_failures:
-    type: number_integer
     label: above
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 12
+    type: number_integer
     region: content
   field_submission_method:
-    type: list_default
+    weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    type: list_default
     region: content
   field_submission_time:
-    type: timestamp
+    weight: 4
     label: above
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
-    weight: 4
+    type: timestamp
     region: content
   field_tracking_number:
-    type: string
+    weight: 7
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 7
+    type: string
     region: content
   field_webform_submission_id:
-    type: number_integer
+    weight: 10
     label: above
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 10
+    type: number_integer
     region: content
   request_status:
-    type: list_default
     label: inline
+    type: list_default
+    region: content
     settings: {  }
     third_party_settings: {  }
     weight: 2
-    region: content
 hidden:
-  search_api_excerpt: true
   user_id: true

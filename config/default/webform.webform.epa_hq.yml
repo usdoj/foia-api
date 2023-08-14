@@ -4,17 +4,15 @@ status: open
 dependencies:
   module:
     - foia_webform
-weight: 0
 open: null
 close: null
 uid: 71
 template: false
-archive: false
 id: epa_hq
 title: 'EPA-HQ Form'
 description: ''
 category: ''
-elements: |-
+elements: |
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -66,40 +64,19 @@ elements: |-
       other: 'All other requester'
   request_description:
     '#type': textarea
-    '#maxlength': 10000
     '#title': 'Your request'
     '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
     '#required': true
   fee_waiver:
     '#type': select
     '#title': 'Fee waiver'
-    '#help': |
-      Requests for the waiver or reduction of fees must be submitted along with your request. <a href="https://www.ecfr.gov/current/title-40/chapter-I/subchapter-A/part-2/subpart-A/section-2.107">40 CFR 2.107(l)</a><a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=9e5e6ebc5306b6f37207f25b7db30ac5&amp;mc=true&amp;node=sp40.1.2.a&amp;rgn=div6#se40.1.2_1107">.</a>
-      <p><strong>EPA will make its fee waiver determination based upon information you provide to the following 6 factors.</strong></p>
-      
-      <p><em><strong>YOU MUST EXPLAIN HOW YOU MEET ALL 6 CRITERIA</strong></em></p>
-      
-      <p><strong>If additional space is needed, please attach your justification with your FOIA request.</strong></p>
-      
-      <p><strong>Factor 1. The subject of the request</strong>: Whether the subject of the requested records concerns &quot;the operations or activities of the government.&quot; The subject of the requested records must concern identifiable operations or activities of the federal government, with a connection that is direct and clear, not remote.</p>
-      
-      <p><strong>Factor 2. The informative value of the information to be disclosed</strong>: Whether the disclosure is &quot;likely to contribute&quot; to an understanding of government operations or activities. The disclosable portions of the requested records must be meaningfully informative about government operations or activities in order to be &quot;likely to contribute&quot; to an increased public understanding of those operations or activities. The disclosure of information that already is in the public domain, in either a duplicative or a substantially identical form, would not be as likely to contribute to such understanding when nothing new would be added to the public&#39;s understanding.</p>
-      
-      <p><strong>Factor 3. The contribution to an understanding of the subject by the public is likely to result from disclosure</strong>: Whether disclosure of the requested information will contribute to &quot;public understanding.&quot; The disclosure must contribute to the understanding of a reasonably broad audience of persons interested in the subject, as opposed to the individual understanding of the requester. A requester&#39;s expertise in the subject area and ability and intention to effectively convey information to the public will be considered. It will be presumed that a representative of the news media will satisfy this consideration.</p>
-      
-      <p><strong>Factor 4. The significance of the contribution to public understanding</strong>: Whether the disclosure is likely to contribute &quot;significantly&quot; to public understanding of government operations or activities. The public&#39;s understanding of the subject in question, as compared to the level of public understanding existing prior to the disclosure, must be enhanced significantly by the disclosure. The FOI Office will not make value judgments about whether information that would contribute significantly to public understanding of the operations or activities of the government is &quot;important&quot; enough to be made public.</p>
-      
-      <p><strong>Factor 5. The existence and magnitude of a commercial interest</strong>: Whether the requester has a commercial interest that would be furthered by the requested disclosure. The FOI Office will consider any commercial interest of the requester or of any person on whose behalf the requester may be acting, that would be furthered by the requested disclosure. Requesters will be given an opportunity in the administrative process to provide explanatory information regarding this consideration.</p>
-      
-      <p><strong>Factor 6. The primary interest in disclosure</strong>: Whether any identified commercial interest of the requester is sufficiently large, in comparison with the public interest in disclosure that disclosure is &quot;primarily in the commercial interest of the requester.&quot; A fee waiver or reduction is justified where the public interest standard is satisfied and that public interest is greater in magnitude than that of any identified commercial interest in disclosure. FOI Offices ordinarily will presume that when a news media requester has satisfied the public interest standard, the public interest will be the interest primarily served by disclosure to that requester. Disclosure to data brokers or others who merely compile and market government information for direct economic return will not be presumed to primarily serve the public interest.</p>
-      
+    '#help': 'Requests for the waiver or reduction of fees must be submitted along with your request. <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=9e5e6ebc5306b6f37207f25b7db30ac5&amp;mc=true&amp;node=sp40.1.2.a&amp;rgn=div6#se40.1.2_1107">40 C.F.R. 2.107(k)(5).</a>'
+    '#default_value': 'no'
     '#options':
       'no': 'No'
       'yes': 'Yes'
-    '#default_value': 'no'
   fee_waiver_explanation:
     '#type': textarea
-    '#maxlength': 10000
     '#title': 'Fee waiver justification'
     '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'
   fee_amount_willing:
@@ -108,26 +85,16 @@ elements: |-
     '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'
     '#pattern': '^(?=.)([+\-\$]?([0-9]*)(\.([0-9]+))?)$'
     '#counter_type': word
-    '#counter_maximum': 1
+    '#counter_maximum': '1'
   expedited_processing:
     '#type': select
     '#title': 'Expedited processing'
-    '#help': |
-      <p><strong>In certain&nbsp;<em>limited circumstances</em>, individual requests can move ahead of other requests on an expedited basis.</strong></p>
-      
-      <p>The following factors must be met:</p>
-      
-      <p>1. Circumstances in which the lack of expedited treatment could reasonably be expected to pose an imminent threat to the life or physical safety of an individual.</p>
-      
-      <p>2. An urgency to inform the public about an actual or alleged Federal government activity, if the information is requested by a person primarily engaged in disseminating information to the public.</p>
-      
+    '#default_value': 'no'
     '#options':
       'no': 'No'
       'yes': 'Yes'
-    '#default_value': 'no'
   expedited_processing_explanation:
     '#type': textarea
-    '#maxlength': 10000
     '#title': 'Justification for expedited processing'
     '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.'
   attachments_supporting_documentation:
@@ -140,86 +107,37 @@ css: ''
 javascript: ''
 settings:
   ajax: false
-  ajax_scroll_top: form
-  ajax_progress_type: ''
-  ajax_effect: ''
-  ajax_speed: null
   page: true
   page_submit_path: ''
   page_confirm_path: ''
-  page_theme_name: ''
-  form_title: both
   form_submit_once: false
+  form_exception_message: ''
   form_open_message: ''
   form_close_message: ''
-  form_exception_message: ''
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
-  form_disable_remote_addr: false
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
   form_prepopulate_source_entity_required: false
   form_prepopulate_source_entity_type: ''
-  form_unsaved: false
-  form_disable_back: false
-  form_submit_back: false
+  form_reset: false
   form_disable_autocomplete: false
   form_novalidate: false
-  form_disable_inline_errors: false
-  form_required: false
+  form_unsaved: false
+  form_disable_back: false
   form_autofocus: false
   form_details_toggle: false
-  form_reset: false
-  form_access_denied: default
-  form_access_denied_title: ''
-  form_access_denied_message: ''
-  form_access_denied_attributes: {  }
-  form_file_limit: ''
-  share: false
-  share_node: false
-  share_theme_name: ''
-  share_title: true
-  share_page_body_attributes: {  }
   submission_label: ''
-  submission_exception_message: ''
-  submission_locked_message: ''
   submission_log: false
-  submission_excluded_elements: {  }
-  submission_exclude_empty: false
-  submission_exclude_empty_checkbox: false
-  submission_views: {  }
-  submission_views_replace: {  }
   submission_user_columns: {  }
-  submission_user_duplicate: false
-  submission_access_denied: default
-  submission_access_denied_title: ''
-  submission_access_denied_message: ''
-  submission_access_denied_attributes: {  }
-  previous_submission_message: ''
-  previous_submissions_message: ''
-  autofill: false
-  autofill_message: ''
-  autofill_excluded_elements: {  }
   wizard_progress_bar: true
   wizard_progress_pages: false
   wizard_progress_percentage: false
-  wizard_progress_link: false
-  wizard_progress_states: false
   wizard_start_label: ''
-  wizard_preview_link: false
-  wizard_confirmation: true
-  wizard_confirmation_label: ''
-  wizard_auto_forward: true
-  wizard_auto_forward_hide_next_button: false
-  wizard_keyboard: true
-  wizard_track: ''
-  wizard_prev_button_label: ''
-  wizard_next_button_label: ''
-  wizard_toggle: false
-  wizard_toggle_show_label: ''
-  wizard_toggle_hide_label: ''
+  wizard_complete: true
+  wizard_complete_label: ''
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -227,46 +145,30 @@ settings:
   preview_attributes: {  }
   preview_excluded_elements: {  }
   preview_exclude_empty: true
-  preview_exclude_empty_checkbox: false
   draft: none
   draft_multiple: false
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
-  draft_pending_single_message: ''
-  draft_pending_multiple_message: ''
   confirmation_type: page
-  confirmation_url: ''
   confirmation_title: ''
   confirmation_message: ''
+  confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
   confirmation_back_attributes: {  }
-  confirmation_exclude_query: false
-  confirmation_exclude_token: false
-  confirmation_update: false
   limit_total: null
-  limit_total_interval: null
   limit_total_message: ''
-  limit_total_unique: false
   limit_user: null
-  limit_user_interval: null
   limit_user_message: ''
-  limit_user_unique: false
-  entity_limit_total: null
-  entity_limit_total_interval: null
-  entity_limit_user: null
-  entity_limit_user_interval: null
   purge: none
   purge_days: null
+  entity_limit_total: null
+  entity_limit_user: null
   results_disabled: false
   results_disabled_ignore: false
-  results_customize: false
-  token_view: false
   token_update: false
-  token_delete: false
-  serial_disabled: false
 access:
   create:
     roles:
@@ -302,24 +204,11 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-  administer:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  test:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  configuration:
-    roles: {  }
-    users: {  }
-    permissions: {  }
 handlers:
   foia_submission_queue:
     id: foia_submission_queue
-    handler_id: foia_submission_queue
     label: 'FOIA Submission Queue'
-    notes: ''
+    handler_id: foia_submission_queue
     status: true
     conditions: {  }
     weight: 0
@@ -328,28 +217,22 @@ handlers:
         - completed
       to_mail: ''
       to_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: _default
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: default
       from_options: {  }
-      from_name: _default
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
+      from_name: default
       subject: 'FOIA Request Submission'
       body: '[webform_submission:values:message:value]'
       excluded_elements: {  }
-      ignore_access: false
-      exclude_empty: true
       html: true
       attachments: false
       debug: false
-      exclude_empty_checkbox: false
-      twig: false
-      theme_name: ''
-      parameters: {  }
-      exclude_attachments: false
-variants: {  }
+      reply_to: ''
+      return_path: ''
+      ignore_access: false
+      exclude_empty: true
+      sender_mail: ''
+      sender_name: ''

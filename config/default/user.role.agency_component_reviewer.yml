@@ -1,13 +1,7 @@
 uuid: c1390f7b-ed74-4abc-90d4-c7921fe5c501
 langcode: en
 status: true
-dependencies:
-  config:
-    - node.type.agency_component
-  module:
-    - content_moderation
-    - file_entity
-    - node
+dependencies: {  }
 id: agency_component_reviewer
 label: 'Agency Component reviewer'
 weight: 10
@@ -16,14 +10,10 @@ permissions:
   - 'access content overview'
   - 'delete any agency_component content'
   - 'edit any agency_component content'
-  - 'revert all revisions'
   - 'use draft_published transition'
   - 'use needs_review_draft transition'
   - 'use needs_review_published transition'
   - 'use published_archived transition'
   - 'use published_published transition'
-  - 'view all revisions'
-  - 'view any unpublished content'
   - 'view files'
-  - 'view latest version'
   - 'view moderation states'
