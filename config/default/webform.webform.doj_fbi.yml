@@ -13,7 +13,7 @@ archive: false
 id: doj_fbi
 title: DOJ-FBI
 description: ''
-category: null
+category: ''
 elements: |-
   name_first:
     '#type': textfield
@@ -143,6 +143,9 @@ elements: |-
       required:
         ':input[name="expedited_processing"]':
           value: 'yes'
+      visible:
+        ':input[name="expedited_processing"]':
+          value: 'yes'
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
@@ -158,6 +161,7 @@ elements: |-
         ':input[name="fbi_requester_type"]':
           value: myself
     '#max_filesize': '10'
+    '#file_extensions': 'gif jpg png txt pdf doc docx odf zip'
     '#sanitize': true
   deceased_name_first:
     '#type': textfield
@@ -192,28 +196,28 @@ elements: |-
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
-          value: decease
+          value: deceased
   deceased_alien_registration_number:
     '#type': textfield
     '#title': 'Deceased Individual''s Alien Registration Number'
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
-          value: decease
+          value: deceased
   deceased_fbi_number:
     '#type': textfield
     '#title': 'Deceased Individual''s FBI Number'
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
-          value: decease
+          value: deceased
   deceased_place_of_birth:
     '#type': textfield
     '#title': 'Deceased Individual''s Place of Birth'
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
-          value: decease
+          value: deceased
   deceased_date_of_birth:
     '#type': textfield
     '#title': 'Deceased Individual''s Date of Birth'
@@ -239,7 +243,7 @@ elements: |-
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
-          value: decease
+          value: deceased
 css: ''
 javascript: ''
 settings:
@@ -281,9 +285,6 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
-  form_attributes: {  }
-  form_method: ''
-  form_action: ''
   share: false
   share_node: false
   share_theme_name: ''
@@ -327,8 +328,6 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
-  wizard_page_type: container
-  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
