@@ -2,10 +2,10 @@
 
 namespace Drupal\foia_wizard\Controller;
 
+use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -52,6 +52,7 @@ class FoiaWizardController extends ControllerBase {
    *   Standard Drupal Container Interface.
    *
    * @return \Drupal\Core\Controller\ControllerBase|void
+   *   Returns a cached response.
    */
   public static function create(ContainerInterface $container) {
     return new static(
@@ -97,8 +98,7 @@ class FoiaWizardController extends ControllerBase {
       : [];
 
     // Return JSON response.
-    return new JsonResponse($data, 200, $headers);
-    //return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
+    return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
   }
 
 }

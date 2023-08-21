@@ -36,7 +36,7 @@ class SettingsForm extends ConfigFormBase {
       '#markup' => $this->t('This form allows you to configure the FOIA Request Wizard.'),
     ];
 
-    // Hacky but huge UX improvement
+    // Hacky but huge UX improvement.
     $form['CSS'] = [
       '#children' => '<style>.foia-wizard-settings .vertical-tabs__menu {max-height: 30rem; overflow-y: auto; overflow-x:hidden}</style>',
     ];
@@ -88,14 +88,6 @@ class SettingsForm extends ConfigFormBase {
     }
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-
-    parent::validateForm($form, $form_state);
   }
 
   /**
