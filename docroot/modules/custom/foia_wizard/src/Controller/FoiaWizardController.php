@@ -76,7 +76,11 @@ class FoiaWizardController extends ControllerBase {
       $messages['m' . $i] = $config->get('messages')['m' . $i]['value'];
     }
 
+    $triggers = file_get_contents(dirname(dirname(__DIR__)) . '/trigger-phrases.json');
+    $triggers = json_decode($triggers);
+
     $data = [
+      'trigger_phrases' => $triggers,
       'language' => [
         'en' => [
           'intro_slide' => $config->get('intro_slide.value'),
