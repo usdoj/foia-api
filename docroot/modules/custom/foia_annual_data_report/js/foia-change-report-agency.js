@@ -8,47 +8,33 @@
       var clearAllReportData = function (containId, overWriteFields = null) {
         // Clear all sections data,
         // clear individual section field will be in section clear function.
-        let dialogOptions
-        // need text and number fields but not buttons
-        let containerInputs = $('#' + containId + ' table tbody tr input:not([type=submit]):not([readonly])');
+        let dialogOptions;
+        // Loop through textareas and check for values
+        let textInputs = $('#' + containId + ' table tbody tr textarea:not([readonly]):not([type=hidden])');
+        var textValues = textInputs.map(function () {
+          if (this.value) {
+            return this.value;
+          }
+        }).get();
+
+        if (typeof textInputs !== 'undefined' && textValues.length >= 1) {
+          runManualWarning();
+          return;
+        }
+
+        // Inputs, number fields and textareas that are not submit or readonly
+        let containerInputs = $('#' + containId + ' table tbody tr input:not([type=submit]):not([readonly]):not([type=hidden])');
         // If there are inputs for this container meaning component is filled out
         if (typeof containerInputs !== 'undefined' && containerInputs.length > 0) {
           // Count number of rows, check for N/A
           var inputValues = containerInputs.map(function () {
-
-            if (this.value) {
+            if (this.value && typeof this.value !== 'undefined') {
               return this.value;
             }
           }).get();
-
-          // If data was already added manually then show error,å inputValues.includes("N/A")
+          // If data was already added manually then show error:inputValues.includes("N/A")
           if (inputValues.length >= 1) {
-            dialogOptions = {
-              title: "Manual Changes Detected",
-              width: 370,
-              height: 200,
-              buttons: {
-                button_resume: {
-                  text: Drupal.t('Close'),
-                  click: function () {
-                    $(this).dialog('close');
-                  }
-                },
-                button_confirm: {
-                  text: Drupal.t('Replace Anyway'),
-                  click: function () {
-                    runInputs()
-                    $(this).dialog('close');
-                  },
-                }
-              },
-              close: function () {
-                $(this).remove();
-              }
-            };
-            $('<div></div>').appendTo('body')
-              .html('<div>You have already entered data in this section. Please adjust the data manually.</div>')
-              .dialog(dialogOptions);
+            runManualWarning();
           } else {
             // Run the foreach script if there are not any manual edits
             runInputs();
@@ -57,32 +43,7 @@
         } else {
           // Show error if "No Data to report for this section" was pressed
           // without having populated any components
-          dialogOptions = {
-            title: "Add Placeholders First",
-            width: 370,
-            height: 200,
-            buttons: {
-              button_resume: {
-                text: Drupal.t('Close'),
-                click: function () {
-                  $(this).dialog('close');
-                }
-              },
-              button_confirm: {
-                text: Drupal.t('Add Placeholders'),
-                click: function () {
-                  $('#' + containId + " .component-placeholder-button").trigger("click");
-                  $(this).dialog('close');
-                },
-              }
-            },
-            close: function () {
-              $(this).remove();
-            }
-          };
-          $('<div></div>').appendTo('body')
-            .html('<div>Please press "Add placeholders for component data below" and try again.</div>')
-            .dialog(dialogOptions);
+          runPlaceholderWarning()
         }
 
         // Run only when needed since this code will run before user answers dialogue
@@ -112,7 +73,67 @@
             }
           });
         }
+
+        function runManualWarning() {
+          dialogOptions = {
+            title: "Manual Changes Detected",
+            width: 370,
+            height: 200,
+            buttons: {
+              button_resume: {
+                text: Drupal.t('Close'),
+                click: function () {
+                  $(this).dialog('close');
+                }
+              },
+              button_confirm: {
+                text: Drupal.t('Replace Anyway'),
+                click: function () {
+                  runInputs()
+                  $(this).dialog('close');
+                },
+              }
+            },
+            close: function () {
+              $(this).remove();
+            }
+          };
+          $('<div></div>').appendTo('body')
+            .html('<div>You have already entered data in this section. Please adjust the data manually.</div>')
+            .dialog(dialogOptions);
+        }
+
+        // Show warning about fields already being filled out
+        function runPlaceholderWarning() {
+          dialogOptions = {
+            title: "Add Placeholders First",
+            width: 370,
+            height: 200,
+            buttons: {
+              button_resume: {
+                text: Drupal.t('Close'),
+                click: function () {
+                  $(this).dialog('close');
+                }
+              },
+              button_confirm: {
+                text: Drupal.t('Add Placeholders'),
+                click: function () {
+                  $('#' + containId + " .component-placeholder-button").trigger("click");
+                  $(this).dialog('close');
+                },
+              }
+            },
+            close: function () {
+              $(this).remove();
+            }
+          };
+          $('<div></div>').appendTo('body')
+            .html('<div>Please press "Add placeholders for component data below" and try again.</div>')
+            .dialog(dialogOptions);
+        }
       };
+
       var sections = [
         {
           field: 'field_admin_app_vib',
@@ -597,7 +618,6 @@
         // Build no data report button.
         let $noDataButton = $('<button class="button no-data-report-button">No data to report for this section</button>');
         noDataToReportDiv.prepend($noDataButton);
-        // debugger;
         $noDataButton.click(function (evt) {
           evt.preventDefault();
           section.section.fnt();
