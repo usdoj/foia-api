@@ -83,6 +83,19 @@ elements: |-
       myself: Myself
       organization: 'An Organization'
     '#required': true
+  fbi_citizen:
+    '#type': select
+    '#title': 'Are you a US citizen?'
+    '#options':
+      'yes': 'Yes'
+      'no': 'No'
+    '#states':
+      required:
+        ':input[name="fbi_requester_type"]':
+          value: myself
+      visible:
+        ':input[name="fbi_requester_type"]':
+          value: myself
   request_category:
     '#type': select
     '#title': 'What type of requester are you?'
