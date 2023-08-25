@@ -14,7 +14,7 @@ id: treasury_irs_form
 title: 'Treasury-IRS Form'
 description: ''
 category: ''
-elements: |
+elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -112,7 +112,7 @@ elements: |
     '#title': 'Upload additional documentation'
     '#multiple': true
     '#max_filesize': '20'
-    '#file_extensions': 'gif jpg png txt pdf doc docx odf'
+    '#sanitize': true
 css: ''
 javascript: ''
 settings:
