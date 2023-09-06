@@ -52,7 +52,7 @@ class SettingsForm extends ConfigFormBase {
         ],
       ],
       'topic2' => [
-        'title' => $this->t('IRS records'),
+        'title' => $this->t('Tax records'),
         'description' => '',
         'messages' => [
           'm16',
