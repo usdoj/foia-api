@@ -128,30 +128,6 @@ resourceFields:
     publicName: moderation_state
     enhancer:
       id: ''
-  scheduled_transition_date:
-    disabled: true
-    fieldName: scheduled_transition_date
-    publicName: scheduled_transition_date
-    enhancer:
-      id: ''
-  scheduled_transition_state:
-    disabled: true
-    fieldName: scheduled_transition_state
-    publicName: scheduled_transition_state
-    enhancer:
-      id: ''
-  scheduled_publication:
-    disabled: true
-    fieldName: scheduled_publication
-    publicName: scheduled_publication
-    enhancer:
-      id: ''
-  scheduled_moderation_state:
-    disabled: true
-    fieldName: scheduled_moderation_state
-    publicName: scheduled_moderation_state
-    enhancer:
-      id: ''
   metatag:
     disabled: true
     fieldName: metatag
@@ -194,10 +170,10 @@ resourceFields:
     publicName: telephone
     enhancer:
       id: ''
-  field_agency_component_inactive:
-    disabled: true
-    fieldName: field_agency_component_inactive
-    publicName: field_agency_component_inactive
+  field_commonly_requested_records:
+    disabled: false
+    fieldName: field_commonly_requested_records
+    publicName: commonly_requested_records
     enhancer:
       id: ''
   field_complex_average_days:
@@ -272,12 +248,6 @@ resourceFields:
     publicName: field_interop_planned_method
     enhancer:
       id: ''
-  field_interop_status:
-    disabled: true
-    fieldName: field_interop_status
-    publicName: field_interop_status
-    enhancer:
-      id: ''
   field_is_centralized:
     disabled: false
     fieldName: field_is_centralized
@@ -336,6 +306,12 @@ resourceFields:
     disabled: false
     fieldName: field_request_submission_form
     publicName: request_form
+    enhancer:
+      id: ''
+  field_require_manual_processing:
+    disabled: false
+    fieldName: field_require_manual_processing
+    publicName: field_require_manual_processing
     enhancer:
       id: ''
   field_service_centers:
