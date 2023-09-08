@@ -33,7 +33,7 @@ class SettingsForm extends ConfigFormBase {
         ],
       ],
       'topic1' => [
-        'title' => $this->t('Immigration records'),
+        'title' => $this->t('Immigration or Travel records'),
         'description' => '',
         'messages' => [
           'm3',
@@ -61,25 +61,6 @@ class SettingsForm extends ConfigFormBase {
         ],
       ],
       'topic3' => [
-        'title' => $this->t('Travel records'),
-        'description' => '',
-        'messages' => [
-          'm3',
-          'm4',
-          'm5',
-          'm6',
-          'm7',
-          'm8',
-          'm9',
-          'm10',
-          'm11',
-          'm12',
-          'm13',
-          'm14',
-          'm15',
-        ],
-      ],
-      'topic4' => [
         'title' => $this->t('Social Security records'),
         'description' => '',
         'messages' => [
@@ -90,7 +71,7 @@ class SettingsForm extends ConfigFormBase {
           'm47',
         ],
       ],
-      'topic5' => [
+      'topic4' => [
         'title' => $this->t('Medical records'),
         'description' => '',
         'messages' => [
@@ -104,7 +85,7 @@ class SettingsForm extends ConfigFormBase {
           'm30',
         ],
       ],
-      'topic6' => [
+      'topic5' => [
         'title' => $this->t('Personnel records'),
         'description' => '',
         'messages' => [
@@ -115,7 +96,7 @@ class SettingsForm extends ConfigFormBase {
           'm35',
         ],
       ],
-      'topic7' => [
+      'topic6' => [
         'title' => $this->t('Military records'),
         'description' => '',
         'messages' => [
