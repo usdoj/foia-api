@@ -13,17 +13,23 @@ class SettingsForm extends ConfigFormBase {
 
   const M_COUNT = 60;
 
-  private $message_mapping = [];
+  /**
+   * Mapping of messages to topics.
+   *
+   * @var array
+   */
+  private $messageMapping = [];
 
   /**
    * Constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
    */
   public function __construct(ConfigFactoryInterface $config_factory) {
     parent::__construct($config_factory);
 
-    $this->message_mapping = [
+    $this->messageMapping = [
       'topic0' => [
         'description' => $this->t('These items are shared by multiple topics.'),
         'title' => $this->t('Shared'),
@@ -176,7 +182,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'vertical_tabs',
     ];
 
-    foreach ($this->message_mapping as $key => $topic) {
+    foreach ($this->messageMapping as $key => $topic) {
       $form['topic_tabs'][$key] = [
         '#type' => 'details',
         '#title' => $topic['title'],
@@ -205,7 +211,7 @@ class SettingsForm extends ConfigFormBase {
 
     // Collect message field values.
     $messages = [];
-    foreach ($this->message_mapping as $key => $topic) {
+    foreach ($this->messageMapping as $key => $topic) {
       foreach ($topic['messages'] as $mid) {
         $messages[$mid] = $form_state->getValue([
           'topic_tabs',
