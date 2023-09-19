@@ -89,6 +89,8 @@ class SettingsForm extends ConfigFormBase {
           'm28',
           'm29',
           'm30',
+          'm50',
+          'm51',
         ],
       ],
       'topic5' => [
