@@ -5,13 +5,35 @@
 (function ($, drupalSettings) {
   Drupal.behaviors.foia_change_report_agency = {
     attach: function attach() {
-      var clearAllReportData = function (containId, overWriteFields = null) {
+
+      function genericWarning(title, btn, msg) {
+        dialogOptions = {
+          title: title,
+          width: 370,
+          height: 200,
+          buttons: {
+            button_resume: {
+              text: Drupal.t(btn),
+              click: function () {
+                $(this).dialog('close');
+              }
+            },
+          },
+          close: function () {
+            $(this).remove();
+          }
+        };
+        $('<div></div>').appendTo('body')
+          .html(`<div>${msg}.</div>`)
+          .dialog(dialogOptions);
+      }
+      const clearAllReportData = function (containId, overWriteFields = null) {
         // Clear all sections data,
         // clear individual section field will be in section clear function.
         let dialogOptions;
         // Loop through textareas and check for values
         let textInputs = $('#' + containId + ' table tbody tr textarea:not([readonly]):not([type=hidden])');
-        var textValues = textInputs.map(function () {
+        const textValues = textInputs.map(function () {
           if (this.value) {
             return this.value;
           }
@@ -21,13 +43,21 @@
           runManualWarning();
           return;
         }
-
+        // Make sure that there is an agency selected
+        let selectAgency = $('#' + containId + ' table tbody tr select:not([readonly]):not([type=hidden])');
+        let agencyVal = selectAgency.val();
+        if (agencyVal === '_none') {
+          genericWarning('Select an Agency First',
+            'Close',
+            'Select an agency using the drop down for the section you are adding.');
+          return;
+        }
         // Inputs, number fields and textareas that are not submit or readonly
         let containerInputs = $('#' + containId + ' table tbody tr input:not([type=submit]):not([readonly]):not([type=hidden])');
         // If there are inputs for this container meaning component is filled out
         if (typeof containerInputs !== 'undefined' && containerInputs.length > 0) {
           // Count number of rows, check for N/A
-          var inputValues = containerInputs.map(function () {
+          const inputValues = containerInputs.map(function () {
             if (this.value && typeof this.value !== 'undefined') {
               return this.value;
             }
@@ -39,22 +69,20 @@
             // Run the foreach script if there are not any manual edits
             runInputs();
           }
-
         } else {
           // Show error if "No Data to report for this section" was pressed
           // without having populated any components
           runPlaceholderWarning()
         }
-
         // Run only when needed since this code will run before user answers dialogue
         function runInputs() {
           $('#' + containId + ' table tbody tr input').each(function () {
             if ($(this).is('[type=text]') && !$(this).attr('readonly')) {
               $(this).val('N/A');
               if (overWriteFields !== null) {
-                for (var i = 0; i < overWriteFields.length; i++) {
-                  var FieldIdPattern = overWriteFields[i].field;
-                  var id = $(this).attr('id');
+                for (let i = 0; i < overWriteFields.length; i++) {
+                  let FieldIdPattern = overWriteFields[i].field;
+                  let id = $(this).attr('id');
                   if (id.match(FieldIdPattern)) {
                     $(this).val(overWriteFields[i].value);
                     break;
@@ -66,14 +94,12 @@
               $(this).val('0').trigger("change");
             }
           });
-
           $('#' + containId + ' table tbody tr textarea').each(function () {
             if (typeof $(this).attr('readonly') === "undefined") {
               $(this).val('N/A');
             }
           });
         }
-
         function runManualWarning() {
           dialogOptions = {
             title: "Manual Changes Detected",
@@ -102,7 +128,6 @@
             .html('<div>You have already entered data in this section. Please adjust the data manually.</div>')
             .dialog(dialogOptions);
         }
-
         // Show warning about fields already being filled out
         function runPlaceholderWarning() {
           dialogOptions = {
@@ -133,8 +158,7 @@
             .dialog(dialogOptions);
         }
       };
-
-      var sections = [
+      const sections = [
         {
           field: 'field_admin_app_vib',
           paragraph: 'admin_app_vib',   // VI.B
@@ -580,7 +604,26 @@
         for (var i = 0; i < elements.length; i++) {
           $(form + ' ' + elements[i]).not(exempt + ' ' + elements[i]).val('');
         }
-        alert('All data has been cleared from the form. Click "Save" to finalize.');
+        dialogOptions = {
+          title: 'Form Fields Cleared',
+          width: 370,
+          height: 200,
+          buttons: {
+            button_resume: {
+              text: Drupal.t('Close'),
+              click: function () {
+                $(this).dialog('close');
+              }
+            },
+          },
+          close: function () {
+            $(this).remove();
+          }
+        };
+        $('<div></div>').appendTo('body')
+          .html(`<div>All data has been cleared from the form. Click "Save" to finalize.</div>`)
+          .dialog(dialogOptions);
+
       }
       $('#edit-actions').once('foia-clear-data-button').each(function () {
         var $button = $('<button class="button clear-data-button">Clear all data</button>');
@@ -604,12 +647,10 @@
         existingComponentSelector = fieldWrapperSelector + ' tbody tr:visible',
         checkedComponentSelector = '#edit-field-agency-components input:checked',
         getComponentDropdownName = function (index) { return section.field + '[' + index + '][subform]' };
-
       $(fieldWrapperSelector).once('foia-add-populate-button').each(function () {
         // Build buttons contain.
         var sectionBtns = $('<div class="section-button-group" style="display: flex;padding-top: .5rem;gap: 1rem;"><div class="component-placeholder-button-div" style="width: 50%"><div class="description">Use this button when starting a new report, to quickly add placeholders for all of the components that you have selected in the checkboxes above.</div></div><div class="no-data-to-report-div"><div class="description">Use this button to quickly fill 0 or N/A for components do not apply.</div></div></div>');
         $(this).prepend(sectionBtns);
-
         let componentPlaceholderButtonDiv = $(this).find('.section-button-group .component-placeholder-button-div');
         let noDataToReportDiv = $(this).find('.section-button-group .no-data-to-report-div');
         // Build component placeholder button.
@@ -631,11 +672,50 @@
             componentDropdownName = getComponentDropdownName(currentComponent),
             componentDropdownSelector = 'select[name^="' + componentDropdownName + '"]',
             blankComponent = singleComponent && $(componentDropdownSelector).val() === '_none';
+
+          console.log("blankcomponent", blankComponent)
+          // TODO: multiple components not working
           if (numComponents === 0) {
-            alert('First select the components you want using the checkboxes above.');
+            dialogOptions = {
+              title: 'Select an Agency First',
+              width: 370,
+              height: 200,
+              buttons: {
+                button_resume: {
+                  text: Drupal.t('Close'),
+                  click: function () {
+                    $(this).dialog('close');
+                  }
+                },
+              },
+              close: function () {
+                $(this).remove();
+              }
+            };
+            $('<div></div>').appendTo('body')
+              .html(`<div>First select the components you want using the checkboxes above.</div>`)
+              .dialog(dialogOptions);
           }
           else if ($(existingComponentSelector).length > 0 && !blankComponent) {
-            alert('Placeholders cannot be added while there are existing entries. Please remove all entries and try again.');
+            dialogOptions = {
+              title: 'Existing Entries',
+              width: 370,
+              height: 200,
+              buttons: {
+                button_resume: {
+                  text: Drupal.t('Close'),
+                  click: function () {
+                    $(this).dialog('close');
+                  }
+                },
+              },
+              close: function () {
+                $(this).remove();
+              }
+            };
+            $('<div></div>').appendTo('body')
+              .html(`<div>Placeholders cannot be added while there are existing entries. Please remove all entries and try again.</div>`)
+              .dialog(dialogOptions);
           }
           else {
             function clickAddMoreButton() {
@@ -652,7 +732,25 @@
                 clickAddMoreButton();
               }
               else {
-                alert('Finished adding placeholders.');
+                dialogOptions = {
+                  title: 'Finished adding placeholders.',
+                  width: 370,
+                  height: 200,
+                  buttons: {
+                    button_resume: {
+                      text: Drupal.t('close'),
+                      click: function () {
+                        $(this).dialog('close');
+                      }
+                    },
+                  },
+                  close: function () {
+                    $(this).remove();
+                  }
+                };
+                $('<div></div>').appendTo('body')
+                  .html(`<div>You can now manually enter data or click the "No Data to report for this section" button.</div>`)
+                  .dialog(dialogOptions);
               }
             }
             $(document).on('ajaxStop', function () {
