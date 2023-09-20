@@ -5,7 +5,6 @@
 (function ($, drupalSettings) {
   Drupal.behaviors.foia_change_report_agency = {
     attach: function attach() {
-
       function genericWarning(title, btn, msg) {
         dialogOptions = {
           title: title,
@@ -32,26 +31,19 @@
         // clear individual section field will be in section clear function.
         let dialogOptions;
         // Loop through textareas and check for values
-        let textInputs = $('#' + containId + ' table tbody tr textarea:not([readonly]):not([type=hidden])');
-        const textValues = textInputs.map(function () {
+        $('#' + containId + ' table tbody tr textarea:not([readonly]):not([type=hidden])').map(function () {
           if (this.value) {
             return this.value;
           }
         }).get();
-
-        if (typeof textInputs !== 'undefined' && textValues.length >= 1) {
-          runManualWarning();
-          return;
-        }
-        // Make sure that there is an agency selected
-        let selectAgency = $('#' + containId + ' table tbody tr select:not([readonly]):not([type=hidden])');
-        let agencyVal = selectAgency.val();
-        if (agencyVal === '_none') {
-          genericWarning('Select an Agency First',
-            'Close',
-            'Select an agency using the drop down for the section you are adding.');
-          return;
-        }
+        $('#' + containId + ' table tbody tr select[name*="field_agency_component"]:not([readonly]):not([type=hidden])').each(function(index, value) {
+          if (this.value === '_none') {
+            $(this).css('border', '1px solid #8B0100');
+            return genericWarning('Select an Agency First',
+              'Close',
+              'Select an agency using the drop down for the section you are adding');
+          }
+        });
         // Inputs, number fields and textareas that are not submit or readonly
         let containerInputs = $('#' + containId + ' table tbody tr input:not([type=submit]):not([readonly]):not([type=hidden])');
         // If there are inputs for this container meaning component is filled out
@@ -64,15 +56,16 @@
           }).get();
           // If data was already added manually then show error:inputValues.includes("N/A")
           if (inputValues.length >= 1) {
-            runManualWarning();
+            return runManualWarning();
           } else {
             // Run the foreach script if there are not any manual edits
+            $(this).css('border', 'none');
             runInputs();
           }
         } else {
           // Show error if "No Data to report for this section" was pressed
           // without having populated any components
-          runPlaceholderWarning()
+          return runPlaceholderWarning();
         }
         // Run only when needed since this code will run before user answers dialogue
         function runInputs() {
@@ -672,9 +665,6 @@
             componentDropdownName = getComponentDropdownName(currentComponent),
             componentDropdownSelector = 'select[name^="' + componentDropdownName + '"]',
             blankComponent = singleComponent && $(componentDropdownSelector).val() === '_none';
-
-          console.log("blankcomponent", blankComponent)
-          // TODO: multiple components not working
           if (numComponents === 0) {
             dialogOptions = {
               title: 'Select an Agency First',
