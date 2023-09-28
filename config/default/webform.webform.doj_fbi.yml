@@ -19,12 +19,14 @@ elements: |-
     '#type': textfield
     '#title': 'First name'
     '#maxlength': 30
+    '#required': true
     '#pattern': '^[a-zA-Z]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
   name_last:
     '#type': textfield
     '#title': 'Last name'
     '#maxlength': 30
+    '#required': true
     '#pattern': '^[a-zA-Z]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
   company_organization:
@@ -35,12 +37,6 @@ elements: |-
       required:
         ':input[name="fbi_requester_type"]':
           value: organization
-  email:
-    '#type': email
-    '#title': 'Email address'
-    '#help': |-
-      In order for us to communicate with you about your request,<br />
-      you must provide at least one form of contact information.
   phone_number:
     '#type': tel
     '#title': 'Phone number'
@@ -66,10 +62,14 @@ elements: |-
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
     '#maxlength': 50
+    '#pattern': '^[0-9]*$'
+    '#pattern_error': 'Please use only numeric characters.'
   address_country:
     '#type': select
     '#title': Country
@@ -191,6 +191,8 @@ elements: |-
     '#type': textfield
     '#title': 'Deceased Individual''s First Name'
     '#maxlength': 30
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
@@ -202,7 +204,8 @@ elements: |-
     '#type': textfield
     '#title': 'Deceased Individual''s Middle Name'
     '#maxlength': 30
-    '#pattern': '[a-zA-Z\-\,\ ]+[\.]?'
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
@@ -211,6 +214,8 @@ elements: |-
     '#type': textfield
     '#title': 'Deceased Individual''s Last Name'
     '#maxlength': 255
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
