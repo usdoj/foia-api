@@ -51,7 +51,7 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   /**
    * The number of seconds before assuming that an email request was delivered.
    */
-  const ASSUME_DELIVERED_AFTER = 604800;
+  const ASSUME_DELIVERED_AFTER = 5184000;
 
   /**
    * The max number of times to requeue failed submissions.
