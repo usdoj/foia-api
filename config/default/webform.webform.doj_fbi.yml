@@ -51,6 +51,7 @@ elements: |-
     '#type': textfield
     '#title': 'Mailing address 1'
     '#maxlength': 50
+    '#required': true
   address_line2:
     '#type': textfield
     '#title': 'Mailing address 2'
@@ -59,21 +60,25 @@ elements: |-
     '#type': textfield
     '#title': City
     '#maxlength': 50
+    '#required': true
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
+    '#required': true
     '#pattern': '^[a-zA-Z]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
     '#maxlength': 50
+    '#required': true
     '#pattern': '^[0-9]*$'
     '#pattern_error': 'Please use only numeric characters.'
   address_country:
     '#type': select
     '#title': Country
     '#options': country_codes
+    '#required': true
     '#default_value': US
   request_description:
     '#type': textarea
