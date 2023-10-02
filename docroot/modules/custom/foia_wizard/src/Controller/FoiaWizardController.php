@@ -84,7 +84,8 @@ class FoiaWizardController extends ControllerBase {
       'language' => [
         'en' => [
           'intro_slide' => $config->get('intro_slide.value'),
-          'query_slide' => $config->get('query_slide.value'),
+          'query_slide_1' => $config->get('query_slide_1.value'),
+          'query_slide_2' => $config->get('query_slide_2.value'),
           'messages' => $messages,
         ],
       ],
