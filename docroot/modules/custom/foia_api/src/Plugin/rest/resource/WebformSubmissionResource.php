@@ -191,7 +191,8 @@ class WebformSubmissionResource extends ResourceBase {
       $phoneNumber = isset($data['phone_number']) && $data['phone_number'];
       $mailingAddress = isset($data['address_line1']) && $data['address_line1']
       && isset($data['address_city']) && $data['address_city']
-      && isset($data['address_state_province']) && $data['address_state_province']
+      && ((isset($data['address_state_province']) && $data['address_state_province'])
+          || (isset($data['address_state_province_international']) && $data['address_state_province_international']))
       && isset($data['address_zip_postal_code']) && $data['address_zip_postal_code']
       && isset($data['address_country']) && $data['address_country'];
 
