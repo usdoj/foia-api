@@ -2,9 +2,9 @@
 
 namespace Drupal\foia_personnel\Entity;
 
-use Drupal\Core\Entity\RevisionLogInterface;
-use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
+use Drupal\Core\Entity\RevisionableInterface;
+use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\user\EntityOwnerInterface;
 
 /**

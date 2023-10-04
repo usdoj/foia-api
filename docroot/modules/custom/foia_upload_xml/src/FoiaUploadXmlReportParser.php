@@ -2,8 +2,8 @@
 
 namespace Drupal\foia_upload_xml;
 
-use Drupal\file\FileInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\file\FileInterface;
 use Drupal\migrate_plus\DataParserPluginManager;
 
 /**
