@@ -19,10 +19,16 @@ elements: |-
     '#type': textfield
     '#title': 'First name'
     '#maxlength': 30
+    '#required': true
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
   name_last:
     '#type': textfield
     '#title': 'Last name'
     '#maxlength': 30
+    '#required': true
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
   company_organization:
     '#type': textfield
     '#title': 'Your organization'
@@ -31,22 +37,21 @@ elements: |-
       required:
         ':input[name="fbi_requester_type"]':
           value: organization
-  email:
-    '#type': email
-    '#title': 'Email address'
-    '#help': |-
-      In order for us to communicate with you about your request,<br />
-      you must provide at least one form of contact information.
   phone_number:
     '#type': tel
     '#title': 'Phone number'
+    '#pattern': '^[0-9]*$'
+    '#pattern_error': 'Please use only numbers.'
   fax_number:
     '#type': tel
     '#title': 'Fax number'
+    '#pattern': '^[0-9]*$'
+    '#pattern_error': 'Please use only numbers.'
   address_line1:
     '#type': textfield
     '#title': 'Mailing address 1'
     '#maxlength': 50
+    '#required': true
   address_line2:
     '#type': textfield
     '#title': 'Mailing address 2'
@@ -55,23 +60,32 @@ elements: |-
     '#type': textfield
     '#title': City
     '#maxlength': 50
+    '#required': true
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
+    '#required': true
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
     '#maxlength': 50
+    '#required': true
+    '#pattern': '^[0-9]*$'
+    '#pattern_error': 'Please use only numeric characters.'
   address_country:
     '#type': select
     '#title': Country
-    '#default_value': 'United States'
-    '#options': country_names
+    '#options': country_codes
+    '#required': true
+    '#default_value': US
   request_description:
     '#type': textarea
     '#title': 'Your request'
     '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
     '#maxlength': 4000
+    '#required': true
   fbi_request_subject:
     '#type': radios
     '#title': 'What is the subject of your request?'
@@ -79,6 +93,7 @@ elements: |-
       myself: Myself
       deceased: 'Deceased Individual'
       other: 'All Other Subjects'
+    '#required': true
   fbi_requester_type:
     '#type': radios
     '#title': 'I am making this request on behalf of'
@@ -133,7 +148,8 @@ elements: |-
     '#type': textfield
     '#title': 'The amount of money you’re willing to pay in fees, if any'
     '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'
-    '#pattern': '^(?=.)([+\-\$]?([0-9]*)(\.([0-9]+))?)$'
+    '#pattern': '^[0-9]*$'
+    '#pattern_error': 'Please use only numbers.'
     '#counter_type': word
     '#counter_maximum': 1
     '#states':
@@ -180,6 +196,8 @@ elements: |-
     '#type': textfield
     '#title': 'Deceased Individual''s First Name'
     '#maxlength': 30
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
@@ -191,7 +209,8 @@ elements: |-
     '#type': textfield
     '#title': 'Deceased Individual''s Middle Name'
     '#maxlength': 30
-    '#pattern': '[a-zA-Z\-\,\ ]+[\.]?'
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
@@ -200,6 +219,8 @@ elements: |-
     '#type': textfield
     '#title': 'Deceased Individual''s Last Name'
     '#maxlength': 255
+    '#pattern': '^[a-zA-Z]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
@@ -218,6 +239,9 @@ elements: |-
   deceased_alien_registration_number:
     '#type': textfield
     '#title': 'Deceased Individual''s Alien Registration Number'
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z0-9]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
@@ -226,6 +250,8 @@ elements: |-
     '#type': textfield
     '#title': 'Deceased Individual''s FBI Number'
     '#maxlength': 30
+    '#pattern': '^[a-zA-Z0-9]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
@@ -274,18 +300,15 @@ elements: |-
       required:
         ':input[name="fbi_request_subject"]':
           value: myself
-        ':input[name="fbi_requester_type"]':
-          value: myself
   fbi_citizen_confirm:
     '#type': select
     '#title': 'By providing an electronic signature below I declare under penalty of perjury under the laws of the United States of America that the foregoing is true and correct, and that I am the person named above, and I understand that any falsification of this statement is punishable under the provisions of 18 U.S.C. Section 1001 by a fine of not more than $10,000 or by imprisonment of not more than five years or both, and that requesting or obtaining any record(s) under false pretenses is punishable under the provisions of 5 U.S.C. Section 552(a)(3) by a fine of not more than $5,000.'
     '#options':
-      'yes': 'I agree'
+      'yes': 'Yes'
+      'no': 'No'
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
-          value: myself
-        ':input[name="fbi_requester_type"]':
           value: myself
   fbi_citizen_signature:
     '#type': textfield
@@ -293,8 +316,6 @@ elements: |-
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
-          value: myself
-        ':input[name="fbi_requester_type"]':
           value: myself
   fbi_citizen_today:
     '#type': textfield
@@ -304,8 +325,6 @@ elements: |-
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
-          value: myself
-        ':input[name="fbi_requester_type"]':
           value: myself
 css: ''
 javascript: ''
