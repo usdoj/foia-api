@@ -3,8 +3,8 @@
 namespace Drupal\node_to_docx;
 
 use Drupal\Core\Url;
-use Phpdocx\Create\CreateDocx;
 use Drupal\node\NodeInterface;
+use Phpdocx\Create\CreateDocx;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;

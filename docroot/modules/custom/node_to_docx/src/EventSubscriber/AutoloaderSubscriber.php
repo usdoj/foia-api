@@ -3,8 +3,8 @@
 namespace Drupal\node_to_docx\EventSubscriber;
 
 use Drupal\Component\Render\FormattableMarkup;
-use Phpdocx\AutoLoader;
 use Drupal\Core\Logger\RfcLogLevel;
+use Phpdocx\AutoLoader;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

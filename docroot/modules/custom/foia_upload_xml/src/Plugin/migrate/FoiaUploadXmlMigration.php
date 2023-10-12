@@ -2,10 +2,10 @@
 
 namespace Drupal\foia_upload_xml\Plugin\migrate;
 
+use Drupal\migrate\Exception\RequirementsException;
 use Drupal\migrate\Plugin\Migration;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\RequirementsInterface;
-use Drupal\migrate\Exception\RequirementsException;
 
 /**
  * Custom migration plugin for report xml upload processing.

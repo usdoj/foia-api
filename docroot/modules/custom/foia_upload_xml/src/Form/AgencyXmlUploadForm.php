@@ -2,14 +2,14 @@
 
 namespace Drupal\foia_upload_xml\Form;
 
-use Drupal\file\FileInterface;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\foia_upload_xml\ReportUploadValidator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\file\FileInterface;
+use Drupal\foia_upload_xml\ReportUploadValidator;
 use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AgencyXmlUploadForm.

@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\foia_webform\Kernel;
 
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Trait FieldInstallTrait installs fields from config.
