@@ -42,3 +42,4 @@ As an alternative to Drupal VM, Docker can be used to spin up this project.
 
 * [Issue queue](https://github.com/18F/beta.foia.gov/issues)
 * [GitHub](https://github.com/usdoj/foia)
+

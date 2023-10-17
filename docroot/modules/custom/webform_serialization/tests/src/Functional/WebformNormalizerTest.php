@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\webform_serialization\Functional;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\webform\Entity\Webform;
-use Drupal\Component\Serialization\Json;
 use Drupal\webform\Entity\WebformOptions;
 
 /**

@@ -2,11 +2,11 @@
 
 namespace Drupal\foia_request\Entity;
 
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\user\UserInterface;
 
 /**

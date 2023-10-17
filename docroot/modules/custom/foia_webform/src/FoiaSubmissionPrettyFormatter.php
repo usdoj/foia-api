@@ -2,9 +2,9 @@
 
 namespace Drupal\foia_webform;
 
-use Drupal\webform\WebformSubmissionInterface;
 use Dompdf\Dompdf;
 use Drupal\file\Entity\File;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Class FoiaSubmissionPrettyFormatter.
@@ -140,6 +140,7 @@ class FoiaSubmissionPrettyFormatter {
         'address_line2' => '',
         'address_city' => 'City',
         'address_state_province' => 'State/Province',
+        'address_state_province_international' => 'Non-U.S. State/Province',
         'address_zip_postal_code' => 'Postal Code',
         'address_country' => 'Country',
         'phone_number' => 'Phone',
