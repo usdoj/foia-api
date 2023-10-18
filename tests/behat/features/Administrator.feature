@@ -112,3 +112,15 @@ Feature: Agency Administrator role
     And I am on "/node/add/agency_component"
     Then I should see "Report Start Date"
     And I should see "Report Expiration Date"
+
+  @api @javascript
+  Scenario: Verify NIH webform has Select the NIH institute drop down selection
+    Given users:
+      | name   | mail              | roles                |
+      | Mini   | mini@example.com  | Administrator        |
+      | Angus  | angus@example.com | Agency Administrator |
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am at 'form/hhs-nih-form'
+    And I select "Office of the Director" from "Select the NIH institute"
+    And I wait 5 seconds
+
