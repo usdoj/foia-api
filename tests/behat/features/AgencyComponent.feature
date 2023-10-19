@@ -37,6 +37,7 @@ Feature: Agency Component Feature
   Scenario: Agency Manager can not edit agency compnent title
     Given I am logged in as a user with the 'Agency Manager' role
     And I wait 5 seconds
-    And I am on '/user'
+    And I am at 'user'
     And I wait 5 seconds
     And I should see "Testing Agency"
+    And I click 'Testing Agency'
