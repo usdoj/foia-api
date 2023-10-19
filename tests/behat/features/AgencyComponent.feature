@@ -10,7 +10,7 @@ Feature: Agency Component Feature
       | Testing Agency          | FTA                       | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
-      | Test Agency Component 1 | Testing Agency    | 2019-01-01      | ABCDEF
+      | Test Agency Component 1 | Testing Agency            | 2019-01-01      | ABCDEF                         |
     Given users:
       | name   | mail              | roles                | field_agency   |
       | Mini   | mini@example.com  | Administrator        | Testing Agency |
