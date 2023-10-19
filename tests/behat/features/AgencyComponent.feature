@@ -7,15 +7,15 @@ Feature: Agency Component Feature
   Background:
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
-      | Federal Testing Agency  | FTA                       | description |plain_text| en       |
+      | Testing Agency          | FTA                       | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
-      | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | ABCDEF
+      | Test Agency Component 1 | Testing Agency    | 2019-01-01      | ABCDEF
     Given users:
-      | name   | mail              | roles                | field_agency           |
-      | Mini   | mini@example.com  | Administrator        | Federal Testing Agency |
-      | Angus  | angus@example.com | Agency Administrator | Federal Testing Agency |
-      | Agency | angus@example.com | Agency Manager       | Federal Testing Agency |
+      | name   | mail              | roles                | field_agency   |
+      | Mini   | mini@example.com  | Administrator        | Testing Agency |
+      | Angus  | angus@example.com | Agency Administrator | Testing Agency |
+      | Agency | angus@example.com | Agency Manager       | Testing Agency |
 
   @api
   Scenario: Agency Component name in title tag for Agency Component node.
@@ -36,7 +36,7 @@ Feature: Agency Component Feature
   @api @agency
   Scenario: Agency Manager can not edit agency compnent title
     And I am logged in as a user with the 'Agency Manager' role
-    And I click 'Federal Testing Agency'
+    And I click 'Testing Agency'
     And I wait 5 seconds
     And I click 'Test Agency Component 1'
     And I wait 5 seconds
