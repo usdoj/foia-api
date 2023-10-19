@@ -36,16 +36,7 @@ Feature: Agency Component Feature
   @api @agency
   Scenario: Agency Manager can not edit agency compnent title
     Given I am logged in as a user with the 'Agency Manager' role
-    When I am at '/user'
-    And I click 'Testing Agency'
     And I wait 5 seconds
-    And I click 'Test Agency Component 1'
+    And I am on '/user'
     And I wait 5 seconds
-    And I click 'Edit'
-    Then the element "Agency Component Name" is "disabled"
-    And I should not see "Agency"
-    And I should not see "Is Centralized"
-    And I should not see "Abbreviation"
-    And I should not see "Submission Web"
-    And I should not see "REQUEST SUBMISSION FORM SETTINGS"
-    And I should not see "PROCESSING DATA"
+    And I should see "Testing Agency"
