@@ -37,9 +37,7 @@ Feature: Agency Component Feature
   Scenario: Agency Manager can not edit agency compnent title
     Given I am logged in as a user with the 'Agency Manager' role
     And I wait 5 seconds
-    And I am at '/test-agency-component'
-    And I wait 5 seconds
-    And I click 'Edit'
+    And I am at '/test-agency-component/edit'
     And I wait 5 seconds
     Then the element "Agency Component Name" is "disabled"
     And I should not see "Agency"
