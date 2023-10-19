@@ -8,6 +8,14 @@ Feature: Agency Component Feature
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
       | Federal Testing Agency  | FTA                       | description |plain_text| en       |
+    Given agency_component content:
+      | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
+      | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | ABCDEF
+    Given users:
+      | name   | mail              | roles                | field_agency           |
+      | Mini   | mini@example.com  | Administrator        | Federal Testing Agency |
+      | Angus  | angus@example.com | Agency Administrator | Federal Testing Agency |
+      | Agency | angus@example.com | Agency Manager       | Federal Testing Agency |
 
   @api
   Scenario: Agency Component name in title tag for Agency Component node.
@@ -25,3 +33,18 @@ Feature: Agency Component Feature
     When I press the 'Save' button
     Then the page title should be "My agency name | Federal Testing Agency | National FOIA Portal"
 
+  @api @agency
+  Scenario: Agency Manager can not edit agency compnent title
+    And I am logged in as a user with the 'Agency Manager' role
+    And I click 'Federal Testing Agency'
+    And I wait 5 seconds
+    And I click 'Test Agency Component 1'
+    And I wait 5 seconds
+    And I click 'Edit'
+    Then the element "Agency Component Name" is "disabled"
+    And I should not see "Agency"
+    And I should not see "Is Centralized"
+    And I should not see "Abbreviation"
+    And I should not see "Submission Web"
+    And I should not see "REQUEST SUBMISSION FORM SETTINGS"
+    And I should not see "PROCESSING DATA"
