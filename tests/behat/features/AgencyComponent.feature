@@ -34,7 +34,7 @@ Feature: Agency Component Feature
     When I press the 'Save' button
     Then the page title should be "My agency name | Federal Testing Agency | National FOIA Portal"
 
-  @api @agency
+  @api @javascript
   Scenario: Agency Manager can not edit agency compnent title
     Given I am at "/test-agency-component"
     And I wait 5 seconds
