@@ -5,6 +5,7 @@ Feature: Agency Component Feature
   I should be able to create and edit an Agency Component entity.
 
   Background:
+    Given I am logged in as a user with the "Agency Manager" role
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
       | Testing Agency          | FTA                       | description |plain_text| en       |
@@ -35,8 +36,6 @@ Feature: Agency Component Feature
 
   @api @agency
   Scenario: Agency Manager can not edit agency compnent title
-    Given I am logged in as a user with the 'Agency Manager' role
-    And I wait 5 seconds
     Given I am at "/test-agency-component"
     And I wait 5 seconds
     And I click the edit tab
