@@ -9,8 +9,8 @@ Feature: Agency Component Feature
       | name                    | field_agency_abbreviation | description |format    | language |
       | Testing Agency          | FTA                       | description |plain_text| en       |
     Given agency_component content:
-      | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
-      | Test Agency Component 1 | Testing Agency            | 2019-01-01      | ABCDEF                         |
+      | title                   | field_agency    | field_rep_start | field_agency_comp_abbreviation | path_alias             |
+      | Test Agency Component 1 | Testing Agency  | 2019-01-01      | ABCDEF                         | /test-agency-component |
     Given users:
       | name   | mail              | roles                | field_agency   |
       | Mini   | mini@example.com  | Administrator        | Testing Agency |
@@ -37,7 +37,14 @@ Feature: Agency Component Feature
   Scenario: Agency Manager can not edit agency compnent title
     Given I am logged in as a user with the 'Agency Manager' role
     And I wait 5 seconds
-    And I am at 'user'
+    And I am at '/test-agency-component'
     And I wait 5 seconds
-    And I should see "Testing Agency"
-    And I click 'Testing Agency'
+    And I click 'Edit'
+    And I wait 5 seconds
+    Then the element "Agency Component Name" is "disabled"
+    And I should not see "Agency"
+    And I should not see "Is Centralized"
+    And I should not see "Abbreviation"
+    And I should not see "Submission Web"
+    And I should not see "REQUEST SUBMISSION FORM SETTINGS"
+    And I should not see "PROCESSING DATA"
