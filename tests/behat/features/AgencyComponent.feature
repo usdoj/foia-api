@@ -35,7 +35,8 @@ Feature: Agency Component Feature
 
   @api @agency
   Scenario: Agency Manager can not edit agency compnent title
-    And I am logged in as a user with the 'Agency Manager' role
+    Given I am logged in as a user with the 'Agency Manager' role
+    When I am at '/user'
     And I click 'Testing Agency'
     And I wait 5 seconds
     And I click 'Test Agency Component 1'
