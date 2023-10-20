@@ -104,6 +104,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Logged in as a user in this user profile edit page.
+   *
    * @Given I am logged in as user :name
    */
   public function iAmLoggedInAsUser($name) {
