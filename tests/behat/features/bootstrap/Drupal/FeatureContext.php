@@ -586,6 +586,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * @Given I click the view tab
+   */
+  public function iClickTheViewTab() {
+    $primary_tabs = $this->getSession()->getPage()->find('css', '.tabs.primary');
+    $edit_button = $primary_tabs->find('named', ['link', 'View']);
+    if (empty($edit_button)) {
+      throw new \Exception('View tab was not found.');
+    }
+    $edit_button->click();
+  }
+
+  /**
    * @Given I press the save button at the bottom of the page
    */
   public function iPressTheSaveButton() {

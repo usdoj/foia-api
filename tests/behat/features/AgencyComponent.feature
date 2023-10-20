@@ -35,7 +35,8 @@ Feature: Agency Component Feature
       | testuser | angus@example.com | Agency Manager       | Testing Agency |
     Given I am logged in as user 'testuser'
     And I wait 5 seconds
-    And I click "view"
+    And I click the view tab
+    And I wait 3 seconds
     Then show me a screenshot
     And I wait 3 seconds
     And I should see "Agency"
