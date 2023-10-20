@@ -37,8 +37,6 @@ Feature: Agency Component Feature
     And I wait 5 seconds
     And I click the view tab
     And I wait 3 seconds
-#    Then show me a screenshot
-    And I wait 3 seconds
     And I should see "Agency"
     And I click 'Testing Agency'
 #    And I click the edit tab

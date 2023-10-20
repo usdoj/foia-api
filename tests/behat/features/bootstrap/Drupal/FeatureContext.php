@@ -609,19 +609,4 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $save_button->click();
   }
 
-  /**
-   * This works for Selenium and other real browsers that support screenshots.
-   *
-   * @Then /^show me a screenshot$/
-   */
-  public function show_me_a_screenshot() {
-
-    $image_data = $this->getSession()->getDriver()->getScreenshot();
-    $file_and_path = '/tmp/behat_screenshot.jpg';
-    file_put_contents($file_and_path, $image_data);
-
-    if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
-      exec('open -a "Preview.app" ' . $file_and_path);
-    }
-  }
 }
