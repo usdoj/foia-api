@@ -8,14 +8,6 @@ Feature: Agency Component Feature
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
       | Testing Agency          | FTA                       | description |plain_text| en       |
-    Given agency_component content:
-      | title                   | field_agency    | field_rep_start | field_agency_comp_abbreviation | path_alias             |
-      | Test Agency Component 1 | Testing Agency  | 2019-01-01      | ABCDEF                         | /test-agency-component |
-    Given users:
-      | name    | mail              | roles                | field_agency   |
-      | Mini    | mini@example.com  | Administrator        | Testing Agency |
-      | Angus   | angus@example.com | Agency Administrator | Testing Agency |
-      | Agency1 | angus@example.com | Agency Manager       | Testing Agency |
 
   @api
   Scenario: Agency Component name in title tag for Agency Component node.
@@ -35,7 +27,13 @@ Feature: Agency Component Feature
 
   @api @javascript
   Scenario: Agency Manager can not edit agency compnent title
-    And I view the user 'Agency1'
+      Given agency_component content:
+      | title                   | field_agency    | field_rep_start | field_agency_comp_abbreviation | path_alias             |
+      | Test Agency Component 1 | Testing Agency  | 2019-01-01      | ABCDEF                         | /test-agency-component |
+    Given users:
+      | name    | mail              | roles                | field_agency   |
+      | testuser | angus@example.com | Agency Manager       | Testing Agency |
+    Given I am logged in as user 'testuser'
     And I wait 5 seconds
     And I should see "Agency"
     And I click 'Testing Agency'
