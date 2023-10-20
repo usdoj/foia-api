@@ -57,7 +57,7 @@ function foia_agency_component_form_node_agency_component_edit_form_alter(&$form
   // If the current user roles is not administrator or
   // agency_administrator disable title input.
   if (count(array_intersect($needle, $user_roles)) == 0) {
-    $form['title']['#disabled'] = TRUE;
+  //  $form['title']['#disabled'] = TRUE;
   }
 
 }
