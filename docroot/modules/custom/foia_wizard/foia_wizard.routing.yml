@@ -1,0 +1,15 @@
+foia_wizard.settings_form:
+  path: '/admin/config/system/foia-wizard'
+  defaults:
+    _title: 'FOIA Request Wizard settings'
+    _form: 'Drupal\foia_wizard\Form\SettingsForm'
+  requirements:
+    _permission: 'administer foia_wizard configuration'
+
+foia_wizard.api:
+  path: '/api/foia_wizard'
+  defaults:
+    _controller: '\Drupal\foia_wizard\Controller\FoiaWizardController::wizard'
+    _format: 'json'
+  requirements:
+    _permission: 'access content'
