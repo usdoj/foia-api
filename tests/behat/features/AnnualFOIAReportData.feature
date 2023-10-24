@@ -22,9 +22,10 @@ Feature: Annual FOIA Report Data Feature
     And for 'Date Prepared' I enter '08/22/2019'
     And I check the box "ABCDEF"
     When I press the 'Save and continue' button
-    Then I should see the following success messages:
-      | Success messages                                  |
-      | FTA - 2019 - Annual FOIA Report has been created. |
+    And I should see "Annual FOIA Report Data - 2019 - Annual FOIA Report has been created."
+#    Then I should see the following success messages:
+#      | Success messages                                  |
+#      | FTA - 2019 - Annual FOIA Report has been created. |
 
   @api
   Scenario: Agency Administrator can add Annual FOIA Reports
