@@ -33,9 +33,10 @@ Feature: Agency Component Feature
     Given users:
       | name    | mail              | roles                | field_agency   |
       | testuser | angus@example.com | Agency Manager       | Testing Agency |
-    Given I am logged in as user 'testuser'
+#    Given I am logged in as user 'testuser'
+    And I view the user 'testuser'
     And I wait 5 seconds
-    And I click the view tab
+#    And I click the view tab
 #    And I wait 3 seconds
 #    And I should see "Agency"
 #    And I click 'Testing Agency'
