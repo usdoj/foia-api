@@ -122,5 +122,4 @@ Feature: Agency Administrator role
     When I am logged in as a user with the 'Agency Administrator' role
     And I am at 'form/hhs-nih-form'
     And I select "Office of the Director" from "Select the NIH institute"
-    And I wait 5 seconds
 
