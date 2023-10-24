@@ -10,7 +10,7 @@ Feature: Annual FOIA Report Data Feature
       | Federal Testing Agency  | FTA                       | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
-      | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | FTA                            |
+      | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | ABCDEF                         |
 
   @api @javascript
   Scenario: Create an Annual FOIA Report Data node.
@@ -20,7 +20,7 @@ Feature: Annual FOIA Report Data Feature
     And I wait 5 seconds
     And for 'FOIA Annual Report Year' I enter '2019'
     And for 'Date Prepared' I enter '08/22/2019'
-    And I check the box "FTA"
+    And I check the box "ABCDEF"
     When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                  |
@@ -39,7 +39,7 @@ Feature: Annual FOIA Report Data Feature
     And for 'FOIA Annual Report Year' I enter '2023'
     And I select "Federal Testing Agency" from "Agency"
     And I wait 5 seconds
-    And I check the box "FTA"
+    And I check the box "ABCDEF"
     When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                        |
@@ -77,7 +77,7 @@ Feature: Annual FOIA Report Data Feature
     And I am on "/node/add/annual_foia_report_data"
     And I select "Federal Testing Agency" from "Agency"
     And I wait 5 seconds
-    And I check the box "FTA"
+    And I check the box "ABCDEF"
     And for 'FOIA Annual Report Year' I enter '2019'
     And I press the 'Save and continue' button
     And I click 'IV. Exemption 3 Statutes'
@@ -113,7 +113,7 @@ Feature: Annual FOIA Report Data Feature
     And I am at "node/add/annual_foia_report_data"
     And I select "Federal Testing Agency" from "Agency"
     And I wait 5 seconds
-    And I check the box "FTA"
+    And I check the box "ABCDEF"
     And for 'FOIA Annual Report Year' I enter '2019'
     And I press the 'Save and continue' button
     And I wait 5 seconds
