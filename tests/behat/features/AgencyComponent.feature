@@ -28,8 +28,8 @@ Feature: Agency Component Feature
   @api @javascript
   Scenario: Agency Manager can not edit agency compnent title
       Given agency_component content:
-      | title                   | field_agency    | field_rep_start | field_agency_comp_abbreviation | path_alias             |
-      | Test Agency Component 1 | Testing Agency  | 2019-01-01      | ABCDEF                         | /test-agency-component |
+      | title                   | field_agency    | field_rep_start | field_agency_comp_abbreviation |
+      | Test Agency Component 2 | Testing Agency  | 2019-01-01      | ABCDEF                         |
     Given users:
       | name    | mail              | roles                | field_agency   |
       | testuser | angus@example.com | Agency Manager       | Testing Agency |
