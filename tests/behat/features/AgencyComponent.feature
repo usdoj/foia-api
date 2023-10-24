@@ -7,7 +7,10 @@ Feature: Agency Component Feature
   Background:
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
-      | Testing Agency          | FTA                       | description |plain_text| en       |
+      | Federal Testing Agency  | FTA                       | description |plain_text| en       |
+    Given agency_component content:
+      | title                   | field_agency           | field_rep_start | field_agency_comp_abbreviation |
+      | Test Agency Component 2 | Federal Testing Agency | 2019-01-01      | FTA                            |
 
   @api
   Scenario: Agency Component name in title tag for Agency Component node.
@@ -27,24 +30,20 @@ Feature: Agency Component Feature
 
   @api @javascript
   Scenario: Agency Manager can not edit agency compnent title
-    Given agency_component content:
-      | title                   | field_agency    | field_rep_start | field_agency_comp_abbreviation |
-      | Test Agency Component 2 | Testing Agency  | 2019-01-01      | FTA                         |
-
     When I am logged in as a user with the 'Agency Administrator' role
-#    And I am at 'admin/people/create'
-#    And for 'Email address' I enter 'testuser2@arthur.com'
-#    And for 'Username' I enter 'testuser2'
-#    And for 'Password' I enter 'abcde123!@#'
-#    And for 'Confirm password' I enter 'abcde123!@#'
-#    And I check the box 'Agency Manager'
-#    And for 'Agency' I enter 'Testing Agency'
-#    And I press the 'Create new account' button
-#    Then I should see the following success messages:
-#      | Success messages                                                  |
-#      | Created a new user account for testuser2. No email has been sent. |
-#    And I wait 5 seconds
-#    And I am at 'user/logout'
+    And I am at 'admin/people/create'
+    And for 'Email address' I enter 'testuser2@arthur.com'
+    And for 'Username' I enter 'testuser2'
+    And for 'Password' I enter 'abcde123!@#'
+    And for 'Confirm password' I enter 'abcde123!@#'
+    And I check the box 'Agency Manager'
+    And for 'Agency' I enter 'Federal Testing Agency'
+    And I press the 'Create new account' button
+    Then I should see the following success messages:
+      | Success messages                                                  |
+      | Created a new user account for testuser2. No email has been sent. |
+    And I wait 5 seconds
+    And I am at 'user/logout'
 #    And I wait 3 seconds
 #    And I am at 'user/login'
 #    And for 'Username' I enter 'testuser2'
