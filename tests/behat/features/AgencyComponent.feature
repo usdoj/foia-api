@@ -26,7 +26,10 @@ Feature: Agency Component Feature
     And I select "Email" from "Portal Submission Format"
     And for 'Submission Email' I enter 'test@test.com'
     When I press the 'Save' button
-    Then the page title should be "My agency name | Federal Testing Agency | National FOIA Portal"
+    Then I should see the following success messages:
+      | Success messages                                  |
+      | Agency Component My agency name has been created. |
+#    Then the page title should be "My agency name | Federal Testing Agency | National FOIA Portal"
 
   @api @javascript
   Scenario: Agency Manager can not edit agency compnent title
