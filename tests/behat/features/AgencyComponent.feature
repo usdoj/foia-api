@@ -18,7 +18,7 @@ Feature: Agency Component Feature
     And I am at '/node/add/agency_component'
     And for 'Agency Component Name' I enter 'My agency name'
     And for 'Agency' I enter 'Federal Testing Agency'
-    And for 'Abbreviation' I enter 'FTA'
+    And for 'Abbreviation' I enter 'ABCDEF'
     And for 'Street address' I enter 'testing'
     And for 'City' I enter 'Rockville'
     And for 'Zip code' I enter "20857'
