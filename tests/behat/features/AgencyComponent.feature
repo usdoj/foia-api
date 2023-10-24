@@ -33,9 +33,30 @@ Feature: Agency Component Feature
     Given users:
       | name    | mail              | roles                | field_agency   |
       | testuser | angus@example.com | Agency Manager       | Testing Agency |
-#    Given I am logged in as user 'testuser'
-    And I view the user 'testuser'
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am at 'admin/people/create'
+    And for 'Email address' I enter 'testuser2@arthur.com'
+    And for 'Username' I enter 'testuser2'
+    And for 'Password' I enter 'abcde123!@#'
+    And for 'Confirm password' I enter 'abcde123!@#'
+    And I check the box 'Agency Manager'
+    And for 'Agency' I enter 'Testing Agency'
+    And I press the 'Create new account' button
+    Then I should see the following success messages:
+      | Success messages                                                  |
+      | Created a new user account for testuser2. No email has been sent. |
     And I wait 5 seconds
+    And I am at 'user/logout'
+    And I wait 3 seconds
+    And I am at 'user/login'
+    And for 'Username' I enter 'testuser2'
+    And for 'Password' I enter 'abcde123!@#'
+    And I press the "Log in" button
+    And I wait 5 seconds
+    And I should see "Agency"
+
+#    And I view the user 'testuser'
+#    And I wait 5 seconds
 #    And I click the view tab
 #    And I wait 3 seconds
 #    And I should see "Agency"
