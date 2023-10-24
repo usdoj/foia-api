@@ -4,8 +4,8 @@ namespace Drupal\foia_request\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_request\Entity\FoiaRequest;
+use Drupal\foia_request\Entity\FoiaRequestInterface;
 
 /**
  * Purge failed FOIA requests older than 2 weeks.

@@ -2,11 +2,11 @@
 
 namespace Drupal\foia_upload_xml\Plugin\QueueWorker;
 
-use Drupal\file\Entity\File;
-use Drupal\user\Entity\User;
+use Drupal\Core\File\Exception\FileNotExistsException;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\Core\Queue\RequeueException;
-use Drupal\Core\File\Exception\FileNotExistsException;
+use Drupal\file\Entity\File;
+use Drupal\user\Entity\User;
 
 /**
  * Import uploaded report xml files on cron.

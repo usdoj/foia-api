@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\foia_webform\Kernel;
 
+use Drupal\foia_request\Entity\FoiaRequest;
 use Drupal\foia_request\Entity\FoiaRequestInterface;
 use Drupal\foia_webform\FoiaSubmissionServiceApi;
 use Drupal\foia_webform\Plugin\QueueWorker\FoiaSubmissionQueueWorker;
-use Drupal\foia_request\Entity\FoiaRequest;
 
 /**
  * Class FoiaSubmissionQueueWorkerTest.
