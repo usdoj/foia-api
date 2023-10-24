@@ -75,6 +75,7 @@ class SettingsForm extends ConfigFormBase {
           'm21',
           'm22',
           'm47',
+          'm48',
         ],
       ],
       'topic4' => [
@@ -122,6 +123,13 @@ class SettingsForm extends ConfigFormBase {
           'm46',
         ],
       ],
+      'topic7' => [
+        'title' => $this->t('State and Local'),
+        'description' => '',
+        'messages' => [
+          'm49',
+        ],
+      ],
     ];
 
   }
@@ -167,14 +175,24 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('This is the text that will appear on the first slide of the FOIA Request Wizard.'),
     ];
 
-    // Beginning query slide.
-    $form['query_slide'] = [
+    // Beginning query slide: text at top of view, above topics.
+    $form['query_slide_1'] = [
       '#type' => 'text_format',
-      '#title' => $this->t('Query Slide'),
+      '#title' => $this->t('Query Slide Part 1'),
       '#required' => TRUE,
-      '#default_value' => $this->config('foia_wizard.settings')->get('query_slide.value'),
-      '#format' => $this->config('foia_wizard.settings')->get('query_slide.format'),
-      '#description' => $this->t('This is the text that will appear on the query slide of the FOIA Request Wizard.'),
+      '#default_value' => $this->config('foia_wizard.settings')->get('query_slide_1.value'),
+      '#format' => $this->config('foia_wizard.settings')->get('query_slide_1.format'),
+      '#description' => $this->t('This is the text that will appear at the top of the view on the query slide of the FOIA Request Wizard.'),
+    ];
+
+    // Beginning query slide: text above the user query input.
+    $form['query_slide_2'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Query Slide Part 2'),
+      '#required' => TRUE,
+      '#default_value' => $this->config('foia_wizard.settings')->get('query_slide_2.value'),
+      '#format' => $this->config('foia_wizard.settings')->get('query_slide_2.format'),
+      '#description' => $this->t('This is the text that will appear below the topic buttons, above the user query input box on the query slide of the FOIA Request Wizard.'),
     ];
 
     // Messages tab group.
@@ -226,7 +244,8 @@ class SettingsForm extends ConfigFormBase {
     // Save all the form fields.
     $this->config('foia_wizard.settings')
       ->set('intro_slide', $form_state->getValue('intro_slide'))
-      ->set('query_slide', $form_state->getValue('query_slide'))
+      ->set('query_slide_1', $form_state->getValue('query_slide_1'))
+      ->set('query_slide_2', $form_state->getValue('query_slide_2'))
       ->set('messages', $messages)
       ->save();
 
