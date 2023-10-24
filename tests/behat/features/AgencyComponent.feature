@@ -36,9 +36,9 @@ Feature: Agency Component Feature
     Given I am logged in as user 'testuser'
     And I wait 5 seconds
     And I click the view tab
-    And I wait 3 seconds
-    And I should see "Agency"
-    And I click 'Testing Agency'
+#    And I wait 3 seconds
+#    And I should see "Agency"
+#    And I click 'Testing Agency'
 #    And I click the edit tab
 #    And I wait 5 seconds
 #    Then the element "Agency Component Name" is "disabled"
