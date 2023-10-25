@@ -34,45 +34,42 @@ Feature: Annual FOIA Report Data Feature
 
   @api @annual_foia_report_data @javascript
   Scenario: Agency Administrator can save Annual FOIA Reports in all workflow states
-    Given agency terms:
-      | name            | field_agency_abbreviation | description |format    | language |
-      | Testing Agency  | FTA                       | description |plain_text| en       |
     When I am logged in as a user with the 'Agency Administrator' role
     And I am at "/node/add/annual_foia_report_data"
     And for 'FOIA Annual Report Year' I enter '2023'
-    And I select "Testing Agency" from "Agency"
-    And I wait 10 seconds
-    And I check the box "FTA"
+    And I select "Federal Testing Agency" from "Agency"
+    And I wait 5 seconds
+    And I check the box "ABCDEF"
     When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                                             |
-      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been created.    |
+      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been created.    |
     And I select "Submitted to OIP" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                                                 |
-      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been updated.        |
+      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been updated.        |
     And save the current URL
     And I click 'Edit'
     And I select "Cleared" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                                                 |
-      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been updated.        |
+      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been updated.        |
     When I go to saved URL
     And I click 'Edit'
     And I select "Published" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                                                 |
-      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been updated.        |
+      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been updated.        |
     When I go to saved URL
     And I click 'Edit'
     And I select "Back with Agency" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                                                 |
-      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been updated.        |
+      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been updated.        |
 
   @api @javascript
   Scenario: There is a button for adding placeholders for component data
