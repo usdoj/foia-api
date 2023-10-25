@@ -7,10 +7,10 @@ Feature: Annual FOIA Report Data Feature
   Background:
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
-      | Federal Testing Agency  | FTA                       | description |plain_text| en       |
+      | Federal Testing Agency  | ABCDEF                    | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
-      | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | ABCDEF                         |
+      | est Agency Component 1T | Federal Testing Agency    | 2019-01-01      | ABCDEF                         |
 
   @api @javascript
   Scenario: Create an Annual FOIA Report Data node.
