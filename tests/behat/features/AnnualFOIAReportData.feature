@@ -40,7 +40,7 @@ Feature: Annual FOIA Report Data Feature
     When I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add/annual_foia_report_data"
     And for 'FOIA Annual Report Year' I enter '2023'
-    And I select "Federal Testing Agency" from "Agency"
+    And I select "Testing Agency" from "Agency"
     And I wait 5 seconds
     And I check the box "FTA"
     When I press the 'Save and continue' button
