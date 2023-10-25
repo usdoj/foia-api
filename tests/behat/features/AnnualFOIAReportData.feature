@@ -7,7 +7,7 @@ Feature: Annual FOIA Report Data Feature
   Background:
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
-      | Federal Testing Agency  | FTA                    | description |plain_text| en       |
+      | Federal Testing Agency  | FTA                       | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
       | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | ABCDEF                         |
@@ -15,16 +15,19 @@ Feature: Annual FOIA Report Data Feature
   @api @javascript
   Scenario: Create an Annual FOIA Report Data node.
     Given I am logged in as a user with the 'Administrator' role
+    Given agency terms:
+      | name                    | field_agency_abbreviation | description |format    | language |
+      | Federal Testing Agency1 | FTB                       | description |plain_text| en       |
     And I am at 'node/add/annual_foia_report_data'
-    And I select "Federal Testing Agency" from "Agency"
+    And I select "Federal Testing Agency1" from "Agency"
     And I wait 5 seconds
     And for 'FOIA Annual Report Year' I enter '2019'
     And for 'Date Prepared' I enter '08/22/2019'
-    And I check the box "FTA"
+    And I check the box "FTB"
     When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                                             |
-      | Annual FOIA Report Data FTA - 2019 - Annual FOIA Report has been created. |
+      | Annual FOIA Report Data FTB - 2019 - Annual FOIA Report has been created. |
 
   @api
   Scenario: Agency Administrator can add Annual FOIA Reports
