@@ -38,7 +38,7 @@ Feature: Annual FOIA Report Data Feature
       | name            | field_agency_abbreviation | description |format    | language |
       | Testing Agency  | FTA                       | description |plain_text| en       |
     When I am logged in as a user with the 'Agency Administrator' role
-    And I am on "/node/add/annual_foia_report_data"
+    And I am at "/node/add/annual_foia_report_data"
     And for 'FOIA Annual Report Year' I enter '2023'
     And I select "Testing Agency" from "Agency"
     And I wait 5 seconds
@@ -77,7 +77,7 @@ Feature: Annual FOIA Report Data Feature
   @api @javascript
   Scenario: There is a button for adding placeholders for component data
     Given I am logged in as a user with the 'Agency Administrator' role
-    And I am on "/node/add/annual_foia_report_data"
+    And I am at "/node/add/annual_foia_report_data"
     And I select "Federal Testing Agency" from "Agency"
     And I wait 5 seconds
     And I check the box "ABCDEF"
@@ -89,7 +89,7 @@ Feature: Annual FOIA Report Data Feature
   @api @javascript
   Scenario: The validate button can be used to validate the report
     Given I am logged in as a user with the 'Agency Administrator' role
-    And I am on "/node/add/annual_foia_report_data"
+    And I am at "/node/add/annual_foia_report_data"
     And I press "Validate"
     And I wait 3 seconds
     Then I should see "This field is required."
@@ -106,7 +106,7 @@ Feature: Annual FOIA Report Data Feature
   @api
   Scenario: The Components should be required for annual reports
     Given I am logged in as a user with the 'Agency Administrator' role
-    And I am on "/node/add/annual_foia_report_data"
+    And I am at "/node/add/annual_foia_report_data"
     When I press the 'Save and continue' button
     Then I should see "Components field is required"
 
