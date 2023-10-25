@@ -29,7 +29,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * context constructor through behat.yml.
    */
   public function __construct() {
-
   }
 
   /**
@@ -122,8 +121,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then save the current URL
    */
-  public function saveTheCurrentUrl()
-  {
+  public function saveTheCurrentUrl() {
     $this->url = $this->getSession()->getCurrentUrl();
   }
 
@@ -132,8 +130,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I output the page
    */
-  public function iOutputThePage()
-  {
+  public function iOutputThePage() {
     print PHP_EOL . '******';
     print $this->getSession()->getPage()->getHtml() . PHP_EOL . '******' . PHP_EOL;
   }
@@ -141,8 +138,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * @Then I output the content of the page
    */
-  public function iOutputTheContentOfThePage()
-  {
+  public function iOutputTheContentOfThePage() {
     print PHP_EOL . '******';
     print $this->getSession()->getPage()->findById('main')->getHtml() . PHP_EOL . '******' . PHP_EOL;
   }
@@ -152,16 +148,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I go to saved URL
    */
-  public function iGoToSavedUrl()
-  {
+  public function iGoToSavedUrl() {
     $this->getSession()->visit($this->url);
   }
 
   /**
    * @Given I create a webform :arg1
    */
-  public function iCreateAWebform($arg1)
-  {
+  public function iCreateAWebform($arg1) {
     if (!empty($arg1)) {
       Webform::create(['id' => $arg1])->save();
     }
@@ -200,56 +194,53 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * @Given I edit the current entity
    */
-  public function iEditTheCurrentEntity()
-  {
+  public function iEditTheCurrentEntity() {
     $currentPath = $this->getSession()->getCurrentUrl();
     $newPath = "{$currentPath}/edit";
     $this->getSession()->visit($newPath);
   }
 
   /**
-     * Check if the given radio button is selected or not
-     *
-     * @param $radioButtonSelector
-     *   string The label of the radio button
-     * @param $selected
-     *   boolean To test against selected or not
-     *
-     * @Given /^I (?:|should )see the radio button "([^"]*)" selected$/
-     * @Then /^the radio button "([^"]*)" (?:is|should be) selected$/
-     * @Then /^the "([^"]*)" radio button (?:is|should be) selected$/
-     */
-    public function isRadioButtonSelected($radioButtonSelector, $selected = TRUE) {
-      // Verify whether a field with the given selector exists or not
-      $field = $this->getSession()->getPage()->findField($radioButtonSelector);
-      if (empty($field)) {
-        throw new \Exception(sprintf("Form field with id|name|label|value '%s' was not found on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+   * Check if the given radio button is selected or not
+   *
+   * @param $radioButtonSelector
+   *   string The label of the radio button
+   * @param $selected
+   *   boolean To test against selected or not
+   *
+   * @Given /^I (?:|should )see the radio button "([^"]*)" selected$/
+   * @Then /^the radio button "([^"]*)" (?:is|should be) selected$/
+   * @Then /^the "([^"]*)" radio button (?:is|should be) selected$/
+   */
+  public function isRadioButtonSelected($radioButtonSelector, $selected = TRUE) {
+    // Verify whether a field with the given selector exists or not
+    $field = $this->getSession()->getPage()->findField($radioButtonSelector);
+    if (empty($field)) {
+      throw new \Exception(sprintf("Form field with id|name|label|value '%s' was not found on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+    }
+    // Verify if the field is a radio button or not
+    $type = $field->getAttribute('type');
+    if ($type != "radio") {
+      throw new \Exception(sprintf("The field '%s' was found but it is not a radio button on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+    }
+    // If the field should be selected, then the attribute 'checked' should exist
+    if ($selected) {
+      if (!$field->hasAttribute('checked')) {
+        throw new \Exception(sprintf("The radio button '%s' was not selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
       }
-      // Verify if the field is a radio button or not
-      $type = $field->getAttribute('type');
-      if ($type != "radio") {
-        throw new \Exception(sprintf("The field '%s' was found but it is not a radio button on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
-      }
-      // If the field should be selected, then the attribute 'checked' should exist
-      if ($selected) {
-        if (!$field->hasAttribute('checked')) {
-          throw new \Exception(sprintf("The radio button '%s' was not selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
-        }
-      }
-      else {
-        if ($field->hasAttribute('checked')) {
-          throw new \Exception(sprintf("The radio button '%s' was selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
-        }
+    } else {
+      if ($field->hasAttribute('checked')) {
+        throw new \Exception(sprintf("The radio button '%s' was selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
       }
     }
+  }
 
-    /**
-     * @Given I wait :num seconds
-     */
-    public function iWaitSeconds($num)
-    {
-      sleep($num);
-    }
+  /**
+   * @Given I wait :num seconds
+   */
+  public function iWaitSeconds($num) {
+    sleep($num);
+  }
 
   /**
    * Check if the given title is expected or not.
@@ -260,8 +251,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $titleElement = $this->getSession()->getPage()->find('css', 'head title');
     if ($titleElement === null) {
       throw new \Exception('Page title element was not found!');
-    }
-    else {
+    } else {
       $title = $titleElement->getText();
       if ($expectedTitle !== $title) {
         throw new \Exception("Incorrect title! Expected:$expectedTitle | Actual:$title ");
@@ -323,7 +313,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $field = $this->getSession()->getPage()->find('named', ['field', $elementlabel]);
     if ($status == 'enabled') {
       if ($field->getAttribute('disabled') == 'disabled') {
-        throw new \Exception('field '. $elementlabel. ' is disabled ');
+        throw new \Exception('field ' . $elementlabel . ' is disabled ');
       }
     }
     if ($status == 'disabled') {
@@ -351,8 +341,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if ($match) {
       $match->click();
       $this->getSession()->wait(1000);
-    }
-    else {
+    } else {
       throw new \Exception('Node edit section "' . $section_name . '" was not found.');
     }
   }
@@ -417,7 +406,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception('Node edit field "' . $field_id . '" was not found.');
     } else {
       $value = $field->getAttribute('value');
-      echo "field value: ". $value;
+      echo "field value: " . $value;
     }
   }
 
@@ -566,18 +555,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * @Given I click the view tab
-   */
-  public function iClickTheViewTab() {
-    $primary_tabs = $this->getSession()->getPage()->find('css', '.tabs.primary');
-    $edit_button = $primary_tabs->find('named', ['link', 'View']);
-    if (empty($edit_button)) {
-      throw new \Exception('View tab was not found.');
-    }
-    $edit_button->click();
-  }
-
-  /**
    * @Given I press the save button at the bottom of the page
    */
   public function iPressTheSaveButton() {
@@ -588,5 +565,4 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
     $save_button->click();
   }
-
 }
