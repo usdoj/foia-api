@@ -32,7 +32,7 @@ Feature: Annual FOIA Report Data Feature
     And I am on "/node/add"
     Then I should see the link "Annual FOIA Report Data"
 
-  @api @javascript
+  @api @annual_foia_report_data @javascript
   Scenario: Agency Administrator can save Annual FOIA Reports in all workflow states
     Given agency terms:
       | name            | field_agency_abbreviation | description |format    | language |
@@ -41,7 +41,7 @@ Feature: Annual FOIA Report Data Feature
     And I am at "/node/add/annual_foia_report_data"
     And for 'FOIA Annual Report Year' I enter '2023'
     And I select "Testing Agency" from "Agency"
-    And I wait 15 seconds
+    And I wait 10 seconds
     And I check the box "FTA"
     When I press the 'Save and continue' button
     Then I should see the following success messages:
