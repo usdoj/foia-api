@@ -7,7 +7,7 @@ Feature: Annual FOIA Report Data Feature
   Background:
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
-      | Federal Testing Agency  | ABCDEF                    | description |plain_text| en       |
+      | Federal Testing Agency  | FTA                    | description |plain_text| en       |
     Given agency_component content:
       | title                   | field_agency              | field_rep_start | field_agency_comp_abbreviation |
       | Test Agency Component 1 | Federal Testing Agency    | 2019-01-01      | ABCDEF                         |
@@ -20,11 +20,11 @@ Feature: Annual FOIA Report Data Feature
     And I wait 5 seconds
     And for 'FOIA Annual Report Year' I enter '2019'
     And for 'Date Prepared' I enter '08/22/2019'
-    And I check the box "ABCDEF"
+    And I check the box "FTA"
     When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                                             |
-      | Annual FOIA Report Data ABCDEF - 2019 - Annual FOIA Report has been created. |
+      | Annual FOIA Report Data FTA - 2019 - Annual FOIA Report has been created. |
 
   @api
   Scenario: Agency Administrator can add Annual FOIA Reports
@@ -39,37 +39,37 @@ Feature: Annual FOIA Report Data Feature
     And for 'FOIA Annual Report Year' I enter '2023'
     And I select "Federal Testing Agency" from "Agency"
     And I wait 5 seconds
-    And I check the box "ABCDEF"
+    And I check the box "FTA"
     When I press the 'Save and continue' button
     Then I should see the following success messages:
       | Success messages                                                             |
-      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been created.    |
+      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been created.    |
     And I select "Submitted to OIP" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                                                 |
-      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been updated.        |
+      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been updated.        |
     And save the current URL
     And I click 'Edit'
     And I select "Cleared" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                                                 |
-      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been updated.        |
+      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been updated.        |
     When I go to saved URL
     And I click 'Edit'
     And I select "Published" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                                                 |
-      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been updated.        |
+      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been updated.        |
     When I go to saved URL
     And I click 'Edit'
     And I select "Back with Agency" from "Change to"
     And I press the 'Save' button
     Then I should see the following success messages:
       | Success messages                                                                 |
-      | Annual FOIA Report Data ABCDEF - 2023 - Annual FOIA Report has been updated.        |
+      | Annual FOIA Report Data FTA - 2023 - Annual FOIA Report has been updated.        |
 
   @api @javascript
   Scenario: There is a button for adding placeholders for component data
@@ -77,7 +77,7 @@ Feature: Annual FOIA Report Data Feature
     And I am at "/node/add/annual_foia_report_data"
     And I select "Federal Testing Agency" from "Agency"
     And I wait 5 seconds
-    And I check the box "ABCDEF"
+    And I check the box "FTA"
     And for 'FOIA Annual Report Year' I enter '2019'
     And I press the 'Save and continue' button
     And I click 'IV. Exemption 3 Statutes'
@@ -113,7 +113,7 @@ Feature: Annual FOIA Report Data Feature
     And I am at "node/add/annual_foia_report_data"
     And I select "Federal Testing Agency" from "Agency"
     And I wait 5 seconds
-    And I check the box "ABCDEF"
+    And I check the box "FTA"
     And for 'FOIA Annual Report Year' I enter '2019'
     And I press the 'Save and continue' button
     And I wait 5 seconds
