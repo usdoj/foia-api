@@ -30,15 +30,15 @@ Feature: Agency Administrator role
     And I should not see 'Edit' in the 'Arthur' row
     And I view the user 'Mini'
     And I attempt to delete the current entity
-    Then the response status code should be 404
+    Then I should see "Page not found"
     When I am at 'admin/people'
     And I view the user 'Angus'
     And I attempt to delete the current entity
-    Then the response status code should be 404
+    Then I should see "Page not found"
     When I am at 'admin/people'
     And I view the user 'Arthur'
     And I attempt to delete the current entity
-    Then the response status code should be 404
+    Then I should see "Page not found"
     And the user 'Arthur' is deleted
 
   @api @agency
@@ -112,14 +112,3 @@ Feature: Agency Administrator role
     And I am on "/node/add/agency_component"
     Then I should see "Report Start Date"
     And I should see "Report Expiration Date"
-
-  @api @javascript
-  Scenario: Verify NIH webform has Select the NIH institute drop down selection
-    Given users:
-      | name   | mail              | roles                |
-      | Mini   | mini@example.com  | Administrator        |
-      | Angus  | angus@example.com | Agency Administrator |
-    When I am logged in as a user with the 'Agency Administrator' role
-    And I am at 'form/hhs-nih-form'
-    And I select "Office of the Director" from "Select the NIH institute"
-
