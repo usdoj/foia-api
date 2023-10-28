@@ -1,61 +1,79 @@
-uuid: 72948033-94e7-439f-86cf-348f119de5e5
+uuid: 762c0a6c-a679-401f-a24c-2cd3bec005b7
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.rich_text
   module:
-    - ckeditor
-_core:
-  default_config_hash: 0bVELtfx9sXhjZ6s6W-dJo8SW-IR9jiEIEylzm-2Cro
+    - ckeditor5
 format: rich_text
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-            - Strike
-            - Superscript
-            - Subscript
-            - '-'
-            - RemoveFormat
-        -
-          name: Linking
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
-        -
-          name: Media
-          items:
-            - Blockquote
-            - Table
-            - HorizontalRule
-            - media_browser
-        -
-          name: 'Block Formatting'
-          items:
-            - Format
-        -
-          name: Tools
-          items:
-            - ShowBlocks
-            - Source
-  plugins: {  }
+    items:
+      - heading
+      - bold
+      - italic
+      - superscript
+      - subscript
+      - removeFormat
+      - strikethrough
+      - '|'
+      - link
+      - blockQuote
+      - code
+      - horizontalLine
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - uploadImage
+      - drupalMedia
+      - insertTable
+      - '|'
+      - codeBlock
+      - sourceEditing
+  plugins:
+    ckeditor5_heading:
+      enabled_headings:
+        - heading1
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_imageResize:
+      allow_resize: true
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<cite>'
+        - '<dl>'
+        - '<dt>'
+        - '<dd>'
+        - '<a type title class hreflang>'
+        - '<blockquote cite>'
+        - '<ul type>'
+        - '<ol type>'
+        - '<h2 id>'
+        - '<h3 id>'
+        - '<h4 id>'
+        - '<h5 id>'
+        - '<h6 id>'
+        - '<img title height width class src alt data-entity-type data-entity-uuid data-align data-caption>'
+        - '<drupal-entity data-*>'
+        - '<audio type src controls contenteditable>'
+        - '<span class>'
+        - '<video type src controls contenteditable>'
+    media_media:
+      allow_view_mode_override: false
 image_upload:
   status: true
   scheme: public
   directory: inline-images
   max_size: ''
   max_dimensions:
-    width: null
-    height: null
+    width: 0
+    height: 0

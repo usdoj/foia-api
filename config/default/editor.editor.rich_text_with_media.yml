@@ -1,64 +1,60 @@
-uuid: 67f79eed-0bb4-48b1-873b-1d93e0909a0a
+uuid: 80a12184-fc6b-4b4f-910e-b4d51135062a
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.rich_text_with_media
   module:
-    - ckeditor
+    - ckeditor5
 format: rich_text_with_media
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-            - Underline
-            - Strike
-            - Superscript
-            - Subscript
-            - RemoveFormat
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
-        -
-          name: Formatting
-          items:
-            - Format
-            - JustifyLeft
-            - JustifyCenter
-            - JustifyRight
-            - JustifyBlock
-            - Blockquote
-            - Table
-        -
-          name: Media
-          items:
-            - DrupalImage
-            - DrupalMediaLibrary
-        -
-          name: Tools
-          items:
-            - Source
-            - Undo
-            - Redo
-  plugins: {  }
+    items:
+      - heading
+      - bold
+      - italic
+      - superscript
+      - subscript
+      - removeFormat
+      - strikethrough
+      - '|'
+      - link
+      - blockQuote
+      - code
+      - horizontalLine
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - uploadImage
+      - drupalMedia
+      - insertTable
+      - codeBlock
+      - sourceEditing
+  plugins:
+    ckeditor5_heading:
+      enabled_headings:
+        - heading1
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_imageResize:
+      allow_resize: true
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
+    media_media:
+      allow_view_mode_override: false
 image_upload:
   status: true
   scheme: public
   directory: inline-images
   max_size: ''
   max_dimensions:
-    width: null
-    height: null
+    width: 0
+    height: 0
