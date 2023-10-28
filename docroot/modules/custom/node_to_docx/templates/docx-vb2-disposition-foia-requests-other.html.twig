@@ -1,8 +1,8 @@
 <div class=WordSection12>
 
-<p class=MsoNormal ><b>V.B.(2).
-DISPOSITION OF FOIA REQUESTS -- &quot;OTHER&quot; REASONS FOR &quot;FULL
-DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS&quot;<o:p></o:p></b></p>
+  <p class=MsoNormal ><b>V.B.(2).
+      DISPOSITION OF FOIA REQUESTS -- &quot;OTHER&quot; REASONS FOR &quot;FULL
+      DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS&quot;<o:p></o:p></b></p>
 
 </div>
 
@@ -11,73 +11,76 @@ DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS&quot;<o:p></o:p></b></p>
 
 <div class=WordSection13>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=87 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=334 >
-  <p class=MsoNormal align=center >
-  Description of &quot;Other&quot; Reasons for Denials from Chart B(1)<o:p></o:p></p>
-  </td>
-  <td width=79 >
-  <p class=MsoNormal align=center >Number of Times &quot;Other&quot;
-  Reason Was Relied Upon<o:p></o:p></p>
-  </td>
-  <td width=70 >
-  <p class=MsoNormal align=center >TOTAL<o:p></o:p></p>
-  </td>
- </tr>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=87 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=334 >
+        <p class=MsoNormal align=center >
+          Description of &quot;Other&quot; Reasons for Denials from Chart B(1)<o:p></o:p></p>
+      </td>
+      <td width=79 >
+        <p class=MsoNormal align=center >Number of Times &quot;Other&quot;
+          Reason Was Relied Upon<o:p></o:p></p>
+      </td>
+      <td width=70 >
+        <p class=MsoNormal align=center >TOTAL<o:p></o:p></p>
+      </td>
+    </tr>
 
-{% for key,value in content.field_foia_requests_vb1 if key|first != '#' %}
-  {% for subkey,subvalue in content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info if subkey|first != '#' %}
+    {% for key,value in content.field_foia_requests_vb1 %}
+      {% if key|first != '#' %}
+        {% for subkey,subvalue in content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info %}
 
- <tr >
-  {% if not subkey %}
-  <td nowrap rowspan={{ content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info|length }} valign=top >
-  <p class=MsoNormal >
-  {{ content.field_foia_requests_vb2[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
-  <o:p></o:p></p>
-  </td>
-  {% endif %}
-  <td valign=bottom >
-  <p class=MsoNormal >
-  {{ content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info[subkey].entity.field_desc_oth_reasons.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info[subkey].entity.field_num_relied_upon.value }}
-  <o:p></o:p></p>
-  </td>
-  {% if not subkey %}
-  <td rowspan={{ content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info|length }} >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_requests_vb2[key]['#paragraph'].field_total.value }}
-  <o:p></o:p></p>
-  </td>
-  {% endif %}
-  </tr>
-  {% endfor %}
- </tr>
-{% endfor %}
- <tr >
-  <td  >
-  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal >&nbsp;<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal >&nbsp;<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >
-  {{ docx.field_overall_vb2_total  }}
-  <o:p></o:p></p>
-  </td>
- </tr>
-</table>
+          {% if subkey|first != '#'  %}
+            <tr >
+              {% if not subkey %}
+                <td nowrap rowspan={{ content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info|length }} valign=top >
+                  <p class=MsoNormal >
+                    {{ content.field_foia_requests_vb2[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+                    <o:p></o:p></p>
+                </td>
+              {% endif %}
+              <td valign=bottom >
+                <p class=MsoNormal >
+                  {{ content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info[subkey].entity.field_desc_oth_reasons.value }}
+                  <o:p></o:p></p>
+              </td>
+              <td nowrap valign=bottom >
+                <p class=MsoNormal align=right >
+                  {{ content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info[subkey].entity.field_num_relied_upon.value }}
+                  <o:p></o:p></p>
+              </td>
+              {% if not subkey %}
+                <td rowspan={{ content.field_foia_requests_vb2[key]['#paragraph'].field_foia_req_vb2_info|length }} >
+                  <p class=MsoNormal align=right >
+                    {{ content.field_foia_requests_vb2[key]['#paragraph'].field_total.value }}
+                    <o:p></o:p></p>
+                </td>
+              {% endif %}
+            </tr>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+    <tr >
+      <td  >
+        <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal >&nbsp;<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal >&nbsp;<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >
+          {{ docx.field_overall_vb2_total  }}
+          <o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -85,13 +88,13 @@ DENIALS BASED ON REASONS OTHER THAN EXEMPTIONS&quot;<o:p></o:p></b></p>
 
 <div class=WordSection14>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=570 valign=bottom >
-  <p class=MsoNormal><i >{{ docx.field_footnotes_vb2 }}</i><o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=570 valign=bottom >
+        <p class=MsoNormal><i >{{ docx.field_footnotes_vb2 }}</i><o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 

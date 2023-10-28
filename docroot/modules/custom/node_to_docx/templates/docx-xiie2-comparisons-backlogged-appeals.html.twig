@@ -1,8 +1,8 @@
 <div class=WordSection96>
 
-<p class=MsoNormal ><b>XII.E.(2).
-COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT
-ANNUAL REPORT -- BACKLOGGED APPEALS<o:p></o:p></b></p>
+  <p class=MsoNormal ><b>XII.E.(2).
+      COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT
+      ANNUAL REPORT -- BACKLOGGED APPEALS<o:p></o:p></b></p>
 
 </div>
 
@@ -11,56 +11,58 @@ ANNUAL REPORT -- BACKLOGGED APPEALS<o:p></o:p></b></p>
 
 <div class=WordSection97>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=364>
- <tr >
-  <td width=114 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=125 >
-  <p class=MsoNormal align=center >Number of Backlogged Appeals as of End
-  of the Fiscal Year from Previous Annual Report<o:p></o:p></p>
-  </td>
-  <td width=125 >
-  <p class=MsoNormal align=center >Number of Backlogged Appeals as of End
-  of the Fiscal Year from Current Annual Report<o:p></o:p></p>
-  </td>
- </tr>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=364>
+    <tr >
+      <td width=114 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=125 >
+        <p class=MsoNormal align=center >Number of Backlogged Appeals as of End
+          of the Fiscal Year from Previous Annual Report<o:p></o:p></p>
+      </td>
+      <td width=125 >
+        <p class=MsoNormal align=center >Number of Backlogged Appeals as of End
+          of the Fiscal Year from Current Annual Report<o:p></o:p></p>
+      </td>
+    </tr>
 
-{% for key,value in content.field_foia_xiie2 if key|first != '#' %}
- <tr >
-  <td nowrap valign=bottom >
-  <p class=MsoNormal >
-  {{ content.field_foia_xiie2[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiie2[key]['#paragraph'].field_back_prev_yr.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiie2[key]['#paragraph'].field_back_cur_yr.value }}
-  <o:p></o:p></p>
-  </td>
- </tr>
-{% endfor %}
- <tr >
-  <td >
-  <p class=MsoNormal >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ docx.field_overall_xiie2_back_prev_yr }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ docx.field_overall_xiie2_back_cur_yr }}
-  <o:p></o:p></p>
-  </td>
- </tr>
-</table>
+    {% for key,value in content.field_foia_xiie2 %}
+      {% if key|first != '#' %}
+        <tr >
+          <td nowrap valign=bottom >
+            <p class=MsoNormal >
+              {{ content.field_foia_xiie2[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiie2[key]['#paragraph'].field_back_prev_yr.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiie2[key]['#paragraph'].field_back_cur_yr.value }}
+              <o:p></o:p></p>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+    <tr >
+      <td >
+        <p class=MsoNormal >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >
+          {{ docx.field_overall_xiie2_back_prev_yr }}
+          <o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >
+          {{ docx.field_overall_xiie2_back_cur_yr }}
+          <o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -68,14 +70,14 @@ ANNUAL REPORT -- BACKLOGGED APPEALS<o:p></o:p></b></p>
 
 <div class=WordSection98>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535 >
- <tr >
-  <td width=570 nowrap valign=bottom >
-  <p class=MsoNormal align=left ><i>
-  {{ docx.field_footnotes_xiie2 }}
-  </i><o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535 >
+    <tr >
+      <td width=570 nowrap valign=bottom >
+        <p class=MsoNormal align=left ><i>
+            {{ docx.field_footnotes_xiie2 }}
+          </i><o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>

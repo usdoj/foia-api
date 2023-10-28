@@ -2,7 +2,8 @@
  * @file
  */
 
-(function ($, drupalSettings) {
+(function ($, drupalSettings, once) {
+
   Drupal.behaviors.foia_change_report_agency = {
     attach: function attach() {
       function genericWarning(title, btn, msg) {
@@ -640,10 +641,12 @@
         existingComponentSelector = fieldWrapperSelector + ' tbody tr:visible',
         checkedComponentSelector = '#edit-field-agency-components input:checked',
         getComponentDropdownName = function (index) { return section.field + '[' + index + '][subform]' };
-      $(fieldWrapperSelector).once('foia-add-populate-button').each(function () {
+
+      $(once('foia-add-populate-button', fieldWrapperSelector)).each(function () {
         // Build buttons contain.
         var sectionBtns = $('<div class="section-button-group" style="display: flex;padding-top: .5rem;gap: 1rem;"><div class="component-placeholder-button-div" style="width: 50%"><div class="description">Use this button when starting a new report, to quickly add placeholders for all of the components that you have selected in the checkboxes above.</div></div><div class="no-data-to-report-div"><div class="description">Use this button to quickly fill 0 or N/A for components do not apply.</div></div></div>');
         $(this).prepend(sectionBtns);
+
         let componentPlaceholderButtonDiv = $(this).find('.section-button-group .component-placeholder-button-div');
         let noDataToReportDiv = $(this).find('.section-button-group .no-data-to-report-div');
         // Build component placeholder button.
@@ -652,7 +655,12 @@
         // Build no data report button.
         let $noDataButton = $('<button class="button no-data-report-button">No data to report for this section</button>');
         noDataToReportDiv.prepend($noDataButton);
+// debugger;
         $noDataButton.click(function (evt) {
+          evt.preventDefault();
+          section.section.fnt();
+        });
+        $placeholderButton.click(function (evt) {          
           evt.preventDefault();
           section.section.fnt();
         });
@@ -759,4 +767,5 @@
       });
     }
   };
-})(jQuery, drupalSettings);
+})(jQuery, drupalSettings, once);
+

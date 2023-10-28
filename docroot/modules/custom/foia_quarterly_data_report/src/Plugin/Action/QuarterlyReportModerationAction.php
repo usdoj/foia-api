@@ -192,8 +192,9 @@ class QuarterlyReportModerationAction extends ActionBase implements ContainerFac
       $entity->set('moderation_state', $state);
 
       if (method_exists($entity, 'setRevisionUserId')) {
-        $entity->setRevisionCreationTime(REQUEST_TIME);
-        $entity->setRevisionLogMessage('VBO Published quarterly report, time:' . date('d/m/Y - h:i', REQUEST_TIME));
+        $request_time = \Drupal::time()->getRequestTime();
+        $entity->setRevisionCreationTime($request_time);
+        $entity->setRevisionLogMessage('VBO Published quarterly report, time:' . date('d/m/Y - h:i', $request_time));
         $entity->setRevisionUserId(\Drupal::service('current_user')->id());
       }
       if ($entity->save()) {

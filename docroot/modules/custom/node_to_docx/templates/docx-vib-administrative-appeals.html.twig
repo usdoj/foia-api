@@ -1,7 +1,7 @@
 <div class=WordSection21>
 
-<p class=MsoNormal ><b>VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS
--- ALL PROCESSED APPEALS<o:p></o:p></b></p>
+  <p class=MsoNormal ><b>VI.B. DISPOSITION OF ADMINISTRATIVE APPEALS
+      -- ALL PROCESSED APPEALS<o:p></o:p></b></p>
 
 </div>
 
@@ -10,87 +10,89 @@
 
 <div class=WordSection22>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=657>
- <tr >
-  <td width=114 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Number Affirmed on Appeal<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Number Partially Affirmed &amp;
-  Partially Reversed/Remanded on Appeal<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Number Completely Reversed/Remanded on
-  Appeal<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Number of Appeals Closed for Other
-  Reasons<o:p></o:p></p>
-  </td>
-  <td width=87 >
-  <p class=MsoNormal align=center >TOTAL<o:p></o:p></p>
-  </td>
- </tr>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=657>
+    <tr >
+      <td width=114 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Number Affirmed on Appeal<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Number Partially Affirmed &amp;
+          Partially Reversed/Remanded on Appeal<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Number Completely Reversed/Remanded on
+          Appeal<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Number of Appeals Closed for Other
+          Reasons<o:p></o:p></p>
+      </td>
+      <td width=87 >
+        <p class=MsoNormal align=center >TOTAL<o:p></o:p></p>
+      </td>
+    </tr>
 
-{% for key,value in content.field_admin_app_vib if key|first != '#' %}
- <tr >
-  <td nowrap valign=bottom >
-  <p class=MsoNormal >
-  {{ content.field_admin_app_vib[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vib[key]['#paragraph'].field_affirmed_on_app.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vib[key]['#paragraph'].field_part_on_app.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vib[key]['#paragraph'].field_complete_on_app.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vib[key]['#paragraph'].field_closed_oth_app.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vib[key]['#paragraph'].field_total.value }}
-  <o:p></o:p></p>
-  </td>
- </tr>
-{% endfor %}
+    {% for key,value in content.field_admin_app_vib %}
+      {% if key|first != '#' %}
+        <tr >
+          <td nowrap valign=bottom >
+            <p class=MsoNormal >
+              {{ content.field_admin_app_vib[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vib[key]['#paragraph'].field_affirmed_on_app.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vib[key]['#paragraph'].field_part_on_app.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vib[key]['#paragraph'].field_complete_on_app.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vib[key]['#paragraph'].field_closed_oth_app.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vib[key]['#paragraph'].field_total.value }}
+              <o:p></o:p></p>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
 
- <tr >
-  <td width=114 >
-  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vib_affirm_on_app }}<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vib_part_on_app }}<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vib_comp_on_app }}<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vib_closed_oth_app }}<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vib_total }}<o:p></o:p></p>
-  </td>
- </tr>
-</table>
+    <tr >
+      <td width=114 >
+        <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vib_affirm_on_app }}<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vib_part_on_app }}<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vib_comp_on_app }}<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vib_closed_oth_app }}<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vib_total }}<o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -98,13 +100,13 @@
 
 <div class=WordSection23>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=570 nowrap valign=bottom >
-  <p class=MsoNormal align=left ><i>{{ docx.field_footnotes_vib }}</i><o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=570 nowrap valign=bottom >
+        <p class=MsoNormal align=left ><i>{{ docx.field_footnotes_vib }}</i><o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 

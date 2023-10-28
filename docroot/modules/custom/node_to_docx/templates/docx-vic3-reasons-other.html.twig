@@ -1,7 +1,7 @@
 <div class=WordSection30>
 
-<p class=MsoNormal ><b>VI.C.(3).
-REASONS FOR DENIAL ON APPEAL -- &quot;OTHER&quot; REASONS<o:p></o:p></b></p>
+  <p class=MsoNormal ><b>VI.C.(3).
+      REASONS FOR DENIAL ON APPEAL -- &quot;OTHER&quot; REASONS<o:p></o:p></b></p>
 
 </div>
 
@@ -10,70 +10,73 @@ REASONS FOR DENIAL ON APPEAL -- &quot;OTHER&quot; REASONS<o:p></o:p></b></p>
 
 <div class=WordSection31>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=79 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=334 >
-  <p class=MsoNormal align=center >Description of &quot;Other&quot;
-  Reasons for Denial on Appeal from Chart C(2)<o:p></o:p></p>
-  </td>
-  <td width=87 >
-  <p class=MsoNormal align=center >Number of Times &quot;Other&quot;
-  Reason Was Relied Upon<o:p></o:p></p>
-  </td>
-  <td width=70 >
-  <p class=MsoNormal align=center >TOTAL<o:p></o:p></p>
-  </td>
- </tr>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=79 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=334 >
+        <p class=MsoNormal align=center >Description of &quot;Other&quot;
+          Reasons for Denial on Appeal from Chart C(2)<o:p></o:p></p>
+      </td>
+      <td width=87 >
+        <p class=MsoNormal align=center >Number of Times &quot;Other&quot;
+          Reason Was Relied Upon<o:p></o:p></p>
+      </td>
+      <td width=70 >
+        <p class=MsoNormal align=center >TOTAL<o:p></o:p></p>
+      </td>
+    </tr>
 
-{% for key,value in content.field_admin_app_vic3 if key|first != '#' %}
-  {% for subkey,subvalue in content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info if subkey|first != '#' %}
- <tr >
-  {% if not subkey %}
-  <td nowrap rowspan={{ content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info|length }} valign=top >
-  <p class=MsoNormal >
-  {{ content.field_admin_app_vic3[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
-  <o:p></o:p></p>
-  </td>
-  {% endif %}
-  <td valign=bottom >
-  <p class=MsoNormal >
-  {{ content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info[subkey].entity.field_desc_oth_reasons.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info[subkey].entity.field_num_relied_upon.value }}
-  <o:p></o:p></p>
-  </td>
-  {% if not subkey %}
-  <td nowrap rowspan={{ content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info|length }} >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vic3[key]['#paragraph'].field_total.value }}
-  <o:p></o:p></p>
-  </td>
-  {% endif %}
- </tr>
- {% endfor %}
- </tr>
-{% endfor %}
- <tr >
-  <td >
-  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal >&nbsp;<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal >&nbsp;<o:p></o:p></p>
-  </td>
-  <td nowrap >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vic3_total }}<o:p></o:p></p>
-  </td>
- </tr>
-</table>
+    {% for key,value in content.field_admin_app_vic3 %}
+      {% if key|first != '#' %}
+        {% for subkey,subvalue in content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info %}
+          {% if subkey|first != '#'  %}
+            <tr >
+              {% if not subkey %}
+                <td nowrap rowspan={{ content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info|length }} valign=top >
+                  <p class=MsoNormal >
+                    {{ content.field_admin_app_vic3[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+                    <o:p></o:p></p>
+                </td>
+              {% endif %}
+              <td valign=bottom >
+                <p class=MsoNormal >
+                  {{ content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info[subkey].entity.field_desc_oth_reasons.value }}
+                  <o:p></o:p></p>
+              </td>
+              <td nowrap valign=bottom >
+                <p class=MsoNormal align=right >
+                  {{ content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info[subkey].entity.field_num_relied_upon.value }}
+                  <o:p></o:p></p>
+              </td>
+              {% if not subkey %}
+                <td nowrap rowspan={{ content.field_admin_app_vic3[key]['#paragraph'].field_admin_app_vic3_info|length }} >
+                  <p class=MsoNormal align=right >
+                    {{ content.field_admin_app_vic3[key]['#paragraph'].field_total.value }}
+                    <o:p></o:p></p>
+                </td>
+              {% endif %}
+            </tr>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+    <tr >
+      <td >
+        <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal >&nbsp;<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal >&nbsp;<o:p></o:p></p>
+      </td>
+      <td nowrap >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vic3_total }}<o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -81,13 +84,13 @@ REASONS FOR DENIAL ON APPEAL -- &quot;OTHER&quot; REASONS<o:p></o:p></b></p>
 
 <div class=WordSection32>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=570 nowrap valign=bottom >
-  <p class=MsoNormal align=left><i >{{ docx.field_footnotes_vic3 }}</i><o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=570 nowrap valign=bottom >
+        <p class=MsoNormal align=left><i >{{ docx.field_footnotes_vic3 }}</i><o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 

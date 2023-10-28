@@ -45,7 +45,7 @@ class NodeToDocxHandler implements ContainerAwareInterface {
     }
     else {
       \Drupal::messenger()->addWarning(t('Phpdocx library is not included. Please copy phpdocx to "[your_drupal_app]/libraries/" directory or "[your_drupal_app]/!default_module_path/" directory.', [
-        '!default_module_path' => drupal_get_path('module', 'node_to_docx'),
+        '!default_module_path' => \Drupal::service('extension.list.module')->getPath('node_to_docx'),
       ]));
       return new RedirectResponse(Url::fromRoute('entity.node.canonical', ['node' => $node->id()])->toString());
     }

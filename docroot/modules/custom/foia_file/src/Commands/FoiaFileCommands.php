@@ -94,6 +94,7 @@ class FoiaFileCommands extends DrushCommands {
 
       // Determine file entity id based upon file path & name.
       $query = \Drupal::entityQuery('file')
+        ->accessCheck(TRUE)
         ->condition('uri', "private://webform/{$relativeFileName}");
       $fids = $query->execute();
       if ($fids) {
