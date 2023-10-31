@@ -158,6 +158,7 @@ class CFOController extends ControllerBase {
     $meetings_nids = \Drupal::service('renderer')->executeInRenderContext($context_meetings, function () {
       // Query for all CFO meetings.
       $meetings_query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', 'cfo_meeting')
         ->condition('status', 1)
         ->sort('field_meeting_date', 'DESC');

@@ -165,7 +165,7 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
       $nodes = $query->execute();
       foreach ($nodes as $nid) {
         $node = Node::load($nid);
-        $options[$nid] = $node->getTitle();
+        $options[$nid] = $node->field_agency_comp_abbreviation->value;
       }
     }
 
