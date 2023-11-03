@@ -14,7 +14,7 @@ id: hhs_nih_form
 title: 'HHS-NIH Form'
 description: ''
 category: ''
-elements: |-
+elements: |
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -105,43 +105,6 @@ elements: |-
     '#options':
       'no': 'No'
       'yes': 'Yes'
-  select_the_nih_institute:
-    '#type': select
-    '#title': 'Select the NIH institute'
-    '#help_title': 'Selection of the NIH institute'
-    '#help': 'You may find useful information on the NIH FOIA page that could assist you with your request. We encourage you to visit the NIH FOIA webpage for instructions on how to file a request. Alternatively, you can select the NIH institute that is most relevant to your inquiry from the drop-down menu below. This will help NIH process your request faster and more efficiently. If unsure, please select &ldquo;Office of the Director&rdquo;. Thank you for your interest in the NIH.'
-    '#options':
-      OD: 'Office of the Director '
-      NCI: 'National Cancer Institute'
-      NEI: 'National Eye Institute '
-      NHLBI: 'National Heart, Lung, and Blood Institute'
-      NHGRI: 'National Human Genome Research Institute'
-      NIA: 'National Institute on Aging'
-      NIAAA: 'National Institute on Alcohol Abuse and Alcoholism'
-      NIAID: 'National Institute of Allergy and Infectious Diseases'
-      NIAMS: 'National Institute of Arthritis and Musculoskeletal and Skin Diseases'
-      NIBIB: 'National Institute of Biomedical Imaging and Bioengineering'
-      NICHD: 'Eunice Kennedy Shriver National Institute of Child Health and Human Development'
-      NIDCD: 'National Institute on Deafness and Other Communication Disorders'
-      NIDCR: 'National Institute of Dental and Craniofacial Research'
-      NIDDK: 'National Institute of Diabetes and Digestive and Kidney Diseases'
-      NIDA: 'National Institute on Drug Abuse'
-      NIEHS: 'National Institute of Environmental Health Sciences'
-      NIGMS: 'National Institute of General Medical Sciences'
-      NIMH: 'National Institute of Mental Health'
-      NIMHD: 'National Institute on Minority Health and Health Disparities'
-      NINDS: 'National Institute of Neurological Disorders and Stroke'
-      NINR: 'National Institute of Nursing Research'
-      NLM: 'National Library of Medicine'
-      CC: 'NIH Clinical Center'
-      CIT: 'Center for Information Technology'
-      CSR: 'Center for Scientific Review'
-      FIC: 'Fogarty International Center'
-      NCATS: 'National Center for Advancing Translational Sciences'
-      NCCIH: 'National Center for Complementary and Integrative Health'
-    '#empty_option': '- None -'
-    '#empty_value': NONE
-    '#sort_options': true
   expedited_processing_explanation:
     '#type': textarea
     '#maxlength': 10000
