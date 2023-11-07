@@ -1,4 +1,4 @@
-uuid: b2d4c77f-4c51-421e-967d-f0dff8399846
+uuid: d3066118-913b-4d2d-910c-999172c88d73
 langcode: en
 status: open
 dependencies:
@@ -7,23 +7,20 @@ dependencies:
 weight: 0
 open: null
 close: null
-uid: 76
+uid: 1701
 template: false
 archive: false
-id: hhs_nih_form
-title: 'HHS-NIH Form'
+id: dhs_fps
+title: DHS-FPS
 description: ''
 category: ''
 elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
-    '#help': 'Name is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.'
-    '#required': true
   name_last:
     '#type': textfield
     '#title': 'Last name'
-    '#required': true
   company_organization:
     '#type': textfield
     '#title': 'Your organization'
@@ -33,31 +30,24 @@ elements: |-
   phone_number:
     '#type': tel
     '#title': 'Phone number'
-    '#help': 'Phone number is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.'
-    '#required': true
   fax_number:
     '#type': tel
     '#title': 'Fax number'
   address_line1:
     '#type': textfield
     '#title': 'Mailing address 1'
-    '#help': 'Address is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.'
-    '#required': true
   address_line2:
     '#type': textfield
     '#title': 'Mailing address 2'
   address_city:
     '#type': textfield
     '#title': City
-    '#required': true
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
-    '#required': true
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
-    '#required': true
   address_country:
     '#type': select
     '#title': Country
@@ -75,7 +65,7 @@ elements: |-
       other: 'All other requester'
   request_description:
     '#type': textarea
-    '#maxlength': 10000
+    '#maxlength': '10000'
     '#title': 'Your request'
     '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
     '#required': true
@@ -88,7 +78,7 @@ elements: |-
       'yes': 'Yes'
   fee_waiver_explanation:
     '#type': textarea
-    '#maxlength': 10000
+    '#maxlength': '10000'
     '#title': 'Fee waiver justification'
     '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'
   fee_amount_willing:
@@ -97,7 +87,7 @@ elements: |-
     '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'
     '#pattern': '^(?=.)([+\-\$]?([0-9]*)(\.([0-9]+))?)$'
     '#counter_type': word
-    '#counter_maximum': 1
+    '#counter_maximum': '1'
   expedited_processing:
     '#type': select
     '#title': 'Expedited processing'
@@ -105,53 +95,17 @@ elements: |-
     '#options':
       'no': 'No'
       'yes': 'Yes'
-  select_the_nih_institute:
-    '#type': select
-    '#title': 'Select the NIH institute'
-    '#help_title': 'Selection of the NIH institute'
-    '#help': 'You may find useful information on the NIH FOIA page that could assist you with your request. We encourage you to visit the NIH FOIA webpage for instructions on how to file a request. Alternatively, you can select the NIH institute that is most relevant to your inquiry from the drop-down menu below. This will help NIH process your request faster and more efficiently. If unsure, please select &ldquo;Office of the Director&rdquo;. Thank you for your interest in the NIH.'
-    '#options':
-      OD: 'Office of the Director'
-      NCI: 'National Cancer Institute'
-      NEI: 'National Eye Institute'
-      NHLBI: 'National Heart, Lung, and Blood Institute'
-      NHGRI: 'National Human Genome Research Institute'
-      NIA: 'National Institute on Aging'
-      NIAAA: 'National Institute on Alcohol Abuse and Alcoholism'
-      NIAID: 'National Institute of Allergy and Infectious Diseases'
-      NIAMS: 'National Institute of Arthritis and Musculoskeletal and Skin Diseases'
-      NIBIB: 'National Institute of Biomedical Imaging and Bioengineering'
-      NICHD: 'Eunice Kennedy Shriver National Institute of Child Health and Human Development'
-      NIDCD: 'National Institute on Deafness and Other Communication Disorders'
-      NIDCR: 'National Institute of Dental and Craniofacial Research'
-      NIDDK: 'National Institute of Diabetes and Digestive and Kidney Diseases'
-      NIDA: 'National Institute on Drug Abuse'
-      NIEHS: 'National Institute of Environmental Health Sciences'
-      NIGMS: 'National Institute of General Medical Sciences'
-      NIMH: 'National Institute of Mental Health'
-      NIMHD: 'National Institute on Minority Health and Health Disparities'
-      NINDS: 'National Institute of Neurological Disorders and Stroke'
-      NINR: 'National Institute of Nursing Research'
-      NLM: 'National Library of Medicine'
-      CC: 'NIH Clinical Center'
-      CIT: 'Center for Information Technology'
-      CSR: 'Center for Scientific Review'
-      FIC: 'Fogarty International Center'
-      NCATS: 'National Center for Advancing Translational Sciences'
-      NCCIH: 'National Center for Complementary and Integrative Health'
-    '#empty_option': '- None -'
-    '#empty_value': NONE
-    '#sort_options': true
   expedited_processing_explanation:
     '#type': textarea
-    '#maxlength': 10000
+    '#maxlength': '10000'
     '#title': 'Justification for expedited processing'
     '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.'
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
-    '#help': '<p style="margin-top:0pt; margin-bottom:8pt"><span style="font-size:11.0pt"><span style="font-family:Calibri">If you are seeking records about yourself or medical records of another individual, additional documentation is required.&nbsp; See <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">44 C.F.R. &sect; 5.22(f)</a></span></span></p>'
     '#multiple': true
+    '#max_filesize': '20'
+    '#file_extensions': 'gif jpg png txt pdf doc docx odf'
 css: ''
 javascript: ''
 settings:
@@ -193,6 +147,9 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
   share: false
   share_node: false
   share_theme_name: ''
@@ -236,6 +193,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -348,9 +307,9 @@ handlers:
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: _default
+      from_mail: default
       from_options: {  }
-      from_name: _default
+      from_name: default
       reply_to: ''
       return_path: ''
       sender_mail: ''
@@ -364,8 +323,8 @@ handlers:
       attachments: false
       debug: false
       exclude_empty_checkbox: false
+      exclude_attachments: false
       twig: false
       theme_name: ''
       parameters: {  }
-      exclude_attachments: false
 variants: {  }
