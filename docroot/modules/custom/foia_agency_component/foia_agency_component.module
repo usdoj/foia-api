@@ -51,4 +51,14 @@ function foia_agency_component_form_node_agency_component_edit_form_alter(&$form
       $form[$field]['#disabled'] = TRUE;
     }
   }
+
+  $user = \Drupal::service('current_user');
+  $user_roles = $user->getRoles();
+  $needle = ['administrator', 'agency_administrator'];
+  // If the current user roles is not administrator or
+  // agency_administrator disable title input.
+  if (count(array_intersect($needle, $user_roles)) == 0) {
+    $form['title']['#disabled'] = TRUE;
+  }
+
 }
