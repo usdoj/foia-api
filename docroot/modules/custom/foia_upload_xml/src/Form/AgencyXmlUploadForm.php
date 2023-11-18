@@ -166,7 +166,7 @@ class AgencyXmlUploadForm extends FormBase {
 
   /**
    * Process an uploaded report file immediately via the batch api.
-   * 
+   *
    * Used on the /report/upload page.
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state

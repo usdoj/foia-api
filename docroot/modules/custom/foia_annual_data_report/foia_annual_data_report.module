@@ -8,9 +8,9 @@
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Render\Element;
 use Drupal\node\Entity\Node;
 
 /**
@@ -24,9 +24,9 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
 
   // Look for the adr string in the form id.
   if (substr($form_id, 0, strlen($adr_string)) === $adr_string || $qdr_string) {
-    // If user changes the agency selected
+    // If user changes the agency selected.
     $agency_selected = '';
-    if (isset($form_state->getValue('field_agency')[0]) ) {
+    if (isset($form_state->getValue('field_agency')[0])) {
       $agency_selected = $form_state->getValue('field_agency')[0]['target_id'];
     }
 
@@ -36,14 +36,14 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
     }
 
     $form['field_agency']['widget']['#ajax'] = [
-      'callback' => 'agencyCallback',
+      'callback' => 'foia_annual_data_report_agency_callback',
       'event' => 'change',
       'wrapper' => 'agency-field-wrapper',
     ];
     $form['field_agency']['#validated'] = TRUE;
     $form['field_agency_components']['#attributes'] = ['id' => ['agency-field-wrapper']];
     $form['field_agency_components']['#validated'] = TRUE;
-    $form['field_agency_components']['widget']['#options'] = !empty($agency_selected) ? getAgencyComponents($agency_selected) : [];
+    $form['field_agency_components']['widget']['#options'] = !empty($agency_selected) ? foia_annual_data_report_get_agency_components($agency_selected) : [];
 
   }
 
@@ -153,29 +153,35 @@ function foia_annual_data_report_form_alter(&$form, FormStateInterface $form_sta
   }
 }
 
-  function getAgencyComponents($agency = '') {
+/**
+ * Callback to get an agency's components.
+ */
+function foia_annual_data_report_get_agency_components($agency = '') {
 
-    $nodes = [];
-    $options = [];
-    if (!is_null($agency)) {
-      $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
-        ->accessCheck(FALSE)
-        ->condition('type', 'agency_component')
-        ->condition('field_agency', $agency);
-      $nodes = $query->execute();
-      foreach ($nodes as $nid) {
-        $node = Node::load($nid);
-        $options[$nid] = $node->field_agency_comp_abbreviation->value;
-      }
+  $nodes = [];
+  $options = [];
+  if (!is_null($agency)) {
+    $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('type', 'agency_component')
+      ->condition('field_agency', $agency);
+    $nodes = $query->execute();
+    foreach ($nodes as $nid) {
+      $node = Node::load($nid);
+      $options[$nid] = $node->field_agency_comp_abbreviation->value;
     }
-
-    return $options;
-
   }
 
-  function agencyCallback(array $form) {
-    return $form['field_agency_components'];
-  }
+  return $options;
+
+}
+
+/**
+ * Ajax callback refresh form function.
+ */
+function foia_annual_data_report_agency_callback(array $form) {
+  return $form['field_agency_components'];
+}
 
 /**
  * Submit handler for brand new annual reports.
