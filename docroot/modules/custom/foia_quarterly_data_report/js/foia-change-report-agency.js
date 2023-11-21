@@ -2,7 +2,7 @@
  * @file
  */
 
-(function ($, drupalSettings) {
+(function ($, drupalSettings, once) {
   Drupal.behaviors.foia_change_report_agency = {
     attach: function attach() {
       this.addPopulateComponentsButton();
@@ -14,7 +14,7 @@
         existingComponentSelector = '#edit-field-quarterly-component-data-wrapper tbody tr',
         checkedComponentSelector = '#edit-field-agency-components input:checked',
         componentDropdownSelector = '#edit-field-quarterly-component-data-wrapper table tr:last-child .field--name-field-agency-component select';
-      $(fieldWrapperSelector).once('foia-add-populate-button').each(function() {
+      $(once('foia-add-populate-button', fieldWrapperSelector)).each(function() {
         $(this).prepend('<div class="description">Use this button when starting a new report, to quickly add placeholders for all of the components that you have selected in the checkboxes above.</div>');
         var $button = $('<button class="button component-placeholder-button">Add placeholders for component data below</button>');
         $(this).prepend($button);
@@ -63,4 +63,4 @@
       });
     }
   }
-})(jQuery, drupalSettings);
+})(jQuery, drupalSettings, once);

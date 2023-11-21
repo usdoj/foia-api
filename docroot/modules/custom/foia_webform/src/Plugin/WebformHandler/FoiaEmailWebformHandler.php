@@ -142,14 +142,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     ];
     $message['body'] = trim((string) \Drupal::service('renderer')->renderPlain($build));
 
-    if ($this->configuration['html']) {
-      switch ($this->getMailSystemFormatter()) {
-        case 'swiftmailer':
-          // SwiftMailer requires that the body be valid Markup.
-          $message['body'] = Markup::create($message['body']);
-          break;
-      }
-    }
+    $message['body'] = Markup::create($message['body']);
 
     // Log that we are about to send an email.
     $notice = 'Drupal is sending an email now, for webform submission ID: ' . $webformSubmission->id();

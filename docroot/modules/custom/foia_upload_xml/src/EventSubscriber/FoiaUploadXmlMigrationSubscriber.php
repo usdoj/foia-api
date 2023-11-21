@@ -91,6 +91,7 @@ class FoiaUploadXmlMigrationSubscriber implements EventSubscriberInterface {
     $taxonomy_query = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
       ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('vid', 'agency')
       ->condition('field_agency_abbreviation', $agency);
     $tids = $taxonomy_query->execute();
@@ -102,6 +103,7 @@ class FoiaUploadXmlMigrationSubscriber implements EventSubscriberInterface {
     $node_query = \Drupal::entityTypeManager()
       ->getStorage('node')
       ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'annual_foia_report_data')
       ->condition('field_agency', reset($tids))
       ->condition('field_foia_annual_report_yr', $report_year);

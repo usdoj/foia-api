@@ -2,7 +2,7 @@
  * @file
  */
 
-(function ($, drupalSettings) {
+(function ($, drupalSettings, once) {
   Drupal.behaviors.foia_ui_admin = {
     attach: function attach() {
       this.listenForToggleWeight();
@@ -14,13 +14,13 @@
 
       this.toggleDisplayWeightColumn(initialDisplayValue);
 
-      $('button.link.tabledrag-toggle-weight').once('ToggleDisplayWeightColumns').on('click', function (event) {
+      $(once('ToggleDisplayWeightColumns', 'button.link.tabledrag-toggle-weight')).on('click', function (event) {
         that.toggleDisplayWeightColumn(localStorage.getItem('Drupal.tableDrag.showWeight') || false);
       });
     },
 
     toggleDisplayWeightColumn: function (displayWeight) {
-      var $tables = $('table').findOnce('tabledrag');
+      var $tables = $(once.filter('tabledrag', 'table'));
 
       if (displayWeight) {
         $tables.find('> colgroup > col:last-child').css('display', '');
@@ -30,4 +30,4 @@
       }
     }
   }
-})(jQuery, drupalSettings);
+})(jQuery, drupalSettings, once);

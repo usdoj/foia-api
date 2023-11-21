@@ -1,4 +1,4 @@
-@cfo @api
+@cfo @cfocouncil @api
 Feature: Chief FOIA Officers Council
   In order to post info about the Chief FOIA Officers Council
   As an Administrator
@@ -9,10 +9,20 @@ Feature: Chief FOIA Officers Council
       | title             | body             | moderation_state |
       | CFO Council title | CFO Council body | published        |
 
-  Scenario: Committee endpoint works
+  @api @javascript
+  Scenario: Add a CFO Council
+    Given I am logged in as a user with the 'Administrator' role
+    And I am at '/node/add/cfo_council'
+    And for 'Title' I enter 'CFO Council title'
+    And I fill in 'Body' field with 'CFO Council body'
+    When I press the 'Save' button
+    And I wait 3 seconds
+    Then the page title should be "CFO Council title | National FOIA Portal"
+
+  Scenario: Confirm that the CFO Committee endpoint is operational
     Given I request "/api/cfo/council"
     Then the response code is 200
-    And the response body contains JSON:
+    Then the response body contains JSON:
         """
         {
             "title":"CFO Council title",

@@ -6,7 +6,7 @@ use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Logger\RfcLogLevel;
 use Phpdocx\AutoLoader;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -33,7 +33,7 @@ class AutoloaderSubscriber implements EventSubscriberInterface {
   /**
    * Registers the autoloader.
    */
-  public function onRequest(GetResponseEvent $event) {
+  public function onRequest(RequestEvent $event) {
     try {
       $this->registerAutoloader();
     }
@@ -77,7 +77,7 @@ class AutoloaderSubscriber implements EventSubscriberInterface {
    *   The path to AutoLoad.php file.
    */
   public function getAutoloadFilepath() {
-    $module_path = DRUPAL_ROOT . '/' . drupal_get_path('module', 'node_to_docx') . '/phpdocx/Classes/Phpdocx/AutoLoader.php';
+    $module_path = DRUPAL_ROOT . '/' . \Drupal::service('extension.list.module')->getPath('node_to_docx') . '/phpdocx/Classes/Phpdocx/AutoLoader.php';
     $library_path = DRUPAL_ROOT . '/libraries/phpdocx/Classes/Phpdocx/AutoLoader.php';
 
     if (file_exists($library_path)) {

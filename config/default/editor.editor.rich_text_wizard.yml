@@ -1,64 +1,47 @@
-uuid: f11bde99-324e-4c66-a593-b12dfb0c9b02
+uuid: 993197d4-c3b2-400b-aaf7-c0548cef2aac
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.rich_text_wizard
   module:
-    - ckeditor
-_core:
-  default_config_hash: 0bVELtfx9sXhjZ6s6W-dJo8SW-IR9jiEIEylzm-2Cro
+    - ckeditor5
 format: rich_text_wizard
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-            - Strike
-            - Superscript
-            - Subscript
-            - '-'
-            - RemoveFormat
-        -
-          name: Linking
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
-        -
-          name: Media
-          items:
-            - Blockquote
-            - Table
-            - HorizontalRule
-            - media_browser
-        -
-          name: 'Block Formatting'
-          items:
-            - Styles
-            - Format
-        -
-          name: Tools
-          items:
-            - ShowBlocks
-            - Source
+    items:
+      - heading
+      - bold
+      - italic
+      - strikethrough
+      - subscript
+      - superscript
+      - horizontalLine
+      - removeFormat
+      - link
+      - bulletedList
+      - numberedList
+      - blockQuote
+      - insertTable
+      - style
+      - sourceEditing
   plugins:
-    stylescombo:
-      styles: "a|Default link style\r\na.square|Square link style"
-image_upload:
-  status: true
-  scheme: public
-  directory: inline-images
-  max_size: ''
-  max_dimensions:
-    width: null
-    height: null
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_list:
+      reversed: true
+      startIndex: true
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
+    ckeditor5_style:
+      styles:
+        -
+          label: 'Square link'
+          element: '<a class="square">'
+image_upload: {  }

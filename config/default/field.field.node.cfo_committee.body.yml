@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
+    - filter.format.rich_text
     - node.type.cfo_committee
   module:
     - foia_autocalc
@@ -26,4 +27,6 @@ default_value_callback: ''
 settings:
   display_summary: true
   required_summary: false
+  allowed_formats:
+    - rich_text
 field_type: text_with_summary

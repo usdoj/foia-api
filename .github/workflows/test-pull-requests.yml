@@ -17,11 +17,11 @@ jobs:
       - name: Set up the site
         run: |
           ddev composer install
-          ddev exec blt setup || true
+          ddev exec blt setup --no-interaction || true
           ddev drush cim
           ddev drush cr
       - name: Validate code
-        run: ddev exec blt validate
+        run: ddev exec blt validate --no-interaction
       - name: Run tests
         run: ddev exec vendor/bin/behat --config=tests/behat/behat.yml --stop-on-failure --strict
       - name: Upload screenshots of failure

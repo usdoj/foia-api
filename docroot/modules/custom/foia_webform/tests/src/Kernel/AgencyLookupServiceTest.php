@@ -116,6 +116,7 @@ class AgencyLookupServiceTest extends KernelTestBase {
     $title = $return->label();
 
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('field_request_submission_form', $webformId);
     $nids = $query->execute();
 
@@ -144,6 +145,7 @@ class AgencyLookupServiceTest extends KernelTestBase {
     ])->save();
 
     $query = \Drupal::entityQuery('taxonomy_term')
+      ->accessCheck(TRUE)
       ->condition('name', 'A Test Taxonomy Term');
     $tids = $query->execute();
 
@@ -163,6 +165,7 @@ class AgencyLookupServiceTest extends KernelTestBase {
     ])->save();
 
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('field_agency', 1);
     $nids = $query->execute();
     $node = Node::load($nids[2]);

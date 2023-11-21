@@ -112,6 +112,7 @@ class FoiaUploadXmlReportParser {
 
     $term_query = $this->entityTypeManager->getStorage('taxonomy_term')
       ->getQuery()
+      ->accessCheck(TRUE)
       ->condition('vid', 'agency')
       ->condition('field_agency_abbreviation', $agency_abbreviation);
 

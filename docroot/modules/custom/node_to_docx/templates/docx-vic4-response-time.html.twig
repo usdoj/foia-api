@@ -1,7 +1,7 @@
 <div class=WordSection33>
 
-<p class=MsoNormal ><b>VI.C.(4).
-RESPONSE TIME FOR ADMINISTRATIVE APPEALS<o:p></o:p></b></p>
+  <p class=MsoNormal ><b>VI.C.(4).
+      RESPONSE TIME FOR ADMINISTRATIVE APPEALS<o:p></o:p></b></p>
 
 </div>
 
@@ -10,73 +10,75 @@ RESPONSE TIME FOR ADMINISTRATIVE APPEALS<o:p></o:p></b></p>
 
 <div class=WordSection34>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=114 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Lowest Number of Days<o:p></o:p></p>
-  </td>
-  <td width=114 >
-  <p class=MsoNormal align=center >Highest Number of Days<o:p></o:p></p>
-  </td>
- </tr>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=114 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Lowest Number of Days<o:p></o:p></p>
+      </td>
+      <td width=114 >
+        <p class=MsoNormal align=center >Highest Number of Days<o:p></o:p></p>
+      </td>
+    </tr>
 
-{% for key,value in content.field_admin_app_vic4 if key|first != '#' %}
- <tr >
-  <td nowrap valign=bottom >
-  <p class=MsoNormal >
-  {{ content.field_admin_app_vic4[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vic4[key]['#paragraph'].field_med_num_days.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vic4[key]['#paragraph'].field_avg_num_days.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vic4[key]['#paragraph'].field_low_num_days.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_admin_app_vic4[key]['#paragraph'].field_high_num_days.value }}
-  <o:p></o:p></p>
-  </td>
- </tr>
-{% endfor %}
+    {% for key,value in content.field_admin_app_vic4 %}
+      {% if key|first != '#' %}
+        <tr >
+          <td nowrap valign=bottom >
+            <p class=MsoNormal >
+              {{ content.field_admin_app_vic4[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vic4[key]['#paragraph'].field_med_num_days.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vic4[key]['#paragraph'].field_avg_num_days.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vic4[key]['#paragraph'].field_low_num_days.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_admin_app_vic4[key]['#paragraph'].field_high_num_days.value }}
+              <o:p></o:p></p>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
 
- <tr >
-  <td width=114 >
-  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vic4_med_num_days }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vic4_avg_num_days }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vic4_low_num_days }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_vic4_high_num_days }}<o:p></o:p></p>
-  </td>
- </tr>
-</table>
+    <tr >
+      <td width=114 >
+        <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vic4_med_num_days }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vic4_avg_num_days }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vic4_low_num_days }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_vic4_high_num_days }}<o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -84,13 +86,13 @@ RESPONSE TIME FOR ADMINISTRATIVE APPEALS<o:p></o:p></b></p>
 
 <div class=WordSection35>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
- <tr >
-   <td width=570 nowrap valign=bottom >
-   <p class=MsoNormal align=left><i >{{ docx.field_footnotes_vic4 }}</i><o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=570 nowrap valign=bottom >
+        <p class=MsoNormal align=left><i >{{ docx.field_footnotes_vic4 }}</i><o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 

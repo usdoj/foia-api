@@ -182,6 +182,7 @@ function foia_quarterly_data_report_form_quarterly_data_report_validate(array &$
   // the user to update the existing report or change the values.
   if ($agency_id && $report_year && $report_quarter) {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'quarterly_foia_report_data')
       ->condition('field_agency', $agency_id)
       ->condition('field_quarterly_year', $report_year)

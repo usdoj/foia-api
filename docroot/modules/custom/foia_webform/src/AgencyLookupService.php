@@ -35,6 +35,7 @@ class AgencyLookupService implements AgencyLookupServiceInterface {
    */
   public function getComponentFromWebform($webformId) {
     $query = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->accessCheck(TRUE)
       ->condition('type', 'agency_component')
       ->condition('field_request_submission_form', $webformId)
       ->condition('status', NodeInterface::PUBLISHED);
