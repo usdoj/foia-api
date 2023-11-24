@@ -161,19 +161,24 @@ function foia_annual_data_report_get_agency_components($agency = '') {
   $nodes = [];
   $options = [];
   if (!is_null($agency)) {
+
+    $current_timestamp = \Drupal::time()->getCurrentTime();
+    $todays_date = \Drupal::service('date.formatter')->format($current_timestamp, 'custom', 'Y-m-d');
     $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
       ->accessCheck(FALSE)
       ->condition('type', 'agency_component')
-      ->condition('field_agency', $agency);
+      ->condition('field_agency', $agency)
+      ->condition('field_rep_start', $todays_date, '<=');
     $nodes = $query->execute();
     foreach ($nodes as $nid) {
       $node = Node::load($nid);
-      $options[$nid] = $node->field_agency_comp_abbreviation->value;
+      $expiry_date = $node->field_rep_exp->value;
+      if (empty($expiry_date) || $expiry_date >= $todays_date) {
+        $options[$nid] = $node->field_agency_comp_abbreviation->value;
+      }
     }
   }
-
   return $options;
-
 }
 
 /**
