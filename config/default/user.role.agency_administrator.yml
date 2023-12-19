@@ -14,6 +14,7 @@ dependencies:
     - content_moderation
     - entity_clone
     - field_permissions
+    - file
     - file_entity
     - filter
     - foia_personnel
@@ -64,7 +65,6 @@ permissions:
   - 'create field_agency_component_inactive'
   - 'create field_interop_exception'
   - 'create field_interop_planned_method'
-  - 'create field_interop_status'
   - 'create field_is_centralized'
   - 'create field_rep_exp'
   - 'create field_rep_start'
@@ -82,6 +82,7 @@ permissions:
   - 'delete foia personnel entities'
   - 'delete own agency_component content'
   - 'delete own annual_foia_report_data content'
+  - 'delete own files'
   - 'delete own quarterly_foia_report_data content'
   - 'delete own webform'
   - 'delete terms in agency'
@@ -102,7 +103,6 @@ permissions:
   - 'edit field_expedited_median_days'
   - 'edit field_interop_exception'
   - 'edit field_interop_planned_method'
-  - 'edit field_interop_status'
   - 'edit field_is_centralized'
   - 'edit field_rep_exp'
   - 'edit field_rep_start'
@@ -125,7 +125,6 @@ permissions:
   - 'edit own field_agency_component_inactive'
   - 'edit own field_interop_exception'
   - 'edit own field_interop_planned_method'
-  - 'edit own field_interop_status'
   - 'edit own field_is_centralized'
   - 'edit own field_rep_exp'
   - 'edit own field_rep_start'
@@ -201,7 +200,6 @@ permissions:
   - 'view any unpublished annual_foia_report_data content'
   - 'view any unpublished quarterly_foia_report_data content'
   - 'view any webform submission'
-  - 'view field_agency_component_inactive'
   - 'view field_complex_average_days'
   - 'view field_complex_highest_days'
   - 'view field_complex_lowest_days'
@@ -212,7 +210,6 @@ permissions:
   - 'view field_expedited_median_days'
   - 'view field_interop_exception'
   - 'view field_interop_planned_method'
-  - 'view field_interop_status'
   - 'view field_rep_exp'
   - 'view field_rep_start'
   - 'view field_request_data_year'
@@ -226,10 +223,8 @@ permissions:
   - 'view field_submission_email'
   - 'view files'
   - 'view foia request entities'
-  - 'view own field_agency_component_inactive'
   - 'view own field_interop_exception'
   - 'view own field_interop_planned_method'
-  - 'view own field_interop_status'
   - 'view own field_rep_exp'
   - 'view own field_rep_start'
   - 'view own field_submission_api'

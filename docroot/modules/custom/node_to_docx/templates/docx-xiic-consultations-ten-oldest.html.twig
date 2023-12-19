@@ -1,7 +1,7 @@
 <div class=WordSection84>
 
-<p class=MsoNormal ><b>XII.C. CONSULTATIONS ON FOIA REQUESTS --
-TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY<o:p></o:p></b></p>
+  <p class=MsoNormal ><b>XII.C. CONSULTATIONS ON FOIA REQUESTS --
+      TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY<o:p></o:p></b></p>
 
 </div>
 
@@ -10,216 +10,218 @@ TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY<
 
 <div class=WordSection85>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=45 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >&nbsp;<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >10th Oldest Consultation<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >9th<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >8th<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >7th<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >6th<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >5th<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >4th<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >3rd<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >2nd<o:p></o:p></p>
-  </td>
-  <td width=45 >
-  <p class=MsoNormal align=center >Oldest Consultation<o:p></o:p></p>
-  </td>
- </tr>
-{% for key,value in content.field_foia_xiic if key|first != '#' %}
- <tr >
-  <td nowrap rowspan=2 valign=bottom >
-  <p class=MsoNormal >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
-  <o:p></o:p></p>
-  </td>
-  <td >
-  <p class=MsoNormal align=center >Date<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_10.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_9.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_8.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_7.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_6.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_5.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_4.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_3.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_2.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_xiic[key]['#paragraph'].field_date_1.value }}
-  <o:p></o:p></p>
-  </td>
- </tr>
- <tr >
-  <td >
-  <p class=MsoNormal align=center >Number of Days<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_10.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_9.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_8.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_7.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_6.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_5.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_4.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_3.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_2.value }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_1.value }}<o:p></o:p></p>
-  </td>
- </tr>
- {% endfor %}
- <tr >
-  <td rowspan=2 >
-  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td >
-  <p class=MsoNormal align=center >Date<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_10 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_9 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_8 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_7 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_6 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_5 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_4 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_3 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_2 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_1 }}<o:p></o:p></p>
-  </td>
- </tr>
- <tr >
-  <td >
-  <p class=MsoNormal align=center >Number of Days<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_10 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_9 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_8 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_7 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_6 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_5 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_4 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_3 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_2 }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_1 }}<o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=45 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >&nbsp;<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >10th Oldest Consultation<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >9th<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >8th<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >7th<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >6th<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >5th<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >4th<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >3rd<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >2nd<o:p></o:p></p>
+      </td>
+      <td width=45 >
+        <p class=MsoNormal align=center >Oldest Consultation<o:p></o:p></p>
+      </td>
+    </tr>
+    {% for key,value in content.field_foia_xiic %}
+      {% if key|first != '#' %}
+        <tr >
+          <td nowrap rowspan=2 valign=bottom >
+            <p class=MsoNormal >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+              <o:p></o:p></p>
+          </td>
+          <td >
+            <p class=MsoNormal align=center >Date<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_10.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_9.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_8.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_7.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_6.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_5.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_4.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_3.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_2.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_foia_xiic[key]['#paragraph'].field_date_1.value }}
+              <o:p></o:p></p>
+          </td>
+        </tr>
+        <tr >
+          <td >
+            <p class=MsoNormal align=center >Number of Days<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_10.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_9.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_8.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_7.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_6.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_5.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_4.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_3.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_2.value }}<o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >{{ content.field_foia_xiic[key]['#paragraph'].field_num_days_1.value }}<o:p></o:p></p>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+    <tr >
+      <td rowspan=2 >
+        <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td >
+        <p class=MsoNormal align=center >Date<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_10 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_9 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_8 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_7 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_6 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_5 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_4 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_3 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_2 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_date_1 }}<o:p></o:p></p>
+      </td>
+    </tr>
+    <tr >
+      <td >
+        <p class=MsoNormal align=center >Number of Days<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_10 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_9 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_8 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_7 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_6 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_5 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_4 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_3 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_2 }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_xiic_num_days_1 }}<o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -227,13 +229,13 @@ TEN OLDEST CONSULTATIONS RECEIVED FROM OTHER AGENCIES AND PENDING AT THE AGENCY<
 
 <div class=WordSection86>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
- <tr >
-   <td width=570 nowrap valign=bottom >
-   <p class=MsoNormal align=left><i >{{ docx.field_footnotes_xiic }}<o:p></o:p></i></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=570 nowrap valign=bottom >
+        <p class=MsoNormal align=left><i >{{ docx.field_footnotes_xiic }}<o:p></o:p></i></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 

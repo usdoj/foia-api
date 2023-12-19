@@ -12,6 +12,7 @@ dependencies:
   module:
     - content_moderation
     - field_permissions
+    - file
     - file_entity
     - filter
     - foia_personnel
@@ -34,21 +35,25 @@ permissions:
   - 'administer migrations'
   - 'create annual_foia_report_data content'
   - 'create field_interop_status'
+  - 'create field_request_submission_form'
   - 'create field_submission_api'
   - 'create field_submission_api_secret'
   - 'create field_submission_email'
   - 'create quarterly_foia_report_data content'
   - 'delete foia personnel entities'
+  - 'delete own files'
   - 'download own document files'
   - 'edit any annual_foia_report_data content'
   - 'edit any quarterly_foia_report_data content'
   - 'edit field_interop_status'
+  - 'edit field_request_submission_form'
   - 'edit field_submission_api'
   - 'edit field_submission_api_secret'
   - 'edit field_submission_email'
   - 'edit foia personnel entities'
   - 'edit own annual_foia_report_data content'
   - 'edit own field_interop_status'
+  - 'edit own field_request_submission_form'
   - 'edit own field_submission_api'
   - 'edit own field_submission_api_secret'
   - 'edit own field_submission_email'
@@ -107,7 +112,6 @@ permissions:
   - 'view field_expedited_highest_days'
   - 'view field_expedited_lowest_days'
   - 'view field_expedited_median_days'
-  - 'view field_interop_status'
   - 'view field_request_data_year'
   - 'view field_simple_average_days'
   - 'view field_simple_highest_days'
@@ -118,6 +122,7 @@ permissions:
   - 'view field_submission_email'
   - 'view files'
   - 'view own field_interop_status'
+  - 'view own field_request_submission_form'
   - 'view own field_submission_api'
   - 'view own field_submission_api_secret'
   - 'view own field_submission_email'

@@ -52,6 +52,8 @@ Feature: Quarterly FOIA Report Data Feature
     And for 'Number of requests received' I enter '123'
     And for 'Number of requests processed' I enter '23'
     And for 'Number of requests backlogged' I enter '3'
+    And I press the "Save" button
+    And I click "Edit"
     And I click 'Agency Overall'
     And I wait 3 seconds
     Then the "Agency Overall - Number of requests received" element should have the value "123"

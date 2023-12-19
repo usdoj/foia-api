@@ -2,8 +2,12 @@ uuid: eaf483c3-6779-41be-aa50-ae293cc69c80
 langcode: en
 status: true
 dependencies:
+  config:
+    - filter.format.webform_default
   module:
+    - file
     - file_entity
+    - filter
     - foia_personnel
     - form_mode_manager
     - media
@@ -20,8 +24,9 @@ permissions:
   - 'access any webform configuration'
   - 'access content'
   - 'access shortcuts'
-  - 'access site-wide contact form'
+  - 'delete own files'
   - 'use node.default form mode'
+  - 'use text format webform_default'
   - 'view files'
   - 'view media'
   - 'view published foia personnel entities'

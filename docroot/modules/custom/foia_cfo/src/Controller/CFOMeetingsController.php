@@ -56,6 +56,7 @@ class CFOMeetingsController extends ControllerBase {
     $context = new RenderContext();
     $meeting_nids = \Drupal::service('renderer')->executeInRenderContext($context, function () {
       $meeting_query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', 'cfo_meeting')
         ->condition('status', 1)
         ->sort('created');

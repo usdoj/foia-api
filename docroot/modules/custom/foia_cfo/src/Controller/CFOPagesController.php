@@ -55,6 +55,7 @@ class CFOPagesController extends ControllerBase {
     $context = new RenderContext();
     $page_nids = \Drupal::service('renderer')->executeInRenderContext($context, function () {
       $page_query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', 'cfo_page')
         ->condition('status', 1)
         ->sort('created');

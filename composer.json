@@ -7,93 +7,115 @@
     "require": {
         "php": ">=8.1",
         "ext-dom": "*",
-        "acquia/blt": "^13.4.0",
-        "acquia/blt-simplesamlphp": "^1.0",
-        "acquia/drupal-environment-detector": "1.4.1",
-        "acquia/drupal-spec-tool": "^4.1.1",
+        "acquia/blt": "^13.7",
+        "acquia/blt-behat": "dev-master",
+        "acquia/blt-phpcs": "^1.0",
+        "acquia/drupal-environment-detector": "1.6.0",
         "acquia/memcache-settings": "*",
-        "composer/installers": "^1.12.0",
-        "cweagans/composer-patches": "^1.7.2",
+        "composer/installers": "^2.2.0",
+        "cweagans/composer-patches": "^1.7.3",
         "dompdf/dompdf": "^2.0.3",
-        "drupal/acquia_connector": "^4.0.2",
-        "drupal/acquia_purge": "^1.2.0",
-        "drupal/address": "^1.10.0",
+        "drupal/acquia_connector": "^4.0.4",
+        "drupal/acquia_purge": "^1.3.0",
+        "drupal/address": "^1.12.0",
+        "drupal/admin_toolbar": "^3.4",
         "drupal/auto_entitylabel": "^3.0@beta",
         "drupal/autologout": "^1.4",
-        "drupal/autosave_form": "^1.4.0",
-        "drupal/business_rules": "^2.0@beta",
-        "drupal/cog": "^1.15",
-        "drupal/config_split": "^1.7.0",
-        "drupal/core": "^9.5.8",
-        "drupal/core-composer-scaffold": "9.5.11",
-        "drupal/core-project-message": "9.5.11",
-        "drupal/core-recommended": "9.5.11",
-        "drupal/devel": "^5.0.2",
+        "drupal/autosave_form": "^1.4",
+        "drupal/bartik": "^1.0",
+        "drupal/business_rules": "dev-3286389-drupal-10-compatibility",
+        "drupal/ckeditor": "^1.0",
+        "drupal/consumers": "^1.17",
+        "drupal/core-composer-scaffold": "~10.1.1",
+        "drupal/core-project-message": "~10.1.1",
+        "drupal/core-recommended": "~10.1.1",
+        "drupal/core-vendor-hardening": "~10.1.1",
+        "drupal/core_context": "*",
+        "drupal/ctools": "^3.14",
+        "drupal/ctools_block": "^4.0",
+        "drupal/dbug": "dev-3286928-dbug-drupal-10",
+        "drupal/diff": "^1.1",
+        "drupal/entity_block": "^1.1",
+        "drupal/entity_browser": "^2.9",
         "drupal/entity_clone": "^2.0@beta",
-        "drupal/entity_embed": "^1.0",
+        "drupal/entity_embed": "^1.4.0",
         "drupal/entity_reference_revisions": "^1.10.0",
-        "drupal/entity_reference_views_select": "^1.4.0",
-        "drupal/features": "^3.12.0",
-        "drupal/feeds": "^3.0@beta",
-        "drupal/feeds_ex": "^1.0@alpha",
-        "drupal/field_group": "^3.3.0",
-        "drupal/field_permissions": "^1.1.0",
-        "drupal/file_entity": "^2.0@beta",
-        "drupal/form_mode_manager": "^2.0@RC",
-        "drupal/inline_entity_form": "^1.0.0-rc14",
-        "drupal/insert": "^2.0@beta",
-        "drupal/jquery_ui": "^1.4",
-        "drupal/jquery_ui_accordion": "^1.1",
-        "drupal/jsonapi_extras": "^3.20.0",
-        "drupal/lightning_api": "^4.8",
-        "drupal/lightning_core": "^5.11.0",
-        "drupal/lightning_layout": "^2.12.0",
-        "drupal/lightning_media": "4.6.0",
-        "drupal/lightning_workflow": "^3.17",
-        "drupal/maillog": "^1.0@beta",
+        "drupal/entity_reference_views_select": "^1.5.0",
+        "drupal/externalauth": "^2.0",
+        "drupal/feeds": "3.x-dev@dev",
+        "drupal/feeds_ex": "^1.0@beta",
+        "drupal/field_group": "^3.4",
+        "drupal/field_permissions": "^1.2",
+        "drupal/file_entity": "^2.0@RC",
+        "drupal/form_mode_manager": "dev-3297262-automated-drupal-10",
+        "drupal/gin": "^3.0@rc",
+        "drupal/gin_toolbar": "^1.0@rc",
+        "drupal/inline_entity_form": "^2.0@RC",
+        "drupal/insert": "^3.0@beta",
+        "drupal/jquery_ui_accordion": "^2.0",
+        "drupal/jsonapi_extras": "^3.23",
+        "drupal/layout_builder_restrictions": "^2.18",
+        "drupal/layout_builder_styles": "^2.0",
+        "drupal/layout_library": "^1.0@beta",
+        "drupal/lightning_api": "^5.0.0",
+        "drupal/lightning_core": "^6.0",
+        "drupal/lightning_layout": "^3.0.1",
+        "drupal/lightning_media": "^5.0.0",
+        "drupal/lightning_workflow": "^4.0.0",
+        "drupal/maillog": "^1.1",
         "drupal/mailsystem": "^4.4.0",
         "drupal/masquerade": "^2.0.0-rc1",
-        "drupal/metatag": "^1.22.0",
-        "drupal/migrate_plus": "^6.0.0",
-        "drupal/migrate_tools": "^6.0",
-        "drupal/mysql56": "^1.3",
+        "drupal/media_entity_instagram": "^3.0.8",
+        "drupal/media_entity_twitter": "^2.9",
+        "drupal/metatag": "^2.0.0",
+        "drupal/migrate_plus": "^6.0.1",
+        "drupal/migrate_tools": "^6.0.1",
+        "drupal/mysql56": "^1.6.0",
         "drupal/node_edit_protection": "^1.1.0",
         "drupal/node_revision_delete": "^1.0@beta",
-        "drupal/openapi": "^2.0",
+        "drupal/openapi": "^2.1.0",
+        "drupal/panelizer": "dev-3352704-drupal-10-compatibility",
+        "drupal/panels": "^4.7",
         "drupal/paragraphs": "^1.15.0",
         "drupal/password_policy": "^4.0.0",
         "drupal/precision_modifier": "^1.0@beta",
         "drupal/profile_switcher": "^1.0-alpha5",
         "drupal/qa_accounts": "^1.0.0-beta2",
         "drupal/queue_ui": "^3.1",
-        "drupal/restui": "^1.20.0",
+        "drupal/quickedit": "^1.0",
+        "drupal/rdf": "^2.0",
+        "drupal/restui": "^1.21.0",
         "drupal/roleassign": "^2.0.0",
         "drupal/rules": "3.x-dev@dev",
+        "drupal/samlauth": "^3.9",
+        "drupal/schemata": "^1.0@beta",
+        "drupal/search_api": "^1.29",
         "drupal/seckit": "^2.0",
-        "drupal/select2": "^1.14",
+        "drupal/select2": "^1.15",
+        "drupal/seven": "^1.0",
         "drupal/shield": "^1.7.0",
-        "drupal/simplesamlphp_auth": "3.x-dev@dev",
-        "drupal/swiftmailer": "^2.2",
+        "drupal/simplesamlphp_auth": "^4.0@RC",
+        "drupal/symfony_mailer": "^1.3",
         "drupal/time_field": "^2.1.0",
-        "drupal/upgrade_status": "^3.19.0",
-        "drupal/video_embed_field": "^2.4",
-        "drupal/view_unpublished": "^1.0",
-        "drupal/views_bulk_operations": "^4.2.0",
+        "drupal/typed_data": "^1.0@beta",
+        "drupal/upgrade_status": "^4.0",
+        "drupal/video_embed_field": "^2.5.0",
+        "drupal/view_unpublished": "^1.1.0",
+        "drupal/views_bulk_operations": "^4.2.4",
         "drupal/views_data_export": "^1.3.0",
-        "drupal/views_infinite_scroll": "^1.6 || ^1.9",
-        "drupal/webform": "^6.1.3",
+        "drupal/views_infinite_scroll": "^2.0.1",
+        "drupal/webform": "^6.2.0-beta5",
         "drupal/xmlsitemap": "^1.4.0",
-        "drush/drush": "^10.6.2",
+        "drush/drush": "^12.1",
+        "egulias/email-validator": "^4.0.0",
+        "guzzlehttp/guzzle": "^7.7",
+        "mglaman/composer-drupal-lenient": "^1.0",
         "npm-asset/jquery-validation": "^1.19.5",
         "npm-asset/select2": "^4.0",
-        "simplesamlphp/simplesamlphp": "^1.19.6"
+        "symfony/routing": "^6.3",
+        "twig/twig": "^3.6"
     },
-    "require-dev": {
-        "acquia/blt-behat": "^1.3",
-        "acquia/blt-phpcs": "^1.0",
-        "geerlingguy/drupal-vm": "~5.0",
-        "imbo/behat-api-extension": "^2.3"
-    },
+
     "extra": {
         "drupal-scaffold": {
             "locations": {
@@ -141,11 +163,7 @@
             ]
         },
         "patches": {
-            "drupal/business_rules": {
-                "Fix for multivalue child dependent fields": "https://www.drupal.org/files/issues/2021-04-27/business_rules-multi_value_child-3014031-41-D8.patch"
-            },
             "drupal/core": {
-                "FOIA-96: Style read-only inputs as disabled": "./patches/FOIA-96-readonly-inputs.patch",
                 "FOIA-32: Dynamically provide action plugins for every moderation state change": "https://www.drupal.org/files/issues/2019-11-20/2797583_provide_moderation_states_as_actions_128.patch",
                 "FOIA-32: Exclude Agency/Component from validation for bulk publishing": "./patches/FOIA-32-validator.patch",
                 "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2020-02-07/2869592-remove-update-warning-34.patch",
@@ -154,14 +172,26 @@
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/2022-10-04/password_policy_field_last_password_reset_unknown_error_2771129-134.patch"
             },
-            "drupal/entity_reference_views_select": {
-                "Entity Reference Views Checkboxes throw error in EntityReference.php class https://www.drupal.org/project/entity_reference_views_select/issues/3179436": "https://www.drupal.org/files/issues/2021-11-17/entity_reference_views_select-set_default_option_for_checkboxes-3179436-4.patch"
-            },
             "drupal/paragraphs": {
                 "Inline Paragraphs widget performance update": "./patches/paragraphs-improve-performance-2935134.patch"
             },
             "drupal/simplesamlphp_auth": {
                 "Masquerade and Logout Fix": "./patches/FOIA-78964-simplesamlphp-logout.patch"
+            },
+            "drupal/typed_data": {
+                "WS-414: Typed Data testing error: https://www.drupal.org/project/typed_data/issues/3316872": "https://www.drupal.org/files/issues/2022-10-21/3316872_depreated_function_preg_match_all.patch"
+            },
+            "drupal/ckeditor5": {
+                "Drupal 10: Install Error: https://www.drupal.org/project/ckeditor5_font/issues/3318041": "https://www.drupal.org/files/issues/2022-12-16/2-fix-empty-form-value-validation.patch"
+            },
+            "drupal/views": {
+                "Drupal 10: TEMP VIEWS: https://www.drupal.org/project/drupal/issues/3150368": "https://www.drupal.org/files/issues/2020-06-09/EntityViewsData_MapDefinition_Null-3150368-1.patch"
+            },
+            "drupal/maillog": {
+                "Fix Maillog": "https://www.drupal.org/files/issues/2023-01-12/maillog_3259616-15.patch"
+            },
+            "drupal/samlauth": {
+                "Add option to show SAML link on user login page": "https://git.drupalcode.org/project/samlauth/-/merge_requests/13.patch"
             }
         },
         "installer-types": [
@@ -180,16 +210,41 @@
                     "[subprofile support] 2914389 - Allow profiles to exclude dependencies of their parent": "https://www.drupal.org/files/issues/2018-07-09/2914389-8-do-not-test.patch"
                 }
             }
+        },
+        "drupal-lenient": {
+            "allowed-list": ["drupal/panelizer", "drupal/business_rules", "drupal/rules", "egulias/email-validator", "drupal/simplesamlphp_auth", "drupal/form_mode_manager", "drupal/ctools"]
         }
     },
     "repositories": {
         "drupal": {
             "type": "composer",
-            "url": "https://packages.drupal.org/8"
+            "url": "https://packages.drupal.org/8",
+            "exclude": ["drupal/form_mode_manager", "drupal/panelizer", "drupal/business_rules", "drupal/dbug"]
         },
         "asset-packagist": {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        },
+        "npm-assets": {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
+        "drupal/form_mode_manager": {
+            "type": "vcs",
+            "url": "https://git.drupalcode.org/issue/form_mode_manager-3297262.git",
+            "canonical": false
+        },
+        "drupal/panelizer": {
+            "type": "vcs",
+            "url": "https://git.drupalcode.org/issue/panelizer-3352704.git"
+        },
+        "drupal/business_rules": {
+            "type": "vcs",
+            "url": "https://git.drupalcode.org/issue/business_rules-3286389.git"
+        },
+        "drupal/dbug": {
+            "type": "vcs",
+            "url" : "https://git.drupalcode.org/issue/dbug-3286928.git"
         }
     },
     "config": {
@@ -201,9 +256,12 @@
             "cweagans/composer-patches": true,
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
-            "acquia/blt": true,
             "acquia/blt-phpcs": true,
-            "drupal/core-project-message": true
+            "drupal/core-vendor-hardening": true,
+            "drupal/core-project-message": true,
+            "acquia/blt": true,
+            "phpstan/extension-installer": true,
+            "mglaman/composer-drupal-lenient": true
         },
         "platform": {
             "php": "8.1"
@@ -229,5 +287,18 @@
             "@composer clearcache --ansi",
             "@composer install --ansi"
         ]
+    },
+    "require-dev": {
+        "behat/behat": "*",
+        "behat/gherkin": "^4.9",
+        "behat/mink": "^1.10",
+        "behat/mink-goutte-driver": "^2.0",
+        "dmore/behat-chrome-extension": "^1.4",
+        "drevops/behat-screenshot": "^1.2",
+        "drupal/devel": "^5.0",
+        "drupal/devel_kint_extras": "^1.1",
+        "drupal/drupal-extension": "^5.0@RC",
+        "imbo/behat-api-extension": "^5.0",
+        "jarnaiz/behat-junit-formatter": "^1.3"
     }
 }

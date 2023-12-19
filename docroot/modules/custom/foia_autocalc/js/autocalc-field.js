@@ -2,7 +2,7 @@
  * @file
  */
 
-(function ($, drupalSettings, Drupal) {
+(function ($, drupalSettings, Drupal, once) {
   Drupal.behaviors.autocalcFields = {
     attach: function attach() {
       var autocalcSettings = drupalSettings.foiaAutocalc.autocalcSettings;
@@ -13,9 +13,9 @@
 
         fieldSettings.forEach(function (fieldSetting) {
           var fieldSelector = convertToFieldSelector(fieldSetting);
-          $(fieldSelector + ' input').each(function (index) {
+          $(fieldSelector + 'input').each(function (index) {
             // Bind event listeners to calculate field when input fields are changed.
-            $(this).once(fieldSelector + '_' + fieldIndex + '_' + index).on('change', function () {
+            $(once(fieldSelector + '_' + fieldIndex + '_' + index, this)).on('change', function () {
               calculateAllFieldsWithName(fieldName, fieldSettings, false);
             });
           });
@@ -135,4 +135,4 @@
     return !isNaN(parseFloat(value)) && isFinite(value);
   }
 
-})(jQuery, drupalSettings, Drupal);
+})(jQuery, drupalSettings, Drupal, once);
