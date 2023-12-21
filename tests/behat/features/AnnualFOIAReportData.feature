@@ -26,7 +26,7 @@ Feature: Annual FOIA Report Data Feature
       | Success messages                                  |
       | FTA - 2019 - Annual FOIA Report has been created. |
 
-  @api
+  @api @add_annual_foia
   Scenario: Agency Administrator can add Annual FOIA Reports
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add"

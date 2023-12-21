@@ -270,12 +270,22 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception('Page title element was not found!');
 
     } else {
-      $title = $titleElement->getText();
+
 
       if ($expectedTitle !== $title) {
         throw new \Exception("Incorrect title! Expected:$expectedTitle | Actual: $title ");
       }
     }
+  }
+
+  /**
+   * Workaround for checkboxes not working with mink js driver
+   *
+   * @When I fill in :value on the field :field with javascript
+   */
+  public function findAllInputFields($value, $field){
+    $javascript = "window.onload = function () {var e = document.getElementById('$field').value='$value';}";
+    $this->getSession()->executeScript($javascript);
   }
 
   /**
