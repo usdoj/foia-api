@@ -254,7 +254,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $driver = $this->getSession()->getDriver();
     $class = get_class($driver);
 
-
     // If javascript is enabled then we need to get the page title using JS
     switch ($class) {
       case "Behat\Mink\Driver\Selenium2Driver":
@@ -286,6 +285,58 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function findAllInputFields($value, $field){
     $javascript = "window.onload = function () {var e = document.getElementById('$field').value='$value';}";
     $this->getSession()->executeScript($javascript);
+  }
+
+  /**
+   * Workaround for autocomplete not working with mink js driver
+   *
+   * @When I fill in :value on the field :field with autocomplete
+   */
+  public function findAutocompleteField($value, $field){
+    // This works in the browser and the step passes, however test still fails
+    $javascript = "jQuery(document).ready(function () { var e = document.getElementById('$field').value='$value'; });";
+    $this->getSession()->executeScript($javascript);
+  }
+
+  /**
+   * @Given /^(?:|I )key press the "([^"]*)" key in the "([^"]*)" field$/
+   *
+   * @param mixed $char could be either char ('b') or char-code (98)
+   * @throws \Exception
+   */
+  public function pressKey($char, $field) {
+    static $keys = array(
+      'tab' => 9,
+      'enter' => 13,
+      'return' => 13,
+      'esc' => 27,
+      'escape' => 27,
+    );
+
+    if (is_string($char)) {
+      if (strlen($char) < 1) {
+        throw new \Exception('FeatureContext->keyPress($char, $field) was invoked but the $char parameter was empty.');
+      } else if (strlen($char) > 1) {
+        $char = $keys[strtolower($char)];
+      }
+    }
+
+    $element = $this->getSession()->getPage()->findField($field);
+
+    if (!$element) {
+      // Perhaps it's an autocomplete field
+      $javascript = "jQuery(document).ready(function () { $('body').trigger($.Event('keydown', { keyCode: $char })) });";
+      // throw new \Exception("Field '$field' not found");
+      $this->getSession()->executeScript($javascript);
+    } else {
+      $driver = $this->getSession()->getDriver();
+      // $driver->keyPress($element->getXpath(), $char);
+      // This alternative to Driver->keyPress() handles cases that depend on
+      // javascript which binds to key down/up events directly, such as Drupal's
+      // autocomplete.js.
+      $driver->keyDown($element->getXpath(), $char);
+      $driver->keyUp($element->getXpath(), $char);
+    }
   }
 
   /**

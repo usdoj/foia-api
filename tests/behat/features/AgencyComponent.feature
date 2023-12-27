@@ -6,8 +6,8 @@ Feature: Agency Component Feature
 
   Background:
     Given agency terms:
-      | name                    | field_agency_abbreviation | description |format    | language |
-      | A Test Agency  | FTA    | description |plain_text| en       |
+      | name    | field_agency_abbreviation | description |format    | language |
+      | Department of Justice  | DOJ    | description |plain_text| en       |
   @api @agency_create
   Scenario: Agency Component name in title tag for Agency Component node.
     Given I am logged in as a user with the 'Administrator' role
@@ -34,8 +34,12 @@ Feature: Agency Component Feature
     And for 'Username' I enter 'testuser2'
     And for 'Password' I enter 'abcde123!@#'
     And for 'Confirm password' I enter 'abcde123!@#'
-    When I fill in 'Agency Manager' on the field "edit-roles-agency-manager" with javascript
-    When I fill in 'A Test Agency' on the field "edit-field-agency-0-target-id" with javascript
+    # Still having an issue with Account being created with an agency
+    And I fill in 'Agency Manager' on the field "edit-roles-agency-manager" with javascript
+    And I fill in 'American Battle Monuments Commission (1166)' on the field "edit-field-agency-0-target-id" with autocomplete
+    And I key press the "Tab" key in the "Agency" field
+    And I key press the "Esc" key in the "Agency" field
+    And I wait 3 seconds
     And I press the 'Create new account' button
     And I wait 3 seconds
     Then I should see the following success messages:
