@@ -14,6 +14,7 @@ dependencies:
     - field.field.foia_request.foia_request.field_submission_time
     - field.field.foia_request.foia_request.field_tracking_number
     - field.field.foia_request.foia_request.field_webform_submission_id
+    - field.field.foia_request.foia_request.field_webform_submission_website
   module:
     - foia_request
 _core:
@@ -105,6 +106,13 @@ content:
     region: content
     settings:
       placeholder: ''
+    third_party_settings: {  }
+  field_webform_submission_website:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   request_status:
     type: options_select

@@ -1,0 +1,22 @@
+uuid: 87e9b2c7-77fc-4f35-9590-92b844584b72
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.foia_request.field_webform_submission_website
+  module:
+    - foia_request
+id: foia_request.foia_request.field_webform_submission_website
+field_name: field_webform_submission_website
+entity_type: foia_request
+bundle: foia_request
+label: 'Submitted from Website'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean
