@@ -35,7 +35,7 @@ if (EnvironmentDetector::isAhEnv()) {
     }
   }
 
-  switch ($ah_dev) {
+  switch ($ah_env) {
     case 'dev':
       $config['samlauth.authentication']['sp_entity_id'] = 'doj_foia_api_dev';
       $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.test.max.gov/idp/profile/SAML2/Redirect/SSO';
@@ -61,4 +61,9 @@ if (EnvironmentDetector::isAhEnv()) {
       break;
 
   }
+}
+else {
+  // If this is not Acquia, do not try to use saml.
+  $config['simplesamlphp_auth.settings']['activate'] = FALSE;
+  $config['samlauth.authentication'] = [];
 }
