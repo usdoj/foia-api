@@ -62,8 +62,3 @@ if (EnvironmentDetector::isAhEnv()) {
 
   }
 }
-else {
-  // If this is not Acquia, do not try to use saml.
-  $config['simplesamlphp_auth.settings']['activate'] = FALSE;
-  $config['samlauth.authentication'] = [];
-}
