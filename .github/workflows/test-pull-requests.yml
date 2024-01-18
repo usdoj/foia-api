@@ -20,6 +20,7 @@ jobs:
           ddev exec blt setup --no-interaction || true
           ddev drush cim
           ddev drush cr
+          ddev drush samlauth
       - name: Validate code
         run: ddev exec blt validate --no-interaction
       - name: Run tests
