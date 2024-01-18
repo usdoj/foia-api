@@ -38,26 +38,26 @@ if (EnvironmentDetector::isAhEnv()) {
   switch ($ah_env) {
     case 'dev':
       $config['samlauth.authentication']['sp_entity_id'] = 'doj_foia_api_dev';
-      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.test.max.gov/idp/profile/SAML2/Redirect/SSO';
-      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.test.max.gov/idp/shibboleth';
+      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.stage.max.gov/idp/profile/SAML2/Redirect/SSO';
+      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.stage.max.gov/idp/shibboleth';
       break;
 
     case 'test':
       $config['samlauth.authentication']['sp_entity_id'] = 'doj_foia_api_test';
-      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.test.max.gov/idp/profile/SAML2/Redirect/SSO';
-      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.test.max.gov/idp/shibboleth';
+      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.stage.max.gov/idp/profile/SAML2/Redirect/SSO';
+      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.stage.max.gov/idp/shibboleth';
       break;
 
     case 'uat':
       $config['samlauth.authentication']['sp_entity_id'] = 'doj_foia_api_uat';
-      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.test.max.gov/idp/profile/SAML2/Redirect/SSO';
-      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.test.max.gov/idp/shibboleth';
+      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.stage.max.gov/idp/profile/SAML2/Redirect/SSO';
+      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.stage.max.gov/idp/shibboleth';
       break;
 
     case 'prod':
       $config['samlauth.authentication']['sp_entity_id'] = 'doj_foia_api_prod';
-      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.test.max.gov/idp/profile/SAML2/Redirect/SSO';
-      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.test.max.gov/idp/shibboleth';
+      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.stage.max.gov/idp/profile/SAML2/Redirect/SSO';
+      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.stage.max.gov/idp/shibboleth';
       break;
 
   }
