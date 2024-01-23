@@ -69,7 +69,7 @@ class FoiaSubmissionQueueHandler extends EmailWebformHandler {
   protected function createFoiaRequest(WebformSubmissionInterface $webformSubmission, NodeInterface $agencyComponent) {
     $foiaRequest = FoiaRequest::create([
       'field_webform_submission_id' => $webformSubmission->id(),
-      'field_webform_submission_website' => isset($_SERVER["HTTP_X_API_USER_ID"]) && $_SERVER["HTTP_X_API_USER_ID"] === \Drupal::config('api.prod')->get('user_id') ? TRUE : FALSE,
+      'field_webform_submission_website' => isset($_SERVER["HTTP_X_API_USER_ID"]) && $_SERVER["HTTP_X_API_USER_ID"] === \Drupal::config('foia.secrets')->get('api_user_id') ? TRUE : FALSE,
       'field_agency_component' => [
         'target_id' => $agencyComponent->id(),
       ],
