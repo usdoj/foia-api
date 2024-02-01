@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_agency_components
+    - node.type.agency_component
     - node.type.annual_foia_report_data
   module:
     - foia_autocalc
@@ -23,12 +24,13 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: business_rules_views
+  handler: 'default:node'
   handler_settings:
-    business_rules_view:
-      view_name: agency_component_by_agency_2
-      display_name: entity_reference_1
-      parent_field: field_agency
-      reference_parent_by_uuid: false
-      arguments: {  }
+    target_bundles:
+      agency_component: agency_component
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference
