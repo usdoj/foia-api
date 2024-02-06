@@ -70,3 +70,9 @@ Feature: Quarterly FOIA Report Data Feature
     Then the "Agency Overall - Number of requests received" element should have the value "0"
     Then the "Agency Overall - Number of requests processed" element should have the value "0"
     Then the "Agency Overall - Number of requests backlogged" element should have the value "0"
+
+  @api @quarterly_fiscal
+  Scenario: Quarterly Report Fiscal Years 200
+    Given I request "api/quarterly_foia_report/fiscal_years"
+    Then the response code is 200
+    Then the "Content-Type" response header exists

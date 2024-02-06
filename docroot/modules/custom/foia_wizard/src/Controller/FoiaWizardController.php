@@ -3,6 +3,7 @@
 namespace Drupal\foia_wizard\Controller;
 
 use Drupal\Core\Cache\CacheableJsonResponse;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -102,8 +103,13 @@ class FoiaWizardController extends ControllerBase {
       ? ['Access-Control-Allow-Origin' => $origin]
       : [];
 
-    // Return JSON response.
-    return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
+    $cache_tags[] = 'foia_wizard:config';
+    $cacheMeta = (new CacheableMetadata())
+      ->setCacheTags($cache_tags)
+      ->setCacheMaxAge(self::SECONDS_IN_A_DAY);
+    $json_response = new CacheableJsonResponse($data);
+    $json_response->addCacheableDependency($cacheMeta);
+    return $json_response;
   }
 
 }
