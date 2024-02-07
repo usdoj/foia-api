@@ -816,6 +816,11 @@ EOS;
       // Add component data for each statute.
       foreach ($components as $component_info) {
         $agency_component = $component_info->field_agency_component->referencedEntities()[0];
+        if (empty($agency_component)) {
+          // This protects against exceptions caused by the existence of empty
+          // paragraph items.
+          continue;
+        }
         $item = $this->addElementNs('foia:ReliedUponStatuteOrganizationAssociation', $statuteSection);
         $this->addElementNs('foia:ComponentDataReference', $item)
           ->setAttribute('s:ref', $local_id);
