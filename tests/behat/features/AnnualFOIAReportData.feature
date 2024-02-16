@@ -507,3 +507,10 @@ Feature: Annual FOIA Report Data Feature
     And I select "ABCDEF" from "Agency/Component" in the 'XII.E.(2). COMPARISON OF NUMBERS OF ADMINISTRATIVE APPEALS FROM PREVIOUS AND CURRENT ANNUAL REPORT -- BACKLOGGED APPEALS' section
     And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Previous Annual Report' I enter '0'
     And for 'Number of Backlogged Appeals as of End of the Fiscal Year from Current Annual Report' I enter '0'
+
+  @api @annual_fiscal
+  Scenario: Annual Report Fiscal Years 200
+    Given I request "api/annual_foia_report/fiscal_years"
+    Then the response code is 200
+    Then the "Content-Type" response header exists
+
