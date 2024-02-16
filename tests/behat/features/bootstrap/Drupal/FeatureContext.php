@@ -28,7 +28,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * context constructor through behat.yml.
    */
   public function __construct() {
-
   }
 
   /**
@@ -123,8 +122,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then save the current URL
    */
-  public function saveTheCurrentUrl()
-  {
+  public function saveTheCurrentUrl() {
     $this->url = $this->getSession()->getCurrentUrl();
   }
 
@@ -133,8 +131,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I output the page
    */
-  public function iOutputThePage()
-  {
+  public function iOutputThePage() {
     print PHP_EOL . '******';
     print $this->getSession()->getPage()->getHtml() . PHP_EOL . '******' . PHP_EOL;
   }
@@ -142,8 +139,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * @Then I output the content of the page
    */
-  public function iOutputTheContentOfThePage()
-  {
+  public function iOutputTheContentOfThePage() {
     print PHP_EOL . '******';
     print $this->getSession()->getPage()->findById('main')->getHtml() . PHP_EOL . '******' . PHP_EOL;
   }
@@ -153,16 +149,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I go to saved URL
    */
-  public function iGoToSavedUrl()
-  {
+  public function iGoToSavedUrl() {
     $this->getSession()->visit($this->url);
   }
 
   /**
    * @Given I create a webform :arg1
    */
-  public function iCreateAWebform($arg1)
-  {
+  public function iCreateAWebform($arg1) {
     if (!empty($arg1)) {
       Webform::create(['id' => $arg1])->save();
     }
@@ -201,8 +195,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * @Given I edit the current entity
    */
-  public function iEditTheCurrentEntity()
-  {
+  public function iEditTheCurrentEntity() {
     $currentPath = $this->getSession()->getCurrentUrl();
     $newPath = "{$currentPath}/edit";
     $this->getSession()->visit($newPath);
@@ -247,8 +240,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * @Given I wait :num seconds
    */
-  public function iWaitSeconds($num)
-  {
+  public function iWaitSeconds($num) {
     sleep($num);
   }
 
@@ -261,7 +253,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     $driver = $this->getSession()->getDriver();
     $class = get_class($driver);
-
 
     // If javascript is enabled then we need to get the page title using JS
     switch ($class) {
@@ -276,11 +267,75 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     if ($title === null) {
       throw new \Exception('Page title element was not found!');
-    }
-    else {
+
+    } else {
+
+
       if ($expectedTitle !== $title) {
         throw new \Exception("Incorrect title! Expected:$expectedTitle | Actual: $title ");
       }
+    }
+  }
+
+  /**
+   * Workaround for checkboxes not working with mink js driver
+   *
+   * @When I fill in :value on the field :field with javascript
+   */
+  public function findAllInputFields($value, $field){
+    $javascript = "window.onload = function () {var e = document.getElementById('$field').value='$value';}";
+    $this->getSession()->executeScript($javascript);
+  }
+
+  /**
+   * Workaround for autocomplete not working with mink js driver
+   *
+   * @When I fill in :value on the field :field with autocomplete
+   */
+  public function findAutocompleteField($value, $field){
+    // This works in the browser and the step passes, however test still fails
+    $javascript = "jQuery(document).ready(function () { var e = document.getElementById('$field').value='$value'; });";
+    $this->getSession()->executeScript($javascript);
+  }
+
+  /**
+   * @Given /^(?:|I )key press the "([^"]*)" key in the "([^"]*)" field$/
+   *
+   * @param mixed $char could be either char ('b') or char-code (98)
+   * @throws \Exception
+   */
+  public function pressKey($char, $field) {
+    static $keys = array(
+      'tab' => 9,
+      'enter' => 13,
+      'return' => 13,
+      'esc' => 27,
+      'escape' => 27,
+    );
+
+    if (is_string($char)) {
+      if (strlen($char) < 1) {
+        throw new \Exception('FeatureContext->keyPress($char, $field) was invoked but the $char parameter was empty.');
+      } else if (strlen($char) > 1) {
+        $char = $keys[strtolower($char)];
+      }
+    }
+
+    $element = $this->getSession()->getPage()->findField($field);
+
+    if (!$element) {
+      // Perhaps it's an autocomplete field
+      $javascript = "jQuery(document).ready(function () { $('body').trigger($.Event('keydown', { keyCode: $char })) });";
+      // throw new \Exception("Field '$field' not found");
+      $this->getSession()->executeScript($javascript);
+    } else {
+      $driver = $this->getSession()->getDriver();
+      // $driver->keyPress($element->getXpath(), $char);
+      // This alternative to Driver->keyPress() handles cases that depend on
+      // javascript which binds to key down/up events directly, such as Drupal's
+      // autocomplete.js.
+      $driver->keyDown($element->getXpath(), $char);
+      $driver->keyUp($element->getXpath(), $char);
     }
   }
 
@@ -338,7 +393,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $field = $this->getSession()->getPage()->find('named', ['field', $elementlabel]);
     if ($status == 'enabled') {
       if ($field->getAttribute('disabled') == 'disabled') {
-        throw new \Exception('field '. $elementlabel. ' is disabled ');
+        throw new \Exception('field ' . $elementlabel . ' is disabled ');
       }
     }
     if ($status == 'disabled') {
@@ -366,8 +421,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if ($match) {
       $match->click();
       $this->getSession()->wait(1000);
-    }
-    else {
+    } else {
       throw new \Exception('Node edit section "' . $section_name . '" was not found.');
     }
   }
@@ -432,7 +486,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception('Node edit field "' . $field_id . '" was not found.');
     } else {
       $value = $field->getAttribute('value');
-      echo "field value: ". $value;
+      echo "field value: " . $value;
     }
   }
 

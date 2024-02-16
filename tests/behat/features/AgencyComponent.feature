@@ -6,10 +6,9 @@ Feature: Agency Component Feature
 
   Background:
     Given agency terms:
-      | name                    | field_agency_abbreviation | description |format    | language |
-      | A Test Agency  | FTA    | description |plain_text| en       |
-
-  @api
+      | name    | field_agency_abbreviation | description |format    | language |
+      | Department of Justice  | DOJ    | description |plain_text| en       |
+  @api @agency_create
   Scenario: Agency Component name in title tag for Agency Component node.
     Given I am logged in as a user with the 'Administrator' role
     And I am at '/node/add/agency_component'
@@ -18,9 +17,56 @@ Feature: Agency Component Feature
     And for 'Abbreviation' I enter 'FTA'
     And for 'Street address' I enter 'testing'
     And for 'City' I enter 'Rockville'
-    And for 'Zip code' I enter "20857'
+    And for 'Zip code' I enter '20857'
     And I select "Maryland" from "State"
     And I select "Email" from "Portal Submission Format"
     And for 'Submission Email' I enter 'test@test.com'
     When I press the 'Save' button
+    Then I should see the following success messages:
+      | Success messages                                  |
+      | Agency Component My agency name has been created. |
+
+  @api @javascript @agency_manager_edit
+  Scenario: Agency Manager can not edit agency component title
+    When I am logged in as a user with the 'Agency Administrator' role
+    And I am at 'admin/people/create'
+    And for 'Email address' I enter 'testuser2@arthur.com'
+    And for 'Username' I enter 'testuser2'
+    And for 'Password' I enter 'abcde123!@#'
+    And for 'Confirm password' I enter 'abcde123!@#'
+    # Still having an issue with Account being created with an agency
+    And I fill in 'Agency Manager' on the field "edit-roles-agency-manager" with javascript
+    And I fill in 'American Battle Monuments Commission (1166)' on the field "edit-field-agency-0-target-id" with autocomplete
+    And I key press the "Tab" key in the "Agency" field
+    And I key press the "Esc" key in the "Agency" field
+    And I wait 3 seconds
+    And I press the 'Create new account' button
+    And I wait 3 seconds
+    Then I should see the following success messages:
+      | Success messages                                                  |
+      | Created a new user account for testuser2. No email has been sent. |
+    And I wait 1 seconds
+    And I am at 'user/logout'
+    And I wait 3 seconds
+    And I am at 'user/login'
+    And for 'Username' I enter 'testuser2'
+    And for 'Password' I enter 'abcde123!@#'
+    And I press the "Log in" button
+    And I wait 5 seconds
+    And I should see "Agency"
+    And I view the user 'testuser2'
+    And I wait 5 seconds
+#    And I click the view tab
+#    And I wait 3 seconds
+    And I should see "Agency"
+    And I click 'Testing Agency'
+    And I click the edit tab
+    And I wait 5 seconds
+    Then the element "Agency Component Name" is "disabled"
+    And I should not see "Agency"
+    And I should not see "Is Centralized"
+    And I should not see "Abbreviation"
+    And I should not see "Submission Web"
+    And I should not see "REQUEST SUBMISSION FORM SETTINGS"
+    And I should not see "PROCESSING DATA"
     Then the page title should be "My agency name | A Test Agency | National FOIA Portal"
