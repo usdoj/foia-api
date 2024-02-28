@@ -1,4 +1,4 @@
-uuid: ba07d41a-3652-403e-bcb4-1bb3cd5cb904
+uuid: ad0466a6-4a38-4334-9509-21d1b779baf1
 langcode: en
 status: open
 dependencies:
@@ -7,40 +7,26 @@ dependencies:
 weight: 0
 open: null
 close: null
-uid: 71
+uid: 4751
 template: false
 archive: false
-id: nasa_pafo_form
-title: 'NASA-PAFO Form'
+id: dhs_std
+title: DHS-STD
 description: ''
 category: ''
 elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
-    '#help': 'Your full name is required. <a href="https://www.ecfr.gov/cgi-bin/text-idx?c=ecfr&amp;sid=97fb51c6e62b667333b7f1645d203f11&amp;rgn=div5&amp;view=text&amp;node=14:5.0.1.1.8&amp;idno=14#se14.5.1206_1300">14 C.F.R. &sect; 1206.300.</a>'
-    '#required': true
   name_last:
     '#type': textfield
     '#title': 'Last name'
-    '#required': true
   company_organization:
     '#type': textfield
     '#title': 'Your organization'
   email:
     '#type': email
     '#title': 'Email address'
-    '#required_error': 'Please provide either an email or a mailing address.'
-    '#states':
-      required:
-        - ':input[name="address_line1"]':
-            empty: true
-        - or
-        - ':input[name="address_city"]':
-            empty: true
-        - or
-        - ':input[name="address_state_province"]':
-            empty: true
   phone_number:
     '#type': tel
     '#title': 'Phone number'
@@ -50,63 +36,36 @@ elements: |-
   address_line1:
     '#type': textfield
     '#title': 'Mailing address 1'
-    '#help': 'In order for us to communicate with you about your request, you must provide either an email address or mailing address. <a href="https://www.ecfr.gov/current/title-14/chapter-V/part-1206">14 C.F.R.&nbsp;&sect; 1206.300.</a>'
-    '#required_error': 'Please provide either an email or a mailing address.'
-    '#states':
-      required:
-        ':input[name="email"]':
-          empty: true
   address_line2:
     '#type': textfield
     '#title': 'Mailing address 2'
   address_city:
     '#type': textfield
     '#title': City
-    '#required_error': 'Please provide either an email or a mailing address.'
-    '#states':
-      required:
-        ':input[name="email"]':
-          empty: true
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
-    '#required_error': 'Please provide either an email or a mailing address.'
-    '#states':
-      required:
-        ':input[name="email"]':
-          empty: true
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
-    '#required_error': 'Please provide either an email or a mailing address.'
-    '#states':
-      required:
-        ':input[name="email"]':
-          empty: true
   address_country:
     '#type': select
     '#title': Country
-    '#options': country_names
-    '#required_error': 'Please provide either an email or a mailing address.'
-    '#states':
-      required:
-        ':input[name="email"]':
-          empty: true
     '#default_value': 'United States'
+    '#options': country_names
   request_category:
     '#type': select
     '#title': 'What type of requester are you?'
-    '#help': 'Please select the category that best fits you. This information helps FOIA personnel determine what fees, if any, may be applicable. You are required to select a fee category and address fees, including whether you are requesting a fee waiver, at the time of your request. <a href="https://www.ecfr.gov/cgi-bin/text-idx?c=ecfr&amp;sid=97fb51c6e62b667333b7f1645d203f11&amp;rgn=div5&amp;view=text&amp;node=14:5.0.1.1.8&amp;idno=14#se14.5.1206_1300">14 C.F.R. &sect; 1206.300.</a>'
+    '#help': 'Please select the category that best fits you. This information helps FOIA personnel determine what fees, if any, may be applicable.'
     '#options':
       media: 'Representative of the news media'
       educational: 'Educational Institution'
       scientific: 'Non-commercial scientific institution'
       commercial: 'Commercial-use requester'
       other: 'All other requester'
-    '#required': true
   request_description:
     '#type': textarea
-    '#maxlength': 10000
+    '#maxlength': '10000'
     '#title': 'Your request'
     '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
     '#required': true
@@ -119,17 +78,16 @@ elements: |-
       'yes': 'Yes'
   fee_waiver_explanation:
     '#type': textarea
-    '#maxlength': 10000
+    '#maxlength': '10000'
     '#title': 'Fee waiver justification'
     '#help': 'Leave this blank if you are not requesting a fee waiver. When making a request for a fee waiver you must explain how your request meets the fee waiver standard described above.'
   fee_amount_willing:
     '#type': textfield
     '#title': 'The amount of money you’re willing to pay in fees, if any'
-    '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances. You are required to indicate what fees, if any, you are willing to pay at the time of your request. <a href="https://www.ecfr.gov/cgi-bin/text-idx?c=ecfr&amp;sid=97fb51c6e62b667333b7f1645d203f11&amp;rgn=div5&amp;view=text&amp;node=14:5.0.1.1.8&amp;idno=14#se14.5.1206_1300">14 C.F.R&nbsp;&sect; 1206.300.</a>'
-    '#required': true
+    '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'
     '#pattern': '^(?=.)([+\-\$]?([0-9]*)(\.([0-9]+))?)$'
     '#counter_type': word
-    '#counter_maximum': 1
+    '#counter_maximum': '1'
   expedited_processing:
     '#type': select
     '#title': 'Expedited processing'
@@ -139,14 +97,15 @@ elements: |-
       'yes': 'Yes'
   expedited_processing_explanation:
     '#type': textarea
-    '#maxlength': 10000
+    '#maxlength': '10000'
     '#title': 'Justification for expedited processing'
-    '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above. This agency has additional standards for expedited processing detailed at <a href="https://www.ecfr.gov/cgi-bin/text-idx?c=ecfr&amp;sid=97fb51c6e62b667333b7f1645d203f11&amp;rgn=div5&amp;view=text&amp;node=14:5.0.1.1.8&amp;idno=14#se14.5.1206_1400">14 C.F.R.&nbsp;&sect; 1206.400(c).</a>'
+    '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.'
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
-    '#help': 'If you&#39;re seeking records about yourself, additional documentation is required to verify your identity. <a href="https://www.ecfr.gov/cgi-bin/text-idx?c=ecfr&amp;sid=97fb51c6e62b667333b7f1645d203f11&amp;rgn=div5&amp;view=text&amp;node=14:5.0.1.1.8&amp;idno=14#se14.5.1206_1300">14 C.F.R.&nbsp;&sect; 1206.300(f).</a>'
     '#multiple': true
+    '#max_filesize': '20'
+    '#file_extensions': 'gif jpg png txt pdf doc docx odf'
 css: ''
 javascript: ''
 settings:
@@ -188,6 +147,9 @@ settings:
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
   share: false
   share_node: false
   share_theme_name: ''
@@ -231,6 +193,8 @@ settings:
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -343,9 +307,9 @@ handlers:
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: _default
+      from_mail: default
       from_options: {  }
-      from_name: _default
+      from_name: default
       reply_to: ''
       return_path: ''
       sender_mail: ''
@@ -359,8 +323,8 @@ handlers:
       attachments: false
       debug: false
       exclude_empty_checkbox: false
+      exclude_attachments: false
       twig: false
       theme_name: ''
       parameters: {  }
-      exclude_attachments: false
 variants: {  }

@@ -128,6 +128,13 @@ class WebformSubmissionResource extends ResourceBase {
       $this->logSubmission($statusCode, $message);
       return new ModifiedResourceResponse(['errors' => $message], $statusCode);
     }
+    $websiteRequest = isset($_SERVER["HTTP_X_API_USER_ID"]) && $_SERVER["HTTP_X_API_USER_ID"] === \Drupal::config('foia.secrets')->get('api_user_id');
+    if (!$websiteRequest) {
+      $statusCode = 400;
+      $message = t("To submit FOIA requests using FOIA.gov, you must use the request forms on the site.");
+      $this->logSubmission($statusCode, "api_submission: $message");
+      return new ModifiedResourceResponse(['errors' => $message], $statusCode);
+    }
 
     $webformId = $data['id'] ?? '';
     if (!$webformId) {
