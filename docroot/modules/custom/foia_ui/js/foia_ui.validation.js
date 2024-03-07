@@ -1539,4 +1539,4 @@
     }
   };
 
-})(jQuery, drupalSettings, Drupal);
+})(jQuery, drupalSettings, Drupal, once);
