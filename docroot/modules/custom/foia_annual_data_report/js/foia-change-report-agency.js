@@ -619,9 +619,9 @@
           .dialog(dialogOptions);
 
       }
-      once('foia-clear-data-button', $('#edit-actions')).forEach(function (el) {
+      $('#edit-actions').once('foia-clear-data-button').each(function () {
         var $button = $('<button class="button clear-data-button">Clear all data</button>');
-        $(el).append($button);
+        $(this).append($button);
         $button.click(function (evt) {
           evt.preventDefault();
           if (confirm('Are you sure you want to clear all data from this report?')) {
@@ -660,7 +660,7 @@
           evt.preventDefault();
           section.section.fnt();
         });
-        $placeholderButton.click(function (evt) {
+        $placeholderButton.click(function (evt) {          
           evt.preventDefault();
           section.section.fnt();
         });
