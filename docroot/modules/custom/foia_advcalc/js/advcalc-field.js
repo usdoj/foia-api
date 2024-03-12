@@ -5,7 +5,7 @@
  * See foia_autocalc module for simple sum auto-calculations.
  */
 
-(function ($, drupalSettings, Drupal, once) {
+(function ($, drupalSettings, Drupal) {
 
   'use strict';
 
@@ -286,7 +286,8 @@
 
           // Initialize V.A. Number of Requests Pending as of End of Fiscal Year.
           // FOIA REQUESTS V. A.  field Number of Requests Pending as of End of Fiscal Year
-          $(once('initAdvCalcVIAppPendEndYr', "input[name*='field_foia_requests_va']"))
+          $("input[name*='field_foia_requests_va']")
+            .once('initAdvCalcVIAppPendEndYr')
             .filter("input[name*='field_req_pend_end_yr']")
             .each(function () {
               if (!util.fieldIsInitialized(this)) {
@@ -316,7 +317,8 @@
 
           // Initialize on load:
           // VI.A. Number of Appeals Pending as of End of Fiscal Year.
-          $(once('initAdvCalcVIAppPendEndYr', "input[name*='field_admin_app_via']"))
+          $("input[name*='field_admin_app_via']")
+            .once('initAdvCalcVIAppPendEndYr')
             .filter("input[name*='field_app_pend_end_yr']")
             .each(function () {
               if (!util.fieldIsInitialized(this)) {
@@ -387,7 +389,7 @@
           $("input[name*='field_foia_requests_va']")
             .filter("input[name*='field_req_pend_start_yr'], input[name*='field_req_received_yr'], input[name*='field_req_processed_yr']")
             .each(function () {
-              $(once('advCalcVAReqPendEndYr', this)).change(function () {
+              $(this).once('advCalcVAReqPendEndYr').change(function () {
                 calculate.calculatePendEndYr(this, 'field_req_pend_start_yr', 'field_req_received_yr', 'field_req_processed_yr', 'field_req_pend_end_yr');
               });
             });
@@ -400,8 +402,8 @@
           } else {
             via_calcs = $("input[data-drupal-selector='edit-field-overall-req-pend-start-yr-0-value'], input[data-drupal-selector='edit-field-overall-req-received-yr-0-value'], input[data-drupal-selector='edit-field-overall-req-processed-yr-0-value']");
           }
-          
-            $(once('advCalcVAOverallReqPendEndYr', via_calcs))
+          via_calcs
+            .once('advCalcVAOverallReqPendEndYr')
             .change(function () {
               calculate.calculateOverallPendEndYr(
                 '#edit-field-overall-req-pend-start-yr-0-value',
@@ -411,8 +413,9 @@
               );
             });
 
-          $(once('advCalcVAOverallReqPendEndYr', via_calcs))
-         .change(function () {
+          via_calcs
+            .once('advCalcVAOverallReqPendEndYr')
+            .change(function () {
               calculate.calculateOverallPendEndYr(
                 '#edit-field-overall-req-pend-start-yr-0-value',
                 '#edit-field-overall-req-received-yr-0-value',
@@ -426,7 +429,7 @@
           $("input[name*='field_admin_app_via']")
             .filter("input[name*='field_app_pend_start_yr'], input[name*='field_app_received_yr'], input[name*='field_app_processed_yr']")
             .each(function () {
-              $(once('advCalcVIAppPendEndYr', this))
+              $(this).once('advCalcVIAppPendEndYr')
                 .change(function () {
                   calculate.calculatePendEndYr(this, 'field_app_pend_start_yr', 'field_app_received_yr', 'field_app_processed_yr', 'field_app_pend_end_yr');
                 });
@@ -434,8 +437,8 @@
 
           // Calculate on change:
           // VI.A. Agency Overall Number of Requests Pending as of End of Fiscal Yr.
-          $(once('advCalcVIOverallAppPendEndYr', via_calcs))
-
+          via_calcs
+            .once('advCalcVIOverallAppPendEndYr')
             .change(function () {
               calculate.calculateOverallPendEndYr(
                 '#edit-field-overall-via-app-pend-start-0-value',
@@ -455,7 +458,8 @@
          */
         calcPercentageLoad: function () {
 
-          $(once('initAdvCalcIXPercCosts', fieldFeesElement))
+          fieldFeesElement
+            .once('initAdvCalcIXPercCosts')
             .filter("input[name*='field_perc_costs']")
             .each(function () {
 
@@ -483,7 +487,7 @@
             .add(processingCostsElements)
             .each(function () {
               // If X. Total Fees or IX. Processing Costs change, calculate % costs.
-              $(once('advCalcXPercCosts', this)).change(function () {
+              $(this).once('advCalcXPercCosts').change(function () {
                 var processingCostsAgency = getAgencyComponent($(this));
                 if (processingCostsAgency !== '_none') {
                   calculate.calculatePercentTotalCosts(processingCostsAgency, 'change');
@@ -509,7 +513,8 @@
         // Calculate on change:
         // X. Agency Overall Percentage of Total Costs.
         calcOverallChange: function () {
-          $(once('advCalcOverallXPercCosts', "input[data-drupal-selector='edit-field-overall-ix-proc-costs-0-value'], input[data-drupal-selector='edit-field-overall-x-total-fees-0-value']"))
+          $("input[data-drupal-selector='edit-field-overall-ix-proc-costs-0-value'], input[data-drupal-selector='edit-field-overall-x-total-fees-0-value']")
+            .once('advCalcOverallXPercCosts')
             .change(function () {
               advcalcX.calculateOverallPercentCosts();
             });
@@ -576,7 +581,8 @@
       // Initialize on load:
       // XII.B. Number of Consultations Received from Other Agencies that were
       // Pending at the Agency as of End of the Fiscal Year.
-      $(once('initAdvCalcXIIBConPendEndYr', field_foia_xiib))
+      field_foia_xiib
+        .once('initAdvCalcXIIBConPendEndYr')
         .filter("input[name*='field_pend_end_yr']")
         .each(function () {
           if (!util.fieldIsInitialized(this)) {
@@ -631,7 +637,8 @@
       } else {
         viib_calcs = $("input[data-drupal-selector='edit-field-overall-xiib-pend-start-yr-0-value'], input[data-drupal-selector='edit-field-overall-xiib-con-during-yr-0-value'], input[data-drupal-selector='edit-field-overall-xiib-proc-start-yr-0-value']");
       }
-      $(once('advCalcXIIBOverallAppPendEndYr', viib_calcs))
+      viib_calcs
+        .once('advCalcXIIBOverallAppPendEndYr')
         .change(function () {
           calculate.calculateOverallPendEndYr(
             '#edit-field-overall-xiib-pend-start-yr-0-value',

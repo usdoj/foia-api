@@ -3,7 +3,7 @@
  * Stops page from changing when user is posting.
  */
 
-(function($, Drupal, once) {
+(function($, Drupal) {
   Drupal.foiaNodeEditProtection = {};
   var click = false, edit = false;
 
@@ -160,4 +160,4 @@
 
     }
   };
-})(jQuery, Drupal, once);
+})(jQuery, Drupal);
