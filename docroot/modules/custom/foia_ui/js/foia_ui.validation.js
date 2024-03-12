@@ -3,7 +3,7 @@
  * Provide client-side validation for FOIA Annual Report.
  */
 
-(function ($, drupalSettings, Drupal, once) {
+(function ($, drupalSettings, Drupal) {
 
   Drupal.behaviors.foia_ui_validation = {
     attach: function attach() {
@@ -576,7 +576,7 @@
 
       //      $('input[id^=edit-validate-button]').once('foia-validation').on('click', function (event) {
       //$('input#edit-validate-button').once('foia-validation').on('click', function (event) {
-      $(once('foia-validation', 'input[id^=edit-validate-button]')).on('click', function (event) {
+      $('input[id^=edit-validate-button]').once('foia-validation').on('click', function (event) {
         // $('input#edit-validate-button').once('foia-validation').on('click', function (event) {
         event.preventDefault();
         $('.validation-overlay').removeClass('hidden');
