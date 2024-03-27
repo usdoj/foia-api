@@ -1,4 +1,4 @@
-@agency_component @annual_foia_report_data
+@processing_data_time
 Feature: Processing Data Time
   In order to create Agency Component and Annual Report
   As an Administrator I should be able to change field(Simple Median Days)

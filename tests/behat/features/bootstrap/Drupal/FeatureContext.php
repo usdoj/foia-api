@@ -5,10 +5,9 @@ namespace Drupal;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Drupal\PyStringNode;
 use Drupal\webform\Entity\Webform;
-use Drupal\DrupalExtension\Hook\Scope\EntityScope;
 use Drupal\DrupalExtension\Hook\Scope\AfterNodeCreateScope;
-use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\path_alias\Entity\PathAlias;
 use Drupal\node\Entity\Node;
 
@@ -99,7 +98,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function iViewTheUser($arg1) {
     $user = user_load_by_name($arg1);
     $uid = $user->get('uid')->value;
-    $destinationUrl = "user/{$uid}";
+    $baseUrl = $this->getMinkParameter('base_url');
+    $destinationUrl = "{$baseUrl}/user/{$uid}";
     $this->getSession()->visit($destinationUrl);
   }
 
@@ -111,6 +111,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function cleanTaxonomyTerms(AfterScenarioScope $scope) {
     $query = \Drupal::entityQuery('taxonomy_term');
     $query->condition('name', "A Test", 'STARTS_WITH');
+    $query->accessCheck(FALSE);
     $tids = $query->execute();
     $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     $entities = $controller->loadMultiple($tids);
@@ -208,48 +209,48 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-     * Check if the given radio button is selected or not
-     *
-     * @param $radioButtonSelector
-     *   string The label of the radio button
-     * @param $selected
-     *   boolean To test against selected or not
-     *
-     * @Given /^I (?:|should )see the radio button "([^"]*)" selected$/
-     * @Then /^the radio button "([^"]*)" (?:is|should be) selected$/
-     * @Then /^the "([^"]*)" radio button (?:is|should be) selected$/
-     */
-    public function isRadioButtonSelected($radioButtonSelector, $selected = TRUE) {
-      // Verify whether a field with the given selector exists or not
-      $field = $this->getSession()->getPage()->findField($radioButtonSelector);
-      if (empty($field)) {
-        throw new \Exception(sprintf("Form field with id|name|label|value '%s' was not found on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
-      }
-      // Verify if the field is a radio button or not
-      $type = $field->getAttribute('type');
-      if ($type != "radio") {
-        throw new \Exception(sprintf("The field '%s' was found but it is not a radio button on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
-      }
-      // If the field should be selected, then the attribute 'checked' should exist
-      if ($selected) {
-        if (!$field->hasAttribute('checked')) {
-          throw new \Exception(sprintf("The radio button '%s' was not selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
-        }
-      }
-      else {
-        if ($field->hasAttribute('checked')) {
-          throw new \Exception(sprintf("The radio button '%s' was selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
-        }
+   * Check if the given radio button is selected or not
+   *
+   * @param $radioButtonSelector
+   *   string The label of the radio button
+   * @param $selected
+   *   boolean To test against selected or not
+   *
+   * @Given /^I (?:|should )see the radio button "([^"]*)" selected$/
+   * @Then /^the radio button "([^"]*)" (?:is|should be) selected$/
+   * @Then /^the "([^"]*)" radio button (?:is|should be) selected$/
+   */
+  public function isRadioButtonSelected($radioButtonSelector, $selected = TRUE) {
+    // Verify whether a field with the given selector exists or not
+    $field = $this->getSession()->getPage()->findField($radioButtonSelector);
+    if (empty($field)) {
+      throw new \Exception(sprintf("Form field with id|name|label|value '%s' was not found on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+    }
+    // Verify if the field is a radio button or not
+    $type = $field->getAttribute('type');
+    if ($type != "radio") {
+      throw new \Exception(sprintf("The field '%s' was found but it is not a radio button on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+    }
+    // If the field should be selected, then the attribute 'checked' should exist
+    if ($selected) {
+      if (!$field->hasAttribute('checked')) {
+        throw new \Exception(sprintf("The radio button '%s' was not selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
       }
     }
+    else {
+      if ($field->hasAttribute('checked')) {
+        throw new \Exception(sprintf("The radio button '%s' was selected on the page %s", $radioButtonSelector, $this->getSession()->getCurrentUrl()));
+      }
+    }
+  }
 
-    /**
-     * @Given I wait :num seconds
-     */
-    public function iWaitSeconds($num)
-    {
-      sleep($num);
-    }
+  /**
+   * @Given I wait :num seconds
+   */
+  public function iWaitSeconds($num)
+  {
+    sleep($num);
+  }
 
   /**
    * Check if the given title is expected or not.
@@ -257,14 +258,28 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the page title should be :expectedTitle
    */
   public function thePageTitleShouldBe($expectedTitle) {
-    $titleElement = $this->getSession()->getPage()->find('css', 'head title');
-    if ($titleElement === null) {
+
+    $driver = $this->getSession()->getDriver();
+    $class = get_class($driver);
+
+
+    // If javascript is enabled then we need to get the page title using JS
+    switch ($class) {
+      case "Behat\Mink\Driver\Selenium2Driver":
+        $title = $this->getSession()->evaluateScript("return document.title");
+        break;
+      case "Behat\Mink\Driver\GoutteDriver":
+      default:
+        $title = $this->getSession()->getPage()->find('css', 'head title')->getText();
+        break;
+    }
+
+    if ($title === null) {
       throw new \Exception('Page title element was not found!');
     }
     else {
-      $title = $titleElement->getText();
       if ($expectedTitle !== $title) {
-        throw new \Exception("Incorrect title! Expected:$expectedTitle | Actual:$title ");
+        throw new \Exception("Incorrect title! Expected:$expectedTitle | Actual: $title ");
       }
     }
   }
@@ -575,5 +590,40 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception('Save button was not found.');
     }
     $save_button->click();
+  }
+
+  /**
+   * @Given I fill in :arg1 field with :arg2
+   */
+  public function fillCKEditor($locator, $value) {
+    // Make sure we can get to the field first
+    $el = $this->getSession()->getPage()->findField($locator);
+    if (empty($el)) {
+      throw new \Exception('Could not find WYSIWYG with locator: ' . $locator, $this->getSession());
+    }
+    $fieldId = $el->getAttribute('id');
+    if (empty($fieldId)) {
+      throw new \Exception('Could not find an id for field with locator: ' . $locator);
+    }
+
+    $lowercase = strtolower($locator);
+    $editor = "div.js-form-item-$lowercase-0-value .ck-editor__editable";
+
+    $this->getSession()
+      ->executeScript(
+        "
+        var domEditableElement = document.querySelector(\"$editor\");
+        if (domEditableElement.ckeditorInstance) {
+          const editorInstance = domEditableElement.ckeditorInstance;
+          if (editorInstance) {
+            editorInstance.setData(\"$value\");
+            return 'Success!';
+          } else {
+            throw new Exception('Could not get the editor instance!');
+          }
+        } else {
+          throw new Exception('Could not find the element!');
+        }
+        ");
   }
 }

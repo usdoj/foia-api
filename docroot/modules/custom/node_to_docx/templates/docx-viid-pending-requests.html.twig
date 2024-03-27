@@ -1,7 +1,7 @@
 <div class=WordSection54>
 
-<p class=MsoNormal ><b>VII.D. PENDING REQUESTS -- ALL PENDING
-PERFECTED REQUESTS<o:p></o:p></b></p>
+  <p class=MsoNormal ><b>VII.D. PENDING REQUESTS -- ALL PENDING
+      PERFECTED REQUESTS<o:p></o:p></b></p>
 
 </div>
 
@@ -10,138 +10,140 @@ PERFECTED REQUESTS<o:p></o:p></b></p>
 
 <div class=WordSection55>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
- <tr >
-  <td width=75 rowspan=2 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=115 colspan=3 >
-  <p class=MsoNormal align=center >SIMPLE<o:p></o:p></p>
-  </td>
-  <td width=115 colspan=3 >
-  <p class=MsoNormal align=center >COMPLEX<o:p></o:p></p>
-  </td>
-  <td width=115 colspan=3 >
-  <p class=MsoNormal align=center >EXPEDITED PROCESSING<o:p></o:p></p>
-  </td>
- </tr>
- <tr >
-  <td width=55 >
-  <p class=MsoNormal align=center >Number Pending<o:p></o:p></p>
-  </td>
-  <td width=55 >
-  <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
-  </td>
-  <td width=55 >
-  <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
-  </td>
-  <td width=55 >
-  <p class=MsoNormal align=center >Number Pending<o:p></o:p></p>
-  </td>
-  <td width=55 >
-  <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
-  </td>
-  <td width=55 >
-  <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
-  </td>
-  <td width=55 >
-  <p class=MsoNormal align=center >Number Pending<o:p></o:p></p>
-  </td>
-  <td width=55 >
-  <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
-  </td>
-  <td width=55 >
-  <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
-  </td>
- </tr>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=75 rowspan=2 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=115 colspan=3 >
+        <p class=MsoNormal align=center >SIMPLE<o:p></o:p></p>
+      </td>
+      <td width=115 colspan=3 >
+        <p class=MsoNormal align=center >COMPLEX<o:p></o:p></p>
+      </td>
+      <td width=115 colspan=3 >
+        <p class=MsoNormal align=center >EXPEDITED PROCESSING<o:p></o:p></p>
+      </td>
+    </tr>
+    <tr >
+      <td width=55 >
+        <p class=MsoNormal align=center >Number Pending<o:p></o:p></p>
+      </td>
+      <td width=55 >
+        <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
+      </td>
+      <td width=55 >
+        <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
+      </td>
+      <td width=55 >
+        <p class=MsoNormal align=center >Number Pending<o:p></o:p></p>
+      </td>
+      <td width=55 >
+        <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
+      </td>
+      <td width=55 >
+        <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
+      </td>
+      <td width=55 >
+        <p class=MsoNormal align=center >Number Pending<o:p></o:p></p>
+      </td>
+      <td width=55 >
+        <p class=MsoNormal align=center >Median Number of Days<o:p></o:p></p>
+      </td>
+      <td width=55 >
+        <p class=MsoNormal align=center >Average Number of Days<o:p></o:p></p>
+      </td>
+    </tr>
 
-{% for key,value in content.field_pending_requests_vii_d_ if key|first != '#' %}
- <tr >
-  <td nowrap valign=bottom >
-  <p class=MsoNormal >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_sim_pend.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_sim_med.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_sim_avg.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_comp_pend.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_comp_med.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_comp_avg.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_exp_pend.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_exp_med.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_exp_avg.value }} 
-  <o:p></o:p></p>
-  </td>
- </tr>
-{% endfor %}
- <tr >
-  <td >
-  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_sim_pend }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_sim_med }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_sim_avg }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_comp_pend }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_comp_med }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_comp_avg }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_exp_pend }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_exp_med }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_viid_exp_avg }}<o:p></o:p></p>
-  </td>
- </tr>
-</table>
+    {% for key,value in content.field_pending_requests_vii_d_ %}
+      {%  if key|first != '#' %}
+        <tr >
+          <td nowrap valign=bottom >
+            <p class=MsoNormal >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_sim_pend.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_sim_med.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_sim_avg.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_comp_pend.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_comp_med.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_comp_avg.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_exp_pend.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_exp_med.value }}
+              <o:p></o:p></p>
+          </td>
+          <td nowrap valign=bottom >
+            <p class=MsoNormal align=right >
+              {{ content.field_pending_requests_vii_d_[key]['#paragraph'].field_exp_avg.value }}
+              <o:p></o:p></p>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+    <tr >
+      <td >
+        <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_sim_pend }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_sim_med }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_sim_avg }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_comp_pend }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_comp_med }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_comp_avg }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_exp_pend }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_exp_med }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_viid_exp_avg }}<o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -149,13 +151,13 @@ PERFECTED REQUESTS<o:p></o:p></b></p>
 
 <div class=WordSection56>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
- <tr >
-   <td width=570 nowrap valign=bottom >
-   <p class=MsoNormal align=left><i >{{ docx.field_footnotes_viid  }}</i><o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=570 nowrap valign=bottom >
+        <p class=MsoNormal align=left><i >{{ docx.field_footnotes_viid  }}</i><o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 

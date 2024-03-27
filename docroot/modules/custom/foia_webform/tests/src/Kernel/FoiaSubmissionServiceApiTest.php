@@ -234,6 +234,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
     $webformSubmission->save();
     $query = \Drupal::entityTypeManager()->getStorage('webform_submission')->getQuery();
     $query->condition('webform_id', $webform->id());
+    $query->accessCheck();
     foreach (\Drupal::entityTypeManager()->getStorage('webform_submission')->loadMultiple($query->execute()) as $submission) {
       $webformSubmission = $submission;
     }
@@ -306,6 +307,7 @@ class FoiaSubmissionServiceApiTest extends KernelTestBase {
 
     $query = \Drupal::entityTypeManager()->getStorage('webform_submission')->getQuery();
     $query->condition('webform_id', $webform->id());
+    $query->accessCheck();
     foreach (\Drupal::entityTypeManager()->getStorage('webform_submission')->loadMultiple($query->execute()) as $submission) {
       $webformSubmission = $submission;
     }

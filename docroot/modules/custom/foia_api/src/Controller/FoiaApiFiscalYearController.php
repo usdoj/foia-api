@@ -3,6 +3,7 @@
 namespace Drupal\foia_api\Controller;
 
 use Drupal\Core\Cache\CacheableJsonResponse;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -65,7 +66,13 @@ class FoiaApiFiscalYearController extends ControllerBase implements ContainerInj
     $query->condition('n.status', 1);
     $query->orderBy('y.field_foia_annual_report_yr_value', 'DESC');
     $data = $query->distinct()->execute()->fetchCol();
-    return CacheableJsonResponse::create($data)->setMaxAge(self::SECONDS_IN_A_DAY);
+    $cache_tags[] = 'node_field:annual_report_yr';
+    $cacheMeta = (new CacheableMetadata())
+      ->setCacheTags($cache_tags)
+      ->setCacheMaxAge(self::SECONDS_IN_A_DAY);
+    $json_response = new CacheableJsonResponse($data);
+    $json_response->addCacheableDependency($cacheMeta);
+    return $json_response;
   }
 
 }

@@ -21,6 +21,7 @@ class AgencyComponentUniqueAbbreviationValidator extends ConstraintValidator {
       $abbreviation = $value[0]->value;
       $agency = $entity->get('field_agency')->first()->getValue()['target_id'];
       $query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', 'agency_component')
         ->condition('field_agency_comp_abbreviation', $abbreviation)
         ->condition('field_agency', $agency);

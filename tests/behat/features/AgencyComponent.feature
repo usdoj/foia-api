@@ -1,4 +1,4 @@
-@agency_component
+@agency_component @agency
 Feature: Agency Component Feature
   In order to create Agency Component
   As an Administrator
@@ -7,14 +7,14 @@ Feature: Agency Component Feature
   Background:
     Given agency terms:
       | name                    | field_agency_abbreviation | description |format    | language |
-      | Federal Testing Agency  | FTA                       | description |plain_text| en       |
+      | A Test Agency  | FTA    | description |plain_text| en       |
 
   @api
   Scenario: Agency Component name in title tag for Agency Component node.
     Given I am logged in as a user with the 'Administrator' role
     And I am at '/node/add/agency_component'
     And for 'Agency Component Name' I enter 'My agency name'
-    And for 'Agency' I enter 'Federal Testing Agency'
+    And for 'Agency' I enter 'A Test Agency'
     And for 'Abbreviation' I enter 'FTA'
     And for 'Street address' I enter 'testing'
     And for 'City' I enter 'Rockville'
@@ -23,5 +23,4 @@ Feature: Agency Component Feature
     And I select "Email" from "Portal Submission Format"
     And for 'Submission Email' I enter 'test@test.com'
     When I press the 'Save' button
-    Then the page title should be "My agency name | Federal Testing Agency | National FOIA Portal"
-
+    Then the page title should be "My agency name | A Test Agency | National FOIA Portal"

@@ -43,7 +43,7 @@ Additionally, the following core JavaScript libraries and plugins are required:
  * Drupal
  * DrupalSettings
  * jQuery
- * jQuery Once
+ * jQuery Once (core/once drupal 10)
 
 
 INSTALLATION

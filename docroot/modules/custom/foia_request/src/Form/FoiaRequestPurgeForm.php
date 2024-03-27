@@ -40,6 +40,7 @@ class FoiaRequestPurgeForm extends FormBase {
   private function queryRequests() {
     $cutoff_date = strtotime('-2 weeks');
     return \Drupal::entityQuery('foia_request')
+      ->accessCheck(FALSE)
       ->condition('request_status', FoiaRequestInterface::STATUS_FAILED)
       ->condition('created', $cutoff_date, '<')
       ->execute();

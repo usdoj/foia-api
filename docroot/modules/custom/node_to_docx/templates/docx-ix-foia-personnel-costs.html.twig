@@ -1,12 +1,12 @@
 <div class=WordSection66>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535>
- <tr >
-  <td width=535 nowrap valign=bottom >
-  <p class=MsoNormal><b>IX. FOIA Personnel and Costs<o:p></o:p></b></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=535>
+    <tr >
+      <td width=535 nowrap valign=bottom >
+        <p class=MsoNormal><b>IX. FOIA Personnel and Costs<o:p></o:p></b></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -15,105 +15,107 @@
 
 <div class=WordSection67>
 
-<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=609>
- <tr >
-  <td width=87 rowspan=2 >
-  <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
-  </td>
-  <td width=261 colspan=3 >
-  <p class=MsoNormal align=center >PERSONNEL<o:p></o:p></p>
-  </td>
-  <td width=261 colspan=3 >
-  <p class=MsoNormal align=center >COSTS<o:p></o:p></p>
-  </td>
- </tr>
- <tr >
-  <td width=87 >
-  <p class=MsoNormal align=center >Number of &quot;Full-Time FOIA
-  Employees&quot;<o:p></o:p></p>
-  </td>
-  <td width=87 >
-  <p class=MsoNormal align=center >Number of &quot;Equivalent Full-Time
-  FOIA Employees&quot;<o:p></o:p></p>
-  </td>
-  <td width=87 >
-  <p class=MsoNormal align=center >Total Number of &quot;Full-Time FOIA
-  Staff&quot;<o:p></o:p></p>
-  </td>
-  <td width=87 >
-  <p class=MsoNormal align=center >Processing Costs<o:p></o:p></p>
-  </td>
-  <td width=87 >
-  <p class=MsoNormal align=center >Litigation-Related Costs<o:p></o:p></p>
-  </td>
-  <td width=87 >
-  <p class=MsoNormal align=center >Total Costs<o:p></o:p></p>
-  </td>
- </tr>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=609>
+    <tr >
+      <td width=87 rowspan=2 >
+        <p class=MsoNormal align=center >Agency / Component<o:p></o:p></p>
+      </td>
+      <td width=261 colspan=3 >
+        <p class=MsoNormal align=center >PERSONNEL<o:p></o:p></p>
+      </td>
+      <td width=261 colspan=3 >
+        <p class=MsoNormal align=center >COSTS<o:p></o:p></p>
+      </td>
+    </tr>
+    <tr >
+      <td width=87 >
+        <p class=MsoNormal align=center >Number of &quot;Full-Time FOIA
+          Employees&quot;<o:p></o:p></p>
+      </td>
+      <td width=87 >
+        <p class=MsoNormal align=center >Number of &quot;Equivalent Full-Time
+          FOIA Employees&quot;<o:p></o:p></p>
+      </td>
+      <td width=87 >
+        <p class=MsoNormal align=center >Total Number of &quot;Full-Time FOIA
+          Staff&quot;<o:p></o:p></p>
+      </td>
+      <td width=87 >
+        <p class=MsoNormal align=center >Processing Costs<o:p></o:p></p>
+      </td>
+      <td width=87 >
+        <p class=MsoNormal align=center >Litigation-Related Costs<o:p></o:p></p>
+      </td>
+      <td width=87 >
+        <p class=MsoNormal align=center >Total Costs<o:p></o:p></p>
+      </td>
+    </tr>
 
-{% for key,value in content.field_foia_pers_costs_ix if key|first != '#' %}
- <tr >
-  <td nowrap valign=bottom >
-  <p class=MsoNormal >
-  {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }} 
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_full_emp.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_eq_full_emp.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_total_staff.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_proc_costs.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_lit_costs.value }}
-  <o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >
-  {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_total_costs.value }}
-  <o:p></o:p></p>
-  </td>
- </tr>
-{% endfor %}
- <tr >
-  <td >
-  <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_ix_full_emp }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_ix_eq_full_emp }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_ix_total_staff }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_ix_proc_costs }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_ix_lit_costs }}<o:p></o:p></p>
-  </td>
-  <td nowrap valign=bottom >
-  <p class=MsoNormal align=right >{{ docx.field_overall_ix_total_costs }}<o:p></o:p></p>
-  </td>
- </tr>
-</table>
+    {% for key,value in content.field_foia_pers_costs_ix %}
+      {% if key|first != '#' %}
+        <tr >
+        <td nowrap valign=bottom >
+          <p class=MsoNormal >
+            {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_agency_component[0].entity.field_agency_comp_abbreviation.value }}
+            <o:p></o:p></p>
+        </td>
+        <td nowrap valign=bottom >
+          <p class=MsoNormal align=right >
+            {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_full_emp.value }}
+            <o:p></o:p></p>
+        </td>
+        <td nowrap valign=bottom >
+          <p class=MsoNormal align=right >
+            {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_eq_full_emp.value }}
+            <o:p></o:p></p>
+        </td>
+        <td nowrap valign=bottom >
+          <p class=MsoNormal align=right >
+            {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_total_staff.value }}
+            <o:p></o:p></p>
+        </td>
+        <td nowrap valign=bottom >
+          <p class=MsoNormal align=right >
+            {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_proc_costs.value }}
+            <o:p></o:p></p>
+        </td>
+        <td nowrap valign=bottom >
+          <p class=MsoNormal align=right >
+            {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_lit_costs.value }}
+            <o:p></o:p></p>
+        </td>
+        <td nowrap valign=bottom >
+          <p class=MsoNormal align=right >
+            {{ content.field_foia_pers_costs_ix[key]['#paragraph'].field_total_costs.value }}
+            <o:p></o:p></p>
+        </td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+    <tr >
+      <td >
+        <p class=MsoNormal align=center >AGENCY OVERALL<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_ix_full_emp }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_ix_eq_full_emp }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_ix_total_staff }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_ix_proc_costs }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_ix_lit_costs }}<o:p></o:p></p>
+      </td>
+      <td nowrap valign=bottom >
+        <p class=MsoNormal align=right >{{ docx.field_overall_ix_total_costs }}<o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
@@ -121,13 +123,13 @@
 
 <div class=WordSection68>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
- <tr >
-   <td width=570 nowrap valign=bottom >
-   <p class=MsoNormal align=left><i>{{ docx.field_footnotes_ix }}</i><o:p></o:p></p>
-  </td>
- </tr>
-</table>
+  <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=570>
+    <tr >
+      <td width=570 nowrap valign=bottom >
+        <p class=MsoNormal align=left><i>{{ docx.field_footnotes_ix }}</i><o:p></o:p></p>
+      </td>
+    </tr>
+  </table>
 
 </div>
 
