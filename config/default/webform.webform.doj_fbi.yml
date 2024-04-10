@@ -20,14 +20,20 @@ elements: |-
     '#title': 'First name'
     '#maxlength': 30
     '#required': true
-    '#pattern': '^[a-zA-Z]+$'
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+  name_middle:
+    '#type': textfield
+    '#title': 'Middle name'
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z ]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
   name_last:
     '#type': textfield
     '#title': 'Last name'
     '#maxlength': 30
     '#required': true
-    '#pattern': '^[a-zA-Z]+$'
+    '#pattern': '^[a-zA-Z ]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
   company_organization:
     '#type': textfield
@@ -40,11 +46,6 @@ elements: |-
   phone_number:
     '#type': tel
     '#title': 'Phone number'
-    '#pattern': '^[0-9]*$'
-    '#pattern_error': 'Please use only numbers.'
-  fax_number:
-    '#type': tel
-    '#title': 'Fax number'
     '#pattern': '^[0-9]*$'
     '#pattern_error': 'Please use only numbers.'
   address_line1:
@@ -64,15 +65,14 @@ elements: |-
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
-    '#required': true
-    '#pattern': '^[a-zA-Z]+$'
+    '#pattern': '^[a-zA-Z ]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
     '#maxlength': 50
     '#required': true
-    '#pattern': '^[0-9]*$'
+    '#pattern': '^[a-zA-Z0-9 ]*$'
     '#pattern_error': 'Please use only numeric characters.'
   address_country:
     '#type': select
@@ -83,7 +83,7 @@ elements: |-
   request_description:
     '#type': textarea
     '#title': 'Your request'
-    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
+    '#help': "A brief and clear description of the information you'd like to receive. Please be as specific as possible."
     '#maxlength': 4000
     '#required': true
   fbi_request_subject:
@@ -194,9 +194,9 @@ elements: |-
     '#sanitize': true
   deceased_name_first:
     '#type': textfield
-    '#title': 'Deceased Individual''s First Name'
+    '#title': "Deceased Individual's First Name"
     '#maxlength': 30
-    '#pattern': '^[a-zA-Z]+$'
+    '#pattern': '^[a-zA-Z ]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       required:
@@ -207,9 +207,9 @@ elements: |-
           value: deceased
   deceased_name_middle:
     '#type': textfield
-    '#title': 'Deceased Individual''s Middle Name'
+    '#title': "Deceased Individual's Middle Name"
     '#maxlength': 30
-    '#pattern': '^[a-zA-Z]+$'
+    '#pattern': '^[a-zA-Z ]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       visible:
@@ -217,9 +217,9 @@ elements: |-
           value: deceased
   deceased_name_last:
     '#type': textfield
-    '#title': 'Deceased Individual''s Last Name'
+    '#title': "Deceased Individual's Last Name"
     '#maxlength': 255
-    '#pattern': '^[a-zA-Z]+$'
+    '#pattern': '^[a-zA-Z ]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
     '#states':
       required:
@@ -230,15 +230,16 @@ elements: |-
           value: deceased
   deceased_social_security_number:
     '#type': textfield
-    '#title': 'Deceased Individual''s Social Security Number'
-    '#pattern': '^(?!666|000|9\\d{2})\\d{3}(?!00)\\d{2}(?!0{4})\\d{4}$'
+    '#title': "Deceased Individual's Social Security Number"
+    '#pattern': '^(?!666|000|9\d{2})\d{3}-(?!00)\d{2}-(?!0{4})\d{4}$'
+    '#pattern_error': 'Social Security Number must be entered in XXX-XX-XXXX format.'
     '#states':
       visible:
         ':input[name="fbi_request_subject"]':
           value: deceased
   deceased_alien_registration_number:
     '#type': textfield
-    '#title': 'Deceased Individual''s Alien Registration Number'
+    '#title': "Deceased Individual's Alien Registration Number"
     '#maxlength': 30
     '#pattern': '^[a-zA-Z0-9]*$'
     '#pattern_error': 'Please use only letters and numbers.'
@@ -248,7 +249,7 @@ elements: |-
           value: deceased
   deceased_fbi_number:
     '#type': textfield
-    '#title': 'Deceased Individual''s FBI Number'
+    '#title': "Deceased Individual's FBI Number"
     '#maxlength': 30
     '#pattern': '^[a-zA-Z0-9]*$'
     '#pattern_error': 'Please use only letters and numbers.'
@@ -258,7 +259,7 @@ elements: |-
           value: deceased
   deceased_place_of_birth:
     '#type': textfield
-    '#title': 'Deceased Individual''s Place of Birth'
+    '#title': "Deceased Individual's Place of Birth"
     '#maxlength': 100
     '#states':
       visible:
@@ -266,8 +267,8 @@ elements: |-
           value: deceased
   deceased_date_of_birth:
     '#type': textfield
-    '#title': 'Deceased Individual''s Date of Birth'
-    '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d'
+    '#title': "Deceased Individual's Date of Birth"
+    '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(17|18|19|20)\d\d'
     '#pattern_error': 'Please use the date format: MM/DD/YYYY'
     '#states':
       visible:
@@ -275,7 +276,7 @@ elements: |-
           value: deceased
   deceased_date_of_death:
     '#type': textfield
-    '#title': 'Deceased Individual''s Date of Death'
+    '#title': "Deceased Individual's Date of Death"
     '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d'
     '#pattern_error': 'Please use the date format: MM/DD/YYYY'
     '#states':
@@ -284,7 +285,7 @@ elements: |-
           value: deceased
   deceased_additional_information:
     '#type': textarea
-    '#title': 'Deceased Individual''s Additional Information'
+    '#title': "Deceased Individual's Additional Information"
     '#description': 'Provide additional information about the subject of your request. Please provide as much information as possible.'
     '#maxlength': 4000
     '#states':
@@ -296,6 +297,14 @@ elements: |-
     '#title': 'Date of birth'
     '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d'
     '#pattern_error': 'Please use the date format: MM/DD/YYYY'
+    '#states':
+      required:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  fbi_citizen_place_of_birth:
+    '#type': textfield
+    '#title': 'Place of birth'
+    '#maxlength': 4000
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
@@ -318,7 +327,7 @@ elements: |-
           value: myself
   fbi_citizen_today:
     '#type': textfield
-    '#title': 'Today''s date'
+    '#title': "Today's date"
     '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d'
     '#pattern_error': 'Please use the date format: MM/DD/YYYY'
     '#states':
