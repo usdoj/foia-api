@@ -22,7 +22,7 @@ elements: |-
     '#required': true
     '#pattern': '^[a-zA-Z ]+$'
     '#pattern_error': 'Please use only alphabetical characters.'
-  name_middle:
+  name_middle_initial_middle:
     '#type': textfield
     '#title': 'Middle name'
     '#maxlength': 30
@@ -304,7 +304,7 @@ elements: |-
   fbi_citizen_place_of_birth:
     '#type': textfield
     '#title': 'Place of birth'
-    '#maxlength': 4000
+    '#maxlength': 100
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
