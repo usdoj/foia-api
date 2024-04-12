@@ -10,6 +10,7 @@ dependencies:
     - foia_personnel
     - media
     - rest
+    - samlauth
     - system
     - view_unpublished
     - webform
@@ -22,7 +23,6 @@ is_admin: false
 permissions:
   - 'access any webform configuration'
   - 'access content'
-  - 'access site-wide contact form'
   - 'restful post webform_submission'
   - 'view any unpublished agency_component content'
   - 'view field_complex_average_days'
@@ -46,3 +46,4 @@ permissions:
   - 'view own field_is_centralized'
   - 'view own field_request_submission_form'
   - 'view published foia personnel entities'
+  - 'view sp metadata'

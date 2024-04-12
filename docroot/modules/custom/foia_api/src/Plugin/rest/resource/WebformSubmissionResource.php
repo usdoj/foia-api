@@ -463,13 +463,13 @@ class WebformSubmissionResource extends ResourceBase {
       if (isset($element['#max_filesize'])) {
         $maxFileSize = $element['#max_filesize'];
         if (!empty($maxFileSize)) {
-          $maxFileSize = Bytes::toInt("{$maxFileSize}MB");
+          $maxFileSize = Bytes::toNumber("{$maxFileSize}MB");
         }
       }
       if (empty($maxFileSize)) {
         $maxFileSize = \Drupal::config('webform.settings')->get('file.default_max_filesize');
         if (!empty($maxFileSize)) {
-          $maxFileSize = Bytes::toInt($maxFileSize);
+          $maxFileSize = Bytes::toNumber($maxFileSize);
         }
       }
       if (empty($maxFileSize)) {
@@ -548,7 +548,7 @@ class WebformSubmissionResource extends ResourceBase {
     if ($readable) {
       return $maxUploadSize;
     }
-    return Bytes::toInt("{$maxUploadSize}MB");
+    return Bytes::toNumber("{$maxUploadSize}MB");
   }
 
   /**

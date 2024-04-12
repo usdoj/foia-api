@@ -6,6 +6,7 @@ dependencies:
     - node.type.landing_page
   module:
     - content_moderation
+    - file
     - file_entity
     - node
 id: landing_page_reviewer
@@ -15,13 +16,8 @@ is_admin: null
 permissions:
   - 'access content overview'
   - 'delete any landing_page content'
+  - 'delete own files'
   - 'edit any landing_page content'
-  - 'use draft_published transition'
-  - 'use needs_review_draft transition'
-  - 'use needs_review_published transition'
-  - 'use published_archived transition'
-  - 'use published_published transition'
   - 'view any unpublished content'
   - 'view files'
   - 'view latest version'
-  - 'view moderation states'

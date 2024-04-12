@@ -74,6 +74,7 @@ class CFOController extends ControllerBase {
     $context = new RenderContext();
     $council_nids = \Drupal::service('renderer')->executeInRenderContext($context, function () {
       $council_query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', 'cfo_council')
         ->condition('status', 1)
         ->sort('created')
@@ -157,6 +158,7 @@ class CFOController extends ControllerBase {
     $meetings_nids = \Drupal::service('renderer')->executeInRenderContext($context_meetings, function () {
       // Query for all CFO meetings.
       $meetings_query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', 'cfo_meeting')
         ->condition('status', 1)
         ->sort('field_meeting_date', 'DESC');
@@ -288,6 +290,7 @@ class CFOController extends ControllerBase {
     $context = new RenderContext();
     $committee_nids = \Drupal::service('renderer')->executeInRenderContext($context, function () {
       $committee_query = \Drupal::entityQuery('node')
+        ->accessCheck(TRUE)
         ->condition('type', 'cfo_committee')
         ->condition('status', 1)
         ->sort('title');
