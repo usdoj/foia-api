@@ -147,6 +147,7 @@ class SettingsForm extends ConfigFormBase {
           'm64',
           'm65',
           'm66',
+          'm67',
         ],
       ],
     ];
