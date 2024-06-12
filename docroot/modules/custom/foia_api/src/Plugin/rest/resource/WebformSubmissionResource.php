@@ -131,7 +131,7 @@ class WebformSubmissionResource extends ResourceBase {
 
     // If the site has API User ID configured, require clients to provide it.
     $api_user_id = \Drupal::config('foia.secrets')->get('api_user_id');
-    $given_user_id_header = isset($_SERVER["HTTP_X_API_USER_ID"]) ? $_SERVER["HTTP_X_API_USER_ID"] : '';
+    $given_user_id_header = $_SERVER["HTTP_X_API_USER_ID"] ?? '';
     if ($api_user_id && $given_user_id_header !== $api_user_id) {
       $statusCode = 400;
       $message = t("To submit FOIA requests using FOIA.gov, you must use the request forms on the site.");
