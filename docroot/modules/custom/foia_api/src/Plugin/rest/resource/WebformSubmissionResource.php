@@ -128,7 +128,9 @@ class WebformSubmissionResource extends ResourceBase {
       $this->logSubmission($statusCode, $message);
       return new ModifiedResourceResponse(['errors' => $message], $statusCode);
     }
-    $websiteRequest = isset($_SERVER["HTTP_X_API_USER_ID"]) && $_SERVER["HTTP_X_API_USER_ID"] === \Drupal::config('foia.secrets')->get('api_user_id');
+
+    $api_user_id = \Drupal::config('foia.secrets')->get('api_user_id');
+    $websiteRequest = !$api_user_id || (isset($_SERVER["HTTP_X_API_USER_ID"]) && $_SERVER["HTTP_X_API_USER_ID"] === $api_user_id);
     if (!$websiteRequest) {
       $statusCode = 400;
       $message = t("To submit FOIA requests using FOIA.gov, you must use the request forms on the site.");
@@ -159,7 +161,7 @@ class WebformSubmissionResource extends ResourceBase {
     }
 
     $agencyComponent = $this->agencyLookupService->getComponentFromWebform($webformId);
-    if (!$agencyComponent) {
+    if ($webformId !== 'wizard_feedback' && !$agencyComponent) {
       $statusCode = 422;
       $message = t('Submission attempt against webform unassociated with agency component.');
       $this->logSubmission($statusCode, $message);
@@ -191,7 +193,7 @@ class WebformSubmissionResource extends ResourceBase {
     // Validate submission.
     $submissionErrors = WebformSubmissionForm::validateFormValues($values);
     $errors = $fileErrors ? array_merge((array) $submissionErrors, $fileErrors) : $submissionErrors;
-    if (empty($errors)) {
+    if ($webformId !== 'wizard_feedback' && empty($errors)) {
       // Validate emal, phone and address,
       // any one of those three not blank, it should pass.
       $email = isset($data['email']) && $data['email'];
