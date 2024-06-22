@@ -37,9 +37,12 @@ elements: |-
       3: '3'
       4: '4'
       5: '5 -- Very Relevant'
-  additional_feedback:
+  other_feedback:
     '#type': textarea
-    '#title': 'Additional Feedback'
+    '#title': 'Other Feedback'
+    '#counter_type': character
+    '#counter_minimum': 1
+    '#counter_maximum': 2000
 css: ''
 javascript: ''
 settings:
@@ -229,7 +232,7 @@ handlers:
     handler_id: foia_submission_queue
     label: 'FOIA Submission Queue'
     notes: ''
-    status: true
+    status: false
     conditions: {  }
     weight: 0
     settings:
