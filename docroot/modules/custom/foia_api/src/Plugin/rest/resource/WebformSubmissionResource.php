@@ -217,14 +217,12 @@ class WebformSubmissionResource extends ResourceBase {
     }
     if ($webformId == 'wizard_feedback' && empty($errors)) {
       // Must include a response to either of the three items.
-      $relevance = isset($data['results_relevant_to_search']['How relevant were the results to your search?'])
-        && $data['results_relevant_to_search']['How relevant were the results to your search?'];
-      $expectations = isset($data['results_meet_expectations']['How well do these results meet your expectations?'])
-        && $data['results_meet_expectations']['How well do these results meet your expectations?'];
-      $other_feedback = isset($data['other_feedback']) && $data['other_feedback'];
+      $relevance = !empty($data['results_relevant_to_search']['How relevant were the results to your search?']);
+      $expectations = !empty($data['results_meet_expectations']['How well do these results meet your expectations?']);
+      $other_feedback = !empty($data['other_feedback']);
 
       if (!$other_feedback && !$expectations && !$relevance) {
-        $message = '<em>Please provide feedback on at least one item.</em>';
+        $message = '<em>Please provide at least one response.</em>';
         $errors = [
           'all_items' => $message,
         ];
