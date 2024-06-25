@@ -215,6 +215,19 @@ class WebformSubmissionResource extends ResourceBase {
         ];
       }
     }
+    if ($webformId == 'wizard_feedback' && empty($errors)) {
+      // Must include a response to either of the three items.
+      $relevance = !empty($data['results_relevant_to_search']['How relevant were the results to your search?']);
+      $expectations = !empty($data['results_meet_expectations']['How well do these results meet your expectations?']);
+      $other_feedback = !empty($data['other_feedback']);
+
+      if (!$other_feedback && !$expectations && !$relevance) {
+        $message = '<em>Please provide at least one response.</em>';
+        $errors = [
+          'all_items' => $message,
+        ];
+      }
+    }
     if (!empty($errors)) {
       // Delete any created attachments on invalid submissions.
       if ($fileAttachmentsOnSubmission && $fileEntities) {
