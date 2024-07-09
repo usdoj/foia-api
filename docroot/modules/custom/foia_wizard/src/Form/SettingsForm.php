@@ -11,8 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class SettingsForm extends ConfigFormBase {
 
-  const M_COUNT = 60;
-
   /**
    * Mapping of messages to topics.
    *
@@ -128,6 +126,28 @@ class SettingsForm extends ConfigFormBase {
         'description' => '',
         'messages' => [
           'm49',
+        ],
+      ],
+      'topic8' => [
+        'title' => $this->t('Law Enforcement Records'),
+        'description' => '',
+        'messages' => [
+          'm52',
+          'm53',
+          'm54',
+          'm55',
+          'm56',
+          'm57',
+          'm58',
+          'm59',
+          'm60',
+          'm61',
+          'm62',
+          // 63 is unused
+          'm64',
+          'm65',
+          'm66',
+          'm67',
         ],
       ],
     ];
