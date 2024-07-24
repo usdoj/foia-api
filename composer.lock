@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a06eec7841463e297175476b0c85a825",
+    "content-hash": "30496419ed6397b8badd1b855097f3ba",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3210,6 +3210,60 @@
                 "source": "https://www.drupal.org/project/coder"
             },
             "time": "2023-10-15T09:55:50+00:00"
+        },
+        {
+            "name": "drupal/confirm_leave",
+            "version": "1.0.0-beta6",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/confirm_leave.git",
+                "reference": "8.x-1.0-beta6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/confirm_leave-8.x-1.0-beta6.zip",
+                "reference": "8.x-1.0-beta6",
+                "shasum": "76c06c12742d12e33ad0828524a5837f15a34cfc"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-beta6",
+                    "datestamp": "1720209954",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Mike Priscella",
+                    "homepage": "https://drupal.org/u/mpriscella",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "pookmish",
+                    "homepage": "https://www.drupal.org/user/3059577"
+                }
+            ],
+            "description": "Provides a confirmation popup when a user tries to leave an edit form after modifying content.",
+            "homepage": "https://drupal.org/project/confirm_leave",
+            "keywords": [
+                "confirm",
+                "confirm leave",
+                "leave"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/confirm_leave"
+            }
         },
         {
             "name": "drupal/consumers",
@@ -19309,6 +19363,7 @@
         "acquia/blt-behat": 20,
         "drupal/auto_entitylabel": 10,
         "drupal/business_rules": 20,
+        "drupal/confirm_leave": 10,
         "drupal/dbug": 20,
         "drupal/entity_clone": 10,
         "drupal/feeds": 20,
