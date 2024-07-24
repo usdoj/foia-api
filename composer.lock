@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "592fc71d69a8513332b3a748a88dcb8c",
+    "content-hash": "a18d1f34801b24298569eccc2d5fde11",
     "packages": [
         {
             "name": "acquia/blt",
@@ -8349,6 +8349,65 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/roleassign",
                 "issues": "https://www.drupal.org/project/issues/roleassign"
+            }
+        },
+        {
+            "name": "drupal/rules",
+            "version": "3.0.0-alpha8",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/rules.git",
+                "reference": "8.x-3.0-alpha8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/rules-8.x-3.0-alpha8.zip",
+                "reference": "8.x-3.0-alpha8",
+                "shasum": "22a44298b98000697efd86a29a8df1c0ce0bf44f"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10",
+                "drupal/typed_data": "^1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-3.0-alpha8",
+                    "datestamp": "1696376270",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9 || ^10"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "fago",
+                    "homepage": "https://www.drupal.org/user/16747"
+                },
+                {
+                    "name": "klausi",
+                    "homepage": "https://www.drupal.org/user/262198"
+                },
+                {
+                    "name": "TR",
+                    "homepage": "https://www.drupal.org/user/202830"
+                }
+            ],
+            "description": "React on events and conditionally evaluate actions.",
+            "homepage": "https://www.drupal.org/project/rules",
+            "support": {
+                "source": "https://git.drupalcode.org/project/rules",
+                "issues": "https://www.drupal.org/project/issues/rules"
             }
         },
         {
@@ -19334,6 +19393,7 @@
         "drupal/node_revision_delete": 10,
         "drupal/panelizer": 20,
         "drupal/precision_modifier": 10,
+        "drupal/rules": 15,
         "drupal/schemata": 10,
         "drupal/simplesamlphp_auth": 5,
         "drupal/typed_data": 10,
