@@ -711,6 +711,7 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -1214,7 +1215,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - user.roles
       tags:
         - 'config:field.storage.foia_request.field_agency_component'
@@ -1277,7 +1277,6 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
-        - user
         - user.roles
       tags:
         - 'config:field.storage.foia_request.field_agency_component'
@@ -1312,7 +1311,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - user.roles
       tags:
         - 'config:field.storage.foia_request.field_agency_component'

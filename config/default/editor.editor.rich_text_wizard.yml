@@ -35,8 +35,10 @@ settings:
         - heading5
         - heading6
     ckeditor5_list:
-      reversed: true
-      startIndex: true
+      properties:
+        reversed: true
+        startIndex: true
+      multiBlock: true
     ckeditor5_sourceEditing:
       allowed_tags:
         - '<p class>'
@@ -51,4 +53,5 @@ settings:
         -
           label: 'Eyebrow text'
           element: '<span class="eyebrow">'
-image_upload: {  }
+image_upload:
+  status: false
