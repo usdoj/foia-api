@@ -11,7 +11,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.3'
       - name: Set up ddev
         uses: ddev/github-action-setup-ddev@v1
       - name: Set up the site
@@ -24,7 +24,7 @@ jobs:
       - name: Validate code
         run: ddev exec blt validate --no-interaction
       - name: Run tests
-        run: ddev exec vendor/bin/behat --config=tests/behat/behat.yml --stop-on-failure --strict
+        run: ddev exec vendor/bin/behat --config=tests/behat/behat.yml --stop-on-failure --strict --format=progress
       - name: Upload screenshots of failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@v3
