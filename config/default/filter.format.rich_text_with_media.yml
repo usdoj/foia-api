@@ -15,24 +15,6 @@ name: 'Rich Text with Media'
 format: rich_text_with_media
 weight: 1
 filters:
-  filter_align:
-    id: filter_align
-    provider: filter
-    status: true
-    weight: -49
-    settings: {  }
-  filter_caption:
-    id: filter_caption
-    provider: filter
-    status: true
-    weight: -48
-    settings: {  }
-  filter_htmlcorrector:
-    id: filter_htmlcorrector
-    provider: filter
-    status: true
-    weight: -47
-    settings: {  }
   editor_file_reference:
     id: editor_file_reference
     provider: editor
@@ -45,6 +27,24 @@ filters:
     status: true
     weight: -41
     settings: {  }
+  filter_align:
+    id: filter_align
+    provider: filter
+    status: true
+    weight: -49
+    settings: {  }
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: false
+    weight: -44
+    settings: {  }
+  filter_caption:
+    id: filter_caption
+    provider: filter
+    status: true
+    weight: -48
+    settings: {  }
   filter_html:
     id: filter_html
     provider: filter
@@ -54,12 +54,6 @@ filters:
       allowed_html: '<br> <p> <h1> <h2> <h3> <h4> <h5> <h6> <strong> <em> <code class="language-*"> <pre> <s> <sub> <sup> <blockquote> <a href> <ul> <ol start> <li> <hr> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption> <img src alt data-entity-uuid data-entity-type height width data-caption data-align> <drupal-media data-entity-type data-entity-uuid alt data-caption data-align>'
       filter_html_help: true
       filter_html_nofollow: false
-  filter_autop:
-    id: filter_autop
-    provider: filter
-    status: false
-    weight: -44
-    settings: {  }
   filter_html_escape:
     id: filter_html_escape
     provider: filter
@@ -71,6 +65,18 @@ filters:
     provider: filter
     status: true
     weight: -42
+    settings: {  }
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: -47
+    settings: {  }
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: -45
     settings: {  }
   filter_url:
     id: filter_url
@@ -93,9 +99,3 @@ filters:
       allowed_media_types:
         audio_file: audio_file
         document: document
-  filter_image_lazy_load:
-    id: filter_image_lazy_load
-    provider: filter
-    status: true
-    weight: -45
-    settings: {  }
