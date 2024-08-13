@@ -21,16 +21,16 @@
         "drupal/admin_toolbar": "^3.4",
         "drupal/auto_entitylabel": "^3.0@beta",
         "drupal/autologout": "^1.4",
-        "drupal/autosave_form": "^1.4",
+        "drupal/autosave_form": "^1.6",
         "drupal/bartik": "^1.0",
         "drupal/business_rules": "dev-3286389-drupal-10-compatibility",
         "drupal/ckeditor": "^1.0",
+        "drupal/config_split": "^2.0",
         "drupal/consumers": "^1.17",
-        "drupal/core": "~10.1.8",
-        "drupal/core-composer-scaffold": "~10.1.8",
-        "drupal/core-project-message": "~10.1.8",
-        "drupal/core-recommended": "~10.1.8",
-        "drupal/core-vendor-hardening": "~10.1.8",
+        "drupal/core-composer-scaffold": "^10.3.1",
+        "drupal/core-project-message": "^10.3.1",
+        "drupal/core-recommended": "^10.3.1",
+        "drupal/core-vendor-hardening": "^10.3.1",
         "drupal/core_context": "*",
         "drupal/ctools": "^3.14",
         "drupal/ctools_block": "^4.0",
@@ -63,6 +63,7 @@
         "drupal/lightning_core": "^6.0",
         "drupal/lightning_layout": "^3.0.1",
         "drupal/lightning_media": "^5.0.0",
+        "drupal/lightning_media_video": "^5.0",
         "drupal/lightning_workflow": "^4.0.0",
         "drupal/maillog": "^1.1",
         "drupal/mailsystem": "^4.4.0",
@@ -72,7 +73,6 @@
         "drupal/metatag": "^2.0.0",
         "drupal/migrate_plus": "^6.0.1",
         "drupal/migrate_tools": "^6.0.1",
-        "drupal/mysql56": "^1.6.0",
         "drupal/node_edit_protection": "^1.1.0",
         "drupal/node_revision_delete": "^1.0@beta",
         "drupal/openapi": "^2.1.0",
@@ -88,7 +88,7 @@
         "drupal/rdf": "^2.0",
         "drupal/restui": "^1.21.0",
         "drupal/roleassign": "^2.0.0",
-        "drupal/rules": "3.x-dev@dev",
+        "drupal/rules": "^3.0@alpha",
         "drupal/samlauth": "^3.9",
         "drupal/schemata": "^1.0@beta",
         "drupal/search_api": "^1.29",
@@ -169,8 +169,8 @@
             "drupal/core": {
                 "FOIA-32: Dynamically provide action plugins for every moderation state change": "https://www.drupal.org/files/issues/2019-11-20/2797583_provide_moderation_states_as_actions_128.patch",
                 "FOIA-32: Exclude Agency/Component from validation for bulk publishing": "./patches/FOIA-32-validator.patch",
-                "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2020-02-07/2869592-remove-update-warning-34.patch",
-                "Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2021-10-07/drupal-simple-decimal-validation-ver_9.2.7-2230909-234.patch"
+                "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2024-07-16/2869592-disabled-update-module-71.patch",
+                "2230909 - Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2024-06-04/2230909-321.patch"
             },
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/2022-10-04/password_policy_field_last_password_reset_unknown_error_2771129-134.patch"
@@ -195,6 +195,12 @@
             },
             "drupal/samlauth": {
                 "Add option to show SAML link on user login page": "https://git.drupalcode.org/project/samlauth/-/merge_requests/13.patch"
+            },
+            "drupal/lightning_core": {
+              "Issue 3408813 - Fixes functions in ConfigEntityDescriptionTrait.php for Drupal 10.3": "https://www.drupal.org/files/issues/2024-07-17/lightning-core-config-entity-description.patch"
+            },
+            "drupal/lightning_media": {
+              "Issue 3456919 - Fixes error in github action test Drupal 10.3": "https://www.drupal.org/files/issues/2024-07-12/mapping-definition-entity-browser-upload-validators-3456919.patch"
             }
         },
         "installer-types": [
