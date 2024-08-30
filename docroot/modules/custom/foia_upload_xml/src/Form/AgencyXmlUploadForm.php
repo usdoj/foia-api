@@ -75,6 +75,7 @@ class AgencyXmlUploadForm extends FormBase {
         'file_validate_extensions' => ['xml'],
       ],
       '#required' => TRUE,
+      '#file_type' => 'document',
     ];
 
     $form['next_step'] = [
