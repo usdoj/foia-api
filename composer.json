@@ -20,12 +20,13 @@
         "drupal/address": "^1.12.0",
         "drupal/admin_toolbar": "^3.4",
         "drupal/auto_entitylabel": "^3.0@beta",
-        "drupal/autologout": "^1.4",
+        "drupal/autologout": "^2.0",
         "drupal/autosave_form": "^1.6",
         "drupal/bartik": "^1.0",
         "drupal/business_rules": "dev-3286389-drupal-10-compatibility",
         "drupal/ckeditor": "^1.0",
         "drupal/config_split": "^2.0",
+        "drupal/confirm_leave": "^1.0@beta",
         "drupal/consumers": "^1.17",
         "drupal/core-composer-scaffold": "^10.3.1",
         "drupal/core-project-message": "^10.3.1",
@@ -55,6 +56,7 @@
         "drupal/insert": "^3.0@beta",
         "drupal/jquery_once": "^1.0",
         "drupal/jquery_ui_accordion": "^2.0",
+        "drupal/js_cookie": "^1.0",
         "drupal/jsonapi_extras": "^3.23",
         "drupal/layout_builder_restrictions": "^2.18",
         "drupal/layout_builder_styles": "^2.0",
@@ -170,7 +172,9 @@
                 "FOIA-32: Dynamically provide action plugins for every moderation state change": "https://www.drupal.org/files/issues/2019-11-20/2797583_provide_moderation_states_as_actions_128.patch",
                 "FOIA-32: Exclude Agency/Component from validation for bulk publishing": "./patches/FOIA-32-validator.patch",
                 "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2024-07-16/2869592-disabled-update-module-71.patch",
-                "2230909 - Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2024-06-04/2230909-321.patch"
+                "2230909 - Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2024-06-04/2230909-321.patch",
+                "Hacks related to file_entity to get XML upload to work": "./patches/managed-file-hacks-for-xml-upload.patch",
+                "More hacks related to action module to get XML upload to work": "./patches/migrate-action-hack-for-xml-upload.patch"
             },
             "drupal/password_policy": {
                 "Config install issues": "https://www.drupal.org/files/issues/2022-10-04/password_policy_field_last_password_reset_unknown_error_2771129-134.patch"
@@ -201,6 +205,9 @@
             },
             "drupal/lightning_media": {
               "Issue 3456919 - Fixes error in github action test Drupal 10.3": "https://www.drupal.org/files/issues/2024-07-12/mapping-definition-entity-browser-upload-validators-3456919.patch"
+            },
+            "drupal/autologout": {
+              "Avoid problematic interactions with the confirm_leave module": "./patches/autologout-support-for-confirm_leave.patch"
             }
         },
         "installer-types": [

@@ -21,6 +21,7 @@ jobs:
           ddev drush cim
           ddev drush cr
           ddev drush pmu samlauth
+          ddev drush pmu confirm_leave
       - name: Validate code
         run: ddev exec blt validate --no-interaction
       - name: Run tests
