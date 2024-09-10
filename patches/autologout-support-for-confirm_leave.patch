@@ -1,0 +1,13 @@
+diff --git a/js/autologout.js b/js/autologout.js
+index ca3fe7e..fe91a7b 100644
+--- a/js/autologout.js
++++ b/js/autologout.js
+@@ -196,6 +196,8 @@
+       }
+ 
+       function logout() {
++        // Reset forms so that the confirm_leave module doesn't interfere.
++        $('form').removeClass('form-updated');
+         if (localSettings.use_alt_logout_method) {
+           let logoutUrl = drupalSettings.path.baseUrl + "autologout_alt_logout";
+           triggerLogoutEvent('alternative', logoutUrl);
