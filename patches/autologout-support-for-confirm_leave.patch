@@ -1,0 +1,13 @@
+diff --git a/js/autologout.js b/js/autologout.js
+index ca3fe7e..8c0a4a9 100644
+--- a/js/autologout.js
++++ b/js/autologout.js
+@@ -196,6 +196,8 @@
+       }
+ 
+       function logout() {
++        // Prevent the confirm_leave module from interfering.
++        window.onbeforeunload = function () {};
+         if (localSettings.use_alt_logout_method) {
+           let logoutUrl = drupalSettings.path.baseUrl + "autologout_alt_logout";
+           triggerLogoutEvent('alternative', logoutUrl);
