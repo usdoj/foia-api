@@ -18,6 +18,7 @@ use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionForm;
 use Drupal\webform\WebformSubmissionInterface;
 use Psr\Log\LoggerInterface;
+use ReCaptcha\ReCaptcha;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -191,9 +192,23 @@ class WebformSubmissionResource extends ResourceBase {
 
     $values['data'] = $data;
 
-    // Validate submission.
     $submissionErrors = WebformSubmissionForm::validateFormValues($values);
     $errors = $fileErrors ? array_merge((array) $submissionErrors, $fileErrors) : $submissionErrors;
+
+    // Validate recaptcha.
+    $captcha_errors = [];
+    $captcha = $values['data']['captcha'] ;
+    $captcha_errors = $this->validateCaptcha($captcha);
+
+    if (!empty($captcha_errors)) {
+      // The react front end will know that 401 means the captcha failed and
+      // display the appropriate message.
+      $statusCode = 401;
+      $message = t('The captcha failed validation.');
+      $this->logSubmission($statusCode, $message, $agencyComponent);
+      return new ModifiedResourceResponse(['errors' => $captcha_errors], $statusCode);
+    }
+
     if ($webformId !== 'wizard_feedback' && empty($errors)) {
       // Validate emal, phone and address,
       // any one of those three not blank, it should pass.
@@ -253,6 +268,98 @@ class WebformSubmissionResource extends ResourceBase {
     $this->logSubmission($statusCode, $message, $agencyComponent);
     return new ModifiedResourceResponse(['submission_id' => $submissionId], $statusCode);
   }
+
+  /**
+   * Validates that the submitted reCAPTCHA ( google ) is correct. 
+   *
+   * @param string $captca
+   *   The submitted captcha value.
+   *
+   * @return array
+   *   Returns an array of errors, empty if the captcha passes.
+   *
+   * See the function in the recaptcha.module which this is based off of (but
+   * that one didn't work when called directly, failed to find the captcha
+   * value).
+   */
+  protected function validateCaptcha(string $captcha) {
+    $errors = [];
+
+    $this->logger->info("validateCaptcha -- captcha: %captcha%", ['%captcha%' => $captcha]);
+
+    $config = \Drupal::config('recaptcha.settings');
+    $recaptcha_secret_key = $config->get('secret_key');
+
+    if (empty($captcha) || empty($recaptcha_secret_key)) {
+      $this->logger->info("validateCaptcha: response or key is empty - key: %key% captcha: %captcha%",
+        [
+          '%key%' => $recaptcha_secret_key,
+          '%captcha' => $captcha
+        ]
+      );
+      return ["captcha" => "Empty Captcha"];
+    }
+
+    // Use Drupal::httpClient() to circumvent all issues with the Google library.
+    $drupal8post = \Drupal::service('recaptcha.drupal8post');
+    $recaptcha = new ReCaptcha($recaptcha_secret_key, $drupal8post);
+
+    // Ensures the hostname matches. Required if "Domain Name Validation" is
+    // disabled for credentials.
+    if ($config->get('verify_hostname')) {
+      $recaptcha->setExpectedHostname(\Drupal::request()->getHost());
+    }
+
+    $resp = $recaptcha->verify(
+      $captcha,
+      \Drupal::request()->getClientIp()
+    );
+
+    if ($resp->isSuccess()) {
+      // Verified!
+      $this->logger->info("validateCaptcha: captcha passed.");
+      return [];
+    }
+    else {
+      // Error code reference, https://developers.google.com/recaptcha/docs/verify
+      $error_codes = [
+        'action-mismatch' => t('Expected action did not match.'),
+        'apk_package_name-mismatch' => t('Expected APK package name did not match.'),
+        'bad-response' => t('Did not receive a 200 from the service.'),
+        'bad-request' => t('The request is invalid or malformed.'),
+        'connection-failed' => t('Could not connect to service.'),
+        'invalid-input-response' => t('The response parameter is invalid or malformed.'),
+        'invalid-input-secret' => t('The secret parameter is invalid or malformed.'),
+        'invalid-json' => t('The json response is invalid or malformed.'),
+        'missing-input-response' => t('The response parameter is missing.'),
+        'missing-input-secret' => t('The secret parameter is missing.'),
+        'hostname-mismatch' => t('Expected hostname did not match.'),
+      ];
+      $info_codes = [
+        'challenge-timeout' => t('Challenge timeout.'),
+        'score-threshold-not-met' => t('Score threshold not met.'),
+        'timeout-or-duplicate' => t('The challenge response timed out or was already verified.'),
+        'unknown-error' => t('Not a success, but no error codes received!'),
+      ];
+      foreach ($resp->getErrorCodes() as $code) {
+        if (isset($info_codes[$code])) {
+          $this->logger->info("FOIA API validateCaptcha -- info code: %info%", ['%info%' => $info_codes[$code]]);
+        }
+        else {
+          if (!isset($error_codes[$code])) {
+            $code = 'unknown-error';
+          }
+          $this->logger->info("FOIA API validateCaptcha -- error code: %err%", ['%err%' => $error_codes[$code]]);
+          $errors[$code] = $error_codes[$code];
+        }
+      }
+    }
+    $this->logger->error("FOIA API validateCaptcha -- failing Captcha %errors%", ['%errors%' => var_export($errors,TRUE)]);
+
+    return $errors;
+  }
+
+
 
   /**
    * Logs a submission with HTTP status code, message, and optional component.
