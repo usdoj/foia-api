@@ -197,7 +197,7 @@ class WebformSubmissionResource extends ResourceBase {
 
     // Validate recaptcha.
     $captcha_errors = [];
-    $captcha = $values['data']['captcha'] ;
+    $captcha = $values['data']['captcha'];
     $captcha_errors = $this->validateCaptcha($captcha);
 
     if (!empty($captcha_errors)) {
@@ -270,17 +270,17 @@ class WebformSubmissionResource extends ResourceBase {
   }
 
   /**
-   * Validates that the submitted reCAPTCHA ( google ) is correct. 
+   * Validates that the submitted reCAPTCHA ( google ) is correct.
    *
-   * @param string $captca
+   * @param string $captcha
    *   The submitted captcha value.
    *
    * @return array
    *   Returns an array of errors, empty if the captcha passes.
    *
-   * See the function in the recaptcha.module which this is based off of (but
-   * that one didn't work when called directly, failed to find the captcha
-   * value).
+   *   See the function in the recaptcha.module which this is based off of (but
+   *   that one didn't work when called directly, failed to find the captcha
+   *   value).
    */
   protected function validateCaptcha(string $captcha) {
     $errors = [];
@@ -294,13 +294,14 @@ class WebformSubmissionResource extends ResourceBase {
       $this->logger->info("validateCaptcha: response or key is empty - key: %key% captcha: %captcha%",
         [
           '%key%' => $recaptcha_secret_key,
-          '%captcha' => $captcha
+          '%captcha' => $captcha,
         ]
       );
       return ["captcha" => "Empty Captcha"];
     }
 
-    // Use Drupal::httpClient() to circumvent all issues with the Google library.
+    // Use Drupal::httpClient() to circumvent all issues with the Google
+    // library.
     $drupal8post = \Drupal::service('recaptcha.drupal8post');
     $recaptcha = new ReCaptcha($recaptcha_secret_key, $drupal8post);
 
@@ -321,7 +322,8 @@ class WebformSubmissionResource extends ResourceBase {
       return [];
     }
     else {
-      // Error code reference, https://developers.google.com/recaptcha/docs/verify
+      // Error code reference,
+      // https://developers.google.com/recaptcha/docs/verify
       $error_codes = [
         'action-mismatch' => t('Expected action did not match.'),
         'apk_package_name-mismatch' => t('Expected APK package name did not match.'),
@@ -354,12 +356,13 @@ class WebformSubmissionResource extends ResourceBase {
         }
       }
     }
-    $this->logger->error("FOIA API validateCaptcha -- failing Captcha %errors%", ['%errors%' => var_export($errors,TRUE)]);
+    $this->logger->error("FOIA API validateCaptcha -- failing Captcha %errors%",
+      [
+        '%errors%' => var_export($errors, TRUE),
+      ]);
 
     return $errors;
   }
-
-
 
   /**
    * Logs a submission with HTTP status code, message, and optional component.
