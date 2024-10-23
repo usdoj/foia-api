@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "drupal/core*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      drupal-core:
+        patterns:
+          - "drupal/core"
+          - "drupal/core-composer-scaffold"
+          - "drupal/core-recommended"
+          - "drupal/core-dev"
