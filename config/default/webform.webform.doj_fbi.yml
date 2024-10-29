@@ -39,10 +39,14 @@ elements: |-
     '#type': textfield
     '#title': 'Your organization'
     '#maxlength': 100
-    '#states':
-      required:
-        ':input[name="fbi_requester_type"]':
-          value: organization
+    '#pattern': '^[a-zA-Z0-9 ]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
+  email:
+    '#type': email
+    '#title': 'Email address'
+    '#help': |-
+      In order for us to communicate with you about your request,<br />
+      you must provide at least one form of contact information.
   phone_number:
     '#type': tel
     '#title': 'Phone number'
@@ -53,39 +57,63 @@ elements: |-
     '#title': 'Mailing address 1'
     '#maxlength': 50
     '#required': true
+    '#pattern': '^[a-zA-Z0-9 ]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
   address_line2:
     '#type': textfield
     '#title': 'Mailing address 2'
     '#maxlength': 50
+    '#pattern': '^[a-zA-Z0-9 ]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
   address_city:
     '#type': textfield
     '#title': City
     '#maxlength': 50
-    '#required': true
-  address_state_province:
-    '#type': textfield
-    '#title': 'State or province'
     '#pattern': '^[a-zA-Z ]+$'
-    '#pattern_error': 'Please use only alphabetical characters.'
+    '#pattern_error': 'Please use only alphabetical characters and spaces.'
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
     '#maxlength': 50
     '#required': true
     '#pattern': '^[a-zA-Z0-9 ]*$'
-    '#pattern_error': 'Please use only numeric characters.'
-  address_country:
+    '#pattern_error': 'Please use only letters and numbers.'
+  fbi_address_type:
+    '#type': select
+    '#title': 'Address Type'
+    '#options':
+      domestic: Domestic
+      nondomestic: Non-Domestic
+    '#required': true
+  fbi_state_domestic:
+    '#type': select
+    '#title': State
+    '#options': state_codes
+    '#states':
+      visible:
+        ':input[name="fbi_address_type"]':
+          value: domestic
+      required:
+        ':input[name="fbi_address_type"]':
+          value: domestic
+  fbi_state_non_domestic:
+    '#type': textfield
+    '#title': State
+    '#states':
+      visible:
+        ':input[name="fbi_address_type"]':
+          value: nondomestic
+  fbi_country_non_domestic:
     '#type': select
     '#title': Country
     '#options': country_codes
-    '#required': true
-    '#default_value': US
-  request_description:
-    '#type': textarea
-    '#title': 'Your request'
-    '#help': "A brief and clear description of the information you'd like to receive. Please be as specific as possible."
-    '#maxlength': 4000
-    '#required': true
+    '#states':
+      visible:
+        ':input[name="fbi_address_type"]':
+          value: nondomestic
+      required:
+        ':input[name="fbi_address_type"]':
+          value: nondomestic
   fbi_request_subject:
     '#type': radios
     '#title': 'What is the subject of your request?'
@@ -94,6 +122,18 @@ elements: |-
       deceased: 'Deceased Individual'
       other: 'All Other Subjects'
     '#required': true
+  fbi_request_description:
+    '#type': textarea
+    '#title': 'Your request'
+    '#help': "<p>A brief and clear description of the information you'd like to receive. Please be as specific as possible.</p>"
+    '#maxlength': 4000
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: other
+      required:
+        ':input[name="fbi_request_subject"]':
+          value: other
   fbi_requester_type:
     '#type': radios
     '#title': 'I am making this request on behalf of'
@@ -147,9 +187,9 @@ elements: |-
   fee_amount_willing:
     '#type': textfield
     '#title': 'The amount of money you’re willing to pay in fees, if any'
-    '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'
-    '#pattern': '^[0-9]*$'
-    '#pattern_error': 'Please use only numbers.'
+    '#help': '<p>There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.</p>'
+    '#pattern': '^([0-9]|[1-9][0-9]{1,4}|99999)$'
+    '#pattern_error': 'Please use only numbers, from 0 to 99999.'
     '#counter_type': word
     '#counter_maximum': 1
     '#states':
@@ -178,20 +218,6 @@ elements: |-
       visible:
         ':input[name="expedited_processing"]':
           value: 'yes'
-  attachments_supporting_documentation:
-    '#type': managed_file
-    '#title': 'Upload additional documentation'
-    '#multiple': true
-    '#help': |-
-      <ul>
-      	<li>Acceptable formats: pdf, doc, docx, png, gif, jpg, jpeg. Max file size: 10MB</li>
-      	<li>If you are seeking records about yourself, additional documentation is required to verify your identity. <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13">28 C.F.R. &sect; 16.3(a)(3)</a>. &nbsp;If you are a U.S. citizen and sign the below Penalty of Perjury section additional documentation is not required or you can use this <a href="https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf">form</a> to verify your identity.</li>
-      	<li>If you are requesting records on yourself and need to authorize release of information to another person, please use this <a href="https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf">form</a>.&nbsp;</li>
-      	<li>If the subject of your request is a deceased individual, you can include proof-of-death documentation.</li>
-      </ul>
-    '#max_filesize': '10'
-    '#file_extensions': 'pdf doc docx png gif jpg jpeg'
-    '#sanitize': true
   deceased_name_first:
     '#type': textfield
     '#title': "Deceased Individual's First Name"
@@ -292,6 +318,102 @@ elements: |-
       visible:
         ':input[name="fbi_request_subject"]':
           value: deceased
+  myself_name_first:
+    '#type': textfield
+    '#title': "First Party's First Name"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      required:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  myself_name_middle:
+    '#type': textfield
+    '#title': "First Party's Middle Name"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  myself_name_last:
+    '#type': textfield
+    '#title': "First Party's Last Name"
+    '#maxlength': 255
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      required:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  myself_social_security_number:
+    '#type': textfield
+    '#title': "First Party's Social Security Number"
+    '#pattern': '^(?!666|000|9\d{2})\d{3}-(?!00)\d{2}-(?!0{4})\d{4}$'
+    '#pattern_error': 'Social Security Number must be entered in XXX-XX-XXXX format.'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  myself_alien_registration_number:
+    '#type': textfield
+    '#title': "First Party's Alien Registration Number"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z0-9]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  myself_fbi_number:
+    '#type': textfield
+    '#title': "First Party's FBI Number"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z0-9]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  myself_place_of_birth:
+    '#type': textfield
+    '#title': "First Party's Place of Birth"
+    '#maxlength': 100
+    '#pattern': '^[a-zA-Z0-9 ]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  myself_date_of_birth:
+    '#type': textfield
+    '#title': "First Party's Date of Birth"
+    '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(17|18|19|20)\d\d'
+    '#pattern_error': 'Please use the date format: MM/DD/YYYY'
+    '#states':
+      required:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
+  myself_additional_information:
+    '#type': textarea
+    '#title': "First Party's Additional Information"
+    '#description': 'Provide additional information about the subject of your request. Please provide as much information as possible.'
+    '#maxlength': 4000
+    '#states':
+      visible:
+        ':input[name="fbi_request_subject"]':
+          value: myself
   fbi_citizen_dob:
     '#type': textfield
     '#title': 'Date of birth'
@@ -321,6 +443,8 @@ elements: |-
   fbi_citizen_signature:
     '#type': textfield
     '#title': 'Signature (typed)'
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters and spaces.'
     '#states':
       required:
         ':input[name="fbi_request_subject"]':
@@ -334,6 +458,20 @@ elements: |-
       required:
         ':input[name="fbi_request_subject"]':
           value: myself
+  attachments_supporting_documentation:
+    '#type': managed_file
+    '#title': 'Upload additional documentation'
+    '#multiple': true
+    '#help': |-
+      <ul>
+          <li>Acceptable formats: pdf, doc, docx, png, gif, jpg, jpeg. Max file size: 10MB</li>
+          <li>If you are seeking records about yourself, additional documentation is required to verify your identity. <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13">28 C.F.R. &sect; 16.3(a)(3)</a>. &nbsp;If you are a U.S. citizen and sign the below Penalty of Perjury section additional documentation is not required or you can use this <a href="https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf">form</a> to verify your identity.</li>
+          <li>If you are requesting records on yourself and need to authorize release of information to another person, please use this <a href="https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf">form</a>.&nbsp;</li>
+          <li>If the subject of your request is a deceased individual, you can include proof-of-death documentation.</li>
+      </ul>
+    '#max_filesize': '10'
+    '#file_extensions': 'pdf doc docx png gif jpg jpeg'
+    '#sanitize': true
 css: ''
 javascript: ''
 settings:
