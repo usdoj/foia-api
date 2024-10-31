@@ -144,6 +144,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
     $foiaRequestId = ['request_id' => $foiaRequest->id()];
     $submissionValues = array_merge($apiVersion, $agencyInfo, $foiaRequestId, $formValues);
 
+    if (!empty($submissionValues['captcha'])) {
+      unset($submissionValues['captcha']);
+    }
+
     return $submissionValues;
   }
 
