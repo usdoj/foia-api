@@ -59,6 +59,9 @@ class FoiaSubmissionPrettyFormatter {
       'confirmation_id' => $this->webformSubmission->id(),
     ];
     $submissionContents = array_merge($submissionMetadata, $submissionContents);
+    if (!empty($submissionContents['captcha'])) {
+      unset($submissionContents['captcha']);
+    }
     $this->submissionContents = $submissionContents;
   }
 
