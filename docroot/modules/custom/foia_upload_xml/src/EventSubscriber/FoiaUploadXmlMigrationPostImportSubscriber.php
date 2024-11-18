@@ -114,12 +114,24 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
 
     try {
       $this->getEventDispatcher()
-        ->dispatch(MigrateEvents::PRE_ROW_SAVE, new MigratePreRowSaveEvent($migration, new MigrateMessage(), $row));
+        ->dispatch(
+          new MigratePreRowSaveEvent(
+            $migration,
+            new MigrateMessage(),
+            $row),
+        MigrateEvents::PRE_ROW_SAVE
+        );
       $destination_ids = $id_map->lookupDestinationIds($row->getSourceIdValues());
       $destination_id_values = $destination_ids ? reset($destination_ids) : [];
       $destination_id_values = $destination->import($row, $destination_id_values);
       $this->getEventDispatcher()
-        ->dispatch(MigrateEvents::POST_ROW_SAVE, new MigratePostRowSaveEvent($migration, new MigrateMessage(), $row, $destination_id_values));
+        ->dispatch(
+        new MigratePostRowSaveEvent($migration,
+          new MigrateMessage(),
+          $row,
+          $destination_id_values),
+        MigrateEvents::POST_ROW_SAVE,
+        );
       $destination_id_values = $destination_id_values ?: [];
       $this->setPartialNodeModerationState($destination_id_values);
       $rollback_action = !empty($destination_id_values) ? $destination->rollbackAction() : NULL;
