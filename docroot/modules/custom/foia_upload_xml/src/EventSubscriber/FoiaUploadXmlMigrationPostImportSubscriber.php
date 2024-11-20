@@ -33,7 +33,7 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
    *
    * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
    */
-   protected $eventDispatcher;
+  protected $eventDispatcher;
 
   /**
    * The messenger.
