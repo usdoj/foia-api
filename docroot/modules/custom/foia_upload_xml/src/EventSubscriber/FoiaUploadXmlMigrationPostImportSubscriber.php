@@ -29,6 +29,13 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
   protected $entityTypeManager;
 
   /**
+   * The event dispatcher.
+   *
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $eventDispatcher;
+
+  /**
    * The messenger.
    *
    * @var \Drupal\Core\Messenger\MessengerInterface
@@ -155,7 +162,7 @@ class FoiaUploadXmlMigrationPostImportSubscriber implements EventSubscriberInter
    * Gets the event dispatcher.
    *
    * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
-   *   Return Event Dispatcher servicce if it isn't already set
+   *   Return Event Dispatcher service if it isn't already set
    */
   private function getEventDispatcher() {
     if (!$this->eventDispatcher) {
