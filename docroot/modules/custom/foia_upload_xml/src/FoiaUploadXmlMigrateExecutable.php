@@ -53,7 +53,8 @@ class FoiaUploadXmlMigrateExecutable extends MigrateExecutable {
    *   message.
    */
   protected function getFailureHandler(\Exception $e) {
-    $failedMethod = reset($e->getTrace());
+    $trace = $e->getTrace();
+    $failedMethod = reset($trace);
     $container = \Drupal::getContainer();
     if ($failedMethod['class'] === Extract::class && $e->getMessage() == 'Input should be an array.') {
       return new SectionMissing($e, $container->get('messenger'), $this->migration, $container->get('string_translation'));
