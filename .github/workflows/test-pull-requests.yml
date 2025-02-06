@@ -28,7 +28,7 @@ jobs:
         run: ddev exec vendor/bin/behat --config=tests/behat/behat.yml --stop-on-failure --strict --format=progress
       - name: Upload screenshots of failure
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: screenshots
           path: tests/behat/screenshots/*.png
