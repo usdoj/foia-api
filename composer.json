@@ -5,7 +5,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.3",
         "ext-dom": "*",
         "acquia/blt": "^13.7",
         "acquia/blt-behat": "dev-master",
@@ -111,7 +111,7 @@
         "drupal/views_infinite_scroll": "^2.0.1",
         "drupal/webform": "^6.2.0-beta5",
         "drupal/xmlsitemap": "^1.4.0",
-        "drush/drush": "^12.1",
+        "drush/drush": "^12.4",
         "egulias/email-validator": "^4.0.0",
         "guzzlehttp/guzzle": "^7.7",
         "mglaman/composer-drupal-lenient": "^1.0",
@@ -268,21 +268,22 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "simplesamlphp/composer-module-installer": true,
+            "acquia/blt": true,
+            "acquia/blt-phpcs": true,
             "composer/installers": true,
             "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": true,
-            "oomphinc/composer-installers-extender": true,
-            "acquia/blt-phpcs": true,
-            "drupal/core-vendor-hardening": true,
             "drupal/core-project-message": true,
-            "acquia/blt": true,
+            "drupal/core-vendor-hardening": true,
+            "mglaman/composer-drupal-lenient": true,
+            "oomphinc/composer-installers-extender": true,
             "phpstan/extension-installer": true,
-            "mglaman/composer-drupal-lenient": true
+            "simplesamlphp/composer-module-installer": true,
+            "simplesamlphp/composer-xmlprovider-installer": true
         },
         "platform": {
-            "php": "8.1"
+            "php": "8.3.13"
         }
     },
     "autoload": {
