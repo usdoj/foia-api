@@ -253,13 +253,19 @@ class FoiaUploadXmlCommands extends DrushCommands {
    *
    * @usage foia-upload-xml:clean
    *   Clean (drop) all database tables related to these migrations.
+   *   Example of cleaning all agencies: drush fuxml-clean
+   *   Example of cleaning one agency: drush fuxml-clean --agency=DOJ
    *
    * @command foia-upload-xml:clean
    * @aliases fuxml-clean
    * @bootstrap full
    */
-  public function clean() {
-    $tables = [
+  public function clean(
+    array $options = [
+      'agency' => self::OPT,
+    ],
+  ) {
+    $map_tables = [
       'migrate_map_component',
       'migrate_map_component_iv_statutes',
       'migrate_map_component_ix_personnel',
@@ -329,6 +335,8 @@ class FoiaUploadXmlCommands extends DrushCommands {
       'migrate_map_foia_xiid2',
       'migrate_map_foia_xiie1',
       'migrate_map_foia_xiie2',
+    ];
+    $message_tables = [
       'migrate_message_component',
       'migrate_message_component_iv_statutes',
       'migrate_message_component_ix_personnel',
@@ -399,9 +407,29 @@ class FoiaUploadXmlCommands extends DrushCommands {
       'migrate_message_foia_xiie1',
       'migrate_message_foia_xiie2',
     ];
-    foreach ($tables as $table) {
-      $this->connection->schema()->dropTable($table);
+    if (empty($options['agency'])) {
+      foreach (array_merge($map_tables, $message_tables) as $table) {
+        try {
+          $this->connection->schema()->dropTable($table);
+        }
+        catch (\Exception $e) {
+          echo "\n " . $e->getMessage() . "\n";
+        }
+      }
     }
+    else {
+      foreach ($map_tables as $table) {
+        try {
+          $this->connection->delete($table)
+            ->condition('sourceid2', $options['agency'])
+            ->execute();
+        }
+        catch (\Exception $e) {
+          echo "\n " . $e->getMessage() . "\n";
+        }
+      }
+    }
+    return("\n Script completed.");
   }
 
   /**
