@@ -9,6 +9,9 @@
  * Implements hook_node_delete().
  */
 function foia_upload_xml_node_delete($node) {
+  if ($node->bundle() != 'annual_foia_report_data') {
+    return;
+  }
   try {
     $abbreviation = $node->field_agency->entity->get('field_agency_abbreviation')->value;
   }
