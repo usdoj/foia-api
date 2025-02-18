@@ -10,6 +10,7 @@ use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file_entity\Entity\FileEntity;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
 use Drupal\node\NodeInterface;
+use Drupal\recaptcha_v3\Entity\ReCaptchaV3Action;
 use Drupal\rest\ModifiedResourceResponse;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\webform\Entity\Webform;
