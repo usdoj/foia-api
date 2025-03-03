@@ -10,7 +10,6 @@ use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file_entity\Entity\FileEntity;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
 use Drupal\node\NodeInterface;
-use Drupal\recaptcha_v3\Entity\ReCaptchaV3Action;
 use Drupal\rest\ModifiedResourceResponse;
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\webform\Entity\Webform;
@@ -199,7 +198,7 @@ class WebformSubmissionResource extends ResourceBase {
     // Validate recaptcha.
     $captcha_errors = [];
     $captcha = $values['data']['captcha'];
-    $captcha_errors = $this->validateCaptchaV3($captcha);
+    $captcha_errors = $this->validateCaptcha($captcha);
 
     if (!empty($captcha_errors)) {
       // The react front end will know that 401 means the captcha failed and
@@ -271,7 +270,7 @@ class WebformSubmissionResource extends ResourceBase {
   }
 
   /**
-   * Validates that the submitted reCAPTCHA_v2 ( google ) is correct.
+   * Validates that the submitted reCAPTCHA ( google ) is correct.
    *
    * @param string $captcha
    *   The submitted captcha value.
@@ -363,58 +362,6 @@ class WebformSubmissionResource extends ResourceBase {
       ]);
 
     return $errors;
-  }
-
-  /**
-   * CAPTCHA Callback; Validates the reCAPTCHA v3 code.
-   *
-   * Copied and modified from recaptcha_v3.module.
-   */
-  protected function validateCaptchaV3($captcha_response) {
-
-    // This is hardwired on the reactjs side.
-    $captcha_type_challenge = 'submit';
-    /** @var \Drupal\recaptcha_v3\ReCaptchaV3ActionInterface $recaptcha_v3 */
-    $recaptcha_v3 = ReCaptchaV3Action::load($captcha_type_challenge) ?? ReCaptchaV3Action::create([
-      'id' => '',
-      'label' => '',
-      'threshold' => 1,
-      'challenge' => 'default',
-    ]);
-    // Verify submitted reCAPTCHA v3 token.
-    $verification_response = _recaptcha_v3_verify_captcha_response($recaptcha_v3, $captcha_response);
-
-    if (!$verification_response['success']) {
-      // If we here, then token verification failed.
-      if ($verification_response['error-codes']) {
-        $errors = [];
-
-        $challenge = $recaptcha_v3->getChallenge();
-        if ($challenge === 'default') {
-          $challenge = \Drupal::config('recaptcha_v3.settings')->get('default_challenge');
-        }
-
-        foreach ($verification_response['error-codes'] as $code) {
-          // If we have fallback challenge then do not log the threshold errors.
-          if ($challenge && $code === 'score-threshold-not-met') {
-            continue;
-          }
-          $errors[] = recaptcha_v3_error_by_code($code);
-        }
-
-        if ($errors) {
-          $errors_string = implode(' ', $errors);
-          \Drupal::logger('recaptcha_v3')->error(
-            'Google reCAPTCHA v3 validation failed: @error',
-            ['@error' => $errors_string]
-          );
-        }
-      }
-
-      $error_message = \Drupal::config('recaptcha_v3.settings')->get('error_message');
-    }
-
-    return (bool) $verification_response['success'];
   }
 
   /**
