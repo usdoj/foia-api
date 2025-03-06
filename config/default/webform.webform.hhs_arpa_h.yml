@@ -1,4 +1,4 @@
-uuid: b12fa7d6-3258-4a72-ab6a-ce2efc02bcc5
+uuid: e6ff28b4-6dd4-4e69-b4e6-3d877ae66d97
 langcode: en
 status: open
 dependencies:
@@ -7,48 +7,57 @@ dependencies:
 weight: 0
 open: null
 close: null
-uid: 71
+uid: 4751
 template: false
 archive: false
-id: epa_hq
-title: 'EPA-HQ Form'
+id: hhs_arpa_h
+title: 'HHS-ARPA-H Form'
 description: ''
 categories: {  }
-elements: |-
+elements: |
   name_first:
     '#type': textfield
     '#title': 'First name'
+    '#help': '<span style="font-size:11.0pt"><span style="font-family:Calibri">Name is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.</span></span>'
+    '#required': true
   name_last:
     '#type': textfield
     '#title': 'Last name'
+    '#required': true
   company_organization:
     '#type': textfield
     '#title': 'Your organization'
   email:
     '#type': email
     '#title': 'Email address'
-    '#help': 'In order for us to communicate with you about your request, you must provide at least one form of contact information.'
   phone_number:
     '#type': tel
     '#title': 'Phone number'
+    '#help': '<span style="font-size:11.0pt"><span style="font-family:Calibri">Phone number is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.</span></span>'
+    '#required': true
   fax_number:
     '#type': tel
     '#title': 'Fax number'
   address_line1:
     '#type': textfield
     '#title': 'Mailing address 1'
+    '#help': '<span style="font-size:11.0pt"><span style="font-family:Calibri">Address is required pursuant to <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">45 C.F.R. &sect; 5.22(b)</a>.</span></span>'
+    '#required': true
   address_line2:
     '#type': textfield
     '#title': 'Mailing address 2'
   address_city:
     '#type': textfield
     '#title': City
+    '#required': true
   address_state_province:
     '#type': textfield
     '#title': 'State or province'
+    '#required': true
   address_zip_postal_code:
     '#type': textfield
     '#title': 'Zip or postal code'
+    '#required': true
   address_country:
     '#type': select
     '#title': Country
@@ -68,34 +77,15 @@ elements: |-
     '#type': textarea
     '#maxlength': 10000
     '#title': 'Your request'
-    '#help': "A brief and clear description of the information you'd like to receive. Please be as specific as possible."
+    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
     '#required': true
   fee_waiver:
     '#type': select
     '#title': 'Fee waiver'
-    '#help': |
-      Requests for the waiver or reduction of fees must be submitted along with your request. <a href="https://www.ecfr.gov/current/title-40/chapter-I/subchapter-A/part-2/subpart-A/section-2.107">40 CFR 2.107(l)</a><a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=9e5e6ebc5306b6f37207f25b7db30ac5&amp;mc=true&amp;node=sp40.1.2.a&amp;rgn=div6#se40.1.2_1107">.</a>
-      <p><strong>EPA will make its fee waiver determination based upon information you provide to the following 6 factors.</strong></p>
-
-      <p><em><strong>YOU MUST EXPLAIN HOW YOU MEET ALL 6 CRITERIA</strong></em></p>
-
-      <p><strong>If additional space is needed, please attach your justification with your FOIA request.</strong></p>
-
-      <p><strong>Factor 1. The subject of the request</strong>: Whether the subject of the requested records concerns &quot;the operations or activities of the government.&quot; The subject of the requested records must concern identifiable operations or activities of the federal government, with a connection that is direct and clear, not remote.</p>
-
-      <p><strong>Factor 2. The informative value of the information to be disclosed</strong>: Whether the disclosure is &quot;likely to contribute&quot; to an understanding of government operations or activities. The disclosable portions of the requested records must be meaningfully informative about government operations or activities in order to be &quot;likely to contribute&quot; to an increased public understanding of those operations or activities. The disclosure of information that already is in the public domain, in either a duplicative or a substantially identical form, would not be as likely to contribute to such understanding when nothing new would be added to the public&#39;s understanding.</p>
-
-      <p><strong>Factor 3. The contribution to an understanding of the subject by the public is likely to result from disclosure</strong>: Whether disclosure of the requested information will contribute to &quot;public understanding.&quot; The disclosure must contribute to the understanding of a reasonably broad audience of persons interested in the subject, as opposed to the individual understanding of the requester. A requester&#39;s expertise in the subject area and ability and intention to effectively convey information to the public will be considered. It will be presumed that a representative of the news media will satisfy this consideration.</p>
-
-      <p><strong>Factor 4. The significance of the contribution to public understanding</strong>: Whether the disclosure is likely to contribute &quot;significantly&quot; to public understanding of government operations or activities. The public&#39;s understanding of the subject in question, as compared to the level of public understanding existing prior to the disclosure, must be enhanced significantly by the disclosure. The FOI Office will not make value judgments about whether information that would contribute significantly to public understanding of the operations or activities of the government is &quot;important&quot; enough to be made public.</p>
-
-      <p><strong>Factor 5. The existence and magnitude of a commercial interest</strong>: Whether the requester has a commercial interest that would be furthered by the requested disclosure. The FOI Office will consider any commercial interest of the requester or of any person on whose behalf the requester may be acting, that would be furthered by the requested disclosure. Requesters will be given an opportunity in the administrative process to provide explanatory information regarding this consideration.</p>
-
-      <p><strong>Factor 6. The primary interest in disclosure</strong>: Whether any identified commercial interest of the requester is sufficiently large, in comparison with the public interest in disclosure that disclosure is &quot;primarily in the commercial interest of the requester.&quot; A fee waiver or reduction is justified where the public interest standard is satisfied and that public interest is greater in magnitude than that of any identified commercial interest in disclosure. FOI Offices ordinarily will presume that when a news media requester has satisfied the public interest standard, the public interest will be the interest primarily served by disclosure to that requester. Disclosure to data brokers or others who merely compile and market government information for direct economic return will not be presumed to primarily serve the public interest.</p>
+    '#default_value': 'no'
     '#options':
       'no': 'No'
       'yes': 'Yes'
-    '#default_value': 'no'
   fee_waiver_explanation:
     '#type': textarea
     '#maxlength': 10000
@@ -111,29 +101,20 @@ elements: |-
   expedited_processing:
     '#type': select
     '#title': 'Expedited processing'
-    '#help': |
-      <p><strong>In certain&nbsp;<em>limited circumstances</em>, individual requests can move ahead of other requests on an expedited basis.</strong></p>
-
-      <p>The following factors must be met:</p>
-
-      <p>1. Circumstances in which the lack of expedited treatment could reasonably be expected to pose an imminent threat to the life or physical safety of an individual.</p>
-
-      <p>2. An urgency to inform the public about an actual or alleged Federal government activity, if the information is requested by a person primarily engaged in disseminating information to the public.</p>
+    '#default_value': 'no'
     '#options':
       'no': 'No'
       'yes': 'Yes'
-    '#default_value': 'no'
   expedited_processing_explanation:
     '#type': textarea
-    '#title': 'Justification for expedited processing'
-    '#help': '<p>Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.</p><p>By submitting this request for expedited processing, you confirm that you certify your statement to be true and correct to the best of your knowledge and belief. See 40 C.F.R. Section 2.104(g)((3) and 5 U.S.C. 552(a)(6)(E)(vi).</p>'
     '#maxlength': 10000
+    '#title': 'Justification for expedited processing'
+    '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.'
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
+    '#help': '<p style="margin-top:0pt; margin-bottom:8pt"><span style="font-size:11.0pt"><span style="font-family:Calibri">If you are seeking records about yourself or medical records of another individual, additional documentation is required.&nbsp; See <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=ff0eb065fd89358b1547d280a38fba99&amp;mc=true&amp;node=se45.1.5_122&amp;rgn=div8">44 C.F.R. &sect; 5.22(f)</a></span></span></p>'
     '#multiple': true
-    '#max_filesize': '20'
-    '#file_extensions': 'gif jpg png txt pdf doc docx odf'
 css: ''
 javascript: ''
 settings:
@@ -335,9 +316,9 @@ handlers:
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: _default
+      from_mail: default
       from_options: {  }
-      from_name: _default
+      from_name: default
       reply_to: ''
       return_path: ''
       sender_mail: ''
@@ -351,8 +332,8 @@ handlers:
       attachments: false
       debug: false
       exclude_empty_checkbox: false
+      exclude_attachments: false
       twig: false
       theme_name: ''
       parameters: {  }
-      exclude_attachments: false
 variants: {  }

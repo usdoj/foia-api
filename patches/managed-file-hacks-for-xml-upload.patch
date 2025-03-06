@@ -32,7 +32,7 @@ index 6fcfa8c789..e80041cd22 100644
          $errors = [];
          foreach ($result->getViolations() as $violation) {
 diff --git a/core/modules/file/src/Upload/FileUploadHandler.php b/core/modules/file/src/Upload/FileUploadHandler.php
-index 9f3661871f..cc011f399a 100644
+index 9f3661871f..a8af2ef902 100644
 --- a/core/modules/file/src/Upload/FileUploadHandler.php
 +++ b/core/modules/file/src/Upload/FileUploadHandler.php
 @@ -174,7 +174,7 @@ public function __construct(
@@ -44,7 +44,7 @@ index 9f3661871f..cc011f399a 100644
      if (!$fileExists instanceof FileExists) {
        // @phpstan-ignore-next-line
        $fileExists = FileExists::fromLegacyInt($fileExists, __METHOD__);
-@@ -267,11 +267,16 @@ public function handleFileUpload(UploadedFileInterface $uploadedFile, array $val
+@@ -267,11 +267,19 @@ public function handleFileUpload(UploadedFileInterface $uploadedFile, array $val
          );
        }
  
@@ -57,6 +57,9 @@ index 9f3661871f..cc011f399a 100644
 +      ];
 +      if ($file_type) {
 +        $file_values['type'] = $file_type;
++      }
++      if ($mimeType) {
++        $file_values['filemime'] = $mimeType;
 +      }
 +
 +      $file = File::create($file_values);
