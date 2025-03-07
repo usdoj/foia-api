@@ -1,0 +1,109 @@
+<?php
+
+/**
+ * @file
+ * FOIA Upload XML module hook implementations.
+ */
+
+/**
+ * Implements hook_node_delete().
+ */
+function foia_upload_xml_node_delete($node) {
+  if ($node->bundle() != 'annual_foia_report_data') {
+    return;
+  }
+  try {
+    $abbreviation = $node->field_agency->entity->get('field_agency_abbreviation')->value;
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('foia_upload_xml')->notice(
+      'Could not clean XML upload for deleted node ' . $node->getTitle() . ': ' . $e->getMessage()
+    );
+    return;
+  }
+  $tables = [
+    'migrate_map_component',
+    'migrate_map_component_iv_statutes',
+    'migrate_map_component_ix_personnel',
+    'migrate_map_component_va_requests',
+    'migrate_map_component_vb1_requests',
+    'migrate_map_component_vb2_requests',
+    'migrate_map_component_vb3_requests',
+    'migrate_map_component_via_disposition',
+    'migrate_map_component_vib_disposition',
+    'migrate_map_component_vic1_applied_exemptions',
+    'migrate_map_component_vic2_nonexemption_denial',
+    'migrate_map_component_vic3_other_denial',
+    'migrate_map_component_vic4_response_time',
+    'migrate_map_component_vic5_oldest_pending',
+    'migrate_map_component_viia_processed_requests',
+    'migrate_map_component_viib_processed_requests',
+    'migrate_map_component_viic1_simple_response',
+    'migrate_map_component_viic2_complex_response',
+    'migrate_map_component_viic3_expedited_response',
+    'migrate_map_component_viid_pending_requests',
+    'migrate_map_component_viie_oldest_pending',
+    'migrate_map_component_viiia_expedited_processing',
+    'migrate_map_component_viiib_fee_waiver',
+    'migrate_map_component_x_fees',
+    'migrate_map_component_xia_subsection_c',
+    'migrate_map_component_xib_subsection_a2',
+    'migrate_map_component_xiia',
+    'migrate_map_component_xiib',
+    'migrate_map_component_xiic',
+    'migrate_map_component_xiid1',
+    'migrate_map_component_xiid2',
+    'migrate_map_component_xiie1',
+    'migrate_map_component_xiie2',
+    'migrate_map_foia_agency_report',
+    'migrate_map_foia_iv_details',
+    'migrate_map_foia_iv_statute',
+    'migrate_map_foia_ix_personnel',
+    'migrate_map_foia_va_requests',
+    'migrate_map_foia_vb1_requests',
+    'migrate_map_foia_vb2',
+    'migrate_map_foia_vb2_other',
+    'migrate_map_foia_vb3_requests',
+    'migrate_map_foia_via_disposition',
+    'migrate_map_foia_vib_disposition',
+    'migrate_map_foia_vic1_applied_exemptions',
+    'migrate_map_foia_vic2_nonexemption_denial',
+    'migrate_map_foia_vic3',
+    'migrate_map_foia_vic3_other',
+    'migrate_map_foia_vic4_response_time',
+    'migrate_map_foia_vic5_oldest_pending',
+    'migrate_map_foia_viia_processed_requests',
+    'migrate_map_foia_viib_processed_requests',
+    'migrate_map_foia_viic1_simple_response',
+    'migrate_map_foia_viic2_complex_response',
+    'migrate_map_foia_viic3_expedited_response',
+    'migrate_map_foia_viid_pending_requests',
+    'migrate_map_foia_viie_oldest_pending',
+    'migrate_map_foia_viiia_expedited_processing',
+    'migrate_map_foia_viiib_fee_waiver',
+    'migrate_map_foia_x_fees',
+    'migrate_map_foia_xia_subsection_c',
+    'migrate_map_foia_xib_subsection_a2',
+    'migrate_map_foia_xiia',
+    'migrate_map_foia_xiib',
+    'migrate_map_foia_xiic',
+    'migrate_map_foia_xiid1',
+    'migrate_map_foia_xiid2',
+    'migrate_map_foia_xiie1',
+    'migrate_map_foia_xiie2',
+  ];
+  $connection = \Drupal::service('database');
+  foreach ($tables as $table) {
+    try {
+      $connection->delete($table)
+        ->condition('sourceid2', $abbreviation)
+        ->execute();
+    }
+    catch (\Exception $e) {
+      // Abort quietly. If the database table is missing, it probably
+      // means that it was already cleaned via drush, or that this report
+      // was created in the Drupal UI instead via an XML upload.
+      return;
+    }
+  }
+}
