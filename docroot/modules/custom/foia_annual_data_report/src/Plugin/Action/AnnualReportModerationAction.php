@@ -122,12 +122,12 @@ class AnnualReportModerationAction extends ActionBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     $user = !isset($account) ? \Drupal::service('current_user') : $account;
     if ($object->getEntityTypeId() !== 'node') {
       $this->messenger->addError($this->t('Can only perform publishing on node content.'));
       return FALSE;
-    };
+    }
 
     if ($object->bundle() != 'annual_foia_report_data') {
       $this->messenger->addError($this->t('Can only perform publishing on FOIA annual report content.'));

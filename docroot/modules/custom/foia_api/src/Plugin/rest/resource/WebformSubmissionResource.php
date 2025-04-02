@@ -374,7 +374,7 @@ class WebformSubmissionResource extends ResourceBase {
    * @param \Drupal\node\NodeInterface|null $agencyComponent
    *   The agency component the webform is being submitted to.
    */
-  protected function logSubmission($statusCode, $message, NodeInterface $agencyComponent = NULL) {
+  protected function logSubmission($statusCode, $message, ?NodeInterface $agencyComponent = NULL) {
     $context = [
       '%status' => $statusCode,
       '%message' => $message,
