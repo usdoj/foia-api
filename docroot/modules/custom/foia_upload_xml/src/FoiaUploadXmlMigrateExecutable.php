@@ -20,7 +20,7 @@ class FoiaUploadXmlMigrateExecutable extends MigrateExecutable {
   /**
    * {@inheritdoc}
    */
-  public function processRow(Row $row, array $process = NULL, $value = NULL) {
+  public function processRow(Row $row, ?array $process = NULL, $value = NULL) {
     try {
       return parent::processRow($row, $process, $value);
     }
