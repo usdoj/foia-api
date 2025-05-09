@@ -290,6 +290,12 @@ class WebformSubmissionResource extends ResourceBase {
     $config = \Drupal::config('recaptcha.settings');
     $recaptcha_secret_key = $config->get('secret_key');
 
+    // Configuration to disable recaptcha checking to help with debugging.
+    $bypass = $config->get('bypass');
+    if ($bypass == 'yes') {
+      return [];
+    }
+
     if (empty($captcha) || empty($recaptcha_secret_key)) {
       $this->logger->info("validateCaptcha: response or key is empty - key: %key% captcha: %captcha%",
         [
