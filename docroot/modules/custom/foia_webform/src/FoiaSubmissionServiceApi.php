@@ -324,7 +324,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
    *   Otherwise an empty string.
    */
   protected function parseAgencyResponse(Response $response) {
-    $responseBody = Json::decode($response->getBody());
+    $rawResponseBody = $response->getBody();
+    $responseBody = Json::decode($rawResponseBody);
     $responseCode = $response->getStatusCode();
     // Not a json-formatted response like we expected.
     if (empty($responseBody)) {
@@ -334,6 +335,12 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       ];
       $this->addSubmissionError($error);
       $this->log('warning', $error['message']);
+      if (!empty($rawResponseBody)) {
+        $this->log('warning', $rawResponseBody);
+      }
+      else {
+        $this->log('warning', "Response body from component was empty.");
+      }
       return FALSE;
     }
     $id = $responseBody['id'] ?? '';
