@@ -228,7 +228,8 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       if ($e->hasResponse()) {
         $response = $e->getResponse();
         $responseCode = $response->getStatusCode();
-        $responseBody = Json::decode($response->getBody());
+        $rawResponseBody = $response->getBody();
+        $responseBody = Json::decode($rawResponseBody);
         $context = [
           '@http_code' => $responseCode,
         ];
@@ -240,6 +241,13 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
           ];
           $this->addSubmissionError($error);
           $this->log('error', "{$httpCodeMessagePrefix} {$error['message']}", $context);
+          $context['@body'] = $rawResponseBody;
+          if (!empty($rawResponseBody)) {
+            $this->log('error', "{$httpCodeMessagePrefix} raw reponse body = [@body]", $context);
+          }
+          else {
+            $this->log('error', "Response body from component was empty.");
+          }
           return FALSE;
         }
         if (isset($responseBody['code'])) {
@@ -335,11 +343,15 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       ];
       $this->addSubmissionError($error);
       $this->log('warning', $error['message']);
+      $context = [
+        '@http_code' => $responseCode,
+        '@body' => $rawResponseBody,
+      ];
       if (!empty($rawResponseBody)) {
-        $this->log('warning', $rawResponseBody);
+        $this->log('error', "{$httpCodeMessagePrefix} raw reponse body = [@body]", $context);
       }
       else {
-        $this->log('warning', "Response body from component was empty.");
+        $this->log('error', "Response body from component was empty.");
       }
       return FALSE;
     }
