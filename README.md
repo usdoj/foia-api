@@ -10,36 +10,12 @@ Please see the [BLT documentation](http://blt.readthedocs.io/en/latest/) for inf
 
 ### Local setup
 
-Follow steps 1-5 from the [initial setup section](https://docs.acquia.com/blt/developer/onboarding/#initial-set-up) in BLT's docs, as well as 1-3 from the VM steps. Note that you do not need to follow the steps to install npm/nvm on your host machine. If we end up working frontend tasks, these steps can take place within the VM.
-
-VM-related software version suggestions:
-- Virtualbox - 6.0.8
-- Vagrant - 2.2.2
-- Ansible - 2.8.1
-
-Also, be sure to have Vagrant plugins installed:
-- vagrant-auto_network (1.0.3, global)
-- vagrant-exec (0.5.3, global)
-- vagrant-hostmanager (1.8.9, global)
-- vagrant-hostsupdater (1.1.1.160, global)
-- vagrant-share (1.1.9, global)
-- vagrant-vbguest (0.19.0, global)
-
-To export to Word docs via PHPDocX locally:
-- Replace the symlink in docroot/libraries with a downloaded copy of [PHPDocX](https://www.phpdocx.com/) which supports PHP namespaces.
-- Ensure an activated license key is set in the phpdocxconfig.ini file.
-- You may also need to reprovision your environment to ensure that the ZipArchive and Tidy PHP extensions are enabled
-  `vagrant reload --provision`
-
-### Local setup - Docker
-
-As an alternative to Drupal VM, Docker can be used to spin up this project.
+DDev and Docker can be used to spin up this project.
 - Install "Docker" and run the "Docker Desktop".
 - From the repo root, run the command "ddev start".
 - Import the database through drush.
 
 ## Resources
 
-* [Issue queue](https://github.com/18F/beta.foia.gov/issues)
-* [GitHub](https://github.com/usdoj/foia)
-
+* [Issue queue](https://github.com/usdoj/foia-api/issues)
+* [GitHub](https://github.com/usdoj/foia-api)
