@@ -1,0 +1,131 @@
+#!/bin/bash
+
+## Description: Run BEHAT tests
+## Usage: behat
+## Flags: [{"Name":"tags","Shorthand":"t","Usage":"Passes values to the behat tags parameter"},{"Name":"file","Shorthand":"f","Usage":"Calls behat on a specific file, and possibly line. EX: fileName.feature:1234"},{"Name":"definition-list","Shorthand":"d","Usage":"Outputs all definitions"}]
+## Example: 'ddev behat -d' OR 'ddev behat -t smoke_test' OR 'ddev behat -f SmokeTest.feature' OR 'ddev behat -t "@general" -f SmokeTest.feature'
+##
+## USEFUL LINKS:
+## Working with getopts - https://kodekloud.com/blog/bash-getopts/
+
+
+# @todo Make both shorthand and longhand work! Just shorthand works right now.
+
+projDocRoot="/var/www/html"
+behatRoot="${projDocRoot}/tests/behat"
+behatFeatureRoot="${projDocRoot}/tests/behat/features"
+behatExecPath="${projDocRoot}/vendor/bin/behat"
+configPath=${projDocRoot}/tests/behat/behat.yml
+
+source /etc/profile
+
+tags=false
+progress=false
+stopOnFailure=false
+tagValues=''
+file=false
+fileName=''
+
+while getopts 't:f:psd' opt; do
+  case ${opt} in
+    t)
+      tags=true
+      tagValues="$OPTARG"
+      ;;
+    f)
+      file=true
+      fileName="${OPTARG}"
+      behatFeatureFilePath="${behatFeatureRoot}/${fileName}"
+      ;;
+    p)
+      progress=true
+      ;;
+    s)
+      stopOnFailure=true
+      ;;
+    d)
+      exec $behatExecPath --config=$configPath -dl
+      exit
+      ;;
+  esac
+done
+
+# If no options were passed...
+if [ $OPTIND -eq 1 ]; then
+  # Allow user to leave out "-f" when running a feature for expediency.
+  ARGS="$*"
+  if [[ $ARGS == *".feature"* && $ARGS != *"$behatFeatureRoot/"* ]]; then
+    file=true
+    ARGS=${ARGS/features\//""}
+    fileName="$ARGS"
+    behatFeatureFilePath="${behatFeatureRoot}/${ARGS}"
+  fi
+fi
+
+if ($tags && $file); then
+  if (progress); then
+    if ($stopOnFailure); then
+      exec $behatExecPath "${behatFeatureRoot}/${$fileName}" --config=$configPath --tags "$tagValues" --format progress --verbose=2 --stop-on-failure
+    else
+      exec $behatExecPath "${behatFeatureRoot}/${$fileName}" --config=$configPath --tags "$tagValues" --format progress --verbose=2
+    fi
+  else
+    if ($stopOnFailure); then
+      exec $behatExecPath "${behatFeatureRoot}/${$fileName}" --config=$configPath --tags "$tagValues" --verbose=2 --stop-on-failure
+    else
+      exec $behatExecPath "${behatFeatureRoot}/${$fileName}" --config=$configPath --tags "$tagValues" --verbose=2
+    fi
+  fi
+  exit
+
+elif ($tags); then
+  if ($progress); then
+    if ($stopOnFailure); then
+      exec $behatExecPath --config=$configPath --tags "${tagValues}" --config=$configPath --format progress --verbose=2 --stop-on-failure
+    else
+      exec $behatExecPath --config=$configPath --tags "${tagValues}" --config=$configPath --format progress --verbose=2
+    fi
+  else
+    if ($stopOnFailure); then
+      exec $behatExecPath --config=$configPath --tags "${tagValues}" --config=$configPath --verbose=2 --stop-on-failure
+    else
+      exec $behatExecPath --config=$configPath --tags "${tagValues}" --config=$configPath --verbose=2
+    fi
+  fi
+  exit
+
+elif ($file); then
+  if ($progress); then
+    if ($stopOnFailure); then
+      exec $behatExecPath $behatFeatureFilePath --config=$configPath --format progress --verbose --stop-on-failure
+    else
+      exec $behatExecPath $behatFeatureFilePath --config=$configPath --format progress --verbose
+    fi
+  else
+    if ($stopOnFailure); then
+      exec $behatExecPath $behatFeatureFilePath --config=$configPath --verbose=2 --stop-on-failure
+    else
+      exec $behatExecPath $behatFeatureFilePath --config=$configPath --verbose=2
+    fi
+  fi
+  exit
+
+elif ($progress); then
+  echo "Starting Behat Testing (Progress output). Any errors will render on completion."
+  if ($stopOnFailure); then
+    exec $behatExecPath --config=$configPath --format progress --verbose=2 --stop-on-failure
+  else
+    exec $behatExecPath --config=$configPath --format progress --verbose=2
+  fi
+  exit
+fi
+
+# Stop on failure last.
+elif ($stopOnFailure); then
+  echo "Starting Behat Testing - stop on failure. Any errors will render on completion."
+  exec $behatExecPath --config=$configPath --verbose=2 --stop-on-failure
+  exit
+fi
+
+# Default, run all tests!
+exec $behatExecPath --config=$configPath --verbose=2
