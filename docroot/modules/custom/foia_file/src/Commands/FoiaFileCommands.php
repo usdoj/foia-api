@@ -36,7 +36,7 @@ class FoiaFileCommands extends DrushCommands {
     }
 
     $scan_options = '-r --remove --no-summary';
-    $scan_command = "${path_to_executable} ${scan_options} ${path_to_webform_attachments}";
+    $scan_command = $path_to_executable . ' ' . $scan_options . ' ' . $path_to_webform_attachments;
     $startTime = microtime(TRUE);
     $scanOutput = shell_exec($scan_command);
 
