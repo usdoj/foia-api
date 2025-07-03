@@ -221,16 +221,16 @@ function foia_quarterly_data_report_form_quarterly_data_report_validate(array &$
         $subform = $form_state_values['field_quarterly_component_data'][$key]['subform'];
         $prefix = "field_quarterly_component_data][$key][subform][";
         if (empty($subform['field_agency_component'][0]['target_id'])) {
-          $form_state->setErrorByName("${prefix}field_agency_component", 'Please provide the agency.');
+          $form_state->setErrorByName($prefix . "field_agency_component", 'Please provide the agency.');
         }
         if (!is_numeric($subform['field_quarterly_backlogged'][0]['value'])) {
-          $form_state->setErrorByName("${prefix}field_quarterly_backlogged", 'Please provide a value for "Number of requests backlogged".');
+          $form_state->setErrorByName($prefix . "field_quarterly_backlogged", 'Please provide a value for "Number of requests backlogged".');
         }
         if (!is_numeric($subform['field_quarterly_processed'][0]['value'])) {
-          $form_state->setErrorByName("${prefix}field_quarterly_processed", 'Please provide a value for "Number of requests processed".');
+          $form_state->setErrorByName($prefix . "field_quarterly_processed", 'Please provide a value for "Number of requests processed".');
         }
         if (!is_numeric($subform['field_quarterly_received'][0]['value'])) {
-          $form_state->setErrorByName("${prefix}field_quarterly_received", 'Please provide a value for "Number of requests received".');
+          $form_state->setErrorByName($prefix . "field_quarterly_received", 'Please provide a value for "Number of requests received".');
         }
       }
     }
