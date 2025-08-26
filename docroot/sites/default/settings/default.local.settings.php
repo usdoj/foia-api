@@ -138,13 +138,6 @@ $settings['trusted_host_patterns'] = array(
 );
 
 /**
- * Disable authentication via SimpleSAMLphp on local environments.
- *
- * @see: https://www.drupal.org/node/2837029
- */
-$config['simplesamlphp_auth.settings']['activate'] = false;
-
-/**
  * Effectively disable auto-logout.
  */
 $config['autologout.settings']['timeout'] = 86400;

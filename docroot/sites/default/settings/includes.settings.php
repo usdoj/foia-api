@@ -15,10 +15,7 @@ use Acquia\Blt\Robo\Common\EnvironmentDetector;
 if (EnvironmentDetector::isAhEnv()) {
   $ah_group = EnvironmentDetector::getAhGroup();
   $ah_env = EnvironmentDetector::getAhEnv();
-  if ($ah_env == 'ide') {
-    $config['simplesamlphp_auth.settings']['activate'] = false;
-  }
-  else {
+  if ($ah_env != 'ide') {
     $additionalSettingsFiles = [
       '/mnt/gfs/home/' . $ah_group . '/' . $ah_env . '/secrets.settings.php',
     ];

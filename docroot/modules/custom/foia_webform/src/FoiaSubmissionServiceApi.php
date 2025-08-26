@@ -117,7 +117,10 @@ class FoiaSubmissionServiceApi implements FoiaSubmissionServiceInterface {
       $this->log('error', $error['message']);
       return FALSE;
     }
-    return $this->submitToComponentEndpoint($componentEndpoint, $valuesToSubmit);
+    $response = $this->submitToComponentEndpoint($componentEndpoint, $valuesToSubmit);
+    $successMessage = 'Successful API submission -- Component Nid: ' . $this->agencyComponent->id() . ' Request Id: ' . $foiaRequest->id() . '.';
+    \Drupal::logger('foia_webform')->error($successMessage);
+    return $response;
   }
 
   /**
