@@ -13,9 +13,9 @@ use Acquia\Blt\Robo\Common\EnvironmentDetector;
  */
 
 if (EnvironmentDetector::isAhEnv()) {
-  die('This is Acquia');
   $ah_group = EnvironmentDetector::getAhGroup();
   $ah_env = EnvironmentDetector::getAhEnv();
+  die($ah_env);
   if ($ah_env != 'ide') {
     $additionalSettingsFiles = [
       '/mnt/gfs/home/' . $ah_group . '/' . $ah_env . '/secrets.settings.php',
