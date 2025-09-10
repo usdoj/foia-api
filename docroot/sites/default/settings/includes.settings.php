@@ -15,7 +15,6 @@ use Acquia\Blt\Robo\Common\EnvironmentDetector;
 if (EnvironmentDetector::isAhEnv()) {
   $ah_group = EnvironmentDetector::getAhGroup();
   $ah_env = EnvironmentDetector::getAhEnv();
-  die($ah_env);
   if ($ah_env != 'ide') {
     $additionalSettingsFiles = [
       '/mnt/gfs/home/' . $ah_group . '/' . $ah_env . '/secrets.settings.php',
@@ -47,6 +46,7 @@ if (EnvironmentDetector::isAhEnv()) {
       break;
 
     case 'uat':
+      die('here');
       $config['samlauth.authentication']['sp_entity_id'] = 'doj_foia_api_uat';
       $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.stage.max.gov/idp/profile/SAML2/Redirect/SSO';
       $config['samlauth.authentication']['idp_entity_id'] = 'https://login.stage.max.gov/idp/shibboleth';
