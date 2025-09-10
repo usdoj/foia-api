@@ -13,6 +13,7 @@ use Acquia\Blt\Robo\Common\EnvironmentDetector;
  */
 
 if (EnvironmentDetector::isAhEnv()) {
+  die('This is Acquia');
   $ah_group = EnvironmentDetector::getAhGroup();
   $ah_env = EnvironmentDetector::getAhEnv();
   if ($ah_env != 'ide') {
