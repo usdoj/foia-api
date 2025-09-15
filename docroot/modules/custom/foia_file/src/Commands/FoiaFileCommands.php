@@ -38,8 +38,8 @@ class FoiaFileCommands extends DrushCommands {
     $scan_options = '--remove --no-summary --file-list=/tmp/foia-scan-files-$$.txt';
     $scan_files_cmd = 'find ' . $path_to_webform_attachments . ' -type f > /tmp/foia-scan-files-$$.txt';
     $rm_scan_files_cmd = 'rm /tmp/foia-scan-files-$$.txt';
+    // phpcs:ignore
     $scan_command = $scan_files_cmd . ' ; ' . $path_to_executable . ' ' . $scan_options . ' ; ' . $rm_scan_files_cmd;
-    echo $scan_command ;
     $startTime = microtime(TRUE);
     $scanOutput = shell_exec($scan_command);
 
