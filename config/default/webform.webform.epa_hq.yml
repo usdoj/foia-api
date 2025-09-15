@@ -18,9 +18,14 @@ elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
+    '#help': '<p>Per EPA FOIA regulations at 40 CFR 2.101(c), first and last names are required with electronic submission of a FOIA request.</p>'
+    '#required': true
+    '#required_error': 'Per EPA FOIA regulations at 40 CFR 2.101(c), first and last names are required with electronic submission of a FOIA request.'
   name_last:
     '#type': textfield
     '#title': 'Last name'
+    '#required': true
+    '#required_error': 'Per EPA FOIA regulations at 40 CFR 2.101(c), first and last names are required with electronic submission of a FOIA request.'
   company_organization:
     '#type': textfield
     '#title': 'Your organization'
