@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - entity_browser.browser.image_browser
+    - entity_browser.browser.media_browser
     - filter.format.rich_text
     - node.type.agency_component
   module:
@@ -12,7 +14,6 @@ dependencies:
     - file_entity
     - filter
     - node
-    - panelizer
     - panels_ipe
     - path
 id: agency_component_creator
@@ -23,8 +24,6 @@ permissions:
   - 'access image_browser entity browser pages'
   - 'access media_browser entity browser pages'
   - 'access panels in-place editing'
-  - 'administer panelizer node agency_component content'
-  - 'administer panelizer node agency_component layout'
   - 'create agency_component content'
   - 'create url aliases'
   - 'delete own files'
