@@ -5,7 +5,6 @@ namespace Drupal\foia_upload_xml\Commands;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\file\FileInterface;
 use Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor;
 use Drupal\foia_upload_xml\FoiaUploadXmlReportParser;
@@ -60,21 +59,18 @@ class FoiaUploadXmlCommands extends DrushCommands {
    *   The database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerChannelFactory
-   *   The logger factory.
    * @param \Drupal\foia_upload_xml\FoiaUploadXmlMigrationsProcessor $migrationsProcessor
    *   The migrations processor.
    * @param \Drupal\foia_upload_xml\FoiaUploadXmlReportParser $reportParser
    *   The report parser.
    */
-  public function __construct(Connection $database, EntityTypeManagerInterface $entityTypeManager, LoggerChannelFactoryInterface $loggerChannelFactory, FoiaUploadXmlMigrationsProcessor $migrationsProcessor, FoiaUploadXmlReportParser $reportParser) {
+  public function __construct(Connection $database, EntityTypeManagerInterface $entityTypeManager, FoiaUploadXmlMigrationsProcessor $migrationsProcessor, FoiaUploadXmlReportParser $reportParser) {
     parent::__construct();
     $this->connection = $database;
     $this->entityTypeManager = $entityTypeManager;
     $this->migrationsProcessor = $migrationsProcessor;
     $this->reportParser = $reportParser;
     $this->user = $this->entityTypeManager->getStorage('user')->load(1);
-    $this->setLogger($loggerChannelFactory->get('foia_upload_xml'));
   }
 
   /**

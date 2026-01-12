@@ -1,6 +1,6 @@
 services:
   foia_upload_xml.commands:
     class: \Drupal\foia_upload_xml\Commands\FoiaUploadXmlCommands
-    arguments: ['@database', '@entity_type.manager', '@logger.factory', '@foia_upload_xml.migrations_processor', '@foia_upload_xml.report_parser']
+    arguments: ['@database', '@entity_type.manager', '@foia_upload_xml.migrations_processor', '@foia_upload_xml.report_parser']
     tags:
       - { name: drush.command }
