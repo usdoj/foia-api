@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - search_api.server.database
-    - core.entity_view_mode.node.full
   module:
     - node
-    - search_api
 _core:
   default_config_hash: 5oGmbthAOm65ilSVAb2fnEb6u3IBMfKIw3sPA8KuqXU
 id: content
@@ -44,8 +42,6 @@ field_settings:
           cfo_committee: default
           cfo_council: default
           cfo_meeting: default
-          landing_page: full
-          page: default
           quarterly_foia_report_data: default
   status:
     label: null
@@ -81,6 +77,8 @@ processor_settings:
   content_access:
     weights:
       preprocess_query: -10
+  custom_value: {  }
+  entity_type: {  }
   html_filter:
     weights:
       preprocess_index: -10
@@ -176,5 +174,7 @@ tracker_settings:
     indexing_order: fifo
 options:
   cron_limit: 50
+  delete_on_fail: true
   index_directly: true
+  track_changes_in_references: true
 server: database
