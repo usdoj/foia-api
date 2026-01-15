@@ -14,20 +14,24 @@ id: doj_olp
 title: DOJ-OLP
 description: ''
 categories: {  }
-elements: |
+elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
+    '#required': true
   name_last:
     '#type': textfield
     '#title': 'Last name'
+    '#required': true
   company_organization:
     '#type': textfield
     '#title': 'Your organization'
   email:
     '#type': email
     '#title': 'Email address'
-    '#help': "In order for us to communicate with you about your request,<br />\nyou must provide at least one form of contact information."
+    '#help': |-
+      In order for us to communicate with you about your request,<br />
+      you must provide at least one form of contact information.
   phone_number:
     '#type': tel
     '#title': 'Phone number'
@@ -68,7 +72,7 @@ elements: |
     '#type': textarea
     '#maxlength': 10000
     '#title': 'Your request'
-    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
+    '#help': "A brief and clear description of the information you'd like to receive. Please be as specific as possible."
     '#required': true
   fee_waiver:
     '#type': select
@@ -104,7 +108,9 @@ elements: |
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
-    '#help': "If you are seeking records about yourself, additional documentation<br />\nis required to verify your identity. <a href=\"https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13\">28&nbsp;C.F.R. &sect; 16.3(a)(3).</a>&nbsp;You can use this&nbsp;<a href=\"https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf\">form</a>&nbsp;to verify your identity."
+    '#help': |-
+      If you are seeking records about yourself, additional documentation<br />
+      is required to verify your identity. <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13">28&nbsp;C.F.R. &sect; 16.3(a)(3).</a>&nbsp;You can use this&nbsp;<a href="https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf">form</a>&nbsp;to verify your identity.
     '#multiple': true
 css: ''
 javascript: ''

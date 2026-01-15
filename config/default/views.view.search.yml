@@ -219,8 +219,6 @@ display:
               cfo_council: default
               cfo_meeting: default
               cfo_page: default
-              landing_page: teaser
-              page: teaser
               quarterly_foia_report_data: default
       query:
         type: search_api_query
@@ -240,6 +238,7 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:search_api.index.content'
+        - 'search_api_list:content'
   page:
     id: page
     display_title: Page
@@ -258,3 +257,4 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:search_api.index.content'
+        - 'search_api_list:content'
