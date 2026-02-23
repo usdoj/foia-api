@@ -70,6 +70,7 @@ Feature: Agency Administrator role
     When I am on the homepage
     Then I should see the link 'Manage'
 
+
   @api
   Scenario: Agency Administrator can view unpublished content
     Given "agency" terms:
@@ -86,6 +87,7 @@ Feature: Agency Administrator role
     And for 'Zip code' I enter '12345'
     And I uncheck the box "Published"
     And I press the 'Save' button
+    And the cache has been cleared
     Then I should see the following success messages:
       | Success messages                                           |
       | Agency Component A Test Agency Component has been created. |
@@ -122,3 +124,4 @@ Feature: Agency Administrator role
     When I am logged in as a user with the 'Agency Administrator' role
     And I am at 'form/hhs-nih-form'
     And I select "Office of the Director" from "Select the NIH institute"
+
