@@ -30,6 +30,7 @@ Feature: Annual FOIA Report Data Feature
   Scenario: Agency Administrator can add Annual FOIA Reports
     Given I am logged in as a user with the 'Agency Administrator' role
     And I am on "/node/add"
+    And the cache has been cleared
     Then I should see the link "Annual FOIA Report Data"
 
   @api @javascript
