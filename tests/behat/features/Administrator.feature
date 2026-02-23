@@ -70,6 +70,28 @@ Feature: Agency Administrator role
     When I am on the homepage
     Then I should see the link 'Manage'
 
+
+  @api
+  Scenario: Agency Administrator can view unpublished content
+    Given "agency" terms:
+      | name  |field_agency_abbreviation| description |format    | language |
+      | test  |DOJ                      | description |plain_text| en       |
+    And I am logged in as a user with the 'Agency Administrator' role
+    When I am at 'node/add/agency_component'
+    And for 'Agency Component Name' I enter 'A Test Agency Component'
+    And for 'Agency' I enter 'test'
+    And for Abbreviation I enter 'TAC'
+    And for 'Street address' I enter '123'
+    And for 'City' I enter '123'
+    And I select "Louisiana" from "State"
+    And for 'Zip code' I enter '12345'
+    And I uncheck the box "Published"
+    And I press the 'Save' button
+    And the cache has been cleared
+    Then I should see the following success messages:
+      | Success messages                                           |
+      | Agency Component A Test Agency Component has been created. |
+
   @api
   Scenario: Agency Administrator can not view admin-related FOIA request pages
     Given I am logged in as a user with the 'Agency Administrator' role
@@ -102,24 +124,4 @@ Feature: Agency Administrator role
     When I am logged in as a user with the 'Agency Administrator' role
     And I am at 'form/hhs-nih-form'
     And I select "Office of the Director" from "Select the NIH institute"
-
-  @api
-  Scenario: Agency Administrator can view unpublished content
-    Given "agency" terms:
-      | name  |field_agency_abbreviation| description |format    | language |
-      | test  |DOJ                      | description |plain_text| en       |
-    And I am logged in as a user with the 'Agency Administrator' role
-    When I am at 'node/add/agency_component'
-    And for 'Agency Component Name' I enter 'A Test Agency Component'
-    And for 'Agency' I enter 'test'
-    And for Abbreviation I enter 'TAC'
-    And for 'Street address' I enter '123'
-    And for 'City' I enter '123'
-    And I select "Louisiana" from "State"
-    And for 'Zip code' I enter '12345'
-    And I uncheck the box "Published"
-    And I press the 'Save' button
-    Then I should see the following success messages:
-      | Success messages                                           |
-      | Agency Component A Test Agency Component has been created. |
 
