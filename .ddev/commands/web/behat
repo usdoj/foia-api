@@ -120,12 +120,5 @@ elif ($progress); then
   exit
 fi
 
-# Stop on failure last.
-elif ($stopOnFailure); then
-  echo "Starting Behat Testing - stop on failure. Any errors will render on completion."
-  exec $behatExecPath --config=$configPath --verbose=2 --stop-on-failure
-  exit
-fi
-
 # Default, run all tests!
 exec $behatExecPath --config=$configPath --verbose=2
