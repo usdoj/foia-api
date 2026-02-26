@@ -61,5 +61,5 @@ if (EnvironmentDetector::isAhEnv()) {
 
   $config['samlauth.authentication']['sp_x509_certificate'] = 'file:/var/www/html/foia.' . $ah_env . '/acquia-files/saml/samlauth_key.pub';
   $config['samlauth.authentication']['sp_private_key'] = 'file:/var/www/html/foia.' . $ah_env . '/acquia-files/saml/samlauth_key';
-  $config['samlauth.authentication']['idp_certs'][0] = 'file:/var/www/html/foia.' . $ah_env . '/acquia-files/saml/max_key.pub';
+  $config['samlauth.authentication']['idp_certs'][0] = 'file:/var/www/html/foia.' . $ah_env . '/acquia-files/saml/fedhub_key.pub';
 }
