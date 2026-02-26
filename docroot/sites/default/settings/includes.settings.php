@@ -35,8 +35,8 @@ if (EnvironmentDetector::isAhEnv()) {
   switch ($ah_env) {
     case 'dev':
       $config['samlauth.authentication']['sp_entity_id'] = 'doj_foia_api_dev';
-      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.stage.max.gov/idp/profile/SAML2/Redirect/SSO';
-      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.stage.max.gov/idp/shibboleth';
+      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://int.fedhub.hhs.gov/ABaaS/idp';
+      $config['samlauth.authentication']['idp_entity_id'] = 'https://int.fedhub.hhs.gov/ABaaS/idp';
       break;
 
     case 'test':
