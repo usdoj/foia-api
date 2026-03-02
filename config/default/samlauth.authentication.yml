@@ -48,7 +48,7 @@ idp_change_password_service: ''
 idp_certs:
   - 'file:/var/www/html/foia.dev/acquia-files/saml/fedhub_key.pub'
 idp_cert_encryption: ''
-unique_id_attribute: Email
+unique_id_attribute: email
 map_users: false
 map_users_name: true
 map_users_mail: true
@@ -79,8 +79,8 @@ map_users_roles:
 create_users: false
 sync_name: true
 sync_mail: true
-user_name_attribute: Email
-user_mail_attribute: Email
+user_name_attribute: email
+user_mail_attribute: email
 request_set_name_id_policy: false
 strict: true
 security_metadata_sign: false
