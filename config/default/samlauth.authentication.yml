@@ -3,43 +3,20 @@ _core:
 login_menu_item_title: ''
 logout_menu_item_title: ''
 login_link_title: 'Login via FedHub'
+login_auto_redirect: false
 login_redirect_url: ''
 logout_redirect_url: ''
 error_redirect_url: ''
 error_throw: false
+login_error_keep_session: false
 local_login_saml_error: false
 logout_different_user: false
-drupal_login_roles:
-  authenticated: '0'
-  administrator: '0'
-  page_creator: '0'
-  layout_manager: '0'
-  page_reviewer: '0'
-  landing_page_creator: '0'
-  landing_page_reviewer: '0'
-  media_creator: '0'
-  media_manager: '0'
-  agency_component_creator: '0'
-  agency_component_reviewer: '0'
-  agency_administrator: '0'
-  agency_manager: '0'
-  non_sso: '0'
-  quarterly_foia_report_data_creator: '0'
-  quarterly_foia_report_data_reviewer: '0'
-  cfo_meeting_creator: '0'
-  cfo_meeting_reviewer: '0'
-  cfo_committee_creator: '0'
-  cfo_committee_reviewer: '0'
-  cfo_council_creator: '0'
-  cfo_council_reviewer: '0'
-  cfo_page_creator: '0'
-  cfo_page_reviewer: '0'
+drupal_login_roles: {  }
 sp_entity_id: doj_foia_api_dev
-sp_name_id_format: ''
 sp_x509_certificate: 'file:/var/www/html/foia.dev/acquia-files/saml/samlauth_key.pub'
 sp_new_certificate: ''
 sp_private_key: 'file:/var/www/html/foia.dev/acquia-files/saml/samlauth_key'
-metadata_valid_secs: 172800
+metadata_valid_secs: 2
 metadata_cache_http: false
 idp_entity_id: 'https://int.fedhub.hhs.gov/ABaaS/idp'
 idp_single_sign_on_service: 'https://int.fedhub.hhs.gov/ABaaS/idp'
@@ -54,11 +31,7 @@ map_users_name: true
 map_users_mail: true
 map_users_roles:
   administrator: administrator
-  page_creator: page_creator
   layout_manager: layout_manager
-  page_reviewer: page_reviewer
-  landing_page_creator: landing_page_creator
-  landing_page_reviewer: landing_page_reviewer
   media_creator: media_creator
   media_manager: media_manager
   agency_component_creator: agency_component_creator
@@ -90,7 +63,7 @@ security_logout_responses_sign: false
 security_nameid_encrypt: false
 security_signature_algorithm: ''
 security_encryption_algorithm: ''
-security_messages_sign: true
+security_messages_sign: false
 security_assertions_signed: false
 security_assertions_encrypt: false
 security_nameid_encrypted: false
