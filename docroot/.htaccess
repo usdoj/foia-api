@@ -39,6 +39,10 @@ AddEncoding gzip svgz
   php_value always_populate_raw_post_data   -1
 </IfModule>
 
+<IfModule mod_headers.c>
+  Header set Cross-Origin-Opener-Policy "same-origin"
+</IfModule>
+
 # Requires mod_expires to be enabled.
 <IfModule mod_expires.c>
   # Enable expirations.
