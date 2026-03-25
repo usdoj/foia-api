@@ -117,8 +117,9 @@ elements: |-
   fee_amount_willing:
     '#type': textfield
     '#title': 'The amount of money you’re willing to pay in fees, if any'
-    '#help': 'There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.'
-    '#pattern': '^(?=.)([+\-\$]?([0-9]*)(\.([0-9]+))?)$'
+    '#help': '<p>There is no initial fee required to submit a FOIA request, but the FOIA does allow people requesting records to be charged certain types of fees in some instances.</p>'
+    '#pattern': '^(?=(?:\D*\d){1,6}\D*$)[+\-\$]?([0-9]*)(\.([0-9]+))?$'
+    '#pattern_error': 'Please enter a number between 0 and 999999.'
     '#counter_type': word
     '#counter_maximum': 1
   expedited_processing:
