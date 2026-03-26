@@ -53,8 +53,8 @@ if (EnvironmentDetector::isAhEnv()) {
 
     case 'prod':
       $config['samlauth.authentication']['sp_entity_id'] = 'doj_foia_api_prod';
-      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://login.max.gov/idp/profile/SAML2/Redirect/SSO';
-      $config['samlauth.authentication']['idp_entity_id'] = 'https://login.max.gov/idp/shibboleth';
+      $config['samlauth.authentication']['idp_single_sign_on_service'] = 'https://fedhub.hhs.gov/ABaaS/idp';
+      $config['samlauth.authentication']['idp_entity_id'] = 'https://fedhub.hhs.gov/ABaaS/idp';
       break;
 
   }
