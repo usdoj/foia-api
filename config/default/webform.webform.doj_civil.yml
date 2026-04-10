@@ -14,7 +14,7 @@ id: doj_civil
 title: DOJ-Civil
 description: ''
 categories: {  }
-elements: |
+elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -27,7 +27,9 @@ elements: |
   email:
     '#type': email
     '#title': 'Email address'
-    '#help': "In order for us to communicate with you about your request,<br />\nyou must provide at least one form of contact information."
+    '#help': |-
+      In order for us to communicate with you about your request,<br />
+      you must provide at least one form of contact information.
   phone_number:
     '#type': tel
     '#title': 'Phone number'
@@ -54,6 +56,13 @@ elements: |
     '#title': Country
     '#default_value': 'United States'
     '#options': country_names
+  request_subject:
+    '#type': radios
+    '#title': 'What is the subject of your request?'
+    '#options':
+      myself: Myself
+      other: 'All Other Subjects'
+    '#required': true
   request_category:
     '#type': select
     '#title': 'What type of requester are you?'
@@ -68,7 +77,7 @@ elements: |
     '#type': textarea
     '#maxlength': 10000
     '#title': 'Your request'
-    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
+    '#help': "A brief and clear description of the information you'd like to receive. Please be as specific as possible."
     '#required': true
   fee_waiver:
     '#type': select
@@ -101,16 +110,108 @@ elements: |
     '#maxlength': 10000
     '#title': 'Justification for expedited processing'
     '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.&nbsp;&nbsp;This agency has additional criteria for expedited processing detailed at <a href="https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&amp;SID=a41b3b79fe629d968f90008e116d5f2e&amp;mc=true&amp;n=pt28.1.16&amp;r=PART&amp;ty=HTML#se28.1.16_15">28&nbsp;C.F.R. &sect; 16.5(e).</a>'
+  myself_name_first:
+    '#type': textfield
+    '#title': "First Party's First Name"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      required:
+        ':input[name="request_subject"]':
+          value: myself
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_name_middle:
+    '#type': textfield
+    '#title': "First Party's Middle Name"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_name_last:
+    '#type': textfield
+    '#title': "First Party's Last Name"
+    '#maxlength': 255
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      required:
+        ':input[name="request_subject"]':
+          value: myself
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_social_security_number:
+    '#type': textfield
+    '#title': "First Party's Social Security Number"
+    '#pattern': '^(?!666|000|9\d{2})\d{3}-(?!00)\d{2}-(?!0{4})\d{4}$'
+    '#pattern_error': 'Social Security Number must be entered in XXX-XX-XXXX format.'
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_alien_registration_number:
+    '#type': textfield
+    '#title': "First Party's Alien Registration Number"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z0-9]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_place_of_birth:
+    '#type': textfield
+    '#title': "First Party's Place of Birth"
+    '#maxlength': 100
+    '#required': true
+    '#pattern': '^[a-zA-Z0-9 ]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_date_of_birth:
+    '#type': textfield
+    '#title': "First Party's Date of Birth"
+    '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(17|18|19|20)\d\d'
+    '#pattern_error': 'Please use the date format: MM/DD/YYYY'
+    '#states':
+      required:
+        ':input[name="request_subject"]':
+          value: myself
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_additional_information:
+    '#type': textarea
+    '#title': "First Party's Additional Information"
+    '#description': '<p>Provide additional information about the subject of your request. Please provide as much information as possible.</p>'
+    '#maxlength': 4000
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
-    '#help': "If you are seeking records about yourself, additional documentation<br />\nis required to verify your identity. <a href=\"https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13\">28&nbsp;C.F.R. &sect; 16.3(a)(3).</a>&nbsp;You can use this&nbsp;<a href=\"https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf\">form</a>&nbsp;to verify your identity."
+    '#help': |-
+      If you are seeking records about yourself, additional documentation<br />
+      is required to verify your identity. <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=0793c853161160d5e01f0ff18c51b96a&amp;mc=true&amp;node=sp28.1.16.a&amp;rgn=div6#se28.1.16_13">28&nbsp;C.F.R. &sect; 16.3(a)(3).</a>&nbsp;You can use this&nbsp;<a href="https://www.justice.gov/sites/default/files/oip/legacy/2014/07/23/cert_ind.pdf">form</a>&nbsp;to verify your identity.
     '#multiple': true
   case_files:
     '#type': textarea
     '#maxlength': 10000
     '#title': 'Case Files'
-    '#help': "Requests for records from case files must include a case caption or name,<br />\ncivil court case number, and judicial district.<br />\n<a href=\"https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&amp;SID=a41b3b79fe629d968f90008e116d5f2e&amp;mc=true&amp;n=pt28.1.16&amp;r=PART&amp;ty=HTML#ap28.1.16_1301.i\">28&nbsp;C.F.R. &sect; 16 (Appendix I).</a>"
+    '#help': |-
+      Requests for records from case files must include a case caption or name,<br />
+      civil court case number, and judicial district.<br />
+      <a href="https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&amp;SID=a41b3b79fe629d968f90008e116d5f2e&amp;mc=true&amp;n=pt28.1.16&amp;r=PART&amp;ty=HTML#ap28.1.16_1301.i">28&nbsp;C.F.R. &sect; 16 (Appendix I).</a>
 css: ''
 javascript: ''
 settings:
