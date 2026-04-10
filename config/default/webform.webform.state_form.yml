@@ -14,7 +14,7 @@ id: state_form
 title: 'State Form'
 description: ''
 categories: {  }
-elements: |
+elements: |-
   name_first:
     '#type': textfield
     '#title': 'First name'
@@ -54,6 +54,13 @@ elements: |
     '#title': Country
     '#default_value': 'United States'
     '#options': country_names
+  request_subject:
+    '#type': radios
+    '#title': 'What is the subject of your request?'
+    '#options':
+      myself: Myself
+      other: 'All Other Subjects'
+    '#required': true
   request_category:
     '#type': select
     '#title': 'What type of requester are you?'
@@ -68,7 +75,14 @@ elements: |
     '#type': textarea
     '#maxlength': 10000
     '#title': 'Your request'
-    '#help': 'A brief and clear description of the information you''d like to receive. Please be as specific as possible.'
+    '#help': "A brief and clear description of the information you'd like to receive. Please be as specific as possible."
+    '#required': true
+  requester_type:
+    '#type': radios
+    '#title': 'I am making this request on behalf of'
+    '#options':
+      myself: Myself
+      organization: 'A Designee'
     '#required': true
   fee_waiver:
     '#type': select
@@ -101,6 +115,92 @@ elements: |
     '#maxlength': 10000
     '#title': 'Justification for expedited processing'
     '#help': 'Leave this blank if you are not requesting expedited processing. When making a request for expedited processing you must explain how your request meets one of the expedition standards described above.&nbsp;This agency has additional standards for expedited processing detailed at <a href="http://www.ecfr.gov/cgi-bin/text-idx?SID=0df71f6be9c4726126c214653ed2a1f7&amp;mc=true&amp;node=sp22.1.171.b&amp;rgn=div6">22 C.F.R.&nbsp;&sect; 171.11(f).</a>'
+  myself_name_first:
+    '#type': textfield
+    '#title': "First Party's First Name"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      required:
+        ':input[name="request_subject"]':
+          value: myself
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_name_middle:
+    '#type': textfield
+    '#title': "First Party's Middle Name"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_name_last:
+    '#type': textfield
+    '#title': "First Party's Last Name"
+    '#maxlength': 255
+    '#pattern': '^[a-zA-Z ]+$'
+    '#pattern_error': 'Please use only alphabetical characters.'
+    '#states':
+      required:
+        ':input[name="request_subject"]':
+          value: myself
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_social_security_number:
+    '#type': textfield
+    '#title': "First Party's Social Security Number"
+    '#pattern': '^(?!666|000|9\d{2})\d{3}-(?!00)\d{2}-(?!0{4})\d{4}$'
+    '#pattern_error': 'Social Security Number must be entered in XXX-XX-XXXX format.'
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_alien_registration_number:
+    '#type': textfield
+    '#title': "First Party's Alien Registration Number"
+    '#maxlength': 30
+    '#pattern': '^[a-zA-Z0-9]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_place_of_birth:
+    '#type': textfield
+    '#title': "First Party's Place of Birth"
+    '#maxlength': 100
+    '#pattern': '^[a-zA-Z0-9 ]*$'
+    '#pattern_error': 'Please use only letters and numbers.'
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_date_of_birth:
+    '#type': textfield
+    '#title': "First Party's Date of Birth"
+    '#pattern': '(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(17|18|19|20)\d\d'
+    '#pattern_error': 'Please use the date format: MM/DD/YYYY'
+    '#states':
+      required:
+        ':input[name="request_subject"]':
+          value: myself
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
+  myself_additional_information:
+    '#type': textarea
+    '#title': "First Party's Additional Information"
+    '#description': 'Provide additional information about the subject of your request. Please provide as much information as possible.'
+    '#maxlength': 4000
+    '#states':
+      visible:
+        ':input[name="request_subject"]':
+          value: myself
   attachments_supporting_documentation:
     '#type': managed_file
     '#title': 'Upload additional documentation'
