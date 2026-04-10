@@ -83,7 +83,6 @@ elements: |-
     '#options':
       myself: Myself
       organization: 'A Designee'
-    '#required': true
   fee_waiver:
     '#type': select
     '#title': 'Fee waiver'
@@ -174,6 +173,7 @@ elements: |-
     '#type': textfield
     '#title': "First Party's Place of Birth"
     '#maxlength': 100
+    '#required': true
     '#pattern': '^[a-zA-Z0-9 ]*$'
     '#pattern_error': 'Please use only letters and numbers.'
     '#states':
@@ -195,7 +195,7 @@ elements: |-
   myself_additional_information:
     '#type': textarea
     '#title': "First Party's Additional Information"
-    '#description': 'Provide additional information about the subject of your request. Please provide as much information as possible.'
+    '#description': '<p>Provide additional information about the subject of your request. Please provide as much information as possible.</p>'
     '#maxlength': 4000
     '#states':
       visible:
@@ -206,11 +206,6 @@ elements: |-
     '#title': 'Upload additional documentation'
     '#help': 'If you are seeking records about yourself, additional documentation is recommended to verify your identity. <a href="http://www.ecfr.gov/cgi-bin/text-idx?SID=c454106e3b14fa4dfc6bd23b3ed59d37&amp;mc=true&amp;node=se22.1.171_111&amp;rgn=div8">22 C.F.R.&nbsp;&sect; 171.11(n)(2).</a>'
     '#multiple': true
-  requests_for_visa_information:
-    '#type': textarea
-    '#maxlength': 10000
-    '#title': 'Requests for visa information'
-    '#help': '<p style="margin:0in 0in 8pt"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="line-height:107%">In order to provide more information to requesters seeking visa records, the following information should be provided with the FOIA request for both the petitioner and the beneficiary: full name, as well as any aliases used; current address; date and place of birth (including city, state, and country); the type of visa (immigrant or non-immigrant); the country and Foreign Service post where the visa application was made; when the visa application was made; and whether the visa application was granted or denied; and if denied, on what grounds. <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=0df71f6be9c4726126c214653ed2a1f7&amp;mc=true&amp;node=sp22.1.171.b&amp;rgn=div6#se22.1.171_111">22 C.F.R. &sect; 171.11(n)(2).</a></span></span></span></span></span></p>'
 css: ''
 javascript: ''
 settings:
