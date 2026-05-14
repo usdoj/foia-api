@@ -7,9 +7,6 @@
     "require": {
         "php": ">=8.3",
         "ext-dom": "*",
-        "acquia/blt": "^13.7",
-        "acquia/blt-behat": "dev-master",
-        "acquia/blt-phpcs": "^1.0",
         "acquia/drupal-environment-detector": "1.6.0",
         "acquia/memcache-settings": "*",
         "composer/installers": "^2.2.0",
@@ -78,7 +75,7 @@
         "drupal/panelizer": "dev-3352704-drupal-10-compatibility",
         "drupal/panels": "^4.7",
         "drupal/paragraphs": "^1.15.0",
-        "drupal/password_policy": "^4.0.0",
+        "drupal/password_policy": "^4.0",
         "drupal/precision_modifier": "^1.0@beta",
         "drupal/queue_ui": "^3.1",
         "drupal/quickedit": "^1.0",
@@ -250,8 +247,6 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "acquia/blt": true,
-            "acquia/blt-phpcs": true,
             "composer/installers": true,
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
@@ -266,6 +261,9 @@
         },
         "platform": {
             "php": "8.3.24"
+        },
+        "audit": {
+            "block-insecure": false
         }
     },
     "autoload": {

@@ -18,14 +18,25 @@ source_branch="$3"
 deployed_tag="$4"
 repo_url="$5"
 repo_type="$6"
+drush_alias=$site'.'$target_env
 
-# Prep for BLT commands.
 repo_root="/var/www/html/$site.$target_env"
 export PATH=$repo_root/vendor/bin:$PATH
 cd $repo_root
 
-drush @$site.$target_env cr
 
-blt artifact:ac-hooks:post-code-deploy $site $target_env $source_branch $deployed_tag $repo_url $repo_type --environment=$target_env -v --no-interaction -D drush.ansi=false
+drush @$drush_alias updb --no-interaction -v
+drush @$drush_alias updb --no-interaction -v
+drush @$drush_alias updatedb:status --no-interaction -v
+drush @$drush_alias cache-rebuild --no-interaction -v
+drush @$drush_alias config:import --no-interaction -v
+drush @$drush_alias config:import --no-interaction -v
+drush @$drush_alias cache-rebuild --no-interaction -v
+drush @$drush_alias config:import --no-interaction -v
+drush @$drush_alias config:import --no-interaction -v
+drush @$drush_alias cache-rebuild --no-interaction -v
+drush @$drush_alias config:status --no-interaction -v
+drush @$drush_alias deploy:hook --no-interaction -v
+drush @$drush_alias cache-rebuild --no-interaction -v
 
 set +v

@@ -58,10 +58,6 @@
  * implementations with custom ones.
  */
 
-use Acquia\Blt\Robo\Common\EnvironmentDetector;
-
-$is_ah_env = EnvironmentDetector::isAhEnv();
-
 /**
  * Database settings:
  *
@@ -788,7 +784,6 @@ $settings['entity_update_batch_size'] = 50;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 $settings['install_profile'] = 'lightning';
 
 $settings['trusted_host_patterns'] = array(
@@ -801,7 +796,7 @@ $settings['trusted_host_patterns'] = array(
 );
 
 
-if ($is_ah_env) {
+if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
   if ($_ENV['AH_SITE_ENVIRONMENT'] == 'ide') {
     $settings['file_temp_path'] = '/mnt/tmp/foia';
   }
@@ -819,12 +814,6 @@ if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '1024M');
 }
 
-#
-# IMPORTANT
-# Do not include additional settings here. Instead, add them to settings included
-# by `blt.settings.php`. See [BLT's documentation](http://blt.readthedocs.io)
-# for more detail.
-#
 
 // Automatically generated include for settings managed by ddev.
 if (file_exists($app_root . '/' . $site_path . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 'true') {
