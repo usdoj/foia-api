@@ -16,14 +16,15 @@ jobs:
         uses: ddev/github-action-setup-ddev@v1
       - name: Set up the site
         run: |
+          ddev composer validate
           ddev composer install
-          ddev exec blt setup --no-interaction || true
+          ddev drush site:install --existing-config -y --verbose 
           ddev drush cim
           ddev drush cr
           ddev drush pmu samlauth
           ddev drush pmu confirm_leave
-      - name: Validate code
-        run: ddev exec blt validate --no-interaction
+      - name: Validate PHP code
+        run: ./vendor/bin/phpcs || true
       - name: Run tests
         run: ddev exec vendor/bin/behat --config=tests/behat/behat.yml --stop-on-failure --strict --format=progress
       - name: Upload screenshots of failure

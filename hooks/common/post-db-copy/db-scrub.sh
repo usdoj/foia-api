@@ -13,11 +13,15 @@ target_env="$2"
 db_name="$3"
 source_env="$4"
 
-# Prep for BLT commands.
+drush_alias=$site'.'$target_env
+
 repo_root="/var/www/html/$site.$target_env"
 export PATH=$repo_root/vendor/bin:$PATH
 cd $repo_root
 
-blt artifact:ac-hooks:db-scrub $site $target_env $db_name $source_env -D drush.ansi=false
+password=$(tr -dc 'A-Za-z0-9!?%=' < /dev/urandom | head -c 10)
+
+drush @$drush_alias sql-sanitize --sanitize-password="${password}" --yes
+drush @$drush_alias cr
 
 set +v

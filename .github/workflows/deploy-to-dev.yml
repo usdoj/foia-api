@@ -22,6 +22,26 @@ jobs:
       - name: Install dev dependencies
         run: |
           composer install
-      - name: Build the artifact
+
+      - name: Commit built frontend assets
         run: |
-          vendor/bin/blt deploy --branch="develop-build" --commit-msg="Automated deployment of develop branch" --verbose --ignore-dirty
+          git config --global user.email "no-reply@usdoj.gov"
+          git config --global user.name "Automated Deployment"
+          git add -A
+          git add -f docroot/themes/custom/*/assets
+          git commit -m "Commit frontend assets post composer install" || echo "Nothing to commit"
+
+      - name: Install Acquia CLI
+        run: |
+          curl -OL https://github.com/acquia/cli/releases/latest/download/acli.phar
+          chmod +x acli.phar
+          sudo mv acli.phar /usr/local/bin/acli
+
+      - name: Push artifact to Acquia
+        run: |
+          git config --global user.email "no-reply@usdoj.gov"
+          git config --global user.name "Automated Deployment"
+          export AH_ORGANIZATION_UUID=8401c2a7-d5ef-11e3-9eb3-22000b04072f
+          acli login --key=${{ secrets.ACLI_KEY }} --secret=${{ secrets.ACLI_SECRET }}
+          acli push:artifact --destination-git-branch=develop-build
+

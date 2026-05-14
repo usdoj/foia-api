@@ -5,16 +5,14 @@
  * Includes settings files on Acquia.
  */
 
-use Acquia\Blt\Robo\Common\EnvironmentDetector;
-
 /**
  * @file
  * Site-specific settings.php code for the National FOIA Portal.
  */
 
-if (EnvironmentDetector::isAhEnv()) {
-  $ah_group = EnvironmentDetector::getAhGroup();
-  $ah_env = EnvironmentDetector::getAhEnv();
+if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
+  $ah_group = $_ENV['AH_SITE_GROUP'];
+  $ah_env = $_ENV['AH_SITE_ENVIRONMENT'];
   if ($ah_env != 'ide') {
     $additionalSettingsFiles = [
       '/mnt/gfs/home/' . $ah_group . '/' . $ah_env . '/secrets.settings.php',
