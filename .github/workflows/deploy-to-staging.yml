@@ -23,14 +23,6 @@ jobs:
         run: |
           composer install
 
-      - name: Commit built frontend assets
-        run: |
-          git config --global user.email "no-reply@usdoj.gov"
-          git config --global user.name "Automated Deployment"
-          git add -A
-          git add -f docroot/themes/custom/*/assets
-          git commit -m "Commit frontend assets post composer install" || echo "Nothing to commit"
-
       - name: Install Acquia CLI
         run: |
           curl -OL https://github.com/acquia/cli/releases/latest/download/acli.phar
