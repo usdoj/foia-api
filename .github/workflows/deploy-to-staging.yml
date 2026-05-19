@@ -6,6 +6,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      ACLI_KEY: ${{ secrets.ACLI_KEY }}
+      ACLI_SECRET: ${{ secrets.ACLI_SECRET }}
+
     steps:
       - uses: actions/checkout@v3
       - name: Setup PHP
