@@ -17,13 +17,16 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
+
       - name: Acquia known hosts
         run: |
           echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+
       - name: Install dev dependencies
         run: |
           composer install
@@ -39,6 +42,6 @@ jobs:
           git config --global user.email "no-reply@usdoj.gov"
           git config --global user.name "Automated Deployment"
           export AH_ORGANIZATION_UUID=8401c2a7-d5ef-11e3-9eb3-22000b04072f
-          acli login --key=${{ secrets.ACLI_KEY }} --secret=${{ secrets.ACLI_SECRET }} -vvv
+          acli login --key=${{ secrets.ACLI_KEY }} --secret=${{ secrets.ACLI_SECRET }} --no-interaction -vvv
           acli push:artifact --destination-git-branch=develop-build -vvv
 
