@@ -511,7 +511,8 @@ Feature: Annual FOIA Report Data Feature
 
   @api @annual_fiscal
   Scenario: Annual Report Fiscal Years 200
-    Given I request "api/annual_foia_report/fiscal_years"
+    Given the cache has been cleared
+    And I request "api/annual_foia_report/fiscal_years"
     Then the response code is 200
     Then the "Content-Type" response header exists
 
