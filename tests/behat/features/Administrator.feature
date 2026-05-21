@@ -74,8 +74,8 @@ Feature: Agency Administrator role
   @api
   Scenario: Agency Administrator can view unpublished content
     Given "agency" terms:
-      | name  |field_agency_abbreviation| description |format    | language |
-      | test  |DOJ                      | description |plain_text| en       |
+      | name  |field_agency_abbreviation| description |
+      | test  |DOJ                      | description |
     And I am logged in as a user with the 'Agency Administrator' role
     When I am at 'node/add/agency_component'
     And for 'Agency Component Name' I enter 'A Test Agency Component'
