@@ -1,0 +1,30 @@
+uuid: ece52f9b-cd3a-4be1-81e0-11f7aa5a6922
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_num_requests
+    - node.type.agency_component
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.agency_component.field_num_requests
+field_name: field_num_requests
+entity_type: node
+bundle: agency_component
+label: 'Number of requests'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
