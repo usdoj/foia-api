@@ -12,9 +12,7 @@ jobs:
       ACLI_SECRET: ${{ secrets.ACLI_SECRET }}
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+      - uses: actions/checkout@v3
 
       - name: Install SSH key6
         uses: kielabokkie/ssh-key-and-known-hosts-action@v1
@@ -42,9 +40,6 @@ jobs:
           curl -OL https://github.com/acquia/cli/releases/latest/download/acli.phar
           chmod +x acli.phar
           sudo mv acli.phar /usr/local/bin/acli
-
-      - name: Debug git config
-        run: cat .git/config
 
       - name: Push artifact to Acquia
         run: |
