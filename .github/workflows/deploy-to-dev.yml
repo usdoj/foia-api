@@ -13,17 +13,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Install SSH key6
+        uses: kielabokkie/ssh-key-and-known-hosts-action@v1
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+          ssh-host: svn-23659.prod.hosting.acquia.com
+      - name: Acquia known hosts
+        run: |
+          echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-      - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
-      - name: Acquia known hosts
-        run: |
-          echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
       - name: Install dev dependencies
         run: |
           composer install
