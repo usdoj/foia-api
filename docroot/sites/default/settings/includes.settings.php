@@ -13,6 +13,11 @@
 if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
   $ah_group = $_ENV['AH_SITE_GROUP'];
   $ah_env = $_ENV['AH_SITE_ENVIRONMENT'];
+  if (file_exists('/var/www/site-php/foia/foia-settings.inc')) {
+    require '/var/www/site-php/foia/foia-settings.inc';
+  }
+  // Fix the location of the config files.
+  $settings['config_sync_directory'] = '../config/default';
   if ($ah_env != 'ide') {
     $additionalSettingsFiles = [
       '/mnt/gfs/home/' . $ah_group . '/' . $ah_env . '/secrets.settings.php',
