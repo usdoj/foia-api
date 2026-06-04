@@ -38,6 +38,16 @@ function _foia_request_validate_status(array $element, FormStateInterface $form_
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_insert().
+ *
+ * When a request is created, update the field_num_requests count for that
+ * agency component.
+ */
+function foia_request_foia_request_insert(FoiaRequestInterface $entity) {
+  foia_request_recount_num_requests($entity);
+}
+
+/**
  * Implements hook_ENTITY_TYPE_update().
  *
  * When the request is intentionally changed to "Queued for submission" we
@@ -95,5 +105,34 @@ function foia_request_foia_request_delete(FoiaRequestInterface $entity) {
   $webformSubmission = WebformSubmission::load($webformSubmissionId);
   if ($webformSubmission) {
     $webformSubmission->delete();
+  }
+}
+
+/**
+ * Recalculate agency component counts when a request entity is created.
+ */
+function foia_request_recount_num_requests(FoiaRequestInterface $entity) {
+
+  $agency_component_id = $entity->get('field_agency_component')->target_id;
+
+  if (!$agency_component_id) {
+    return;
+  }
+
+  // Count all request entities referencing this agency_component.
+  $count = \Drupal::entityQuery('foia_request')
+    ->condition('field_agency_component.target_id', $agency_component_id)
+    ->accessCheck(FALSE)
+    ->count()
+    ->execute();
+
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  $agency_component = $storage->load($agency_component_id);
+
+  /** @var \Drupal\node\NodeInterface $agency_component */
+  if ($agency_component && $agency_component->bundle() === 'agency_component') {
+    $agency_component->set('field_num_requests', $count);
+    $agency_component->save();
   }
 }
