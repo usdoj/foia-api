@@ -11,9 +11,14 @@ third_party_settings:
       - main
     parent: 'main:'
   node_revision_delete:
-    minimum_revisions_to_keep: 5
-    minimum_age_to_delete: 12
-    when_to_delete: 3
+    amount:
+      status: true
+      settings:
+        amount: 5
+    created:
+      status: true
+      settings:
+        age: 12
 name: 'Agency Component'
 type: agency_component
 description: 'An agency component to which a request can be sent and which will be fulfilling requests.'
