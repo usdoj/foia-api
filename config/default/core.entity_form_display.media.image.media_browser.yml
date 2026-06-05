@@ -10,7 +10,6 @@ dependencies:
     - media.type.image
   module:
     - image
-    - lightning_media
     - path
 _core:
   default_config_hash: XAs-0xJN_RSqL0AwDm_5FnHvxR7U1H1asYTOBUKcnsE
@@ -33,10 +32,7 @@ content:
     settings:
       progress_indicator: throbber
       preview_image_style: medium
-    third_party_settings:
-      lightning_media:
-        file_links: false
-        remove_button: false
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 3
