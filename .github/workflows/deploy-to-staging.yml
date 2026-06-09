@@ -6,6 +6,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      ACLI_KEY: ${{ secrets.ACLI_KEY }}
+      ACLI_SECRET: ${{ secrets.ACLI_SECRET }}
+
     steps:
       - uses: actions/checkout@v3
       - name: Setup PHP
@@ -22,6 +27,18 @@ jobs:
       - name: Install dev dependencies
         run: |
           composer install
-      - name: Build the artifact
+
+      - name: Install Acquia CLI
         run: |
-          vendor/bin/blt deploy --branch="staging-build" --commit-msg="Automated deployment of a release branch" --verbose --ignore-dirty
+          curl -OL https://github.com/acquia/cli/releases/latest/download/acli.phar
+          chmod +x acli.phar
+          sudo mv acli.phar /usr/local/bin/acli
+
+      - name: Push artifact to Acquia
+        run: |
+          git config --global user.email "no-reply@usdoj.gov"
+          git config --global user.name "Automated Deployment"
+          export AH_ORGANIZATION_UUID=8401c2a7-d5ef-11e3-9eb3-22000b04072f
+          acli login --key=${{ secrets.ACLI_KEY }} --secret=${{ secrets.ACLI_SECRET }}
+          acli push:artifact --destination-git-branch=staging-build
+

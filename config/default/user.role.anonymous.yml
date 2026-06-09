@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - node.type.agency_component
     - rest.resource.webform_submission
   module:
     - field_permissions
@@ -34,6 +35,7 @@ permissions:
   - 'view field_expedited_lowest_days'
   - 'view field_expedited_median_days'
   - 'view field_is_centralized'
+  - 'view field_num_requests'
   - 'view field_rep_start'
   - 'view field_request_data_year'
   - 'view field_request_submission_form'

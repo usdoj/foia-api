@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.agency_component.field_interop_planned_method
     - field.field.node.agency_component.field_is_centralized
     - field.field.node.agency_component.field_misc
+    - field.field.node.agency_component.field_num_requests
     - field.field.node.agency_component.field_portal_submission_format
     - field.field.node.agency_component.field_public_liaisons
     - field.field.node.agency_component.field_reading_rooms
@@ -158,7 +159,7 @@ third_party_settings:
       label: 'Processing Data'
       region: content
       parent_name: ''
-      weight: 24
+      weight: 23
       format_type: details
       format_settings:
         classes: ''
@@ -174,7 +175,7 @@ third_party_settings:
       label: 'Annual FOIA Report Start/Expiration Dates'
       region: content
       parent_name: ''
-      weight: 25
+      weight: 24
       format_type: details
       format_settings:
         classes: ''
@@ -188,7 +189,7 @@ third_party_settings:
       label: 'FOIA Portal Interoperability'
       region: content
       parent_name: ''
-      weight: 26
+      weight: 25
       format_type: details
       format_settings:
         classes: ''
@@ -245,7 +246,7 @@ content:
     third_party_settings: {  }
   field_commonly_requested_records:
     type: string_textarea
-    weight: 37
+    weight: 28
     region: content
     settings:
       rows: 5
@@ -377,6 +378,13 @@ content:
       collapsed: false
       revision: false
       removed_reference: optional
+    third_party_settings: {  }
+  field_num_requests:
+    type: number
+    weight: 29
+    region: content
+    settings:
+      placeholder: ''
     third_party_settings: {  }
   field_portal_submission_format:
     type: options_select
@@ -568,7 +576,7 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 28
+    weight: 27
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -587,7 +595,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 27
+    weight: 26
     region: content
     settings:
       display_label: true

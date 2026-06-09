@@ -13,12 +13,9 @@ site="$1"
 target_env="$2"
 source_env="$3"
 
-# Prep for BLT commands.
 repo_root="/var/www/html/$site.$target_env"
 export PATH=$repo_root/vendor/bin:$PATH
 cd $repo_root
-
-blt artifact:ac-hooks:post-files-copy $site $target_env $source_env --environment=$target_env -v --no-interaction -D drush.ansi=false
 
 echo "$site.$target_env: Received copy of files from $source_env."
 
