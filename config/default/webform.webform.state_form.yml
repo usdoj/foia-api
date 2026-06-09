@@ -83,6 +83,7 @@ elements: |-
     '#options':
       myself: Myself
       organization: 'A Designee'
+    '#required': true
   fee_waiver:
     '#type': select
     '#title': 'Fee waiver'
@@ -173,7 +174,6 @@ elements: |-
     '#type': textfield
     '#title': "First Party's Place of Birth"
     '#maxlength': 100
-    '#required': true
     '#pattern': '^[a-zA-Z0-9 ]*$'
     '#pattern_error': 'Please use only letters and numbers.'
     '#states':
@@ -195,7 +195,7 @@ elements: |-
   myself_additional_information:
     '#type': textarea
     '#title': "First Party's Additional Information"
-    '#description': '<p>Provide additional information about the subject of your request. Please provide as much information as possible.</p>'
+    '#description': 'Provide additional information about the subject of your request. Please provide as much information as possible.'
     '#maxlength': 4000
     '#states':
       visible:
@@ -206,10 +206,11 @@ elements: |-
     '#title': 'Upload additional documentation'
     '#help': 'If you are seeking records about yourself, additional documentation is recommended to verify your identity. <a href="http://www.ecfr.gov/cgi-bin/text-idx?SID=c454106e3b14fa4dfc6bd23b3ed59d37&amp;mc=true&amp;node=se22.1.171_111&amp;rgn=div8">22 C.F.R.&nbsp;&sect; 171.11(n)(2).</a>'
     '#multiple': true
-  privacy_act_statement:
-    '#type': processed_text
-    '#text': '<p class="MsoNormal"><span style="font-size:11.0pt;"><strong>Privacy Act Statement</strong></span></p><p class="MsoNormal"><span style="font-size:11.0pt;">In accordance with 28 CFR Section 16.41(d) personal data sufficient to identify the individuals submitting requests by mail under the Privacy Act of 1974, 5 U.S.C. Section 552a, is required. The primary purpose for the collection of the information on this form is to ensure that the records of individuals who are the subject of U.S. Department of Justice systems of records are not wrongfully disclosed by the Department. The authority by which information is collected on this form is 5 U.S.C. § 552 and 5 U.S.C. § 552a(a), as well as 28 CFR Section 16.41(d). Any information you provide may also be disclosed pursuant to a “routine use” under the Privacy Act of 1974, 5 U.S.C. § 552a, listed in a DOJ System of Records Notice, which may include: JUSTICE/DOJ-004 Freedom of Information Act, Privacy Act, and Mandatory Declassification Review Records (CMS) for the Department of Justice, available at </span><a href="https://www.justice.gov/opcl/doj-systems-records#DOJ" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.justice.gov/opcl/doj-systems-records%23DOJ&amp;source=gmail&amp;ust=1775919815026000&amp;usg=AOvVaw2FVWP0yA-BMd_yUxnmP4fs"><span style="font-size:11.0pt;">https://www.justice.gov/opcl/<wbr>doj-systems-records#DOJ</span></a><span style="font-size:11.0pt;">. Your disclosure of information to the Department of Justice on this form is voluntary. If you do not complete all or some information fields in this form, however, the Department of Justice may not be able to effectively respond to your request. False information on this form may subject the requester to criminal penalties under 18 U.S.C. § 1001 and/or 5 U.S.C. § 552a(i)(3).</span></p><p class="MsoNormal"><span style="font-size:11.0pt;">&nbsp;</span></p><p class="MsoNormal"><span style="font-size:11.0pt;">Public reporting burden for this collection of information is estimated to average 0.50 hours per response, including the time for reviewing instructions, searching existing data sources, gathering and maintaining the data needed, and completing and reviewing the collection of information. Suggestions for reducing this burden may be submitted to the Office of Information and Regulatory Affairs, Office of Management and Budget, Public Use Reports Project (1103-0016), Washington, DC 20503.</span></p>'
-    '#format': email_html
+  requests_for_visa_information:
+    '#type': textarea
+    '#maxlength': 10000
+    '#title': 'Requests for visa information'
+    '#help': '<p style="margin:0in 0in 8pt"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="line-height:107%">In order to provide more information to requesters seeking visa records, the following information should be provided with the FOIA request for both the petitioner and the beneficiary: full name, as well as any aliases used; current address; date and place of birth (including city, state, and country); the type of visa (immigrant or non-immigrant); the country and Foreign Service post where the visa application was made; when the visa application was made; and whether the visa application was granted or denied; and if denied, on what grounds. <a href="https://www.ecfr.gov/cgi-bin/text-idx?SID=0df71f6be9c4726126c214653ed2a1f7&amp;mc=true&amp;node=sp22.1.171.b&amp;rgn=div6#se22.1.171_111">22 C.F.R. &sect; 171.11(n)(2).</a></span></span></span></span></span></p>'
 css: ''
 javascript: ''
 settings:
