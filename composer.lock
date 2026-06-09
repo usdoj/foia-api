@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "baa00a5c640c082d4660c39487aeba31",
+    "content-hash": "285464d7b1debf39ed342347db342d75",
     "packages": [
         {
             "name": "acquia/drupal-environment-detector",
@@ -10978,24 +10978,25 @@
         },
         {
             "name": "mglaman/composer-drupal-lenient",
-            "version": "1.0.7",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mglaman/composer-drupal-lenient.git",
-                "reference": "bcb9be7f2d3160be43cd1d13a44580734a5afee0"
+                "reference": "7bfe79bfcccf1b0f3dafee7e36468dccfc2e56bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mglaman/composer-drupal-lenient/zipball/bcb9be7f2d3160be43cd1d13a44580734a5afee0",
-                "reference": "bcb9be7f2d3160be43cd1d13a44580734a5afee0",
+                "url": "https://api.github.com/repos/mglaman/composer-drupal-lenient/zipball/7bfe79bfcccf1b0f3dafee7e36468dccfc2e56bb",
+                "reference": "7bfe79bfcccf1b0f3dafee7e36468dccfc2e56bb",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^2.0",
-                "php": ">=8.1"
+                "php": ">=8.3"
             },
             "require-dev": {
                 "composer/composer": "^2.3",
+                "drupal/core": "^11 || ^12",
                 "phpstan/extension-installer": "^1.1",
                 "phpstan/phpstan": "^1.6",
                 "phpstan/phpstan-phpunit": "^1.1",
@@ -11008,6 +11009,9 @@
                 "class": "ComposerDrupalLenient\\Plugin"
             },
             "autoload": {
+                "files": [
+                    "src/autoload.php"
+                ],
                 "psr-4": {
                     "ComposerDrupalLenient\\": "src/"
                 }
@@ -11024,7 +11028,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mglaman/composer-drupal-lenient/issues",
-                "source": "https://github.com/mglaman/composer-drupal-lenient/tree/1.0.7"
+                "source": "https://github.com/mglaman/composer-drupal-lenient/tree/2.0.0"
             },
             "funding": [
                 {
@@ -11032,7 +11036,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-21T15:59:26+00:00"
+            "time": "2026-03-20T20:28:20+00:00"
         },
         {
             "name": "mglaman/phpstan-drupal",
