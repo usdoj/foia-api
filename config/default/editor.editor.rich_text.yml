@@ -27,7 +27,6 @@ settings:
       - bulletedList
       - numberedList
       - '|'
-      - uploadImage
       - drupalMedia
       - insertTable
       - '|'
@@ -86,12 +85,11 @@ settings:
         - heading4
         - heading5
         - heading6
-    ckeditor5_imageResize:
-      allow_resize: true
     ckeditor5_list:
       properties:
         reversed: false
         startIndex: true
+        styles: true
       multiBlock: true
     ckeditor5_sourceEditing:
       allowed_tags:
@@ -101,8 +99,6 @@ settings:
         - '<dd>'
         - '<a type title class hreflang>'
         - '<blockquote cite>'
-        - '<ul type>'
-        - '<ol type>'
         - '<h2 id>'
         - '<h3 id>'
         - '<h4 id>'
