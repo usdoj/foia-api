@@ -6,8 +6,8 @@ Feature: Agency Component Feature
 
   Background:
     Given agency terms:
-      | name                    | field_agency_abbreviation | description |format    | language |
-      | A Test Agency  | FTA    | description |plain_text| en       |
+      | name                    | field_agency_abbreviation | description |
+      | A Test Agency  | FTA    | description |
 
   @api
   Scenario: Agency Component name in title tag for Agency Component node.

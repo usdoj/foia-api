@@ -56,7 +56,7 @@ interface FoiaRequestInterface extends ContentEntityInterface, EntityChangedInte
   /**
    * The max number of times to requeue failed submissions.
    */
-  const MAX_SUBMISSION_FAILURES = 5;
+  const MAX_SUBMISSION_FAILURES = 6;
 
   /**
    * Gets the status of the foia_request entity.
