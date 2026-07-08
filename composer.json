@@ -102,7 +102,6 @@
         "drush/drush": "^13",
         "egulias/email-validator": "^4.0.0",
         "guzzlehttp/guzzle": "^7.7",
-        "guzzlehttp/psr7": "~2.10.4",
         "mglaman/composer-drupal-lenient": "^1.0",
         "mglaman/phpstan-drupal": "^2.0",
         "npm-asset/jquery-validation": "^1.19.5",
@@ -169,7 +168,7 @@
             },
             "drupal/paragraphs": {
                 "Inline Paragraphs widget performance update": "./patches/paragraphs-improve-performance-2935134.patch",
-                "Paragraph access check using incorrect revision of its parent https://www.drupal.org/project/paragraphs/issues/3090200#comment-14762651": "./patches/3084934-13_combine_3090200-22.patch"
+                "3090200: Paragraph view access check using incorrect revision of its parent, leading to issues viewing paragraphs when reverted host entities or content moderation is used": "https://www.drupal.org/files/issues/2026-07-06/paragraphs-parent-access-block-content-skip-3090200-97.patch"
             },
             "drupal/simplesamlphp_auth": {
                 "Masquerade and Logout Fix": "./patches/FOIA-78964-simplesamlphp-logout.patch"
