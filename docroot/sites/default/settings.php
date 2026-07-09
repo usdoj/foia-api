@@ -773,7 +773,7 @@ $settings['file_scan_ignore_directories'] = [
 $settings['entity_update_batch_size'] = 50;
 
 // Include settings files.
-include $app_root . '/' . $site_path . '/settings/includes.settings.php';
+include DRUPAL_ROOT . '/sites/default/settings/includes.settings.php';
 
 /**
  * Load local development override configuration, if available.
