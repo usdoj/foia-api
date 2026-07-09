@@ -22,7 +22,7 @@ corepack_enable: false
 # If the name is omitted, the project will take the name of the enclosing directory,
 # which is useful if you want to have a copy of the project side by side with this one.
 
-# type: <projecttype>  # backdrop, cakephp, codeigniter, craftcms, drupal, drupal6, drupal7, drupal8, drupal9, drupal10, drupal11, drupal12, generic, laravel, magento, magento2, php, shopware6, silverstripe, symfony, typo3, wordpress
+# type: <projecttype>  # asterios, backdrop, cakephp, codeigniter, craftcms, drupal, drupal6, drupal7, drupal8, drupal9, drupal10, drupal11, drupal12, generic, joomla, laravel, magento, magento2, php, shopware6, silverstripe, symfony, typo3, wordpress, wp-bedrock
 # See https://docs.ddev.com/en/stable/users/quickstart/ for more
 # information on the different project types
 
@@ -82,7 +82,7 @@ corepack_enable: false
 # commands are executed.
 
 # composer_version: "2"
-# You can set it to "" or "2" (default) for Composer v2 or "1" for Composer v1
+# You can set it to "" or "2" (default) for Composer v2
 # to use the latest major version available at the time your container is built.
 # It is also possible to use each other Composer version channel. This includes:
 #   - 2.2 (latest Composer LTS version)
@@ -185,10 +185,10 @@ corepack_enable: false
 # The mailpit port is not normally bound on the host at all, instead being routed
 # through ddev-router, but it can be bound directly to localhost if specified here.
 
-# webimage_extra_packages: [php7.4-tidy, php-bcmath]
+# webimage_extra_packages: ['php${DDEV_PHP_VERSION}-tidy', 'php${DDEV_PHP_VERSION}-yac']
 # Extra Debian packages that are needed in the webimage can be added here
 
-# dbimage_extra_packages: [telnet,netcat]
+# dbimage_extra_packages: [netcat, telnet, sudo]
 # Extra Debian packages that are needed in the dbimage can be added here
 
 # use_dns_when_possible: true

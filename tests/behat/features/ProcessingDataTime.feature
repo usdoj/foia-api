@@ -10,12 +10,12 @@ Feature: Processing Data Time
       | name        | field_agency_abbreviation |
       | Test Agency | TESTAGENCY                |
     And agency_component content:
-      | title                 | field_agency | field_rep_start | field_agency_comp_abbreviation | path_alias             |
-      | Test Agency Component | Test Agency  | 2019-01-01      | TESTAGENCYCOMPONENT            | /test-agency-component |
+      | title                 | field_agency | field_rep_start | field_agency_comp_abbreviation |
+      | Test Agency Component | Test Agency  | 2019-01-01      | TESTAGENCYCOMPONENT            |
 
   @api @javascript
   Scenario: Processing time data are automatically populated when reports are published
-    Given I am at "/test-agency-component"
+    Given I view the entity of type node with the title "Test Agency Component"
     Then I should see "Test Agency Component"
     And I should not see "123456789"
     And I am at "node/add/annual_foia_report_data"
@@ -41,13 +41,13 @@ Feature: Processing Data Time
     And I click the edit tab
     And I select "Published" from "Change to"
     And I press the save button at the bottom of the page
-    And I am at "/test-agency-component"
+    And I view the entity of type node with the title "Test Agency Component"
     Then I should see "Test Agency Component"
     And I should see "123456789"
 
   @api @javascript
   Scenario: The processing time fields can be manually enabled to prevent automatic population
-    Given I am at "/test-agency-component"
+    Given I view the entity of type node with the title "Test Agency Component"
     And I click the edit tab
     And I expand the "Annual FOIA Report Start/Expiration Dates"
     And I expand the "FOIA Portal Interoperability"
@@ -111,14 +111,14 @@ Feature: Processing Data Time
     And I click the edit tab
     And I select "Published" from "Change to"
     And I press the save button at the bottom of the page
-    And I am at "/test-agency-component"
+    And I view the entity of type node with the title "Test Agency Component"
     Then I should see "Test Agency Component"
     And I should not see "123456789"
     And I should see "987654321"
 
   @api @javascript
   Scenario: Edits of past annual reports should not update processing times on component pages
-    Given I am at "/test-agency-component"
+    Given I view the entity of type node with the title "Test Agency Component"
     And I click the edit tab
     And I check the box "Require manual entry of processing times"
     And for 'Street address' I enter '123 testing Address'
@@ -158,5 +158,5 @@ Feature: Processing Data Time
     And I click the edit tab
     And I select "Published" from "Change to"
     And I press the save button at the bottom of the page
-    And I am at "/test-agency-component"
+    And I view the entity of type node with the title "Test Agency Component"
     And I should not see "123456789"

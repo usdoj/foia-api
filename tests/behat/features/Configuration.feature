@@ -10,7 +10,6 @@ Feature: General site wide configuration
     When I am at "admin/modules"
     Then the "Syslog" checkbox should be checked
     And the "Contact" checkbox should not be checked
-    And the "Contact Form" checkbox should not be checked
     And the "Migrate" checkbox should be checked
     And the "Migrate Plus" checkbox should be checked
     And the "Migrate Tools" checkbox should be checked

@@ -14,7 +14,9 @@ use Drupal\Core\Form\FormStateInterface;
 function foia_agency_component_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, $bundle) {
 
   if ($entity_type->id() === 'node' && $bundle === 'agency_component') {
-    $fields['field_agency_comp_abbreviation']->addConstraint('AgencyComponentUniqueAbbreviation', []);
+    if (isset($fields['field_agency_comp_abbreviation'])) {
+      $fields['field_agency_comp_abbreviation']->addConstraint('AgencyComponentUniqueAbbreviation', []);
+    }
   }
 }
 

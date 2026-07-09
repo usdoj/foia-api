@@ -16,10 +16,9 @@ default:
         - "%paths.base%/features"
   extensions:
     Drupal\MinkExtension:
-      default_session: goutte
+      default_session: browserkit_http
       browser_name: chrome
       javascript_session: selenium2
-      goutte: ~
       files_path: "%paths.base%/media"
       base_url: https://foia-api.ddev.site
       selenium2:
@@ -32,6 +31,9 @@ default:
               - "--headless"
               - "--no-sandbox"
               - "--disable-dev-shm-usage"
+      sessions:
+        browserkit_http:
+          browserkit_http: ~
     Drupal\DrupalExtension:
       drupal:
         drupal_root: /var/www/html/docroot

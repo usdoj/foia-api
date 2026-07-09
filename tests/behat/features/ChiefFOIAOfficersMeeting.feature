@@ -12,7 +12,7 @@ Feature: Chief FOIA Officers Meeting
     And I am at '/node/add/cfo_meeting'
     And for 'Title' I enter 'CFO Meeting title'
     And I fill in 'Body' field with 'CFO Meeting Content'
-    And for 'Date' I enter '07/04/3000'
+    And for 'Date' I enter '07/04/2040'
     And for 'Time' I enter '03:00:00PM'
     When I press the 'Save' button
     Then the page title should be "CFO Meeting title | National FOIA Portal"
