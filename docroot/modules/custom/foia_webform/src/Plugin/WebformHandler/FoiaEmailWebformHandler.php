@@ -116,6 +116,9 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * @see \Drupal\Core\Mail\MailManagerInterface::mail()
    */
   public function sendEmailMessage(WebformSubmissionInterface $webformSubmission, array $message) {
+    \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', [
+      '@body' => print_r($message['body'], TRUE),
+    ]);
     $to = $message['to_mail'];
     $from = $message['from_mail'];
 
