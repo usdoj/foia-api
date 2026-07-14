@@ -131,6 +131,9 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $current_langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
     // Render body using webform email message (wrapper) template.
+    \Drupal::logger('foia_webform')->notice('Theme: @theme', [
+      '@theme' => 'webform_email_message_' . ($this->configuration['html'] ? 'html' : 'text'),
+    ]);
     $build = [
       '#theme' => 'webform_email_message_' . (($this->configuration['html']) ? 'html' : 'text'),
       '#message' =>
