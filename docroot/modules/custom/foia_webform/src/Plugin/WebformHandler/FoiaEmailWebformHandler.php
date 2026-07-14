@@ -134,6 +134,9 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     \Drupal::logger('foia_webform')->notice('Theme: @theme', [
       '@theme' => 'webform_email_message_' . ($this->configuration['html'] ? 'html' : 'text'),
     ]);
+    \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', [
+      '@body' => print_r($message['body'], TRUE),
+    ]);
     $build = [
       '#theme' => 'webform_email_message_' . (($this->configuration['html']) ? 'html' : 'text'),
       '#message' =>
