@@ -135,13 +135,14 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       '#theme' => 'webform_email_message_' . (($this->configuration['html']) ? 'html' : 'text'),
       '#message' =>
         [
-          'body' => $message['body'],
+          'body' => is_string($message['body']) ? Markup::create($message['body']) : $message['body'],
         ] + $message,
       '#webform_submission' => $webformSubmission,
       '#handler' => $this,
     ];
-
     $message['body'] = trim((string) \Drupal::service('renderer')->renderPlain($build));
+
+    $message['body'] = Markup::create($message['body']);
 
     // Log that we are about to send an email.
     $notice = 'Drupal is sending an email now, for webform submission ID: ' . $webformSubmission->id();
