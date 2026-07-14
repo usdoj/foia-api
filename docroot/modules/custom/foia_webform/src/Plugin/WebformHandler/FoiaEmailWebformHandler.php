@@ -2,7 +2,6 @@
 
 namespace Drupal\foia_webform\Plugin\WebformHandler;
 
-use Drupal\Core\Render\Markup;
 use Drupal\foia_webform\FoiaSubmissionPrettyFormatter;
 use Drupal\node\NodeInterface;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
@@ -140,9 +139,10 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       '#webform_submission' => $webformSubmission,
       '#handler' => $this,
     ];
-    $message['body'] = trim((string) \Drupal::service('renderer')->renderPlain($build));
 
-    $message['body'] = Markup::create($message['body']);
+    $message['body'] = [
+      trim((string) \Drupal::service('renderer')->renderPlain($build)),
+    ];
 
     // Log that we are about to send an email.
     $notice = 'Drupal is sending an email now, for webform submission ID: ' . $webformSubmission->id();
