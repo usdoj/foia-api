@@ -143,7 +143,13 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       '#webform_submission' => $webformSubmission,
       '#handler' => $this,
     ];
-    $message['body'] = trim((string) \Drupal::service('renderer')->renderPlain($build));
+    $output = \Drupal::service('renderer')->renderPlain($build);
+
+    \Drupal::logger('foia_webform')->notice('<pre>@output</pre>', [
+      '@output' => (string) $output,
+    ]);
+
+    $message['body'] = trim((string) $output);
 
     $message['body'] = Markup::create($message['body']);
 
