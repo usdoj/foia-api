@@ -95,6 +95,9 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       'filename' => 'FOIA Request confirmation #' . $webformSubmission->id() . '.pdf',
       'filemime' => 'application/pdf',
     ];
+    \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', [
+      '@body' => $message['body'],
+    ]);
     return $message;
   }
 
@@ -116,9 +119,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
    * @see \Drupal\Core\Mail\MailManagerInterface::mail()
    */
   public function sendEmailMessage(WebformSubmissionInterface $webformSubmission, array $message) {
-    \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', [
-      '@body' => print_r($message['body'], TRUE),
-    ]);
     $to = $message['to_mail'];
     $from = $message['from_mail'];
 
@@ -134,12 +134,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $current_langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
     // Render body using webform email message (wrapper) template.
-    \Drupal::logger('foia_webform')->notice('Theme: @theme', [
-      '@theme' => 'webform_email_message_' . ($this->configuration['html'] ? 'html' : 'text'),
-    ]);
-    \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', [
-      '@body' => print_r($message['body'], TRUE),
-    ]);
     $build = [
       '#theme' => 'webform_email_message_' . (($this->configuration['html']) ? 'html' : 'text'),
       '#message' =>
@@ -149,13 +143,7 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       '#webform_submission' => $webformSubmission,
       '#handler' => $this,
     ];
-    $output = \Drupal::service('renderer')->renderPlain($build);
-
-    \Drupal::logger('foia_webform')->notice('<pre>@output</pre>', [
-      '@output' => (string) $output,
-    ]);
-
-    $message['body'] = trim((string) $output);
+    $message['body'] = trim((string) \Drupal::service('renderer')->renderPlain($build));
 
     $message['body'] = Markup::create($message['body']);
 
@@ -164,9 +152,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     \Drupal::logger('foia_webform')->notice($notice);
 
     // Send message.
-    \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', [
-      '@body' => (string) $message['body'],
-    ]);
     return $this->mailManager->mail('webform', 'email_' . $this->getHandlerId(), $to, $current_langcode, $message, $from, TRUE);
   }
 
