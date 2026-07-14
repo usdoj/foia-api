@@ -95,9 +95,6 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       'filename' => 'FOIA Request confirmation #' . $webformSubmission->id() . '.pdf',
       'filemime' => 'application/pdf',
     ];
-    \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', [
-      '@body' => $message['body'],
-    ]);
     return $message;
   }
 
