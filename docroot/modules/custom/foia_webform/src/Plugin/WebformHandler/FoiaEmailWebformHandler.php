@@ -149,6 +149,9 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     \Drupal::logger('foia_webform')->notice($notice);
 
     // Send message.
+    \Drupal::logger('foia_webform')->notice('Mail manager class: @class', [
+      '@class' => get_class($this->mailManager),
+    ]);
     return $this->mailManager->mail('webform', 'email_' . $this->getHandlerId(), $to, $current_langcode, $message, $from, TRUE);
   }
 

@@ -6,6 +6,8 @@ use Drupal\Core\Mail\Attribute\Mail;
 use Drupal\Core\Mail\Plugin\Mail\SymfonyMailer;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 /**
@@ -16,6 +18,29 @@ use Symfony\Component\Mime\Email;
   label: new TranslatableMarkup('Custom HTML Symfony Mailer'),
 )]
 class CustomHtmlSymfonyMailer extends SymfonyMailer {
+
+  /**
+   * Logger channel for FOIA Webform operations.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected LoggerInterface $logger;
+
+  /**
+   * Constructs a FOIA submission queue handler.
+   *
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger service.
+   * @param \Symfony\Component\Mailer\MailerInterface $mailer
+   *   Mailer.
+   */
+  public function __construct(
+    LoggerInterface $logger,
+    ?MailerInterface $mailer = NULL,
+  ) {
+    parent::__construct($logger, $mailer);
+    \Drupal::logger('foia_webform')->notice('CustomHtmlSymfonyMailer constructed.');
+  }
 
   /**
    * {@inheritdoc}
