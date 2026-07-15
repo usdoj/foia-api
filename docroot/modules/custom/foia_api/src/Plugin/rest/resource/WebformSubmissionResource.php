@@ -5,7 +5,9 @@ namespace Drupal\foia_api\Plugin\rest\resource;
 use Drupal\Component\Utility\Bytes;
 use Drupal\Component\Utility\Environment;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\File\FileValidatorInterface;
 use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
 use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file_entity\Entity\FileEntity;
 use Drupal\foia_webform\AgencyLookupServiceInterface;
@@ -609,14 +611,17 @@ class WebformSubmissionResource extends ResourceBase {
       }
 
       $fileExtensions = $element['#file_extensions'] ?? $defaultProperties['file_extensions'];
-      $validators['file_validate_size'] = [$maxFileSize];
-      $validators['file_validate_extensions'] = [$fileExtensions];
+      $validators = [
+        'FileExtension' => ['extensions' =>  $fileExtensions],
+        'FileSizeLimit' => ['fileLimit' => $maxFileSize],
+      ];
+      $file_validator = \Drupal::service('file.validator');
       /** @var \Drupal\file_entity\FileEntityInterface $file */
       foreach ($files as $file) {
         $fileSizes[] = $file->getSize();
-        $validationErrors = file_validate($file, $validators);
-        if (!empty($validationErrors)) {
-          $errors[$fieldName][] = $validationErrors;
+        $validationErrors = $file_validator->validate($file, $validators);
+        foreach ($validationErrors as $validationError) {
+          $errors[$fieldName][] = $validationError->getMessage();
         }
       }
     }
