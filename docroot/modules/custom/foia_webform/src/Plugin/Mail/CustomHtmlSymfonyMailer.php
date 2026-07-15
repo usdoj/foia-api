@@ -53,7 +53,19 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
         ->subject($message['subject'])
         ->html($message['body']);
 
-      foreach ($message['attachments'] ?? [] as $attachment) {
+      \Drupal::logger('foia_webform')->notice(
+        'Top-level attachments: @top Params attachments: @params',
+        [
+          '@top' => count($message['attachments'] ?? []),
+          '@params' => count($message['params']['attachments'] ?? []),
+        ]
+      );
+
+      $attachments = $message['attachments']
+        ?? $message['params']['attachments']
+        ?? [];
+
+      foreach ($attachments as $attachment) {
         \Drupal::logger('foia_webform')->notice(
           'Attachment @name mime=@mime bytes=@bytes',
           [
