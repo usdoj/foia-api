@@ -29,6 +29,7 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
    * {@inheritdoc}
    */
   public function mail(array $message) {
+    \Drupal::logger('foia_webform')->notice('Running mail in foia_webform');
     try {
       $email = new Email();
 
@@ -41,8 +42,6 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
 
       $recipients = array_map(trim(...), str_getcsv($message['to'], escape: "\\"));
 
-      \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', ['@body' => $message['body']]);
-      file_put_contents('/tmp/foia_mail_debug.html', $message['body']);
       $email
         ->to(...$recipients)
         ->subject($message['subject'])
