@@ -30,6 +30,12 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
    * {@inheritdoc}
    */
   public function mail(array $message) {
+    \Drupal::logger('foia_webform')->notice(
+      'Custom mail received @count attachments',
+      [
+        '@count' => count($message['attachments'] ?? []),
+      ]
+    );
     try {
       $email = new Email();
 
@@ -48,6 +54,14 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
         ->html($message['body']);
 
       foreach ($message['attachments'] ?? [] as $attachment) {
+        \Drupal::logger('foia_webform')->notice(
+          'Attachment @name mime=@mime bytes=@bytes',
+          [
+            '@name' => $attachment['filename'] ?? 'missing',
+            '@mime' => $attachment['filemime'] ?? 'missing',
+            '@bytes' => strlen($attachment['filecontent'] ?? ''),
+          ]
+        );
         $email->addPart(new DataPart(
           $attachment['filecontent'],
           $attachment['filename'] ?? NULL,
@@ -56,6 +70,12 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
       }
 
       $mailer = $this->getMailer();
+      \Drupal::logger('foia_webform')->notice(
+        'Symfony email attachments: @count',
+        [
+          '@count' => count($email->getAttachments()),
+        ]
+      );
       $mailer->send($email);
 
       return TRUE;
