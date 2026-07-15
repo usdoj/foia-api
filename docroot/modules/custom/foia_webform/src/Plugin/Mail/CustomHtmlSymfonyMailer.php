@@ -38,8 +38,8 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
     LoggerInterface $logger,
     ?MailerInterface $mailer = NULL,
   ) {
-    parent::__construct($logger, $mailer);
     \Drupal::logger('foia_webform')->notice('CustomHtmlSymfonyMailer constructed.');
+    parent::__construct($logger, $mailer);
   }
 
   /**
