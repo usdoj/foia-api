@@ -7,6 +7,7 @@ use Drupal\Core\Mail\Plugin\Mail\SymfonyMailer;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
 
 /**
  * Sends HTML emails using Symfony Mailer.
@@ -45,6 +46,14 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
         ->to(...$recipients)
         ->subject($message['subject'])
         ->html($message['body']);
+
+      foreach ($message['attachments'] ?? [] as $attachment) {
+        $email->addPart(new DataPart(
+          $attachment['filecontent'],
+          $attachment['filename'] ?? NULL,
+          $attachment['filemime'] ?? NULL
+        ));
+      }
 
       $mailer = $this->getMailer();
       $mailer->send($email);
