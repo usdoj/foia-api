@@ -41,6 +41,7 @@ class CustomHtmlSymfonyMailer extends SymfonyMailer {
 
       $recipients = array_map(trim(...), str_getcsv($message['to'], escape: "\\"));
 
+      \Drupal::logger('foia_webform')->notice('<pre>@body</pre>', ['@body' => $message['body']]);
       $email
         ->to(...$recipients)
         ->subject($message['subject'])
