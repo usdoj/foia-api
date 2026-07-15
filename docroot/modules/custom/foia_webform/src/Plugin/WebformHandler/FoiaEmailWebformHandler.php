@@ -153,9 +153,19 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
       '@class' => get_class($this->mailManager),
     ]);
     \Drupal::logger('foia_webform')->notice('Handler ID: @id', [
-      '@id' => $this->getHandlerId(),
+      '@id' => var_export($this->getHandlerId(), TRUE),
     ]);
-    return $this->mailManager->mail('webform', 'email_' . $this->getHandlerId(), $to, $current_langcode, $message, $from, TRUE);
+
+    \Drupal::logger('foia_webform')->notice('Plugin ID: @id', [
+      '@id' => var_export($this->getPluginId(), TRUE),
+    ]);
+
+    \Drupal::logger('foia_webform')->notice('Configuration: @config', [
+      '@config' => print_r($this->configuration, TRUE),
+    ]);
+    //$key = 'email_' . $this->getHandlerId();
+    $key = 'email_foia_submission_queue';
+    return $this->mailManager->mail('webform', $key, $to, $current_langcode, $message, $from, TRUE);
   }
 
   /**
