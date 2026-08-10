@@ -5,15 +5,12 @@ namespace Drupal\node_to_docx;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Phpdocx\Create\CreateDocx;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Class NodeToDocxHandler for converting nodes to docx.
  */
-class NodeToDocxHandler implements ContainerAwareInterface {
-  use ContainerAwareTrait;
+class NodeToDocxHandler {
 
   /**
    * Generates a docx file adding the content of a node.

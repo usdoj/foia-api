@@ -45,6 +45,7 @@ dependencies:
     - field.field.node.agency_component.field_submission_web
     - field.field.node.agency_component.field_website
     - node.type.agency_component
+    - workflows.workflow.annual_report_workflow
   module:
     - address
     - content_moderation
@@ -525,7 +526,8 @@ content:
     type: address_default
     weight: 7
     region: content
-    settings: {  }
+    settings:
+      wrapper_type: details
     third_party_settings: {  }
   field_submission_api:
     type: link_default

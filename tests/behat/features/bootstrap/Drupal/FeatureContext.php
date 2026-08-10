@@ -10,6 +10,7 @@ use Drupal\webform\Entity\Webform;
 use Drupal\DrupalExtension\Hook\Scope\AfterNodeCreateScope;
 use Drupal\path_alias\Entity\PathAlias;
 use Drupal\node\Entity\Node;
+use RuntimeException;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -64,6 +65,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       ]);
       $path_alias->save();
     }
+  }
+
+  /**
+   * adds a breakpoints
+   * stops the execution until you hit enter in the console
+   * @Then /^breakpoint/
+   */
+  public function breakpoint() {
+    fwrite(STDOUT, "\033[s    \033[93m[Breakpoint] Press \033[1;93m[RETURN]\033[0;93m to continue...\033[0m");
+    while (fgets(STDIN, 1024) == '') {}
+    fwrite(STDOUT, "\033[u");
+    return;
   }
 
   /**
@@ -354,7 +367,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I expand the :section_name
    */
   public function iExpandThe($section_name) {
-    $summaries = $this->getSession()->getPage()->findAll('css', '.seven-details__summary');
+    $summaries = $this->getSession()->getPage()->findAll('css', '.details__summary');
     $match = FALSE;
     foreach ($summaries as $summary) {
       $name = $summary->getText();
@@ -626,4 +639,51 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
         }
         ");
   }
+
+  /**
+   * @Given I visit the entity of type :entity named :name
+   * @Given I visit the entity of type :entity with the name :name
+   * @Given I visit the entity of type :entity titled :name
+   * @Given I visit the entity of type :entity with the title :name
+   * @Given I visit the entity of type :entity labeled :name
+   * @Given I visit the entity of type :entity with the label :name
+   * @Given I view the entity of type :entity named :name
+   * @Given I view the entity of type :entity with the name :name
+   * @Given I view the entity of type :entity titled:name
+   * @Given I view the entity of type :entity with the title :name
+   * @Given I view the entity of type :entity labeled :name
+   * @Given I view the entity of type :entity with the label :name
+   *
+   * Visits the view route (/<entity_type>/<id>) for the entity with the matching name/title/label.
+   * Helps avoid using hardcoded IDs.
+   *
+   * @param string $entity
+   *   The entity type. Can be "group", "user", "media", "node" or "feed".
+   *   Cannot be a content type.
+   * @param string $name
+   *   The name/title/label of the entity.
+   *
+   * @return void
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function iVisitTheNamedEntity(string $entity, string $name)
+  : void {
+    // Identify by title, label or name? Not all entities are the same.
+    $property = match ($entity) {
+      'group' => 'label',
+      'user', 'media' => 'name',
+      'node', 'feed' => 'title',
+      default => throw new RuntimeException("Unsupported entity '$entity'"),
+    };
+    $arr = \Drupal::entityTypeManager()
+      ->getStorage($entity)
+      ->loadByProperties([$property => $name]);
+    if ($arr) {
+      $ent = reset($arr);
+      $this->getSession()->visit($this->locatePath("/$entity/{$ent->id()}"));
+    }
+  }
+
 }

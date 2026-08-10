@@ -148,8 +148,8 @@ class FoiaEmailWebformHandler extends EmailWebformHandler {
     $notice = 'Drupal is sending an email now, for webform submission ID: ' . $webformSubmission->id();
     \Drupal::logger('foia_webform')->notice($notice);
 
-    // Send message.
-    return $this->mailManager->mail('webform', 'email_' . $this->getHandlerId(), $to, $current_langcode, $message, $from, TRUE);
+    $key = 'email_foia_submission_queue';
+    return $this->mailManager->mail('webform', $key, $to, $current_langcode, $message, $from, TRUE);
   }
 
   /**
