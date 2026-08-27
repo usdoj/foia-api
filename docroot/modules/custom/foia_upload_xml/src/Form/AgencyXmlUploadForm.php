@@ -72,7 +72,7 @@ class AgencyXmlUploadForm extends FormBase {
       '#description' => $this->t("Upload your agency's annual report in the standard NIEM-XML format. Use the file extension '.xml'."),
       '#upload_location' => 'temporary://foia-xml',
       '#upload_validators' => [
-        'file_validate_extensions' => ['xml'],
+        'FileExtension' => ['extensions' => 'xml'],
       ],
       '#required' => TRUE,
       '#file_type' => 'document',
