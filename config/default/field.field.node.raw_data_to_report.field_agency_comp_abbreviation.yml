@@ -1,0 +1,26 @@
+uuid: 629e7b11-7f6b-4025-9eba-3c9ceadc4bc7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_agency_comp_abbreviation
+    - node.type.raw_data_to_report
+  module:
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.raw_data_to_report.field_agency_comp_abbreviation
+field_name: field_agency_comp_abbreviation
+entity_type: node
+bundle: raw_data_to_report
+label: Abbreviation
+description: 'The agency abbreviation for this data.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
