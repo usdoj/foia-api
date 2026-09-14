@@ -1,0 +1,106 @@
+uuid: de78c776-45df-40aa-8957-42a4e820e7df
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.raw_data_to_report.field_agency
+    - field.field.node.raw_data_to_report.field_agency_comp_abbreviation
+    - field.field.node.raw_data_to_report.field_request_data_csv
+    - field.field.node.raw_data_to_report.field_request_data_xml
+    - field.field.node.raw_data_to_report.field_year
+    - node.type.raw_data_to_report
+    - workflows.workflow.quarterly_report_workflow
+  module:
+    - content_moderation
+    - datetime
+    - file
+    - path
+id: node.raw_data_to_report.default
+targetEntityType: node
+bundle: raw_data_to_report
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_agency:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_agency_comp_abbreviation:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_request_data_csv:
+    type: file_generic
+    weight: 122
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_request_data_xml:
+    type: file_generic
+    weight: 123
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_year:
+    type: datetime_default
+    weight: 121
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  promote: true
+  sticky: true

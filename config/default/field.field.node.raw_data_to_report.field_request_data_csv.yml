@@ -1,0 +1,33 @@
+uuid: 756c3f1e-2bd7-4533-8f50-fad7f7d23651
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_request_data_csv
+    - node.type.raw_data_to_report
+  module:
+    - file
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.raw_data_to_report.field_request_data_csv
+field_name: field_request_data_csv
+entity_type: node
+bundle: raw_data_to_report
+label: request_data_csv
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: 'request_data_tool/[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'csv xlsx'
+  max_filesize: ''
+  description_field: true
+field_type: file
