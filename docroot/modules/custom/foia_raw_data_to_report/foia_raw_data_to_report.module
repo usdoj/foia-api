@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Provides the raw data report generation action.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\foia_raw_data_to_report\Form\GenerateXmlReportForm;
+
+/**
+ * Implements hook_node_view().
+ *
+ * Adds the report generation form to the full raw data node display.
+ * PURPOSE: Gives agency users an entry point for generating an XML report.
+ */
+function foia_raw_data_to_report_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() === 'raw_data_to_report' && in_array($view_mode, ['full', 'default'], TRUE)) {
+    $build['generate_xml_report'] = \Drupal::formBuilder()->getForm(GenerateXmlReportForm::class, $entity);
+    $build['generate_xml_report']['#weight'] = 110;
+  }
+}
