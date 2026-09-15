@@ -16,7 +16,7 @@ Feature: Raw data XML report action
     When I am viewing a "raw_data_to_report" with the title "Raw data action fixture"
     Then I should see the button "Generate XML Report"
     When I press "Generate XML Report"
-    Then I should see "XML report generation is not implemented yet."
+    Then I should see "XML report generation has been queued."
 
   Scenario: Anonymous visitors cannot generate reports
     Given I am an anonymous user
