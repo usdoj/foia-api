@@ -24,3 +24,10 @@ Feature: Agency Component Feature
     And for 'Submission Email' I enter 'test@test.com'
     When I press the 'Save' button
     Then the page title should be "My agency name | A Test Agency | National FOIA Portal"
+
+  @api
+  Scenario: Agency Manager can add Raw Data To Report node
+    Given I am logged in as a user with the 'Agency Manager' role
+    And I am on "/node/add"
+    Then I should see the link "Raw Data To Report"
+

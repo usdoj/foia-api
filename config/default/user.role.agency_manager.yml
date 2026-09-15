@@ -7,6 +7,7 @@ dependencies:
     - node.type.agency_component
     - node.type.annual_foia_report_data
     - node.type.quarterly_foia_report_data
+    - node.type.raw_data_to_report
     - workflows.workflow.annual_report_workflow
     - workflows.workflow.quarterly_report_workflow
   module:
@@ -35,11 +36,13 @@ permissions:
   - 'create field_submission_api_secret'
   - 'create field_submission_email'
   - 'create quarterly_foia_report_data content'
+  - 'create raw_data_to_report content'
   - 'delete foia personnel entities'
   - 'delete own files'
   - 'download own document files'
   - 'edit any annual_foia_report_data content'
   - 'edit any quarterly_foia_report_data content'
+  - 'edit any raw_data_to_report content'
   - 'edit field_request_submission_form'
   - 'edit field_submission_api'
   - 'edit field_submission_api_secret'
@@ -51,6 +54,7 @@ permissions:
   - 'edit own field_submission_api_secret'
   - 'edit own field_submission_email'
   - 'edit own quarterly_foia_report_data content'
+  - 'edit own raw_data_to_report content'
   - 'generate docx using node to docx: annual_foia_report_data'
   - 'generate docx using node to docx: quarterly_foia_report_data'
   - 'revert all revisions'
