@@ -29,6 +29,5 @@ Feature: Agency Component Feature
   Scenario: Agency Manager can add Raw Data To Report node
     Given I am logged in as a user with the 'Agency Manager' role
     And I am on "/node/add"
-    And the cache has been cleared
     Then I should see the link "Raw Data To Report"
 
