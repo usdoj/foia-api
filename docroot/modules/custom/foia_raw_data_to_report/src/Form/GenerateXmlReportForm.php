@@ -8,26 +8,27 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Provides the placeholder XML report generation action.
+ * Provides the queued XML report generation action.
  */
 final class GenerateXmlReportForm extends FormBase {
 
   /**
    * Constructs the report action form.
    */
-  public function __construct(protected EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(protected EntityTypeManagerInterface $entityTypeManager, protected QueueFactory $queueFactory) {
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('entity_type.manager'));
+    return new static($container->get('entity_type.manager'), $container->get('queue'));
   }
 
   /**
@@ -86,14 +87,21 @@ final class GenerateXmlReportForm extends FormBase {
     if (!$node instanceof NodeInterface || !$this->generationAccess($node)->isAllowed()) {
       throw new AccessDeniedHttpException();
     }
-    $this->generateXmlReport($node);
-    $this->messenger()->addStatus($this->t('XML report generation is not implemented yet.'));
+    if ($this->generateXmlReport($node)) {
+      $this->messenger()->addStatus($this->t('XML report generation has been queued.'));
+    }
+    else {
+      $this->messenger()->addError($this->t('The report could not be queued. Please try again.'));
+    }
   }
 
   /**
-   * Placeholder for enqueueing report generation in a future implementation.
+   * Enqueues the node ID without reading or processing the CSV file yet.
    */
-  protected function generateXmlReport(NodeInterface $node): void {
+  protected function generateXmlReport(NodeInterface $node): bool {
+    return $this->queueFactory->get('raw_data_to_report_processing')->createItem([
+      'nid' => (int) $node->id(),
+    ]) !== FALSE;
   }
 
 }
