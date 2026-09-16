@@ -6,12 +6,11 @@ dependencies:
     - field.field.node.raw_data_to_report.field_agency
     - field.field.node.raw_data_to_report.field_agency_comp_abbreviation
     - field.field.node.raw_data_to_report.field_messages
+    - field.field.node.raw_data_to_report.field_foia_annual_report_yr
     - field.field.node.raw_data_to_report.field_request_data_csv
     - field.field.node.raw_data_to_report.field_request_data_xml
-    - field.field.node.raw_data_to_report.field_year
     - node.type.raw_data_to_report
   module:
-    - datetime
     - file
     - text
     - user
@@ -42,6 +41,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 104
+  field_foia_annual_report_yr:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 72
     region: content
   field_request_data_csv:
     type: file_default
@@ -58,15 +65,6 @@ content:
       use_description_as_link_text: true
     third_party_settings: {  }
     weight: 103
-    region: content
-  field_year:
-    type: datetime_default
-    label: above
-    settings:
-      timezone_override: ''
-      format_type: medium
-    third_party_settings: {  }
-    weight: 101
     region: content
   links:
     settings: {  }
