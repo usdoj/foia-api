@@ -1,27 +1,30 @@
-uuid: 1060ff89-93a5-481c-8992-992fcac68be1
+uuid: 1b9fa312-0d4c-4c53-b8bb-a430eafba9c8
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_year
+    - field.storage.node.field_foia_annual_report_yr
     - node.type.raw_data_to_report
   module:
-    - datetime
     - foia_autocalc
 third_party_settings:
   foia_autocalc:
     autocalc_settings:
       description: ''
       autocalc_config: ''
-id: node.raw_data_to_report.field_year
-field_name: field_year
+id: node.raw_data_to_report.field_foia_annual_report_yr
+field_name: field_foia_annual_report_yr
 entity_type: node
 bundle: raw_data_to_report
-label: Year
-description: 'Enter the year that this data applies to.'
+label: 'FOIA Annual Report Year'
+description: ''
 required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
-field_type: datetime
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
