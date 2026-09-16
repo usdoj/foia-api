@@ -1,0 +1,27 @@
+uuid: 03d40a92-0614-4dfa-8520-8ae69e628ea3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_request_data_csv
+    - paragraphs.paragraphs_type.raw_data_component_upload
+  module:
+    - file
+id: paragraph.raw_data_component_upload.field_request_data_csv
+field_name: field_request_data_csv
+entity_type: paragraph
+bundle: raw_data_component_upload
+label: 'CSV file'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: 'request_data_tool/components/[date:custom:Y]-[date:custom:m]'
+  file_extensions: csv
+  max_filesize: ''
+  description_field: false
+field_type: file

@@ -59,7 +59,8 @@ Import configuration before running the updated worker. It requires the new
 long text with summary, like Body). Messages use the plain text format, appear
 on the node view, and are hidden from the edit form.
 
-Each processing attempt clears previous messages. `CsvValidator::validate()`
+Each processing attempt clears previous messages and checks every component
+upload. `CsvValidator::validate()`
 streams the CSV one record at a time and checks for 29 columns, matching
 `OIP Request Raw Data (FOIA Star submission) (final).csv`. Both the header and
 data records are checked. Blank records are skipped; quoted commas, escaped
@@ -70,7 +71,9 @@ The first invalid record produces a human-readable message with the expected
 and actual column counts. Missing, unreadable, empty, and non-CSV uploads also
 produce messages. Validation failures finish the queue item without generating
 XML or changing any existing XML attachment. Correct the CSV and click Generate
-XML Report again to retry. Successful validation sets Messages to **CSV validated.**
+XML Report again to retry. Each upload result identifies its component and filename,
+with **CSV validated.** for files that pass. Any failure prevents generation of
+the single replacement XML; all files are still checked.
 
 Future CSV checks belong in `CsvValidator::validate()`. Header names and the
 contents of individual columns are not validated yet. The reference CSV is not
@@ -85,14 +88,61 @@ ddev exec vendor/bin/phpunit -c docroot/core/phpunit.xml.dist docroot/modules/cu
 ## Access and private files
 
 Anonymous users cannot view `raw_data_to_report` nodes. Authenticated users
-remain subject to existing node and field permissions. Both upload fields use
+remain subject to existing node and field permissions. CSV paragraph fields and
+the report XML field use
 `private://`, so direct downloads go through Drupal's file access checks.
 The XML worker inherits this scheme from the field configuration. A scoped
 file-access hook enforces the report node and field permissions for attached
-CSV/XML files even when File Entity overrides core's file access handler.
+CSV/XML files even when File Entity overrides core's file access handler. For
+paragraph uploads, it follows the parent report and checks that the paragraph
+revision is actually attached. Detached or historical paragraph uploads cannot
+gain download access through the current report. Before a paragraph is saved,
+the authenticated uploader can access their own temporary CSV in the dedicated
+`private://request_data_tool/components/` directory so the upload widget works.
 
 Before importing this configuration on a server, configure
 `$settings['file_private_path']` to a persistent writable directory outside the
 web root. The local DDEV default is `files-private/` at the repository root.
 Rebuild caches after changing the private path. These changes apply to new
 uploads; no existing files are migrated.
+
+## Component CSV uploads
+
+The report remains unique per Agency and keeps its existing Year and single XML
+field. `field_component_uploads` is an unlimited Paragraphs reference to
+`raw_data_component_upload`. Each paragraph contains:
+
+- Required `field_agency_component`, reusing the existing paragraph field storage.
+- Required, single-value `field_request_data_csv`, accepting CSV files only and
+  storing them privately.
+
+A subset of the agency's components is allowed. At least one upload is needed
+for processing; reports can otherwise be saved without uploads. Duplicate
+components and components belonging to another agency are rejected by entity
+validation and checked again by the queue worker. Missing components/files also
+produce processing messages.
+
+The component autocomplete is limited to the parent report's agency and refreshes
+when Agency changes. Existing component-selection views depend on the report
+node URL, so this bundle uses a dedicated selection handler supporting unsaved
+reports. The shared component field storage and other paragraph bundles are not
+changed.
+
+Import the exported configuration and rebuild caches before running the queue.
+The old node-level CSV field is replaced, with no migration of existing uploads.
+This follows the pre-launch assumption that existing upload content is disposable.
+The queue payload remains the parent node ID. Edits during processing are not
+locked or snapshotted. CSV conversion remains a stub, producing one empty XML
+only after every component upload passes validation.
+
+Local integration verification (creates and removes temporary fixtures):
+
+```bash
+ddev drush php:script docroot/modules/custom/foia_raw_data_to_report/tests/integration/component_uploads.php
+```
+
+Browser and regression verification:
+
+```bash
+ddev behat -f RawDataToReport.feature
+```

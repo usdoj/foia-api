@@ -11,6 +11,7 @@ use Drupal\file\FileRepositoryInterface;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\node\NodeInterface;
 use Drupal\foia_raw_data_to_report\CsvValidator;
+use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -67,30 +68,42 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     // Clear persisted messages before validating the current upload.
     $node->set('field_messages', []);
     $node->save();
-    $source = $node->get('field_request_data_csv')->entity;
-    if (!$source) {
-      $errors = ['No CSV file is attached. Please upload a CSV file and try again.'];
+    $assignment_errors = UploadAssignments::validate($node);
+    $messages = [];
+    $has_errors = FALSE;
+    if ($node->get('field_component_uploads')->isEmpty()) {
+      $messages[] = 'Add at least one Agency Component CSV upload before generating a report.';
+      $has_errors = TRUE;
     }
-    elseif (strtolower(pathinfo($source->getFilename(), PATHINFO_EXTENSION)) !== 'csv') {
-      $errors = ['Please upload a CSV file. Excel workbooks are not supported by this processor.'];
-    }
-    else {
-      $errors = $this->csvValidator->validate($source->getFileUri());
-    }
-    if ($errors) {
-      $node->set('field_messages', [
-        'value' => "No new XML report was generated.\n" . implode("\n", $errors),
-        'format' => 'plain_text',
-      ]);
-      $node->save();
-      // Invalid input is a completed queue task, not a retryable exception.
-      return;
+    foreach ($node->get('field_component_uploads') as $delta => $item) {
+      $upload = $item->entity;
+      $errors = $assignment_errors[$delta] ?? [];
+      $supported = $upload && $upload->bundle() === 'raw_data_component_upload';
+      $component = $supported ? $upload->get('field_agency_component')->entity : NULL;
+      $source = $supported ? $upload->get('field_request_data_csv')->entity : NULL;
+      $prefix = sprintf('Upload %d — Component: %s — File: %s', $delta + 1, $component?->label() ?? '(not selected)', $source?->getFilename() ?? '(not attached)');
+      if (!$source) {
+        $errors[] = 'No CSV file is attached. Please upload a CSV file and try again.';
+      }
+      elseif (strtolower(pathinfo($source->getFilename(), PATHINFO_EXTENSION)) !== 'csv') {
+        $errors[] = 'Please upload a CSV file. Excel workbooks are not supported by this processor.';
+      }
+      else {
+        // Validate every file, even when another component's CSV has failed.
+        $errors = array_merge($errors, $this->csvValidator->validate($source->getFileUri()));
+      }
+      $has_errors = $has_errors || (bool) $errors;
+      $messages[] = $prefix . "\n" . ($errors ? implode("\n", array_unique($errors)) : 'CSV validated.');
     }
     $node->set('field_messages', [
-      'value' => 'CSV validated.',
+      'value' => ($has_errors ? "No new XML report was generated.\n\n" : '') . implode("\n\n", $messages),
       'format' => 'plain_text',
     ]);
     $node->save();
+    if ($has_errors) {
+      // Invalid input is a completed task, not a retryable exception.
+      return;
+    }
     $this->generateXmlReport($node);
   }
 

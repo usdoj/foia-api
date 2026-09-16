@@ -1,13 +1,13 @@
-uuid: d40228e3-0e84-4b67-ba7c-249b848f12e1
+uuid: e7812fb1-668f-4632-bf39-f17e2bd9dfa0
 langcode: en
 status: true
 dependencies:
   module:
     - file
-    - node
-id: node.field_request_data_csv
+    - paragraphs
+id: paragraph.field_request_data_csv
 field_name: field_request_data_csv
-entity_type: node
+entity_type: paragraph
 type: file
 settings:
   target_type: file
@@ -16,7 +16,7 @@ settings:
   uri_scheme: private
 module: file
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

@@ -5,14 +5,15 @@ dependencies:
   config:
     - field.field.node.raw_data_to_report.field_agency
     - field.field.node.raw_data_to_report.field_agency_comp_abbreviation
-    - field.field.node.raw_data_to_report.field_messages
+    - field.field.node.raw_data_to_report.field_component_uploads
     - field.field.node.raw_data_to_report.field_foia_annual_report_yr
-    - field.field.node.raw_data_to_report.field_request_data_csv
+    - field.field.node.raw_data_to_report.field_messages
     - field.field.node.raw_data_to_report.field_request_data_xml
     - node.type.raw_data_to_report
   module:
     - content_moderation
     - file
+    - paragraphs
     - path
 id: node.raw_data_to_report.default
 targetEntityType: node
@@ -43,19 +44,24 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_component_uploads:
+    type: entity_reference_paragraphs
+    weight: 122
+    region: content
+    settings:
+      title: 'Component CSV upload'
+      title_plural: 'Component CSV uploads'
+      edit_mode: open
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: raw_data_component_upload
+    third_party_settings: {  }
   field_foia_annual_report_yr:
     type: number
     weight: 5
     region: content
     settings:
       placeholder: ''
-    third_party_settings: {  }
-  field_request_data_csv:
-    type: file_generic
-    weight: 122
-    region: content
-    settings:
-      progress_indicator: throbber
     third_party_settings: {  }
   field_request_data_xml:
     type: file_generic
