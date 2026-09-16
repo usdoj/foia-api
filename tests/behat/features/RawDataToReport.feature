@@ -95,3 +95,51 @@ Feature: Raw data XML report action
     Then I should see "Upload Fixture Component"
     And I should see "Second Upload Component"
     And the URL should match "/node/[0-9]+$"
+
+  @javascript
+  Scenario: An Agency Manager can save a new report with a component CSV
+    Given agency_component content:
+      | title                | field_agency         | status |
+      | New Report Component | Raw Block Agency One | 1      |
+    And I am logged in as "raw_block_manager"
+    When I am on "/node/add/raw_data_to_report"
+    And I fill in "Title" with "New component report"
+    And I fill in "Abbreviation" with "RBA1"
+    And I fill in "FOIA Annual Report Year" with "2026"
+    And I fill in "Agency" with "Raw Block Agency One"
+    And I press the "down" key in the "Agency" field
+    And I wait 2 seconds
+    And I press the "down" key in the "Agency" field
+    And I press the "enter" key in the "Agency" field
+    And I press the "tab" key in the "Agency" field
+    And I wait for AJAX to finish
+    And I fill in "Agency Component" with "New Report Component"
+    And I attach the file "raw-data-valid.csv" to "CSV file"
+    And I wait 2 seconds
+    And I wait for AJAX to finish
+    And I press "Save"
+    Then the URL should match "/node/[0-9]+$"
+    And I should see "New Report Component"
+    And I should see "raw-data-valid"
+
+  @javascript
+  Scenario: Additional uploads autocomplete components on an unsaved report
+    Given agency_component content:
+      | title                    | field_agency         | status |
+      | Second Upload Component  | Raw Block Agency One | 1      |
+      | Other Agency Component   | Raw Block Agency Two | 1      |
+    And I am logged in as "raw_block_manager"
+    When I am on "/node/add/raw_data_to_report"
+    And I fill in "Agency" with "Raw Block Agency One"
+    And I press the "down" key in the "Agency" field
+    And I wait 2 seconds
+    And I press the "down" key in the "Agency" field
+    And I press the "enter" key in the "Agency" field
+    And I press the "tab" key in the "Agency" field
+    And I wait for AJAX to finish
+    And I press "Add Component CSV upload"
+    And I fill in "field_component_uploads[1][subform][field_agency_component][0][target_id]" with "Component"
+    And I press the "down" key in the "field_component_uploads[1][subform][field_agency_component][0][target_id]" field
+    And I wait 2 seconds
+    Then I should see "Second Upload Component"
+    And I should not see "Other Agency Component"

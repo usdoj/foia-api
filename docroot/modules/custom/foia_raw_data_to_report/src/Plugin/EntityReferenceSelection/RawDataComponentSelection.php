@@ -21,6 +21,23 @@ class RawDataComponentSelection extends NodeSelection {
   /**
    * {@inheritdoc}
    */
+  public function validateReferenceableEntities(array $ids) {
+    if (!$ids) {
+      return [];
+    }
+    // Paragraphs resolves its parent from storage, so it cannot supply the
+    // submitted agency before the report's first save or after an agency edit.
+    // Preserve core reference/access checks here. RawDataUploads validates
+    // agency membership against the submitted parent report instead.
+    return parent::buildEntityQuery()
+      ->condition('type', 'agency_component')
+      ->condition('nid', $ids, 'IN')
+      ->execute();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function buildEntityQuery($match = NULL, $match_operator = 'CONTAINS') {
     $query = parent::buildEntityQuery($match, $match_operator);
     $configuration = $this->getConfiguration();

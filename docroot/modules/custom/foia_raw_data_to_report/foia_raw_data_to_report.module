@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
@@ -142,6 +143,13 @@ function foia_raw_data_to_report_field_widget_single_element_form_alter(&$elemen
     $node = $form_object->getEntity();
     if ($node instanceof NodeInterface && $node->bundle() === 'raw_data_to_report') {
       $agency = $form_state->getValue(['field_agency', 0, 'target_id'], $node->get('field_agency')->target_id);
+      // Paragraph add/remove uses partial validation, which discards unrelated
+      // validated values. The submitted autocomplete input still has the agency
+      // selected on an unsaved report (or changed on an existing report).
+      $input = $form_state->getUserInput()['field_agency'][0]['target_id'] ?? NULL;
+      if (is_string($input)) {
+        $agency = ctype_digit($input) ? $input : EntityAutocomplete::extractEntityIdFromAutocompleteInput($input);
+      }
       $element['target_id']['#selection_settings']['agency_id'] = $agency ?: 0;
     }
   }

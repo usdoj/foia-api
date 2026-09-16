@@ -80,6 +80,11 @@ try {
     'field_agency' => $agencies[0]->id(),
     'field_component_uploads' => array_map(static fn($p) => ['entity' => $p], $paragraphs),
   ]);
+  // Components must validate before the parent report has a node ID.
+  foreach ($paragraphs as $paragraph) {
+    $paragraph->setParentEntity($report, 'field_component_uploads');
+    $check(count($paragraph->get('field_agency_component')->validate()) === 0, 'Component reference rejected on an unsaved report.');
+  }
   $report->save();
   $process = static function () use ($worker, $report, $node_storage) {
     $worker->processItem(['nid' => (int) $report->id()]);
