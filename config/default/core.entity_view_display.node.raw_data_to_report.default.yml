@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.raw_data_to_report.field_agency
     - field.field.node.raw_data_to_report.field_agency_comp_abbreviation
+    - field.field.node.raw_data_to_report.field_messages
     - field.field.node.raw_data_to_report.field_request_data_csv
     - field.field.node.raw_data_to_report.field_request_data_xml
     - field.field.node.raw_data_to_report.field_year
@@ -12,6 +13,7 @@ dependencies:
   module:
     - datetime
     - file
+    - text
     - user
 id: node.raw_data_to_report.default
 targetEntityType: node
@@ -33,6 +35,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 3
+    region: content
+  field_messages:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
     region: content
   field_request_data_csv:
     type: file_default

@@ -10,6 +10,7 @@ use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\node\NodeInterface;
+use Drupal\foia_raw_data_to_report\CsvValidator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,7 +26,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
   /**
    * Constructs the report queue worker.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -40,6 +41,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       $container->get('entity_type.manager'),
       $container->get('file_system'),
       $container->get('file.repository'),
+      $container->get('foia_raw_data_to_report.csv_validator'),
     );
   }
 
@@ -62,6 +64,33 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     if (!$node instanceof NodeInterface || $node->bundle() !== 'raw_data_to_report') {
       throw new \InvalidArgumentException('The queued node is not a raw data report.');
     }
+    // Clear persisted messages before validating the current upload.
+    $node->set('field_messages', []);
+    $node->save();
+    $source = $node->get('field_request_data_csv')->entity;
+    if (!$source) {
+      $errors = ['No CSV file is attached. Please upload a CSV file and try again.'];
+    }
+    elseif (strtolower(pathinfo($source->getFilename(), PATHINFO_EXTENSION)) !== 'csv') {
+      $errors = ['Please upload a CSV file. Excel workbooks are not supported by this processor.'];
+    }
+    else {
+      $errors = $this->csvValidator->validate($source->getFileUri());
+    }
+    if ($errors) {
+      $node->set('field_messages', [
+        'value' => "No new XML report was generated.\n" . implode("\n", $errors),
+        'format' => 'plain_text',
+      ]);
+      $node->save();
+      // Invalid input is a completed queue task, not a retryable exception.
+      return;
+    }
+    $node->set('field_messages', [
+      'value' => 'CSV validated.',
+      'format' => 'plain_text',
+    ]);
+    $node->save();
     $this->generateXmlReport($node);
   }
 
