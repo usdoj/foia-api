@@ -81,3 +81,18 @@ Run validator unit tests with:
 ```bash
 ddev exec vendor/bin/phpunit -c docroot/core/phpunit.xml.dist docroot/modules/custom/foia_raw_data_to_report/tests/src/Unit/CsvValidatorTest.php
 ```
+
+## Access and private files
+
+Anonymous users cannot view `raw_data_to_report` nodes. Authenticated users
+remain subject to existing node and field permissions. Both upload fields use
+`private://`, so direct downloads go through Drupal's file access checks.
+The XML worker inherits this scheme from the field configuration. A scoped
+file-access hook enforces the report node and field permissions for attached
+CSV/XML files even when File Entity overrides core's file access handler.
+
+Before importing this configuration on a server, configure
+`$settings['file_private_path']` to a persistent writable directory outside the
+web root. The local DDEV default is `files-private/` at the repository root.
+Rebuild caches after changing the private path. These changes apply to new
+uploads; no existing files are migrated.

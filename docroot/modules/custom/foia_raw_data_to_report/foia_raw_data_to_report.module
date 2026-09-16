@@ -7,6 +7,11 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
+use Drupal\file\FileInterface;
+use Drupal\file\FileReferenceResolver;
 use Drupal\foia_raw_data_to_report\Form\GenerateXmlReportForm;
 
 /**
@@ -20,4 +25,57 @@ function foia_raw_data_to_report_node_view(array &$build, EntityInterface $entit
     $build['generate_xml_report'] = \Drupal::formBuilder()->getForm(GenerateXmlReportForm::class, $entity);
     $build['generate_xml_report']['#weight'] = 110;
   }
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Denies anonymous viewing of raw data reports.
+ * PURPOSE: Protects agency uploads and reports from unauthenticated access.
+ */
+function foia_raw_data_to_report_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($node->bundle() === 'raw_data_to_report' && $op === 'view') {
+    return AccessResult::forbiddenIf($account->isAnonymous())
+      ->addCacheContexts(['user.roles:authenticated']);
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_file_access().
+ *
+ * Applies report node and field access to private CSV and XML attachments.
+ * PURPOSE: Preserves report access rules with File Entity's access handler.
+ */
+function foia_raw_data_to_report_file_access(FileInterface $file, $operation, AccountInterface $account) {
+  if (!in_array($operation, ['view', 'download'], TRUE) || !str_starts_with($file->getFileUri(), 'private://')) {
+    return AccessResult::neutral();
+  }
+
+  $resolver = \Drupal::service(FileReferenceResolver::class);
+  $access = AccessResult::neutral()->cachePerUser()->addCacheableDependency($file);
+  $is_report_file = FALSE;
+  $report_fields = ['field_request_data_csv', 'field_request_data_xml'];
+  foreach ($resolver->getReferences($file) as $usage) {
+    if ($usage->entityTypeId !== 'node' || !in_array($usage->fieldName, $report_fields, TRUE)) {
+      continue;
+    }
+    $node = $resolver->loadEntityFromUsage($usage);
+    if ($node->bundle() !== 'raw_data_to_report') {
+      continue;
+    }
+    $is_report_file = TRUE;
+    $access->addCacheableDependency($node);
+    if ($account->isAuthenticated()) {
+      $operation = $node->isDefaultRevision() ? 'view' : 'view revision';
+      $access = $access->orIf($node->access($operation, $account, TRUE)
+        ->andIf($node->get($usage->fieldName)->access('view', $account, TRUE)));
+    }
+  }
+
+  // Prevent unrelated file permissions from granting access to these reports.
+  if ($is_report_file && !$access->isAllowed()) {
+    return AccessResult::forbidden()->addCacheableDependency($access);
+  }
+  return $access;
 }

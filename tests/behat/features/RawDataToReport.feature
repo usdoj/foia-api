@@ -18,10 +18,11 @@ Feature: Raw data XML report action
     When I press "Generate XML Report"
     Then I should see "XML report generation has been queued."
 
-  Scenario: Anonymous visitors cannot generate reports
+  Scenario: Anonymous visitors cannot view raw data reports
     Given I am an anonymous user
     When I am viewing a "raw_data_to_report" with the title "Raw data action fixture"
-    Then I should not see the button "Generate XML Report"
+    Then the response status code should be 403
+    And I should not see the button "Generate XML Report"
 
   Scenario: Only the manager's agency report appears
     Given raw_data_to_report content:
@@ -48,3 +49,9 @@ Feature: Raw data XML report action
     Given I am logged in as a user with the "Administrator" role
     When I am on "/user"
     Then I should not see the link "Add new Raw Data To Report"
+
+  Scenario: Authenticated visitors can view published raw data reports
+    Given I am logged in as a user with the "authenticated" role
+    When I am viewing a "raw_data_to_report" with the title "Authenticated raw data fixture"
+    Then the response status code should be 200
+    And I should see "Authenticated raw data fixture"
