@@ -7,6 +7,16 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\Element\EntityAutocomplete;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
+use Drupal\file\FileInterface;
+use Drupal\file\FileReferenceResolver;
 use Drupal\foia_raw_data_to_report\Form\GenerateXmlReportForm;
 
 /**
@@ -20,4 +30,154 @@ function foia_raw_data_to_report_node_view(array &$build, EntityInterface $entit
     $build['generate_xml_report'] = \Drupal::formBuilder()->getForm(GenerateXmlReportForm::class, $entity);
     $build['generate_xml_report']['#weight'] = 110;
   }
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Denies anonymous viewing of raw data reports.
+ * PURPOSE: Protects agency uploads and reports from unauthenticated access.
+ */
+function foia_raw_data_to_report_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($node->bundle() === 'raw_data_to_report' && $op === 'view') {
+    return AccessResult::forbiddenIf($account->isAnonymous())
+      ->addCacheContexts(['user.roles:authenticated']);
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_file_access().
+ *
+ * Applies report node and field access to private CSV and XML attachments.
+ * PURPOSE: Preserves report access rules with File Entity's access handler.
+ */
+function foia_raw_data_to_report_file_access(FileInterface $file, $operation, AccountInterface $account) {
+  if (!in_array($operation, ['view', 'download'], TRUE) || !str_starts_with($file->getFileUri(), 'private://')) {
+    return AccessResult::neutral();
+  }
+
+  $resolver = \Drupal::service(FileReferenceResolver::class);
+  $access = AccessResult::neutral()->cachePerUser()->addCacheableDependency($file);
+  $is_report_file = FALSE;
+  $report_fields = ['field_request_data_csv', 'field_request_data_xml'];
+  foreach ($resolver->getReferences($file) as $usage) {
+    $entity = $resolver->loadEntityFromUsage($usage);
+    $node = $entity;
+    $parent_field = $usage->fieldName;
+    if ($entity instanceof ParagraphInterface && $entity->bundle() === 'raw_data_component_upload' && $usage->fieldName === 'field_request_data_csv') {
+      $is_report_file = TRUE;
+      $access->addCacheableDependency($entity);
+      $node = $entity->getParentEntity();
+      $parent_field = 'field_component_uploads';
+      // Only the paragraph revision actually attached to this report may grant
+      // access. Detached uploads must not inherit current access.
+      $attached = FALSE;
+      if ($node instanceof NodeInterface && $node->hasField($parent_field)) {
+        foreach ($node->get($parent_field) as $reference) {
+          if ((string) $reference->target_revision_id === (string) $entity->getRevisionId()) {
+            $attached = TRUE;
+          }
+        }
+      }
+      if (!$attached) {
+        continue;
+      }
+    }
+    elseif ($usage->entityTypeId !== 'node' || !in_array($usage->fieldName, $report_fields, TRUE)) {
+      continue;
+    }
+    if (!$node instanceof NodeInterface || $node->bundle() !== 'raw_data_to_report') {
+      continue;
+    }
+    $is_report_file = TRUE;
+    $access->addCacheableDependency($node);
+    if ($account->isAuthenticated()) {
+      $node_operation = $node->isDefaultRevision() ? 'view' : 'view revision';
+      $access = $access->orIf($node->access($node_operation, $account, TRUE)
+        ->andIf($node->get($parent_field)->access('view', $account, TRUE))
+        ->andIf($entity->get($usage->fieldName)->access('view', $account, TRUE)));
+    }
+  }
+
+  // Before the paragraph is saved, the managed-file widget needs owner access
+  // to its temporary upload. Keep this exception within our CSV directory.
+  if (!$is_report_file && $file->isTemporary() && str_starts_with($file->getFileUri(), 'private://request_data_tool/components/')) {
+    $is_owner = $account->isAuthenticated() && (string) $file->getOwnerId() === (string) $account->id();
+    return ($is_owner ? AccessResult::allowed() : AccessResult::forbidden())
+      ->cachePerUser()->addCacheableDependency($file);
+  }
+
+  // Prevent unrelated file permissions from granting access to these reports.
+  if ($is_report_file && !$access->isAllowed()) {
+    return AccessResult::forbidden()->addCacheableDependency($access);
+  }
+  return $access;
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ *
+ * Adds report-level upload validation.
+ * PURPOSE: Enforces agency membership and one upload per component on save.
+ */
+function foia_raw_data_to_report_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() === 'node' && $bundle === 'raw_data_to_report' && isset($fields['field_component_uploads'])) {
+    $fields['field_component_uploads']->addConstraint('RawDataUploads');
+  }
+}
+
+/**
+ * Implements hook_field_widget_single_element_form_alter().
+ *
+ * Passes the selected parent agency into component autocomplete requests.
+ * PURPOSE: Restricts choices on new reports as well as existing reports.
+ */
+function foia_raw_data_to_report_field_widget_single_element_form_alter(&$element, FormStateInterface $form_state, $context) {
+  $items = $context['items'];
+  if ($items->getEntity()->bundle() !== 'raw_data_component_upload' || $items->getName() !== 'field_agency_component') {
+    return;
+  }
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof EntityFormInterface) {
+    $node = $form_object->getEntity();
+    if ($node instanceof NodeInterface && $node->bundle() === 'raw_data_to_report') {
+      $agency = $form_state->getValue(['field_agency', 0, 'target_id'], $node->get('field_agency')->target_id);
+      // Paragraph add/remove uses partial validation, which discards unrelated
+      // validated values. The submitted autocomplete input still has the agency
+      // selected on an unsaved report (or changed on an existing report).
+      $input = $form_state->getUserInput()['field_agency'][0]['target_id'] ?? NULL;
+      if (is_string($input)) {
+        $agency = ctype_digit($input) ? $input : EntityAutocomplete::extractEntityIdFromAutocompleteInput($input);
+      }
+      $element['target_id']['#selection_settings']['agency_id'] = $agency ?: 0;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_form.
+ *
+ * Refreshes component selectors when the report agency changes.
+ * PURPOSE: Keeps paragraph choices scoped to the selected agency.
+ */
+function foia_raw_data_to_report_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $node = $form_state->getFormObject()->getEntity();
+  if ($node->bundle() !== 'raw_data_to_report' || !isset($form['field_component_uploads'])) {
+    return;
+  }
+  $form['field_component_uploads']['#prefix'] = '<div id="raw-data-component-uploads">';
+  $form['field_component_uploads']['#suffix'] = '</div>';
+  $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
+    'callback' => 'foia_raw_data_to_report_refresh_components',
+    'wrapper' => 'raw-data-component-uploads',
+    'event' => 'change',
+  ];
+}
+
+/**
+ * Returns the rebuilt component uploads after an agency selection change.
+ */
+function foia_raw_data_to_report_refresh_components(array &$form, FormStateInterface $form_state) {
+  return $form['field_component_uploads'];
 }

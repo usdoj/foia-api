@@ -1,0 +1,33 @@
+uuid: a7135f9b-1091-4ec4-a20e-beafacf20536
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.raw_data_component_upload.field_agency_component
+    - field.field.paragraph.raw_data_component_upload.field_request_data_csv
+    - paragraphs.paragraphs_type.raw_data_component_upload
+  module:
+    - file
+id: paragraph.raw_data_component_upload.default
+targetEntityType: paragraph
+bundle: raw_data_component_upload
+mode: default
+content:
+  field_agency_component:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_request_data_csv:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  search_api_excerpt: true

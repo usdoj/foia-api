@@ -1,0 +1,33 @@
+uuid: c39e482e-3394-4580-9954-a1d4880896f0
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - foia_raw_data_to_report
+  config:
+    - field.storage.paragraph.field_agency_component
+    - node.type.agency_component
+    - paragraphs.paragraphs_type.raw_data_component_upload
+  module:
+    - foia_raw_data_to_report
+id: paragraph.raw_data_component_upload.field_agency_component
+field_name: field_agency_component
+entity_type: paragraph
+bundle: raw_data_component_upload
+label: 'Agency Component'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: raw_data_component
+  handler_settings:
+    target_bundles:
+      agency_component: agency_component
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

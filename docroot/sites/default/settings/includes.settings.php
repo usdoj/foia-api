@@ -66,3 +66,8 @@ if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
   $config['samlauth.authentication']['sp_private_key'] = 'file:/var/www/html/foia.' . $ah_env . '/acquia-files/saml/samlauth_key';
   $config['samlauth.authentication']['idp_certs'][0] = 'file:/var/www/html/foia.' . $ah_env . '/acquia-files/saml/fedhub_key.pub';
 }
+
+// Keep local private uploads outside the web root.
+if (getenv('IS_DDEV_PROJECT') === 'true' && empty($settings['file_private_path'])) {
+  $settings['file_private_path'] = DRUPAL_ROOT . '/../files-private';
+}

@@ -5,13 +5,15 @@ dependencies:
   config:
     - field.field.node.raw_data_to_report.field_agency
     - field.field.node.raw_data_to_report.field_agency_comp_abbreviation
+    - field.field.node.raw_data_to_report.field_component_uploads
     - field.field.node.raw_data_to_report.field_foia_annual_report_yr
-    - field.field.node.raw_data_to_report.field_request_data_csv
+    - field.field.node.raw_data_to_report.field_messages
     - field.field.node.raw_data_to_report.field_request_data_xml
     - node.type.raw_data_to_report
   module:
+    - entity_reference_revisions
     - file
-    - user
+    - text
 id: node.raw_data_to_report.default
 targetEntityType: node
 bundle: raw_data_to_report
@@ -33,6 +35,15 @@ content:
     third_party_settings: {  }
     weight: 3
     region: content
+  field_component_uploads:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 102
+    region: content
   field_foia_annual_report_yr:
     type: number_integer
     label: above
@@ -42,13 +53,12 @@ content:
     third_party_settings: {  }
     weight: 72
     region: content
-  field_request_data_csv:
-    type: file_default
+  field_messages:
+    type: text_default
     label: above
-    settings:
-      use_description_as_link_text: true
+    settings: {  }
     third_party_settings: {  }
-    weight: 102
+    weight: 104
     region: content
   field_request_data_xml:
     type: file_default
