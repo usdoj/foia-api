@@ -67,17 +67,43 @@ data records are checked. Blank records are skipped; quoted commas, escaped
 quotes, and multiline values are supported. Record numbers include the header
 and blank records and are not physical line numbers for multiline CSVs.
 
-The first invalid record produces a human-readable message with the expected
-and actual column counts. Missing, unreadable, empty, and non-CSV uploads also
+The first validation error produces a human-readable message identifying the
+CSV record. Column-count errors include the expected and actual counts. Missing, unreadable, empty, and non-CSV uploads also
 produce messages. Validation failures finish the queue item without generating
 XML or changing any existing XML attachment. Correct the CSV and click Generate
 XML Report again to retry. Each upload result identifies its component and filename,
 with **CSV validated.** for files that pass. Any failure prevents generation of
 the single replacement XML; all files are still checked.
 
-Future CSV checks belong in `CsvValidator::validate()`. Header names and the
-contents of individual columns are not validated yet. The reference CSV is not
-needed at runtime; its 29-column count is recorded in `EXPECTED_COLUMNS`.
+Column checks are grouped in `CsvValidator::validate()` in column order, with
+comments describing each rule. The first nonblank record is treated as the
+header; its names are not validated. Data records currently require:
+
+- **A (Component):** a nonblank value.
+- **B (Request Number):** a nonblank value, unique within that CSV. Comparisons
+  are case-sensitive, ignore surrounding whitespace, and preserve leading zeroes.
+- **C (Is This a Consultation):** uppercase `Y` or `N`, ignoring surrounding
+  whitespace. For `Y`, all columns except A, B, C, I, and K must be blank.
+  K may be empty; date and other column requirements will be added later.
+- **D (Days Allowed):** `20` or `30`, ignoring surrounding whitespace, unless
+  C is `Y`. Consultation rows must leave D blank under the Column C rule.
+- **E (Exemption 3 Statutes):** optional comma-separated integer IDs from 1
+  through 77. Whitespace around IDs is allowed; empty entries are invalid.
+  If any ID is 77, F, G, and H must each contain information. Otherwise, all
+  three must be blank. A nonblank E also requires a standalone `3` in P's
+  comma-separated exemptions. Consultation rows must leave E blank.
+- **F (Other Exemption 3 Statutes):** when nonblank, requires code 77 in E.
+- **G (Information Withheld):** when nonblank, requires code 77 in E and data in F.
+- **H (Case Citation):** when nonblank, requires code 77 in E and data in F and G.
+
+Checks run in column order, so earlier Column C or E errors take precedence
+when a row also violates the F, G, or H rules.
+
+Whitespace-only cells count as blank. Request numbers are kept in a lookup set
+while streaming; memory usage grows with the number of distinct request numbers,
+without retaining entire records. Duplicate tracking resets for each CSV upload.
+Future checks belong in the same method. The reference CSV is not needed at
+runtime; its 29-column count is recorded in `EXPECTED_COLUMNS`.
 
 Run validator unit tests with:
 
