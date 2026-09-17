@@ -20,11 +20,17 @@ final class CsvValidator {
    *
    * @param string $uri
    *   The CSV file URI, including Drupal stream wrapper URIs.
+   * @param int $fiscal_year
+   *   The report node's Year; the fiscal year ends on September 30.
    *
    * @return string[]
    *   Validation errors. Stops at the first error to keep output bounded.
    */
-  public function validate(string $uri): array {
+  public function validate(string $uri, int $fiscal_year): array {
+    // A missing or invalid report year must not bypass fiscal-year checks.
+    if ($fiscal_year < 1 || $fiscal_year > 9999) {
+      return ['The report Year must be between 1 and 9999 to validate CSV dates.'];
+    }
     $stream = @fopen($uri, 'rb');
     if ($stream === FALSE) {
       return ['The CSV file could not be opened. Please upload it again.'];
@@ -74,7 +80,7 @@ final class CsvValidator {
         }
 
         // Column C: Consultations may contain values only in A, B, C, I and K.
-        // K may be empty; date validation for I and K will be added separately.
+        // K may be empty; Column I is validated separately below.
         if ($consultation === 'Y') {
           foreach ($columns as $index => $value) {
             if (!in_array($index, [0, 1, 2, 8, 10], TRUE) && trim($value) !== '') {
@@ -146,6 +152,80 @@ final class CsvValidator {
         // Column H: Case Citation requires code 77 in E and data in F and G.
         if (trim($columns[7]) !== '' && (!$has_other_statute || trim($columns[5]) === '' || trim($columns[6]) === '')) {
           return [sprintf('CSV record %d: Ex. 3 Code 77 must appear in Column E if there is data in Column H', $record)];
+        }
+
+        // Column I: Date Initially Received is required for all rows.
+        $initially_received = trim($columns[8]);
+        if ($initially_received === '') {
+          return [sprintf('CSV record %d: Data initially Received cannot be blank', $record)];
+        }
+
+        // Column I: Require a real calendar date in month/day/four-digit year
+        // order. Allow single-digit months/days as used in the reference CSV.
+        if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $initially_received, $date_parts)
+          || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
+          return [sprintf('CSV record %d: Date Initially Received must be a valid date in MM/DD/YYYY format', $record)];
+        }
+
+        // Column I: September 30 of the report year is the latest allowed date.
+        // Compare calendar dates without time zones; earlier years are allowed.
+        $received_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
+        if ($received_date > $fiscal_year * 10000 + 930) {
+          return [sprintf('CSV record %d: Date Initially Received is later than the fiscal year', $record)];
+        }
+
+        // Column J: Date Perfected is optional; validate only nonblank values.
+        // The Column C check already requires J to be blank for consultations.
+        $perfected = trim($columns[9]);
+        if ($perfected !== '') {
+          // Column J: Require a real date using the same format as Column I.
+          if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $perfected, $date_parts)
+            || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
+            return [sprintf('CSV record %d: Date Perfected must be a valid date in MM/DD/YYYY format', $record)];
+          }
+
+          // Column J: The date cannot exceed September 30 of the report year.
+          $perfected_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
+          if ($perfected_date > $fiscal_year * 10000 + 930) {
+            return [sprintf('CSV record %d: Date Perfected is later than the fiscal year', $record)];
+          }
+
+          // Column J: A perfected date requires an uppercase S, C or E in M.
+          if (!in_array(trim($columns[12]), ['S', 'C', 'E'], TRUE)) {
+            return [sprintf('CSV record %d: If data is entered in Column J, Column M must contain capital S, C, or E', $record)];
+          }
+
+          // Column J: Perfection cannot precede the initially received date.
+          if ($perfected_date < $received_date) {
+            return [sprintf('CSV record %d: Date Perfected cannot be prior to Date Initially Received', $record)];
+          }
+        }
+
+        // Column K: Date Completed is required when N contains a disposition.
+        $completed = trim($columns[10]);
+        if ($completed === '' && trim($columns[13]) !== '') {
+          return [sprintf('CSV record %d: Must complete Column K if Disposition is listed in Column N', $record)];
+        }
+
+        // Column K: Otherwise optional, including for consultation rows.
+        if ($completed !== '') {
+          // Column K: Require a real date using the same format as I and J.
+          if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $completed, $date_parts)
+            || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
+            return [sprintf('CSV record %d: Date Completed must be a valid date in MM/DD/YYYY format', $record)];
+          }
+
+          // Column K: Completion must fall within the report's fiscal year,
+          // from October 1 of the previous year through September 30 inclusive.
+          $completed_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
+          if ($completed_date < ($fiscal_year - 1) * 10000 + 1001 || $completed_date > $fiscal_year * 10000 + 930) {
+            return [sprintf('CSV record %d: Date Completed must fall within the fiscal year (10/01/%04d through 09/30/%04d)', $record, $fiscal_year - 1, $fiscal_year)];
+          }
+
+          // Column K: Completion cannot precede J when a perfected date exists.
+          if ($perfected !== '' && $completed_date < $perfected_date) {
+            return [sprintf('CSV record %d: Date Completed cannot be prior to Date Perfected', $record)];
+          }
         }
       }
       if (!feof($stream)) {

@@ -84,7 +84,7 @@ header; its names are not validated. Data records currently require:
   are case-sensitive, ignore surrounding whitespace, and preserve leading zeroes.
 - **C (Is This a Consultation):** uppercase `Y` or `N`, ignoring surrounding
   whitespace. For `Y`, all columns except A, B, C, I, and K must be blank.
-  K may be empty; date and other column requirements will be added later.
+  K may be empty; I is required and validated as a date below.
 - **D (Days Allowed):** `20` or `30`, ignoring surrounding whitespace, unless
   C is `Y`. Consultation rows must leave D blank under the Column C rule.
 - **E (Exemption 3 Statutes):** optional comma-separated integer IDs from 1
@@ -95,6 +95,22 @@ header; its names are not validated. Data records currently require:
 - **F (Other Exemption 3 Statutes):** when nonblank, requires code 77 in E.
 - **G (Information Withheld):** when nonblank, requires code 77 in E and data in F.
 - **H (Case Citation):** when nonblank, requires code 77 in E and data in F and G.
+- **I (Date Initially Received):** required, including for consultations. Must
+  be a valid calendar date in `MM/DD/YYYY` order (single-digit months and days
+  are also accepted), on or before September 30 of the report node's Year.
+  Earlier years are allowed; surrounding whitespace is ignored.
+- **J (Date Perfected):** optional, with the same date format as I. If provided,
+  must be on or after I and on or before September 30 of the report node's Year,
+  and M must contain uppercase `S`, `C`, or `E`. Consultation rows must leave
+  J blank under the Column C rule.
+- **K (Date Completed):** optional unless N contains a disposition. If provided,
+  must be a valid date in the same format as I and J, between October 1 of the
+  previous year and September 30 of the report node's Year, inclusive. Must not
+  precede J when J is provided; equality is allowed. Applies to consultations too.
+
+The queue worker passes `field_foia_annual_report_yr` to the validator as its
+required second argument. A missing or invalid Year prevents CSV validation
+and XML generation, with a message asking for a Year between 1 and 9999.
 
 Checks run in column order, so earlier Column C or E errors take precedence
 when a row also violates the F, G, or H rules.

@@ -90,7 +90,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       }
       else {
         // Validate every file, even when another component's CSV has failed.
-        $errors = array_merge($errors, $this->csvValidator->validate($source->getFileUri()));
+        $errors = array_merge($errors, $this->csvValidator->validate($source->getFileUri(), (int) $node->get('field_foia_annual_report_yr')->value));
       }
       $has_errors = $has_errors || (bool) $errors;
       $messages[] = $prefix . "\n" . ($errors ? implode("\n", array_unique($errors)) : 'CSV validated.');
