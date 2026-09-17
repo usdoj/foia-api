@@ -113,13 +113,39 @@ header; its names are not validated. Data records currently require:
   holidays are excluded. With K blank, only the integer and J requirements apply.
 - **M (Track):** may be blank unless J is populated, in which case uppercase
   `S`, `C`, or `E` is required by the Column J check. Independently, uppercase
-  `G` in T requires uppercase `E` in M, even if J is blank. Surrounding
+  `G` in S requires uppercase `E` in M, even if J is blank. Surrounding
   whitespace is ignored.
 - **N (Disposition Reason):** required when K is populated and C is `N`.
   Code `12` requires data in O. Codes `1`, `2`, `3`, `4`, `5`, and `7` require
   J to be populated; codes `8` and `9` require J to be blank. Codes are matched
   exactly after trimming surrounding whitespace. The Column K check still
   requires a completed date whenever N is populated.
+- **O (Disposition "Other" Reason):** when nonblank, requires code `12` in N.
+  This complements the Column N rule requiring O when N is `12`.
+- **P (Disposition Exemption(s) Applied):** optional comma-separated
+  alphanumeric entries, allowing whitespace around entries. Required for N =
+  `3`; nonblank P requires N = `2` or `3`. A standalone exemption `3` requires
+  information in E, complementing the existing E-to-P requirement.
+- **Q (Request for Expedited Processing - Date Received):** optional date in
+  the same format as I, J, and K. Must be on or before September 30 of the
+  report node's Year; earlier years are allowed.
+- **R (Request for Expedited Processing - Date of Determination):** optional
+  unless Q, S, or T is populated. Uses the same date format as Q and must fall
+  between October 1 of the previous year and September 30 of the report node's
+  Year, inclusive. Cannot precede Q when Q is populated; equality is allowed.
+- **S (Request for Expedited Processing - Granted/Denied):** when R is populated,
+  requires uppercase `G` or `D`, ignoring surrounding whitespace.
+- **T (Request for Fee Waiver - Date Adjudication Began):** optional date in
+  the same format as Q. Must be on or before September 30 of the report node's
+  Year; earlier years are allowed. The existing R rule still requires R when
+  T is populated.
+- **U (Request for Fee Waiver - Date Adjudication Completed):** optional date in
+  the same format as T. Must fall between October 1 of the previous year and
+  September 30 of the report node's Year, inclusive. Cannot precede T when T
+  is populated; equality is allowed.
+- **V (Request for Fee Waiver - Granted/Denied):** may be blank unless U has a
+  date, in which case uppercase `G` or `D` is required. Surrounding whitespace
+  is ignored.
 
 `CsvValidator::FEDERAL_HOLIDAYS` embeds all 205 dates supplied in
 `federal-holidays.txt`, covering 2008–2026. The file is not read at runtime.
