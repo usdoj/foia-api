@@ -34,9 +34,16 @@ Use a lease longer than the maximum processing duration and avoid overlapping
 runners. Revisit the lease and server PHP resource limits when CSV conversion
 is implemented; a lease is not a processing timeout.
 
-`RawDataToReportProcessing::generateXmlReport()` is the conversion stub. It
-currently writes a **zero-byte placeholder**, not valid XML, and attaches it to
-`field_request_data_xml`. It uses the field's configured directory and storage
+`RawDataToReportProcessing::generateXmlReport()` uses `XmlReportBuilder` to
+create a **metadata-only XML stub** and attaches it to `field_request_data_xml`.
+The document uses the example's `iepd:FoiaAnnualReport` root and namespaces,
+with `nc:DocumentApplicationName` set to `FOIA Annual Report Workbook`
+(application version `1.1`), `nc:DocumentCreationDate/nc:Date` set to the current
+generation date (`YYYY-MM-DD`, Drupal runtime timezone), and
+`nc:DocumentDescriptionText` set to `FOIA Annual Report`. It is well-formed XML,
+but is not yet a complete, schema-valid annual report. CSV-derived sections
+will be added to this module's builder; `foia_export_xml` is not modified.
+It uses the field's configured directory and storage
 scheme, with a unique filename, and replaces the current field reference.
 Each filename includes the generation timestamp in `YYYY-MM-DD-HH-MM-SS`
 format using the Drupal runtime timezone (normally the site default). Drupal
@@ -49,8 +56,8 @@ manage file permanence and usage on node save.
 Each click creates a separate job. The worker reads the latest node state when
 processing; it does not snapshot the CSV selection. Deleted nodes are skipped.
 Processing exceptions leave the item available for retry after its lease expires.
-The CSV is validated before the placeholder XML is generated; conversion is not
-implemented yet.
+The CSV is validated before the XML stub is generated; CSV-derived report
+sections are not implemented yet.
 
 ## CSV validation and messages
 
@@ -219,7 +226,7 @@ Import the exported configuration and rebuild caches before running the queue.
 The old node-level CSV field is replaced, with no migration of existing uploads.
 This follows the pre-launch assumption that existing upload content is disposable.
 The queue payload remains the parent node ID. Edits during processing are not
-locked or snapshotted. CSV conversion remains a stub, producing one empty XML
+locked or snapshotted. CSV conversion remains a stub, producing one metadata-only XML document
 only after every component upload passes validation.
 
 Local integration verification (creates and removes temporary fixtures):

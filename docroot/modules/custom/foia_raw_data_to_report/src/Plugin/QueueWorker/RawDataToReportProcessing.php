@@ -12,6 +12,7 @@ use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\node\NodeInterface;
 use Drupal\foia_raw_data_to_report\CsvValidator;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
+use Drupal\foia_raw_data_to_report\XmlReportBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -108,9 +109,10 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
   }
 
   /**
-   * Attaches an empty XML placeholder; future CSV conversion belongs here.
+   * Builds and attaches report XML after all component CSVs pass validation.
    */
   protected function generateXmlReport(NodeInterface $node): void {
+    $xml = (new XmlReportBuilder())->build();
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();
@@ -124,7 +126,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
 
     // Include the generation time so users can identify the latest report.
     $filename = 'raw-data-report-' . $node->id() . '-' . date('Y-m-d-H-i-s') . '.xml';
-    $file = $this->fileRepository->writeData('', $directory . '/' . $filename, FileExists::Rename);
+    $file = $this->fileRepository->writeData($xml, $directory . '/' . $filename, FileExists::Rename);
     $file->setOwnerId($node->getOwnerId());
     $file->save();
     $node->set('field_request_data_xml', ['target_id' => $file->id()]);
