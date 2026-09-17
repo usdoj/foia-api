@@ -107,6 +107,25 @@ header; its names are not validated. Data records currently require:
   must be a valid date in the same format as I and J, between October 1 of the
   previous year and September 30 of the report node's Year, inclusive. Must not
   precede J when J is provided; equality is allowed. Applies to consultations too.
+- **L (Days Tolled):** optional non-negative integer, requiring J when populated.
+  If K is populated, cannot exceed working days after J through K (J excluded,
+  K included). Same-day completion allows zero. Weekends and the supplied
+  holidays are excluded. With K blank, only the integer and J requirements apply.
+- **M (Track):** may be blank unless J is populated, in which case uppercase
+  `S`, `C`, or `E` is required by the Column J check. Independently, uppercase
+  `G` in T requires uppercase `E` in M, even if J is blank. Surrounding
+  whitespace is ignored.
+- **N (Disposition Reason):** required when K is populated and C is `N`.
+  Code `12` requires data in O. Codes `1`, `2`, `3`, `4`, `5`, and `7` require
+  J to be populated; codes `8` and `9` require J to be blank. Codes are matched
+  exactly after trimming surrounding whitespace. The Column K check still
+  requires a completed date whenever N is populated.
+
+`CsvValidator::FEDERAL_HOLIDAYS` embeds all 205 dates supplied in
+`federal-holidays.txt`, covering 2008–2026. The file is not read at runtime.
+Maintain the constant for future years; dates outside its coverage currently
+exclude weekends only. Working-day arithmetic counts whole weeks and a short
+remainder rather than looping over every calendar day for each CSV record.
 
 The queue worker passes `field_foia_annual_report_yr` to the validator as its
 required second argument. A missing or invalid Year prevents CSV validation

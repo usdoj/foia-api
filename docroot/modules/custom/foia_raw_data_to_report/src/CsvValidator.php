@@ -13,6 +13,219 @@ final class CsvValidator {
   public const EXPECTED_COLUMNS = 29;
 
   /**
+   * Holiday dates covering 2008 through 2026.
+   *
+   * Keep this list updated for future reporting years.
+   */
+  private const FEDERAL_HOLIDAYS = [
+    '2008-01-01',
+    '2008-01-21',
+    '2008-02-18',
+    '2008-05-26',
+    '2008-07-04',
+    '2008-09-01',
+    '2008-10-13',
+    '2008-11-11',
+    '2008-11-27',
+    '2008-12-25',
+    '2009-01-01',
+    '2009-01-19',
+    '2009-01-20',
+    '2009-02-16',
+    '2009-05-25',
+    '2009-07-03',
+    '2009-09-07',
+    '2009-10-12',
+    '2009-11-11',
+    '2009-11-26',
+    '2009-12-25',
+    '2010-01-01',
+    '2010-01-18',
+    '2010-02-15',
+    '2010-05-31',
+    '2010-07-05',
+    '2010-09-06',
+    '2010-10-11',
+    '2010-11-11',
+    '2010-11-25',
+    '2010-12-24',
+    '2010-12-31',
+    '2011-01-17',
+    '2011-02-21',
+    '2011-05-30',
+    '2011-07-04',
+    '2011-09-05',
+    '2011-10-10',
+    '2011-11-11',
+    '2011-11-24',
+    '2011-12-26',
+    '2012-01-02',
+    '2012-01-16',
+    '2012-02-20',
+    '2012-05-28',
+    '2012-07-04',
+    '2012-09-03',
+    '2012-10-08',
+    '2012-11-12',
+    '2012-11-22',
+    '2012-12-25',
+    '2013-01-01',
+    '2013-01-21',
+    '2013-02-18',
+    '2013-05-27',
+    '2013-07-04',
+    '2013-09-02',
+    '2013-10-14',
+    '2013-11-11',
+    '2013-11-28',
+    '2013-12-25',
+    '2014-01-01',
+    '2014-01-20',
+    '2014-02-17',
+    '2014-05-26',
+    '2014-07-04',
+    '2014-09-01',
+    '2014-10-13',
+    '2014-11-11',
+    '2014-11-27',
+    '2014-12-24',
+    '2014-12-25',
+    '2015-01-01',
+    '2015-01-19',
+    '2015-02-16',
+    '2015-05-25',
+    '2015-07-03',
+    '2015-09-07',
+    '2015-10-12',
+    '2015-11-11',
+    '2015-11-26',
+    '2015-12-25',
+    '2016-01-01',
+    '2016-01-18',
+    '2016-02-15',
+    '2016-05-30',
+    '2016-07-04',
+    '2016-09-05',
+    '2016-10-10',
+    '2016-11-11',
+    '2016-11-24',
+    '2016-12-26',
+    '2017-01-02',
+    '2017-01-16',
+    '2017-02-20',
+    '2017-05-29',
+    '2017-07-04',
+    '2017-09-04',
+    '2017-10-09',
+    '2017-11-10',
+    '2017-11-23',
+    '2017-12-25',
+    '2018-01-01',
+    '2018-01-15',
+    '2018-02-19',
+    '2018-05-28',
+    '2018-07-04',
+    '2018-09-03',
+    '2018-10-08',
+    '2018-11-12',
+    '2018-11-22',
+    '2018-12-24',
+    '2018-12-25',
+    '2019-01-01',
+    '2019-01-21',
+    '2019-02-18',
+    '2019-05-27',
+    '2019-07-04',
+    '2019-09-02',
+    '2019-10-14',
+    '2019-11-11',
+    '2019-11-28',
+    '2019-12-24',
+    '2019-12-25',
+    '2020-01-01',
+    '2020-01-20',
+    '2020-02-17',
+    '2020-04-03',
+    '2020-05-25',
+    '2020-09-07',
+    '2020-10-12',
+    '2020-11-11',
+    '2020-11-26',
+    '2020-12-25',
+    '2021-01-01',
+    '2021-01-18',
+    '2021-01-20',
+    '2021-02-15',
+    '2021-05-31',
+    '2021-06-18',
+    '2021-07-05',
+    '2021-09-06',
+    '2021-10-11',
+    '2021-11-11',
+    '2021-11-25',
+    '2021-12-24',
+    '2021-12-31',
+    '2022-01-17',
+    '2022-02-21',
+    '2022-05-30',
+    '2022-06-20',
+    '2022-07-04',
+    '2022-09-05',
+    '2022-10-10',
+    '2022-11-11',
+    '2022-11-24',
+    '2022-12-26',
+    '2023-01-02',
+    '2023-01-16',
+    '2023-02-20',
+    '2023-05-29',
+    '2023-06-19',
+    '2023-07-04',
+    '2023-09-04',
+    '2023-10-09',
+    '2023-11-10',
+    '2023-11-23',
+    '2023-12-25',
+    '2024-01-01',
+    '2024-01-15',
+    '2024-02-19',
+    '2024-05-27',
+    '2024-06-19',
+    '2024-07-04',
+    '2024-09-02',
+    '2024-10-14',
+    '2024-11-11',
+    '2024-11-28',
+    '2024-12-24',
+    '2024-12-25',
+    '2025-01-01',
+    '2025-01-09',
+    '2025-01-20',
+    '2025-02-17',
+    '2025-05-26',
+    '2025-06-19',
+    '2025-07-04',
+    '2025-09-01',
+    '2025-10-13',
+    '2025-11-11',
+    '2025-11-27',
+    '2025-12-24',
+    '2025-12-25',
+    '2025-12-26',
+    '2026-01-01',
+    '2026-01-19',
+    '2026-02-16',
+    '2026-05-25',
+    '2026-06-19',
+    '2026-07-03',
+    '2026-09-07',
+    '2026-10-12',
+    '2026-11-11',
+    '2026-11-26',
+    '2026-12-25',
+  ];
+
+  /**
    * Returns human-readable errors, or an empty array when validation passes.
    *
    * Record numbers include the header and blank records. Quoted multiline
@@ -227,6 +440,54 @@ final class CsvValidator {
             return [sprintf('CSV record %d: Date Completed cannot be prior to Date Perfected', $record)];
           }
         }
+
+        // Column L: Days Tolled is optional, but needs a perfected date in J.
+        $days_tolled = trim($columns[11]);
+        if ($days_tolled !== '') {
+          if ($perfected === '') {
+            return [sprintf('CSV record %d: Days Tolled only permitted if Perfected Date is entered', $record)];
+          }
+
+          // Column L: Accept non-negative whole days, including zero.
+          if (!ctype_digit($days_tolled)) {
+            return [sprintf('CSV record %d: Days Tolled must be a non-negative integer', $record)];
+          }
+
+          // Column L: When K is present, limit tolling to elapsed working days.
+          // Exclude J, include K, and subtract weekends and supplied holidays.
+          // With no completed date, the upper limit cannot yet be checked.
+          if ($completed !== '' && (int) $days_tolled > $this->countWorkingDays($perfected, $completed)) {
+            return [sprintf('CSV record %d: Days Tolled exceeds working days between Perfected and Completed Dates (Columns J and K)', $record)];
+          }
+        }
+
+        // Column M: Track may be blank. The Column J check above already
+        // requires uppercase S, C or E whenever a perfected date is present.
+        // Independently, an uppercase G in T requires an uppercase E in M.
+        if (trim($columns[19]) === 'G' && trim($columns[12]) !== 'E') {
+          return [sprintf('CSV record %d: If Column T contains a G, Column M must contain an E', $record)];
+        }
+
+        // Column N: Completed non-consultation requests need a disposition.
+        $disposition = trim($columns[13]);
+        if ($completed !== '' && $consultation === 'N' && $disposition === '') {
+          return [sprintf('CSV record %d: If Column K has Date Completed AND Column C = N (No), then Column N must have Disposition entered', $record)];
+        }
+
+        // Column N: Disposition code 12 requires explanatory data in O.
+        if ($disposition === '12' && trim($columns[14]) === '') {
+          return [sprintf('CSV record %d: Column O must contain data for Disposition Code 12', $record)];
+        }
+
+        // Column N: Codes 1, 2, 3, 4, 5 and 7 require a perfected date in J.
+        if (in_array($disposition, ['1', '2', '3', '4', '5', '7'], TRUE) && $perfected === '') {
+          return [sprintf('CSV record %d: If Disposition Code 1, 2, 3, 4, 5, or 7 is entered in Column N, Column J must have a Perfected Date', $record)];
+        }
+
+        // Column N: Codes 8 and 9 require the perfected date in J to be blank.
+        if (in_array($disposition, ['8', '9'], TRUE) && $perfected !== '') {
+          return [sprintf('CSV record %d: If Disposition Code 8 or 9 is listed in Column N, Column J must be blank for that request', $record)];
+        }
       }
       if (!feof($stream)) {
         return ['The CSV file could not be read completely. Please upload it again.'];
@@ -239,6 +500,38 @@ final class CsvValidator {
     finally {
       fclose($stream);
     }
+  }
+
+  /**
+   * Counts weekdays after the start date through the end date, minus holidays.
+   *
+   * Dates have already passed CSV validation. UTC avoids daylight-saving
+   * effects. Whole weeks avoid iterating over every day of a long request.
+   */
+  private function countWorkingDays(string $start, string $end): int {
+    $timezone = new \DateTimeZone('UTC');
+    $start_date = \DateTimeImmutable::createFromFormat('!m/d/Y', $start, $timezone);
+    $end_date = \DateTimeImmutable::createFromFormat('!m/d/Y', $end, $timezone);
+    $days = (int) $start_date->diff($end_date)->days;
+    $working_days = intdiv($days, 7) * 5;
+    $start_weekday = (int) $start_date->format('N');
+    for ($offset = 1; $offset <= $days % 7; $offset++) {
+      if (($start_weekday - 1 + $offset) % 7 < 5) {
+        $working_days++;
+      }
+    }
+
+    $first = $start_date->format('Y-m-d');
+    $last = $end_date->format('Y-m-d');
+    foreach (self::FEDERAL_HOLIDAYS as $holiday) {
+      if ($holiday > $last) {
+        break;
+      }
+      if ($holiday > $first && (int) (new \DateTimeImmutable($holiday, $timezone))->format('N') <= 5) {
+        $working_days--;
+      }
+    }
+    return $working_days;
   }
 
 }
