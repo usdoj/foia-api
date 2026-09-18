@@ -2,6 +2,8 @@
 
 namespace Drupal\foia_raw_data_to_report;
 
+use Drupal\taxonomy\TermInterface;
+
 /**
  * Builds annual report XML independently of the node-based foia_export_xml.
  */
@@ -21,9 +23,23 @@ final class XmlReportBuilder {
   ];
 
   /**
-   * Builds the metadata stub; CSV-derived report sections will be added later.
+   * Builds metadata, organizations, statute usage, and request statistics.
+   *
+   * @param \Drupal\taxonomy\TermInterface $agency
+   *   The report's linked Agency term, supplying its name and abbreviation.
+   * @param \Drupal\node\NodeInterface[] $components
+   *   Components from the validated upload paragraphs, in paragraph order.
+   * @param int $fiscal_year
+   *   The report node's Year, already checked during CSV validation.
+   * @param array $statutes
+   *   Statute summaries returned by StatuteAggregator.
+   * @param array $request_statistics
+   *   Component and overall summaries from RequestStatisticsAggregator.
+   *
+   * @return string
+   *   The serialized report XML.
    */
-  public function build(): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -43,11 +59,131 @@ final class XmlReportBuilder {
     $root->appendChild($creation_date);
     $root->appendChild($document->createElementNS(self::NAMESPACES['nc'], 'nc:DocumentDescriptionText', 'FOIA Annual Report'));
 
+    // Use the Agency term, not the abbreviation on the raw data report node.
+    $organization = $document->createElementNS(self::NAMESPACES['nc'], 'nc:Organization');
+    $organization->setAttributeNS(self::NAMESPACES['s'], 's:id', 'ORG0');
+    $root->appendChild($organization);
+    $this->addOrganizationText($document, $organization, (string) $agency->get('field_agency_abbreviation')->value, $agency->label());
+
+    // Only uploaded components are subunits, with IDs matching the example.
+    $component_map = [];
+    foreach (array_values($components) as $delta => $component) {
+      $component_map[$component->id()] = 'ORG' . ($delta + 1);
+      $subunit = $document->createElementNS(self::NAMESPACES['nc'], 'nc:OrganizationSubUnit');
+      $subunit->setAttributeNS(self::NAMESPACES['s'], 's:id', 'ORG' . ($delta + 1));
+      $organization->appendChild($subunit);
+      $this->addOrganizationText($document, $subunit, (string) $component->get('field_agency_comp_abbreviation')->value, $component->label());
+    }
+
+    // Follow the Organization section with the report's selected fiscal year.
+    $root->appendChild($document->createElementNS(self::NAMESPACES['foia'], 'foia:DocumentFiscalYearDate', (string) $fiscal_year));
+
+    $this->addStatutes($document, $root, $statutes, $component_map);
+    if ($request_statistics !== []) {
+      $this->addRequestStatistics($document, $root, $request_statistics, $component_map);
+    }
+
     $xml = $document->saveXML();
     if ($xml === FALSE) {
       throw new \RuntimeException('Unable to serialize the raw data report XML.');
     }
     return $xml;
+  }
+
+  /**
+   * Adds statute definitions, component counts, and agency-wide totals.
+   */
+  private function addStatutes(\DOMDocument $document, \DOMElement $root, array $statutes, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'Exemption3StatuteSection');
+    $statutes = array_values($statutes);
+    foreach ($statutes as $delta => $statute) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ReliedUponStatute');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'ES' . ($delta + 1));
+      $this->addTextElement($document, $entry, 'j', 'StatuteDescriptionText', $statute['description']);
+      // Keep distinct G and H values, separated by newlines across requests.
+      $citations = implode("\n", $statute['citations']);
+      $withheld = implode("\n", $statute['information_withheld']);
+      $this->addTextElement($document, $entry, 'foia', 'ReliedUponStatuteInformationWithheldText', $withheld);
+      $case = $this->addTextElement($document, $entry, 'nc', 'Case');
+      // Match the example report when no case citation was supplied.
+      $this->addTextElement($document, $case, 'nc', 'CaseTitleText', $citations === '' ? 'N/A' : $citations);
+    }
+    // Definitions precede associations, matching the existing annual exporter.
+    foreach ($statutes as $delta => $statute) {
+      $counts = [];
+      foreach ($component_map as $component_id => $organization_id) {
+        if (isset($statute['counts'][$component_id])) {
+          $counts[$organization_id] = $statute['counts'][$component_id];
+        }
+      }
+      $counts['ORG0'] = array_sum($counts);
+      foreach ($counts as $organization_id => $quantity) {
+        $association = $this->addTextElement($document, $section, 'foia', 'ReliedUponStatuteOrganizationAssociation');
+        $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+        $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'ES' . ($delta + 1));
+        $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+        $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+        $this->addTextElement($document, $association, 'foia', 'ReliedUponStatuteQuantity', (string) $quantity);
+      }
+    }
+  }
+
+  /**
+   * Adds request counters and references to component/agency organizations.
+   */
+  private function addRequestStatistics(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'ProcessedRequestSection');
+    $fields = [
+      'pending_start' => 'ProcessingStatisticsPendingAtStartQuantity',
+      'received' => 'ProcessingStatisticsReceivedQuantity',
+      'processed' => 'ProcessingStatisticsProcessedQuantity',
+      'pending_end' => 'ProcessingStatisticsPendingAtEndQuantity',
+    ];
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+
+    // Keep matching suffixes: PS1 refers to ORG1, and PS0 to the agency ORG0.
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ProcessingStatistics');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PS' . substr($organization_id, 3));
+      foreach ($fields as $key => $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+      }
+    }
+    // Statistics precede associations, matching the example and exporter.
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ProcessingStatisticsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PS' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Appends a namespaced element and safely escapes optional text.
+   */
+  private function addTextElement(\DOMDocument $document, \DOMElement $parent, string $prefix, string $name, string $text = ''): \DOMElement {
+    $element = $document->createElementNS(self::NAMESPACES[$prefix], $prefix . ':' . $name);
+    if ($text !== '') {
+      $element->appendChild($document->createTextNode($text));
+    }
+    $parent->appendChild($element);
+    return $element;
+  }
+
+  /**
+   * Adds organization text safely, including names containing XML characters.
+   */
+  private function addOrganizationText(\DOMDocument $document, \DOMElement $parent, string $abbreviation, string $name): void {
+    foreach (['OrganizationAbbreviationText' => $abbreviation, 'OrganizationName' => $name] as $element => $value) {
+      $child = $document->createElementNS(self::NAMESPACES['nc'], 'nc:' . $element);
+      $child->appendChild($document->createTextNode($value));
+      $parent->appendChild($child);
+    }
   }
 
 }

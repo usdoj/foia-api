@@ -35,14 +35,31 @@ runners. Revisit the lease and server PHP resource limits when CSV conversion
 is implemented; a lease is not a processing timeout.
 
 `RawDataToReportProcessing::generateXmlReport()` uses `XmlReportBuilder` to
-create a **metadata-only XML stub** and attaches it to `field_request_data_xml`.
+create a **partial annual report XML document** and attaches it to `field_request_data_xml`.
 The document uses the example's `iepd:FoiaAnnualReport` root and namespaces,
 with `nc:DocumentApplicationName` set to `FOIA Annual Report Workbook`
 (application version `1.1`), `nc:DocumentCreationDate/nc:Date` set to the current
 generation date (`YYYY-MM-DD`, Drupal runtime timezone), and
 `nc:DocumentDescriptionText` set to `FOIA Annual Report`. It is well-formed XML,
-but is not yet a complete, schema-valid annual report. CSV-derived sections
+but is not yet a complete, schema-valid annual report. Additional CSV-derived sections
 will be added to this module's builder; `foia_export_xml` is not modified.
+The `nc:Organization` section uses the linked Agency taxonomy term's name and
+`field_agency_abbreviation`, with `s:id="ORG0"`. Its `nc:OrganizationSubUnit`
+children use the components from the uploaded paragraphs, in paragraph order,
+with IDs `ORG1`, `ORG2`, etc. Component abbreviations come from
+`field_agency_comp_abbreviation` on each component. Names and abbreviations are
+escaped as XML text. The report node's own abbreviation is not used.
+The Organization section is followed by `foia:DocumentFiscalYearDate`, using
+the report node's `field_foia_annual_report_yr`, also used for CSV validation.
+
+Each queue run compares attached CSV components with all `agency_component`
+nodes linked to the Agency (including unpublished components). It appends
+`Warning: no CSV has been attached for these Components: ` followed by missing
+component names. This warning does not block generation; existing validation
+errors still do. Components with an attached but invalid CSV receive validation
+errors rather than a missing-upload warning. Missing components are not added
+as XML subunits. Previous warnings are cleared with other processing messages.
+
 It uses the field's configured directory and storage
 scheme, with a unique filename, and replaces the current field reference.
 Each filename includes the generation timestamp in `YYYY-MM-DD-HH-MM-SS`
@@ -56,8 +73,9 @@ manage file permanence and usage on node save.
 Each click creates a separate job. The worker reads the latest node state when
 processing; it does not snapshot the CSV selection. Deleted nodes are skipped.
 Processing exceptions leave the item available for retry after its lease expires.
-The CSV is validated before the XML stub is generated; CSV-derived report
-sections are not implemented yet.
+All CSVs are validated before aggregation and XML generation. Statute usage and
+processed request statistics are aggregated; the remaining report sections are
+not implemented yet.
 
 ## CSV validation and messages
 
@@ -226,7 +244,7 @@ Import the exported configuration and rebuild caches before running the queue.
 The old node-level CSV field is replaced, with no migration of existing uploads.
 This follows the pre-launch assumption that existing upload content is disposable.
 The queue payload remains the parent node ID. Edits during processing are not
-locked or snapshotted. CSV conversion remains a stub, producing one metadata-only XML document
+locked or snapshotted. CSV conversion produces one partial annual report XML document
 only after every component upload passes validation.
 
 Local integration verification (creates and removes temporary fixtures):
@@ -240,3 +258,56 @@ Browser and regression verification:
 ```bash
 ddev behat -f RawDataToReport.feature
 ```
+
+## Exemption 3 statute aggregation
+
+After validation, `StatuteAggregator` streams each component CSV in a separate
+pass, one record at a time. Component identity comes from the paragraph, not
+Column A. Each distinct statute ID in Column E counts once per request row;
+agency totals sum the component counts. No request rows are retained.
+
+`StatuteAggregator::STATUTES` embeds all 77 labels from
+`ID_Statute_exemption_3.txt` verbatim, including its placeholder labels and
+punctuation. That file is not needed at runtime. Code 77 uses the trimmed
+Other Statute description in F; different descriptions produce separate statute
+entries. Other codes are grouped by their numeric ID.
+
+Distinct, nonblank Information Withheld values from G and Case Citation values
+from H are retained separately per statute and joined with newlines. G populates
+`foia:ReliedUponStatuteInformationWithheldText`; H populates
+`nc:Case/nc:CaseTitleText`. Memory grows with distinct statutes, components, and
+text values, rather than total CSV rows; retaining all unique text can still
+consume memory if every request has different text.
+
+`XmlReportBuilder` receives summaries, not CSV files. It adds
+`foia:Exemption3StatuteSection` after `foia:DocumentFiscalYearDate`, with `ES1`,
+`ES2`, etc. definitions followed by component usage associations and an `ORG0`
+agency total for each statute. Only components with nonzero usage get an
+association. No statutes produces an empty section. Names and citation text
+are escaped as XML text. Read failures abort generation before an existing XML
+file is replaced. The existing `foia_export_xml` module is unchanged.
+
+## Processed request statistics
+
+`RequestStatisticsAggregator` makes a separate streaming pass after validation,
+retaining only four counters per component. Every data row counts, including
+consultations and rows without statute codes. Headers and blank records are
+skipped using the same rules as validation.
+
+- Pending at start: I is before October 1 of the previous year.
+- Received: I is within the fiscal year, including both boundaries.
+- Processed: K is within the fiscal year, including both boundaries.
+- Pending at end: K is blank (including whitespace-only cells).
+
+Agency totals sum each counter across components. Both component and overall
+counts must satisfy `pending start + received - processed = pending end`.
+A mismatch or read failure raises a processing exception before the existing
+XML is replaced. Normal CSV validation already enforces the date constraints
+that make this equation hold. Header-only uploads produce four zero counts.
+
+The builder adds `foia:ProcessedRequestSection` after the statute section.
+Each uploaded component gets `PS1`, `PS2`, etc., and the agency total gets
+`PS0`. All four quantities are emitted, including zeroes. Corresponding
+`foia:ProcessingStatisticsOrganizationAssociation` elements reference those
+statistics using `foia:ComponentDataReference` and link to `ORG1`, `ORG2`, etc.
+or agency `ORG0` using `nc:OrganizationReference`.
