@@ -73,8 +73,9 @@ manage file permanence and usage on node save.
 Each click creates a separate job. The worker reads the latest node state when
 processing; it does not snapshot the CSV selection. Deleted nodes are skipped.
 Processing exceptions leave the item available for retry after its lease expires.
-All CSVs are validated before aggregation and XML generation. Statute usage is
-aggregated; the remaining report sections are not implemented yet.
+All CSVs are validated before aggregation and XML generation. Statute usage and
+processed request statistics are aggregated; the remaining report sections are
+not implemented yet.
 
 ## CSV validation and messages
 
@@ -285,3 +286,28 @@ agency total for each statute. Only components with nonzero usage get an
 association. No statutes produces an empty section. Names and citation text
 are escaped as XML text. Read failures abort generation before an existing XML
 file is replaced. The existing `foia_export_xml` module is unchanged.
+
+## Processed request statistics
+
+`RequestStatisticsAggregator` makes a separate streaming pass after validation,
+retaining only four counters per component. Every data row counts, including
+consultations and rows without statute codes. Headers and blank records are
+skipped using the same rules as validation.
+
+- Pending at start: I is before October 1 of the previous year.
+- Received: I is within the fiscal year, including both boundaries.
+- Processed: K is within the fiscal year, including both boundaries.
+- Pending at end: K is blank (including whitespace-only cells).
+
+Agency totals sum each counter across components. Both component and overall
+counts must satisfy `pending start + received - processed = pending end`.
+A mismatch or read failure raises a processing exception before the existing
+XML is replaced. Normal CSV validation already enforces the date constraints
+that make this equation hold. Header-only uploads produce four zero counts.
+
+The builder adds `foia:ProcessedRequestSection` after the statute section.
+Each uploaded component gets `PS1`, `PS2`, etc., and the agency total gets
+`PS0`. All four quantities are emitted, including zeroes. Corresponding
+`foia:ProcessingStatisticsOrganizationAssociation` elements reference those
+statistics using `foia:ComponentDataReference` and link to `ORG1`, `ORG2`, etc.
+or agency `ORG0` using `nc:OrganizationReference`.

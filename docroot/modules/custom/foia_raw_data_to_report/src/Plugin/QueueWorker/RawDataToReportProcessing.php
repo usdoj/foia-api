@@ -15,6 +15,7 @@ use Drupal\foia_raw_data_to_report\CsvValidator;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\XmlReportBuilder;
 use Drupal\foia_raw_data_to_report\StatuteAggregator;
+use Drupal\foia_raw_data_to_report\RequestStatisticsAggregator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -150,7 +151,9 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       ];
     }
     $statutes = (new StatuteAggregator())->aggregate($sources);
-    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, (int) $node->get('field_foia_annual_report_yr')->value, $statutes);
+    $fiscal_year = (int) $node->get('field_foia_annual_report_yr')->value;
+    $request_statistics = (new RequestStatisticsAggregator())->aggregate($sources, $fiscal_year);
+    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();

@@ -23,7 +23,7 @@ final class XmlReportBuilder {
   ];
 
   /**
-   * Builds report metadata, organizations, and aggregated statute usage.
+   * Builds metadata, organizations, statute usage, and request statistics.
    *
    * @param \Drupal\taxonomy\TermInterface $agency
    *   The report's linked Agency term, supplying its name and abbreviation.
@@ -33,11 +33,13 @@ final class XmlReportBuilder {
    *   The report node's Year, already checked during CSV validation.
    * @param array $statutes
    *   Statute summaries returned by StatuteAggregator.
+   * @param array $request_statistics
+   *   Component and overall summaries from RequestStatisticsAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -77,6 +79,9 @@ final class XmlReportBuilder {
     $root->appendChild($document->createElementNS(self::NAMESPACES['foia'], 'foia:DocumentFiscalYearDate', (string) $fiscal_year));
 
     $this->addStatutes($document, $root, $statutes, $component_map);
+    if ($request_statistics !== []) {
+      $this->addRequestStatistics($document, $root, $request_statistics, $component_map);
+    }
 
     $xml = $document->saveXML();
     if ($xml === FALSE) {
@@ -120,6 +125,41 @@ final class XmlReportBuilder {
         $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
         $this->addTextElement($document, $association, 'foia', 'ReliedUponStatuteQuantity', (string) $quantity);
       }
+    }
+  }
+
+  /**
+   * Adds request counters and references to component/agency organizations.
+   */
+  private function addRequestStatistics(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'ProcessedRequestSection');
+    $fields = [
+      'pending_start' => 'ProcessingStatisticsPendingAtStartQuantity',
+      'received' => 'ProcessingStatisticsReceivedQuantity',
+      'processed' => 'ProcessingStatisticsProcessedQuantity',
+      'pending_end' => 'ProcessingStatisticsPendingAtEndQuantity',
+    ];
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+
+    // Keep matching suffixes: PS1 refers to ORG1, and PS0 to the agency ORG0.
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ProcessingStatistics');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PS' . substr($organization_id, 3));
+      foreach ($fields as $key => $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+      }
+    }
+    // Statistics precede associations, matching the example and exporter.
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ProcessingStatisticsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PS' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
   }
 
