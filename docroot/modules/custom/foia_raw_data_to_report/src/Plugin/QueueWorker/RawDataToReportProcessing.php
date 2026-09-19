@@ -16,6 +16,7 @@ use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\XmlReportBuilder;
 use Drupal\foia_raw_data_to_report\StatuteAggregator;
 use Drupal\foia_raw_data_to_report\RequestStatisticsAggregator;
+use Drupal\foia_raw_data_to_report\DispositionAggregator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -153,7 +154,8 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $statutes = (new StatuteAggregator())->aggregate($sources);
     $fiscal_year = (int) $node->get('field_foia_annual_report_yr')->value;
     $request_statistics = (new RequestStatisticsAggregator())->aggregate($sources, $fiscal_year);
-    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics);
+    $dispositions = (new DispositionAggregator())->aggregate($sources);
+    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();

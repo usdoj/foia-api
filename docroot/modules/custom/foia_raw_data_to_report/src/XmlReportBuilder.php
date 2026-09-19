@@ -23,7 +23,7 @@ final class XmlReportBuilder {
   ];
 
   /**
-   * Builds metadata, organizations, statute usage, and request statistics.
+   * Builds metadata, organizations, statute usage, and request summaries.
    *
    * @param \Drupal\taxonomy\TermInterface $agency
    *   The report's linked Agency term, supplying its name and abbreviation.
@@ -35,11 +35,13 @@ final class XmlReportBuilder {
    *   Statute summaries returned by StatuteAggregator.
    * @param array $request_statistics
    *   Component and overall summaries from RequestStatisticsAggregator.
+   * @param array $dispositions
+   *   Component and overall summaries from DispositionAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -81,6 +83,9 @@ final class XmlReportBuilder {
     $this->addStatutes($document, $root, $statutes, $component_map);
     if ($request_statistics !== []) {
       $this->addRequestStatistics($document, $root, $request_statistics, $component_map);
+    }
+    if ($dispositions !== []) {
+      $this->addDispositions($document, $root, $dispositions, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -158,6 +163,45 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'ProcessingStatisticsOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PS' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds disposition counts, totals, and references to their organizations.
+   */
+  private function addDispositions(\DOMDocument $document, \DOMElement $root, array $dispositions, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'RequestDispositionSection');
+    $fields = [
+      1 => 'RequestDispositionFullGrantQuantity',
+      2 => 'RequestDispositionPartialGrantQuantity',
+      3 => 'RequestDispositionFullExemptionDenialQuantity',
+    ];
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $dispositions['components'][$component_id];
+    }
+    $organizations['ORG0'] = $dispositions['overall'];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'RequestDisposition');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'RD' . substr($organization_id, 3));
+      foreach ($fields as $code => $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$code]);
+      }
+      // These values are XML reason codes, not the human-readable CSV labels.
+      foreach (DispositionAggregator::NON_EXEMPTION_REASONS as $code => $reason) {
+        $denial = $this->addTextElement($document, $entry, 'foia', 'NonExemptionDenial');
+        $this->addTextElement($document, $denial, 'foia', 'NonExemptionDenialReasonCode', $reason);
+        $this->addTextElement($document, $denial, 'foia', 'NonExemptionDenialQuantity', (string) $counts[$code]);
+      }
+      $this->addTextElement($document, $entry, 'foia', 'RequestDispositionTotalQuantity', (string) array_sum($counts));
+    }
+    // Keep RD/ORG suffixes aligned, including RD0 for the overall agency.
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'RequestDispositionOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'RD' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

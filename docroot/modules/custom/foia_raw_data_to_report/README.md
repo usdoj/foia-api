@@ -74,7 +74,7 @@ Each click creates a separate job. The worker reads the latest node state when
 processing; it does not snapshot the CSV selection. Deleted nodes are skipped.
 Processing exceptions leave the item available for retry after its lease expires.
 All CSVs are validated before aggregation and XML generation. Statute usage and
-processed request statistics are aggregated; the remaining report sections are
+processed request and disposition statistics are aggregated; other sections are
 not implemented yet.
 
 ## CSV validation and messages
@@ -311,3 +311,28 @@ Each uploaded component gets `PS1`, `PS2`, etc., and the agency total gets
 `foia:ProcessingStatisticsOrganizationAssociation` elements reference those
 statistics using `foia:ComponentDataReference` and link to `ORG1`, `ORG2`, etc.
 or agency `ORG0` using `nc:OrganizationReference`.
+
+## Request disposition statistics
+
+`DispositionAggregator` streams each validated CSV in a separate pass, keeping
+12 counters per component and summing them for the agency overall. Each data
+row with a nonblank Column N counts once for that code. Blank dispositions,
+headers, and blank records do not contribute. Date eligibility is enforced by
+existing CSV validation (a disposition requires a completion date in the report
+fiscal year). Header-only components retain all twelve zero counts.
+
+`DispositionAggregator::DISPOSITIONS` embeds the twelve labels from
+`ID_Disposition.txt`; the file is not needed at runtime. Codes 1–3 map to the
+FullGrant, PartialGrant, and FullExemptionDenial quantity elements. Codes 4–12
+map to `NonExemptionDenial` entries using the XML reason codes from the example
+and existing exporter: `NoRecords`, `Referred`, `Withdrawn`, `FeeRelated`,
+`NotDescribed`, `ImproperRequest`, `NotAgency`, `Duplicate`, and `Other`.
+These XML codes differ from the mapping file's human-readable labels.
+
+`foia:RequestDispositionSection` follows the processed request section. Each
+component receives `RD1`, `RD2`, etc., and the overall agency receives `RD0`.
+All twelve quantities, including zeroes, and their `RequestDispositionTotalQuantity`
+sum are output. `RequestDispositionOrganizationAssociation` links each RD ID
+through `ComponentDataReference` to its corresponding ORG ID through
+`OrganizationReference`. Unknown nonblank codes or read failures raise a
+processing exception before any existing XML is replaced.
