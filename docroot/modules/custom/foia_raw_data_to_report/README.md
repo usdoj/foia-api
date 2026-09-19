@@ -73,9 +73,9 @@ manage file permanence and usage on node save.
 Each click creates a separate job. The worker reads the latest node state when
 processing; it does not snapshot the CSV selection. Deleted nodes are skipped.
 Processing exceptions leave the item available for retry after its lease expires.
-All CSVs are validated before aggregation and XML generation. Statute usage and
-processed request and disposition statistics are aggregated; other sections are
-not implemented yet.
+All CSVs are validated before aggregation and XML generation. Statute usage,
+processed request statistics, dispositions, and other denial reasons are
+aggregated; the remaining sections are not implemented yet.
 
 ## CSV validation and messages
 
@@ -336,3 +336,23 @@ sum are output. `RequestDispositionOrganizationAssociation` links each RD ID
 through `ComponentDataReference` to its corresponding ORG ID through
 `OrganizationReference`. Unknown nonblank codes or read failures raise a
 processing exception before any existing XML is replaced.
+
+## Other denial reasons
+
+`OtherDenialReasonAggregator` streams Column O, counting each nonblank value
+once per request. It trims surrounding whitespace but preserves case,
+punctuation, and internal whitespace, including multiline text. Numeric-looking
+reasons remain text. Distinct reasons are sorted by text for stable output.
+Agency counts sum each reason's usage across components. Memory grows with the
+number and length of distinct reasons, not with repeated request rows.
+
+`foia:RequestDenialOtherReasonSection` follows the disposition section. Each
+component has a `ComponentOtherDenialReason` (`CODR1`, `CODR2`, etc.) containing
+reason descriptions and usage counts. The agency entry (`CODR0`) includes the
+summed count for every distinct reason. Each entry has a
+`ComponentOtherDenialReasonQuantity` equal to the sum of its usage counts,
+matching the example (two reasons used 1 and 3 times give a total of 4).
+Components with no reasons have zero totals and no reason entries.
+`OtherDenialReasonOrganizationAssociation` links each CODR entry to its ORG
+organization. Text is escaped safely when written to XML. Blank records and
+headers are skipped; read failures abort generation before XML replacement.

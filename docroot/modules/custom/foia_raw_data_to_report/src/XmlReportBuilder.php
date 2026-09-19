@@ -37,11 +37,13 @@ final class XmlReportBuilder {
    *   Component and overall summaries from RequestStatisticsAggregator.
    * @param array $dispositions
    *   Component and overall summaries from DispositionAggregator.
+   * @param array $other_reasons
+   *   Component and overall summaries from OtherDenialReasonAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -86,6 +88,9 @@ final class XmlReportBuilder {
     }
     if ($dispositions !== []) {
       $this->addDispositions($document, $root, $dispositions, $component_map);
+    }
+    if ($other_reasons !== []) {
+      $this->addOtherDenialReasons($document, $root, $other_reasons, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -202,6 +207,37 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'RequestDispositionOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'RD' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds free-text reason counts, totals, and organization references.
+   */
+  private function addOtherDenialReasons(\DOMDocument $document, \DOMElement $root, array $other_reasons, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'RequestDenialOtherReasonSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $other_reasons['components'][$component_id];
+    }
+    $organizations['ORG0'] = $other_reasons['overall'];
+    foreach ($organizations as $organization_id => $reasons) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ComponentOtherDenialReason');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'CODR' . substr($organization_id, 3));
+      foreach ($reasons as $reason) {
+        $item = $this->addTextElement($document, $entry, 'foia', 'OtherDenialReason');
+        $this->addTextElement($document, $item, 'foia', 'OtherDenialReasonDescriptionText', $reason['description']);
+        $this->addTextElement($document, $item, 'foia', 'OtherDenialReasonQuantity', (string) $reason['quantity']);
+      }
+      // The example sums usages, not the number of distinct reason texts.
+      $total = array_sum(array_column($reasons, 'quantity'));
+      $this->addTextElement($document, $entry, 'foia', 'ComponentOtherDenialReasonQuantity', (string) $total);
+    }
+    foreach ($organizations as $organization_id => $reasons) {
+      $association = $this->addTextElement($document, $section, 'foia', 'OtherDenialReasonOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'CODR' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
