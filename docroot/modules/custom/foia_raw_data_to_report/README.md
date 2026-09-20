@@ -442,3 +442,17 @@ contain nonzero `AppliedExemption` entries with labels such as `Ex. 5` and
 its corresponding ORG entry. Empty components retain their container and
 association, but no zero-count exemption entries. No combined total is emitted.
 Request exemptions continue to use a separate section and RDE IDs.
+
+## Appeal non-exemption denials
+
+`AppealNonExemptionDenialAggregator` streams Column AA and maps the 11 CSV
+reason labels to XML codes using its `REASONS` constant. Comma-separated
+reasons are trimmed and counted once per distinct reason per row. Blank
+cells are ignored; unknown labels stop generation with the component and CSV
+record in the error message. Agency counts sum all component counts.
+
+`AppealNonExemptionDenialSection` follows the appeal exemptions section.
+Each component and the agency have an `AppealNonExemptionDenial` entry with
+all 11 reason counts, including zero counts, matching the example XML.
+`ANE1`, `ANE2`, etc. reference the component organizations; `ANE0` references
+`ORG0` for the agency. No combined total across reasons is emitted.

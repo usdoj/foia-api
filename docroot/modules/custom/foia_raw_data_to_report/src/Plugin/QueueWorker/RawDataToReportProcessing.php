@@ -21,6 +21,7 @@ use Drupal\foia_raw_data_to_report\OtherDenialReasonAggregator;
 use Drupal\foia_raw_data_to_report\AppliedExemptionsAggregator;
 use Drupal\foia_raw_data_to_report\AppealStatisticsAggregator;
 use Drupal\foia_raw_data_to_report\AppealDispositionAggregator;
+use Drupal\foia_raw_data_to_report\AppealNonExemptionDenialAggregator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -165,7 +166,8 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $appeal_dispositions = (new AppealDispositionAggregator())->aggregate($sources);
     // Column AC holds appeal exemptions; Column P remains request-only.
     $appeal_exemptions = (new AppliedExemptionsAggregator())->aggregate($sources, 28);
-    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions);
+    $appeal_denials = (new AppealNonExemptionDenialAggregator())->aggregate($sources);
+    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();

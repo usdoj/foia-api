@@ -47,11 +47,13 @@ final class XmlReportBuilder {
    *   Component and overall summaries from AppealDispositionAggregator.
    * @param array $appeal_exemptions
    *   Column AC summaries from AppliedExemptionsAggregator.
+   * @param array $appeal_denials
+   *   Column AA summaries from AppealNonExemptionDenialAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -113,6 +115,10 @@ final class XmlReportBuilder {
 
     if ($appeal_exemptions !== []) {
       $this->addAppliedExemptions($document, $root, $appeal_exemptions, $component_map, 'AppealDispositionAppliedExemptionsSection', 'ADE');
+    }
+
+    if ($appeal_denials !== []) {
+      $this->addAppealNonExemptionDenials($document, $root, $appeal_denials, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -325,6 +331,35 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'AppealDispositionOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'AD' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds appeal denial reason counts and their organization associations.
+   */
+  private function addAppealNonExemptionDenials(\DOMDocument $document, \DOMElement $root, array $denials, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'AppealNonExemptionDenialSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $denials['components'][$component_id];
+    }
+    $organizations['ORG0'] = $denials['overall'];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'AppealNonExemptionDenial');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'ANE' . substr($organization_id, 3));
+      // Include all reason codes, including zero counts, as in the example.
+      foreach (AppealNonExemptionDenialAggregator::REASONS as $code) {
+        $reason = $this->addTextElement($document, $entry, 'foia', 'NonExemptionDenial');
+        $this->addTextElement($document, $reason, 'foia', 'NonExemptionDenialReasonCode', $code);
+        $this->addTextElement($document, $reason, 'foia', 'NonExemptionDenialQuantity', (string) $counts[$code]);
+      }
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'AppealNonExemptionDenialOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'ANE' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
