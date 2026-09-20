@@ -3,7 +3,7 @@
 namespace Drupal\foia_raw_data_to_report;
 
 /**
- * Streams validated component CSVs into applied exemption counts from Column P.
+ * Streams component CSVs into request or appeal exemption counts.
  */
 final class AppliedExemptionsAggregator {
 
@@ -32,11 +32,17 @@ final class AppliedExemptionsAggregator {
    *
    * @param array $sources
    *   Component/file pairs, each with component_id and uri keys.
+   * @param int $column
+   *   Zero-based CSV column: 15 for requests, 28 for appeals.
    *
    * @return array
    *   Component counts keyed by entity ID and overall counts, keyed by code.
    */
-  public function aggregate(array $sources): array {
+  public function aggregate(array $sources, int $column = 15): array {
+    if (!in_array($column, [15, 28], TRUE)) {
+      throw new \InvalidArgumentException('Exemption counts require Column P or AC.');
+    }
+    $column_name = $column === 15 ? 'P' : 'AC';
     $empty = array_fill_keys(array_keys(self::EXEMPTIONS), 0);
     $components = [];
     foreach ($sources as $source) {
@@ -61,7 +67,7 @@ final class AppliedExemptionsAggregator {
             $header = FALSE;
             continue;
           }
-          $value = trim($columns[15]);
+          $value = trim($columns[$column]);
           if ($value === '') {
             continue;
           }
@@ -71,7 +77,7 @@ final class AppliedExemptionsAggregator {
           foreach ($codes as $code) {
             // Unknown codes must not silently disappear from the report.
             if (!isset(self::EXEMPTIONS[$code])) {
-              throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown exemption code "%s" in Column P.', $id, $record, $code));
+              throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown exemption code "%s" in Column %s.', $id, $record, $code, $column_name));
             }
             $components[$id][$code]++;
           }

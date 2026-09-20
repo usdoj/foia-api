@@ -423,3 +423,22 @@ Affirmed, Partial, Reversed, and Other quantities and their
 outcomes. IDs `AD1`, `AD2`, etc. and agency `AD0` link to their corresponding ORG
 IDs through `AppealDispositionOrganizationAssociation`. Only four counters per
 component are retained in memory.
+
+## Appeal applied exemptions
+
+The queue reuses `AppliedExemptionsAggregator` with zero-based column 28 (AC)
+for appeal exemptions, independently of Column P's request counts. It splits
+commas, trims surrounding whitespace, normalizes letter case, and counts each
+exemption once per row. For example, `5,7a,7A` contributes one count each to
+5 and 7(A). Blank cells, headers, and blank records are skipped. Unknown codes
+(including malformed separators or empty list entries) stop generation before
+an existing XML attachment is replaced.
+
+`foia:AppealDispositionAppliedExemptionsSection` follows the appeal disposition
+section. `ComponentAppliedExemptions` IDs `ADE1`, `ADE2`, etc. and agency `ADE0`
+contain nonzero `AppliedExemption` entries with labels such as `Ex. 5` and
+`Ex. 7(A)` and their quantities. Agency counts sum the component counts.
+`ComponentAppliedExemptionsOrganizationAssociation` links each ADE entry to
+its corresponding ORG entry. Empty components retain their container and
+association, but no zero-count exemption entries. No combined total is emitted.
+Request exemptions continue to use a separate section and RDE IDs.
