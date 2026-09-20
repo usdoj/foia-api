@@ -75,7 +75,7 @@ processing; it does not snapshot the CSV selection. Deleted nodes are skipped.
 Processing exceptions leave the item available for retry after its lease expires.
 All CSVs are validated before aggregation and XML generation. Statute usage,
 processed request statistics, dispositions, other denial reasons, and applied
-exemptions and appeal processing statistics are aggregated; the remaining
+exemptions, appeal processing statistics, and appeal dispositions are aggregated; the remaining
 sections are not implemented yet.
 
 ## CSV validation and messages
@@ -404,3 +404,22 @@ the same four `ProcessingStatistics` quantities as requests, with IDs `PA1`,
 `PA2`, etc. and agency `PA0`. `ProcessingStatisticsOrganizationAssociation`
 links each PA ID to its corresponding ORG ID. Components with no appeals have
 four zero quantities. Request statistics continue to use distinct PS IDs.
+
+## Appeal dispositions
+
+`AppealDispositionAggregator` streams Column Z and counts the four specified
+outcomes: `Affirmed on Appeal`, `Partially Affirmed & Partially Reversed/Remanded`,
+`Completely Reversed/Remanded`, and `Closed for Other Reasons`. Matching is exact
+and case-sensitive after trimming surrounding whitespace. Blank cells, headers,
+and blank records do not contribute. Each populated row contributes once;
+agency counters sum the component counters. No additional date filter is applied
+by this accumulator. Existing validation and appeal date checks still run first.
+Unrecognized nonblank outcomes or read failures abort generation before the
+previous XML is replaced.
+
+`foia:AppealDispositionSection` follows the processed appeal section. It emits
+Affirmed, Partial, Reversed, and Other quantities and their
+`AppealDispositionTotalQuantity` sum, including zeroes for components without
+outcomes. IDs `AD1`, `AD2`, etc. and agency `AD0` link to their corresponding ORG
+IDs through `AppealDispositionOrganizationAssociation`. Only four counters per
+component are retained in memory.

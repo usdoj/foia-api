@@ -43,11 +43,13 @@ final class XmlReportBuilder {
    *   Component and overall summaries from AppliedExemptionsAggregator.
    * @param array $appeal_statistics
    *   Component and overall summaries from AppealStatisticsAggregator.
+   * @param array $appeal_dispositions
+   *   Component and overall summaries from AppealDispositionAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -102,6 +104,9 @@ final class XmlReportBuilder {
 
     if ($appeal_statistics !== []) {
       $this->addProcessingStatistics($document, $root, $appeal_statistics, $component_map, 'ProcessedAppealSection', 'PA');
+    }
+    if ($appeal_dispositions !== []) {
+      $this->addAppealDispositions($document, $root, $appeal_dispositions, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -281,6 +286,39 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'ComponentAppliedExemptionsOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'RDE' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds four appeal disposition counts, their total, and organization links.
+   */
+  private function addAppealDispositions(\DOMDocument $document, \DOMElement $root, array $dispositions, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'AppealDispositionSection');
+    $fields = [
+      'affirmed' => 'AppealDispositionAffirmedQuantity',
+      'partial' => 'AppealDispositionPartialQuantity',
+      'reversed' => 'AppealDispositionReversedQuantity',
+      'other' => 'AppealDispositionOtherQuantity',
+    ];
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $dispositions['components'][$component_id];
+    }
+    $organizations['ORG0'] = $dispositions['overall'];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'AppealDisposition');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'AD' . substr($organization_id, 3));
+      foreach ($fields as $key => $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+      }
+      $this->addTextElement($document, $entry, 'foia', 'AppealDispositionTotalQuantity', (string) array_sum($counts));
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'AppealDispositionOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'AD' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
