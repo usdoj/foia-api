@@ -41,11 +41,13 @@ final class XmlReportBuilder {
    *   Component and overall summaries from OtherDenialReasonAggregator.
    * @param array $applied_exemptions
    *   Component and overall summaries from AppliedExemptionsAggregator.
+   * @param array $appeal_statistics
+   *   Component and overall summaries from AppealStatisticsAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -86,7 +88,7 @@ final class XmlReportBuilder {
 
     $this->addStatutes($document, $root, $statutes, $component_map);
     if ($request_statistics !== []) {
-      $this->addRequestStatistics($document, $root, $request_statistics, $component_map);
+      $this->addProcessingStatistics($document, $root, $request_statistics, $component_map, 'ProcessedRequestSection', 'PS');
     }
     if ($dispositions !== []) {
       $this->addDispositions($document, $root, $dispositions, $component_map);
@@ -96,6 +98,10 @@ final class XmlReportBuilder {
     }
     if ($applied_exemptions !== []) {
       $this->addAppliedExemptions($document, $root, $applied_exemptions, $component_map);
+    }
+
+    if ($appeal_statistics !== []) {
+      $this->addProcessingStatistics($document, $root, $appeal_statistics, $component_map, 'ProcessedAppealSection', 'PA');
     }
 
     $xml = $document->saveXML();
@@ -144,10 +150,10 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds request counters and references to component/agency organizations.
+   * Adds request or appeal counters and their organization references.
    */
-  private function addRequestStatistics(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
-    $section = $this->addTextElement($document, $root, 'foia', 'ProcessedRequestSection');
+  private function addProcessingStatistics(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map, string $section_name, string $prefix): void {
+    $section = $this->addTextElement($document, $root, 'foia', $section_name);
     $fields = [
       'pending_start' => 'ProcessingStatisticsPendingAtStartQuantity',
       'received' => 'ProcessingStatisticsReceivedQuantity',
@@ -160,10 +166,10 @@ final class XmlReportBuilder {
     }
     $organizations['ORG0'] = $statistics['overall'];
 
-    // Keep matching suffixes: PS1 refers to ORG1, and PS0 to the agency ORG0.
+    // Match organization suffixes: PS/PA1 links to ORG1, PS/PA0 to ORG0.
     foreach ($organizations as $organization_id => $counts) {
       $entry = $this->addTextElement($document, $section, 'foia', 'ProcessingStatistics');
-      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PS' . substr($organization_id, 3));
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
       foreach ($fields as $key => $name) {
         $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
       }
@@ -172,7 +178,7 @@ final class XmlReportBuilder {
     foreach ($organizations as $organization_id => $counts) {
       $association = $this->addTextElement($document, $section, 'foia', 'ProcessingStatisticsOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
-      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PS' . substr($organization_id, 3));
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

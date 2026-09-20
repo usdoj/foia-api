@@ -75,7 +75,8 @@ processing; it does not snapshot the CSV selection. Deleted nodes are skipped.
 Processing exceptions leave the item available for retry after its lease expires.
 All CSVs are validated before aggregation and XML generation. Statute usage,
 processed request statistics, dispositions, other denial reasons, and applied
-exemptions are aggregated; the remaining sections are not implemented yet.
+exemptions and appeal processing statistics are aggregated; the remaining
+sections are not implemented yet.
 
 ## CSV validation and messages
 
@@ -377,3 +378,29 @@ organization association.
 its corresponding ORG entry. No total across exemptions is emitted, because a
 single request may use several exemptions. Memory retains only counters, not
 request rows. Existing CSV validation continues to run before aggregation.
+
+## Processed appeal statistics
+
+`AppealStatisticsAggregator` streams X (Appeal Date Received) and Y (Appeal
+Date Closed), retaining four counters per component and summing agency totals.
+Rows with both dates blank do not contribute. Dates use the existing
+month/day/four-digit-year format, including single-digit months and days.
+
+- Pending at start: X precedes October 1 of the previous year.
+- Received: X falls within the fiscal year, including both boundaries.
+- Processed: Y falls within the fiscal year, including both boundaries.
+- Pending at end: X is populated and Y is blank.
+
+Both component and agency counts must satisfy
+`pending start + received - processed = pending end`. Because X and Y do not
+have separate CSV validation rules yet, the accumulator rejects invalid dates,
+Y without X, Y preceding X, and X after year-end. A populated Y outside the
+fiscal year makes these counters fail the balance check; such rows must be
+reviewed rather than silently omitted or reported with adjusted totals.
+Errors raise processing exceptions before any existing XML is replaced.
+
+`foia:ProcessedAppealSection` follows the applied exemptions section. It uses
+the same four `ProcessingStatistics` quantities as requests, with IDs `PA1`,
+`PA2`, etc. and agency `PA0`. `ProcessingStatisticsOrganizationAssociation`
+links each PA ID to its corresponding ORG ID. Components with no appeals have
+four zero quantities. Request statistics continue to use distinct PS IDs.
