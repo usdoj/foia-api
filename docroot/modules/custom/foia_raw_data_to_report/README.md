@@ -74,8 +74,8 @@ Each click creates a separate job. The worker reads the latest node state when
 processing; it does not snapshot the CSV selection. Deleted nodes are skipped.
 Processing exceptions leave the item available for retry after its lease expires.
 All CSVs are validated before aggregation and XML generation. Statute usage,
-processed request statistics, dispositions, and other denial reasons are
-aggregated; the remaining sections are not implemented yet.
+processed request statistics, dispositions, other denial reasons, and applied
+exemptions are aggregated; the remaining sections are not implemented yet.
 
 ## CSV validation and messages
 
@@ -356,3 +356,24 @@ Components with no reasons have zero totals and no reason entries.
 `OtherDenialReasonOrganizationAssociation` links each CODR entry to its ORG
 organization. Text is escaped safely when written to XML. Blank records and
 headers are skipped; read failures abort generation before XML replacement.
+
+## Applied exemptions
+
+`AppliedExemptionsAggregator` streams Column P in a separate pass, splits each
+nonblank cell on commas, trims each code, and normalizes letters to uppercase.
+Each distinct exemption counts once per request, so `5,7a,7A` increments 5 and
+7(A) once each. Blank cells, headers, and blank records do not contribute.
+Fourteen counters per component cover 1–6, 7(A)–7(F), 8, and 9; agency counters
+sum the component values. Unknown codes raise a processing exception before
+existing XML is replaced rather than being silently omitted.
+
+`foia:RequestDispositionAppliedExemptionsSection` follows the Other denial
+reason section. Each `ComponentAppliedExemptions` has `RDE1`, `RDE2`, etc., or
+agency `RDE0`. `AppliedExemption` elements contain the example's labels such
+as `Ex. 5` and `Ex. 7(A)` plus `AppliedExemptionQuantity`. Zero-count exemptions
+are omitted; components with no exemptions retain their empty container and
+organization association.
+`ComponentAppliedExemptionsOrganizationAssociation` links each RDE entry to
+its corresponding ORG entry. No total across exemptions is emitted, because a
+single request may use several exemptions. Memory retains only counters, not
+request rows. Existing CSV validation continues to run before aggregation.

@@ -39,11 +39,13 @@ final class XmlReportBuilder {
    *   Component and overall summaries from DispositionAggregator.
    * @param array $other_reasons
    *   Component and overall summaries from OtherDenialReasonAggregator.
+   * @param array $applied_exemptions
+   *   Component and overall summaries from AppliedExemptionsAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -91,6 +93,9 @@ final class XmlReportBuilder {
     }
     if ($other_reasons !== []) {
       $this->addOtherDenialReasons($document, $root, $other_reasons, $component_map);
+    }
+    if ($applied_exemptions !== []) {
+      $this->addAppliedExemptions($document, $root, $applied_exemptions, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -238,6 +243,38 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'OtherDenialReasonOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'CODR' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds per-exemption counts and organization references, without a total.
+   */
+  private function addAppliedExemptions(\DOMDocument $document, \DOMElement $root, array $exemptions, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'RequestDispositionAppliedExemptionsSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $exemptions['components'][$component_id];
+    }
+    $organizations['ORG0'] = $exemptions['overall'];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ComponentAppliedExemptions');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'RDE' . substr($organization_id, 3));
+      foreach (AppliedExemptionsAggregator::EXEMPTIONS as $code => $label) {
+        // Omit unused exemptions for components and the agency overall.
+        if ($counts[$code] === 0) {
+          continue;
+        }
+        $item = $this->addTextElement($document, $entry, 'foia', 'AppliedExemption');
+        $this->addTextElement($document, $item, 'foia', 'AppliedExemptionCode', $label);
+        $this->addTextElement($document, $item, 'foia', 'AppliedExemptionQuantity', (string) $counts[$code]);
+      }
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ComponentAppliedExemptionsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'RDE' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
