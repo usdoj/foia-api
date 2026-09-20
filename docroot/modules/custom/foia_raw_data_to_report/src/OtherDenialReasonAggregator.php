@@ -3,7 +3,7 @@
 namespace Drupal\foia_raw_data_to_report;
 
 /**
- * Streams validated CSVs into counts of the free-text reasons in Column O.
+ * Streams CSVs into request or appeal free-text denial reason counts.
  */
 final class OtherDenialReasonAggregator {
 
@@ -12,11 +12,16 @@ final class OtherDenialReasonAggregator {
    *
    * @param array $sources
    *   Component/file pairs, each with component_id and uri keys.
+   * @param int $column
+   *   Zero-based CSV column: 14 for requests, 27 for appeals.
    *
    * @return array
    *   Component and overall reason maps, with description and quantity entries.
    */
-  public function aggregate(array $sources): array {
+  public function aggregate(array $sources, int $column = 14): array {
+    if (!in_array($column, [14, 27], TRUE)) {
+      throw new \InvalidArgumentException('Other denial reasons require Column O or AB.');
+    }
     $components = [];
     foreach ($sources as $source) {
       $id = $source['component_id'];
@@ -38,16 +43,19 @@ final class OtherDenialReasonAggregator {
             $header = FALSE;
             continue;
           }
-          // Match exact text after trimming only surrounding whitespace.
-          // Keep case, punctuation, and internal whitespace distinctions.
-          $reason = trim($columns[14]);
-          if ($reason === '') {
-            continue;
+          // Column AB holds comma-separated reasons; Column O is one reason.
+          $values = $column === 27 ? explode(',', $columns[$column]) : [$columns[$column]];
+          // Count each reason once per row, trimming surrounding whitespace.
+          // Preserve case, punctuation, and internal whitespace distinctions.
+          foreach (array_unique(array_map('trim', $values)) as $reason) {
+            if ($reason === '') {
+              continue;
+            }
+            // A prefix preserves numeric-looking reasons as text keys.
+            $key = 'reason:' . $reason;
+            $components[$id][$key] ??= ['description' => $reason, 'quantity' => 0];
+            $components[$id][$key]['quantity']++;
           }
-          // A prefix preserves numeric-looking reasons as text keys.
-          $key = 'reason:' . $reason;
-          $components[$id][$key] ??= ['description' => $reason, 'quantity' => 0];
-          $components[$id][$key]['quantity']++;
         }
         if (!feof($stream)) {
           throw new \RuntimeException('Unable to finish reading a CSV for other denial reasons.');

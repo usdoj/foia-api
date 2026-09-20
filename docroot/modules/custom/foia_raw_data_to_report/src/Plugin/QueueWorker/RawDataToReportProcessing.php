@@ -167,7 +167,8 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     // Column AC holds appeal exemptions; Column P remains request-only.
     $appeal_exemptions = (new AppliedExemptionsAggregator())->aggregate($sources, 28);
     $appeal_denials = (new AppealNonExemptionDenialAggregator())->aggregate($sources);
-    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials);
+    $appeal_other_reasons = (new OtherDenialReasonAggregator())->aggregate($sources, 27);
+    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();

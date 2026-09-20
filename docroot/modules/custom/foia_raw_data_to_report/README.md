@@ -456,3 +456,17 @@ Each component and the agency have an `AppealNonExemptionDenial` entry with
 all 11 reason counts, including zero counts, matching the example XML.
 `ANE1`, `ANE2`, etc. reference the component organizations; `ANE0` references
 `ORG0` for the agency. No combined total across reasons is emitted.
+
+## Appeal other denial reasons
+
+`OtherDenialReasonAggregator` also streams Column AB (column index 27). Unlike
+Column O, appeal reasons are split on commas. Surrounding whitespace and empty
+entries are ignored; each distinct reason counts once per row. Text is retained
+without a code mapping, preserving case and internal whitespace. Agency counts
+sum the component counts, and reasons are sorted by text for stable output.
+
+`AppealDenialOtherReasonSection` follows the appeal non-exemption denial section.
+It includes reason descriptions and counts for each component and the agency,
+plus `ComponentOtherDenialReasonQuantity` as the sum of usage counts. `ADOR1`,
+`ADOR2`, etc. link to component organizations; `ADOR0` links to `ORG0`. Empty
+components retain a zero total and an organization association.
