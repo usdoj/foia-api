@@ -536,10 +536,10 @@ final class CsvValidator {
           }
         }
 
-        // Column R: A determination date is optional unless Q, S or T has data.
+        // Column Q: A received date is required when R or S has data.
         $ep_determined = trim($columns[17]);
-        if ($ep_determined === '' && ($ep_received !== '' || trim($columns[18]) !== '' || trim($columns[19]) !== '')) {
-          return [sprintf('CSV record %d: Column R must contain valure if there is value in either Columns Q, S, or T', $record)];
+        if ($ep_received === '' && ($ep_determined !== '' || trim($columns[18]) !== '')) {
+          return [sprintf('CSV record %d: Column Q must contain value if there is value in either Columns R or S', $record)];
         }
 
         if ($ep_determined !== '') {
