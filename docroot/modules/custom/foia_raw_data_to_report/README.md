@@ -489,3 +489,17 @@ not averages of component statistics. Empty components report zeros.
 `AppealResponseTimeSection` follows the appeal other-reasons section, using
 `ART1`, `ART2`, etc. for components and `ART0` for the agency, associated with
 their Organization entries. XML averages always display two decimal places.
+
+## Oldest pending appeals
+
+`OldestPendingAppealAggregator` streams rows with a nonblank Column X and a
+blank Column Y. It retains only the ten earliest received dates per component
+and the ten earliest across the agency. Repeated dates remain separate items;
+fewer than ten pending appeals produce only the items available.
+
+Pending days are elapsed calendar days from the actual received date through
+September 30 of the report year, without clamping to the fiscal-year start.
+Same-day receipt is zero days. XML receipt dates use `YYYY-MM-DD`.
+`OldestPendingAppealSection` follows the appeal response times, with `OPA1`,
+`OPA2`, etc. linked to components and `OPA0` to the agency. Components without
+pending appeals retain an empty container and their organization association.

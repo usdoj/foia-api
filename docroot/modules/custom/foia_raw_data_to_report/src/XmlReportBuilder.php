@@ -53,11 +53,13 @@ final class XmlReportBuilder {
    *   Column AB summaries from OtherDenialReasonAggregator.
    * @param array $appeal_response_times
    *   Component and overall summaries from AppealResponseTimeAggregator.
+   * @param array $oldest_pending_appeals
+   *   Component and overall lists from OldestPendingAppealAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -131,6 +133,10 @@ final class XmlReportBuilder {
 
     if ($appeal_response_times !== []) {
       $this->addAppealResponseTimes($document, $root, $appeal_response_times, $component_map);
+    }
+
+    if ($oldest_pending_appeals !== []) {
+      $this->addOldestPendingAppeals($document, $root, $oldest_pending_appeals, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -405,6 +411,34 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'ResponseTimeOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'ART' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds oldest open appeals and their organization references.
+   */
+  private function addOldestPendingAppeals(\DOMDocument $document, \DOMElement $root, array $appeals, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'OldestPendingAppealSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $appeals['components'][$component_id];
+    }
+    $organizations['ORG0'] = $appeals['overall'];
+    foreach ($organizations as $organization_id => $items) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'OldestPendingItems');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'OPA' . substr($organization_id, 3));
+      foreach ($items as $item) {
+        $old_item = $this->addTextElement($document, $entry, 'foia', 'OldItem');
+        $this->addTextElement($document, $old_item, 'foia', 'OldItemReceiptDate', $item['receipt_date']);
+        $this->addTextElement($document, $old_item, 'foia', 'OldItemPendingDaysQuantity', (string) $item['pending_days']);
+      }
+    }
+    foreach ($organizations as $organization_id => $items) {
+      $association = $this->addTextElement($document, $section, 'foia', 'OldestPendingItemsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'OPA' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
