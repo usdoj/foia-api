@@ -268,6 +268,16 @@ final class CsvValidator {
           continue;
         }
 
+        // Column X: Appeal rows must not contain request data in E through W.
+        $appeal_received = trim($columns[23]);
+        if ($appeal_received !== '') {
+          foreach (array_slice($columns, 4, 19) as $value) {
+            if (trim($value) !== '') {
+              return [sprintf('CSV record %d: If there is data in Column X, Columns E through W must be empty.', $record)];
+            }
+          }
+        }
+
         // Column A: Component is required, including for consultation rows.
         if (trim($columns[0]) === '') {
           return [sprintf('CSV record %d: Component cannot be blank', $record)];
@@ -367,24 +377,24 @@ final class CsvValidator {
           return [sprintf('CSV record %d: Ex. 3 Code 77 must appear in Column E if there is data in Column H', $record)];
         }
 
-        // Column I: Date Initially Received is required for all rows.
+        // Column I: Optional, but the Column X check requires it to be blank
+        // for appeal rows. Validate date contents only when present.
         $initially_received = trim($columns[8]);
-        if ($initially_received === '') {
-          return [sprintf('CSV record %d: Data initially Received cannot be blank', $record)];
-        }
+        $received_date = NULL;
+        if ($initially_received !== '') {
+          // Column I: Require a real calendar date in month/day/four-digit year
+          // order. Allow single-digit months/days as used in the reference CSV.
+          if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $initially_received, $date_parts)
+            || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
+            return [sprintf('CSV record %d: Date Initially Received must be a valid date in MM/DD/YYYY format', $record)];
+          }
 
-        // Column I: Require a real calendar date in month/day/four-digit year
-        // order. Allow single-digit months/days as used in the reference CSV.
-        if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $initially_received, $date_parts)
-          || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
-          return [sprintf('CSV record %d: Date Initially Received must be a valid date in MM/DD/YYYY format', $record)];
-        }
-
-        // Column I: September 30 of the report year is the latest allowed date.
-        // Compare calendar dates without time zones; earlier years are allowed.
-        $received_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
-        if ($received_date > $fiscal_year * 10000 + 930) {
-          return [sprintf('CSV record %d: Date Initially Received is later than the fiscal year', $record)];
+          // Column I: September 30 of the report year is the latest date.
+          // Compare dates without time zones; earlier years are allowed.
+          $received_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
+          if ($received_date > $fiscal_year * 10000 + 930) {
+            return [sprintf('CSV record %d: Date Initially Received is later than the fiscal year', $record)];
+          }
         }
 
         // Column J: Date Perfected is optional; validate only nonblank values.
@@ -409,7 +419,7 @@ final class CsvValidator {
           }
 
           // Column J: Perfection cannot precede the initially received date.
-          if ($perfected_date < $received_date) {
+          if ($received_date !== NULL && $perfected_date < $received_date) {
             return [sprintf('CSV record %d: Date Perfected cannot be prior to Date Initially Received', $record)];
           }
         }

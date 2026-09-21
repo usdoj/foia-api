@@ -87,6 +87,56 @@ class CsvValidatorTest extends UnitTestCase {
   }
 
   /**
+   * Rejects every request-data column E through W when X contains data.
+   */
+  public function testAppealRequestDataExclusion(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    for ($column = 4; $column <= 22; $column++) {
+      $overrides = [8 => '', 23 => '01/02/2026'];
+      // Zero is data too, even though PHP treats it as an empty value.
+      $overrides[$column] = '0';
+      $this->assertSame(
+        ['CSV record 2: If there is data in Column X, Columns E through W must be empty.'],
+        $this->validateContents($header . $this->csvRow($overrides)),
+        'Column index ' . $column,
+      );
+    }
+  }
+
+  /**
+   * Allows blank I with or without X, and validates nonblank received dates.
+   */
+  public function testOptionalInitiallyReceived(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    foreach ([
+      [8 => ''],
+      [8 => '', 23 => '01/02/2026'],
+      [8 => '  ', 23 => '01/02/2026', 24 => '01/03/2026'],
+      [8 => '', 9 => '01/02/2026', 12 => 'S'],
+      [8 => '01/01/2026'],
+    ] as $overrides) {
+      $this->assertSame([], $this->validateContents($header . $this->csvRow($overrides)));
+    }
+    $this->assertSame(
+      ['CSV record 2: Date Initially Received must be a valid date in MM/DD/YYYY format'],
+      $this->validateContents($header . $this->csvRow([8 => '02/30/2026'])),
+    );
+    $this->assertSame(
+      ['CSV record 2: Date Initially Received is later than the fiscal year'],
+      $this->validateContents($header . $this->csvRow([8 => '10/01/2026'])),
+    );
+    // A blank I on the next row must not reuse the previous row's date.
+    $first = $this->csvRow([8 => '09/01/2026']);
+    $second = $this->csvRow([1 => 'Request 2', 8 => '', 9 => '01/02/2026', 12 => 'S']);
+    $this->assertSame([], $this->validateContents($header . $first . $second));
+    $row = $this->csvRow([8 => '01/03/2026', 9 => '01/02/2026', 12 => 'S']);
+    $this->assertSame(
+      ['CSV record 2: Date Perfected cannot be prior to Date Initially Received'],
+      $this->validateContents($header . $row),
+    );
+  }
+
+  /**
    * Rejects an incorrect header column count.
    */
   public function testInvalidHeader(): void {
