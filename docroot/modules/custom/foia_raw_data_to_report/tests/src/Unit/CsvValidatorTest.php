@@ -66,7 +66,7 @@ class CsvValidatorTest extends UnitTestCase {
       [16 => '  ', 17 => '01/03/2026', 18 => 'D'],
     ] as $overrides) {
       $this->assertSame(
-        ['CSV record 2: Column Q must contain value if there is value in either Columns R or S'],
+        ['CSV record 2: Column Q: Column Q must contain value if there is value in either Columns R or S'],
         $this->validateContents($header . $this->csvRow($overrides)),
       );
     }
@@ -83,7 +83,7 @@ class CsvValidatorTest extends UnitTestCase {
     $row = $this->csvRow([16 => '01/03/2026', 17 => '01/02/2026', 18 => 'D']);
     $this->assertStringContainsString('cannot be prior', $this->validateContents($header . $row)[0]);
     $row = $this->csvRow([16 => '01/02/2026', 17 => '01/03/2026']);
-    $this->assertSame(['CSV record 2: Must have G or D in Column S'], $this->validateContents($header . $row));
+    $this->assertSame(['CSV record 2: Column S: Must have G or D in Column S'], $this->validateContents($header . $row));
   }
 
   /**
@@ -118,11 +118,11 @@ class CsvValidatorTest extends UnitTestCase {
       $this->assertSame([], $this->validateContents($header . $this->csvRow($overrides)));
     }
     $this->assertSame(
-      ['CSV record 2: Date Initially Received must be a valid date in MM/DD/YYYY format'],
+      ['CSV record 2: Column I: Date Initially Received must be a valid date in MM/DD/YYYY format'],
       $this->validateContents($header . $this->csvRow([8 => '02/30/2026'])),
     );
     $this->assertSame(
-      ['CSV record 2: Date Initially Received is later than the fiscal year'],
+      ['CSV record 2: Column I: Date Initially Received is later than the fiscal year'],
       $this->validateContents($header . $this->csvRow([8 => '10/01/2026'])),
     );
     // A blank I on the next row must not reuse the previous row's date.
@@ -131,7 +131,19 @@ class CsvValidatorTest extends UnitTestCase {
     $this->assertSame([], $this->validateContents($header . $first . $second));
     $row = $this->csvRow([8 => '01/03/2026', 9 => '01/02/2026', 12 => 'S']);
     $this->assertSame(
-      ['CSV record 2: Date Perfected cannot be prior to Date Initially Received'],
+      ['CSV record 2: Column J: Date Perfected cannot be prior to Date Initially Received'],
+      $this->validateContents($header . $row),
+    );
+  }
+
+  /**
+   * Identifies Column S as the source of the expedited-track requirement.
+   */
+  public function testExpeditedTrackMessage(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    $row = $this->csvRow([16 => '01/02/2026', 18 => 'G']);
+    $this->assertSame(
+      ['CSV record 2: Column M: If Column S contains a G, Column M must contain an E'],
       $this->validateContents($header . $row),
     );
   }

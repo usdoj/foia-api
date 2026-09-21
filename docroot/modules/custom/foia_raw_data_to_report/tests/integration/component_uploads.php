@@ -77,6 +77,7 @@ try {
     'title' => "CSV report $suffix",
     'status' => 1,
     'uid' => $manager->id(),
+    'field_foia_annual_report_yr' => 2026,
     'field_agency' => $agencies[0]->id(),
     'field_component_uploads' => array_map(static fn($p) => ['entity' => $p], $paragraphs),
   ]);

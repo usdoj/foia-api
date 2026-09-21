@@ -280,7 +280,7 @@ final class CsvValidator {
 
         // Column A: Component is required, including for consultation rows.
         if (trim($columns[0]) === '') {
-          return [sprintf('CSV record %d: Component cannot be blank', $record)];
+          return [sprintf('CSV record %d: Column A: Component cannot be blank', $record)];
         }
 
         // Column B: Request Number is required and must be unique in this CSV.
@@ -288,11 +288,11 @@ final class CsvValidator {
         // keys (including leading zeroes). Ignore surrounding whitespace.
         $request_number = trim($columns[1]);
         if ($request_number === '') {
-          return [sprintf('CSV record %d: Request Number cannot be blank', $record)];
+          return [sprintf('CSV record %d: Column B: Request Number cannot be blank', $record)];
         }
         $request_key = 'request:' . $request_number;
         if (isset($request_numbers[$request_key])) {
-          return [sprintf('CSV record %d: Request Number is duplicate', $record)];
+          return [sprintf('CSV record %d: Column B: Request Number is duplicate', $record)];
         }
         $request_numbers[$request_key] = TRUE;
 
@@ -316,7 +316,7 @@ final class CsvValidator {
 
         // Column D: Non-consultation rows require Days Allowed to be 20 or 30.
         if ($consultation !== 'Y' && !in_array(trim($columns[3]), ['20', '30'], TRUE)) {
-          return [sprintf('CSV record %d: Must complete Days Allowed with 20 or 30', $record)];
+          return [sprintf('CSV record %d: Column D: Must complete Days Allowed with 20 or 30', $record)];
         }
 
         // Column E: Exemption 3 Statutes is optional. The Column C check above
@@ -328,7 +328,7 @@ final class CsvValidator {
           // Detect digit groups separated by non-comma characters; whitespace
           // around comma-separated IDs is allowed, as with other column checks.
           if (preg_match('/[0-9][^0-9,]+[0-9]/', $statutes)) {
-            return [sprintf('CSV record %d: Separate multiple entries in Column E with a comma', $record)];
+            return [sprintf('CSV record %d: Column E: Separate multiple entries in Column E with a comma', $record)];
           }
 
           // Column E: Every comma-separated entry must be an integer ID 1-77.
@@ -347,10 +347,10 @@ final class CsvValidator {
           $has_other_statute = in_array(77, $statute_ids, TRUE);
           foreach ([5, 6, 7] as $index) {
             if ($has_other_statute && trim($columns[$index]) === '') {
-              return [sprintf('CSV record %d: If Ex. 3 Code 77 is entered, columns F, G, and H must contain information', $record)];
+              return [sprintf('CSV record %d: Column E: If Ex. 3 Code 77 is entered, columns F, G, and H must contain information', $record)];
             }
             if (!$has_other_statute && trim($columns[$index]) !== '') {
-              return [sprintf('CSV record %d: If Ex. 3 Codes 1 - 76 is entered in Column E, columns F, G, and H must remain blank', $record)];
+              return [sprintf('CSV record %d: Column E: If Ex. 3 Codes 1 - 76 is entered in Column E, columns F, G, and H must remain blank', $record)];
             }
           }
 
@@ -358,23 +358,23 @@ final class CsvValidator {
           // Match a complete comma-separated exemption, not a substring of 13.
           $exemptions = array_map('trim', explode(',', $columns[15]));
           if (!in_array('3', $exemptions, TRUE)) {
-            return [sprintf("CSV record %d: If Column E contains information, a '3' must be listed in Column P", $record)];
+            return [sprintf("CSV record %d: Column E: If Column E contains information, a '3' must be listed in Column P", $record)];
           }
         }
 
         // Column F: Other Exemption 3 Statutes requires code 77 in Column E.
         if (trim($columns[5]) !== '' && !$has_other_statute) {
-          return [sprintf('CSV record %d: Ex. 3 Code 77 must appear in Column E if there is data in Column F', $record)];
+          return [sprintf('CSV record %d: Column F: Ex. 3 Code 77 must appear in Column E if there is data in Column F', $record)];
         }
 
         // Column G: Information Withheld requires code 77 in E and data in F.
         if (trim($columns[6]) !== '' && (!$has_other_statute || trim($columns[5]) === '')) {
-          return [sprintf('CSV record %d: Ex. 3 Code 77 must appear in Column E if there is data in Column G', $record)];
+          return [sprintf('CSV record %d: Column G: Ex. 3 Code 77 must appear in Column E if there is data in Column G', $record)];
         }
 
         // Column H: Case Citation requires code 77 in E and data in F and G.
         if (trim($columns[7]) !== '' && (!$has_other_statute || trim($columns[5]) === '' || trim($columns[6]) === '')) {
-          return [sprintf('CSV record %d: Ex. 3 Code 77 must appear in Column E if there is data in Column H', $record)];
+          return [sprintf('CSV record %d: Column H: Ex. 3 Code 77 must appear in Column E if there is data in Column H', $record)];
         }
 
         // Column I: Optional, but the Column X check requires it to be blank
@@ -386,14 +386,14 @@ final class CsvValidator {
           // order. Allow single-digit months/days as used in the reference CSV.
           if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $initially_received, $date_parts)
             || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
-            return [sprintf('CSV record %d: Date Initially Received must be a valid date in MM/DD/YYYY format', $record)];
+            return [sprintf('CSV record %d: Column I: Date Initially Received must be a valid date in MM/DD/YYYY format', $record)];
           }
 
           // Column I: September 30 of the report year is the latest date.
           // Compare dates without time zones; earlier years are allowed.
           $received_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
           if ($received_date > $fiscal_year * 10000 + 930) {
-            return [sprintf('CSV record %d: Date Initially Received is later than the fiscal year', $record)];
+            return [sprintf('CSV record %d: Column I: Date Initially Received is later than the fiscal year', $record)];
           }
         }
 
@@ -404,30 +404,30 @@ final class CsvValidator {
           // Column J: Require a real date using the same format as Column I.
           if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $perfected, $date_parts)
             || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
-            return [sprintf('CSV record %d: Date Perfected must be a valid date in MM/DD/YYYY format', $record)];
+            return [sprintf('CSV record %d: Column J: Date Perfected must be a valid date in MM/DD/YYYY format', $record)];
           }
 
           // Column J: The date cannot exceed September 30 of the report year.
           $perfected_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
           if ($perfected_date > $fiscal_year * 10000 + 930) {
-            return [sprintf('CSV record %d: Date Perfected is later than the fiscal year', $record)];
+            return [sprintf('CSV record %d: Column J: Date Perfected is later than the fiscal year', $record)];
           }
 
           // Column J: A perfected date requires an uppercase S, C or E in M.
           if (!in_array(trim($columns[12]), ['S', 'C', 'E'], TRUE)) {
-            return [sprintf('CSV record %d: If data is entered in Column J, Column M must contain capital S, C, or E', $record)];
+            return [sprintf('CSV record %d: Column J: If data is entered in Column J, Column M must contain capital S, C, or E', $record)];
           }
 
           // Column J: Perfection cannot precede the initially received date.
           if ($received_date !== NULL && $perfected_date < $received_date) {
-            return [sprintf('CSV record %d: Date Perfected cannot be prior to Date Initially Received', $record)];
+            return [sprintf('CSV record %d: Column J: Date Perfected cannot be prior to Date Initially Received', $record)];
           }
         }
 
         // Column K: Date Completed is required when N contains a disposition.
         $completed = trim($columns[10]);
         if ($completed === '' && trim($columns[13]) !== '') {
-          return [sprintf('CSV record %d: Must complete Column K if Disposition is listed in Column N', $record)];
+          return [sprintf('CSV record %d: Column K: Must complete Column K if Disposition is listed in Column N', $record)];
         }
 
         // Column K: Otherwise optional, including for consultation rows.
@@ -435,19 +435,19 @@ final class CsvValidator {
           // Column K: Require a real date using the same format as I and J.
           if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $completed, $date_parts)
             || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
-            return [sprintf('CSV record %d: Date Completed must be a valid date in MM/DD/YYYY format', $record)];
+            return [sprintf('CSV record %d: Column K: Date Completed must be a valid date in MM/DD/YYYY format', $record)];
           }
 
           // Column K: Completion must fall within the report's fiscal year,
           // from October 1 of the previous year through September 30 inclusive.
           $completed_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
           if ($completed_date < ($fiscal_year - 1) * 10000 + 1001 || $completed_date > $fiscal_year * 10000 + 930) {
-            return [sprintf('CSV record %d: Date Completed must fall within the fiscal year (10/01/%04d through 09/30/%04d)', $record, $fiscal_year - 1, $fiscal_year)];
+            return [sprintf('CSV record %d: Column K: Date Completed must fall within the fiscal year (10/01/%04d through 09/30/%04d)', $record, $fiscal_year - 1, $fiscal_year)];
           }
 
           // Column K: Completion cannot precede J when a perfected date exists.
           if ($perfected !== '' && $completed_date < $perfected_date) {
-            return [sprintf('CSV record %d: Date Completed cannot be prior to Date Perfected', $record)];
+            return [sprintf('CSV record %d: Column K: Date Completed cannot be prior to Date Perfected', $record)];
           }
         }
 
@@ -455,19 +455,19 @@ final class CsvValidator {
         $days_tolled = trim($columns[11]);
         if ($days_tolled !== '') {
           if ($perfected === '') {
-            return [sprintf('CSV record %d: Days Tolled only permitted if Perfected Date is entered', $record)];
+            return [sprintf('CSV record %d: Column L: Days Tolled only permitted if Perfected Date is entered', $record)];
           }
 
           // Column L: Accept non-negative whole days, including zero.
           if (!ctype_digit($days_tolled)) {
-            return [sprintf('CSV record %d: Days Tolled must be a non-negative integer', $record)];
+            return [sprintf('CSV record %d: Column L: Days Tolled must be a non-negative integer', $record)];
           }
 
           // Column L: When K is present, limit tolling to elapsed working days.
           // Exclude J, include K, and subtract weekends and supplied holidays.
           // With no completed date, the upper limit cannot yet be checked.
           if ($completed !== '' && (int) $days_tolled > $this->countWorkingDays($perfected, $completed)) {
-            return [sprintf('CSV record %d: Days Tolled exceeds working days between Perfected and Completed Dates (Columns J and K)', $record)];
+            return [sprintf('CSV record %d: Column L: Days Tolled exceeds working days between Perfected and Completed Dates (Columns J and K)', $record)];
           }
         }
 
@@ -475,58 +475,58 @@ final class CsvValidator {
         // requires uppercase S, C or E whenever a perfected date is present.
         // Independently, an uppercase G in S requires an uppercase E in M.
         if (trim($columns[18]) === 'G' && trim($columns[12]) !== 'E') {
-          return [sprintf('CSV record %d: If Column S contains a G, Column M must contain an E', $record)];
+          return [sprintf('CSV record %d: Column M: If Column S contains a G, Column M must contain an E', $record)];
         }
 
         // Column N: Completed non-consultation requests need a disposition.
         $disposition = trim($columns[13]);
         if ($completed !== '' && $consultation === 'N' && $disposition === '') {
-          return [sprintf('CSV record %d: If Column K has Date Completed AND Column C = N (No), then Column N must have Disposition entered', $record)];
+          return [sprintf('CSV record %d: Column N: If Column K has Date Completed AND Column C = N (No), then Column N must have Disposition entered', $record)];
         }
 
         // Column N: Disposition code 12 requires explanatory data in O.
         if ($disposition === '12' && trim($columns[14]) === '') {
-          return [sprintf('CSV record %d: Column O must contain data for Disposition Code 12', $record)];
+          return [sprintf('CSV record %d: Column N: Column O must contain data for Disposition Code 12', $record)];
         }
 
         // Column N: Codes 1, 2, 3, 4, 5 and 7 require a perfected date in J.
         if (in_array($disposition, ['1', '2', '3', '4', '5', '7'], TRUE) && $perfected === '') {
-          return [sprintf('CSV record %d: If Disposition Code 1, 2, 3, 4, 5, or 7 is entered in Column N, Column J must have a Perfected Date', $record)];
+          return [sprintf('CSV record %d: Column N: If Disposition Code 1, 2, 3, 4, 5, or 7 is entered in Column N, Column J must have a Perfected Date', $record)];
         }
 
         // Column N: Codes 8 and 9 require the perfected date in J to be blank.
         if (in_array($disposition, ['8', '9'], TRUE) && $perfected !== '') {
-          return [sprintf('CSV record %d: If Disposition Code 8 or 9 is listed in Column N, Column J must be blank for that request', $record)];
+          return [sprintf('CSV record %d: Column N: If Disposition Code 8 or 9 is listed in Column N, Column J must be blank for that request', $record)];
         }
 
         // Column O: An Other Reason requires disposition code 12 in N.
         // This is the reverse of the Column N check requiring O for code 12.
         if (trim($columns[14]) !== '' && $disposition !== '12') {
-          return [sprintf('CSV record %d: If Column O contains information, Column N must contain Disposition Code 12', $record)];
+          return [sprintf('CSV record %d: Column O: If Column O contains information, Column N must contain Disposition Code 12', $record)];
         }
 
         // Column P: Optional alphanumeric exemptions must be comma-separated.
         // Allow whitespace around entries, but not in place of a comma.
         $applied_exemptions = trim($columns[15]);
         if ($applied_exemptions !== '' && !preg_match('/^[a-zA-Z0-9]+(?:\s*,\s*[a-zA-Z0-9]+)*$/', $applied_exemptions)) {
-          return [sprintf('CSV record %d: Multiple exemptions must be separated with a comma (e.g., 3,5,7a,7c,7d)', $record)];
+          return [sprintf('CSV record %d: Column P: Multiple exemptions must be separated with a comma (e.g., 3,5,7a,7c,7d)', $record)];
         }
 
         // Column P: Disposition code 3 requires at least one exemption.
         if ($disposition === '3' && $applied_exemptions === '') {
-          return [sprintf('CSV record %d: Column P must contain exemption(s) for Disposition Code 3', $record)];
+          return [sprintf('CSV record %d: Column P: Column P must contain exemption(s) for Disposition Code 3', $record)];
         }
 
         // Column P: Exemptions are allowed only for disposition codes 2 or 3.
         if ($applied_exemptions !== '' && !in_array($disposition, ['2', '3'], TRUE)) {
-          return [sprintf('CSV record %d: Column N must list Disposition Code 2 or 3 if Column P contains exemptions', $record)];
+          return [sprintf('CSV record %d: Column P: Column N must list Disposition Code 2 or 3 if Column P contains exemptions', $record)];
         }
 
         // Column P: A complete exemption 3 entry requires statute data in E.
         // This complements the Column E check requiring exemption 3 in P.
         $exemptions = array_map('trim', explode(',', $applied_exemptions));
         if (in_array('3', $exemptions, TRUE) && $statutes === '') {
-          return [sprintf("CSV record %d: If Column P constains a '3', Column E must contain information", $record)];
+          return [sprintf("CSV record %d: Column P: If Column P contains a '3', Column E must contain information", $record)];
         }
 
         // Column Q: Request for EP - Date Received is optional.
@@ -535,45 +535,45 @@ final class CsvValidator {
           // Column Q: Require a real date using the same format as I, J and K.
           if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $ep_received, $date_parts)
             || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
-            return [sprintf('CSV record %d: Request for EP - Date Received must be a valid date in MM/DD/YYYY format', $record)];
+            return [sprintf('CSV record %d: Column Q: Request for EP - Date Received must be a valid date in MM/DD/YYYY format', $record)];
           }
 
           // Column Q: September 30 of the report year is the latest date.
           // Earlier years are allowed, as for Date Initially Received.
           $ep_received_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
           if ($ep_received_date > $fiscal_year * 10000 + 930) {
-            return [sprintf('CSV record %d: Request for EP - Date Received is later than the fiscal year', $record)];
+            return [sprintf('CSV record %d: Column Q: Request for EP - Date Received is later than the fiscal year', $record)];
           }
         }
 
         // Column Q: A received date is required when R or S has data.
         $ep_determined = trim($columns[17]);
         if ($ep_received === '' && ($ep_determined !== '' || trim($columns[18]) !== '')) {
-          return [sprintf('CSV record %d: Column Q must contain value if there is value in either Columns R or S', $record)];
+          return [sprintf('CSV record %d: Column Q: Column Q must contain value if there is value in either Columns R or S', $record)];
         }
 
         if ($ep_determined !== '') {
           // Column R: Require a real date using the same format as Column Q.
           if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $ep_determined, $date_parts)
             || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
-            return [sprintf('CSV record %d: Request for EP - Date of Determination must be a valid date in MM/DD/YYYY format', $record)];
+            return [sprintf('CSV record %d: Column R: Request for EP - Date of Determination must be a valid date in MM/DD/YYYY format', $record)];
           }
 
           // Column R: Require the report fiscal year, including its boundaries.
           $ep_determined_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
           if ($ep_determined_date < ($fiscal_year - 1) * 10000 + 1001 || $ep_determined_date > $fiscal_year * 10000 + 930) {
-            return [sprintf('CSV record %d: Request for EP - Date of Determination is outside the fiscal year', $record)];
+            return [sprintf('CSV record %d: Column R: Request for EP - Date of Determination is outside the fiscal year', $record)];
           }
 
           // Column R: Determination cannot precede a received date in Q.
           if ($ep_received !== '' && $ep_determined_date < $ep_received_date) {
-            return [sprintf('CSV record %d: Request Expedited Processing - Date of Determination cannot be prior to Request Expedited Processing - Date Received', $record)];
+            return [sprintf('CSV record %d: Column R: Request Expedited Processing - Date of Determination cannot be prior to Request Expedited Processing - Date Received', $record)];
           }
         }
 
         // Column S: A determination date in R requires uppercase G or D.
         if ($ep_determined !== '' && !in_array(trim($columns[18]), ['G', 'D'], TRUE)) {
-          return [sprintf('CSV record %d: Must have G or D in Column S', $record)];
+          return [sprintf('CSV record %d: Column S: Must have G or D in Column S', $record)];
         }
 
         // Column T: Request for FW - Date Adjudication Began is optional.
@@ -582,14 +582,14 @@ final class CsvValidator {
           // Column T: Require a real date using the same format as Column Q.
           if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $fw_began, $date_parts)
             || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
-            return [sprintf('CSV record %d: Request for FW - Date Adjudication Began must be a valid date in MM/DD/YYYY format', $record)];
+            return [sprintf('CSV record %d: Column T: Request for FW - Date Adjudication Began must be a valid date in MM/DD/YYYY format', $record)];
           }
 
           // Column T: September 30 of the report year is the latest date.
           // Earlier years are allowed, as for the other received dates.
           $fw_began_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
           if ($fw_began_date > $fiscal_year * 10000 + 930) {
-            return [sprintf('CSV record %d: Request for FW - Date Adjudication Began is later than the fiscal year', $record)];
+            return [sprintf('CSV record %d: Column T: Request for FW - Date Adjudication Began is later than the fiscal year', $record)];
           }
         }
 
@@ -599,24 +599,24 @@ final class CsvValidator {
           // Column U: Require a real date using the same format as Column T.
           if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $fw_completed, $date_parts)
             || !checkdate((int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[3])) {
-            return [sprintf('CSV record %d: Request for FW - Date Adjudication Completed must be a valid date in MM/DD/YYYY format', $record)];
+            return [sprintf('CSV record %d: Column U: Request for FW - Date Adjudication Completed must be a valid date in MM/DD/YYYY format', $record)];
           }
 
           // Column U: Require the report fiscal year, including its boundaries.
           $fw_completed_date = (int) $date_parts[3] * 10000 + (int) $date_parts[1] * 100 + (int) $date_parts[2];
           if ($fw_completed_date < ($fiscal_year - 1) * 10000 + 1001 || $fw_completed_date > $fiscal_year * 10000 + 930) {
-            return [sprintf('CSV record %d: Request for FW - Date Adjudication Completed is outside of the fiscal year', $record)];
+            return [sprintf('CSV record %d: Column U: Request for FW - Date Adjudication Completed is outside of the fiscal year', $record)];
           }
 
           // Column U: Completion cannot precede the start date in T, if given.
           if ($fw_began !== '' && $fw_completed_date < $fw_began_date) {
-            return [sprintf('CSV record %d: Request for Fee Waiver - Date Adjudication Completed cannot be prior to Request for Fee Waiver - Date Adjudication Began', $record)];
+            return [sprintf('CSV record %d: Column U: Request for Fee Waiver - Date Adjudication Completed cannot be prior to Request for Fee Waiver - Date Adjudication Began', $record)];
           }
         }
 
         // Column V: A completion date in U requires uppercase G or D.
         if ($fw_completed !== '' && !in_array(trim($columns[21]), ['G', 'D'], TRUE)) {
-          return [sprintf('CSV record %d: Must complete G or D in Column V', $record)];
+          return [sprintf('CSV record %d: Column V: Must complete G or D in Column V', $record)];
         }
       }
       if (!feof($stream)) {
