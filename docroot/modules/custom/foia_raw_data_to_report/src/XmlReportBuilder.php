@@ -55,11 +55,13 @@ final class XmlReportBuilder {
    *   Component and overall summaries from AppealResponseTimeAggregator.
    * @param array $oldest_pending_appeals
    *   Component and overall lists from OldestPendingAppealAggregator.
+   * @param array $processed_response_times
+   *   Component and overall summaries from ProcessedResponseTimeAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -137,6 +139,10 @@ final class XmlReportBuilder {
 
     if ($oldest_pending_appeals !== []) {
       $this->addOldestPendingAppeals($document, $root, $oldest_pending_appeals, $component_map);
+    }
+
+    if ($processed_response_times !== []) {
+      $this->addProcessedResponseTimes($document, $root, $processed_response_times, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -439,6 +445,38 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'OldestPendingItemsOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'OPA' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds working-day statistics by track and organization associations.
+   */
+  private function addProcessedResponseTimes(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'ProcessedResponseTimeSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+    foreach ($organizations as $organization_id => $tracks) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ProcessedResponseTime');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PRT' . substr($organization_id, 3));
+      foreach (ProcessedResponseTimeAggregator::TRACKS as $track => $name) {
+        $bin = $this->addTextElement($document, $entry, 'foia', $name);
+        foreach ($tracks[$track] as $key => $value) {
+          // Test the unrounded statistic before formatting the average.
+          $suffix = $value < 1 ? 'Code' : 'Value';
+          $text = $value < 1 ? 'LT1' : ($key === 'average' ? number_format($value, 2, '.', '') : (string) $value);
+          $this->addTextElement($document, $bin, 'foia', 'ResponseTime' . ucfirst($key) . 'Days' . $suffix, $text);
+        }
+      }
+    }
+    foreach ($organizations as $organization_id => $tracks) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ProcessedResponseTimeOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PRT' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

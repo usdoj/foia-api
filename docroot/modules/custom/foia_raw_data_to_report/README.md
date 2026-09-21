@@ -173,7 +173,7 @@ header; its names are not validated. Data records currently require:
   date, in which case uppercase `G` or `D` is required. Surrounding whitespace
   is ignored.
 
-`CsvValidator::FEDERAL_HOLIDAYS` embeds all 205 dates supplied in
+`WorkingDays::FEDERAL_HOLIDAYS` embeds all 205 dates supplied in
 `federal-holidays.txt`, covering 2008–2026. The file is not read at runtime.
 Maintain the constant for future years; dates outside its coverage currently
 exclude weekends only. Working-day arithmetic counts whole weeks and a short
@@ -503,3 +503,29 @@ Same-day receipt is zero days. XML receipt dates use `YYYY-MM-DD`.
 `OldestPendingAppealSection` follows the appeal response times, with `OPA1`,
 `OPA2`, etc. linked to components and `OPA0` to the agency. Components without
 pending appeals retain an empty container and their organization association.
+
+## Processed request response times
+
+`ProcessedResponseTimeAggregator` uses completed rows (K) with S, C, or E in M.
+The start is J when present, otherwise I. No fiscal-year clamping or Days Tolled
+subtraction is applied. A counted row without either start date, or with an end
+before its start, stops generation with a contextual error.
+
+`WorkingDays` shares the existing federal holiday constant and calculation with
+CSV validation: exclude the start day, include the end day, skip weekends and
+listed holidays. The calendar currently covers 2008–2026 and must be maintained.
+Day-frequency maps provide exact medians, averages, minima and maxima without
+retaining individual rows. Agency statistics use combined frequencies per track.
+
+`ProcessedResponseTimeSection` follows oldest pending appeals. `PRT1`, `PRT2`,
+etc. reference component organizations; `PRT0` references the agency. Each has
+Simple, Complex and Expedited response-time elements, empty for unused tracks.
+Statistics below one use the corresponding `DaysCode` element with `LT1`;
+otherwise `DaysValue` is used, with averages formatted to two decimal places.
+The less-than-one comparison occurs before average rounding.
+
+Report-generation exceptions are appended after validation messages in the
+node's Messages field as plain text. The worker reloads the stored node before
+saving the message so unsaved file-field changes are not persisted accidentally.
+The exception is rethrown to preserve Drush logging and queue retry behavior.
+Each new attempt clears previous messages as before.

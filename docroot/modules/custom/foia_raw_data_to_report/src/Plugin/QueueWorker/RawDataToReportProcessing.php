@@ -22,6 +22,7 @@ use Drupal\foia_raw_data_to_report\AppliedExemptionsAggregator;
 use Drupal\foia_raw_data_to_report\AppealStatisticsAggregator;
 use Drupal\foia_raw_data_to_report\AppealResponseTimeAggregator;
 use Drupal\foia_raw_data_to_report\OldestPendingAppealAggregator;
+use Drupal\foia_raw_data_to_report\ProcessedResponseTimeAggregator;
 use Drupal\foia_raw_data_to_report\AppealDispositionAggregator;
 use Drupal\foia_raw_data_to_report\AppealNonExemptionDenialAggregator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -141,7 +142,24 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       // Invalid input is a completed task, not a retryable exception.
       return;
     }
-    $this->generateXmlReport($node);
+    try {
+      $this->generateXmlReport($node);
+    }
+    catch (\Throwable $exception) {
+      // Reload persisted state: generation may have changed the XML field in
+      // memory before failing. Save only messages alongside the stored file.
+      $stored_node = $storage->loadUnchanged($node->id());
+      if ($stored_node instanceof NodeInterface) {
+        $validation_messages = (string) $stored_node->get('field_messages')->value;
+        $stored_node->set('field_messages', [
+          'value' => $validation_messages . "\n\nXML report processing failed: " . $exception->getMessage(),
+          'format' => 'plain_text',
+        ]);
+        $stored_node->save();
+      }
+      // Preserve Drush logging and the queue's existing retry behavior.
+      throw $exception;
+    }
   }
 
   /**
@@ -172,7 +190,8 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $appeal_other_reasons = (new OtherDenialReasonAggregator())->aggregate($sources, 27);
     $appeal_response_times = (new AppealResponseTimeAggregator())->aggregate($sources, $fiscal_year);
     $oldest_pending_appeals = (new OldestPendingAppealAggregator())->aggregate($sources, $fiscal_year);
-    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals);
+    $processed_response_times = (new ProcessedResponseTimeAggregator())->aggregate($sources);
+    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals, $processed_response_times);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();
