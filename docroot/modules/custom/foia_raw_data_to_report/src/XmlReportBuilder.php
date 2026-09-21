@@ -51,11 +51,13 @@ final class XmlReportBuilder {
    *   Column AA summaries from AppealNonExemptionDenialAggregator.
    * @param array $appeal_other_reasons
    *   Column AB summaries from OtherDenialReasonAggregator.
+   * @param array $appeal_response_times
+   *   Component and overall summaries from AppealResponseTimeAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -125,6 +127,10 @@ final class XmlReportBuilder {
 
     if ($appeal_other_reasons !== []) {
       $this->addOtherDenialReasons($document, $root, $appeal_other_reasons, $component_map, 'AppealDenialOtherReasonSection', 'ADOR');
+    }
+
+    if ($appeal_response_times !== []) {
+      $this->addAppealResponseTimes($document, $root, $appeal_response_times, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -366,6 +372,39 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'AppealNonExemptionDenialOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'ANE' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds response time statistics and their organization references.
+   */
+  private function addAppealResponseTimes(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'AppealResponseTimeSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+    $fields = [
+      'median' => 'ResponseTimeMedianDaysValue',
+      'average' => 'ResponseTimeAverageDaysValue',
+      'lowest' => 'ResponseTimeLowestDaysValue',
+      'highest' => 'ResponseTimeHighestDaysValue',
+    ];
+    foreach ($organizations as $organization_id => $values) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ResponseTime');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'ART' . substr($organization_id, 3));
+      foreach ($fields as $key => $name) {
+        $value = $key === 'average' ? number_format($values[$key], 2, '.', '') : (string) $values[$key];
+        $this->addTextElement($document, $entry, 'foia', $name, $value);
+      }
+    }
+    foreach ($organizations as $organization_id => $values) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ResponseTimeOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'ART' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

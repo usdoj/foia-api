@@ -470,3 +470,22 @@ It includes reason descriptions and counts for each component and the agency,
 plus `ComponentOtherDenialReasonQuantity` as the sum of usage counts. `ADOR1`,
 `ADOR2`, etc. link to component organizations; `ADOR0` links to `ORG0`. Empty
 components retain a zero total and an organization association.
+
+## Appeal response times
+
+`AppealResponseTimeAggregator` uses Columns X and Y. Rows without an Appeal
+Date Received are excluded; a closed date without a received date is rejected.
+The start is the later of Appeal Date Received and October 1 of the previous
+year. The end is Appeal Date Closed, or September 30 of the report year when
+Y is blank.
+Elapsed calendar days exclude the starting day and include the ending day;
+same-day completion is zero. Weekends and holidays count.
+
+Day-frequency maps keep memory independent of the number of rows. They yield
+the exact median (averaging the middle pair for even counts), average rounded
+to two decimals, minimum, and maximum. The agency uses combined frequencies,
+not averages of component statistics. Empty components report zeros.
+
+`AppealResponseTimeSection` follows the appeal other-reasons section, using
+`ART1`, `ART2`, etc. for components and `ART0` for the agency, associated with
+their Organization entries. XML averages always display two decimal places.
