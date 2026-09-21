@@ -10,9 +10,20 @@ use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\node\NodeInterface;
+use Drupal\taxonomy\TermInterface;
 use Drupal\foia_raw_data_to_report\CsvValidator;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\XmlReportBuilder;
+use Drupal\foia_raw_data_to_report\StatuteAggregator;
+use Drupal\foia_raw_data_to_report\RequestStatisticsAggregator;
+use Drupal\foia_raw_data_to_report\DispositionAggregator;
+use Drupal\foia_raw_data_to_report\OtherDenialReasonAggregator;
+use Drupal\foia_raw_data_to_report\AppliedExemptionsAggregator;
+use Drupal\foia_raw_data_to_report\AppealStatisticsAggregator;
+use Drupal\foia_raw_data_to_report\AppealResponseTimeAggregator;
+use Drupal\foia_raw_data_to_report\OldestPendingAppealAggregator;
+use Drupal\foia_raw_data_to_report\AppealDispositionAggregator;
+use Drupal\foia_raw_data_to_report\AppealNonExemptionDenialAggregator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -72,6 +83,12 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $assignment_errors = UploadAssignments::validate($node);
     $messages = [];
     $has_errors = FALSE;
+    $agency = $node->get('field_agency')->entity;
+    if (!$agency instanceof TermInterface) {
+      $messages[] = 'Select an Agency before generating a report.';
+      $has_errors = TRUE;
+    }
+    $uploaded_components = [];
     if ($node->get('field_component_uploads')->isEmpty()) {
       $messages[] = 'Add at least one Agency Component CSV upload before generating a report.';
       $has_errors = TRUE;
@@ -82,6 +99,9 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       $supported = $upload && $upload->bundle() === 'raw_data_component_upload';
       $component = $supported ? $upload->get('field_agency_component')->entity : NULL;
       $source = $supported ? $upload->get('field_request_data_csv')->entity : NULL;
+      if ($component && $source) {
+        $uploaded_components[$component->id()] = TRUE;
+      }
       $prefix = sprintf('Upload %d — Component: %s — File: %s', $delta + 1, $component?->label() ?? '(not selected)', $source?->getFilename() ?? '(not attached)');
       if (!$source) {
         $errors[] = 'No CSV file is attached. Please upload a CSV file and try again.';
@@ -95,6 +115,22 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       }
       $has_errors = $has_errors || (bool) $errors;
       $messages[] = $prefix . "\n" . ($errors ? implode("\n", array_unique($errors)) : 'CSV validated.');
+    }
+    // Compare against every linked component, regardless of publication/access.
+    // Missing uploads are a warning only; CSV validation still controls errors.
+    if ($agency instanceof TermInterface) {
+      $component_ids = $storage->getQuery()
+        ->accessCheck(FALSE)
+        ->condition('type', 'agency_component')
+        ->condition('field_agency.target_id', $agency->id())
+        ->sort('title')
+        ->sort('nid')
+        ->execute();
+      $missing = $storage->loadMultiple(array_diff($component_ids, array_keys($uploaded_components)));
+      if ($missing) {
+        $names = array_map(static fn(NodeInterface $component) => $component->label(), $missing);
+        $messages[] = 'Warning: no CSV has been attached for these Components: ' . implode(', ', $names);
+      }
     }
     $node->set('field_messages', [
       'value' => ($has_errors ? "No new XML report was generated.\n\n" : '') . implode("\n\n", $messages),
@@ -112,7 +148,31 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
    * Builds and attaches report XML after all component CSVs pass validation.
    */
   protected function generateXmlReport(NodeInterface $node): void {
-    $xml = (new XmlReportBuilder())->build();
+    $components = [];
+    $sources = [];
+    foreach ($node->get('field_component_uploads') as $item) {
+      $component = $item->entity->get('field_agency_component')->entity;
+      $components[] = $component;
+      $sources[] = [
+        'component_id' => $component->id(),
+        'uri' => $item->entity->get('field_request_data_csv')->entity->getFileUri(),
+      ];
+    }
+    $statutes = (new StatuteAggregator())->aggregate($sources);
+    $fiscal_year = (int) $node->get('field_foia_annual_report_yr')->value;
+    $request_statistics = (new RequestStatisticsAggregator())->aggregate($sources, $fiscal_year);
+    $dispositions = (new DispositionAggregator())->aggregate($sources);
+    $other_reasons = (new OtherDenialReasonAggregator())->aggregate($sources);
+    $applied_exemptions = (new AppliedExemptionsAggregator())->aggregate($sources);
+    $appeal_statistics = (new AppealStatisticsAggregator())->aggregate($sources, $fiscal_year);
+    $appeal_dispositions = (new AppealDispositionAggregator())->aggregate($sources);
+    // Column AC holds appeal exemptions; Column P remains request-only.
+    $appeal_exemptions = (new AppliedExemptionsAggregator())->aggregate($sources, 28);
+    $appeal_denials = (new AppealNonExemptionDenialAggregator())->aggregate($sources);
+    $appeal_other_reasons = (new OtherDenialReasonAggregator())->aggregate($sources, 27);
+    $appeal_response_times = (new AppealResponseTimeAggregator())->aggregate($sources, $fiscal_year);
+    $oldest_pending_appeals = (new OldestPendingAppealAggregator())->aggregate($sources, $fiscal_year);
+    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();
