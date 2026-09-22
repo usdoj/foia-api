@@ -40,7 +40,9 @@ final class RequestStatisticsAggregator {
       }
       try {
         $header = TRUE;
+        $record = 0;
         while (($columns = fgetcsv($stream, 0, ',', '"', '')) !== FALSE) {
+          $record++;
           if ($columns === [NULL]) {
             continue;
           }
@@ -52,7 +54,8 @@ final class RequestStatisticsAggregator {
             continue;
           }
           // Every data row counts, including consultations and rows without E.
-          $received = $this->calendarDate(trim($columns[8]));
+          $context = sprintf('Component %s, CSV %s, record %d', $source['component_id'], basename($source['uri']), $record);
+          $received = $this->calendarDate(trim($columns[8]), $context . ', Column I (Date Initially Received)');
           if ($received < $start) {
             $counts['pending_start']++;
           }
@@ -69,7 +72,7 @@ final class RequestStatisticsAggregator {
             $counts['pending_end']++;
           }
           else {
-            $completed_date = $this->calendarDate($completed);
+            $completed_date = $this->calendarDate($completed, $context . ', Column K (Date Completed)');
             if ($completed_date >= $start && $completed_date <= $end) {
               $counts['processed']++;
             }
@@ -104,10 +107,10 @@ final class RequestStatisticsAggregator {
   /**
    * Converts a validated date to YYYYMMDD, guarding against changed CSV data.
    */
-  private function calendarDate(string $value): int {
+  private function calendarDate(string $value, string $context): int {
     if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $value, $parts)
       || !checkdate((int) $parts[1], (int) $parts[2], (int) $parts[3])) {
-      throw new \RuntimeException('CSV contains an invalid date after validation.');
+      throw new \RuntimeException($context . ': CSV contains an invalid date after validation: ' . ($value === '' ? '[blank]' : $value) . '. Expected MM/DD/YYYY.');
     }
     return (int) $parts[3] * 10000 + (int) $parts[1] * 100 + (int) $parts[2];
   }

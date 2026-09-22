@@ -129,6 +129,31 @@ try {
   $check($xml && str_starts_with($xml->getFileUri(), 'private://'), 'Valid uploads did not produce private XML.');
   $files[] = $xml;
   $check(substr_count($report->get('field_messages')->value, 'CSV validated.') === 2, 'Successful retry did not replace earlier messages.');
+  // An aggregation exception must append to validation messages and retain XML.
+  $row = array_fill(0, 29, '');
+  $row[0] = 'Component';
+  $row[1] = 'Exception fixture';
+  $row[2] = 'N';
+  $row[3] = '20';
+  $row[23] = '01/02/2026';
+  $contents = implode(',', array_fill(0, 29, 'column')) . "\n" . implode(',', $row);
+  file_put_contents($files[1]->getFileUri(), $contents);
+  for ($attempt = 0; $attempt < 2; $attempt++) {
+    try {
+      $process();
+      throw new LogicException('Expected the request-statistics date exception.');
+    }
+    catch (RuntimeException $exception) {
+      $check(str_contains($exception->getMessage(), 'Column I'), 'Unexpected processing exception.');
+      $report = $node_storage->loadUnchanged($report->id());
+      $message = $report->get('field_messages')->value;
+      $check(substr_count($message, 'CSV validated.') === 2, 'Exception lost validation messages.');
+      $check(substr_count($message, 'XML report processing failed:') === 1, 'Retry duplicated exception messages.');
+      $check(str_ends_with($message, $exception->getMessage()), 'Exception details were not appended.');
+      $check($report->get('field_messages')->format === 'plain_text', 'Exception message must be plain text.');
+      $check($report->get('field_request_data_xml')->target_id === $xml->id(), 'Exception replaced existing XML.');
+    }
+  }
   file_put_contents($files[1]->getFileUri(), 'bad,csv');
   $report = $process();
   $check($report->get('field_request_data_xml')->target_id === $xml->id(), 'Failed retry replaced existing XML.');

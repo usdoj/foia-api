@@ -173,7 +173,7 @@ header; its names are not validated. Data records currently require:
   date, in which case uppercase `G` or `D` is required. Surrounding whitespace
   is ignored.
 
-`CsvValidator::FEDERAL_HOLIDAYS` embeds all 205 dates supplied in
+`WorkingDays::FEDERAL_HOLIDAYS` embeds all 205 dates supplied in
 `federal-holidays.txt`, covering 2008–2026. The file is not read at runtime.
 Maintain the constant for future years; dates outside its coverage currently
 exclude weekends only. Working-day arithmetic counts whole weeks and a short
@@ -503,3 +503,124 @@ Same-day receipt is zero days. XML receipt dates use `YYYY-MM-DD`.
 `OldestPendingAppealSection` follows the appeal response times, with `OPA1`,
 `OPA2`, etc. linked to components and `OPA0` to the agency. Components without
 pending appeals retain an empty container and their organization association.
+
+## Processed request response times
+
+`ProcessedResponseTimeAggregator` uses completed rows (K) with S, C, or E in M.
+The start is J when present, otherwise I. No fiscal-year clamping or Days Tolled
+subtraction is applied. A counted row without either start date, or with an end
+before its start, stops generation with a contextual error.
+
+`WorkingDays` shares the existing federal holiday constant and calculation with
+CSV validation: exclude the start day, include the end day, skip weekends and
+listed holidays. The calendar currently covers 2008–2026 and must be maintained.
+Day-frequency maps provide exact medians, averages, minima and maxima without
+retaining individual rows. Agency statistics use combined frequencies per track.
+
+`ProcessedResponseTimeSection` follows oldest pending appeals. `PRT1`, `PRT2`,
+etc. reference component organizations; `PRT0` references the agency. Each has
+Simple, Complex and Expedited response-time elements, empty for unused tracks.
+Statistics below one use the corresponding `DaysCode` element with `LT1`;
+otherwise `DaysValue` is used, with averages formatted to two decimal places.
+The less-than-one comparison occurs before average rounding.
+
+Report-generation exceptions are appended after validation messages in the
+node's Messages field as plain text. The worker reloads the stored node before
+saving the message so unsaved file-field changes are not persisted accidentally.
+The exception is rethrown to preserve Drush logging and queue retry behavior.
+Each new attempt clears previous messages as before.
+
+## Information granted response times
+
+`InformationGrantedResponseTimeSection` uses the same accumulator and XML writer
+as processed response times, with `information_granted_only` enabled to select
+Column N codes 1 and 2. Completed dates, track selection, working days, empty
+tracks, agency weighting, two-decimal averages, and `LT1` handling are unchanged.
+The section follows processed response times and uses `IGRT1`, `IGRT2`, etc.
+for components and `IGRT0` for the agency. Associations retain the example's
+`ProcessedResponseTimeOrganizationAssociation` element name.
+
+## Simple response-time increments
+
+`aggregateSimpleIncrements()` shares the processed-response CSV reader and
+working-day calculation. It includes completed requests with Track S and
+Disposition 1 or 2. Zero-day completions count in 1–20. The thirteen bins
+include both endpoints, followed by the open-ended 401+ bin. Agency counts
+sum component counts.
+
+`SimpleResponseTimeIncrementsSection` follows information-granted response
+times. Every component and the agency have all thirteen `TimeIncrement`
+entries (including zero counts), followed by `TimeIncrementTotalQuantity`.
+`SRT1`, `SRT2`, etc. refer to components and `SRT0` refers to the agency.
+
+## Complex response-time increments
+
+`aggregateComplexIncrements()` uses the same thirteen bins and working-day
+calculation as simple increments, selecting Track C instead of S. Completed
+requests with disposition 1 or 2 contribute; zero-day responses count in 1–20.
+All bins, including zero counts, and their sum are emitted for every component
+and the agency. `ComplexResponseTimeIncrementsSection` follows the simple
+section and uses `CRT1`, `CRT2`, etc. and agency `CRT0` organization references.
+
+## Expedited response-time increments
+
+`aggregateExpeditedIncrements()` selects Track E, using the same calculation,
+disposition 1/2 filter, thirteen bins, zero counts, and totals as simple and
+complex increments. Zero-day responses count in 1–20.
+`ExpeditedResponseTimeIncrementsSection` follows the complex section, with
+`ERT1`, `ERT2`, etc. linked to components and `ERT0` linked to the agency.
+
+## Pending perfected requests
+
+`PendingPerfectedRequestsAggregator` includes rows with J populated and K blank,
+separated by Track S, C, and E. There is no disposition filter. Age is working
+days from J through September 30 of the report year, excluding the start day
+and including the end day, without fiscal-start clamping or toll subtraction.
+The shared `WorkingDays` calendar excludes weekends and federal holidays.
+
+Frequency maps provide counts, exact medians, and averages per component and
+across all agency rows. Empty tracks emit quantity 0 and literal `N/A` in both
+median/average value elements; populated averages have two decimals. Same-day
+ages remain numeric zero. `PendingPerfectedRequestsSection` follows expedited
+increments and uses `PPR1`, `PPR2`, etc. and agency `PPR0` organization links.
+
+## Oldest pending requests
+
+`OldestPendingRequestAggregator` selects rows with I populated and K blank,
+without track or disposition filters. Pending age uses the shared working-day
+calendar from the actual received date through fiscal year-end, excluding the
+start day and including the end day. Prior-year time is included.
+
+At most ten items are retained per component and for the entire agency, sorted
+by descending pending days, then ascending receipt date for ties. Duplicate
+rows remain separate entries. Empty components retain their empty container
+and association. `OldestPendingRequestSection` follows pending perfected
+requests, with ISO receipt dates and `OPR1`, `OPR2`, etc.; `OPR0` is the agency.
+The existing oldest-appeal section continues using calendar days.
+
+## Expedited processing
+
+`ExpeditedProcessingAggregator` counts uppercase G and D in Column S as granted
+and denied. With both Q and R present, adjudications taking at most ten working
+days also increment the timely counter. The shared calendar excludes the start
+day, includes the end day, and skips weekends and listed federal holidays.
+Same-day determinations qualify. Blank R still counts the outcome, but not a
+timely adjudication. Invalid or reversed dates produce contextual exceptions.
+
+`ExpeditedProcessingSection` follows oldest pending requests. All three counts,
+including zeros, appear for each component and the agency. `EP1`, `EP2`, etc.
+and `EP0` link to their Organization entries. Agency counts sum components.
+
+## Fee waivers
+
+`FeeWaiverAggregator` counts uppercase G and D in Column V for every component
+and sums those counts for the agency. Other values and blank cells do not
+contribute. No date, track, or disposition filter is applied.
+`FeeWaiverSection` follows expedited processing, emitting both granted and
+denied quantities even when zero. `FW1`, `FW2`, etc. reference components;
+`FW0` references the agency through `FeeWaiverOrganizationAssociation`.
+
+For appeal rows (Column X populated), CSV validation requires E–P and T–W
+to be blank. Q, R, and S may contain expedited-processing data and retain
+their date and dependency checks. Appeal rows are exempt from the rule that
+S = G requires M = E, since M must remain blank on these rows.

@@ -55,11 +55,29 @@ final class XmlReportBuilder {
    *   Component and overall summaries from AppealResponseTimeAggregator.
    * @param array $oldest_pending_appeals
    *   Component and overall lists from OldestPendingAppealAggregator.
+   * @param array $processed_response_times
+   *   Component and overall summaries from ProcessedResponseTimeAggregator.
+   * @param array $information_granted_response_times
+   *   Disposition-filtered summaries from ProcessedResponseTimeAggregator.
+   * @param array $simple_response_increments
+   *   Simple-track bin counts from ProcessedResponseTimeAggregator.
+   * @param array $complex_response_increments
+   *   Complex-track bin counts from ProcessedResponseTimeAggregator.
+   * @param array $expedited_response_increments
+   *   Expedited-track bin counts from ProcessedResponseTimeAggregator.
+   * @param array $pending_perfected_requests
+   *   Component and agency summaries from PendingPerfectedRequestsAggregator.
+   * @param array $oldest_pending_requests
+   *   Component and overall lists from OldestPendingRequestAggregator.
+   * @param array $expedited_processing
+   *   Component and agency counters from ExpeditedProcessingAggregator.
+   * @param array $fee_waivers
+   *   Component and agency counters from FeeWaiverAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = [], array $pending_perfected_requests = [], array $oldest_pending_requests = [], array $expedited_processing = [], array $fee_waivers = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -136,7 +154,43 @@ final class XmlReportBuilder {
     }
 
     if ($oldest_pending_appeals !== []) {
-      $this->addOldestPendingAppeals($document, $root, $oldest_pending_appeals, $component_map);
+      $this->addOldestPendingItems($document, $root, $oldest_pending_appeals, $component_map, 'OldestPendingAppealSection', 'OPA');
+    }
+
+    if ($processed_response_times !== []) {
+      $this->addProcessedResponseTimes($document, $root, $processed_response_times, $component_map, 'ProcessedResponseTimeSection', 'PRT');
+    }
+
+    if ($information_granted_response_times !== []) {
+      $this->addProcessedResponseTimes($document, $root, $information_granted_response_times, $component_map, 'InformationGrantedResponseTimeSection', 'IGRT');
+    }
+
+    if ($simple_response_increments !== []) {
+      $this->addResponseTimeIncrements($document, $root, $simple_response_increments, $component_map, 'SimpleResponseTimeIncrementsSection', 'SRT');
+    }
+
+    if ($complex_response_increments !== []) {
+      $this->addResponseTimeIncrements($document, $root, $complex_response_increments, $component_map, 'ComplexResponseTimeIncrementsSection', 'CRT');
+    }
+
+    if ($expedited_response_increments !== []) {
+      $this->addResponseTimeIncrements($document, $root, $expedited_response_increments, $component_map, 'ExpeditedResponseTimeIncrementsSection', 'ERT');
+    }
+
+    if ($pending_perfected_requests !== []) {
+      $this->addPendingPerfectedRequests($document, $root, $pending_perfected_requests, $component_map);
+    }
+
+    if ($oldest_pending_requests !== []) {
+      $this->addOldestPendingItems($document, $root, $oldest_pending_requests, $component_map, 'OldestPendingRequestSection', 'OPR');
+    }
+
+    if ($expedited_processing !== []) {
+      $this->addExpeditedProcessing($document, $root, $expedited_processing, $component_map);
+    }
+
+    if ($fee_waivers !== []) {
+      $this->addFeeWaivers($document, $root, $fee_waivers, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -417,18 +471,18 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds oldest open appeals and their organization references.
+   * Adds oldest pending items and their organization references.
    */
-  private function addOldestPendingAppeals(\DOMDocument $document, \DOMElement $root, array $appeals, array $component_map): void {
-    $section = $this->addTextElement($document, $root, 'foia', 'OldestPendingAppealSection');
+  private function addOldestPendingItems(\DOMDocument $document, \DOMElement $root, array $pending, array $component_map, string $section_name, string $prefix): void {
+    $section = $this->addTextElement($document, $root, 'foia', $section_name);
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $appeals['components'][$component_id];
+      $organizations[$organization_id] = $pending['components'][$component_id];
     }
-    $organizations['ORG0'] = $appeals['overall'];
+    $organizations['ORG0'] = $pending['overall'];
     foreach ($organizations as $organization_id => $items) {
       $entry = $this->addTextElement($document, $section, 'foia', 'OldestPendingItems');
-      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'OPA' . substr($organization_id, 3));
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
       foreach ($items as $item) {
         $old_item = $this->addTextElement($document, $entry, 'foia', 'OldItem');
         $this->addTextElement($document, $old_item, 'foia', 'OldItemReceiptDate', $item['receipt_date']);
@@ -438,7 +492,161 @@ final class XmlReportBuilder {
     foreach ($organizations as $organization_id => $items) {
       $association = $this->addTextElement($document, $section, 'foia', 'OldestPendingItemsOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
-      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'OPA' . substr($organization_id, 3));
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds working-day statistics by track and organization associations.
+   */
+  private function addProcessedResponseTimes(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map, string $section_name, string $prefix): void {
+    $section = $this->addTextElement($document, $root, 'foia', $section_name);
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+    foreach ($organizations as $organization_id => $tracks) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ProcessedResponseTime');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
+      foreach (ProcessedResponseTimeAggregator::TRACKS as $track => $name) {
+        $bin = $this->addTextElement($document, $entry, 'foia', $name);
+        foreach ($tracks[$track] as $key => $value) {
+          // Test the unrounded statistic before formatting the average.
+          $suffix = $value < 1 ? 'Code' : 'Value';
+          $text = $value < 1 ? 'LT1' : ($key === 'average' ? number_format($value, 2, '.', '') : (string) $value);
+          $this->addTextElement($document, $bin, 'foia', 'ResponseTime' . ucfirst($key) . 'Days' . $suffix, $text);
+        }
+      }
+    }
+    foreach ($organizations as $organization_id => $tracks) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ProcessedResponseTimeOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds all thirteen response-time bins and organization references.
+   */
+  private function addResponseTimeIncrements(\DOMDocument $document, \DOMElement $root, array $increments, array $component_map, string $section_name, string $prefix): void {
+    $section = $this->addTextElement($document, $root, 'foia', $section_name);
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $increments['components'][$component_id];
+    }
+    $organizations['ORG0'] = $increments['overall'];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ComponentResponseTimeIncrements');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
+      foreach (ProcessedResponseTimeAggregator::INCREMENTS as $code => $upper) {
+        $increment = $this->addTextElement($document, $entry, 'foia', 'TimeIncrement');
+        $this->addTextElement($document, $increment, 'foia', 'TimeIncrementCode', $code);
+        $this->addTextElement($document, $increment, 'foia', 'TimeIncrementProcessedQuantity', (string) $counts[$code]);
+      }
+      $this->addTextElement($document, $entry, 'foia', 'TimeIncrementTotalQuantity', (string) array_sum($counts));
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ResponseTimeIncrementsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds pending counts and ages by track, including N/A for empty tracks.
+   */
+  private function addPendingPerfectedRequests(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'PendingPerfectedRequestsSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+    foreach ($organizations as $organization_id => $tracks) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'PendingPerfectedRequests');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PPR' . substr($organization_id, 3));
+      foreach (PendingPerfectedRequestsAggregator::TRACKS as $track => $name) {
+        $values = $tracks[$track];
+        $bin = $this->addTextElement($document, $entry, 'foia', $name);
+        $this->addTextElement($document, $bin, 'foia', 'PendingRequestQuantity', (string) $values['quantity']);
+        $median = $values['quantity'] === 0 ? 'N/A' : (string) $values['median'];
+        $average = $values['quantity'] === 0 ? 'N/A' : number_format($values['average'], 2, '.', '');
+        $this->addTextElement($document, $bin, 'foia', 'PendingRequestMedianDaysValue', $median);
+        $this->addTextElement($document, $bin, 'foia', 'PendingRequestAverageDaysValue', $average);
+      }
+    }
+    foreach ($organizations as $organization_id => $tracks) {
+      $association = $this->addTextElement($document, $section, 'foia', 'PendingPerfectedRequestsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PPR' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds expedited outcomes and timely adjudications with organization links.
+   */
+  private function addExpeditedProcessing(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'ExpeditedProcessingSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+    $fields = [
+      'granted' => 'RequestGrantedQuantity',
+      'denied' => 'RequestDeniedQuantity',
+      'within_ten' => 'AdjudicationWithinTenDaysQuantity',
+    ];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ExpeditedProcessing');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'EP' . substr($organization_id, 3));
+      foreach ($fields as $key => $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+      }
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ExpeditedProcessingOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'EP' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds fee-waiver outcomes, including zeros, and organization links.
+   */
+  private function addFeeWaivers(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'FeeWaiverSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+    $fields = [
+      'granted' => 'RequestGrantedQuantity',
+      'denied' => 'RequestDeniedQuantity',
+    ];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'FeeWaiver');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'FW' . substr($organization_id, 3));
+      foreach ($fields as $key => $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+      }
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'FeeWaiverOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'FW' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

@@ -87,19 +87,47 @@ class CsvValidatorTest extends UnitTestCase {
   }
 
   /**
-   * Rejects every request-data column E through W when X contains data.
+   * Rejects E-P and T-W when X contains data, while allowing Q, R, and S.
    */
   public function testAppealRequestDataExclusion(): void {
     $header = implode(',', array_fill(0, 29, 'column')) . "\n";
-    for ($column = 4; $column <= 22; $column++) {
+    foreach (array_merge(range(4, 15), range(19, 22)) as $column) {
       $overrides = [8 => '', 23 => '01/02/2026'];
       // Zero is data too, even though PHP treats it as an empty value.
       $overrides[$column] = '0';
       $this->assertSame(
-        ['CSV record 2: If there is data in Column X, Columns E through W must be empty.'],
+        ['CSV record 2: If there is data in Column X, Columns E through W must be empty, except for Columns Q, R, and S; those may optionally have data, but Columns E through P and Columns T through W must be blank.'],
         $this->validateContents($header . $this->csvRow($overrides)),
         'Column index ' . $column,
       );
+    }
+  }
+
+  /**
+   * Allows expedited-processing data on appeal rows with its usual validation.
+   */
+  public function testAppealExpeditedProcessing(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    $appeal = [8 => '', 23 => '01/02/2026'];
+    foreach ([
+      [],
+      [16 => '01/03/2026'],
+      [16 => '01/03/2026', 18 => 'D'],
+      [16 => '01/03/2026', 17 => '01/04/2026', 18 => 'D'],
+      [16 => '01/03/2026', 18 => 'G'],
+      [16 => '01/03/2026', 17 => '01/04/2026', 18 => 'G'],
+    ] as $values) {
+      $this->assertSame([], $this->validateContents($header . $this->csvRow($appeal + $values)));
+    }
+    $cases = [
+      [[18 => 'D'], 'Column Q must contain value'],
+      [[16 => 'bad-date'], 'Column Q: Request for EP - Date Received must be a valid date'],
+      [[16 => '01/03/2026', 17 => '01/02/2026', 18 => 'D'], 'cannot be prior'],
+      [[16 => '01/03/2026', 17 => '01/04/2026'], 'Must have G or D in Column S'],
+    ];
+    foreach ($cases as [$values, $message]) {
+      $errors = $this->validateContents($header . $this->csvRow($appeal + $values));
+      $this->assertStringContainsString($message, $errors[0]);
     }
   }
 
