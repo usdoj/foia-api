@@ -65,11 +65,13 @@ final class XmlReportBuilder {
    *   Complex-track bin counts from ProcessedResponseTimeAggregator.
    * @param array $expedited_response_increments
    *   Expedited-track bin counts from ProcessedResponseTimeAggregator.
+   * @param array $pending_perfected_requests
+   *   Component and agency summaries from PendingPerfectedRequestsAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = [], array $pending_perfected_requests = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -167,6 +169,10 @@ final class XmlReportBuilder {
 
     if ($expedited_response_increments !== []) {
       $this->addResponseTimeIncrements($document, $root, $expedited_response_increments, $component_map, 'ExpeditedResponseTimeIncrementsSection', 'ERT');
+    }
+
+    if ($pending_perfected_requests !== []) {
+      $this->addPendingPerfectedRequests($document, $root, $pending_perfected_requests, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -530,6 +536,38 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'ResponseTimeIncrementsOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds pending counts and ages by track, including N/A for empty tracks.
+   */
+  private function addPendingPerfectedRequests(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'PendingPerfectedRequestsSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+    foreach ($organizations as $organization_id => $tracks) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'PendingPerfectedRequests');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PPR' . substr($organization_id, 3));
+      foreach (PendingPerfectedRequestsAggregator::TRACKS as $track => $name) {
+        $values = $tracks[$track];
+        $bin = $this->addTextElement($document, $entry, 'foia', $name);
+        $this->addTextElement($document, $bin, 'foia', 'PendingRequestQuantity', (string) $values['quantity']);
+        $median = $values['quantity'] === 0 ? 'N/A' : (string) $values['median'];
+        $average = $values['quantity'] === 0 ? 'N/A' : number_format($values['average'], 2, '.', '');
+        $this->addTextElement($document, $bin, 'foia', 'PendingRequestMedianDaysValue', $median);
+        $this->addTextElement($document, $bin, 'foia', 'PendingRequestAverageDaysValue', $average);
+      }
+    }
+    foreach ($organizations as $organization_id => $tracks) {
+      $association = $this->addTextElement($document, $section, 'foia', 'PendingPerfectedRequestsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PPR' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

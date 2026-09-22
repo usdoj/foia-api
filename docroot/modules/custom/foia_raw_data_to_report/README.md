@@ -569,3 +569,17 @@ disposition 1/2 filter, thirteen bins, zero counts, and totals as simple and
 complex increments. Zero-day responses count in 1–20.
 `ExpeditedResponseTimeIncrementsSection` follows the complex section, with
 `ERT1`, `ERT2`, etc. linked to components and `ERT0` linked to the agency.
+
+## Pending perfected requests
+
+`PendingPerfectedRequestsAggregator` includes rows with J populated and K blank,
+separated by Track S, C, and E. There is no disposition filter. Age is working
+days from J through September 30 of the report year, excluding the start day
+and including the end day, without fiscal-start clamping or toll subtraction.
+The shared `WorkingDays` calendar excludes weekends and federal holidays.
+
+Frequency maps provide counts, exact medians, and averages per component and
+across all agency rows. Empty tracks emit quantity 0 and literal `N/A` in both
+median/average value elements; populated averages have two decimals. Same-day
+ages remain numeric zero. `PendingPerfectedRequestsSection` follows expedited
+increments and uses `PPR1`, `PPR2`, etc. and agency `PPR0` organization links.
