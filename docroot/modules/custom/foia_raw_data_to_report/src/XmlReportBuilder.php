@@ -59,11 +59,13 @@ final class XmlReportBuilder {
    *   Component and overall summaries from ProcessedResponseTimeAggregator.
    * @param array $information_granted_response_times
    *   Disposition-filtered summaries from ProcessedResponseTimeAggregator.
+   * @param array $simple_response_increments
+   *   Simple-track bin counts from ProcessedResponseTimeAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -149,6 +151,10 @@ final class XmlReportBuilder {
 
     if ($information_granted_response_times !== []) {
       $this->addProcessedResponseTimes($document, $root, $information_granted_response_times, $component_map, 'InformationGrantedResponseTimeSection', 'IGRT');
+    }
+
+    if ($simple_response_increments !== []) {
+      $this->addSimpleResponseTimeIncrements($document, $root, $simple_response_increments, $component_map);
     }
 
     $xml = $document->saveXML();
@@ -483,6 +489,35 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'ProcessedResponseTimeOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds all thirteen simple response-time bins and organization references.
+   */
+  private function addSimpleResponseTimeIncrements(\DOMDocument $document, \DOMElement $root, array $increments, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'SimpleResponseTimeIncrementsSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $increments['components'][$component_id];
+    }
+    $organizations['ORG0'] = $increments['overall'];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ComponentResponseTimeIncrements');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'SRT' . substr($organization_id, 3));
+      foreach (ProcessedResponseTimeAggregator::INCREMENTS as $code => $upper) {
+        $increment = $this->addTextElement($document, $entry, 'foia', 'TimeIncrement');
+        $this->addTextElement($document, $increment, 'foia', 'TimeIncrementCode', $code);
+        $this->addTextElement($document, $increment, 'foia', 'TimeIncrementProcessedQuantity', (string) $counts[$code]);
+      }
+      $this->addTextElement($document, $entry, 'foia', 'TimeIncrementTotalQuantity', (string) array_sum($counts));
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ResponseTimeIncrementsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'SRT' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

@@ -539,3 +539,16 @@ tracks, agency weighting, two-decimal averages, and `LT1` handling are unchanged
 The section follows processed response times and uses `IGRT1`, `IGRT2`, etc.
 for components and `IGRT0` for the agency. Associations retain the example's
 `ProcessedResponseTimeOrganizationAssociation` element name.
+
+## Simple response-time increments
+
+`aggregateSimpleIncrements()` shares the processed-response CSV reader and
+working-day calculation. It includes completed requests with Track S and
+Disposition 1 or 2. Zero-day completions count in 1–20. The thirteen bins
+include both endpoints, followed by the open-ended 401+ bin. Agency counts
+sum component counts.
+
+`SimpleResponseTimeIncrementsSection` follows information-granted response
+times. Every component and the agency have all thirteen `TimeIncrement`
+entries (including zero counts), followed by `TimeIncrementTotalQuantity`.
+`SRT1`, `SRT2`, etc. refer to components and `SRT0` refers to the agency.

@@ -28,6 +28,71 @@ final class ProcessedResponseTimeAggregator {
    *   Component and overall statistics keyed by track, empty for unused tracks.
    */
   public function aggregate(array $sources, bool $information_granted_only = FALSE): array {
+    $histograms = $this->collectHistograms($sources, $information_granted_only);
+    $empty = array_fill_keys(array_keys(self::TRACKS), []);
+    $components = [];
+    $overall = $empty;
+    foreach ($histograms as $id => $tracks) {
+      foreach ($tracks as $track => $histogram) {
+        $components[$id][$track] = $this->summarize($histogram);
+        foreach ($histogram as $days => $count) {
+          $overall[$track][$days] = ($overall[$track][$days] ?? 0) + $count;
+        }
+      }
+    }
+    foreach ($overall as $track => $histogram) {
+      $overall[$track] = $this->summarize($histogram);
+    }
+    return ['components' => $components, 'overall' => $overall];
+  }
+
+  /**
+   * Upper bounds for the ordered response-time bins; the last is unbounded.
+   */
+  public const INCREMENTS = [
+    '1-20' => 20,
+    '21-40' => 40,
+    '41-60' => 60,
+    '61-80' => 80,
+    '81-100' => 100,
+    '101-120' => 120,
+    '121-140' => 140,
+    '141-160' => 160,
+    '161-180' => 180,
+    '181-200' => 200,
+    '201-300' => 300,
+    '301-400' => 400,
+    '401+' => PHP_INT_MAX,
+  ];
+
+  /**
+   * Counts simple information-granted requests in all thirteen day ranges.
+   */
+  public function aggregateSimpleIncrements(array $sources): array {
+    $histograms = $this->collectHistograms($sources, TRUE, 'S');
+    $empty = array_fill_keys(array_keys(self::INCREMENTS), 0);
+    $components = [];
+    $overall = $empty;
+    foreach ($histograms as $id => $tracks) {
+      $components[$id] = $empty;
+      // Same-day completions belong in 1-20 so every selected row counts.
+      foreach ($tracks['S'] as $days => $count) {
+        foreach (self::INCREMENTS as $code => $upper) {
+          if ($days <= $upper) {
+            $components[$id][$code] += $count;
+            $overall[$code] += $count;
+            break;
+          }
+        }
+      }
+    }
+    return ['components' => $components, 'overall' => $overall];
+  }
+
+  /**
+   * Shares CSV selection and working-day calculation across both outputs.
+   */
+  private function collectHistograms(array $sources, bool $information_granted_only, ?string $only_track = NULL): array {
     $empty = array_fill_keys(array_keys(self::TRACKS), []);
     $histograms = [];
     $working_days = new WorkingDays();
@@ -60,7 +125,7 @@ final class ProcessedResponseTimeAggregator {
           // Only completed requests in one of the three tracks contribute.
           $completed = trim($columns[10]);
           $track = trim($columns[12]);
-          if ($completed === '' || !isset(self::TRACKS[$track])) {
+          if ($completed === '' || !isset(self::TRACKS[$track]) || ($only_track !== NULL && $track !== $only_track)) {
             continue;
           }
           // Prefer J; fall back to I without clamping to the fiscal year.
@@ -87,20 +152,7 @@ final class ProcessedResponseTimeAggregator {
         fclose($stream);
       }
     }
-    $components = [];
-    $overall = $empty;
-    foreach ($histograms as $id => $tracks) {
-      foreach ($tracks as $track => $histogram) {
-        $components[$id][$track] = $this->summarize($histogram);
-        foreach ($histogram as $days => $count) {
-          $overall[$track][$days] = ($overall[$track][$days] ?? 0) + $count;
-        }
-      }
-    }
-    foreach ($overall as $track => $histogram) {
-      $overall[$track] = $this->summarize($histogram);
-    }
-    return ['components' => $components, 'overall' => $overall];
+    return $histograms;
   }
 
   /**
