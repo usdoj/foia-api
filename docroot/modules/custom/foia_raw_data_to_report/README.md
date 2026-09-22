@@ -561,3 +561,11 @@ requests with disposition 1 or 2 contribute; zero-day responses count in 1–20.
 All bins, including zero counts, and their sum are emitted for every component
 and the agency. `ComplexResponseTimeIncrementsSection` follows the simple
 section and uses `CRT1`, `CRT2`, etc. and agency `CRT0` organization references.
+
+## Expedited response-time increments
+
+`aggregateExpeditedIncrements()` selects Track E, using the same calculation,
+disposition 1/2 filter, thirteen bins, zero counts, and totals as simple and
+complex increments. Zero-day responses count in 1–20.
+`ExpeditedResponseTimeIncrementsSection` follows the complex section, with
+`ERT1`, `ERT2`, etc. linked to components and `ERT0` linked to the agency.

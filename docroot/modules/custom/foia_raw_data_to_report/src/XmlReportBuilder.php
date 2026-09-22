@@ -63,11 +63,13 @@ final class XmlReportBuilder {
    *   Simple-track bin counts from ProcessedResponseTimeAggregator.
    * @param array $complex_response_increments
    *   Complex-track bin counts from ProcessedResponseTimeAggregator.
+   * @param array $expedited_response_increments
+   *   Expedited-track bin counts from ProcessedResponseTimeAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -161,6 +163,10 @@ final class XmlReportBuilder {
 
     if ($complex_response_increments !== []) {
       $this->addResponseTimeIncrements($document, $root, $complex_response_increments, $component_map, 'ComplexResponseTimeIncrementsSection', 'CRT');
+    }
+
+    if ($expedited_response_increments !== []) {
+      $this->addResponseTimeIncrements($document, $root, $expedited_response_increments, $component_map, 'ExpeditedResponseTimeIncrementsSection', 'ERT');
     }
 
     $xml = $document->saveXML();

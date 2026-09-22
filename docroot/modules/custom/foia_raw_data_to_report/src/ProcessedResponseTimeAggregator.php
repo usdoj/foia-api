@@ -80,6 +80,13 @@ final class ProcessedResponseTimeAggregator {
   }
 
   /**
+   * Counts expedited information-granted requests in all thirteen day ranges.
+   */
+  public function aggregateExpeditedIncrements(array $sources): array {
+    return $this->aggregateIncrements($sources, 'E');
+  }
+
+  /**
    * Bins completed information-granted requests for the selected track.
    */
   private function aggregateIncrements(array $sources, string $track): array {
