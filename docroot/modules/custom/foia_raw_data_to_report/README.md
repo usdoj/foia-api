@@ -597,3 +597,16 @@ rows remain separate entries. Empty components retain their empty container
 and association. `OldestPendingRequestSection` follows pending perfected
 requests, with ISO receipt dates and `OPR1`, `OPR2`, etc.; `OPR0` is the agency.
 The existing oldest-appeal section continues using calendar days.
+
+## Expedited processing
+
+`ExpeditedProcessingAggregator` counts uppercase G and D in Column S as granted
+and denied. With both Q and R present, adjudications taking at most ten working
+days also increment the timely counter. The shared calendar excludes the start
+day, includes the end day, and skips weekends and listed federal holidays.
+Same-day determinations qualify. Blank R still counts the outcome, but not a
+timely adjudication. Invalid or reversed dates produce contextual exceptions.
+
+`ExpeditedProcessingSection` follows oldest pending requests. All three counts,
+including zeros, appear for each component and the agency. `EP1`, `EP2`, etc.
+and `EP0` link to their Organization entries. Agency counts sum components.
