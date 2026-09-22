@@ -610,3 +610,12 @@ timely adjudication. Invalid or reversed dates produce contextual exceptions.
 `ExpeditedProcessingSection` follows oldest pending requests. All three counts,
 including zeros, appear for each component and the agency. `EP1`, `EP2`, etc.
 and `EP0` link to their Organization entries. Agency counts sum components.
+
+## Fee waivers
+
+`FeeWaiverAggregator` counts uppercase G and D in Column V for every component
+and sums those counts for the agency. Other values and blank cells do not
+contribute. No date, track, or disposition filter is applied.
+`FeeWaiverSection` follows expedited processing, emitting both granted and
+denied quantities even when zero. `FW1`, `FW2`, etc. reference components;
+`FW0` references the agency through `FeeWaiverOrganizationAssociation`.
