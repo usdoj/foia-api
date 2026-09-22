@@ -69,14 +69,28 @@ final class ProcessedResponseTimeAggregator {
    * Counts simple information-granted requests in all thirteen day ranges.
    */
   public function aggregateSimpleIncrements(array $sources): array {
-    $histograms = $this->collectHistograms($sources, TRUE, 'S');
+    return $this->aggregateIncrements($sources, 'S');
+  }
+
+  /**
+   * Counts complex information-granted requests in all thirteen day ranges.
+   */
+  public function aggregateComplexIncrements(array $sources): array {
+    return $this->aggregateIncrements($sources, 'C');
+  }
+
+  /**
+   * Bins completed information-granted requests for the selected track.
+   */
+  private function aggregateIncrements(array $sources, string $track): array {
+    $histograms = $this->collectHistograms($sources, TRUE, $track);
     $empty = array_fill_keys(array_keys(self::INCREMENTS), 0);
     $components = [];
     $overall = $empty;
     foreach ($histograms as $id => $tracks) {
       $components[$id] = $empty;
       // Same-day completions belong in 1-20 so every selected row counts.
-      foreach ($tracks['S'] as $days => $count) {
+      foreach ($tracks[$track] as $days => $count) {
         foreach (self::INCREMENTS as $code => $upper) {
           if ($days <= $upper) {
             $components[$id][$code] += $count;

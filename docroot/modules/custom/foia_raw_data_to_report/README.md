@@ -552,3 +552,12 @@ sum component counts.
 times. Every component and the agency have all thirteen `TimeIncrement`
 entries (including zero counts), followed by `TimeIncrementTotalQuantity`.
 `SRT1`, `SRT2`, etc. refer to components and `SRT0` refers to the agency.
+
+## Complex response-time increments
+
+`aggregateComplexIncrements()` uses the same thirteen bins and working-day
+calculation as simple increments, selecting Track C instead of S. Completed
+requests with disposition 1 or 2 contribute; zero-day responses count in 1–20.
+All bins, including zero counts, and their sum are emitted for every component
+and the agency. `ComplexResponseTimeIncrementsSection` follows the simple
+section and uses `CRT1`, `CRT2`, etc. and agency `CRT0` organization references.
