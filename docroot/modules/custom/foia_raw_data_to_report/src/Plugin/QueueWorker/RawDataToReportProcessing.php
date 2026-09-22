@@ -191,7 +191,8 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $appeal_response_times = (new AppealResponseTimeAggregator())->aggregate($sources, $fiscal_year);
     $oldest_pending_appeals = (new OldestPendingAppealAggregator())->aggregate($sources, $fiscal_year);
     $processed_response_times = (new ProcessedResponseTimeAggregator())->aggregate($sources);
-    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals, $processed_response_times);
+    $information_granted_response_times = (new ProcessedResponseTimeAggregator())->aggregate($sources, TRUE);
+    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals, $processed_response_times, $information_granted_response_times);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();

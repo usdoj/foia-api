@@ -21,11 +21,13 @@ final class ProcessedResponseTimeAggregator {
    *
    * @param array $sources
    *   Component/file pairs, each with component_id and uri keys.
+   * @param bool $information_granted_only
+   *   Whether to include only disposition codes 1 and 2 in Column N.
    *
    * @return array
    *   Component and overall statistics keyed by track, empty for unused tracks.
    */
-  public function aggregate(array $sources): array {
+  public function aggregate(array $sources, bool $information_granted_only = FALSE): array {
     $empty = array_fill_keys(array_keys(self::TRACKS), []);
     $histograms = [];
     $working_days = new WorkingDays();
@@ -49,6 +51,10 @@ final class ProcessedResponseTimeAggregator {
           }
           if ($header) {
             $header = FALSE;
+            continue;
+          }
+          // Information-granted statistics include only full/partial grants.
+          if ($information_granted_only && !in_array(trim($columns[13]), ['1', '2'], TRUE)) {
             continue;
           }
           // Only completed requests in one of the three tracks contribute.

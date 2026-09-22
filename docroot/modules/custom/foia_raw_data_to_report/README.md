@@ -529,3 +529,13 @@ node's Messages field as plain text. The worker reloads the stored node before
 saving the message so unsaved file-field changes are not persisted accidentally.
 The exception is rethrown to preserve Drush logging and queue retry behavior.
 Each new attempt clears previous messages as before.
+
+## Information granted response times
+
+`InformationGrantedResponseTimeSection` uses the same accumulator and XML writer
+as processed response times, with `information_granted_only` enabled to select
+Column N codes 1 and 2. Completed dates, track selection, working days, empty
+tracks, agency weighting, two-decimal averages, and `LT1` handling are unchanged.
+The section follows processed response times and uses `IGRT1`, `IGRT2`, etc.
+for components and `IGRT0` for the agency. Associations retain the example's
+`ProcessedResponseTimeOrganizationAssociation` element name.
