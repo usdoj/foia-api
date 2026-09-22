@@ -583,3 +583,17 @@ across all agency rows. Empty tracks emit quantity 0 and literal `N/A` in both
 median/average value elements; populated averages have two decimals. Same-day
 ages remain numeric zero. `PendingPerfectedRequestsSection` follows expedited
 increments and uses `PPR1`, `PPR2`, etc. and agency `PPR0` organization links.
+
+## Oldest pending requests
+
+`OldestPendingRequestAggregator` selects rows with I populated and K blank,
+without track or disposition filters. Pending age uses the shared working-day
+calendar from the actual received date through fiscal year-end, excluding the
+start day and including the end day. Prior-year time is included.
+
+At most ten items are retained per component and for the entire agency, sorted
+by descending pending days, then ascending receipt date for ties. Duplicate
+rows remain separate entries. Empty components retain their empty container
+and association. `OldestPendingRequestSection` follows pending perfected
+requests, with ISO receipt dates and `OPR1`, `OPR2`, etc.; `OPR0` is the agency.
+The existing oldest-appeal section continues using calendar days.

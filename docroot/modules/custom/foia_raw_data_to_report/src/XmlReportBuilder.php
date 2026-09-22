@@ -67,11 +67,13 @@ final class XmlReportBuilder {
    *   Expedited-track bin counts from ProcessedResponseTimeAggregator.
    * @param array $pending_perfected_requests
    *   Component and agency summaries from PendingPerfectedRequestsAggregator.
+   * @param array $oldest_pending_requests
+   *   Component and overall lists from OldestPendingRequestAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = [], array $pending_perfected_requests = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = [], array $pending_perfected_requests = [], array $oldest_pending_requests = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -148,7 +150,7 @@ final class XmlReportBuilder {
     }
 
     if ($oldest_pending_appeals !== []) {
-      $this->addOldestPendingAppeals($document, $root, $oldest_pending_appeals, $component_map);
+      $this->addOldestPendingItems($document, $root, $oldest_pending_appeals, $component_map, 'OldestPendingAppealSection', 'OPA');
     }
 
     if ($processed_response_times !== []) {
@@ -173,6 +175,10 @@ final class XmlReportBuilder {
 
     if ($pending_perfected_requests !== []) {
       $this->addPendingPerfectedRequests($document, $root, $pending_perfected_requests, $component_map);
+    }
+
+    if ($oldest_pending_requests !== []) {
+      $this->addOldestPendingItems($document, $root, $oldest_pending_requests, $component_map, 'OldestPendingRequestSection', 'OPR');
     }
 
     $xml = $document->saveXML();
@@ -453,18 +459,18 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds oldest open appeals and their organization references.
+   * Adds oldest pending items and their organization references.
    */
-  private function addOldestPendingAppeals(\DOMDocument $document, \DOMElement $root, array $appeals, array $component_map): void {
-    $section = $this->addTextElement($document, $root, 'foia', 'OldestPendingAppealSection');
+  private function addOldestPendingItems(\DOMDocument $document, \DOMElement $root, array $pending, array $component_map, string $section_name, string $prefix): void {
+    $section = $this->addTextElement($document, $root, 'foia', $section_name);
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $appeals['components'][$component_id];
+      $organizations[$organization_id] = $pending['components'][$component_id];
     }
-    $organizations['ORG0'] = $appeals['overall'];
+    $organizations['ORG0'] = $pending['overall'];
     foreach ($organizations as $organization_id => $items) {
       $entry = $this->addTextElement($document, $section, 'foia', 'OldestPendingItems');
-      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'OPA' . substr($organization_id, 3));
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
       foreach ($items as $item) {
         $old_item = $this->addTextElement($document, $entry, 'foia', 'OldItem');
         $this->addTextElement($document, $old_item, 'foia', 'OldItemReceiptDate', $item['receipt_date']);
@@ -474,7 +480,7 @@ final class XmlReportBuilder {
     foreach ($organizations as $organization_id => $items) {
       $association = $this->addTextElement($document, $section, 'foia', 'OldestPendingItemsOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
-      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'OPA' . substr($organization_id, 3));
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
