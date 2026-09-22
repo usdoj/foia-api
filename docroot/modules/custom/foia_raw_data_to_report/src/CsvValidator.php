@@ -55,12 +55,12 @@ final class CsvValidator {
           continue;
         }
 
-        // Column X: Appeal rows must not contain request data in E through W.
+        // Column X: Appeal rows require E-P and T-W blank, but allow Q, R, S.
         $appeal_received = trim($columns[23]);
         if ($appeal_received !== '') {
-          foreach (array_slice($columns, 4, 19) as $value) {
+          foreach (array_merge(array_slice($columns, 4, 12), array_slice($columns, 19, 4)) as $value) {
             if (trim($value) !== '') {
-              return [sprintf('CSV record %d: If there is data in Column X, Columns E through W must be empty.', $record)];
+              return [sprintf('CSV record %d: If there is data in Column X, Columns E through W must be empty, except for Columns Q, R, and S; those may optionally have data, but Columns E through P and Columns T through W must be blank.', $record)];
             }
           }
         }
@@ -260,8 +260,8 @@ final class CsvValidator {
 
         // Column M: Track may be blank. The Column J check above already
         // requires uppercase S, C or E whenever a perfected date is present.
-        // Independently, an uppercase G in S requires an uppercase E in M.
-        if (trim($columns[18]) === 'G' && trim($columns[12]) !== 'E') {
+        // Non-appeal rows with G in S require E in M. Appeal rows keep M blank.
+        if ($appeal_received === '' && trim($columns[18]) === 'G' && trim($columns[12]) !== 'E') {
           return [sprintf('CSV record %d: Column M: If Column S contains a G, Column M must contain an E', $record)];
         }
 

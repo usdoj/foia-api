@@ -619,3 +619,8 @@ contribute. No date, track, or disposition filter is applied.
 `FeeWaiverSection` follows expedited processing, emitting both granted and
 denied quantities even when zero. `FW1`, `FW2`, etc. reference components;
 `FW0` references the agency through `FeeWaiverOrganizationAssociation`.
+
+For appeal rows (Column X populated), CSV validation requires E–P and T–W
+to be blank. Q, R, and S may contain expedited-processing data and retain
+their date and dependency checks. Appeal rows are exempt from the rule that
+S = G requires M = E, since M must remain blank on these rows.
