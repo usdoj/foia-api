@@ -690,3 +690,32 @@ each component and the agency total. `PCN1`, `PCN2`, etc. and `PCN0` link to the
 Organization entries through `ProcessingStatisticsOrganizationAssociation`.
 Existing CSV validation rules remain in effect, including the restriction on
 completion dates outside the fiscal year.
+
+## Oldest pending consultations
+
+`OldestPendingRequestAggregator` also supports a consultation-only listing:
+Column C must equal `Y`, Column I must contain a receipt date, and Column K
+must be blank. Working days run from the actual receipt date through September
+30 of the report year, excluding the receipt day, weekends, and the shared
+federal holidays. Dates before the fiscal year are not clamped.
+
+`OldestPendingConsultationSection` follows processed consultations and uses
+`OPC1`, `OPC2`, etc. and agency `OPC0` with the usual Organization associations.
+Each listing retains at most ten items, ordered by pending working days
+(descending), then receipt date (ascending). Duplicate dates remain separate
+items. Empty components retain an empty `OldestPendingItems` entry; fewer than
+ten items are emitted when fewer qualify. Only ten items per component and
+ten agency-wide are retained in memory.
+
+## Processed request comparison
+
+`ProcessedRequestComparisonSection` reuses the existing request statistics:
+Column I within the fiscal year supplies `ItemsReceivedCurrentYearQuantity`,
+and Column K within the fiscal year supplies `ItemsProcessedCurrentYearQuantity`.
+October 1 and September 30 are included. Both last-year quantities are `0`.
+No additional CSV pass is needed.
+
+Each component and the agency have a `ProcessingComparison`, including zero
+counts, with `PRC1`, `PRC2`, etc. and `PRC0` linked to Organization entries via
+`ProcessingComparisonOrganizationAssociation`. Agency quantities are the sums
+of component quantities.

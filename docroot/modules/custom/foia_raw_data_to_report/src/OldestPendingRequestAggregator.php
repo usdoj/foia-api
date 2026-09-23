@@ -14,11 +14,13 @@ final class OldestPendingRequestAggregator {
    *   Component/file pairs, each with component_id and uri keys.
    * @param int $fiscal_year
    *   The validated report year.
+   * @param bool $consultations_only
+   *   Whether to include only rows with Column C equal to Y.
    *
    * @return array
    *   Component and overall lists with receipt_date and pending_days entries.
    */
-  public function aggregate(array $sources, int $fiscal_year): array {
+  public function aggregate(array $sources, int $fiscal_year, bool $consultations_only = FALSE): array {
     $end = new \DateTimeImmutable($fiscal_year . '-09-30', new \DateTimeZone('UTC'));
     $working_days = new WorkingDays();
     $components = [];
@@ -43,6 +45,10 @@ final class OldestPendingRequestAggregator {
           }
           if ($header) {
             $header = FALSE;
+            continue;
+          }
+          // Consultation listings include only rows marked Y in Column C.
+          if ($consultations_only && trim($columns[2]) !== 'Y') {
             continue;
           }
           // Pending requests have a received date and no completed date.
