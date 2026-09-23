@@ -631,3 +631,16 @@ S = G requires M = E, since M must remain blank on these rows.
 the agency receive all six personnel/staffing/cost fields with literal `N/A`,
 since the CSV has no source data for these values. `PC1`, `PC2`, etc. link to
 component organizations; `PC0` links to the agency. No CSV pass is needed.
+
+## Fees collected
+
+`FeesCollectedAggregator` sums Column W across all rows without track, outcome,
+or date filters. Blank cells contribute zero. Plain decimal amounts with up
+to two decimal places (and optional sign) are summed as integer cents to avoid
+floating-point drift. Unsupported formats and overflow produce contextual
+exceptions rather than silently dropping or rounding data.
+
+`FeesCollectedSection` follows personnel and cost. Each component and the agency
+receive a two-decimal `FeesCollectedAmount`, including zero, and a fixed
+`FeesCollectedCostPercent` of `0.0000`. `FC1`, `FC2`, etc. and agency `FC0`
+use the usual Organization associations.

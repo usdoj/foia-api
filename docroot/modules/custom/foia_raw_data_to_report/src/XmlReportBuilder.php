@@ -73,11 +73,13 @@ final class XmlReportBuilder {
    *   Component and agency counters from ExpeditedProcessingAggregator.
    * @param array $fee_waivers
    *   Component and agency counters from FeeWaiverAggregator.
+   * @param array $fees_collected
+   *   Component and agency totals in cents from FeesCollectedAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = [], array $pending_perfected_requests = [], array $oldest_pending_requests = [], array $expedited_processing = [], array $fee_waivers = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = [], array $pending_perfected_requests = [], array $oldest_pending_requests = [], array $expedited_processing = [], array $fee_waivers = [], array $fees_collected = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -194,6 +196,10 @@ final class XmlReportBuilder {
     }
 
     $this->addPersonnelAndCost($document, $root, $component_map);
+
+    if ($fees_collected !== []) {
+      $this->addFeesCollected($document, $root, $fees_collected, $component_map);
+    }
 
     $xml = $document->saveXML();
     if ($xml === FALSE) {
@@ -680,6 +686,34 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'PersonnelAndCostOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PC' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds exact fee totals and the unavailable cost percentage placeholder.
+   */
+  private function addFeesCollected(\DOMDocument $document, \DOMElement $root, array $fees, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'FeesCollectedSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $fees['components'][$component_id];
+    }
+    $organizations['ORG0'] = $fees['overall'];
+    foreach ($organizations as $organization_id => $cents) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'FeesCollected');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'FC' . substr($organization_id, 3));
+      // Format integer cents without converting the total to floating point.
+      $absolute = abs($cents);
+      $amount = ($cents < 0 ? '-' : '') . intdiv($absolute, 100) . '.' . str_pad((string) ($absolute % 100), 2, '0', STR_PAD_LEFT);
+      $this->addTextElement($document, $entry, 'foia', 'FeesCollectedAmount', $amount);
+      $this->addTextElement($document, $entry, 'foia', 'FeesCollectedCostPercent', '0.0000');
+    }
+    foreach ($organizations as $organization_id => $cents) {
+      $association = $this->addTextElement($document, $section, 'foia', 'FeesCollectedOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'FC' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
