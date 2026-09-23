@@ -201,6 +201,8 @@ final class XmlReportBuilder {
       $this->addFeesCollected($document, $root, $fees_collected, $component_map);
     }
 
+    $this->addSubsectionUsed($document, $root, $component_map);
+
     $xml = $document->saveXML();
     if ($xml === FALSE) {
       throw new \RuntimeException('Unable to serialize the raw data report XML.');
@@ -714,6 +716,27 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'FeesCollectedOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'FC' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds zero subsection-use placeholders because CSVs lack this information.
+   */
+  private function addSubsectionUsed(\DOMDocument $document, \DOMElement $root, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'SubsectionUsedSection');
+    $organizations = array_values($component_map);
+    $organizations[] = 'ORG0';
+    foreach ($organizations as $organization_id) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'SubsectionUsed');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'SU' . substr($organization_id, 3));
+      $this->addTextElement($document, $entry, 'foia', 'TimesUsedQuantity', '0');
+    }
+    foreach ($organizations as $organization_id) {
+      $association = $this->addTextElement($document, $section, 'foia', 'SubsectionUsedOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'SU' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

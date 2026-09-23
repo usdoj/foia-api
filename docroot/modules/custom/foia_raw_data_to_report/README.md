@@ -644,3 +644,11 @@ exceptions rather than silently dropping or rounding data.
 receive a two-decimal `FeesCollectedAmount`, including zero, and a fixed
 `FeesCollectedCostPercent` of `0.0000`. `FC1`, `FC2`, etc. and agency `FC0`
 use the usual Organization associations.
+
+## Subsection use placeholders
+
+`SubsectionUsedSection` follows fees collected. Every uploaded component and
+the agency receive a `SubsectionUsed` entry with `TimesUsedQuantity` set to
+`0`, since CSVs do not provide this information. `SU1`, `SU2`, etc. and agency
+`SU0` link to Organization entries through `SubsectionUsedOrganizationAssociation`.
+No additional CSV pass is needed.
