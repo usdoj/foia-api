@@ -652,3 +652,11 @@ the agency receive a `SubsectionUsed` entry with `TimesUsedQuantity` set to
 `0`, since CSVs do not provide this information. `SU1`, `SU2`, etc. and agency
 `SU0` link to Organization entries through `SubsectionUsedOrganizationAssociation`.
 No additional CSV pass is needed.
+
+## Subsection posting placeholders
+
+`SubsectionPostSection` follows subsection use. Every uploaded component and
+the agency receive a `Subsection` entry with `PostedbyFOIAQuantity` and
+`PostedbyProgramQuantity` both set to `0`. `SP1`, `SP2`, etc. and agency `SP0`
+link to Organization entries through `SubsectionPostOrganizationAssociation`.
+These placeholders require no additional CSV processing.

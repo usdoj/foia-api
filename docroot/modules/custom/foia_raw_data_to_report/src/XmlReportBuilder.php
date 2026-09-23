@@ -202,6 +202,7 @@ final class XmlReportBuilder {
     }
 
     $this->addSubsectionUsed($document, $root, $component_map);
+    $this->addSubsectionPost($document, $root, $component_map);
 
     $xml = $document->saveXML();
     if ($xml === FALSE) {
@@ -737,6 +738,28 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'SubsectionUsedOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'SU' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds zero subsection-post placeholders because CSVs lack this information.
+   */
+  private function addSubsectionPost(\DOMDocument $document, \DOMElement $root, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'SubsectionPostSection');
+    $organizations = array_values($component_map);
+    $organizations[] = 'ORG0';
+    foreach ($organizations as $organization_id) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'Subsection');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'SP' . substr($organization_id, 3));
+      $this->addTextElement($document, $entry, 'foia', 'PostedbyFOIAQuantity', '0');
+      $this->addTextElement($document, $entry, 'foia', 'PostedbyProgramQuantity', '0');
+    }
+    foreach ($organizations as $organization_id) {
+      $association = $this->addTextElement($document, $section, 'foia', 'SubsectionPostOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'SP' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
