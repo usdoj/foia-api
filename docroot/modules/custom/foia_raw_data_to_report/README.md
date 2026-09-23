@@ -676,3 +676,17 @@ and associates `BK1`, `BK2`, etc. and agency `BK0` with Organization entries.
 Agency counts sum component counts. Appeal response-time summaries now also
 use working days, retaining their existing fiscal-start clamp and year-end
 fallback; backlog intervals use the full X-to-Y interval specified above.
+
+## Processed consultations
+
+`ConsultationStatisticsAggregator` streams rows with Column C equal to `Y`.
+Column I before October 1 counts as pending at start; October 1 through
+September 30 (inclusive) counts as received. Column K within those inclusive
+boundaries counts as processed; blank K or K after September 30 counts as
+pending at end. Blank I contributes to neither receipt-date counter.
+
+`ProcessedConsultationSection` emits all four counters, including zeros, for
+each component and the agency total. `PCN1`, `PCN2`, etc. and `PCN0` link to the
+Organization entries through `ProcessingStatisticsOrganizationAssociation`.
+Existing CSV validation rules remain in effect, including the restriction on
+completion dates outside the fiscal year.
