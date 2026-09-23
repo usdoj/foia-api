@@ -478,8 +478,8 @@ Date Received are excluded; a closed date without a received date is rejected.
 The start is the later of Appeal Date Received and October 1 of the previous
 year. The end is Appeal Date Closed, or September 30 of the report year when
 Y is blank.
-Elapsed calendar days exclude the starting day and include the ending day;
-same-day completion is zero. Weekends and holidays count.
+Elapsed working days exclude the starting day and include the ending day;
+same-day completion is zero. Weekends and federal holidays do not count.
 
 Day-frequency maps keep memory independent of the number of rows. They yield
 the exact median (averaging the middle pair for even counts), average rounded
@@ -497,7 +497,7 @@ blank Column Y. It retains only the ten earliest received dates per component
 and the ten earliest across the agency. Repeated dates remain separate items;
 fewer than ten pending appeals produce only the items available.
 
-Pending days are elapsed calendar days from the actual received date through
+Pending days are elapsed working days from the actual received date through
 September 30 of the report year, without clamping to the fiscal-year start.
 Same-day receipt is zero days. XML receipt dates use `YYYY-MM-DD`.
 `OldestPendingAppealSection` follows the appeal response times, with `OPA1`,
@@ -596,7 +596,7 @@ by descending pending days, then ascending receipt date for ties. Duplicate
 rows remain separate entries. Empty components retain their empty container
 and association. `OldestPendingRequestSection` follows pending perfected
 requests, with ISO receipt dates and `OPR1`, `OPR2`, etc.; `OPR0` is the agency.
-The existing oldest-appeal section continues using calendar days.
+The oldest-appeal section also uses the shared working-day calendar.
 
 ## Expedited processing
 
@@ -660,3 +660,18 @@ the agency receive a `Subsection` entry with `PostedbyFOIAQuantity` and
 `PostedbyProgramQuantity` both set to `0`. `SP1`, `SP2`, etc. and agency `SP0`
 link to Organization entries through `SubsectionPostOrganizationAssociation`.
 These placeholders require no additional CSV processing.
+
+## Backlog
+
+`BacklogAggregator` counts rows whose request or appeal interval exceeds twenty
+working days (exactly twenty does not qualify). Requests use J, falling back
+to I, through K; appeals use X through Y. Open rows use September 30 of the
+report year. Actual start dates are retained, including prior fiscal years.
+No track or disposition filter applies. Rows with no start or end dates for
+an item are skipped; a closing date without a start produces an error.
+
+`BacklogSection` follows subsection posting, emits both counts including zeros,
+and associates `BK1`, `BK2`, etc. and agency `BK0` with Organization entries.
+Agency counts sum component counts. Appeal response-time summaries now also
+use working days, retaining their existing fiscal-start clamp and year-end
+fallback; backlog intervals use the full X-to-Y interval specified above.
