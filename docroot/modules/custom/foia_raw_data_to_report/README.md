@@ -624,3 +624,10 @@ For appeal rows (Column X populated), CSV validation requires E–P and T–W
 to be blank. Q, R, and S may contain expedited-processing data and retain
 their date and dependency checks. Appeal rows are exempt from the rule that
 S = G requires M = E, since M must remain blank on these rows.
+
+## Personnel and cost placeholders
+
+`PersonnelAndCostSection` follows fee waivers. Every uploaded component and
+the agency receive all six personnel/staffing/cost fields with literal `N/A`,
+since the CSV has no source data for these values. `PC1`, `PC2`, etc. link to
+component organizations; `PC0` links to the agency. No CSV pass is needed.

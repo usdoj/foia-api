@@ -193,6 +193,8 @@ final class XmlReportBuilder {
       $this->addFeeWaivers($document, $root, $fee_waivers, $component_map);
     }
 
+    $this->addPersonnelAndCost($document, $root, $component_map);
+
     $xml = $document->saveXML();
     if ($xml === FALSE) {
       throw new \RuntimeException('Unable to serialize the raw data report XML.');
@@ -647,6 +649,37 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'FeeWaiverOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'FW' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds personnel and cost placeholders because CSVs lack these values.
+   */
+  private function addPersonnelAndCost(\DOMDocument $document, \DOMElement $root, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'PersonnelAndCostSection');
+    $organizations = array_values($component_map);
+    $organizations[] = 'ORG0';
+    $fields = [
+      'FullTimeEmployeeQuantity',
+      'EquivalentFullTimeEmployeeQuantity',
+      'TotalFullTimeStaffQuantity',
+      'ProcessingCostAmount',
+      'LitigationCostAmount',
+      'TotalCostAmount',
+    ];
+    foreach ($organizations as $organization_id) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'PersonnelAndCost');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PC' . substr($organization_id, 3));
+      foreach ($fields as $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, 'N/A');
+      }
+    }
+    foreach ($organizations as $organization_id) {
+      $association = $this->addTextElement($document, $section, 'foia', 'PersonnelAndCostOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PC' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
