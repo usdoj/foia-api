@@ -663,8 +663,9 @@ These placeholders require no additional CSV processing.
 
 ## Backlog
 
-`BacklogAggregator` counts rows whose request or appeal interval exceeds twenty
-working days (exactly twenty does not qualify). Requests use J, falling back
+`BacklogAggregator` counts rows whose request or appeal interval exceeds the
+working days allowed in Column D (exactly that many days does not qualify).
+Rows with blank Days Allowed are excluded from both counts. Requests use J, falling back
 to I, through K; appeals use X through Y. Open rows use September 30 of the
 report year. Actual start dates are retained, including prior fiscal years.
 No track or disposition filter applies. Rows with no start or end dates for

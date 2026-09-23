@@ -3,7 +3,7 @@
 namespace Drupal\foia_raw_data_to_report;
 
 /**
- * Streams requests and appeals into counts exceeding twenty working days.
+ * Counts requests and appeals exceeding their allowed working days.
  */
 final class BacklogAggregator {
 
@@ -46,6 +46,15 @@ final class BacklogAggregator {
             continue;
           }
           $context = sprintf('Component %s, CSV %s, record %d', $id, basename($source['uri']), $record);
+          // Column D supplies the threshold for both requests and appeals.
+          // Consultations leave Days Allowed blank and are excluded.
+          $days_allowed = trim($columns[3]);
+          if ($days_allowed === '') {
+            continue;
+          }
+          if (!in_array($days_allowed, ['20', '30'], TRUE)) {
+            throw new \RuntimeException($context . ': Column D: Expected Days Allowed to be 20 or 30.');
+          }
           // Request age starts at J, falling back to I, without track filters.
           $perfected = trim($columns[9]);
           $request_start = $perfected !== '' ? $perfected : trim($columns[8]);
@@ -68,7 +77,7 @@ final class BacklogAggregator {
               throw new \RuntimeException($context . ': End date cannot precede start date for ' . $kind . '.');
             }
             // Use actual receipt dates, including time before the fiscal year.
-            if ($working_days->count($start, $end) > 20) {
+            if ($working_days->count($start, $end) > (int) $days_allowed) {
               $components[$id][$kind]++;
             }
           }
