@@ -738,3 +738,12 @@ component and the agency have a `ProcessingComparison`, including zero counts,
 with `APC1`, `APC2`, etc. and `APC0` linked to Organization entries through
 `ProcessingComparisonOrganizationAssociation`. No additional CSV pass is
 needed; the request and appeal comparisons share the same XML formatter.
+
+## Backlogged appeal comparison
+
+`BackloggedAppealComparisonSection` reuses `BackloggedAppealQuantity` from
+`BacklogSection` for its current-year count and emits `0` for last year.
+Every component and the agency have a `BacklogComparison`, including zeros,
+with `ABC1`, `ABC2`, etc. and `ABC0` linked to Organization entries through
+`BacklogComparisonOrganizationAssociation`. Request and appeal backlog
+comparisons share the same XML formatter and need no additional CSV pass.
