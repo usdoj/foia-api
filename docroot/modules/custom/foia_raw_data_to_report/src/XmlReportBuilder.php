@@ -221,7 +221,15 @@ final class XmlReportBuilder {
     }
 
     if ($request_statistics !== []) {
-      $this->addProcessedRequestComparison($document, $root, $request_statistics, $component_map);
+      $this->addProcessingComparison($document, $root, $request_statistics, $component_map, 'ProcessedRequestComparisonSection', 'PRC');
+    }
+
+    if ($backlog !== []) {
+      $this->addBackloggedRequestComparison($document, $root, $backlog, $component_map);
+    }
+
+    if ($appeal_statistics !== []) {
+      $this->addProcessingComparison($document, $root, $appeal_statistics, $component_map, 'ProcessedAppealComparisonSection', 'APC');
     }
 
     $xml = $document->saveXML();
@@ -305,10 +313,10 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds current request counts with zero placeholders for last year's counts.
+   * Adds request or appeal comparisons with zero counts for last year.
    */
-  private function addProcessedRequestComparison(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
-    $section = $this->addTextElement($document, $root, 'foia', 'ProcessedRequestComparisonSection');
+  private function addProcessingComparison(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map, string $section_name, string $prefix): void {
+    $section = $this->addTextElement($document, $root, 'foia', $section_name);
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
       $organizations[$organization_id] = $statistics['components'][$component_id];
@@ -317,8 +325,8 @@ final class XmlReportBuilder {
 
     foreach ($organizations as $organization_id => $counts) {
       $entry = $this->addTextElement($document, $section, 'foia', 'ProcessingComparison');
-      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PRC' . substr($organization_id, 3));
-      // Reuse the inclusive fiscal-year counts from request statistics.
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
+      // Reuse the inclusive fiscal-year counts already aggregated.
       $fields = [
         'ItemsReceivedLastYearQuantity' => 0,
         'ItemsReceivedCurrentYearQuantity' => $counts['received'],
@@ -332,7 +340,34 @@ final class XmlReportBuilder {
     foreach ($organizations as $organization_id => $counts) {
       $association = $this->addTextElement($document, $section, 'foia', 'ProcessingComparisonOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
-      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PRC' . substr($organization_id, 3));
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds request backlog comparisons with zero for the unavailable prior year.
+   */
+  private function addBackloggedRequestComparison(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'BackloggedRequestComparisonSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'BacklogComparison');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'BLR' . substr($organization_id, 3));
+      // Reuse the exact request count emitted in BacklogSection.
+      $this->addTextElement($document, $entry, 'foia', 'BacklogLastYearQuantity', '0');
+      $this->addTextElement($document, $entry, 'foia', 'BacklogCurrentYearQuantity', (string) $counts['requests']);
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'BacklogComparisonOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'BLR' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

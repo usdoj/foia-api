@@ -719,3 +719,22 @@ Each component and the agency have a `ProcessingComparison`, including zero
 counts, with `PRC1`, `PRC2`, etc. and `PRC0` linked to Organization entries via
 `ProcessingComparisonOrganizationAssociation`. Agency quantities are the sums
 of component quantities.
+
+## Backlogged request comparison
+
+`BackloggedRequestComparisonSection` reuses the request counts from
+`BacklogSection` for `BacklogCurrentYearQuantity`. `BacklogLastYearQuantity`
+is always `0`. No additional CSV pass is needed.
+
+Each component and the agency have a `BacklogComparison`, including zero
+counts. `BLR1`, `BLR2`, etc. and agency `BLR0` link to their Organization entries
+through `BacklogComparisonOrganizationAssociation`.
+
+## Processed appeal comparison
+
+`ProcessedAppealComparisonSection` reuses the received and processed counts
+from `ProcessedAppealSection`. Both last-year quantities are `0`. Each
+component and the agency have a `ProcessingComparison`, including zero counts,
+with `APC1`, `APC2`, etc. and `APC0` linked to Organization entries through
+`ProcessingComparisonOrganizationAssociation`. No additional CSV pass is
+needed; the request and appeal comparisons share the same XML formatter.
