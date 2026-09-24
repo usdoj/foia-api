@@ -654,13 +654,14 @@ to four decimal places, including `0.0000` for zero. Exact decimal arithmetic
 avoids floating-point rounding. Column W in the raw request CSV no longer
 supplies this section. Existing FC/ORG links and zero-count entries remain.
 
-## Subsection use placeholders
+## Subsection use
 
-`SubsectionUsedSection` follows fees collected. Every uploaded component and
-the agency receive a `SubsectionUsed` entry with `TimesUsedQuantity` set to
-`0`, since CSVs do not provide this information. `SU1`, `SU2`, etc. and agency
-`SU0` link to Organization entries through `SubsectionUsedOrganizationAssociation`.
-No additional CSV pass is needed.
+`SubsectionUsedSection` uses Column F (Subsection (c) Exclusions) from each
+component's Section IX-XI CSV for `TimesUsedQuantity`. Agency quantities sum
+component quantities with exact integer arithmetic. Zero values remain present.
+`SU1`, `SU2`, etc. and agency `SU0` retain the existing Organization links through
+`SubsectionUsedOrganizationAssociation`. These values are collected in the same
+pass as personnel, cost, and fee totals.
 
 ## Subsection posting placeholders
 
