@@ -234,6 +234,7 @@ field. `field_component_uploads` is an unlimited Paragraphs reference to
 - Required `field_agency_component`, reusing the existing paragraph field storage.
 - Required, single-value `field_request_data_csv`, accepting CSV files only and
   storing them privately.
+- Required, single-value `section_ix_xi_data`, also accepting private CSV files.
 
 A subset of the agency's components is allowed. At least one upload is needed
 for processing; reports can otherwise be saved without uploads. Duplicate
@@ -806,3 +807,14 @@ retries of the same queue item. A successful retry supersedes an unread failure.
 Older queue items without requester metadata still process normally but cannot
 notify a user. Notification storage failures are logged without altering XML
 processing or queue retry behavior.
+
+## Section IX-XI upload
+
+Each component paragraph now requires two single-file private CSV uploads:
+`field_request_data_csv` (help: Component Raw Data Report) and
+`section_ix_xi_data` (help: Section IX-XI Data). The second upload follows the
+same private download access rules, CSV extension restriction, and upload size
+settings as the first. It appears after the original upload on edit and view
+displays. Its presence is required; its contents are not yet validated or used
+in XML generation. Existing paragraphs need the second file when edited.
+Import the field and display configuration before running the updated code.

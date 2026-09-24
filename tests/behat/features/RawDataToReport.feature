@@ -74,7 +74,10 @@ Feature: Raw data XML report action
     And I wait 2 seconds
     And I press the "down" key in the "Agency Component" field
     And I press the "enter" key in the "Agency Component" field
-    And I attach the file "raw-data-valid.csv" to "CSV file"
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_0_subform_field_request_data_csv_0]"
+    And I wait 2 seconds
+    And I wait for AJAX to finish
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_0_subform_section_ix_xi_data_0]"
     And I wait 2 seconds
     And I wait for AJAX to finish
     And I press "Save"
@@ -86,6 +89,9 @@ Feature: Raw data XML report action
     And I press "Add Component CSV upload"
     And I fill in "field_component_uploads[1][subform][field_agency_component][0][target_id]" with "Upload Fixture Component"
     And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_1_subform_field_request_data_csv_0]"
+    And I wait 2 seconds
+    And I wait for AJAX to finish
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_1_subform_section_ix_xi_data_0]"
     And I wait 2 seconds
     And I wait for AJAX to finish
     And I press "Save"
@@ -114,7 +120,10 @@ Feature: Raw data XML report action
     And I press the "tab" key in the "Agency" field
     And I wait for AJAX to finish
     And I fill in "Agency Component" with "New Report Component"
-    And I attach the file "raw-data-valid.csv" to "CSV file"
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_0_subform_field_request_data_csv_0]"
+    And I wait 2 seconds
+    And I wait for AJAX to finish
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_0_subform_section_ix_xi_data_0]"
     And I wait 2 seconds
     And I wait for AJAX to finish
     And I press "Save"

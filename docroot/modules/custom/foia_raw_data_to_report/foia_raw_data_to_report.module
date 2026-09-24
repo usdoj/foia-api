@@ -61,11 +61,12 @@ function foia_raw_data_to_report_file_access(FileInterface $file, $operation, Ac
   $access = AccessResult::neutral()->cachePerUser()->addCacheableDependency($file);
   $is_report_file = FALSE;
   $report_fields = ['field_request_data_csv', 'field_request_data_xml'];
+  $upload_fields = ['field_request_data_csv', 'section_ix_xi_data'];
   foreach ($resolver->getReferences($file) as $usage) {
     $entity = $resolver->loadEntityFromUsage($usage);
     $node = $entity;
     $parent_field = $usage->fieldName;
-    if ($entity instanceof ParagraphInterface && $entity->bundle() === 'raw_data_component_upload' && $usage->fieldName === 'field_request_data_csv') {
+    if ($entity instanceof ParagraphInterface && $entity->bundle() === 'raw_data_component_upload' && in_array($usage->fieldName, $upload_fields, TRUE)) {
       $is_report_file = TRUE;
       $access->addCacheableDependency($entity);
       $node = $entity->getParentEntity();

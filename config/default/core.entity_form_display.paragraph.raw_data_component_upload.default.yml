@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.raw_data_component_upload.field_agency_component
     - field.field.paragraph.raw_data_component_upload.field_request_data_csv
+    - field.field.paragraph.raw_data_component_upload.section_ix_xi_data
     - paragraphs.paragraphs_type.raw_data_component_upload
   module:
     - file
@@ -26,6 +27,13 @@ content:
   field_request_data_csv:
     type: file_generic
     weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  section_ix_xi_data:
+    type: file_generic
+    weight: 2
     region: content
     settings:
       progress_indicator: throbber

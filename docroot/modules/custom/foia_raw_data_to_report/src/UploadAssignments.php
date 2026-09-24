@@ -35,6 +35,9 @@ final class UploadAssignments {
         }
         $seen[$component->id()] = TRUE;
       }
+      if ($upload->get('section_ix_xi_data')->isEmpty()) {
+        $errors[$delta][] = 'Upload a Section IX-XI CSV file for this Agency Component.';
+      }
       if ($upload->get('field_request_data_csv')->isEmpty()) {
         $errors[$delta][] = 'Upload a CSV file for this Agency Component.';
       }

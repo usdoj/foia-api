@@ -34,6 +34,7 @@ $agencies = [];
 $components = [];
 $paragraphs = [];
 $files = [];
+$section_files = [];
 $report = NULL;
 $notification_store = NULL;
 $suffix = bin2hex(random_bytes(6));
@@ -76,6 +77,12 @@ try {
     ]);
     $paragraphs[] = $paragraph;
   }
+  foreach ($paragraphs as $delta => $paragraph) {
+    $section_file = \Drupal::service('file.repository')->writeData('Section IX-XI fixture', "private://section-check-$suffix-$delta.csv");
+    $section_file->setOwnerId($manager->id())->save();
+    $section_files[] = $section_file;
+    $paragraph->set('section_ix_xi_data', $section_file->id());
+  }
   $report = Node::create([
     'type' => 'raw_data_to_report',
     'title' => "CSV report $suffix",
@@ -110,6 +117,14 @@ try {
     $check(str_contains($message, $file->getFilename()), 'Messages must identify each filename.');
   }
   $check($report->get('field_request_data_xml')->isEmpty(), 'Invalid input generated XML.');
+
+  // The additional upload is required independently of its future contents.
+  $first_upload = $report->get('field_component_uploads')->get(0)->entity;
+  $section_id = $first_upload->get('section_ix_xi_data')->target_id;
+  $first_upload->set('section_ix_xi_data', []);
+  $check(count($first_upload->get('section_ix_xi_data')->validate()) > 0, 'Section IX-XI field was not required.');
+  $check(isset(UploadAssignments::validate($report)[0]), 'Missing Section IX-XI upload passed assignment validation.');
+  $first_upload->set('section_ix_xi_data', $section_id);
 
   // Entity validation and queue processing must reject bad assignments.
   $second = $report->get('field_component_uploads')->get(1)->entity;
@@ -194,7 +209,7 @@ try {
   foreach ([new AnonymousUserSession(), $manager] as $account) {
     $switcher->switchTo($account);
     try {
-      foreach ($files as $file) {
+      foreach (array_merge($files, $section_files) as $file) {
         try {
           $response = $controller->download(new Request(['file' => substr($file->getFileUri(), 10)]));
           $check(!$account->isAnonymous() && $response->getStatusCode() === 200, 'Anonymous download allowed.');
@@ -284,7 +299,7 @@ finally {
   foreach (array_reverse($entities) as $entity) {
     $entity->delete();
   }
-  foreach ($files as $file) {
+  foreach (array_merge($files, $section_files) as $file) {
     if ($stored = File::load($file->id())) {
       $stored->delete();
     }

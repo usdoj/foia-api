@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.raw_data_component_upload.field_agency_component
     - field.field.paragraph.raw_data_component_upload.field_request_data_csv
+    - field.field.paragraph.raw_data_component_upload.section_ix_xi_data
     - paragraphs.paragraphs_type.raw_data_component_upload
   module:
     - file
@@ -28,6 +29,14 @@ content:
       use_description_as_link_text: false
     third_party_settings: {  }
     weight: 1
+    region: content
+  section_ix_xi_data:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: false
+    third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   search_api_excerpt: true
