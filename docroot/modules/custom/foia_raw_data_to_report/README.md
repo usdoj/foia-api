@@ -93,8 +93,14 @@ data records are checked. Blank records are skipped; quoted commas, escaped
 quotes, and multiline values are supported. Record numbers include the header
 and blank records and are not physical line numbers for multiline CSVs.
 
-The first validation error produces a human-readable message identifying the
-CSV record. Column-count errors include the expected and actual counts. Missing, unreadable, empty, and non-CSV uploads also
+Validation scans the entire CSV and collects all applicable errors, including
+multiple errors on the same record. Each message identifies its CSV record.
+Duplicate messages within a record are listed once. Column-count errors include
+the expected and actual counts; other checks on that malformed record are
+skipped, but later records are still checked. Invalid dates are reported without
+running dependent date calculations. CSV rows are streamed; accumulated error
+messages and seen request numbers consume memory in proportion to their count.
+Missing, unreadable, empty, and non-CSV uploads also
 produce messages. Validation failures finish the queue item without generating
 XML or changing any existing XML attachment. Correct the CSV and click Generate
 XML Report again to retry. Each upload result identifies its component and filename,

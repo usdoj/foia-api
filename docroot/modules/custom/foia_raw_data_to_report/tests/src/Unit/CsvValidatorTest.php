@@ -61,7 +61,7 @@ class CsvValidatorTest extends UnitTestCase {
   public function testExpeditedReceivedDependency(): void {
     $header = implode(',', array_fill(0, 29, 'column')) . "\n";
     foreach ([
-      [17 => '01/03/2026'],
+      [17 => '01/03/2026', 18 => 'D'],
       [18 => 'D'],
       [16 => '  ', 17 => '01/03/2026', 18 => 'D'],
     ] as $overrides) {
@@ -95,8 +95,8 @@ class CsvValidatorTest extends UnitTestCase {
       $overrides = [8 => '', 23 => '01/02/2026'];
       // Zero is data too, even though PHP treats it as an empty value.
       $overrides[$column] = '0';
-      $this->assertSame(
-        ['CSV record 2: If there is data in Column X, Columns E through W must be empty, except for Columns Q, R, and S; those may optionally have data, but Columns E through P and Columns T through W must be blank.'],
+      $this->assertContains(
+        'CSV record 2: If there is data in Column X, Columns E through W must be empty, except for Columns Q, R, and S; those may optionally have data, but Columns E through P and Columns T through W must be blank.',
         $this->validateContents($header . $this->csvRow($overrides)),
         'Column index ' . $column,
       );
@@ -191,6 +191,65 @@ class CsvValidatorTest extends UnitTestCase {
     $header = implode(',', array_fill(0, 29, 'column'));
     $errors = $this->validateContents($header . "\n\n" . $header . ',');
     $this->assertStringContainsString('record 3 has 30 columns; expected 29', $errors[0]);
+  }
+
+  /**
+   * Collects multiple failures per row and checks duplicates after errors.
+   */
+  public function testCollectsAllErrors(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    $first = $this->csvRow([0 => '', 3 => '10']);
+    $second = $this->csvRow([0 => '', 16 => '', 18 => 'D']);
+    $this->assertSame([
+      'CSV record 2: Column A: Component cannot be blank',
+      'CSV record 2: Column D: Must complete Days Allowed with 20 or 30',
+      'CSV record 3: Column A: Component cannot be blank',
+      'CSV record 3: Column B: Request Number is duplicate',
+      'CSV record 3: Column Q: Column Q must contain value if there is value in either Columns R or S',
+    ], $this->validateContents($header . $first . $second));
+  }
+
+  /**
+   * A malformed header or row must not suppress validation of later rows.
+   */
+  public function testContinuesAfterMalformedRecords(): void {
+    $contents = "bad,header\nshort,row\n" . $this->csvRow([0 => '']);
+    $errors = $this->validateContents($contents);
+    $this->assertCount(3, $errors);
+    $this->assertStringContainsString('record 1 has 2 columns', $errors[0]);
+    $this->assertStringContainsString('record 2 has 2 columns', $errors[1]);
+    $this->assertSame('CSV record 3: Column A: Component cannot be blank', $errors[2]);
+  }
+
+  /**
+   * Invalid dates cannot cause calculations or leak dates between rows.
+   */
+  public function testInvalidDatesDoNotPreventOtherChecks(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    $valid = $this->csvRow([9 => '01/02/2026', 12 => 'S']);
+    $invalid = $this->csvRow([
+      1 => 'Request 2',
+      8 => 'bad',
+      9 => 'bad',
+      10 => 'bad',
+      11 => '1',
+      12 => 'S',
+      13 => '1',
+      16 => 'bad',
+      17 => 'bad',
+      18 => 'D',
+      19 => 'bad',
+      20 => 'bad',
+      21 => 'D',
+    ]);
+    $later = $this->csvRow([1 => 'Request 3', 0 => '']);
+    $errors = $this->validateContents($header . $valid . $invalid . $later);
+    $this->assertCount(8, $errors);
+    foreach (array_slice($errors, 0, 7) as $error) {
+      $this->assertStringContainsString('CSV record 3:', $error);
+      $this->assertStringContainsString('must be a valid date', $error);
+    }
+    $this->assertSame('CSV record 4: Column A: Component cannot be blank', $errors[7]);
   }
 
   /**

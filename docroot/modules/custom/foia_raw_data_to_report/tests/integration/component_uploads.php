@@ -92,9 +92,12 @@ try {
     $worker->processItem(['nid' => (int) $report->id()]);
     return $node_storage->loadUnchanged($report->id());
   };
+  // Multiple failures in one upload must all reach the persisted messages.
+  file_put_contents($files[1]->getFileUri(), "\nshort,row", FILE_APPEND);
   $report = $process();
   $message = $report->get('field_messages')->value;
   $check(str_contains($message, 'CSV validated.') && str_contains($message, '28 columns'), 'All files must be checked, with per-file results.');
+  $check(str_contains($message, 'CSV record 1 has 28 columns') && str_contains($message, 'CSV record 2 has 2 columns'), 'Messages lost errors from later records.');
   foreach ($files as $file) {
     $check(str_contains($message, $file->getFilename()), 'Messages must identify each filename.');
   }
