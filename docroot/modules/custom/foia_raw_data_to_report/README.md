@@ -644,16 +644,15 @@ agency `PC0` link to Organization entries through
 
 ## Fees collected
 
-`FeesCollectedAggregator` sums Column W across all rows without track, outcome,
-or date filters. Blank cells contribute zero. Plain decimal amounts with up
-to two decimal places (and optional sign) are summed as integer cents to avoid
-floating-point drift. Unsupported formats and overflow produce contextual
-exceptions rather than silently dropping or rounding data.
-
-`FeesCollectedSection` follows personnel and cost. Each component and the agency
-receive a two-decimal `FeesCollectedAmount`, including zero, and a fixed
-`FeesCollectedCostPercent` of `0.0000`. `FC1`, `FC2`, etc. and agency `FC0`
-use the usual Organization associations.
+`FeesCollectedAggregator` uses Section IX-XI Column E for each component's
+fees, with agency fees summed across components. `FeesCollectedCostPercent`
+is fees divided by the matching `TotalCostAmount` from personnel and cost,
+rounded half-up to four decimal places without multiplying by 100. The agency
+ratio uses total agency fees divided by total agency costs. A zero total cost
+produces `0.0000`, even when fees are nonzero. Fee amounts are also formatted
+to four decimal places, including `0.0000` for zero. Exact decimal arithmetic
+avoids floating-point rounding. Column W in the raw request CSV no longer
+supplies this section. Existing FC/ORG links and zero-count entries remain.
 
 ## Subsection use placeholders
 

@@ -793,7 +793,7 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds exact fee totals and the unavailable cost percentage placeholder.
+   * Adds Section IX-XI fee totals and their ratios to total costs.
    */
   private function addFeesCollected(\DOMDocument $document, \DOMElement $root, array $fees, array $component_map): void {
     $section = $this->addTextElement($document, $root, 'foia', 'FeesCollectedSection');
@@ -802,16 +802,13 @@ final class XmlReportBuilder {
       $organizations[$organization_id] = $fees['components'][$component_id];
     }
     $organizations['ORG0'] = $fees['overall'];
-    foreach ($organizations as $organization_id => $cents) {
+    foreach ($organizations as $organization_id => $values) {
       $entry = $this->addTextElement($document, $section, 'foia', 'FeesCollected');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'FC' . substr($organization_id, 3));
-      // Format integer cents without converting the total to floating point.
-      $absolute = abs($cents);
-      $amount = ($cents < 0 ? '-' : '') . intdiv($absolute, 100) . '.' . str_pad((string) ($absolute % 100), 2, '0', STR_PAD_LEFT);
-      $this->addTextElement($document, $entry, 'foia', 'FeesCollectedAmount', $amount);
-      $this->addTextElement($document, $entry, 'foia', 'FeesCollectedCostPercent', '0.0000');
+      $this->addTextElement($document, $entry, 'foia', 'FeesCollectedAmount', $values['amount']);
+      $this->addTextElement($document, $entry, 'foia', 'FeesCollectedCostPercent', $values['ratio']);
     }
-    foreach ($organizations as $organization_id => $cents) {
+    foreach ($organizations as $organization_id => $values) {
       $association = $this->addTextElement($document, $section, 'foia', 'FeesCollectedOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'FC' . substr($organization_id, 3));

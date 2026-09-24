@@ -235,11 +235,11 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $oldest_pending_requests = (new OldestPendingRequestAggregator())->aggregate($sources, $fiscal_year);
     $expedited_processing = (new ExpeditedProcessingAggregator())->aggregate($sources);
     $fee_waivers = (new FeeWaiverAggregator())->aggregate($sources);
-    $fees_collected = (new FeesCollectedAggregator())->aggregate($sources);
     $backlog = (new BacklogAggregator())->aggregate($sources, $fiscal_year);
     $consultation_statistics = (new ConsultationStatisticsAggregator())->aggregate($sources, $fiscal_year);
     $oldest_pending_consultations = (new OldestPendingRequestAggregator())->aggregate($sources, $fiscal_year, TRUE);
     $personnel_and_cost = (new PersonnelAndCostAggregator())->aggregate($section_sources);
+    $fees_collected = (new FeesCollectedAggregator())->aggregate($personnel_and_cost);
     $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals, $processed_response_times, $information_granted_response_times, $simple_response_increments, $complex_response_increments, $expedited_response_increments, $pending_perfected_requests, $oldest_pending_requests, $expedited_processing, $fee_waivers, $fees_collected, $backlog, $consultation_statistics, $oldest_pending_consultations, $personnel_and_cost);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;

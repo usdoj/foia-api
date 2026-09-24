@@ -79,7 +79,8 @@ try {
     $paragraphs[] = $paragraph;
   }
   foreach ($paragraphs as $delta => $paragraph) {
-    $section_file = \Drupal::service('file.repository')->writeData(implode(',', SectionDataCsvValidator::HEADERS) . "\n39,1.85,7164103,1918485,0,0,145,823", "private://section-check-$suffix-$delta.csv");
+    $section_fees = $delta === 0 ? '908259' : '1816518';
+    $section_file = \Drupal::service('file.repository')->writeData(implode(',', SectionDataCsvValidator::HEADERS) . "\n39,1.85,7164103,1918485,$section_fees,0,145,823", "private://section-check-$suffix-$delta.csv");
     $section_file->setOwnerId($manager->id())->save();
     $section_files[] = $section_file;
     $paragraph->set('section_ix_xi_data', $section_file->id());
@@ -187,6 +188,16 @@ try {
     }
   }
 
+  $expected_fees = [
+    1 => ['908259.0000', '0.1000'],
+    2 => ['1816518.0000', '0.2000'],
+    0 => ['2724777.0000', '0.1500'],
+  ];
+  foreach ($expected_fees as $id => [$amount, $ratio]) {
+    $base = '//foia:FeesCollected[@s:id="FC' . $id . '"]';
+    $check($xpath->evaluate('string(' . $base . '/foia:FeesCollectedAmount)') === $amount, 'Incorrect Section IX-XI fees.');
+    $check($xpath->evaluate('string(' . $base . '/foia:FeesCollectedCostPercent)') === $ratio, 'Incorrect fee/cost ratio.');
+  }
   $check(substr_count($report->get('field_messages')->value, 'CSV validated.') === 4, 'Successful retry did not replace earlier messages.');
   // An aggregation exception must append to validation messages and retain XML.
   $row = array_fill(0, 29, '');
