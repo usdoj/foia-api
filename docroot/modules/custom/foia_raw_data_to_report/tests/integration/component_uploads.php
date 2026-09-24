@@ -9,6 +9,7 @@ use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
+use Drupal\foia_raw_data_to_report\RequestStatisticsAggregator;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\system\FileDownloadController;
@@ -138,13 +139,22 @@ try {
   $row[23] = '01/02/2026';
   $contents = implode(',', array_fill(0, 29, 'column')) . "\n" . implode(',', $row);
   file_put_contents($files[1]->getFileUri(), $contents);
+  // Appeal-only rows must not count as initial requests or pending requests.
+  $counts = (new RequestStatisticsAggregator())->aggregate([
+    ['component_id' => $components[1]->id(), 'uri' => $files[1]->getFileUri()],
+  ], 2026);
+  $check($counts['overall'] === ['pending_start' => 0, 'received' => 0, 'processed' => 0, 'pending_end' => 0], 'Appeal-only row contributed to request statistics.');
+  // Invalid appeal dates still exercise post-validation exception reporting.
+  $row[23] = 'invalid-date';
+  $contents = implode(',', array_fill(0, 29, 'column')) . "\n" . implode(',', $row);
+  file_put_contents($files[1]->getFileUri(), $contents);
   for ($attempt = 0; $attempt < 2; $attempt++) {
     try {
       $process();
-      throw new LogicException('Expected the request-statistics date exception.');
+      throw new LogicException('Expected the appeal-statistics date exception.');
     }
     catch (RuntimeException $exception) {
-      $check(str_contains($exception->getMessage(), 'Column I'), 'Unexpected processing exception.');
+      $check(str_contains($exception->getMessage(), 'Column X'), 'Unexpected processing exception.');
       $report = $node_storage->loadUnchanged($report->id());
       $message = $report->get('field_messages')->value;
       $check(substr_count($message, 'CSV validated.') === 2, 'Exception lost validation messages.');

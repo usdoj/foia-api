@@ -53,9 +53,15 @@ final class RequestStatisticsAggregator {
             $header = FALSE;
             continue;
           }
-          // Every data row counts, including consultations and rows without E.
+          // Initial request statistics require a receipt date in Column I.
+          // Skip appeal-only rows and any other rows without that date before
+          // counting completions or pending requests for either XML section.
+          $received_text = trim($columns[8]);
+          if ($received_text === '') {
+            continue;
+          }
           $context = sprintf('Component %s, CSV %s, record %d', $source['component_id'], basename($source['uri']), $record);
-          $received = $this->calendarDate(trim($columns[8]), $context . ', Column I (Date Initially Received)');
+          $received = $this->calendarDate($received_text, $context . ', Column I (Date Initially Received)');
           if ($received < $start) {
             $counts['pending_start']++;
           }
