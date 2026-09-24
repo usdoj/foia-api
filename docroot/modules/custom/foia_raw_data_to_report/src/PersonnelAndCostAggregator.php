@@ -5,7 +5,7 @@ namespace Drupal\foia_raw_data_to_report;
 use Brick\Math\BigDecimal;
 
 /**
- * Collects exact personnel, cost, fee, and exclusion totals from Section IX-XI.
+ * Collects exact totals from all eight Section IX-XI CSV columns.
  */
 final class PersonnelAndCostAggregator {
 
@@ -22,6 +22,8 @@ final class PersonnelAndCostAggregator {
       'TotalCostAmount',
       'FeesCollectedAmount',
       'TimesUsedQuantity',
+      'PostedbyFOIAQuantity',
+      'PostedbyProgramQuantity',
     ];
     $overall = array_fill_keys($fields, '0');
     $components = [];
@@ -54,7 +56,7 @@ final class PersonnelAndCostAggregator {
           throw new \RuntimeException($context . ': Section IX-XI CSV changed after validation.');
         }
         $values = [];
-        foreach (array_slice($rows[1], 0, 6) as $index => $value) {
+        foreach ($rows[1] as $index => $value) {
           $value = trim($value);
           $pattern = $index === 1 ? '/^[+-]?[0-9]+(?:\.[0-9]+)?$/' : '/^[+-]?[0-9]+$/';
           if (!preg_match($pattern, $value)) {
@@ -62,7 +64,7 @@ final class PersonnelAndCostAggregator {
           }
           $values[] = BigDecimal::of($value);
         }
-        [$employees, $equivalent, $processing, $litigation, $fees, $exclusions] = $values;
+        [$employees, $equivalent, $processing, $litigation, $fees, $exclusions, $foia_posts, $program_posts] = $values;
         $totals = [
           $employees,
           $equivalent,
@@ -72,6 +74,8 @@ final class PersonnelAndCostAggregator {
           $processing->plus($litigation),
           $fees,
           $exclusions,
+          $foia_posts,
+          $program_posts,
         ];
         $id = $source['component_id'];
         $components[$id] ??= array_fill_keys($fields, '0');

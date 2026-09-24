@@ -663,13 +663,14 @@ component quantities with exact integer arithmetic. Zero values remain present.
 `SubsectionUsedOrganizationAssociation`. These values are collected in the same
 pass as personnel, cost, and fee totals.
 
-## Subsection posting placeholders
+## Subsection posting
 
-`SubsectionPostSection` follows subsection use. Every uploaded component and
-the agency receive a `Subsection` entry with `PostedbyFOIAQuantity` and
-`PostedbyProgramQuantity` both set to `0`. `SP1`, `SP2`, etc. and agency `SP0`
-link to Organization entries through `SubsectionPostOrganizationAssociation`.
-These placeholders require no additional CSV processing.
+`SubsectionPostSection` uses Section IX-XI Column G for `PostedbyFOIAQuantity`
+and Column H for `PostedbyProgramQuantity`. Agency quantities sum component
+quantities using exact integer arithmetic, including zeros. `SP1`, `SP2`, etc.
+and agency `SP0` retain Organization links through
+`SubsectionPostOrganizationAssociation`. These values are collected in the
+same pass as personnel, cost, fee, and exclusion totals.
 
 ## Backlog
 
@@ -845,4 +846,4 @@ Agency quantities sum the corresponding component values. Existing PC/ORG
 references and zero values are preserved. Exact decimal arithmetic uses the
 existing Brick Math dependency, avoiding floating-point rounding or integer
 overflow; output does not impose an additional decimal precision limit.
-Other Section IX-XI columns are not yet used for XML generation.
+Section IX-XI columns E-H supply fees and subsection statistics.

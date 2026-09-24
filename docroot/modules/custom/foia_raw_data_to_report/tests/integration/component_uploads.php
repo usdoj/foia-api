@@ -81,7 +81,9 @@ try {
   foreach ($paragraphs as $delta => $paragraph) {
     $section_fees = $delta === 0 ? '908259' : '1816518';
     $section_exclusions = $delta === 0 ? '7' : '0';
-    $section_file = \Drupal::service('file.repository')->writeData(implode(',', SectionDataCsvValidator::HEADERS) . "\n39,1.85,7164103,1918485,$section_fees,$section_exclusions,145,823", "private://section-check-$suffix-$delta.csv");
+    $section_foia_posts = $delta === 0 ? '145' : '0';
+    $section_program_posts = $delta === 0 ? '823' : '17';
+    $section_file = \Drupal::service('file.repository')->writeData(implode(',', SectionDataCsvValidator::HEADERS) . "\n39,1.85,7164103,1918485,$section_fees,$section_exclusions,$section_foia_posts,$section_program_posts", "private://section-check-$suffix-$delta.csv");
     $section_file->setOwnerId($manager->id())->save();
     $section_files[] = $section_file;
     $paragraph->set('section_ix_xi_data', $section_file->id());
@@ -192,6 +194,11 @@ try {
   foreach ([1 => '7', 2 => '0', 0 => '7'] as $id => $expected) {
     $actual = $xpath->evaluate('string(//foia:SubsectionUsed[@s:id="SU' . $id . '"]/foia:TimesUsedQuantity)');
     $check($actual === $expected, 'Incorrect Section IX-XI subsection-use count.');
+  }
+  foreach ([1 => ['145', '823'], 2 => ['0', '17'], 0 => ['145', '840']] as $id => [$foia_posts, $program_posts]) {
+    $base = '//foia:Subsection[@s:id="SP' . $id . '"]';
+    $check($xpath->evaluate('string(' . $base . '/foia:PostedbyFOIAQuantity)') === $foia_posts, 'Incorrect FOIA posting count.');
+    $check($xpath->evaluate('string(' . $base . '/foia:PostedbyProgramQuantity)') === $program_posts, 'Incorrect program posting count.');
   }
   $expected_fees = [
     1 => ['908259.0000', '0.1000'],

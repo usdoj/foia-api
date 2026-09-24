@@ -210,7 +210,7 @@ final class XmlReportBuilder {
     }
 
     $this->addSubsectionUsed($document, $root, $component_map, $personnel_and_cost);
-    $this->addSubsectionPost($document, $root, $component_map);
+    $this->addSubsectionPost($document, $root, $component_map, $personnel_and_cost);
 
     if ($backlog !== []) {
       $this->addBacklog($document, $root, $backlog, $component_map);
@@ -842,19 +842,22 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds zero subsection-post placeholders because CSVs lack this information.
+   * Adds Section IX-XI posting counts and their organization references.
    */
-  private function addSubsectionPost(\DOMDocument $document, \DOMElement $root, array $component_map): void {
+  private function addSubsectionPost(\DOMDocument $document, \DOMElement $root, array $component_map, array $statistics): void {
     $section = $this->addTextElement($document, $root, 'foia', 'SubsectionPostSection');
-    $organizations = array_values($component_map);
-    $organizations[] = 'ORG0';
-    foreach ($organizations as $organization_id) {
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id] ?? [];
+    }
+    $organizations['ORG0'] = $statistics['overall'] ?? [];
+    foreach ($organizations as $organization_id => $values) {
       $entry = $this->addTextElement($document, $section, 'foia', 'Subsection');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'SP' . substr($organization_id, 3));
-      $this->addTextElement($document, $entry, 'foia', 'PostedbyFOIAQuantity', '0');
-      $this->addTextElement($document, $entry, 'foia', 'PostedbyProgramQuantity', '0');
+      $this->addTextElement($document, $entry, 'foia', 'PostedbyFOIAQuantity', $values['PostedbyFOIAQuantity'] ?? '0');
+      $this->addTextElement($document, $entry, 'foia', 'PostedbyProgramQuantity', $values['PostedbyProgramQuantity'] ?? '0');
     }
-    foreach ($organizations as $organization_id) {
+    foreach ($organizations as $organization_id => $values) {
       $association = $this->addTextElement($document, $section, 'foia', 'SubsectionPostOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'SP' . substr($organization_id, 3));
