@@ -12,6 +12,7 @@ use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\TermInterface;
 use Drupal\foia_raw_data_to_report\CsvValidator;
+use Drupal\foia_raw_data_to_report\SectionDataCsvValidator;
 use Drupal\foia_raw_data_to_report\ReportNotifications;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\XmlReportBuilder;
@@ -48,7 +49,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
   /**
    * Constructs the report queue worker.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator, protected ReportNotifications $notifications) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator, protected ReportNotifications $notifications, protected SectionDataCsvValidator $sectionCsvValidator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -65,6 +66,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       $container->get('file.repository'),
       $container->get('foia_raw_data_to_report.csv_validator'),
       $container->get('foia_raw_data_to_report.notifications'),
+      $container->get('foia_raw_data_to_report.section_csv_validator'),
     );
   }
 
@@ -125,6 +127,22 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       }
       $has_errors = $has_errors || (bool) $errors;
       $messages[] = $prefix . "\n" . ($errors ? implode("\n", array_unique($errors)) : 'CSV validated.');
+
+      // Check the Section IX-XI file independently, even if raw data failed.
+      $section_source = $supported ? $upload->get('section_ix_xi_data')->entity : NULL;
+      $section_errors = [];
+      if (!$section_source) {
+        $section_errors[] = 'No Section IX-XI CSV file is attached. Please upload it again.';
+      }
+      elseif (strtolower(pathinfo($section_source->getFilename(), PATHINFO_EXTENSION)) !== 'csv') {
+        $section_errors[] = 'Please upload a CSV file. Excel workbooks are not supported by this processor.';
+      }
+      else {
+        $section_errors = $this->sectionCsvValidator->validate($section_source->getFileUri());
+      }
+      $has_errors = $has_errors || (bool) $section_errors;
+      $section_prefix = sprintf('Upload %d — Component: %s — Section IX-XI file: %s', $delta + 1, $component?->label() ?? '(not selected)', $section_source?->getFilename() ?? '(not attached)');
+      $messages[] = $section_prefix . "\n" . ($section_errors ? implode("\n", $section_errors) : 'CSV validated.');
     }
     // Compare against every linked component, regardless of publication/access.
     // Missing uploads are a warning only; CSV validation still controls errors.

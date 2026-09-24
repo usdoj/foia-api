@@ -815,6 +815,22 @@ Each component paragraph now requires two single-file private CSV uploads:
 `section_ix_xi_data` (help: Section IX-XI Data). The second upload follows the
 same private download access rules, CSV extension restriction, and upload size
 settings as the first. It appears after the original upload on edit and view
-displays. Its presence is required; its contents are not yet validated or used
+displays. Its presence and contents are validated; its values are not yet used
 in XML generation. Existing paragraphs need the second file when edited.
 Import the field and display configuration before running the updated code.
+
+## Section IX-XI CSV validation
+
+The first nonblank record must exactly match the eight header names and order
+from `OIP FY23 Section IX-XI Datav final.csv`, stored in
+`SectionDataCsvValidator::HEADERS`. Exactly one nonblank data row must follow.
+All eight cells are required: B accepts decimal notation (including whole
+numbers), and the other seven require integers. Optional signs and surrounding
+numeric whitespace are accepted; scientific notation, separators, currency,
+and blank cells are rejected. Headers are not trimmed. UTF-8 BOMs and blank
+lines are ignored, and record numbers include blank lines.
+
+The queue checks both CSVs for every component, collects all errors with file,
+component, record, and column context, and retains the existing XML if either
+file fails. Successful files receive `CSV validated.` messages. Section IX-XI
+values are not yet used in the generated XML.

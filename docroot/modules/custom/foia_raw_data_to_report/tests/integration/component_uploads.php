@@ -9,6 +9,7 @@ use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
+use Drupal\foia_raw_data_to_report\SectionDataCsvValidator;
 use Drupal\foia_raw_data_to_report\RequestStatisticsAggregator;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -78,7 +79,7 @@ try {
     $paragraphs[] = $paragraph;
   }
   foreach ($paragraphs as $delta => $paragraph) {
-    $section_file = \Drupal::service('file.repository')->writeData('Section IX-XI fixture', "private://section-check-$suffix-$delta.csv");
+    $section_file = \Drupal::service('file.repository')->writeData(implode(',', SectionDataCsvValidator::HEADERS) . "\n39,1.85,7164103,1918485,0,0,145,823", "private://section-check-$suffix-$delta.csv");
     $section_file->setOwnerId($manager->id())->save();
     $section_files[] = $section_file;
     $paragraph->set('section_ix_xi_data', $section_file->id());
@@ -151,11 +152,18 @@ try {
   $check(!$selection->getReferenceableEntities(), 'Unselected agency must have no component choices.');
 
   file_put_contents($files[1]->getFileUri(), implode(',', array_fill(0, 29, 'column')));
+  $valid_section = file_get_contents($section_files[1]->getFileUri());
+  file_put_contents($section_files[1]->getFileUri(), implode(',', SectionDataCsvValidator::HEADERS) . "\ninvalid,1.85,0,0,0,0,0,0");
+  $report = $process();
+  $check($report->get('field_request_data_xml')->isEmpty(), 'Invalid Section IX-XI data generated XML.');
+  $section_messages = $report->get('field_messages')->value;
+  $check(str_contains($section_messages, $section_files[1]->getFilename()) && str_contains($section_messages, 'Column A: Full-Time Employees must be an integer'), 'Section IX-XI error lacks file/column context.');
+  file_put_contents($section_files[1]->getFileUri(), $valid_section);
   $report = $process();
   $xml = $report->get('field_request_data_xml')->entity;
   $check($xml && str_starts_with($xml->getFileUri(), 'private://'), 'Valid uploads did not produce private XML.');
   $files[] = $xml;
-  $check(substr_count($report->get('field_messages')->value, 'CSV validated.') === 2, 'Successful retry did not replace earlier messages.');
+  $check(substr_count($report->get('field_messages')->value, 'CSV validated.') === 4, 'Successful retry did not replace earlier messages.');
   // An aggregation exception must append to validation messages and retain XML.
   $row = array_fill(0, 29, '');
   $row[0] = 'Component';
@@ -185,7 +193,7 @@ try {
       $check(str_contains($exception->getMessage(), 'Column AC'), 'Unexpected processing exception.');
       $report = $node_storage->loadUnchanged($report->id());
       $message = $report->get('field_messages')->value;
-      $check(substr_count($message, 'CSV validated.') === 2, 'Exception lost validation messages.');
+      $check(substr_count($message, 'CSV validated.') === 4, 'Exception lost validation messages.');
       $check(substr_count($message, 'XML report processing failed:') === 1, 'Retry duplicated exception messages.');
       $check(str_ends_with($message, $exception->getMessage()), 'Exception details were not appended.');
       $check($report->get('field_messages')->format === 'plain_text', 'Exception message must be plain text.');

@@ -12,3 +12,5 @@ services:
     arguments: ['@foia_raw_data_to_report.notifications']
     tags:
       - { name: event_subscriber }
+  foia_raw_data_to_report.section_csv_validator:
+    class: Drupal\foia_raw_data_to_report\SectionDataCsvValidator
