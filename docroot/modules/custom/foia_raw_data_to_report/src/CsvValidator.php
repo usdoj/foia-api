@@ -405,6 +405,85 @@ final class CsvValidator {
         if ($fw_completed !== '' && !in_array(trim($columns[21]), ['G', 'D'], TRUE)) {
           $errors[] = sprintf('CSV record %d: Column V: Must complete G or D in Column V', $record);
         }
+
+        // Column X: Require an appeal receipt date when I is blank.
+        // The earlier Column X exclusion rule already forbids I and X together.
+        if ($appeal_received === '' && $initially_received === '') {
+          $errors[] = sprintf('CSV record %d: Column X: Appeal Date Received cannot be blank', $record);
+        }
+        $appeal_received_date = NULL;
+        if ($appeal_received !== '') {
+          // Column X: Require a real date, no later than fiscal year-end.
+          $appeal_received_date = $this->parseDate($appeal_received);
+          if ($appeal_received_date === NULL) {
+            $errors[] = sprintf('CSV record %d: Column X: Appeal Date Received must be a valid date in MM/DD/YYYY format', $record);
+          }
+          elseif ($appeal_received_date > $fiscal_year * 10000 + 930) {
+            $errors[] = sprintf('CSV record %d: Column X: Appeal Date Received is later than the fiscal year', $record);
+          }
+        }
+
+        // Column Y: A populated Appeal Date Closed must be a real date.
+        $appeal_closed = trim($columns[24]);
+        $appeal_closed_date = $this->parseDate($appeal_closed);
+        if ($appeal_closed !== '') {
+          if ($appeal_closed_date === NULL) {
+            $errors[] = sprintf('CSV record %d: Column Y: Appeal Date Closed must be a valid date in MM/DD/YYYY format', $record);
+          }
+          // Column Y: Closure must be within the inclusive fiscal year.
+          elseif ($appeal_closed_date < ($fiscal_year - 1) * 10000 + 1001 || $appeal_closed_date > $fiscal_year * 10000 + 930) {
+            $errors[] = sprintf('CSV record %d: Column Y: Appeal Date Closed is outside the fiscal year', $record);
+          }
+        }
+
+        // Column Y: A closed date requires a disposition in Column Z.
+        $appeal_disposition = trim($columns[25]);
+        if ($appeal_closed !== '' && $appeal_disposition === '') {
+          $errors[] = sprintf('CSV record %d: Column Y: Appeal Disposition is required if Appeal Closed Date is entered ', $record);
+        }
+
+        // Column Y: A disposition in Column Z requires a closed date.
+        if ($appeal_disposition !== '' && $appeal_closed === '') {
+          $errors[] = sprintf('CSV record %d: Column Y: Appeal Closed Date is required if Appeal Disposition is entered', $record);
+        }
+
+        // Column Y: Compare valid dates only; closure cannot precede receipt.
+        if ($appeal_closed_date !== NULL && $appeal_received_date !== NULL && $appeal_closed_date < $appeal_received_date) {
+          $errors[] = sprintf('CSV record %d: Column Y: Appeal Date Closed cannot be prior to Appeal Date Received', $record);
+        }
+
+        // Column Z: Affirmed appeals need denial reasons or exemptions.
+        // Include the reference CSV's full label, Affirmed on Appeal.
+        $affirmed_dispositions = [
+          'Affirmed',
+          'Affirmed on Appeal',
+          'Partially Affirmed & Partially Reversed/Remanded',
+        ];
+        if (in_array($appeal_disposition, $affirmed_dispositions, TRUE)
+          && trim($columns[26]) === '' && trim($columns[28]) === '') {
+          $errors[] = sprintf('CSV record %d: Column Z: If Column Z has "Affirmed" or "Partially Affirmed & Partially Reversed/Remanded", there must be an entry in Column AA and/or Column AC', $record);
+        }
+
+        // Column Z: Other closures require at least one reason in AA.
+        if ($appeal_disposition === 'Closed for Other Reasons' && trim($columns[26]) === '') {
+          $errors[] = sprintf('CSV record %d: Column Z: If Column Z has appeal disposition "Closed for Other Reasons", then Column AA must have at least one reason entered', $record);
+        }
+
+        // Column AB: An Other reason in AA requires explanatory text.
+        // AA may contain multiple comma-separated reasons; match a whole entry.
+        $appeal_denial_reasons = array_map('trim', explode(',', $columns[26]));
+        if (in_array('Other', $appeal_denial_reasons, TRUE) && trim($columns[27]) === '') {
+          $errors[] = sprintf('CSV record %d: Column AB: If Column AA has "Other" entered, there must be a value in Column AB', $record);
+        }
+
+        // Column AC: Appeal exemptions require one of these dispositions in Z.
+        $exemption_dispositions = [
+          'Affirmed on Appeal',
+          'Partially Affirmed & Partially Reversed/Remanded',
+        ];
+        if (trim($columns[28]) !== '' && !in_array($appeal_disposition, $exemption_dispositions, TRUE)) {
+          $errors[] = sprintf('CSV record %d: Column AC: If AC has exemptions, Column Z must be Affirmed on Appeal or Partially Affirmed & Partially Reversed/Remanded', $record);
+        }
       }
       if (!feof($stream)) {
         $errors[] = 'The CSV file could not be read completely. Please upload it again.';

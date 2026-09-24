@@ -147,17 +147,19 @@ try {
     ['component_id' => $components[1]->id(), 'uri' => $files[1]->getFileUri()],
   ], 2026);
   $check($counts['overall'] === ['pending_start' => 0, 'received' => 0, 'processed' => 0, 'pending_end' => 0], 'Appeal-only row contributed to request statistics.');
-  // Invalid appeal dates still exercise post-validation exception reporting.
-  $row[23] = 'invalid-date';
+  // An unknown appeal exemption exercises post-validation exception reporting.
+  $row[24] = '01/03/2026';
+  $row[25] = 'Affirmed on Appeal';
+  $row[28] = 'invalid-code';
   $contents = implode(',', array_fill(0, 29, 'column')) . "\n" . implode(',', $row);
   file_put_contents($files[1]->getFileUri(), $contents);
   for ($attempt = 0; $attempt < 2; $attempt++) {
     try {
       $process();
-      throw new LogicException('Expected the appeal-statistics date exception.');
+      throw new LogicException('Expected the appeal-exemption exception.');
     }
     catch (RuntimeException $exception) {
-      $check(str_contains($exception->getMessage(), 'Column X'), 'Unexpected processing exception.');
+      $check(str_contains($exception->getMessage(), 'Column AC'), 'Unexpected processing exception.');
       $report = $node_storage->loadUnchanged($report->id());
       $message = $report->get('field_messages')->value;
       $check(substr_count($message, 'CSV validated.') === 2, 'Exception lost validation messages.');

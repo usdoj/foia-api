@@ -754,3 +754,37 @@ Every component and the agency have a `BacklogComparison`, including zeros,
 with `ABC1`, `ABC2`, etc. and `ABC0` linked to Organization entries through
 `BacklogComparisonOrganizationAssociation`. Request and appeal backlog
 comparisons share the same XML formatter and need no additional CSV pass.
+
+### Appeal receipt date validation
+
+Every data row must have exactly one receipt date: Column I for an initial
+request or Column X for an appeal. If I is blank, X is required; both blank
+produces "Appeal Date Received cannot be blank". The existing Column X
+exclusion rule rejects rows containing both I and X.
+
+When populated, X must be a real MM/DD/YYYY date (single-digit months/days are
+accepted), no later than September 30 of the report year. Earlier fiscal years
+are allowed. Errors identify Column X and the CSV record; the queue adds the
+filename and component when saving messages.
+
+Column Y (Appeal Date Closed) may be blank when Z (Appeal Disposition) is blank.
+When populated, it must be a valid MM/DD/YYYY date within the inclusive fiscal
+year and cannot precede a valid X date. Y requires Z, and Z requires Y; these
+presence checks are independent of date validity. All failures identify Column
+Y and the record and are collected with other validation messages.
+
+Column Z dispositions `Affirmed`, `Affirmed on Appeal`, and
+`Partially Affirmed & Partially Reversed/Remanded` require a nonblank AA or AC
+(or both). `Closed for Other Reasons` requires nonblank AA even when AC has
+data. Surrounding whitespace is ignored. These presence checks do not change
+the disposition labels recognized by XML aggregation.
+
+Column AB requires nonblank explanatory text when AA contains `Other` as a
+complete comma-separated reason. Whitespace around entries is ignored; a
+longer reason such as `Improper Request for Other Reasons` does not trigger
+this rule. Failures identify Column AB and the CSV record.
+
+Nonblank Column AC requires Column Z to be exactly `Affirmed on Appeal` or
+`Partially Affirmed & Partially Reversed/Remanded`, ignoring surrounding
+whitespace. The shorter `Affirmed` label does not satisfy this rule. Blank AC
+adds no disposition requirement. Errors identify Column AC and the record.
