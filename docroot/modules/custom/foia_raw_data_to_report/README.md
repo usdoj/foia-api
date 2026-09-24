@@ -250,7 +250,8 @@ changed.
 Import the exported configuration and rebuild caches before running the queue.
 The old node-level CSV field is replaced, with no migration of existing uploads.
 This follows the pre-launch assumption that existing upload content is disposable.
-The queue payload remains the parent node ID. Edits during processing are not
+The queue payload includes the parent node ID, requester UID, and a unique
+notification ID. Edits during processing are not
 locked or snapshotted. CSV conversion produces one partial annual report XML document
 only after every component upload passes validation.
 
@@ -788,3 +789,20 @@ Nonblank Column AC requires Column Z to be exactly `Affirmed on Appeal` or
 `Partially Affirmed & Partially Reversed/Remanded`, ignoring surrounding
 whitespace. The shorter `Affirmed` label does not satisfy this rule. Blank AC
 adds no disposition requirement. Errors identify Column AC and the record.
+
+## Completion notifications
+
+New queue items record the user who clicks Generate XML Report and a unique
+notification ID. Successful XML generation, validation failure, and XML
+processing exceptions store a personal notification. On the requester's next
+normal HTML GET page visit, it becomes a Drupal status/error message linking
+to the report. No email is sent and no polling is performed. Rebuild Drupal's
+cache after deploying these service definitions (`ddev drush cr` locally).
+
+Delivery checks current node view access and suppresses deleted/inaccessible
+reports. AJAX and non-HTML requests do not consume notices. Notices and delivery
+receipts expire after 30 days; receipts suppress repeated failure notices for
+retries of the same queue item. A successful retry supersedes an unread failure.
+Older queue items without requester metadata still process normally but cannot
+notify a user. Notification storage failures are logged without altering XML
+processing or queue retry behavior.

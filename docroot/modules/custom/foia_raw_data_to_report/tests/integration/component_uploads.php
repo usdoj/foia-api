@@ -16,6 +16,8 @@ use Drupal\system\FileDownloadController;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 if (getenv('IS_DDEV_PROJECT') !== 'true') {
@@ -33,6 +35,7 @@ $components = [];
 $paragraphs = [];
 $files = [];
 $report = NULL;
+$notification_store = NULL;
 $suffix = bin2hex(random_bytes(6));
 $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 $worker = \Drupal::service('plugin.manager.queue_worker')->createInstance('raw_data_to_report_processing');
@@ -88,8 +91,13 @@ try {
     $check(count($paragraph->get('field_agency_component')->validate()) === 0, 'Component reference rejected on an unsaved report.');
   }
   $report->save();
-  $process = static function () use ($worker, $report, $node_storage) {
-    $worker->processItem(['nid' => (int) $report->id()]);
+  $notification_store = \Drupal::service('keyvalue.expirable')->get('foia_report_notifications.' . $manager->id());
+  $process = static function () use ($worker, $report, $node_storage, $manager, $suffix) {
+    $worker->processItem([
+      'nid' => (int) $report->id(),
+      'requester_uid' => (int) $manager->id(),
+      'notification_id' => $suffix,
+    ]);
     return $node_storage->loadUnchanged($report->id());
   };
   // Multiple failures in one upload must all reach the persisted messages.
@@ -219,9 +227,57 @@ try {
   finally {
     $switcher->switchBack();
   }
-  print "PASS: multi-file validation, retry, empty uploads, XML preservation, duplicate/agency constraints, component choices, private and detached downloads.\n";
+  // All worker outcomes are durable and addressed to the requesting user.
+  $notices = $notification_store->getAll();
+  $check(count($notices) === 3, 'Expected success, validation, and processing failure notices without retry duplicates.');
+  $messenger = \Drupal::messenger();
+  $messenger->deleteAll();
+  $notifications = \Drupal::service('foia_raw_data_to_report.notifications');
+  $notifications->deliver();
+  $check(!$messenger->all(), 'Notices leaked to a different account.');
+  $switcher->switchTo($manager);
+  try {
+    $subscriber = \Drupal::service('foia_raw_data_to_report.notification_subscriber');
+    $request = Request::create('/user');
+    $request->headers->set('X-Requested-With', 'XMLHttpRequest');
+    $event = new RequestEvent(\Drupal::service('http_kernel'), $request, HttpKernelInterface::MAIN_REQUEST);
+    $subscriber->onRequest($event);
+    $check(!$messenger->all(), 'AJAX consumed a notice.');
+    $request->headers->remove('X-Requested-With');
+    $request->setRequestFormat('json');
+    $subscriber->onRequest($event);
+    $check(!$messenger->all(), 'JSON consumed a notice.');
+    $request->setRequestFormat('html');
+    $subscriber->onRequest($event);
+    $messages = $messenger->deleteAll();
+    $check(count($messages['status'] ?? []) === 1 && count($messages['error'] ?? []) === 1, 'Missing completion notices or unread failure was not superseded.');
+    $check(str_contains((string) $messages['status'][0], '<a href=') && str_contains((string) $messages['status'][0], $report->label()), 'Completion notice lacks the report link/title.');
+    $notifications->deliver();
+    $check(!$messenger->all(), 'Delivered notices appeared twice.');
+    $notifications->record([
+      'nid' => (int) $report->id(),
+      'requester_uid' => (int) $manager->id(),
+      'notification_id' => $suffix,
+    ], 'failed');
+    $notifications->deliver();
+    $check(!$messenger->all(), 'Retry repeated a delivered failure notice.');
+    $notifications->record(['nid' => (int) $report->id()], 'success');
+    $check(count($notification_store->getAll()) === 3, 'Legacy queue metadata created a notice.');
+    $notifications->record([
+      'nid' => 0,
+      'requester_uid' => (int) $manager->id(),
+      'notification_id' => $suffix . '-missing',
+    ], 'success');
+    $notifications->deliver();
+    $check(!$messenger->all(), 'Missing report produced a broken notification.');
+  }
+  finally {
+    $switcher->switchBack();
+  }
+  print "PASS: multi-file validation, retry, empty uploads, XML preservation, duplicate/agency constraints, component choices, private and detached downloads, requester notifications and one-time delivery.\n";
 }
 finally {
+  $notification_store?->deleteAll();
   if ($report) {
     $report->delete();
   }

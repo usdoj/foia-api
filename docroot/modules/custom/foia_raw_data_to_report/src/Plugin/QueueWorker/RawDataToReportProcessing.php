@@ -12,6 +12,7 @@ use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\TermInterface;
 use Drupal\foia_raw_data_to_report\CsvValidator;
+use Drupal\foia_raw_data_to_report\ReportNotifications;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\XmlReportBuilder;
 use Drupal\foia_raw_data_to_report\StatuteAggregator;
@@ -47,7 +48,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
   /**
    * Constructs the report queue worker.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator, protected ReportNotifications $notifications) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -63,6 +64,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       $container->get('file_system'),
       $container->get('file.repository'),
       $container->get('foia_raw_data_to_report.csv_validator'),
+      $container->get('foia_raw_data_to_report.notifications'),
     );
   }
 
@@ -147,6 +149,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $node->save();
     if ($has_errors) {
       // Invalid input is a completed task, not a retryable exception.
+      $this->notifications->record($data, 'validation_failed');
       return;
     }
     try {
@@ -164,9 +167,11 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
         ]);
         $stored_node->save();
       }
+      $this->notifications->record($data, 'failed');
       // Preserve Drush logging and the queue's existing retry behavior.
       throw $exception;
     }
+    $this->notifications->record($data, 'success');
   }
 
   /**

@@ -96,11 +96,13 @@ final class GenerateXmlReportForm extends FormBase {
   }
 
   /**
-   * Enqueues the node ID without reading or processing the CSV file yet.
+   * Enqueues the node and requester without processing the CSV file yet.
    */
   protected function generateXmlReport(NodeInterface $node): bool {
     return $this->queueFactory->get('raw_data_to_report_processing')->createItem([
       'nid' => (int) $node->id(),
+      'requester_uid' => (int) $this->currentUser()->id(),
+      'notification_id' => bin2hex(random_bytes(16)),
     ]) !== FALSE;
   }
 
