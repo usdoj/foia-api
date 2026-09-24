@@ -634,12 +634,13 @@ to be blank. Q, R, and S may contain expedited-processing data and retain
 their date and dependency checks. Appeal rows are exempt from the rule that
 S = G requires M = E, since M must remain blank on these rows.
 
-## Personnel and cost placeholders
+## Personnel and cost
 
 `PersonnelAndCostSection` follows fee waivers. Every uploaded component and
-the agency receive all six personnel/staffing/cost fields with literal `N/A`,
-since the CSV has no source data for these values. `PC1`, `PC2`, etc. link to
-component organizations; `PC0` links to the agency. No CSV pass is needed.
+the agency have the six personnel and cost values sourced from Section IX-XI
+Columns A-D, with calculated staff and cost totals. `PC1`, `PC2`, etc. and
+agency `PC0` link to Organization entries through
+`PersonnelAndCostOrganizationAssociation`.
 
 ## Fees collected
 
@@ -815,8 +816,8 @@ Each component paragraph now requires two single-file private CSV uploads:
 `section_ix_xi_data` (help: Section IX-XI Data). The second upload follows the
 same private download access rules, CSV extension restriction, and upload size
 settings as the first. It appears after the original upload on edit and view
-displays. Its presence and contents are validated; its values are not yet used
-in XML generation. Existing paragraphs need the second file when edited.
+displays. Its presence and contents are validated; Columns A-D populate personnel
+and cost XML totals. Existing paragraphs need the second file when edited.
 Import the field and display configuration before running the updated code.
 
 ## Section IX-XI CSV validation
@@ -833,4 +834,15 @@ lines are ignored, and record numbers include blank lines.
 The queue checks both CSVs for every component, collects all errors with file,
 component, record, and column context, and retains the existing XML if either
 file fails. Successful files receive `CSV validated.` messages. Section IX-XI
-values are not yet used in the generated XML.
+Columns A-D populate the personnel and cost section.
+
+## Personnel and cost from Section IX-XI data
+
+Queue processing now supplies `PersonnelAndCostSection` with Column A full-time
+employees, Column B equivalent full-time employees, Column C processing costs,
+and Column D litigation costs. Total staff is A+B and total cost is C+D.
+Agency quantities sum the corresponding component values. Existing PC/ORG
+references and zero values are preserved. Exact decimal arithmetic uses the
+existing Brick Math dependency, avoiding floating-point rounding or integer
+overflow; output does not impose an additional decimal precision limit.
+Other Section IX-XI columns are not yet used for XML generation.

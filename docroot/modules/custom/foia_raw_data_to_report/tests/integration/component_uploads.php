@@ -163,6 +163,30 @@ try {
   $xml = $report->get('field_request_data_xml')->entity;
   $check($xml && str_starts_with($xml->getFileUri(), 'private://'), 'Valid uploads did not produce private XML.');
   $files[] = $xml;
+  $document = new DOMDocument();
+  $check($document->loadXML(file_get_contents($xml->getFileUri())), 'Generated XML could not be parsed.');
+  $xpath = new DOMXPath($document);
+  $xpath->registerNamespace('foia', 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03');
+  $xpath->registerNamespace('s', 'http://niem.gov/niem/structures/2.0');
+  $expected_totals = [
+    1 => ['39', '1.85', '40.85', '7164103', '1918485', '9082588'],
+    0 => ['78', '3.7', '81.7', '14328206', '3836970', '18165176'],
+  ];
+  foreach ($expected_totals as $id => $expected) {
+    $fields = [
+      'FullTimeEmployeeQuantity',
+      'EquivalentFullTimeEmployeeQuantity',
+      'TotalFullTimeStaffQuantity',
+      'ProcessingCostAmount',
+      'LitigationCostAmount',
+      'TotalCostAmount',
+    ];
+    foreach ($fields as $index => $field) {
+      $actual = $xpath->evaluate('string(//foia:PersonnelAndCost[@s:id="PC' . $id . '"]/foia:' . $field . ')');
+      $check($actual === $expected[$index], 'Incorrect personnel/cost XML value for ' . $field);
+    }
+  }
+
   $check(substr_count($report->get('field_messages')->value, 'CSV validated.') === 4, 'Successful retry did not replace earlier messages.');
   // An aggregation exception must append to validation messages and retain XML.
   $row = array_fill(0, 29, '');
