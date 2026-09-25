@@ -20,7 +20,8 @@ final class ProcessedResponseTimeAggregator {
    * Returns component and agency summaries without retaining individual rows.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param bool $information_granted_only
    *   Whether to include only disposition codes 1 and 2 in Column N.
    *
@@ -152,7 +153,7 @@ final class ProcessedResponseTimeAggregator {
           // Prefer J; fall back to I without clamping to the fiscal year.
           $perfected = trim($columns[9]);
           $start = $perfected !== '' ? $perfected : trim($columns[8]);
-          $context = sprintf('Component %s, CSV record %d', $id, $record);
+          $context = sprintf('Component %s, CSV record %d', $source['component_label'] ?? $id, $record);
           if ($start === '') {
             throw new \RuntimeException($context . ': Completed requests require a date in Column J or I to calculate response time.');
           }

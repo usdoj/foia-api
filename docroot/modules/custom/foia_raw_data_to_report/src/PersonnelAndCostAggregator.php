@@ -30,7 +30,7 @@ final class PersonnelAndCostAggregator {
     foreach ($sources as $source) {
       // Recheck the small file in case it changed after queue validation.
       $errors = (new SectionDataCsvValidator())->validate($source['uri']);
-      $context = sprintf('Component %s, CSV %s', $source['component_id'], basename($source['uri']));
+      $context = sprintf('Component %s, CSV %s', $source['component_label'] ?? $source['component_id'], basename($source['uri']));
       if ($errors) {
         throw new \RuntimeException($context . ': ' . implode(' ', $errors));
       }

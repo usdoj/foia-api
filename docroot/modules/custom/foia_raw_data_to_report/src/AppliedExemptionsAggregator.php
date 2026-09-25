@@ -31,7 +31,8 @@ final class AppliedExemptionsAggregator {
    * Counts each distinct exemption once per row, then sums component counts.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $column
    *   Zero-based CSV column: 15 for requests, 28 for appeals.
    *
@@ -77,7 +78,7 @@ final class AppliedExemptionsAggregator {
           foreach ($codes as $code) {
             // Unknown codes must not silently disappear from the report.
             if (!isset(self::EXEMPTIONS[$code])) {
-              throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown exemption code "%s" in Column %s.', $id, $record, $code, $column_name));
+              throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown exemption code "%s" in Column %s.', $source['component_label'] ?? $id, $record, $code, $column_name));
             }
             $components[$id][$code]++;
           }

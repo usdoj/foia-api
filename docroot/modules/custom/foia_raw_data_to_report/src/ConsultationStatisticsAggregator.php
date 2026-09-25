@@ -21,7 +21,8 @@ final class ConsultationStatisticsAggregator {
    * Returns component counters and agency totals without retaining CSV rows.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
    *
@@ -57,7 +58,7 @@ final class ConsultationStatisticsAggregator {
           if (trim($columns[2]) !== 'Y') {
             continue;
           }
-          $context = sprintf('Component %s, CSV %s, record %d', $source['component_id'], basename($source['uri']), $record);
+          $context = sprintf('Component %s, CSV %s, record %d', $source['component_label'] ?? $source['component_id'], basename($source['uri']), $record);
           // Count receipt dates before or within the inclusive fiscal year.
           $received = trim($columns[8]);
           if ($received !== '') {

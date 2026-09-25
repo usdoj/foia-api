@@ -21,7 +21,8 @@ final class RequestStatisticsAggregator {
    * Returns component counters and agency totals without retaining CSV rows.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
    *
@@ -60,7 +61,7 @@ final class RequestStatisticsAggregator {
           if ($received_text === '') {
             continue;
           }
-          $context = sprintf('Component %s, CSV %s, record %d', $source['component_id'], basename($source['uri']), $record);
+          $context = sprintf('Component %s, CSV %s, record %d', $source['component_label'] ?? $source['component_id'], basename($source['uri']), $record);
           $received = $this->calendarDate($received_text, $context . ', Column I (Date Initially Received)');
           if ($received < $start) {
             $counts['pending_start']++;

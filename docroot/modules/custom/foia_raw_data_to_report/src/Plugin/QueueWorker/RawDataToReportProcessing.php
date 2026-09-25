@@ -205,10 +205,12 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       $components[] = $component;
       $section_sources[] = [
         'component_id' => $component->id(),
+        'component_label' => $component->label(),
         'uri' => $item->entity->get('section_ix_xi_data')->entity->getFileUri(),
       ];
       $sources[] = [
         'component_id' => $component->id(),
+        'component_label' => $component->label(),
         'uri' => $item->entity->get('field_request_data_csv')->entity->getFileUri(),
       ];
     }

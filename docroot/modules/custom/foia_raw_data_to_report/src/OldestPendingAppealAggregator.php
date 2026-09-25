@@ -11,7 +11,8 @@ final class OldestPendingAppealAggregator {
    * Collects at most ten receipt dates per component and for the agency.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
    *
@@ -50,7 +51,7 @@ final class OldestPendingAppealAggregator {
           if ($received_text === '' || trim($columns[24]) !== '') {
             continue;
           }
-          $context = sprintf('Component %s, CSV record %d, Column X', $id, $record);
+          $context = sprintf('Component %s, CSV record %d, Column X', $source['component_label'] ?? $id, $record);
           $received = $this->calendarDate($received_text, $context);
           if ($received > $end) {
             throw new \RuntimeException($context . ': Appeal Date Received is after the report fiscal year.');

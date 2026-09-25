@@ -16,7 +16,8 @@ final class ExpeditedProcessingAggregator {
    * Counts granted, denied, and adjudications within ten working days.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    *
    * @return array
    *   Component counts keyed by entity ID and overall counts, keyed by outcome.
@@ -55,7 +56,7 @@ final class ExpeditedProcessingAggregator {
           $components[$id][self::OUTCOMES[$outcome]]++;
           $received = trim($columns[16]);
           $determined = trim($columns[17]);
-          $context = sprintf('Component %s, CSV %s, record %d', $id, basename($source['uri']), $record);
+          $context = sprintf('Component %s, CSV %s, record %d', $source['component_label'] ?? $id, basename($source['uri']), $record);
           $start = $this->calendarDate($received, $context . ', Column Q');
           // R may be blank: count the outcome, but no adjudication interval.
           if ($determined === '') {

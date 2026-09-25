@@ -11,7 +11,8 @@ final class AppealResponseTimeAggregator {
    * Calculates component and agency statistics without retaining CSV rows.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
    *
@@ -46,7 +47,7 @@ final class AppealResponseTimeAggregator {
             $header = FALSE;
             continue;
           }
-          $context = sprintf('Component %s, CSV record %d', $id, $record);
+          $context = sprintf('Component %s, CSV record %d', $source['component_label'] ?? $id, $record);
           // Only rows with an appeal contribute to response time statistics.
           $received_text = trim($columns[23]);
           $completed = trim($columns[24]);

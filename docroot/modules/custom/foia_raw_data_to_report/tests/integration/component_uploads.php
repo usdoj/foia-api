@@ -238,6 +238,7 @@ try {
     }
     catch (RuntimeException $exception) {
       $check(str_contains($exception->getMessage(), 'Column AC'), 'Unexpected processing exception.');
+      $check(str_starts_with($exception->getMessage(), 'Component ' . $components[1]->label() . ', CSV'), 'Processing exception must identify the component by name.');
       $report = $node_storage->loadUnchanged($report->id());
       $message = $report->get('field_messages')->value;
       $check(substr_count($message, 'CSV validated.') === 4, 'Exception lost validation messages.');

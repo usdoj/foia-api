@@ -11,7 +11,8 @@ final class BacklogAggregator {
    * Counts requests and appeals, using fiscal year-end for open items.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
    *
@@ -45,7 +46,7 @@ final class BacklogAggregator {
             $header = FALSE;
             continue;
           }
-          $context = sprintf('Component %s, CSV %s, record %d', $id, basename($source['uri']), $record);
+          $context = sprintf('Component %s, CSV %s, record %d', $source['component_label'] ?? $id, basename($source['uri']), $record);
           // Column D supplies the threshold for both requests and appeals.
           // Consultations leave Days Allowed blank and are excluded.
           $days_allowed = trim($columns[3]);

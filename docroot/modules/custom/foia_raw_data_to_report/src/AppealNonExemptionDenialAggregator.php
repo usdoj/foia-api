@@ -28,7 +28,8 @@ final class AppealNonExemptionDenialAggregator {
    * Counts each distinct reason once per row, then sums component counts.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    *
    * @return array
    *   Component and overall counts keyed by XML reason code.
@@ -67,7 +68,7 @@ final class AppealNonExemptionDenialAggregator {
           foreach ($reasons as $reason) {
             // Unknown labels must not silently disappear from the report.
             if (!isset(self::REASONS[$reason])) {
-              throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown appeal denial reason "%s" in Column AA.', $id, $record, $reason));
+              throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown appeal denial reason "%s" in Column AA.', $source['component_label'] ?? $id, $record, $reason));
             }
             $components[$id][self::REASONS[$reason]]++;
           }
