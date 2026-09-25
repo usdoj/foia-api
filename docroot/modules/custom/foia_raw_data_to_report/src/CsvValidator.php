@@ -377,8 +377,11 @@ final class CsvValidator {
           $errors[] = sprintf('CSV record %d: Column S: Must have G or D in Column S', $record);
         }
 
-        // Column T: Request for FW - Date Adjudication Began is optional.
+        // Column T: A value in U, V, or W requires an adjudication start date.
         $fw_began = trim($columns[19]);
+        if ($fw_began === '' && (trim($columns[20]) !== '' || trim($columns[21]) !== '' || trim($columns[22]) !== '')) {
+          $errors[] = sprintf('CSV record %d: Column T: Column T must contain a value if there is data in Columns U, V, or W', $record);
+        }
         $fw_began_date = $this->parseDate($fw_began);
         if ($fw_began !== '') {
           // Column T: Require a real date using the same format as Column Q.

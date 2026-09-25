@@ -185,7 +185,7 @@ class CsvValidatorTest extends UnitTestCase {
    */
   public function testValidCsv(): void {
     $header = implode(',', array_fill(0, 29, 'column'));
-    $row = $this->csvRow([0 => 'A, B', 1 => "First line\nSecond line", 22 => 'A "quote"']);
+    $row = $this->csvRow([0 => 'A, B', 1 => "First line\nSecond line", 19 => '01/01/2026', 22 => 'A "quote"']);
     $this->assertSame([], $this->validateContents("\xEF\xBB\xBF" . $header . "\r\n\r\n" . $row . "\r\n"));
   }
 
