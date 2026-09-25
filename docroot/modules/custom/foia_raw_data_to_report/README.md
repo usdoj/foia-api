@@ -9,6 +9,14 @@ The button calls `GenerateXmlReportForm::generateXmlReport()`.
 
 Note tests in RawDataToReport.feature.
 
+## XML download tab
+
+The **XML** tab at `/node/{node}/xml_download` serves the currently attached
+XML file without regenerating it. It is available to authenticated users with
+node, XML field, and file access, once an XML attachment exists. The response
+uses `text/xml; charset=UTF-8` and an attachment disposition with the generated
+filename. Downloads are private and are not stored in caches.
+
 ## Queue processing
 
 The button adds `['nid' => (int) $node->id()]` to the
