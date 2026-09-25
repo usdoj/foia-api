@@ -44,7 +44,8 @@ final class DispositionAggregator {
    * Counts each nonblank disposition once per row, then sums component counts.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    *
    * @return array
    *   Component counts keyed by entity ID and overall counts, keyed by code.
@@ -80,7 +81,7 @@ final class DispositionAggregator {
           }
           // Reject unmapped values rather than silently omitting requests.
           if (!preg_match('/^(?:[1-9]|1[0-2])$/', $code)) {
-            throw new \RuntimeException(sprintf('Component %s, CSV record %d: Column N must contain a disposition code from 1 through 12.', $id, $record));
+            throw new \RuntimeException(sprintf('Component %s, CSV record %d: Column N must contain a disposition code from 1 through 12.', $source['component_label'] ?? $id, $record));
           }
           $components[$id][(int) $code]++;
         }

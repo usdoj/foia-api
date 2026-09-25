@@ -20,7 +20,8 @@ final class PendingPerfectedRequestsAggregator {
    * Calculates component and agency counts, medians, and averages.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year, ending September 30.
    *
@@ -59,7 +60,7 @@ final class PendingPerfectedRequestsAggregator {
           if ($perfected === '' || trim($columns[10]) !== '') {
             continue;
           }
-          $context = sprintf('Component %s, CSV %s, record %d', $id, basename($source['uri']), $record);
+          $context = sprintf('Component %s, CSV %s, record %d', $source['component_label'] ?? $id, basename($source['uri']), $record);
           $track = trim($columns[12]);
           if (!isset(self::TRACKS[$track])) {
             throw new \RuntimeException($context . ': Column M must contain S, C, or E for a perfected request.');

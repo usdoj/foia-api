@@ -68,16 +68,21 @@ Feature: Raw data XML report action
     And I am logged in as "raw_block_manager"
     When I visit the entity of type "node" with the title "Component upload form"
     And I click "Edit"
-    And I press "Add Component CSV upload"
-    And I fill in "Agency Component" with "Upload Fixture Component"
-    And I press the "down" key in the "Agency Component" field
-    And I wait 2 seconds
-    And I press the "down" key in the "Agency Component" field
-    And I press the "enter" key in the "Agency Component" field
-    And I attach the file "raw-data-valid.csv" to "CSV file"
+    And I check "Update Upload Fixture Component"
+    And I press "Add placeholders for component data below"
+    And I wait for AJAX to finish
+    Then I should see "Added 1 component placeholder(s)."
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_0_subform_field_request_data_csv_0]"
     And I wait 2 seconds
     And I wait for AJAX to finish
-    And I press "Save"
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_0_subform_section_ix_xi_data_0]"
+    And I wait 2 seconds
+    And I wait for AJAX to finish
+    And I check "Update Upload Fixture Component"
+    And I press "Add placeholders for component data below"
+    And I wait for AJAX to finish
+    Then I should see "Added 0 component placeholder(s)."
+    When I press "Save"
     Then I should see "Upload Fixture Component"
     And I should see "raw-data-valid"
     And the URL should match "/node/[0-9]+$"
@@ -86,6 +91,9 @@ Feature: Raw data XML report action
     And I press "Add Component CSV upload"
     And I fill in "field_component_uploads[1][subform][field_agency_component][0][target_id]" with "Upload Fixture Component"
     And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_1_subform_field_request_data_csv_0]"
+    And I wait 2 seconds
+    And I wait for AJAX to finish
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_1_subform_section_ix_xi_data_0]"
     And I wait 2 seconds
     And I wait for AJAX to finish
     And I press "Save"
@@ -113,14 +121,48 @@ Feature: Raw data XML report action
     And I press the "enter" key in the "Agency" field
     And I press the "tab" key in the "Agency" field
     And I wait for AJAX to finish
-    And I fill in "Agency Component" with "New Report Component"
-    And I attach the file "raw-data-valid.csv" to "CSV file"
+    And I check "Update New Report Component"
+    And I press "Add placeholders for component data below"
+    And I wait for AJAX to finish
+    Then I should see "Added 1 component placeholder(s)."
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_0_subform_field_request_data_csv_0]"
+    And I wait 2 seconds
+    And I wait for AJAX to finish
+    And I attach the file "raw-data-valid.csv" to "files[field_component_uploads_0_subform_section_ix_xi_data_0]"
     And I wait 2 seconds
     And I wait for AJAX to finish
     And I press "Save"
     Then the URL should match "/node/[0-9]+$"
     And I should see "New Report Component"
     And I should see "raw-data-valid"
+
+  @javascript
+  Scenario: Multiple placeholders can be added without uploading files first
+    Given agency_component content:
+      | title                    | field_agency         | status |
+      | First Bulk Component     | Raw Block Agency One | 1      |
+      | Second Bulk Component    | Raw Block Agency One | 1      |
+      | Foreign Bulk Component   | Raw Block Agency Two | 1      |
+    And raw_data_to_report content:
+      | title                 | field_agency         | field_foia_annual_report_yr | field_agency_comp_abbreviation | status |
+      | Bulk placeholder form | Raw Block Agency One | 2026                       | RBA1                          | 1      |
+    And I am logged in as "raw_block_manager"
+    When I visit the entity of type "node" with the title "Bulk placeholder form"
+    And I click "Edit"
+    Then I should not see "Foreign Bulk Component"
+    When I check "Update First Bulk Component"
+    And I check "Update Second Bulk Component"
+    And I press "Add placeholders for component data below"
+    And I wait for AJAX to finish
+    Then I should see "Added 2 component placeholder(s)."
+    When I check "Update First Bulk Component"
+    And I check "Update Second Bulk Component"
+    And I press "Add placeholders for component data below"
+    And I wait for AJAX to finish
+    Then I should see "Added 0 component placeholder(s)."
+    When I press "Save"
+    Then I should see "CSV file field is required."
+    And I should see "Section IX-XI CSV file field is required."
 
   @javascript
   Scenario: Additional uploads autocomplete components on an unsaved report

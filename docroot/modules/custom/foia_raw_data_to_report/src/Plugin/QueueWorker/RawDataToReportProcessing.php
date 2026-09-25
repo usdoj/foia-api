@@ -12,10 +12,14 @@ use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\TermInterface;
 use Drupal\foia_raw_data_to_report\CsvValidator;
+use Drupal\foia_raw_data_to_report\PersonnelAndCostAggregator;
+use Drupal\foia_raw_data_to_report\SectionDataCsvValidator;
+use Drupal\foia_raw_data_to_report\ReportNotifications;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\XmlReportBuilder;
 use Drupal\foia_raw_data_to_report\StatuteAggregator;
 use Drupal\foia_raw_data_to_report\RequestStatisticsAggregator;
+use Drupal\foia_raw_data_to_report\ConsultationStatisticsAggregator;
 use Drupal\foia_raw_data_to_report\DispositionAggregator;
 use Drupal\foia_raw_data_to_report\OtherDenialReasonAggregator;
 use Drupal\foia_raw_data_to_report\AppliedExemptionsAggregator;
@@ -25,6 +29,8 @@ use Drupal\foia_raw_data_to_report\OldestPendingAppealAggregator;
 use Drupal\foia_raw_data_to_report\OldestPendingRequestAggregator;
 use Drupal\foia_raw_data_to_report\ExpeditedProcessingAggregator;
 use Drupal\foia_raw_data_to_report\FeeWaiverAggregator;
+use Drupal\foia_raw_data_to_report\FeesCollectedAggregator;
+use Drupal\foia_raw_data_to_report\BacklogAggregator;
 use Drupal\foia_raw_data_to_report\ProcessedResponseTimeAggregator;
 use Drupal\foia_raw_data_to_report\PendingPerfectedRequestsAggregator;
 use Drupal\foia_raw_data_to_report\AppealDispositionAggregator;
@@ -44,7 +50,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
   /**
    * Constructs the report queue worker.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator, protected ReportNotifications $notifications, protected SectionDataCsvValidator $sectionCsvValidator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -60,6 +66,8 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       $container->get('file_system'),
       $container->get('file.repository'),
       $container->get('foia_raw_data_to_report.csv_validator'),
+      $container->get('foia_raw_data_to_report.notifications'),
+      $container->get('foia_raw_data_to_report.section_csv_validator'),
     );
   }
 
@@ -120,6 +128,22 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       }
       $has_errors = $has_errors || (bool) $errors;
       $messages[] = $prefix . "\n" . ($errors ? implode("\n", array_unique($errors)) : 'CSV validated.');
+
+      // Check the Section IX-XI file independently, even if raw data failed.
+      $section_source = $supported ? $upload->get('section_ix_xi_data')->entity : NULL;
+      $section_errors = [];
+      if (!$section_source) {
+        $section_errors[] = 'No Section IX-XI CSV file is attached. Please upload it again.';
+      }
+      elseif (strtolower(pathinfo($section_source->getFilename(), PATHINFO_EXTENSION)) !== 'csv') {
+        $section_errors[] = 'Please upload a CSV file. Excel workbooks are not supported by this processor.';
+      }
+      else {
+        $section_errors = $this->sectionCsvValidator->validate($section_source->getFileUri());
+      }
+      $has_errors = $has_errors || (bool) $section_errors;
+      $section_prefix = sprintf('Upload %d — Component: %s — Section IX-XI file: %s', $delta + 1, $component?->label() ?? '(not selected)', $section_source?->getFilename() ?? '(not attached)');
+      $messages[] = $section_prefix . "\n" . ($section_errors ? implode("\n", $section_errors) : 'CSV validated.');
     }
     // Compare against every linked component, regardless of publication/access.
     // Missing uploads are a warning only; CSV validation still controls errors.
@@ -144,6 +168,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $node->save();
     if ($has_errors) {
       // Invalid input is a completed task, not a retryable exception.
+      $this->notifications->record($data, 'validation_failed');
       return;
     }
     try {
@@ -161,9 +186,11 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
         ]);
         $stored_node->save();
       }
+      $this->notifications->record($data, 'failed');
       // Preserve Drush logging and the queue's existing retry behavior.
       throw $exception;
     }
+    $this->notifications->record($data, 'success');
   }
 
   /**
@@ -172,11 +199,18 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
   protected function generateXmlReport(NodeInterface $node): void {
     $components = [];
     $sources = [];
+    $section_sources = [];
     foreach ($node->get('field_component_uploads') as $item) {
       $component = $item->entity->get('field_agency_component')->entity;
       $components[] = $component;
+      $section_sources[] = [
+        'component_id' => $component->id(),
+        'component_label' => $component->label(),
+        'uri' => $item->entity->get('section_ix_xi_data')->entity->getFileUri(),
+      ];
       $sources[] = [
         'component_id' => $component->id(),
+        'component_label' => $component->label(),
         'uri' => $item->entity->get('field_request_data_csv')->entity->getFileUri(),
       ];
     }
@@ -203,7 +237,12 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $oldest_pending_requests = (new OldestPendingRequestAggregator())->aggregate($sources, $fiscal_year);
     $expedited_processing = (new ExpeditedProcessingAggregator())->aggregate($sources);
     $fee_waivers = (new FeeWaiverAggregator())->aggregate($sources);
-    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals, $processed_response_times, $information_granted_response_times, $simple_response_increments, $complex_response_increments, $expedited_response_increments, $pending_perfected_requests, $oldest_pending_requests, $expedited_processing, $fee_waivers);
+    $backlog = (new BacklogAggregator())->aggregate($sources, $fiscal_year);
+    $consultation_statistics = (new ConsultationStatisticsAggregator())->aggregate($sources, $fiscal_year);
+    $oldest_pending_consultations = (new OldestPendingRequestAggregator())->aggregate($sources, $fiscal_year, TRUE);
+    $personnel_and_cost = (new PersonnelAndCostAggregator())->aggregate($section_sources);
+    $fees_collected = (new FeesCollectedAggregator())->aggregate($personnel_and_cost);
+    $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals, $processed_response_times, $information_granted_response_times, $simple_response_increments, $complex_response_increments, $expedited_response_increments, $pending_perfected_requests, $oldest_pending_requests, $expedited_processing, $fee_waivers, $fees_collected, $backlog, $consultation_statistics, $oldest_pending_consultations, $personnel_and_cost);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;
     $item = $field->first() ?? $field->appendItem();

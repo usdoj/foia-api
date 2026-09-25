@@ -11,14 +11,17 @@ final class OldestPendingRequestAggregator {
    * Collects at most ten receipt dates per component and for the agency.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
+   * @param bool $consultations_only
+   *   Whether to include only rows with Column C equal to Y.
    *
    * @return array
    *   Component and overall lists with receipt_date and pending_days entries.
    */
-  public function aggregate(array $sources, int $fiscal_year): array {
+  public function aggregate(array $sources, int $fiscal_year, bool $consultations_only = FALSE): array {
     $end = new \DateTimeImmutable($fiscal_year . '-09-30', new \DateTimeZone('UTC'));
     $working_days = new WorkingDays();
     $components = [];
@@ -45,12 +48,16 @@ final class OldestPendingRequestAggregator {
             $header = FALSE;
             continue;
           }
+          // Consultation listings include only rows marked Y in Column C.
+          if ($consultations_only && trim($columns[2]) !== 'Y') {
+            continue;
+          }
           // Pending requests have a received date and no completed date.
           $received_text = trim($columns[8]);
           if ($received_text === '' || trim($columns[10]) !== '') {
             continue;
           }
-          $context = sprintf('Component %s, CSV %s, record %d, Column I', $id, basename($source['uri']), $record);
+          $context = sprintf('Component %s, CSV %s, record %d, Column I', $source['component_label'] ?? $id, basename($source['uri']), $record);
           $received = $this->calendarDate($received_text, $context);
           if ($received > $end) {
             throw new \RuntimeException($context . ': Date Initially Received is after the report fiscal year.');

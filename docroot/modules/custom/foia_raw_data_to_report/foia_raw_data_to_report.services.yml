@@ -1,3 +1,16 @@
 services:
   foia_raw_data_to_report.csv_validator:
     class: Drupal\foia_raw_data_to_report\CsvValidator
+  logger.channel.foia_raw_data_to_report:
+    parent: logger.channel_base
+    arguments: ['foia_raw_data_to_report']
+  foia_raw_data_to_report.notifications:
+    class: Drupal\foia_raw_data_to_report\ReportNotifications
+    arguments: ['@keyvalue.expirable', '@entity_type.manager', '@current_user', '@messenger', '@lock', '@logger.channel.foia_raw_data_to_report']
+  foia_raw_data_to_report.notification_subscriber:
+    class: Drupal\foia_raw_data_to_report\EventSubscriber\ReportNotificationSubscriber
+    arguments: ['@foia_raw_data_to_report.notifications']
+    tags:
+      - { name: event_subscriber }
+  foia_raw_data_to_report.section_csv_validator:
+    class: Drupal\foia_raw_data_to_report\SectionDataCsvValidator

@@ -21,7 +21,8 @@ final class AppealStatisticsAggregator {
    * Returns component counters and agency totals without retaining CSV rows.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
    *
@@ -56,7 +57,7 @@ final class AppealStatisticsAggregator {
           // Rows without an appeal do not contribute to any of the counters.
           $received_text = trim($columns[23]);
           $completed = trim($columns[24]);
-          $context = sprintf('Component %s, CSV record %d', $source['component_id'], $record);
+          $context = sprintf('Component %s, CSV record %d', $source['component_label'] ?? $source['component_id'], $record);
           if ($received_text === '') {
             if ($completed !== '') {
               throw new \RuntimeException($context . ': Appeal Date Closed requires an Appeal Date Received.');

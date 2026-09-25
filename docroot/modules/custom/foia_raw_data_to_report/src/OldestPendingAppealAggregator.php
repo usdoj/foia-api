@@ -11,7 +11,8 @@ final class OldestPendingAppealAggregator {
    * Collects at most ten receipt dates per component and for the agency.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
    *
@@ -20,6 +21,7 @@ final class OldestPendingAppealAggregator {
    */
   public function aggregate(array $sources, int $fiscal_year): array {
     $end = new \DateTimeImmutable($fiscal_year . '-09-30', new \DateTimeZone('UTC'));
+    $working_days = new WorkingDays();
     $components = [];
     $overall = [];
     foreach ($sources as $source) {
@@ -49,15 +51,15 @@ final class OldestPendingAppealAggregator {
           if ($received_text === '' || trim($columns[24]) !== '') {
             continue;
           }
-          $context = sprintf('Component %s, CSV record %d, Column X', $id, $record);
+          $context = sprintf('Component %s, CSV record %d, Column X', $source['component_label'] ?? $id, $record);
           $received = $this->calendarDate($received_text, $context);
           if ($received > $end) {
             throw new \RuntimeException($context . ': Appeal Date Received is after the report fiscal year.');
           }
-          // Use the full elapsed calendar time, including prior fiscal years.
+          // Use elapsed working days, including time in prior fiscal years.
           $item = [
             'receipt_date' => $received->format('Y-m-d'),
-            'pending_days' => (int) $received->diff($end)->days,
+            'pending_days' => $working_days->count($received_text, $end->format('m/d/Y')),
           ];
           $this->retainOldest($components[$id], $item);
           $this->retainOldest($overall, $item);

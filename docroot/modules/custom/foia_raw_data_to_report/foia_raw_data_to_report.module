@@ -18,6 +18,7 @@ use Drupal\node\NodeInterface;
 use Drupal\file\FileInterface;
 use Drupal\file\FileReferenceResolver;
 use Drupal\foia_raw_data_to_report\Form\GenerateXmlReportForm;
+use Drupal\foia_raw_data_to_report\Form\ComponentPlaceholders;
 
 /**
  * Implements hook_node_view().
@@ -61,11 +62,12 @@ function foia_raw_data_to_report_file_access(FileInterface $file, $operation, Ac
   $access = AccessResult::neutral()->cachePerUser()->addCacheableDependency($file);
   $is_report_file = FALSE;
   $report_fields = ['field_request_data_csv', 'field_request_data_xml'];
+  $upload_fields = ['field_request_data_csv', 'section_ix_xi_data'];
   foreach ($resolver->getReferences($file) as $usage) {
     $entity = $resolver->loadEntityFromUsage($usage);
     $node = $entity;
     $parent_field = $usage->fieldName;
-    if ($entity instanceof ParagraphInterface && $entity->bundle() === 'raw_data_component_upload' && $usage->fieldName === 'field_request_data_csv') {
+    if ($entity instanceof ParagraphInterface && $entity->bundle() === 'raw_data_component_upload' && in_array($usage->fieldName, $upload_fields, TRUE)) {
       $is_report_file = TRUE;
       $access->addCacheableDependency($entity);
       $node = $entity->getParentEntity();
@@ -168,10 +170,11 @@ function foia_raw_data_to_report_form_node_form_alter(&$form, FormStateInterface
   }
   $form['field_component_uploads']['#prefix'] = '<div id="raw-data-component-uploads">';
   $form['field_component_uploads']['#suffix'] = '</div>';
+  ComponentPlaceholders::build($form, $form_state);
   $form['field_agency']['widget'][0]['target_id']['#ajax'] = [
     'callback' => 'foia_raw_data_to_report_refresh_components',
     'wrapper' => 'raw-data-component-uploads',
-    'event' => 'change',
+    'event' => 'autocompleteclose change',
   ];
 }
 

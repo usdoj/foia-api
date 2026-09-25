@@ -3,12 +3,12 @@
 namespace Drupal\foia_raw_data_to_report;
 
 /**
- * Streams validated CSVs into fiscal-year request statistics.
+ * Streams validated CSVs into fiscal-year consultation statistics.
  */
-final class RequestStatisticsAggregator {
+final class ConsultationStatisticsAggregator {
 
   /**
-   * Counters initialized even for a component with no request rows.
+   * Counters initialized even for a component with no consultation rows.
    */
   private const EMPTY_COUNTS = [
     'pending_start' => 0,
@@ -37,7 +37,7 @@ final class RequestStatisticsAggregator {
       $counts = self::EMPTY_COUNTS;
       $stream = @fopen($source['uri'], 'rb');
       if ($stream === FALSE) {
-        throw new \RuntimeException('Unable to reopen a validated CSV for request statistics.');
+        throw new \RuntimeException('Unable to reopen a validated CSV for consultation statistics.');
       }
       try {
         $header = TRUE;
@@ -54,26 +54,24 @@ final class RequestStatisticsAggregator {
             $header = FALSE;
             continue;
           }
-          // Initial request statistics require a receipt date in Column I.
-          // Skip appeal-only rows and any other rows without that date before
-          // counting completions or pending requests for either XML section.
-          $received_text = trim($columns[8]);
-          if ($received_text === '') {
+          // Only Column C = Y identifies a consultation.
+          if (trim($columns[2]) !== 'Y') {
             continue;
           }
           $context = sprintf('Component %s, CSV %s, record %d', $source['component_label'] ?? $source['component_id'], basename($source['uri']), $record);
-          $received = $this->calendarDate($received_text, $context . ', Column I (Date Initially Received)');
-          if ($received < $start) {
-            $counts['pending_start']++;
-          }
-          elseif ($received <= $end) {
-            $counts['received']++;
-          }
-          else {
-            throw new \RuntimeException('CSV received date is after the report fiscal year.');
+          // Count receipt dates before or within the inclusive fiscal year.
+          $received = trim($columns[8]);
+          if ($received !== '') {
+            $received_date = $this->calendarDate($received, $context . ', Column I (Date Initially Received)');
+            if ($received_date < $start) {
+              $counts['pending_start']++;
+            }
+            elseif ($received_date <= $end) {
+              $counts['received']++;
+            }
           }
 
-          // Count end-of-year pending requests directly from blank Column K.
+          // Consultations closed after year-end or still open are pending.
           $completed = trim($columns[10]);
           if ($completed === '') {
             $counts['pending_end']++;
@@ -83,17 +81,18 @@ final class RequestStatisticsAggregator {
             if ($completed_date >= $start && $completed_date <= $end) {
               $counts['processed']++;
             }
+            elseif ($completed_date > $end) {
+              $counts['pending_end']++;
+            }
           }
         }
         if (!feof($stream)) {
-          throw new \RuntimeException('Unable to finish reading a CSV for request statistics.');
+          throw new \RuntimeException('Unable to finish reading a CSV for consultation statistics.');
         }
       }
       finally {
         fclose($stream);
       }
-      // The counts must reconcile before any XML file can be replaced.
-      $this->checkBalance($counts, (string) $source['component_id']);
       $id = $source['component_id'];
       $components[$id] ??= self::EMPTY_COUNTS;
       foreach ($counts as $key => $value) {
@@ -107,7 +106,6 @@ final class RequestStatisticsAggregator {
         $overall[$key] += $value;
       }
     }
-    $this->checkBalance($overall, 'agency overall');
     return ['components' => $components, 'overall' => $overall];
   }
 
@@ -120,15 +118,6 @@ final class RequestStatisticsAggregator {
       throw new \RuntimeException($context . ': CSV contains an invalid date after validation: ' . ($value === '' ? '[blank]' : $value) . '. Expected MM/DD/YYYY.');
     }
     return (int) $parts[3] * 10000 + (int) $parts[1] * 100 + (int) $parts[2];
-  }
-
-  /**
-   * Checks pending start + received - processed = pending end.
-   */
-  private function checkBalance(array $counts, string $label): void {
-    if ($counts['pending_start'] + $counts['received'] - $counts['processed'] !== $counts['pending_end']) {
-      throw new \RuntimeException('Request statistics do not balance for ' . $label . '.');
-    }
   }
 
 }

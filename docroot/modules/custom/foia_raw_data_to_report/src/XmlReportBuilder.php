@@ -73,11 +73,21 @@ final class XmlReportBuilder {
    *   Component and agency counters from ExpeditedProcessingAggregator.
    * @param array $fee_waivers
    *   Component and agency counters from FeeWaiverAggregator.
+   * @param array $fees_collected
+   *   Component and agency totals in cents from FeesCollectedAggregator.
+   * @param array $backlog
+   *   Component and agency counters from BacklogAggregator.
+   * @param array $consultation_statistics
+   *   Consultation counters by component and overall.
+   * @param array $oldest_pending_consultations
+   *   Component and overall lists of the ten oldest pending consultations.
+   * @param array $personnel_and_cost
+   *   Exact component and agency totals from PersonnelAndCostAggregator.
    *
    * @return string
    *   The serialized report XML.
    */
-  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = [], array $pending_perfected_requests = [], array $oldest_pending_requests = [], array $expedited_processing = [], array $fee_waivers = []): string {
+  public function build(TermInterface $agency, array $components, int $fiscal_year, array $statutes = [], array $request_statistics = [], array $dispositions = [], array $other_reasons = [], array $applied_exemptions = [], array $appeal_statistics = [], array $appeal_dispositions = [], array $appeal_exemptions = [], array $appeal_denials = [], array $appeal_other_reasons = [], array $appeal_response_times = [], array $oldest_pending_appeals = [], array $processed_response_times = [], array $information_granted_response_times = [], array $simple_response_increments = [], array $complex_response_increments = [], array $expedited_response_increments = [], array $pending_perfected_requests = [], array $oldest_pending_requests = [], array $expedited_processing = [], array $fee_waivers = [], array $fees_collected = [], array $backlog = [], array $consultation_statistics = [], array $oldest_pending_consultations = [], array $personnel_and_cost = []): string {
     $document = new \DOMDocument('1.0', 'UTF-8');
     $document->formatOutput = TRUE;
     $root = $document->createElementNS(self::NAMESPACES['iepd'], 'iepd:FoiaAnnualReport');
@@ -193,6 +203,41 @@ final class XmlReportBuilder {
       $this->addFeeWaivers($document, $root, $fee_waivers, $component_map);
     }
 
+    $this->addPersonnelAndCost($document, $root, $component_map, $personnel_and_cost);
+
+    if ($fees_collected !== []) {
+      $this->addFeesCollected($document, $root, $fees_collected, $component_map);
+    }
+
+    $this->addSubsectionUsed($document, $root, $component_map, $personnel_and_cost);
+    $this->addSubsectionPost($document, $root, $component_map, $personnel_and_cost);
+
+    if ($backlog !== []) {
+      $this->addBacklog($document, $root, $backlog, $component_map);
+    }
+    if ($consultation_statistics !== []) {
+      $this->addProcessingStatistics($document, $root, $consultation_statistics, $component_map, 'ProcessedConsultationSection', 'PCN');
+    }
+    if ($oldest_pending_consultations !== []) {
+      $this->addOldestPendingItems($document, $root, $oldest_pending_consultations, $component_map, 'OldestPendingConsultationSection', 'OPC');
+    }
+
+    if ($request_statistics !== []) {
+      $this->addProcessingComparison($document, $root, $request_statistics, $component_map, 'ProcessedRequestComparisonSection', 'PRC');
+    }
+
+    if ($backlog !== []) {
+      $this->addBacklogComparison($document, $root, $backlog, $component_map, 'BackloggedRequestComparisonSection', 'BLR', 'requests');
+    }
+
+    if ($appeal_statistics !== []) {
+      $this->addProcessingComparison($document, $root, $appeal_statistics, $component_map, 'ProcessedAppealComparisonSection', 'APC');
+    }
+
+    if ($backlog !== []) {
+      $this->addBacklogComparison($document, $root, $backlog, $component_map, 'BackloggedAppealComparisonSection', 'ABC', 'appeals');
+    }
+
     $xml = $document->saveXML();
     if ($xml === FALSE) {
       throw new \RuntimeException('Unable to serialize the raw data report XML.');
@@ -239,7 +284,7 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds request or appeal counters and their organization references.
+   * Adds processing counters and their organization references.
    */
   private function addProcessingStatistics(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map, string $section_name, string $prefix): void {
     $section = $this->addTextElement($document, $root, 'foia', $section_name);
@@ -255,7 +300,7 @@ final class XmlReportBuilder {
     }
     $organizations['ORG0'] = $statistics['overall'];
 
-    // Match organization suffixes: PS/PA1 links to ORG1, PS/PA0 to ORG0.
+    // Match each statistics ID suffix to its corresponding organization.
     foreach ($organizations as $organization_id => $counts) {
       $entry = $this->addTextElement($document, $section, 'foia', 'ProcessingStatistics');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
@@ -266,6 +311,67 @@ final class XmlReportBuilder {
     // Statistics precede associations, matching the example and exporter.
     foreach ($organizations as $organization_id => $counts) {
       $association = $this->addTextElement($document, $section, 'foia', 'ProcessingStatisticsOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds request or appeal comparisons with zero counts for last year.
+   */
+  private function addProcessingComparison(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map, string $section_name, string $prefix): void {
+    $section = $this->addTextElement($document, $root, 'foia', $section_name);
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'ProcessingComparison');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
+      // Reuse the inclusive fiscal-year counts already aggregated.
+      $fields = [
+        'ItemsReceivedLastYearQuantity' => 0,
+        'ItemsReceivedCurrentYearQuantity' => $counts['received'],
+        'ItemsProcessedLastYearQuantity' => 0,
+        'ItemsProcessedCurrentYearQuantity' => $counts['processed'],
+      ];
+      foreach ($fields as $name => $quantity) {
+        $this->addTextElement($document, $entry, 'foia', $name, (string) $quantity);
+      }
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'ProcessingComparisonOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds request or appeal backlog comparisons with zero for last year.
+   */
+  private function addBacklogComparison(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map, string $section_name, string $prefix, string $counter): void {
+    $section = $this->addTextElement($document, $root, 'foia', $section_name);
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'BacklogComparison');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
+      // Reuse the matching count emitted in BacklogSection.
+      $this->addTextElement($document, $entry, 'foia', 'BacklogLastYearQuantity', '0');
+      $this->addTextElement($document, $entry, 'foia', 'BacklogCurrentYearQuantity', (string) $counts[$counter]);
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'BacklogComparisonOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
@@ -647,6 +753,144 @@ final class XmlReportBuilder {
       $association = $this->addTextElement($document, $section, 'foia', 'FeeWaiverOrganizationAssociation');
       $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'FW' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds personnel and cost totals with their organization references.
+   */
+  private function addPersonnelAndCost(\DOMDocument $document, \DOMElement $root, array $component_map, array $statistics): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'PersonnelAndCostSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id] ?? [];
+    }
+    $organizations['ORG0'] = $statistics['overall'] ?? [];
+    $fields = [
+      'FullTimeEmployeeQuantity',
+      'EquivalentFullTimeEmployeeQuantity',
+      'TotalFullTimeStaffQuantity',
+      'ProcessingCostAmount',
+      'LitigationCostAmount',
+      'TotalCostAmount',
+    ];
+    foreach ($organizations as $organization_id => $values) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'PersonnelAndCost');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PC' . substr($organization_id, 3));
+      foreach ($fields as $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, $values[$name] ?? 'N/A');
+      }
+    }
+    foreach ($organizations as $organization_id => $values) {
+      $association = $this->addTextElement($document, $section, 'foia', 'PersonnelAndCostOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'PC' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds Section IX-XI fee totals and their ratios to total costs.
+   */
+  private function addFeesCollected(\DOMDocument $document, \DOMElement $root, array $fees, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'FeesCollectedSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $fees['components'][$component_id];
+    }
+    $organizations['ORG0'] = $fees['overall'];
+    foreach ($organizations as $organization_id => $values) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'FeesCollected');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'FC' . substr($organization_id, 3));
+      $this->addTextElement($document, $entry, 'foia', 'FeesCollectedAmount', $values['amount']);
+      $this->addTextElement($document, $entry, 'foia', 'FeesCollectedCostPercent', $values['ratio']);
+    }
+    foreach ($organizations as $organization_id => $values) {
+      $association = $this->addTextElement($document, $section, 'foia', 'FeesCollectedOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'FC' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds Section IX-XI subsection-use counts and organization references.
+   */
+  private function addSubsectionUsed(\DOMDocument $document, \DOMElement $root, array $component_map, array $statistics): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'SubsectionUsedSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id]['TimesUsedQuantity'] ?? '0';
+    }
+    $organizations['ORG0'] = $statistics['overall']['TimesUsedQuantity'] ?? '0';
+    foreach ($organizations as $organization_id => $quantity) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'SubsectionUsed');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'SU' . substr($organization_id, 3));
+      $this->addTextElement($document, $entry, 'foia', 'TimesUsedQuantity', $quantity);
+    }
+    foreach ($organizations as $organization_id => $quantity) {
+      $association = $this->addTextElement($document, $section, 'foia', 'SubsectionUsedOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'SU' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds Section IX-XI posting counts and their organization references.
+   */
+  private function addSubsectionPost(\DOMDocument $document, \DOMElement $root, array $component_map, array $statistics): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'SubsectionPostSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id] ?? [];
+    }
+    $organizations['ORG0'] = $statistics['overall'] ?? [];
+    foreach ($organizations as $organization_id => $values) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'Subsection');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'SP' . substr($organization_id, 3));
+      $this->addTextElement($document, $entry, 'foia', 'PostedbyFOIAQuantity', $values['PostedbyFOIAQuantity'] ?? '0');
+      $this->addTextElement($document, $entry, 'foia', 'PostedbyProgramQuantity', $values['PostedbyProgramQuantity'] ?? '0');
+    }
+    foreach ($organizations as $organization_id => $values) {
+      $association = $this->addTextElement($document, $section, 'foia', 'SubsectionPostOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'SP' . substr($organization_id, 3));
+      $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
+      $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+  }
+
+  /**
+   * Adds request and appeal backlog counts with organization links.
+   */
+  private function addBacklog(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map): void {
+    $section = $this->addTextElement($document, $root, 'foia', 'BacklogSection');
+    $organizations = [];
+    foreach ($component_map as $component_id => $organization_id) {
+      $organizations[$organization_id] = $statistics['components'][$component_id];
+    }
+    $organizations['ORG0'] = $statistics['overall'];
+    $fields = [
+      'requests' => 'BackloggedRequestQuantity',
+      'appeals' => 'BackloggedAppealQuantity',
+    ];
+    foreach ($organizations as $organization_id => $counts) {
+      $entry = $this->addTextElement($document, $section, 'foia', 'Backlog');
+      $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'BK' . substr($organization_id, 3));
+      foreach ($fields as $key => $name) {
+        $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+      }
+    }
+    foreach ($organizations as $organization_id => $counts) {
+      $association = $this->addTextElement($document, $section, 'foia', 'BacklogOrganizationAssociation');
+      $reference = $this->addTextElement($document, $association, 'foia', 'ComponentDataReference');
+      $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', 'BK' . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }

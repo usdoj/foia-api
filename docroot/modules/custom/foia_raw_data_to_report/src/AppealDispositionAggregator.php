@@ -21,7 +21,8 @@ final class AppealDispositionAggregator {
    * Counts each nonblank disposition once per row, then sums component counts.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    *
    * @return array
    *   Component counts keyed by entity ID and overall counts, keyed by outcome.
@@ -57,7 +58,7 @@ final class AppealDispositionAggregator {
           }
           // Reject unmapped values rather than silently omitting requests.
           if (!isset(self::DISPOSITIONS[$code])) {
-            throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown Appeal Disposition in Column Z.', $id, $record));
+            throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown Appeal Disposition in Column Z.', $source['component_label'] ?? $id, $record));
           }
           $components[$id][self::DISPOSITIONS[$code]]++;
         }

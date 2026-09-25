@@ -3,7 +3,7 @@
 namespace Drupal\foia_raw_data_to_report;
 
 /**
- * Streams Columns X and Y into calendar-day response time distributions.
+ * Streams Columns X and Y into working-day response time distributions.
  */
 final class AppealResponseTimeAggregator {
 
@@ -11,7 +11,8 @@ final class AppealResponseTimeAggregator {
    * Calculates component and agency statistics without retaining CSV rows.
    *
    * @param array $sources
-   *   Component/file pairs, each with component_id and uri keys.
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
    * @param int $fiscal_year
    *   The validated report year.
    *
@@ -22,6 +23,7 @@ final class AppealResponseTimeAggregator {
     $timezone = new \DateTimeZone('UTC');
     $start = new \DateTimeImmutable(($fiscal_year - 1) . '-10-01', $timezone);
     $end = new \DateTimeImmutable($fiscal_year . '-09-30', $timezone);
+    $working_days = new WorkingDays();
     $histograms = [];
     foreach ($sources as $source) {
       $id = $source['component_id'];
@@ -45,7 +47,7 @@ final class AppealResponseTimeAggregator {
             $header = FALSE;
             continue;
           }
-          $context = sprintf('Component %s, CSV record %d', $id, $record);
+          $context = sprintf('Component %s, CSV record %d', $source['component_label'] ?? $id, $record);
           // Only rows with an appeal contribute to response time statistics.
           $received_text = trim($columns[23]);
           $completed = trim($columns[24]);
@@ -61,9 +63,9 @@ final class AppealResponseTimeAggregator {
           if ($finish < $begin || $finish > $end) {
             throw new \RuntimeException($context . ': Response time dates must be in chronological order and within the report fiscal year.');
           }
-          // Elapsed calendar days exclude the starting day; same-day is zero.
+          // Working days exclude the starting day; same-day is zero.
           // UTC dates avoid daylight-saving changes affecting the calculation.
-          $days = (int) $begin->diff($finish)->days;
+          $days = $working_days->count($begin->format('m/d/Y'), $finish->format('m/d/Y'));
           $histograms[$id][$days] = ($histograms[$id][$days] ?? 0) + 1;
         }
         if (!feof($stream)) {

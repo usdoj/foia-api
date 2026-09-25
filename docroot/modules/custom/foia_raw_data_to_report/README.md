@@ -93,8 +93,14 @@ data records are checked. Blank records are skipped; quoted commas, escaped
 quotes, and multiline values are supported. Record numbers include the header
 and blank records and are not physical line numbers for multiline CSVs.
 
-The first validation error produces a human-readable message identifying the
-CSV record. Column-count errors include the expected and actual counts. Missing, unreadable, empty, and non-CSV uploads also
+Validation scans the entire CSV and collects all applicable errors, including
+multiple errors on the same record. Each message identifies its CSV record.
+Duplicate messages within a record are listed once. Column-count errors include
+the expected and actual counts; other checks on that malformed record are
+skipped, but later records are still checked. Invalid dates are reported without
+running dependent date calculations. CSV rows are streamed; accumulated error
+messages and seen request numbers consume memory in proportion to their count.
+Missing, unreadable, empty, and non-CSV uploads also
 produce messages. Validation failures finish the queue item without generating
 XML or changing any existing XML attachment. Correct the CSV and click Generate
 XML Report again to retry. Each upload result identifies its component and filename,
@@ -228,6 +234,7 @@ field. `field_component_uploads` is an unlimited Paragraphs reference to
 - Required `field_agency_component`, reusing the existing paragraph field storage.
 - Required, single-value `field_request_data_csv`, accepting CSV files only and
   storing them privately.
+- Required, single-value `section_ix_xi_data`, also accepting private CSV files.
 
 A subset of the agency's components is allowed. At least one upload is needed
 for processing; reports can otherwise be saved without uploads. Duplicate
@@ -244,7 +251,8 @@ changed.
 Import the exported configuration and rebuild caches before running the queue.
 The old node-level CSV field is replaced, with no migration of existing uploads.
 This follows the pre-launch assumption that existing upload content is disposable.
-The queue payload remains the parent node ID. Edits during processing are not
+The queue payload includes the parent node ID, requester UID, and a unique
+notification ID. Edits during processing are not
 locked or snapshotted. CSV conversion produces one partial annual report XML document
 only after every component upload passes validation.
 
@@ -291,9 +299,10 @@ file is replaced. The existing `foia_export_xml` module is unchanged.
 ## Processed request statistics
 
 `RequestStatisticsAggregator` makes a separate streaming pass after validation,
-retaining only four counters per component. Every data row counts, including
-consultations and rows without statute codes. Headers and blank records are
-skipped using the same rules as validation.
+retaining only four counters per component. Only rows with a nonblank Column I
+count, including consultations and rows without statute codes. Appeal-only rows
+and other rows without Column I are excluded from all counters. Headers and
+blank records are skipped using the same rules as validation.
 
 - Pending at start: I is before October 1 of the previous year.
 - Received: I is within the fiscal year, including both boundaries.
@@ -478,8 +487,8 @@ Date Received are excluded; a closed date without a received date is rejected.
 The start is the later of Appeal Date Received and October 1 of the previous
 year. The end is Appeal Date Closed, or September 30 of the report year when
 Y is blank.
-Elapsed calendar days exclude the starting day and include the ending day;
-same-day completion is zero. Weekends and holidays count.
+Elapsed working days exclude the starting day and include the ending day;
+same-day completion is zero. Weekends and federal holidays do not count.
 
 Day-frequency maps keep memory independent of the number of rows. They yield
 the exact median (averaging the middle pair for even counts), average rounded
@@ -497,7 +506,7 @@ blank Column Y. It retains only the ten earliest received dates per component
 and the ten earliest across the agency. Repeated dates remain separate items;
 fewer than ten pending appeals produce only the items available.
 
-Pending days are elapsed calendar days from the actual received date through
+Pending days are elapsed working days from the actual received date through
 September 30 of the report year, without clamping to the fiscal-year start.
 Same-day receipt is zero days. XML receipt dates use `YYYY-MM-DD`.
 `OldestPendingAppealSection` follows the appeal response times, with `OPA1`,
@@ -596,7 +605,7 @@ by descending pending days, then ascending receipt date for ties. Duplicate
 rows remain separate entries. Empty components retain their empty container
 and association. `OldestPendingRequestSection` follows pending perfected
 requests, with ISO receipt dates and `OPR1`, `OPR2`, etc.; `OPR0` is the agency.
-The existing oldest-appeal section continues using calendar days.
+The oldest-appeal section also uses the shared working-day calendar.
 
 ## Expedited processing
 
@@ -624,3 +633,217 @@ For appeal rows (Column X populated), CSV validation requires E–P and T–W
 to be blank. Q, R, and S may contain expedited-processing data and retain
 their date and dependency checks. Appeal rows are exempt from the rule that
 S = G requires M = E, since M must remain blank on these rows.
+
+## Personnel and cost
+
+`PersonnelAndCostSection` follows fee waivers. Every uploaded component and
+the agency have the six personnel and cost values sourced from Section IX-XI
+Columns A-D, with calculated staff and cost totals. `PC1`, `PC2`, etc. and
+agency `PC0` link to Organization entries through
+`PersonnelAndCostOrganizationAssociation`.
+
+## Fees collected
+
+`FeesCollectedAggregator` uses Section IX-XI Column E for each component's
+fees, with agency fees summed across components. `FeesCollectedCostPercent`
+is fees divided by the matching `TotalCostAmount` from personnel and cost,
+rounded half-up to four decimal places without multiplying by 100. The agency
+ratio uses total agency fees divided by total agency costs. A zero total cost
+produces `0.0000`, even when fees are nonzero. Fee amounts are also formatted
+to four decimal places, including `0.0000` for zero. Exact decimal arithmetic
+avoids floating-point rounding. Column W in the raw request CSV no longer
+supplies this section. Existing FC/ORG links and zero-count entries remain.
+
+## Subsection use
+
+`SubsectionUsedSection` uses Column F (Subsection (c) Exclusions) from each
+component's Section IX-XI CSV for `TimesUsedQuantity`. Agency quantities sum
+component quantities with exact integer arithmetic. Zero values remain present.
+`SU1`, `SU2`, etc. and agency `SU0` retain the existing Organization links through
+`SubsectionUsedOrganizationAssociation`. These values are collected in the same
+pass as personnel, cost, and fee totals.
+
+## Subsection posting
+
+`SubsectionPostSection` uses Section IX-XI Column G for `PostedbyFOIAQuantity`
+and Column H for `PostedbyProgramQuantity`. Agency quantities sum component
+quantities using exact integer arithmetic, including zeros. `SP1`, `SP2`, etc.
+and agency `SP0` retain Organization links through
+`SubsectionPostOrganizationAssociation`. These values are collected in the
+same pass as personnel, cost, fee, and exclusion totals.
+
+## Backlog
+
+`BacklogAggregator` counts rows whose request or appeal interval exceeds the
+working days allowed in Column D (exactly that many days does not qualify).
+Rows with blank Days Allowed are excluded from both counts. Requests use J, falling back
+to I, through K; appeals use X through Y. Open rows use September 30 of the
+report year. Actual start dates are retained, including prior fiscal years.
+No track or disposition filter applies. Rows with no start or end dates for
+an item are skipped; a closing date without a start produces an error.
+
+`BacklogSection` follows subsection posting, emits both counts including zeros,
+and associates `BK1`, `BK2`, etc. and agency `BK0` with Organization entries.
+Agency counts sum component counts. Appeal response-time summaries now also
+use working days, retaining their existing fiscal-start clamp and year-end
+fallback; backlog intervals use the full X-to-Y interval specified above.
+
+## Processed consultations
+
+`ConsultationStatisticsAggregator` streams rows with Column C equal to `Y`.
+Column I before October 1 counts as pending at start; October 1 through
+September 30 (inclusive) counts as received. Column K within those inclusive
+boundaries counts as processed; blank K or K after September 30 counts as
+pending at end. Blank I contributes to neither receipt-date counter.
+
+`ProcessedConsultationSection` emits all four counters, including zeros, for
+each component and the agency total. `PCN1`, `PCN2`, etc. and `PCN0` link to the
+Organization entries through `ProcessingStatisticsOrganizationAssociation`.
+Existing CSV validation rules remain in effect, including the restriction on
+completion dates outside the fiscal year.
+
+## Oldest pending consultations
+
+`OldestPendingRequestAggregator` also supports a consultation-only listing:
+Column C must equal `Y`, Column I must contain a receipt date, and Column K
+must be blank. Working days run from the actual receipt date through September
+30 of the report year, excluding the receipt day, weekends, and the shared
+federal holidays. Dates before the fiscal year are not clamped.
+
+`OldestPendingConsultationSection` follows processed consultations and uses
+`OPC1`, `OPC2`, etc. and agency `OPC0` with the usual Organization associations.
+Each listing retains at most ten items, ordered by pending working days
+(descending), then receipt date (ascending). Duplicate dates remain separate
+items. Empty components retain an empty `OldestPendingItems` entry; fewer than
+ten items are emitted when fewer qualify. Only ten items per component and
+ten agency-wide are retained in memory.
+
+## Processed request comparison
+
+`ProcessedRequestComparisonSection` reuses the existing request statistics:
+Column I within the fiscal year supplies `ItemsReceivedCurrentYearQuantity`,
+and Column K within the fiscal year supplies `ItemsProcessedCurrentYearQuantity`.
+October 1 and September 30 are included. Both last-year quantities are `0`.
+No additional CSV pass is needed.
+
+Each component and the agency have a `ProcessingComparison`, including zero
+counts, with `PRC1`, `PRC2`, etc. and `PRC0` linked to Organization entries via
+`ProcessingComparisonOrganizationAssociation`. Agency quantities are the sums
+of component quantities.
+
+## Backlogged request comparison
+
+`BackloggedRequestComparisonSection` reuses the request counts from
+`BacklogSection` for `BacklogCurrentYearQuantity`. `BacklogLastYearQuantity`
+is always `0`. No additional CSV pass is needed.
+
+Each component and the agency have a `BacklogComparison`, including zero
+counts. `BLR1`, `BLR2`, etc. and agency `BLR0` link to their Organization entries
+through `BacklogComparisonOrganizationAssociation`.
+
+## Processed appeal comparison
+
+`ProcessedAppealComparisonSection` reuses the received and processed counts
+from `ProcessedAppealSection`. Both last-year quantities are `0`. Each
+component and the agency have a `ProcessingComparison`, including zero counts,
+with `APC1`, `APC2`, etc. and `APC0` linked to Organization entries through
+`ProcessingComparisonOrganizationAssociation`. No additional CSV pass is
+needed; the request and appeal comparisons share the same XML formatter.
+
+## Backlogged appeal comparison
+
+`BackloggedAppealComparisonSection` reuses `BackloggedAppealQuantity` from
+`BacklogSection` for its current-year count and emits `0` for last year.
+Every component and the agency have a `BacklogComparison`, including zeros,
+with `ABC1`, `ABC2`, etc. and `ABC0` linked to Organization entries through
+`BacklogComparisonOrganizationAssociation`. Request and appeal backlog
+comparisons share the same XML formatter and need no additional CSV pass.
+
+### Appeal receipt date validation
+
+Every data row must have exactly one receipt date: Column I for an initial
+request or Column X for an appeal. If I is blank, X is required; both blank
+produces "Appeal Date Received cannot be blank". The existing Column X
+exclusion rule rejects rows containing both I and X.
+
+When populated, X must be a real MM/DD/YYYY date (single-digit months/days are
+accepted), no later than September 30 of the report year. Earlier fiscal years
+are allowed. Errors identify Column X and the CSV record; the queue adds the
+filename and component when saving messages.
+
+Column Y (Appeal Date Closed) may be blank when Z (Appeal Disposition) is blank.
+When populated, it must be a valid MM/DD/YYYY date within the inclusive fiscal
+year and cannot precede a valid X date. Y requires Z, and Z requires Y; these
+presence checks are independent of date validity. All failures identify Column
+Y and the record and are collected with other validation messages.
+
+Column Z dispositions `Affirmed`, `Affirmed on Appeal`, and
+`Partially Affirmed & Partially Reversed/Remanded` require a nonblank AA or AC
+(or both). `Closed for Other Reasons` requires nonblank AA even when AC has
+data. Surrounding whitespace is ignored. These presence checks do not change
+the disposition labels recognized by XML aggregation.
+
+Column AB requires nonblank explanatory text when AA contains `Other` as a
+complete comma-separated reason. Whitespace around entries is ignored; a
+longer reason such as `Improper Request for Other Reasons` does not trigger
+this rule. Failures identify Column AB and the CSV record.
+
+Nonblank Column AC requires Column Z to be exactly `Affirmed on Appeal` or
+`Partially Affirmed & Partially Reversed/Remanded`, ignoring surrounding
+whitespace. The shorter `Affirmed` label does not satisfy this rule. Blank AC
+adds no disposition requirement. Errors identify Column AC and the record.
+
+## Completion notifications
+
+New queue items record the user who clicks Generate XML Report and a unique
+notification ID. Successful XML generation, validation failure, and XML
+processing exceptions store a personal notification. On the requester's next
+normal HTML GET page visit, it becomes a Drupal status/error message linking
+to the report. No email is sent and no polling is performed. Rebuild Drupal's
+cache after deploying these service definitions (`ddev drush cr` locally).
+
+Delivery checks current node view access and suppresses deleted/inaccessible
+reports. AJAX and non-HTML requests do not consume notices. Notices and delivery
+receipts expire after 30 days; receipts suppress repeated failure notices for
+retries of the same queue item. A successful retry supersedes an unread failure.
+Older queue items without requester metadata still process normally but cannot
+notify a user. Notification storage failures are logged without altering XML
+processing or queue retry behavior.
+
+## Section IX-XI upload
+
+Each component paragraph now requires two single-file private CSV uploads:
+`field_request_data_csv` (help: Component Raw Data Report) and
+`section_ix_xi_data` (help: Section IX-XI Data). The second upload follows the
+same private download access rules, CSV extension restriction, and upload size
+settings as the first. It appears after the original upload on edit and view
+displays. Its presence and contents are validated; Columns A-D populate personnel
+and cost XML totals. Existing paragraphs need the second file when edited.
+Import the field and display configuration before running the updated code.
+
+## Section IX-XI CSV validation
+
+The first nonblank record must exactly match the eight header names and order
+from `OIP FY23 Section IX-XI Datav final.csv`, stored in
+`SectionDataCsvValidator::HEADERS`. Exactly one nonblank data row must follow.
+All eight cells are required: B accepts decimal notation (including whole
+numbers), and the other seven require integers. Optional signs and surrounding
+numeric whitespace are accepted; scientific notation, separators, currency,
+and blank cells are rejected. Headers are not trimmed. UTF-8 BOMs and blank
+lines are ignored, and record numbers include blank lines.
+
+The queue checks both CSVs for every component, collects all errors with file,
+component, record, and column context, and retains the existing XML if either
+file fails. Successful files receive `CSV validated.` messages. Section IX-XI
+Columns A-D populate the personnel and cost section.
+
+## Personnel and cost from Section IX-XI data
+
+Queue processing now supplies `PersonnelAndCostSection` with Column A full-time
+employees, Column B equivalent full-time employees, Column C processing costs,
+and Column D litigation costs. Total staff is A+B and total cost is C+D.
+Agency quantities sum the corresponding component values. Existing PC/ORG
+references and zero values are preserved. Exact decimal arithmetic uses the
+existing Brick Math dependency, avoiding floating-point rounding or integer
+overflow; output does not impose an additional decimal precision limit.
+Section IX-XI columns E-H supply fees and subsection statistics.
