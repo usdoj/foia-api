@@ -11,6 +11,7 @@ use Drupal\file\Entity\File;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\SectionDataCsvValidator;
 use Drupal\foia_raw_data_to_report\RequestStatisticsAggregator;
+use Drupal\foia_raw_data_to_report\Controller\XmlDownloadController;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\system\FileDownloadController;
@@ -261,10 +262,28 @@ try {
   $temporary->save();
   $files[] = $temporary;
   $controller = FileDownloadController::create(\Drupal::getContainer());
+  $xml_controller = XmlDownloadController::create(\Drupal::getContainer());
   $switcher = \Drupal::service('account_switcher');
   foreach ([new AnonymousUserSession(), $manager] as $account) {
     $switcher->switchTo($account);
     try {
+      $route_access = \Drupal::service('access_manager')->checkNamedRoute('foia_raw_data_to_report.xml_download', ['node' => $report->id()], $account);
+      $check($route_access === !$account->isAnonymous(), 'XML route access does not match report access.');
+      $check(!$xml_controller->access($components[0], $account)->isAllowed(), 'XML tab allowed on an unrelated content type.');
+      $empty_report = Node::create(['type' => 'raw_data_to_report']);
+      $check(!$xml_controller->access($empty_report, $account)->isAllowed(), 'XML tab allowed without an attachment.');
+      try {
+        $response = $xml_controller->download($report);
+        $check(!$account->isAnonymous(), 'Anonymous XML tab download allowed.');
+        $check($response->headers->get('Content-Type') === 'text/xml; charset=UTF-8', 'XML download MIME type incorrect.');
+        $check(str_starts_with($response->headers->get('Content-Disposition'), 'attachment;'), 'XML download is not an attachment.');
+        $check(str_contains($response->headers->get('Content-Disposition'), $xml->getFilename()), 'XML download lost the generated filename.');
+        $check($response->headers->hasCacheControlDirective('private') && $response->headers->hasCacheControlDirective('no-store'), 'XML download may be publicly cached.');
+        $check(file_get_contents($response->getFile()->getPathname()) === file_get_contents($xml->getFileUri()), 'XML route served a different file.');
+      }
+      catch (AccessDeniedHttpException $e) {
+        $check($account->isAnonymous(), 'Manager XML tab download denied.');
+      }
       foreach (array_merge($files, $section_files) as $file) {
         try {
           $response = $controller->download(new Request(['file' => substr($file->getFileUri(), 10)]));
