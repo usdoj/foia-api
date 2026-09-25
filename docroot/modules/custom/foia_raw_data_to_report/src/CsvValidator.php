@@ -13,6 +13,14 @@ final class CsvValidator {
   public const EXPECTED_COLUMNS = 29;
 
   /**
+   * Allowed exemption codes for Column P (Disposition Exemption(s) Applied).
+   */
+  public const ALLOWED_DISPOSITION_EXEMPTIONS = [
+    '1', '2', '3', '4', '5', '6',
+    '7a', '7b', '7c', '7d', '7e', '7f', '8', '9',
+  ];
+
+  /**
    * Returns human-readable errors, or an empty array when validation passes.
    *
    * Record numbers include the header and blank records. Quoted multiline
@@ -302,6 +310,11 @@ final class CsvValidator {
         if ($applied_exemptions !== '' && !preg_match('/^[a-zA-Z0-9]+(?:\s*,\s*[a-zA-Z0-9]+)*$/', $applied_exemptions)) {
           $errors[] = sprintf('CSV record %d: Column P: Multiple exemptions must be separated with a comma (e.g., 3,5,7a,7c,7d)', $record);
         }
+        // Column P: Each comma-separated entry must match an allowed code.
+        $exemptions = array_map('trim', explode(',', $applied_exemptions));
+        if ($applied_exemptions !== '' && array_diff($exemptions, self::ALLOWED_DISPOSITION_EXEMPTIONS)) {
+          $errors[] = sprintf('CSV record %d: Column P: Disposition Exemption(s) Applied must contain only these values: %s', $record, implode(', ', self::ALLOWED_DISPOSITION_EXEMPTIONS));
+        }
 
         // Column P: Disposition code 3 requires at least one exemption.
         if ($disposition === '3' && $applied_exemptions === '') {
@@ -315,7 +328,6 @@ final class CsvValidator {
 
         // Column P: A complete exemption 3 entry requires statute data in E.
         // This complements the Column E check requiring exemption 3 in P.
-        $exemptions = array_map('trim', explode(',', $applied_exemptions));
         if (in_array('3', $exemptions, TRUE) && $statutes === '') {
           $errors[] = sprintf("CSV record %d: Column P: If Column P contains a '3', Column E must contain information", $record);
         }
