@@ -902,7 +902,7 @@ final class XmlReportBuilder {
   private function addTextElement(\DOMDocument $document, \DOMElement $parent, string $prefix, string $name, string $text = ''): \DOMElement {
     $element = $document->createElementNS(self::NAMESPACES[$prefix], $prefix . ':' . $name);
     if ($text !== '') {
-      $element->appendChild($document->createTextNode($text));
+      $element->appendChild($document->createTextNode($this->normalizeText($text)));
     }
     $parent->appendChild($element);
     return $element;
@@ -914,9 +914,32 @@ final class XmlReportBuilder {
   private function addOrganizationText(\DOMDocument $document, \DOMElement $parent, string $abbreviation, string $name): void {
     foreach (['OrganizationAbbreviationText' => $abbreviation, 'OrganizationName' => $name] as $element => $value) {
       $child = $document->createElementNS(self::NAMESPACES['nc'], 'nc:' . $element);
-      $child->appendChild($document->createTextNode($value));
+      $child->appendChild($document->createTextNode($this->normalizeText($value)));
       $parent->appendChild($child);
     }
+  }
+
+  /**
+   * Normalizes legacy CSV text to UTF-8 characters permitted by XML 1.0.
+   */
+  private function normalizeText(string $text): string {
+    if (!mb_check_encoding($text, 'UTF-8')) {
+      // Preserve valid UTF-8 sequences, even in mixed-encoding CSV cells.
+      // Interpret remaining high bytes as Windows-1252, used by Excel CSVs.
+      $utf8 = '[\xC2-\xDF][\x80-\xBF]'
+        . '|\xE0[\xA0-\xBF][\x80-\xBF]'
+        . '|[\xE1-\xEC\xEE-\xEF][\x80-\xBF]{2}'
+        . '|\xED[\x80-\x9F][\x80-\xBF]'
+        . '|\xF0[\x90-\xBF][\x80-\xBF]{2}'
+        . '|[\xF1-\xF3][\x80-\xBF]{3}'
+        . '|\xF4[\x80-\x8F][\x80-\xBF]{2}';
+      $text = preg_replace_callback('/(?:' . $utf8 . ')(*SKIP)(*F)|[\x80-\xFF]/',
+        static fn(array $match): string => mb_convert_encoding($match[0], 'UTF-8', 'Windows-1252'),
+        $text);
+    }
+    // Keep tabs, line breaks, and valid Unicode. Replace forbidden characters
+    // visibly rather than silently joining words around embedded control bytes.
+    return preg_replace('/[^\x{9}\x{A}\x{D}\x{20}-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', "\u{FFFD}", $text);
   }
 
 }
