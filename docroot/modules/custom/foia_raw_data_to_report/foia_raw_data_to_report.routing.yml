@@ -1,0 +1,11 @@
+foia_raw_data_to_report.xml_download:
+  path: '/node/{node}/xml_download'
+  defaults:
+    _controller: '\Drupal\foia_raw_data_to_report\Controller\XmlDownloadController::download'
+    _title: 'XML'
+  requirements:
+    _custom_access: '\Drupal\foia_raw_data_to_report\Controller\XmlDownloadController::access'
+  options:
+    parameters:
+      node:
+        type: entity:node
