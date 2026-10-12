@@ -283,18 +283,19 @@ pass, one record at a time. Component identity comes from the paragraph, not
 Column A. Each distinct statute ID in Column E counts once per request row;
 agency totals sum the component counts. No request rows are retained.
 
-`StatuteAggregator::STATUTES` embeds all 77 labels from
-`ID_Statute_exemption_3.txt` verbatim, including its placeholder labels and
-punctuation. That file is not needed at runtime. Code 77 uses the trimmed
-Other Statute description in F; different descriptions produce separate statute
-entries. Other codes are grouped by their numeric ID.
+`StatuteAggregator::STATUTES` embeds statute names, information withheld, and
+case citations from `Exemption 3 Codes (003).csv`. Citation continuation rows
+are joined with spaces. Codes 66, 75, and 77, which are absent from that CSV,
+retain their original placeholder descriptions with empty withheld/citation
+values. The source CSV is not needed at runtime.
 
-Distinct, nonblank Information Withheld values from G and Case Citation values
-from H are retained separately per statute and joined with newlines. G populates
-`foia:ReliedUponStatuteInformationWithheldText`; H populates
-`nc:Case/nc:CaseTitleText`. Memory grows with distinct statutes, components, and
-text values, rather than total CSV rows; retaining all unique text can still
-consume memory if every request has different text.
+Codes 1-76 use only the embedded details and are grouped by numeric ID. Code
+77 uses the trimmed Other Statute description in F; different descriptions
+produce separate entries. Only code 77 reads Information Withheld from G and
+Case Citation from H, retaining distinct nonblank values joined with newlines.
+Withheld text populates `foia:ReliedUponStatuteInformationWithheldText`; citations
+populate `nc:Case/nc:CaseTitleText` (or `N/A` when empty). Memory grows with
+distinct statutes, components, and text values, rather than total CSV rows.
 
 `XmlReportBuilder` receives summaries, not CSV files. It adds
 `foia:Exemption3StatuteSection` after `foia:DocumentFiscalYearDate`, with `ES1`,
