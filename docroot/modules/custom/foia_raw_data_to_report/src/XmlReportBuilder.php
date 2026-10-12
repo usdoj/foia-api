@@ -2,6 +2,8 @@
 
 namespace Drupal\foia_raw_data_to_report;
 
+use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 use Drupal\taxonomy\TermInterface;
 
 /**
@@ -780,7 +782,9 @@ final class XmlReportBuilder {
       $entry = $this->addTextElement($document, $section, 'foia', 'PersonnelAndCost');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PC' . substr($organization_id, 3));
       foreach ($fields as $name) {
-        $this->addTextElement($document, $entry, 'foia', $name, $values[$name] ?? 'N/A');
+        // Round only output, preserving exact totals for fee ratios.
+        $value = isset($values[$name]) ? (string) BigDecimal::of($values[$name])->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros() : 'N/A';
+        $this->addTextElement($document, $entry, 'foia', $name, $value);
       }
     }
     foreach ($organizations as $organization_id => $values) {

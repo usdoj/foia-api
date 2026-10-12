@@ -41,6 +41,8 @@ class SectionDataCsvValidatorTest extends UnitTestCase {
   public function testValidData(): void {
     $row = [39, '1.85', 7164103, 1918485, 0, 0, 145, 823];
     $this->assertSame([], $this->validateCsv([SectionDataCsvValidator::HEADERS, $row], TRUE));
+    $row = ['1.234', '2.345', '3.456', '4.567', '5.678', 0, 0, 0];
+    $this->assertSame([], $this->validateCsv([SectionDataCsvValidator::HEADERS, $row]));
     $row = ['-1', ' 0 ', '+1', 0, 0, 0, 0, 0];
     $this->assertSame([], $this->validateCsv([[], SectionDataCsvValidator::HEADERS, $row, []]));
   }
@@ -68,11 +70,14 @@ class SectionDataCsvValidatorTest extends UnitTestCase {
    * Reports all invalid numeric cells without converting or rounding them.
    */
   public function testNumbers(): void {
-    $row = ['1.5', '1e3', '', '1,000', '$2', 'NaN', '  ', '2.0'];
+    $row = ['invalid', '1e3', '', '1,000', '$2', 'NaN', '  ', '2.0'];
     $errors = $this->validateCsv([SectionDataCsvValidator::HEADERS, $row]);
     $this->assertCount(8, $errors);
     $this->assertStringContainsString('record 2: Column B: Equivalent Full-Time Employees must be a decimal number', $errors[1]);
-    foreach ([0, 2, 3, 4, 5, 6, 7] as $index) {
+    foreach ([0, 2, 3, 4] as $index) {
+      $this->assertStringContainsString('must be a decimal number', $errors[$index]);
+    }
+    foreach ([5, 6, 7] as $index) {
       $this->assertStringContainsString('must be an integer', $errors[$index]);
     }
   }

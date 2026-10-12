@@ -658,8 +658,8 @@ fees, with agency fees summed across components. `FeesCollectedCostPercent`
 is fees divided by the matching `TotalCostAmount` from personnel and cost,
 rounded half-up to four decimal places without multiplying by 100. The agency
 ratio uses total agency fees divided by total agency costs. A zero total cost
-produces `0.0000`, even when fees are nonzero. Fee amounts are also formatted
-to four decimal places, including `0.0000` for zero. Exact decimal arithmetic
+produces `0.0000`, even when fees are nonzero. Fee amounts are rounded half-up
+to at most two decimal places, with trailing zeros removed. Exact decimal arithmetic
 avoids floating-point rounding. Column W in the raw request CSV no longer
 supplies this section. Existing FC/ORG links and zero-count entries remain.
 
@@ -835,8 +835,8 @@ Import the field and display configuration before running the updated code.
 The first nonblank record must exactly match the eight header names and order
 from `OIP FY23 Section IX-XI Datav final.csv`, stored in
 `SectionDataCsvValidator::HEADERS`. Exactly one nonblank data row must follow.
-All eight cells are required: B accepts decimal notation (including whole
-numbers), and the other seven require integers. Optional signs and surrounding
+All eight cells are required: A-E accept decimal notation (including whole
+numbers), and F-H require integers. Optional signs and surrounding
 numeric whitespace are accepted; scientific notation, separators, currency,
 and blank cells are rejected. Headers are not trimmed. UTF-8 BOMs and blank
 lines are ignored, and record numbers include blank lines.
@@ -854,5 +854,7 @@ and Column D litigation costs. Total staff is A+B and total cost is C+D.
 Agency quantities sum the corresponding component values. Existing PC/ORG
 references and zero values are preserved. Exact decimal arithmetic uses the
 existing Brick Math dependency, avoiding floating-point rounding or integer
-overflow; output does not impose an additional decimal precision limit.
+overflow. Personnel and cost XML values are rounded half-up to at most two
+decimal places, with trailing zeros removed. Totals are summed at full precision
+before output rounding; fee ratios also use the unrounded totals.
 Section IX-XI columns E-H supply fees and subsection statistics.

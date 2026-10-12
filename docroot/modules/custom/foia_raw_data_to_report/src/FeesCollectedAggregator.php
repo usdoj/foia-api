@@ -31,7 +31,7 @@ final class FeesCollectedAggregator {
     $amount = BigDecimal::of($values['FeesCollectedAmount']);
     $cost = BigDecimal::of($values['TotalCostAmount']);
     return [
-      'amount' => (string) $amount->toScale(4),
+      'amount' => (string) $amount->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros(),
       // A zero denominator produces zero, even if fees are nonzero.
       'ratio' => $cost->isZero() ? '0.0000' : (string) $amount->dividedBy($cost, 4, RoundingMode::HalfUp),
     ];
