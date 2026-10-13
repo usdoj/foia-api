@@ -318,6 +318,9 @@ final class XmlReportBuilder {
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
+    if (in_array($section_name, ['ProcessedRequestSection', 'ProcessedConsultationSection'], TRUE)) {
+      $this->addTextElement($document, $section, 'foia', 'FootnoteText');
+    }
   }
 
   /**
@@ -719,6 +722,12 @@ final class XmlReportBuilder {
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'EP' . substr($organization_id, 3));
       foreach ($fields as $key => $name) {
         $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+        if ($key === 'denied') {
+          foreach (['median' => 'AdjudicationMedianDaysValue', 'average' => 'AdjudicationAverageDaysValue'] as $statistic => $element) {
+            $value = ($counts['granted'] + $counts['denied'] === 0 || !isset($counts[$statistic])) ? 'N/A' : (string) BigDecimal::of((string) $counts[$statistic])->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros();
+            $this->addTextElement($document, $entry, 'foia', $element, $value);
+          }
+        }
       }
     }
     foreach ($organizations as $organization_id => $counts) {
@@ -749,6 +758,12 @@ final class XmlReportBuilder {
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'FW' . substr($organization_id, 3));
       foreach ($fields as $key => $name) {
         $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+        if ($key === 'denied') {
+          foreach (['median' => 'AdjudicationMedianDaysValue', 'average' => 'AdjudicationAverageDaysValue'] as $statistic => $element) {
+            $value = ($counts['granted'] + $counts['denied'] === 0 || !isset($counts[$statistic])) ? 'N/A' : (string) BigDecimal::of((string) $counts[$statistic])->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros();
+            $this->addTextElement($document, $entry, 'foia', $element, $value);
+          }
+        }
       }
     }
     foreach ($organizations as $organization_id => $counts) {
@@ -794,6 +809,7 @@ final class XmlReportBuilder {
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
+    $this->addTextElement($document, $section, 'foia', 'FootnoteText');
   }
 
   /**

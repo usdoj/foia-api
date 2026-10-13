@@ -235,8 +235,8 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $expedited_response_increments = (new ProcessedResponseTimeAggregator())->aggregateExpeditedIncrements($sources);
     $pending_perfected_requests = (new PendingPerfectedRequestsAggregator())->aggregate($sources, $fiscal_year);
     $oldest_pending_requests = (new OldestPendingRequestAggregator())->aggregate($sources, $fiscal_year);
-    $expedited_processing = (new ExpeditedProcessingAggregator())->aggregate($sources);
-    $fee_waivers = (new FeeWaiverAggregator())->aggregate($sources);
+    $expedited_processing = (new ExpeditedProcessingAggregator())->aggregate($sources, $fiscal_year);
+    $fee_waivers = (new FeeWaiverAggregator())->aggregate($sources, $fiscal_year);
     $backlog = (new BacklogAggregator())->aggregate($sources, $fiscal_year);
     $consultation_statistics = (new ConsultationStatisticsAggregator())->aggregate($sources, $fiscal_year);
     $oldest_pending_consultations = (new OldestPendingRequestAggregator())->aggregate($sources, $fiscal_year, TRUE);

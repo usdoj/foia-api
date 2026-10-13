@@ -642,7 +642,8 @@ and `EP0` link to their Organization entries. Agency counts sum components.
 
 `FeeWaiverAggregator` counts uppercase G and D in Column V for every component
 and sums those counts for the agency. Other values and blank cells do not
-contribute. No date, track, or disposition filter is applied.
+contribute. No track or disposition filter is applied to outcome counts.
+Adjudication summaries use T and U, substituting fiscal year-end for blank U.
 `FeeWaiverSection` follows expedited processing, emitting both granted and
 denied quantities even when zero. `FW1`, `FW2`, etc. reference components;
 `FW0` references the agency through `FeeWaiverOrganizationAssociation`.
@@ -867,3 +868,17 @@ overflow. Personnel and cost XML values are rounded half-up to at most two
 decimal places, with trailing zeros removed. Totals are summed at full precision
 before output rounding; fee ratios also use the unrounded totals.
 Section IX-XI columns E-H supply fees and subsection statistics.
+
+## 2025 example XML additions
+
+PersonnelAndCostSection, ProcessedConsultationSection, and ProcessedRequestSection
+end with an empty FootnoteText element after their organization associations.
+ExpeditedProcessing and FeeWaiver entries include AdjudicationMedianDaysValue
+and AdjudicationAverageDaysValue after granted/denied quantities. Working days
+are counted from Q to R for expedited processing and T to U for fee waivers,
+excluding the start date and including the end date. Missing completion dates
+use September 30 of the report fiscal year. Only granted/denied outcomes
+contribute; expedited processing continues to exclude appeal rows. Agency
+summaries combine interval frequencies rather than averaging component results.
+The new XML values use at most two decimal places, with N/A when both outcome
+counts are zero. The within-ten-days counter still requires an actual R date.
