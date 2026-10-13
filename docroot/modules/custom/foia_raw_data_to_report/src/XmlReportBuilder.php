@@ -2,6 +2,8 @@
 
 namespace Drupal\foia_raw_data_to_report;
 
+use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 use Drupal\taxonomy\TermInterface;
 
 /**
@@ -315,6 +317,9 @@ final class XmlReportBuilder {
       $reference->setAttributeNS(self::NAMESPACES['s'], 's:ref', $prefix . substr($organization_id, 3));
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
+    }
+    if (in_array($section_name, ['ProcessedRequestSection', 'ProcessedConsultationSection'], TRUE)) {
+      $this->addTextElement($document, $section, 'foia', 'FootnoteText');
     }
   }
 
@@ -717,6 +722,12 @@ final class XmlReportBuilder {
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'EP' . substr($organization_id, 3));
       foreach ($fields as $key => $name) {
         $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+        if ($key === 'denied') {
+          foreach (['median' => 'AdjudicationMedianDaysValue', 'average' => 'AdjudicationAverageDaysValue'] as $statistic => $element) {
+            $value = ($counts['granted'] + $counts['denied'] === 0 || !isset($counts[$statistic])) ? 'N/A' : (string) BigDecimal::of((string) $counts[$statistic])->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros();
+            $this->addTextElement($document, $entry, 'foia', $element, $value);
+          }
+        }
       }
     }
     foreach ($organizations as $organization_id => $counts) {
@@ -747,6 +758,12 @@ final class XmlReportBuilder {
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'FW' . substr($organization_id, 3));
       foreach ($fields as $key => $name) {
         $this->addTextElement($document, $entry, 'foia', $name, (string) $counts[$key]);
+        if ($key === 'denied') {
+          foreach (['median' => 'AdjudicationMedianDaysValue', 'average' => 'AdjudicationAverageDaysValue'] as $statistic => $element) {
+            $value = ($counts['granted'] + $counts['denied'] === 0 || !isset($counts[$statistic])) ? 'N/A' : (string) BigDecimal::of((string) $counts[$statistic])->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros();
+            $this->addTextElement($document, $entry, 'foia', $element, $value);
+          }
+        }
       }
     }
     foreach ($organizations as $organization_id => $counts) {
@@ -780,7 +797,9 @@ final class XmlReportBuilder {
       $entry = $this->addTextElement($document, $section, 'foia', 'PersonnelAndCost');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'PC' . substr($organization_id, 3));
       foreach ($fields as $name) {
-        $this->addTextElement($document, $entry, 'foia', $name, $values[$name] ?? 'N/A');
+        // Round only output, preserving exact totals for fee ratios.
+        $value = isset($values[$name]) ? (string) BigDecimal::of($values[$name])->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros() : 'N/A';
+        $this->addTextElement($document, $entry, 'foia', $name, $value);
       }
     }
     foreach ($organizations as $organization_id => $values) {
@@ -790,6 +809,7 @@ final class XmlReportBuilder {
       $organization = $this->addTextElement($document, $association, 'nc', 'OrganizationReference');
       $organization->setAttributeNS(self::NAMESPACES['s'], 's:ref', $organization_id);
     }
+    $this->addTextElement($document, $section, 'foia', 'FootnoteText');
   }
 
   /**

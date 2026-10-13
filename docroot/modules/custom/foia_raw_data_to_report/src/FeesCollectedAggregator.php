@@ -25,15 +25,15 @@ final class FeesCollectedAggregator {
   }
 
   /**
-   * Divides fees by total cost, without multiplying the ratio by 100.
+   * Calculates fees as a percentage of total cost.
    */
   private function calculate(array $values): array {
     $amount = BigDecimal::of($values['FeesCollectedAmount']);
     $cost = BigDecimal::of($values['TotalCostAmount']);
     return [
-      'amount' => (string) $amount->toScale(4),
+      'amount' => (string) $amount->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros(),
       // A zero denominator produces zero, even if fees are nonzero.
-      'ratio' => $cost->isZero() ? '0.0000' : (string) $amount->dividedBy($cost, 4, RoundingMode::HalfUp),
+      'ratio' => $cost->isZero() ? '0.0000' : (string) $amount->multipliedBy(100)->dividedBy($cost, 4, RoundingMode::HalfUp),
     ];
   }
 

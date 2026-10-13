@@ -283,18 +283,19 @@ pass, one record at a time. Component identity comes from the paragraph, not
 Column A. Each distinct statute ID in Column E counts once per request row;
 agency totals sum the component counts. No request rows are retained.
 
-`StatuteAggregator::STATUTES` embeds all 77 labels from
-`ID_Statute_exemption_3.txt` verbatim, including its placeholder labels and
-punctuation. That file is not needed at runtime. Code 77 uses the trimmed
-Other Statute description in F; different descriptions produce separate statute
-entries. Other codes are grouped by their numeric ID.
+`StatuteAggregator::STATUTES` embeds statute names, information withheld, and
+case citations from `Exemption 3 Codes (003).csv`. Citation continuation rows
+are joined with spaces. Codes 66, 75, and 77, which are absent from that CSV,
+retain their original placeholder descriptions with empty withheld/citation
+values. The source CSV is not needed at runtime.
 
-Distinct, nonblank Information Withheld values from G and Case Citation values
-from H are retained separately per statute and joined with newlines. G populates
-`foia:ReliedUponStatuteInformationWithheldText`; H populates
-`nc:Case/nc:CaseTitleText`. Memory grows with distinct statutes, components, and
-text values, rather than total CSV rows; retaining all unique text can still
-consume memory if every request has different text.
+Codes 1-76 use only the embedded details and are grouped by numeric ID. Code
+77 uses the trimmed Other Statute description in F; different descriptions
+produce separate entries. Only code 77 reads Information Withheld from G and
+Case Citation from H, retaining distinct nonblank values joined with newlines.
+Withheld text populates `foia:ReliedUponStatuteInformationWithheldText`; citations
+populate `nc:Case/nc:CaseTitleText` (or `N/A` when empty). Memory grows with
+distinct statutes, components, and text values, rather than total CSV rows.
 
 `XmlReportBuilder` receives summaries, not CSV files. It adds
 `foia:Exemption3StatuteSection` after `foia:DocumentFiscalYearDate`, with `ES1`,
@@ -308,8 +309,11 @@ file is replaced. The existing `foia_export_xml` module is unchanged.
 
 `RequestStatisticsAggregator` makes a separate streaming pass after validation,
 retaining only four counters per component. Only rows with a nonblank Column I
-count, including consultations and rows without statute codes. Appeal-only rows
-and other rows without Column I are excluded from all counters. Headers and
+count, excluding consultations (Column C is Y). Rows without statute codes
+remain eligible. Consultations, appeal-only rows, and other rows without
+Column I are excluded from all counters in both ProcessedRequestSection and
+ProcessedRequestComparisonSection. Consultation statistics are calculated
+separately. Headers and
 blank records are skipped using the same rules as validation.
 
 - Pending at start: I is before October 1 of the previous year.
@@ -523,10 +527,13 @@ pending appeals retain an empty container and their organization association.
 
 ## Processed request response times
 
-`ProcessedResponseTimeAggregator` uses completed rows (K) with S, C, or E in M.
-The start is J when present, otherwise I. No fiscal-year clamping or Days Tolled
-subtraction is applied. A counted row without either start date, or with an end
-before its start, stops generation with a contextual error.
+`ProcessedResponseTimeAggregator` requires nonblank J (Date Perfected) and
+K (Date Completed), with S, C, or E in M. Whitespace-only dates are skipped.
+The start is always J; Column I is never used as a fallback. This selection
+also applies to information-granted response times and all three increment
+sections, which additionally require disposition 1 or 2. No fiscal-year
+clamping or Days Tolled subtraction is applied. Invalid dates or an end
+before its start stop generation with a contextual error.
 
 `WorkingDays` shares the existing federal holiday constant and calculation with
 CSV validation: exclude the start day, include the end day, skip weekends and
@@ -617,6 +624,9 @@ The oldest-appeal section also uses the shared working-day calendar.
 
 ## Expedited processing
 
+Rows with nonblank Column X (Appeal Date Received) are excluded from all
+expedited-processing counts, for both components and agency totals.
+
 `ExpeditedProcessingAggregator` counts uppercase G and D in Column S as granted
 and denied. With both Q and R present, adjudications taking at most ten working
 days also increment the timely counter. The shared calendar excludes the start
@@ -632,7 +642,8 @@ and `EP0` link to their Organization entries. Agency counts sum components.
 
 `FeeWaiverAggregator` counts uppercase G and D in Column V for every component
 and sums those counts for the agency. Other values and blank cells do not
-contribute. No date, track, or disposition filter is applied.
+contribute. No track or disposition filter is applied to outcome counts.
+Adjudication summaries use T and U, substituting fiscal year-end for blank U.
 `FeeWaiverSection` follows expedited processing, emitting both granted and
 denied quantities even when zero. `FW1`, `FW2`, etc. reference components;
 `FW0` references the agency through `FeeWaiverOrganizationAssociation`.
@@ -655,10 +666,10 @@ agency `PC0` link to Organization entries through
 `FeesCollectedAggregator` uses Section IX-XI Column E for each component's
 fees, with agency fees summed across components. `FeesCollectedCostPercent`
 is fees divided by the matching `TotalCostAmount` from personnel and cost,
-rounded half-up to four decimal places without multiplying by 100. The agency
+multiplied by 100 and rounded half-up to four decimal places. The agency
 ratio uses total agency fees divided by total agency costs. A zero total cost
-produces `0.0000`, even when fees are nonzero. Fee amounts are also formatted
-to four decimal places, including `0.0000` for zero. Exact decimal arithmetic
+produces `0.0000`, even when fees are nonzero. Fee amounts are rounded half-up
+to at most two decimal places, with trailing zeros removed. Exact decimal arithmetic
 avoids floating-point rounding. Column W in the raw request CSV no longer
 supplies this section. Existing FC/ORG links and zero-count entries remain.
 
@@ -684,17 +695,18 @@ same pass as personnel, cost, fee, and exclusion totals.
 
 `BacklogAggregator` counts rows whose request or appeal interval exceeds the
 working days allowed in Column D (exactly that many days does not qualify).
-Rows with blank Days Allowed are excluded from both counts. Requests use J, falling back
-to I, through K; appeals use X through Y. Open rows use September 30 of the
-report year. Actual start dates are retained, including prior fiscal years.
-No track or disposition filter applies. Rows with no start or end dates for
-an item are skipped; a closing date without a start produces an error.
+Rows with blank Days Allowed are excluded from both counts. Only requests
+with blank K and appeals with blank Y contribute. Requests use J, falling back
+to I; appeals use X. Both intervals end on September 30 of the report year.
+Whitespace-only closing dates are treated as blank. Actual start dates are
+retained, including prior fiscal years. No track or disposition filter applies.
+Rows without a start date for the relevant item are skipped.
 
 `BacklogSection` follows subsection posting, emits both counts including zeros,
 and associates `BK1`, `BK2`, etc. and agency `BK0` with Organization entries.
 Agency counts sum component counts. Appeal response-time summaries now also
 use working days, retaining their existing fiscal-start clamp and year-end
-fallback; backlog intervals use the full X-to-Y interval specified above.
+fallback; backlog intervals use X through fiscal year-end for open appeals.
 
 ## Processed consultations
 
@@ -834,8 +846,8 @@ Import the field and display configuration before running the updated code.
 The first nonblank record must exactly match the eight header names and order
 from `OIP FY23 Section IX-XI Datav final.csv`, stored in
 `SectionDataCsvValidator::HEADERS`. Exactly one nonblank data row must follow.
-All eight cells are required: B accepts decimal notation (including whole
-numbers), and the other seven require integers. Optional signs and surrounding
+All eight cells are required: A-E accept decimal notation (including whole
+numbers), and F-H require integers. Optional signs and surrounding
 numeric whitespace are accepted; scientific notation, separators, currency,
 and blank cells are rejected. Headers are not trimmed. UTF-8 BOMs and blank
 lines are ignored, and record numbers include blank lines.
@@ -853,5 +865,21 @@ and Column D litigation costs. Total staff is A+B and total cost is C+D.
 Agency quantities sum the corresponding component values. Existing PC/ORG
 references and zero values are preserved. Exact decimal arithmetic uses the
 existing Brick Math dependency, avoiding floating-point rounding or integer
-overflow; output does not impose an additional decimal precision limit.
+overflow. Personnel and cost XML values are rounded half-up to at most two
+decimal places, with trailing zeros removed. Totals are summed at full precision
+before output rounding; fee ratios also use the unrounded totals.
 Section IX-XI columns E-H supply fees and subsection statistics.
+
+## 2025 example XML additions
+
+PersonnelAndCostSection, ProcessedConsultationSection, and ProcessedRequestSection
+end with an empty FootnoteText element after their organization associations.
+ExpeditedProcessing and FeeWaiver entries include AdjudicationMedianDaysValue
+and AdjudicationAverageDaysValue after granted/denied quantities. Working days
+are counted from Q to R for expedited processing and T to U for fee waivers,
+excluding the start date and including the end date. Missing completion dates
+use September 30 of the report fiscal year. Only granted/denied outcomes
+contribute; expedited processing continues to exclude appeal rows. Agency
+summaries combine interval frequencies rather than averaging component results.
+The new XML values use at most two decimal places, with N/A when both outcome
+counts are zero. The within-ten-days counter still requires an actual R date.

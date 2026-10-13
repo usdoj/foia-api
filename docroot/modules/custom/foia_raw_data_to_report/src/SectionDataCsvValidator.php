@@ -62,12 +62,12 @@ final class SectionDataCsvValidator {
             }
             continue;
           }
-          // B accepts decimal notation; all other cells require whole numbers.
+          // A-E accept decimal notation; F-H require whole numbers.
           // Match text rather than casting, so large integer values stay exact.
           $value = trim($columns[$index]);
-          $pattern = $index === 1 ? '/^[+-]?[0-9]+(?:\.[0-9]+)?$/' : '/^[+-]?[0-9]+$/';
+          $pattern = $index <= 4 ? '/^[+-]?[0-9]+(?:\.[0-9]+)?$/' : '/^[+-]?[0-9]+$/';
           if (!preg_match($pattern, $value)) {
-            $errors[] = sprintf('CSV record %d: Column %s: %s must be %s.', $record, $column, $header, $index === 1 ? 'a decimal number' : 'an integer');
+            $errors[] = sprintf('CSV record %d: Column %s: %s must be %s.', $record, $column, $header, $index <= 4 ? 'a decimal number' : 'an integer');
           }
         }
       }

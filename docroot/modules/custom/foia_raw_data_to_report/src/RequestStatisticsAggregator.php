@@ -54,6 +54,11 @@ final class RequestStatisticsAggregator {
             $header = FALSE;
             continue;
           }
+          // Consultations have separate statistics and must not contribute to
+          // initial request statistics or their comparison section.
+          if (trim($columns[2]) === 'Y') {
+            continue;
+          }
           // Initial request statistics require a receipt date in Column I.
           // Skip appeal-only rows and any other rows without that date before
           // counting completions or pending requests for either XML section.

@@ -3,12 +3,12 @@
 namespace Drupal\foia_raw_data_to_report;
 
 /**
- * Counts requests and appeals exceeding their allowed working days.
+ * Counts open requests and appeals exceeding their allowed working days.
  */
 final class BacklogAggregator {
 
   /**
-   * Counts requests and appeals, using fiscal year-end for open items.
+   * Counts only open requests and appeals, measured through fiscal year-end.
    *
    * @param array $sources
    *   Component/file pairs with component_id and uri keys, plus an optional
@@ -64,15 +64,16 @@ final class BacklogAggregator {
             'appeals' => [trim($columns[23]), trim($columns[24]), 'X', 'Y'],
           ];
           foreach ($intervals as $kind => [$start, $end, $start_column, $end_column]) {
+            // Only items still open at fiscal year-end contribute to backlog.
+            if ($end !== '') {
+              continue;
+            }
             // Rows without a received/perfected date do not identify an item.
             if ($start === '') {
-              if ($end !== '') {
-                throw new \RuntimeException($context . ': Column ' . $end_column . ' requires a start date in Column ' . $start_column . '.');
-              }
               continue;
             }
             $start_date = $this->calendarDate($start, $context . ', Column ' . $start_column);
-            $end = $end === '' ? $year_end : $end;
+            $end = $year_end;
             $end_date = $this->calendarDate($end, $context . ', Column ' . $end_column);
             if ($end_date < $start_date) {
               throw new \RuntimeException($context . ': End date cannot precede start date for ' . $kind . '.');

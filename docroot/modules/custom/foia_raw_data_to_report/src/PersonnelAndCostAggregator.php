@@ -58,7 +58,7 @@ final class PersonnelAndCostAggregator {
         $values = [];
         foreach ($rows[1] as $index => $value) {
           $value = trim($value);
-          $pattern = $index === 1 ? '/^[+-]?[0-9]+(?:\.[0-9]+)?$/' : '/^[+-]?[0-9]+$/';
+          $pattern = $index <= 4 ? '/^[+-]?[0-9]+(?:\.[0-9]+)?$/' : '/^[+-]?[0-9]+$/';
           if (!preg_match($pattern, $value)) {
             throw new \RuntimeException($context . ': Column ' . chr(65 + $index) . ': Invalid number after validation.');
           }
