@@ -527,10 +527,13 @@ pending appeals retain an empty container and their organization association.
 
 ## Processed request response times
 
-`ProcessedResponseTimeAggregator` uses completed rows (K) with S, C, or E in M.
-The start is J when present, otherwise I. No fiscal-year clamping or Days Tolled
-subtraction is applied. A counted row without either start date, or with an end
-before its start, stops generation with a contextual error.
+`ProcessedResponseTimeAggregator` requires nonblank J (Date Perfected) and
+K (Date Completed), with S, C, or E in M. Whitespace-only dates are skipped.
+The start is always J; Column I is never used as a fallback. This selection
+also applies to information-granted response times and all three increment
+sections, which additionally require disposition 1 or 2. No fiscal-year
+clamping or Days Tolled subtraction is applied. Invalid dates or an end
+before its start stop generation with a contextual error.
 
 `WorkingDays` shares the existing federal holiday constant and calculation with
 CSV validation: exclude the start day, include the end day, skip weekends and

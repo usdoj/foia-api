@@ -144,26 +144,22 @@ final class ProcessedResponseTimeAggregator {
           if ($information_granted_only && !in_array(trim($columns[13]), ['1', '2'], TRUE)) {
             continue;
           }
-          // Only completed requests in one of the three tracks contribute.
+          // Only perfected, completed requests in selected tracks contribute.
+          $perfected = trim($columns[9]);
           $completed = trim($columns[10]);
           $track = trim($columns[12]);
-          if ($completed === '' || !isset(self::TRACKS[$track]) || ($only_track !== NULL && $track !== $only_track)) {
+          if ($perfected === '' || $completed === '' || !isset(self::TRACKS[$track]) || ($only_track !== NULL && $track !== $only_track)) {
             continue;
           }
-          // Prefer J; fall back to I without clamping to the fiscal year.
-          $perfected = trim($columns[9]);
-          $start = $perfected !== '' ? $perfected : trim($columns[8]);
+          // Use the perfected date, without clamping to the fiscal year.
           $context = sprintf('Component %s, CSV record %d', $source['component_label'] ?? $id, $record);
-          if ($start === '') {
-            throw new \RuntimeException($context . ': Completed requests require a date in Column J or I to calculate response time.');
-          }
-          $start_date = $this->calendarDate($start, $context . ', Column J or I');
+          $start_date = $this->calendarDate($perfected, $context . ', Column J');
           $end_date = $this->calendarDate($completed, $context . ', Column K');
           if ($end_date < $start_date) {
             throw new \RuntimeException($context . ': Date Completed cannot precede the response time start date.');
           }
           // Share the Days Tolled calendar without subtracting tolled days.
-          $days = $working_days->count($start, $completed);
+          $days = $working_days->count($perfected, $completed);
           $histograms[$id][$track][$days] = ($histograms[$id][$track][$days] ?? 0) + 1;
         }
         if (!feof($stream)) {
