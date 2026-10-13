@@ -309,8 +309,11 @@ file is replaced. The existing `foia_export_xml` module is unchanged.
 
 `RequestStatisticsAggregator` makes a separate streaming pass after validation,
 retaining only four counters per component. Only rows with a nonblank Column I
-count, including consultations and rows without statute codes. Appeal-only rows
-and other rows without Column I are excluded from all counters. Headers and
+count, excluding consultations (Column C is Y). Rows without statute codes
+remain eligible. Consultations, appeal-only rows, and other rows without
+Column I are excluded from all counters in both ProcessedRequestSection and
+ProcessedRequestComparisonSection. Consultation statistics are calculated
+separately. Headers and
 blank records are skipped using the same rules as validation.
 
 - Pending at start: I is before October 1 of the previous year.
