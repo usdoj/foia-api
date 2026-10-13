@@ -202,9 +202,9 @@ try {
     $check($xpath->evaluate('string(' . $base . '/foia:PostedbyProgramQuantity)') === $program_posts, 'Incorrect program posting count.');
   }
   $expected_fees = [
-    1 => ['908259', '0.1000'],
-    2 => ['1816518', '0.2000'],
-    0 => ['2724777', '0.1500'],
+    1 => ['908259', '10.0000'],
+    2 => ['1816518', '20.0000'],
+    0 => ['2724777', '15.0000'],
   ];
   foreach ($expected_fees as $id => [$amount, $ratio]) {
     $base = '//foia:FeesCollected[@s:id="FC' . $id . '"]';

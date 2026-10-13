@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\Group;
 class PersonnelAndCostAggregatorTest extends UnitTestCase {
 
   /**
-   * Preserves precision until XML output and leaves fee ratios unchanged.
+   * Preserves precision until XML output and calculates fee percentages.
    */
   public function testDecimalXml(): void {
     $path = tempnam(sys_get_temp_dir(), 'section-decimals-');
@@ -62,7 +62,7 @@ class PersonnelAndCostAggregatorTest extends UnitTestCase {
       foreach ([1 => '3.01', 0 => '6.01'] as $id => $amount) {
         $base = '//foia:FeesCollected[@s:id="FC' . $id . '"]';
         $this->assertSame($amount, $xpath->evaluate('string(' . $base . '/foia:FeesCollectedAmount)'));
-        $this->assertSame('0.1001', $xpath->evaluate('string(' . $base . '/foia:FeesCollectedCostPercent)'));
+        $this->assertSame('10.0137', $xpath->evaluate('string(' . $base . '/foia:FeesCollectedCostPercent)'));
       }
       $zero = (new FeesCollectedAggregator())->aggregate([
         'components' => [],

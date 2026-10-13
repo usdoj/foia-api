@@ -659,7 +659,7 @@ agency `PC0` link to Organization entries through
 `FeesCollectedAggregator` uses Section IX-XI Column E for each component's
 fees, with agency fees summed across components. `FeesCollectedCostPercent`
 is fees divided by the matching `TotalCostAmount` from personnel and cost,
-rounded half-up to four decimal places without multiplying by 100. The agency
+multiplied by 100 and rounded half-up to four decimal places. The agency
 ratio uses total agency fees divided by total agency costs. A zero total cost
 produces `0.0000`, even when fees are nonzero. Fee amounts are rounded half-up
 to at most two decimal places, with trailing zeros removed. Exact decimal arithmetic
