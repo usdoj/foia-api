@@ -695,17 +695,18 @@ same pass as personnel, cost, fee, and exclusion totals.
 
 `BacklogAggregator` counts rows whose request or appeal interval exceeds the
 working days allowed in Column D (exactly that many days does not qualify).
-Rows with blank Days Allowed are excluded from both counts. Requests use J, falling back
-to I, through K; appeals use X through Y. Open rows use September 30 of the
-report year. Actual start dates are retained, including prior fiscal years.
-No track or disposition filter applies. Rows with no start or end dates for
-an item are skipped; a closing date without a start produces an error.
+Rows with blank Days Allowed are excluded from both counts. Only requests
+with blank K and appeals with blank Y contribute. Requests use J, falling back
+to I; appeals use X. Both intervals end on September 30 of the report year.
+Whitespace-only closing dates are treated as blank. Actual start dates are
+retained, including prior fiscal years. No track or disposition filter applies.
+Rows without a start date for the relevant item are skipped.
 
 `BacklogSection` follows subsection posting, emits both counts including zeros,
 and associates `BK1`, `BK2`, etc. and agency `BK0` with Organization entries.
 Agency counts sum component counts. Appeal response-time summaries now also
 use working days, retaining their existing fiscal-start clamp and year-end
-fallback; backlog intervals use the full X-to-Y interval specified above.
+fallback; backlog intervals use X through fiscal year-end for open appeals.
 
 ## Processed consultations
 
