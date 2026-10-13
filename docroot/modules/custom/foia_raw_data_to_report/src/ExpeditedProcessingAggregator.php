@@ -48,6 +48,10 @@ final class ExpeditedProcessingAggregator {
             $header = FALSE;
             continue;
           }
+          // Appeal rows do not contribute to expedited processing statistics.
+          if (trim($columns[23]) !== '') {
+            continue;
+          }
           // Only uppercase G and D outcomes in Column S contribute.
           $outcome = trim($columns[18]);
           if (!isset(self::OUTCOMES[$outcome])) {

@@ -624,6 +624,9 @@ The oldest-appeal section also uses the shared working-day calendar.
 
 ## Expedited processing
 
+Rows with nonblank Column X (Appeal Date Received) are excluded from all
+expedited-processing counts, for both components and agency totals.
+
 `ExpeditedProcessingAggregator` counts uppercase G and D in Column S as granted
 and denied. With both Q and R present, adjudications taking at most ten working
 days also increment the timely counter. The shared calendar excludes the start
