@@ -26,7 +26,7 @@ final class StatuteAggregator {
       'citation' => 'Dubin v. Dep\'t of Treasury, 555 F. Supp. 408, 412 (N.D. Ga. 1981) (5 U.S.C. § 7114(b)(4)), aff\'d, 697 F.2d 1093 (11th Cir. 1983) (unpublished table decision); NTEU v. OPM, No. 76-695, slip op. at 3-4 (D.D.C. July 9, 1979) (5 U.S.C. § 7114(b) (4) and 5 U.S.C. § 7132).',
     ],
     3 => [
-      'description' => '5 U.S.C. app. § 107(a)(2)',
+      'description' => '5 U.S.C. § 13109(a)(2) (formerly at 5 U.S.C. app. 4 § 107(a)(2))',
       'information_withheld' => 'Confidential financial disclosure report pertaining to certain government employees',
       'citation' => 'Meyerhoff v. EPA, 958 F.2d 1498, 1500- 02 (9th Cir. 1992); Boyd v. Exec. Off. for U.S. Attys, 161 F. Supp. 3d 1, 7 (D.D.C. 2015); Seife v. NIH, 874 F. Supp. 2d 248, 254 (S.D.N.Y. 2012).',
     ],
@@ -173,7 +173,7 @@ final class StatuteAggregator {
     32 => [
       'description' => '18 U.S.C. § 3521(b)(1)(g)',
       'information_withheld' => '"[T]he identity or location of the person relocated or protected, or any other matter concerning the person or the program after weighing [various factors]," subject to certain exceptions',
-      'citation' => 'Bonadonna v. DOJ, 791 F. Supp. 2d 269, 270 (D. Mass. 2010), aff\'d, No. 10 1595, 2011 WL 4770189 (1st Cir. Jan. 7, 2011).',
+      'citation' => 'Wilson v. FBI, No. 22-3062, 2025 WL 522019, at *7 (D.D.C. Feb. 18, 2025); Bonadonna v. DOJ, 791 F. Supp. 2d 269, 270 (D. Mass. 2010), aff\'d, No. 10-1595, 2011 WL 4770189 (1st Cir. Jan. 7, 2011).',
     ],
     33 => [
       'description' => '18 U.S.C. § 5038(a)',
@@ -218,7 +218,7 @@ final class StatuteAggregator {
     41 => [
       'description' => '26 U.S.C. §§ 6103, 6105',
       'information_withheld' => 'Certain tax return information, to include Taxpayer Identification Numbers of third parties, and certain tax convention information',
-      'citation' => 'Nosal v. IRS, 523 F. Supp. 3d 72, 79 (D.D.C. 2021); Church of Scientology v. IRS, 484 U.S. 9, 15 (1987) (26 U.S.C. § 6103); Elec. Priv. Info. Ctr. v. IRS, 910 F.3d 1232, 1237 (D.C. Cir. 2018); Leonard v. U.S. Dep\'of Treasury, 590 F. App\'x. 141, 143-44 (3d Cir. 2014) (per curiam); Pac. Fisheries, Inc. v. IRS, 395 F. App\'x. 438, 440 (9th Cir. 2010) (unpublished disposition) (26 U.S.C. §§ 6103, 6105).',
+      'citation' => 'Church of Scientology v. IRS, 484 U.S. 9, 15 (1987) (26 U.S.C. § 6103); Elec. Priv. Info. Ctr. v. IRS, 910 F.3d 1232, 1237 (D.C. Cir. 2018); Leonard v. U.S. Dep\'t of Treasury, 590 F. App\'x. 141, 143-44 (3d Cir. 2014) (per curiam); Pac. Fisheries, Inc. v. IRS, 395 F. App\'x. 438, 440 (9th Cir. 2010) (unpublished disposition) (26 U.S.C. §§ 6103, 6105); Nosal v. IRS, 523 F. Supp. 3d 72, 79 (D.D.C. 2021).',
     ],
     42 => [
       'description' => '26 U.S.C. § 7123',
@@ -263,12 +263,12 @@ final class StatuteAggregator {
     50 => [
       'description' => '39 U.S.C. § 410(c)(2)',
       'information_withheld' => 'Commercial information which would not be disclosed under good business practice',
-      'citation' => 'Wickwire Gavin, P.C. v. USPS, 356 F.3d 588, 589, 597 (4th Cir. 2004); Am. Postal Workers Union, AFL-CIO v. USPS, 742 F. Supp. 2d 76, 81-83 (D.D.C. 2010); Reid v. USPS, No. 05-294, 2006 WL 1876682, at *5-9 (S.D. Ill. July 5, 2006); Robinett v. USPS, No. 02-1094, 2002 WL 1728582, at *5 (E.D. La. July 24, 2002).',
+      'citation' => 'Bloomberg L.P. v. USPS, 118 F.4th 307, 316 (2d Cir. 2024); Wickwire Gavin, P.C. v. USPS, 356 F.3d 588, 589, 597 (4th Cir. 2004); Am. Postal Workers Union, AFL-CIO v. USPS, 742 F. Supp. 2d 76, 81-83 (D.D.C. 2010); Reid v. USPS, No. 05- 294, 2006 WL 1876682, at *5-9 (S.D. Ill. July 5, 2006); Robinett v. USPS, No. 02-1094, 2002 WL 1728582, at *5 (E.D. La. July 24, 2002).',
     ],
     51 => [
       'description' => '41 U.S.C. § 4702 (formerly at 41 U.S.C. § 253b(m)(1))',
       'information_withheld' => 'Contractor proposals that are in the possession or control of an executive agency and that have not been set forth or incorporated by reference into contracts',
-      'citation' => 'Sinkfield v. HUD, No. 10-885, 2012 U.S. Dist. LEXIS 35233, at *13-15 (S.D. Ohio Mar. 15, 2012); Margolin v. NASA, No. 09- CV-00421, 2011 WL 1303221, at *6 (D. Nev. Mar. 31, 2011); Hornbostel v. U.S. Dep\'t of the Interior, 305 F. Supp. 2d 21, 30 (D.D.C. 2003), summary affirmance granted, No. 03-5257, 2004 WL 1900562 (D.C. Cir. Aug. 25, 2004).',
+      'citation' => 'Lenahan v. HHS, No. 23- 06041, 2025 WL 1159878, at *3 (N.D. Cal. Apr. 21, 2025); Sinkfield v. HUD, No. 10-885, 2012 U.S. Dist. LEXIS 35233, at *13-15 (S.D. Ohio Mar. 15, 2012); Margolin v. NASA, No. 09- 00421, 2011 WL 1303221, at *6 (D. Nev. Mar. 31, 2011); Hornbostel v. U.S. Dep\'t of the Interior, 305 F. Supp. 2d 21, 30 (D.D.C. 2003), summary affirmance granted, No. 03- 5257, 2004 WL 1900562 (D.C. Cir. Aug. 25, 2004).',
     ],
     52 => [
       'description' => '41 U.S.C. § 2102 (amending 41 U.S.C. § 423(a)(1))',
@@ -291,12 +291,12 @@ final class StatuteAggregator {
       'citation' => 'N/A',
     ],
     56 => [
-      'description' => '34 U.S.C. § 10231 (formerly at 42 U.S.C. § 3789g)',
+      'description' => '34 U.S.C. § 10231(a)',
       'information_withheld' => 'Data received by the Bureau of Justice Statistics and used only for statistical or research purposes',
       'citation' => 'N/A',
     ],
     57 => [
-      'description' => '42 U.S.C. § 14132(b)(3)',
+      'description' => '34 U.S.C § 12592 (formerly at 42 U.S.C. § 14132)',
       'information_withheld' => 'Certain "stored DNA samples and DNA analyses"',
       'citation' => 'Moore v. Nat\'l DNA Index System, 662 F. Supp. 2d 136, 140 (D.D.C. 2009).',
     ],
@@ -376,14 +376,14 @@ final class StatuteAggregator {
       'citation' => 'Wis. Project on Nuclear Arms Control v. U.S. Dep\'t of Com., 317 F.3d 275, 284 (D.C. Cir. 2003).',
     ],
     73 => [
-      'description' => 'John S. McCain National Defense Authorization Act for Fiscal Year 2019, P.L. 115-232 (formerly at 50 U.S.C. § 4614(c)(1))',
+      'description' => '50 U.S.C. § 4820(h)(1) (formerly at 50 U.S.C. § 4614(c)(1))',
       'information_withheld' => 'Information pertaining to license applications under the Export Administration Act',
       'citation' => 'Wis. Project on Nuclear Arms Control v. U.S. Dep\'t of Commerce, 317 F.3d 275, 284 (D.C. Cir. 2003); Times Publ\'g Co. v. U.S. Dep\'t of Commerce, 236 F.3d 1286, 1292 (11th Cir. 2001); Lessner v. U.S. Dep\'t of Commerce, 827 F.2d 1333, 1336-37 (9th Cir. 1987).',
     ],
     74 => [
-      'description' => 'Fed. R. Crim. P. 6(e)',
+      'description' => 'Fed. R. Crim. P. 6(e), enacted by Act of July 30, 1977, Pub. L. No. 95-78, § 2, 91 Stat. 319',
       'information_withheld' => 'Certain records that would reveal some secret aspect pertaining to grand jury proceedings',
-      'citation' => 'Sussman v. USMS, 494 F.3d 1106, 1113 (D.C. Cir. 2007); Sorin v. DOJ, No. 18-99, 2018 WL 6431027 (2d Cir. Dec. 6, 2018) (per curium); Widi v. McNeil, No. 12-CV-00188, 2016 WL 4394724, at *23 (D. Me. Aug 16, 2016); Durham v. U.S. Att\'y Gen., No. 06-843, 2008 WL 620744, at *2 (E.D. Tex. Mar. 3, 2008); Cozen O\'Connor v. U.S. Dep\'t of Treasury, 570 F. Supp. 2d 749, 776 (E.D. Pa. 2008).',
+      'citation' => 'Kalbers v. DOJ, 166 F.4th 783, 795-96 (9th Cir. 2026); Sorin v. DOJ, No. 18-99, 2018 WL 6431027 (2d Cir. Dec. 6, 2018) (per curium); Sussman v. USMS, 494 F.3d 1106, 1113 (D.C. Cir. 2007); Widi v. McNeil, No. 12-00188, 2016 WL 4394724, at *23 (D. Me. Aug 16, 2016); Durham v. U.S. Att\'y Gen., No. 06-843, 2008 WL 620744, at *2 (E.D. Tex. Mar. 3, 2008); Cozen O\'Connor v. U.S. Dep\'t of Treasury, 570 F. Supp. 2d 749, 776 (E.D. Pa. 2008).',
     ],
     75 => [
       'description' => '[Do not use]',
