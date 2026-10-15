@@ -915,3 +915,9 @@ only. Queued processing appends notes beneath the file validation result in
 block XML generation; errors retain their existing blocking behavior.
 Disposition 2 in Column N with blank (including whitespace-only) Column P
 produces a review note. Disposition 3 still requires exemptions as an error.
+
+RequestDenialOtherReasonSection includes every component represented by the
+validated upload paragraphs. When a component has no other-denial reasons, it
+contains one OtherDenialReason with description N/A and quantity 0, and a
+ComponentOtherDenialReasonQuantity of 0. The same applies to an empty agency
+total. Organization associations remain present for all entries.
