@@ -124,13 +124,24 @@ try {
   }
   $check($report->get('field_request_data_xml')->isEmpty(), 'Invalid input generated XML.');
 
-  // The additional upload is required independently of its future contents.
+  // Drafts can save without files; processing must still reject both omissions.
   $first_upload = $report->get('field_component_uploads')->get(0)->entity;
   $section_id = $first_upload->get('section_ix_xi_data')->target_id;
+  $request_id = $first_upload->get('field_request_data_csv')->target_id;
   $first_upload->set('section_ix_xi_data', []);
-  $check(count($first_upload->get('section_ix_xi_data')->validate()) > 0, 'Section IX-XI field was not required.');
-  $check(isset(UploadAssignments::validate($report)[0]), 'Missing Section IX-XI upload passed assignment validation.');
+  $first_upload->set('field_request_data_csv', []);
+  $check(count($first_upload->get('section_ix_xi_data')->validate()) === 0, 'Missing Section IX-XI file blocked saving.');
+  $check(count($first_upload->get('field_request_data_csv')->validate()) === 0, 'Missing request CSV blocked saving.');
+  $check(UploadAssignments::validate($report) === [], 'Missing files failed assignment validation.');
+  $report->save();
+  $report = $process();
+  $message = $report->get('field_messages')->value;
+  $check(str_contains($message, 'No CSV file is attached.') && str_contains($message, 'No Section IX-XI CSV file is attached.'), 'Processing did not reject both missing files.');
+  $check($report->get('field_request_data_xml')->isEmpty(), 'Missing files generated XML.');
+  $first_upload = $report->get('field_component_uploads')->get(0)->entity;
   $first_upload->set('section_ix_xi_data', $section_id);
+  $first_upload->set('field_request_data_csv', $request_id);
+  $report->save();
 
   // Entity validation and queue processing must reject bad assignments.
   $second = $report->get('field_component_uploads')->get(1)->entity;
@@ -162,7 +173,7 @@ try {
   $report = $process();
   $check($report->get('field_request_data_xml')->isEmpty(), 'Invalid Section IX-XI data generated XML.');
   $section_messages = $report->get('field_messages')->value;
-  $check(str_contains($section_messages, $section_files[1]->getFilename()) && str_contains($section_messages, 'Column A: Full-Time Employees must be an integer'), 'Section IX-XI error lacks file/column context.');
+  $check(str_contains($section_messages, $section_files[1]->getFilename()) && str_contains($section_messages, 'Column A: Full-Time Employees must be a decimal number'), 'Section IX-XI error lacks file/column context.');
   file_put_contents($section_files[1]->getFileUri(), $valid_section);
   $report = $process();
   $xml = $report->get('field_request_data_xml')->entity;

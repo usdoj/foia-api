@@ -161,8 +161,11 @@ Feature: Raw data XML report action
     And I wait for AJAX to finish
     Then I should see "Added 0 component placeholder(s)."
     When I press "Save"
-    Then I should see "CSV file field is required."
-    And I should see "Section IX-XI CSV file field is required."
+    Then the URL should match "/node/[0-9]+$"
+    And I should see "First Bulk Component"
+    And I should see "Second Bulk Component"
+    And I should not see "CSV file field is required."
+    And I should not see "Section IX-XI CSV file field is required."
 
   @javascript
   Scenario: Additional uploads autocomplete components on an unsaved report

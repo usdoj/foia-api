@@ -240,9 +240,9 @@ field. `field_component_uploads` is an unlimited Paragraphs reference to
 `raw_data_component_upload`. Each paragraph contains:
 
 - Required `field_agency_component`, reusing the existing paragraph field storage.
-- Required, single-value `field_request_data_csv`, accepting CSV files only and
+- Optional when saving, single-value `field_request_data_csv`, accepting CSV files only and
   storing them privately.
-- Required, single-value `section_ix_xi_data`, also accepting private CSV files.
+- Optional when saving, single-value `section_ix_xi_data`, also accepting private CSV files.
 
 A subset of the agency's components is allowed. At least one upload is needed
 for processing; reports can otherwise be saved without uploads. Duplicate
@@ -829,7 +829,8 @@ processing or queue retry behavior.
 
 ## Section IX-XI upload
 
-Each component paragraph now requires two single-file private CSV uploads:
+Each component paragraph supports two single-file private CSV uploads. Both
+are optional when saving drafts but required for queued XML processing:
 `field_request_data_csv` (help: Component Raw Data Report) and
 `section_ix_xi_data` (help: Section IX-XI Data). The second upload follows the
 same private download access rules, CSV extension restriction, and upload size
