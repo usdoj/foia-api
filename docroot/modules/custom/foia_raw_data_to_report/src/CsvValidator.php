@@ -484,11 +484,24 @@ final class CsvValidator {
           $errors[] = sprintf('CSV record %d: Column Z: If Column Z is 4, Column AA must have at least one reason entered', $record);
         }
 
-        // Column AB: An Other reason in AA requires explanatory text.
-        // AA may contain multiple comma-separated reasons; match a whole entry.
-        $appeal_denial_reasons = array_map('trim', explode(',', $columns[26]));
-        if (in_array('Other', $appeal_denial_reasons, TRUE) && trim($columns[27]) === '') {
-          $errors[] = sprintf('CSV record %d: Column AB: If Column AA has "Other" entered, there must be a value in Column AB', $record);
+        // Column AA: Reasons are comma-separated integer codes from 1 to 11.
+        $appeal_denial_text = trim($columns[26]);
+        $appeal_denial_reasons = array_map('trim', explode(',', $appeal_denial_text));
+        if ($appeal_denial_text !== '') {
+          if (!in_array($appeal_disposition, ['1', '2', '4'], TRUE)) {
+            $errors[] = sprintf('CSV record %d: If Column AA ( Reasons for Denial on Appeal ) has data, Column Z must have either 1, 2, or 4', $record);
+          }
+          foreach ($appeal_denial_reasons as $reason) {
+            if (!preg_match('/^(?:[1-9]|1[01])$/', $reason)) {
+              $errors[] = sprintf('CSV record %d: Column AA (Reasons for Denial on Appeal) must contain comma-separated integers from 1 to 11', $record);
+              break;
+            }
+          }
+        }
+
+        // Column AB: Code 11 (Other) requires explanatory text.
+        if (in_array('11', $appeal_denial_reasons, TRUE) && trim($columns[27]) === '') {
+          $errors[] = sprintf('CSV record %d: Column AB: If Column AA has code 11 (Other) entered, there must be a value in Column AB', $record);
         }
 
         // Column AC: Appeal exemptions require one of these dispositions in Z.
