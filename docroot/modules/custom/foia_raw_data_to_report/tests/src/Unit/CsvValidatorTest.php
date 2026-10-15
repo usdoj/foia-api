@@ -15,6 +15,34 @@ use PHPUnit\Framework\Attributes\Group;
 class CsvValidatorTest extends UnitTestCase {
 
   /**
+   * Rejects nonblank disposition codes outside the single integer range.
+   */
+  public function testDispositionRange(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    $error = 'CSV record 2: Column N (Disposition Reason) must be an integer from 1 to 12';
+    foreach (['0', '13', '-1', '1.5', '1.0', '1e1', 'Other', '1,2', '01', '+1'] as $value) {
+      $errors = $this->validateContents($header . $this->csvRow([10 => '01/02/2026', 13 => $value]));
+      $this->assertSame([$error], $errors);
+    }
+    foreach (range(1, 12) as $code) {
+      $row = [10 => '01/02/2026', 13 => ' ' . $code . ' '];
+      if (in_array($code, [1, 2, 3, 4, 5, 7], TRUE)) {
+        $row += [9 => '01/01/2026', 12 => 'S'];
+      }
+      if ($code === 3) {
+        $row[15] = '6';
+      }
+      if ($code === 12) {
+        $row[14] = 'Other reason';
+      }
+      $this->assertSame([], $this->validateContents($header . $this->csvRow($row)));
+    }
+    foreach (['', '   '] as $value) {
+      $this->assertSame([], $this->validateContents($header . $this->csvRow([13 => $value])));
+    }
+  }
+
+  /**
    * Validates temporary CSV contents and removes the fixture.
    */
   private function validateContents(string $contents): array {

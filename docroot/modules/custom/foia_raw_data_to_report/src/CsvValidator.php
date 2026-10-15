@@ -279,6 +279,9 @@ final class CsvValidator {
 
         // Column N: Completed non-consultation requests need a disposition.
         $disposition = trim($columns[13]);
+        if ($disposition !== '' && !preg_match('/^(?:[1-9]|1[0-2])$/', $disposition)) {
+          $errors[] = sprintf('CSV record %d: Column N (Disposition Reason) must be an integer from 1 to 12', $record);
+        }
         if ($completed !== '' && $consultation === 'N' && $disposition === '') {
           $errors[] = sprintf('CSV record %d: Column N: If Column K has Date Completed AND Column C = N (No), then Column N must have Disposition entered', $record);
         }
