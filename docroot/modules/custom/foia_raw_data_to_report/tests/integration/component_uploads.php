@@ -223,6 +223,29 @@ try {
     $check($xpath->evaluate('string(' . $base . '/foia:FeesCollectedCostPercent)') === $ratio, 'Incorrect fee/cost ratio.');
   }
   $check(substr_count($report->get('field_messages')->value, 'CSV validated.') === 4, 'Successful retry did not replace earlier messages.');
+  // Review notes must persist without blocking XML replacement.
+  $row = array_fill(0, 29, '');
+  $row[0] = 'Component';
+  $row[1] = 'Partial grant note';
+  $row[2] = 'N';
+  $row[3] = '20';
+  $row[8] = $row[9] = '01/02/2026';
+  $row[10] = '01/05/2026';
+  $row[12] = 'S';
+  $row[13] = '2';
+  $saved_contents = file_get_contents($files[1]->getFileUri());
+  file_put_contents($files[1]->getFileUri(), implode(',', array_fill(0, 29, 'column')) . "\n" . implode(',', $row));
+  $previous_xml_id = $report->get('field_request_data_xml')->target_id;
+  $report = $process();
+  $note_messages = $report->get('field_messages')->value;
+  $check(str_contains($note_messages, 'CSV record 2: Column P: Note:') && str_contains($note_messages, $files[1]->getFilename()), 'Note lacks row, column, or file context.');
+  $check(substr_count($note_messages, 'CSV validated.') === 4, 'Note prevented successful validation.');
+  $check($report->get('field_request_data_xml')->target_id != $previous_xml_id, 'Note blocked XML generation.');
+  // Replaced XML files are removed by the worker and cannot be downloaded.
+  $files = array_values(array_filter($files, static fn($file) => $file->id() != $previous_xml_id));
+  $xml = $report->get('field_request_data_xml')->entity;
+  $files[] = $xml;
+  file_put_contents($files[1]->getFileUri(), $saved_contents);
   // An aggregation exception must append to validation messages and retain XML.
   $row = array_fill(0, 29, '');
   $row[0] = 'Component';

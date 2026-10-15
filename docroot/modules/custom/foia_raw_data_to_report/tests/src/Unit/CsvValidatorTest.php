@@ -83,6 +83,42 @@ class CsvValidatorTest extends UnitTestCase {
   }
 
   /**
+   * Notes coexist with errors, retain row context, and reset for each file.
+   */
+  public function testPartialGrantNotes(): void {
+    $path = tempnam(sys_get_temp_dir(), 'csv-notes-');
+    try {
+      $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+      $base = [9 => '01/02/2026', 10 => '01/05/2026', 12 => 'S', 13 => '2'];
+      $validator = new CsvValidator();
+      $contents = $header . $this->csvRow($base);
+      $contents .= $this->csvRow(array_replace($base, [1 => 'Request 2', 15 => '  ']));
+      $contents .= $this->csvRow(array_replace($base, [1 => 'Request 3', 15 => '6']));
+      file_put_contents($path, $contents);
+      $result = $validator->validateWithNotes($path, 2026);
+      $this->assertSame([], $result['errors']);
+      $this->assertCount(2, $result['notes']);
+      $message = 'Column P: Note: This request has be closed as Disposition 2 "Partial grant/partial denial," but does not have an exemption in Column P.  Please review this request to ensure this is correct."';
+      $this->assertSame('CSV record 2: ' . $message, $result['notes'][0]);
+      $this->assertSame('CSV record 3: ' . $message, $result['notes'][1]);
+      $this->assertSame([], $validator->validate($path, 2026));
+      file_put_contents($path, $header . $this->csvRow(array_replace($base, [0 => ''])));
+      $result = $validator->validateWithNotes($path, 2026);
+      $this->assertNotEmpty($result['errors']);
+      $this->assertCount(1, $result['notes']);
+      foreach (['1', '3'] as $disposition) {
+        file_put_contents($path, $header . $this->csvRow(array_replace($base, [13 => $disposition])));
+        $result = $validator->validateWithNotes($path, 2026);
+        $this->assertSame([], $result['notes']);
+        $this->assertSame($disposition === '3', $result['errors'] !== []);
+      }
+    }
+    finally {
+      unlink($path);
+    }
+  }
+
+  /**
    * Validates temporary CSV contents and removes the fixture.
    */
   private function validateContents(string $contents): array {

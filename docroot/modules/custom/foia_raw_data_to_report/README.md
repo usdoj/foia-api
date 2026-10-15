@@ -905,3 +905,13 @@ per row; component counts sum to the agency total. XML labels stay unchanged:
 
 Nonblank AA requires Z to be 1, 2, or 4. Code 11 requires explanatory text in
 AB. Existing requirements for Z codes 1, 2, and 4 remain in effect.
+
+## Nonblocking CSV review notes
+
+`CsvValidator::validateWithNotes()` returns separate `errors` and `notes` lists
+from one streaming pass. The existing `validate()` method still returns errors
+only. Queued processing appends notes beneath the file validation result in
+`field_messages`, including CSV record and column context. Notes alone do not
+block XML generation; errors retain their existing blocking behavior.
+Disposition 2 in Column N with blank (including whitespace-only) Column P
+produces a review note. Disposition 3 still requires exemptions as an error.
