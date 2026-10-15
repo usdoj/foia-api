@@ -240,9 +240,9 @@ field. `field_component_uploads` is an unlimited Paragraphs reference to
 `raw_data_component_upload`. Each paragraph contains:
 
 - Required `field_agency_component`, reusing the existing paragraph field storage.
-- Required, single-value `field_request_data_csv`, accepting CSV files only and
+- Optional when saving, single-value `field_request_data_csv`, accepting CSV files only and
   storing them privately.
-- Required, single-value `section_ix_xi_data`, also accepting private CSV files.
+- Optional when saving, single-value `section_ix_xi_data`, also accepting private CSV files.
 
 A subset of the agency's components is allowed. At least one upload is needed
 for processing; reports can otherwise be saved without uploads. Duplicate
@@ -829,7 +829,8 @@ processing or queue retry behavior.
 
 ## Section IX-XI upload
 
-Each component paragraph now requires two single-file private CSV uploads:
+Each component paragraph supports two single-file private CSV uploads. Both
+are optional when saving drafts but required for queued XML processing:
 `field_request_data_csv` (help: Component Raw Data Report) and
 `section_ix_xi_data` (help: Section IX-XI Data). The second upload follows the
 same private download access rules, CSV extension restriction, and upload size
@@ -904,3 +905,13 @@ per row; component counts sum to the agency total. XML labels stay unchanged:
 
 Nonblank AA requires Z to be 1, 2, or 4. Code 11 requires explanatory text in
 AB. Existing requirements for Z codes 1, 2, and 4 remain in effect.
+
+## Nonblocking CSV review notes
+
+`CsvValidator::validateWithNotes()` returns separate `errors` and `notes` lists
+from one streaming pass. The existing `validate()` method still returns errors
+only. Queued processing appends notes beneath the file validation result in
+`field_messages`, including CSV record and column context. Notes alone do not
+block XML generation; errors retain their existing blocking behavior.
+Disposition 2 in Column N with blank (including whitespace-only) Column P
+produces a review note. Disposition 3 still requires exemptions as an error.

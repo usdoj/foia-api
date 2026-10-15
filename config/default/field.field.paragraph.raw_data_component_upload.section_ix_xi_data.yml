@@ -7,13 +7,19 @@ dependencies:
     - paragraphs.paragraphs_type.raw_data_component_upload
   module:
     - file
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
 id: paragraph.raw_data_component_upload.section_ix_xi_data
 field_name: section_ix_xi_data
 entity_type: paragraph
 bundle: raw_data_component_upload
 label: 'Section IX-XI CSV file'
 description: 'Section IX-XI Data'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

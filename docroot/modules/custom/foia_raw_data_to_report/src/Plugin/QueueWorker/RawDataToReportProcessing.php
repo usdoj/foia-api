@@ -115,6 +115,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       if ($component && $source) {
         $uploaded_components[$component->id()] = TRUE;
       }
+      $notes = [];
       $prefix = sprintf('Upload %d — Component: %s — File: %s', $delta + 1, $component?->label() ?? '(not selected)', $source?->getFilename() ?? '(not attached)');
       if (!$source) {
         $errors[] = 'No CSV file is attached. Please upload a CSV file and try again.';
@@ -124,10 +125,16 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       }
       else {
         // Validate every file, even when another component's CSV has failed.
-        $errors = array_merge($errors, $this->csvValidator->validate($source->getFileUri(), (int) $node->get('field_foia_annual_report_yr')->value));
+        $result = $this->csvValidator->validateWithNotes($source->getFileUri(), (int) $node->get('field_foia_annual_report_yr')->value);
+        $errors = array_merge($errors, $result['errors']);
+        $notes = $result['notes'];
       }
       $has_errors = $has_errors || (bool) $errors;
       $messages[] = $prefix . "\n" . ($errors ? implode("\n", array_unique($errors)) : 'CSV validated.');
+
+      if ($notes) {
+        $messages[count($messages) - 1] .= "\n" . implode("\n", $notes);
+      }
 
       // Check the Section IX-XI file independently, even if raw data failed.
       $section_source = $supported ? $upload->get('section_ix_xi_data')->entity : NULL;

@@ -35,6 +35,25 @@ final class CsvValidator {
    *   All validation errors, in record and validation-check order.
    */
   public function validate(string $uri, int $fiscal_year): array {
+    return $this->validateWithNotes($uri, $fiscal_year)['errors'];
+  }
+
+  /**
+   * Returns blocking errors and nonblocking review notes from one CSV pass.
+   *
+   * @return array
+   *   Separate errors and notes lists, each containing contextual messages.
+   */
+  public function validateWithNotes(string $uri, int $fiscal_year): array {
+    $notes = [];
+    $errors = $this->validateFile($uri, $fiscal_year, $notes);
+    return ['errors' => $errors, 'notes' => $notes];
+  }
+
+  /**
+   * Checks a CSV, collecting notes separately from validation errors.
+   */
+  private function validateFile(string $uri, int $fiscal_year, array &$notes): array {
     // A missing or invalid report year must not bypass fiscal-year checks.
     if ($fiscal_year < 1 || $fiscal_year > 9999) {
       return ['The report Year must be between 1 and 9999 to validate CSV dates.'];
@@ -317,6 +336,11 @@ final class CsvValidator {
         $exemptions = array_map('trim', explode(',', $applied_exemptions));
         if ($applied_exemptions !== '' && array_diff($exemptions, self::ALLOWED_DISPOSITION_EXEMPTIONS)) {
           $errors[] = sprintf('CSV record %d: Column P: Disposition Exemption(s) Applied must contain only these values: %s', $record, implode(', ', self::ALLOWED_DISPOSITION_EXEMPTIONS));
+        }
+
+        // Column P: Missing exemptions for partial grants need review only.
+        if ($disposition === '2' && $applied_exemptions === '') {
+          $notes[] = sprintf('CSV record %d: Column P: Note: This request has be closed as Disposition 2 "Partial grant/partial denial," but does not have an exemption in Column P.  Please review this request to ensure this is correct."', $record);
         }
 
         // Column P: Disposition code 3 requires at least one exemption.
