@@ -2,15 +2,15 @@ uuid: c39e482e-3394-4580-9954-a1d4880896f0
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - foia_raw_data_to_report
   config:
     - field.storage.paragraph.field_agency_component
     - node.type.agency_component
     - paragraphs.paragraphs_type.raw_data_component_upload
   module:
     - foia_raw_data_to_report
+  enforced:
+    module:
+      - foia_raw_data_to_report
 id: paragraph.raw_data_component_upload.field_agency_component
 field_name: field_agency_component
 entity_type: paragraph
