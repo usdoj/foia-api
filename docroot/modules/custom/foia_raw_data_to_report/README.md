@@ -429,10 +429,11 @@ four zero quantities. Request statistics continue to use distinct PS IDs.
 ## Appeal dispositions
 
 `AppealDispositionAggregator` streams Column Z and counts the four specified
-outcomes: `Affirmed on Appeal`, `Partially Affirmed & Partially Reversed/Remanded`,
-`Completely Reversed/Remanded`, and `Closed for Other Reasons`. Matching is exact
-and case-sensitive after trimming surrounding whitespace. Blank cells, headers,
-and blank records do not contribute. Each populated row contributes once;
+outcomes using integer codes: 1 = `Affirmed on Appeal`, 2 = `Partially Affirmed
+& Partially Reversed/Remanded`, 3 = `Completely Reversed/Remanded on Appeal`,
+4 = `Appeal Closed for Other Reason`. Nonblank values must be a single code
+1-4; the former text labels are rejected. Surrounding whitespace is ignored.
+Blank cells, headers, and blank records do not contribute. Each populated row contributes once;
 agency counters sum the component counters. No additional date filter is applied
 by this accumulator. Existing validation and appeal date checks still run first.
 Unrecognized nonblank outcomes or read failures abort generation before the
@@ -797,21 +798,18 @@ year and cannot precede a valid X date. Y requires Z, and Z requires Y; these
 presence checks are independent of date validity. All failures identify Column
 Y and the record and are collected with other validation messages.
 
-Column Z dispositions `Affirmed`, `Affirmed on Appeal`, and
-`Partially Affirmed & Partially Reversed/Remanded` require a nonblank AA or AC
-(or both). `Closed for Other Reasons` requires nonblank AA even when AC has
-data. Surrounding whitespace is ignored. These presence checks do not change
-the disposition labels recognized by XML aggregation.
+Column Z codes 1 and 2 require a nonblank AA or AC (or both).
+Code 4 requires nonblank AA even when AC has data.
+Surrounding whitespace is ignored. The numeric codes map to the same XML
+outcome counters as the former labels.
 
 Column AB requires nonblank explanatory text when AA contains `Other` as a
 complete comma-separated reason. Whitespace around entries is ignored; a
 longer reason such as `Improper Request for Other Reasons` does not trigger
 this rule. Failures identify Column AB and the CSV record.
 
-Nonblank Column AC requires Column Z to be exactly `Affirmed on Appeal` or
-`Partially Affirmed & Partially Reversed/Remanded`, ignoring surrounding
-whitespace. The shorter `Affirmed` label does not satisfy this rule. Blank AC
-adds no disposition requirement. Errors identify Column AC and the record.
+Nonblank Column AC requires Column Z to be 1 or 2, ignoring surrounding
+whitespace. Blank AC adds no disposition requirement. Errors identify Column AC and the record.
 
 ## Completion notifications
 

@@ -456,6 +456,9 @@ final class CsvValidator {
 
         // Column Y: A closed date requires a disposition in Column Z.
         $appeal_disposition = trim($columns[25]);
+        if ($appeal_disposition !== '' && !preg_match('/^[1-4]$/', $appeal_disposition)) {
+          $errors[] = sprintf('CSV record %d: Column Z (Appeal Disposition) must be an integer from 1 to 4', $record);
+        }
         if ($appeal_closed !== '' && $appeal_disposition === '') {
           $errors[] = sprintf('CSV record %d: Column Y: Appeal Disposition is required if Appeal Closed Date is entered ', $record);
         }
@@ -470,21 +473,15 @@ final class CsvValidator {
           $errors[] = sprintf('CSV record %d: Column Y: Appeal Date Closed cannot be prior to Appeal Date Received', $record);
         }
 
-        // Column Z: Affirmed appeals need denial reasons or exemptions.
-        // Include the reference CSV's full label, Affirmed on Appeal.
-        $affirmed_dispositions = [
-          'Affirmed',
-          'Affirmed on Appeal',
-          'Partially Affirmed & Partially Reversed/Remanded',
-        ];
-        if (in_array($appeal_disposition, $affirmed_dispositions, TRUE)
+        // Column Z: Affirmed and partially affirmed appeals need reasons.
+        if (in_array($appeal_disposition, ['1', '2'], TRUE)
           && trim($columns[26]) === '' && trim($columns[28]) === '') {
-          $errors[] = sprintf('CSV record %d: Column Z: If Column Z has "Affirmed" or "Partially Affirmed & Partially Reversed/Remanded", there must be an entry in Column AA and/or Column AC', $record);
+          $errors[] = sprintf('CSV record %d: Column Z: If Column Z is 1 or 2, there must be an entry in Column AA and/or Column AC', $record);
         }
 
         // Column Z: Other closures require at least one reason in AA.
-        if ($appeal_disposition === 'Closed for Other Reasons' && trim($columns[26]) === '') {
-          $errors[] = sprintf('CSV record %d: Column Z: If Column Z has appeal disposition "Closed for Other Reasons", then Column AA must have at least one reason entered', $record);
+        if ($appeal_disposition === '4' && trim($columns[26]) === '') {
+          $errors[] = sprintf('CSV record %d: Column Z: If Column Z is 4, Column AA must have at least one reason entered', $record);
         }
 
         // Column AB: An Other reason in AA requires explanatory text.
@@ -495,12 +492,9 @@ final class CsvValidator {
         }
 
         // Column AC: Appeal exemptions require one of these dispositions in Z.
-        $exemption_dispositions = [
-          'Affirmed on Appeal',
-          'Partially Affirmed & Partially Reversed/Remanded',
-        ];
+        $exemption_dispositions = ['1', '2'];
         if (trim($columns[28]) !== '' && !in_array($appeal_disposition, $exemption_dispositions, TRUE)) {
-          $errors[] = sprintf('CSV record %d: Column AC: If AC has exemptions, Column Z must be Affirmed on Appeal or Partially Affirmed & Partially Reversed/Remanded', $record);
+          $errors[] = sprintf('CSV record %d: Column AC: If AC has exemptions, Column Z must be 1 or 2', $record);
         }
       }
       if (!feof($stream)) {

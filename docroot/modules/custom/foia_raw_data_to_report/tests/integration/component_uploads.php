@@ -228,7 +228,7 @@ try {
   $check($counts['overall'] === ['pending_start' => 0, 'received' => 0, 'processed' => 0, 'pending_end' => 0], 'Appeal-only row contributed to request statistics.');
   // An unknown appeal exemption exercises post-validation exception reporting.
   $row[24] = '01/03/2026';
-  $row[25] = 'Affirmed on Appeal';
+  $row[25] = '1';
   $row[28] = 'invalid-code';
   $contents = implode(',', array_fill(0, 29, 'column')) . "\n" . implode(',', $row);
   file_put_contents($files[1]->getFileUri(), $contents);

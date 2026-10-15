@@ -8,13 +8,23 @@ namespace Drupal\foia_raw_data_to_report;
 final class AppealDispositionAggregator {
 
   /**
-   * Exact Column Z values mapped to their counters.
+   * Column Z integer codes mapped to their disposition labels.
    */
   public const DISPOSITIONS = [
-    'Affirmed on Appeal' => 'affirmed',
-    'Partially Affirmed & Partially Reversed/Remanded' => 'partial',
-    'Completely Reversed/Remanded' => 'reversed',
-    'Closed for Other Reasons' => 'other',
+    1 => 'Affirmed on Appeal',
+    2 => 'Partially Affirmed & Partially Reversed/Remanded',
+    3 => 'Completely Reversed/Remanded on Appeal',
+    4 => 'Appeal Closed for Other Reason',
+  ];
+
+  /**
+   * Integer codes mapped to the existing XML counters.
+   */
+  private const COUNTERS = [
+    1 => 'affirmed',
+    2 => 'partial',
+    3 => 'reversed',
+    4 => 'other',
   ];
 
   /**
@@ -28,7 +38,7 @@ final class AppealDispositionAggregator {
    *   Component counts keyed by entity ID and overall counts, keyed by outcome.
    */
   public function aggregate(array $sources): array {
-    $empty = array_fill_keys(array_values(self::DISPOSITIONS), 0);
+    $empty = array_fill_keys(array_values(self::COUNTERS), 0);
     $components = [];
     foreach ($sources as $source) {
       $id = $source['component_id'];
@@ -57,10 +67,10 @@ final class AppealDispositionAggregator {
             continue;
           }
           // Reject unmapped values rather than silently omitting requests.
-          if (!isset(self::DISPOSITIONS[$code])) {
-            throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown Appeal Disposition in Column Z.', $source['component_label'] ?? $id, $record));
+          if (!preg_match('/^[1-4]$/', $code)) {
+            throw new \RuntimeException(sprintf('Component %s, CSV record %d: Column Z (Appeal Disposition) must be an integer from 1 to 4.', $source['component_label'] ?? $id, $record));
           }
-          $components[$id][self::DISPOSITIONS[$code]]++;
+          $components[$id][self::COUNTERS[(int) $code]]++;
         }
         if (!feof($stream)) {
           throw new \RuntimeException('Unable to finish reading a CSV for appeal disposition counts.');

@@ -43,6 +43,25 @@ class CsvValidatorTest extends UnitTestCase {
   }
 
   /**
+   * Column Z accepts only integer codes, with whitespace ignored.
+   */
+  public function testAppealDispositionRange(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    $base = [8 => '', 23 => '01/01/2026', 24 => '01/02/2026'];
+    foreach (['0', '5', '-1', '1.0', '1.5', '1e0', '01', '+1', '1,2',
+      'Affirmed on Appeal', 'Partially Affirmed & Partially Reversed/Remanded',
+      'Completely Reversed/Remanded on Appeal', 'Appeal Closed for Other Reason',
+    ] as $value) {
+      $row = $this->csvRow($base + [25 => $value]);
+      $this->assertSame(['CSV record 2: Column Z (Appeal Disposition) must be an integer from 1 to 4'], $this->validateContents($header . $row));
+    }
+    foreach (['', '   '] as $value) {
+      $row = $this->csvRow([8 => '', 23 => '01/01/2026', 25 => $value]);
+      $this->assertSame([], $this->validateContents($header . $row));
+    }
+  }
+
+  /**
    * Validates temporary CSV contents and removes the fixture.
    */
   private function validateContents(string $contents): array {
@@ -90,16 +109,16 @@ class CsvValidatorTest extends UnitTestCase {
     $header = implode(',', array_fill(0, 29, 'column')) . "\n";
     $base = [8 => '', 23 => '01/01/2025'];
     foreach (['10/01/2025', '09/30/2026'] as $date) {
-      $row = $this->csvRow($base + [24 => $date, 25 => 'Affirmed on Appeal', 26 => 'No Records']);
+      $row = $this->csvRow($base + [24 => $date, 25 => '1', 26 => 'No Records']);
       $this->assertSame([], $this->validateContents($header . $row));
     }
     $cases = [
       [
-        [24 => '09/30/2025', 25 => 'Affirmed on Appeal', 26 => 'No Records'],
+        [24 => '09/30/2025', 25 => '1', 26 => 'No Records'],
         'Appeal Date Closed is outside the fiscal year',
       ],
       [
-        [24 => '10/01/2026', 25 => 'Affirmed on Appeal', 26 => 'No Records'],
+        [24 => '10/01/2026', 25 => '1', 26 => 'No Records'],
         'Appeal Date Closed is outside the fiscal year',
       ],
       [
@@ -107,15 +126,15 @@ class CsvValidatorTest extends UnitTestCase {
         'Appeal Disposition is required if Appeal Closed Date is entered ',
       ],
       [
-        [24 => '  ', 25 => 'Affirmed on Appeal', 26 => 'No Records'],
+        [24 => '  ', 25 => '1', 26 => 'No Records'],
         'Appeal Closed Date is required if Appeal Disposition is entered',
       ],
       [
-        [23 => '01/03/2026', 24 => '01/02/2026', 25 => 'Affirmed on Appeal', 26 => 'No Records'],
+        [23 => '01/03/2026', 24 => '01/02/2026', 25 => '1', 26 => 'No Records'],
         'Appeal Date Closed cannot be prior to Appeal Date Received',
       ],
       [
-        [24 => '02/30/2026', 25 => 'Affirmed on Appeal', 26 => 'No Records'],
+        [24 => '02/30/2026', 25 => '1', 26 => 'No Records'],
         'Appeal Date Closed must be a valid date in MM/DD/YYYY format',
       ],
     ];
@@ -125,7 +144,7 @@ class CsvValidatorTest extends UnitTestCase {
     }
     // A previous row's received date must not leak into a blank X comparison.
     $first = $this->csvRow([8 => '', 23 => '09/30/2026']);
-    $second = $this->csvRow([1 => 'Request 2', 24 => '01/02/2026', 25 => 'Affirmed on Appeal', 26 => 'No Records']);
+    $second = $this->csvRow([1 => 'Request 2', 24 => '01/02/2026', 25 => '1', 26 => 'No Records']);
     $this->assertSame([], $this->validateContents($header . $first . $second));
     $row = $this->csvRow([8 => '', 23 => '01/03/2026', 24 => '09/30/2025']);
     $this->assertCount(3, $this->validateContents($header . $row));
@@ -137,26 +156,24 @@ class CsvValidatorTest extends UnitTestCase {
   public function testAppealDispositionReasons(): void {
     $header = implode(',', array_fill(0, 29, 'column')) . "\n";
     $base = [8 => '', 23 => '01/01/2026', 24 => '01/02/2026'];
-    foreach (['Affirmed', 'Affirmed on Appeal', 'Partially Affirmed & Partially Reversed/Remanded'] as $label) {
+    foreach (['1', '2'] as $label) {
       $row = $this->csvRow($base + [25 => $label, 26 => '  ', 28 => '']);
       $this->assertSame([
-        'CSV record 2: Column Z: If Column Z has "Affirmed" or "Partially Affirmed & Partially Reversed/Remanded", there must be an entry in Column AA and/or Column AC',
+        'CSV record 2: Column Z: If Column Z is 1 or 2, there must be an entry in Column AA and/or Column AC',
       ], $this->validateContents($header . $row));
       foreach ([[26 => 'No Records'], [28 => '3'], [26 => 'No Records', 28 => '3']] as $values) {
         $row = $this->csvRow($base + [25 => ' ' . $label . ' '] + $values);
-        $expected = $label === 'Affirmed' && isset($values[28])
-          ? ['CSV record 2: Column AC: If AC has exemptions, Column Z must be Affirmed on Appeal or Partially Affirmed & Partially Reversed/Remanded']
-          : [];
+        $expected = [];
         $this->assertSame($expected, $this->validateContents($header . $row));
       }
     }
-    $row = $this->csvRow($base + [25 => 'Closed for Other Reasons']);
+    $row = $this->csvRow($base + [25 => '4']);
     $this->assertSame([
-      'CSV record 2: Column Z: If Column Z has appeal disposition "Closed for Other Reasons", then Column AA must have at least one reason entered',
+      'CSV record 2: Column Z: If Column Z is 4, Column AA must have at least one reason entered',
     ], $this->validateContents($header . $row));
-    $row = $this->csvRow($base + [25 => 'Closed for Other Reasons', 26 => 'No Records']);
+    $row = $this->csvRow($base + [25 => '4', 26 => 'No Records']);
     $this->assertSame([], $this->validateContents($header . $row));
-    $row = $this->csvRow($base + [25 => 'Completely Reversed/Remanded']);
+    $row = $this->csvRow($base + [25 => '3']);
     $this->assertSame([], $this->validateContents($header . $row));
   }
 
@@ -183,24 +200,24 @@ class CsvValidatorTest extends UnitTestCase {
   }
 
   /**
-   * Restricts appeal exemptions to the two specified disposition labels.
+   * Restricts appeal exemptions to disposition codes 1 and 2.
    */
   public function testAppealExemptionDisposition(): void {
     $header = implode(',', array_fill(0, 29, 'column')) . "\n";
     $base = [8 => '', 23 => '01/01/2026', 24 => '01/02/2026', 26 => 'No Records'];
-    foreach (['Affirmed on Appeal', 'Partially Affirmed & Partially Reversed/Remanded'] as $label) {
+    foreach (['1', '2'] as $label) {
       $row = $this->csvRow($base + [25 => ' ' . $label . ' ', 28 => '3, 5']);
       $this->assertSame([], $this->validateContents($header . $row));
     }
-    foreach (['Affirmed', 'Closed for Other Reasons', 'Completely Reversed/Remanded'] as $label) {
+    foreach (['4', '3'] as $label) {
       $row = $this->csvRow($base + [25 => $label, 28 => '3']);
       $this->assertSame([
-        'CSV record 2: Column AC: If AC has exemptions, Column Z must be Affirmed on Appeal or Partially Affirmed & Partially Reversed/Remanded',
+        'CSV record 2: Column AC: If AC has exemptions, Column Z must be 1 or 2',
       ], $this->validateContents($header . $row));
     }
     $row = $this->csvRow([8 => '', 23 => '01/01/2026', 28 => '0']);
     $this->assertSame([
-      'CSV record 2: Column AC: If AC has exemptions, Column Z must be Affirmed on Appeal or Partially Affirmed & Partially Reversed/Remanded',
+      'CSV record 2: Column AC: If AC has exemptions, Column Z must be 1 or 2',
     ], $this->validateContents($header . $row));
     foreach (['', '  '] as $value) {
       $row = $this->csvRow([8 => '', 23 => '01/01/2026', 28 => $value]);
@@ -330,7 +347,7 @@ class CsvValidatorTest extends UnitTestCase {
     $header = implode(',', array_fill(0, 29, 'column')) . "\n";
     foreach ([
       [8 => '', 23 => '01/02/2026'],
-      [8 => '  ', 23 => '01/02/2026', 24 => '01/03/2026', 25 => 'Affirmed on Appeal', 26 => 'No Records'],
+      [8 => '  ', 23 => '01/02/2026', 24 => '01/03/2026', 25 => '1', 26 => 'No Records'],
       [8 => '01/01/2026'],
     ] as $overrides) {
       $this->assertSame([], $this->validateContents($header . $this->csvRow($overrides)));
