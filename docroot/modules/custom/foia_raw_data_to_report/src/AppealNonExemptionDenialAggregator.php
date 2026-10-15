@@ -8,20 +8,20 @@ namespace Drupal\foia_raw_data_to_report;
 final class AppealNonExemptionDenialAggregator {
 
   /**
-   * Column AA reason labels mapped to annual report XML codes.
+   * Column AA integer reason codes mapped to annual report XML codes.
    */
   public const REASONS = [
-    'No Records' => 'NoRecords',
-    'Records Referred at the Initial Request Level' => 'Referred',
-    'Request Withdrawn' => 'Withdrawn',
-    'Fee-Related Reason' => 'FeeRelated',
-    'Records not Reasonably Described' => 'NotDescribed',
-    'Improper Request for Other Reasons' => 'ImproperRequest',
-    'Not an Agency Record' => 'NotAgency',
-    'Duplicate Request or Appeal' => 'Duplicate',
-    'Request in Litigation' => 'InLitigation',
-    'Appeal Based Solely on Denial of Request for Expedited Processing' => 'ExpeditedDenial',
-    'Other' => 'Other',
+    1 => 'NoRecords',
+    2 => 'Referred',
+    3 => 'Withdrawn',
+    4 => 'FeeRelated',
+    5 => 'NotDescribed',
+    6 => 'ImproperRequest',
+    7 => 'NotAgency',
+    8 => 'Duplicate',
+    9 => 'InLitigation',
+    10 => 'ExpeditedDenial',
+    11 => 'Other',
   ];
 
   /**
@@ -67,10 +67,10 @@ final class AppealNonExemptionDenialAggregator {
           $reasons = array_unique(array_map('trim', explode(',', $value)));
           foreach ($reasons as $reason) {
             // Unknown labels must not silently disappear from the report.
-            if (!isset(self::REASONS[$reason])) {
-              throw new \RuntimeException(sprintf('Component %s, CSV record %d: Unknown appeal denial reason "%s" in Column AA.', $source['component_label'] ?? $id, $record, $reason));
+            if (!preg_match('/^(?:[1-9]|1[01])$/', $reason)) {
+              throw new \RuntimeException(sprintf('Component %s, CSV record %d: Invalid appeal denial reason code "%s" in Column AA; expected an integer from 1 to 11.', $source['component_label'] ?? $id, $record, $reason));
             }
-            $components[$id][self::REASONS[$reason]]++;
+            $components[$id][self::REASONS[(int) $reason]]++;
           }
         }
         if (!feof($stream)) {

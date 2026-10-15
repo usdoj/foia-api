@@ -429,10 +429,11 @@ four zero quantities. Request statistics continue to use distinct PS IDs.
 ## Appeal dispositions
 
 `AppealDispositionAggregator` streams Column Z and counts the four specified
-outcomes: `Affirmed on Appeal`, `Partially Affirmed & Partially Reversed/Remanded`,
-`Completely Reversed/Remanded`, and `Closed for Other Reasons`. Matching is exact
-and case-sensitive after trimming surrounding whitespace. Blank cells, headers,
-and blank records do not contribute. Each populated row contributes once;
+outcomes using integer codes: 1 = `Affirmed on Appeal`, 2 = `Partially Affirmed
+& Partially Reversed/Remanded`, 3 = `Completely Reversed/Remanded on Appeal`,
+4 = `Appeal Closed for Other Reason`. Nonblank values must be a single code
+1-4; the former text labels are rejected. Surrounding whitespace is ignored.
+Blank cells, headers, and blank records do not contribute. Each populated row contributes once;
 agency counters sum the component counters. No additional date filter is applied
 by this accumulator. Existing validation and appeal date checks still run first.
 Unrecognized nonblank outcomes or read failures abort generation before the
@@ -467,9 +468,9 @@ Request exemptions continue to use a separate section and RDE IDs.
 ## Appeal non-exemption denials
 
 `AppealNonExemptionDenialAggregator` streams Column AA and maps the 11 CSV
-reason labels to XML codes using its `REASONS` constant. Comma-separated
+integer reason codes (1-11) to XML labels using its `REASONS` constant. Comma-separated
 reasons are trimmed and counted once per distinct reason per row. Blank
-cells are ignored; unknown labels stop generation with the component and CSV
+cells are ignored; invalid codes stop generation with the component and CSV
 record in the error message. Agency counts sum all component counts.
 
 `AppealNonExemptionDenialSection` follows the appeal exemptions section.
@@ -797,21 +798,17 @@ year and cannot precede a valid X date. Y requires Z, and Z requires Y; these
 presence checks are independent of date validity. All failures identify Column
 Y and the record and are collected with other validation messages.
 
-Column Z dispositions `Affirmed`, `Affirmed on Appeal`, and
-`Partially Affirmed & Partially Reversed/Remanded` require a nonblank AA or AC
-(or both). `Closed for Other Reasons` requires nonblank AA even when AC has
-data. Surrounding whitespace is ignored. These presence checks do not change
-the disposition labels recognized by XML aggregation.
+Column Z codes 1 and 2 require a nonblank AA or AC (or both).
+Code 4 requires nonblank AA even when AC has data.
+Surrounding whitespace is ignored. The numeric codes map to the same XML
+outcome counters as the former labels.
 
-Column AB requires nonblank explanatory text when AA contains `Other` as a
-complete comma-separated reason. Whitespace around entries is ignored; a
-longer reason such as `Improper Request for Other Reasons` does not trigger
-this rule. Failures identify Column AB and the CSV record.
+Column AB requires nonblank explanatory text when AA contains code `11`
+(Other) as a complete comma-separated entry. Whitespace around entries is ignored; code 6 (ImproperRequest) does not
+trigger this rule. Failures identify Column AB and the CSV record.
 
-Nonblank Column AC requires Column Z to be exactly `Affirmed on Appeal` or
-`Partially Affirmed & Partially Reversed/Remanded`, ignoring surrounding
-whitespace. The shorter `Affirmed` label does not satisfy this rule. Blank AC
-adds no disposition requirement. Errors identify Column AC and the record.
+Nonblank Column AC requires Column Z to be 1 or 2, ignoring surrounding
+whitespace. Blank AC adds no disposition requirement. Errors identify Column AC and the record.
 
 ## Completion notifications
 
@@ -883,3 +880,27 @@ contribute; expedited processing continues to exclude appeal rows. Agency
 summaries combine interval frequencies rather than averaging component results.
 The new XML values use at most two decimal places, with N/A when both outcome
 counts are zero. The within-ten-days counter still requires an actual R date.
+
+## Numeric Column AA appeal denial reasons
+
+Column AA accepts comma-separated integer codes 1-11, with surrounding
+whitespace ignored. Former text labels, out-of-range values, and empty list
+entries are rejected during CSV validation. Each distinct code counts once
+per row; component counts sum to the agency total. XML labels stay unchanged:
+
+| CSV code | XML reason code |
+|---|---|
+| 1 | NoRecords |
+| 2 | Referred |
+| 3 | Withdrawn |
+| 4 | FeeRelated |
+| 5 | NotDescribed |
+| 6 | ImproperRequest |
+| 7 | NotAgency |
+| 8 | Duplicate |
+| 9 | InLitigation |
+| 10 | ExpeditedDenial |
+| 11 | Other |
+
+Nonblank AA requires Z to be 1, 2, or 4. Code 11 requires explanatory text in
+AB. Existing requirements for Z codes 1, 2, and 4 remain in effect.
