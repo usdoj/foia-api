@@ -700,8 +700,7 @@ same pass as personnel, cost, fee, and exclusion totals.
 `BacklogAggregator` counts rows whose request or appeal interval exceeds the
 working days allowed in Column D (exactly that many days does not qualify).
 Rows with blank Days Allowed are excluded from both counts. Only requests
-with blank K and appeals with blank Y contribute. Requests use J, falling back
-to I; appeals use X. Both intervals end on September 30 of the report year.
+with blank K and appeals with blank Y contribute. Requests use only I, regardless of J; appeals use X. Both intervals end on September 30 of the report year.
 Whitespace-only closing dates are treated as blank. Actual start dates are
 retained, including prior fiscal years. No track or disposition filter applies.
 Rows without a start date for the relevant item are skipped.
