@@ -223,6 +223,54 @@ try {
     $check($xpath->evaluate('string(' . $base . '/foia:FeesCollectedCostPercent)') === $ratio, 'Incorrect fee/cost ratio.');
   }
   $check(substr_count($report->get('field_messages')->value, 'CSV validated.') === 4, 'Successful retry did not replace earlier messages.');
+  // A missing prior report is nonblocking and preserves zero comparisons.
+  $check(str_contains($report->get('field_messages')->value, 'no matching report was found'), 'Missing prior report did not produce a note.');
+  $previous_sections = [];
+  foreach ([
+    ['foia_req_va', 'field_foia_requests_va', ['field_req_received_yr' => 11, 'field_req_processed_yr' => 12]],
+    ['admin_app_via', 'field_admin_app_via', ['field_app_received_yr' => 21, 'field_app_processed_yr' => 22]],
+    ['foia_xiia', 'field_foia_xiia', ['field_back_req_end_yr' => 31, 'field_back_app_end_yr' => 32]],
+  ] as [$bundle, $field_name, $values]) {
+    $paragraph = Paragraph::create(['type' => $bundle, 'field_agency_component' => $components[0]->id()] + $values);
+    $previous_sections[$field_name] = [['entity' => $paragraph]];
+  }
+  $annual = Node::create([
+    'type' => 'annual_foia_report_data',
+    'title' => "Previous annual report $suffix",
+    'field_agency' => $agencies[0]->id(),
+    'field_foia_annual_report_yr' => 2025,
+    'field_overall_req_received_yr' => 101,
+    'field_overall_req_processed_yr' => 102,
+    'field_overall_via_app_recd_yr' => 201,
+    'field_overall_via_app_proc_yr' => 202,
+    'field_overall_xiia_back_req_end_' => 301,
+    'field_overall_xiia_back_app_end_' => 302,
+  ] + $previous_sections);
+  $annual->save();
+  $entities[] = $annual;
+  $previous_xml_id = $xml->id();
+  $report = $process();
+  $files = array_values(array_filter($files, static fn($file) => $file->id() != $previous_xml_id));
+  $xml = $report->get('field_request_data_xml')->entity;
+  $files[] = $xml;
+  $check($document->loadXML(file_get_contents($xml->getFileUri())), 'Prior-report XML could not be parsed.');
+  $xpath = new DOMXPath($document);
+  $xpath->registerNamespace('foia', 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03');
+  $xpath->registerNamespace('s', 'http://niem.gov/niem/structures/2.0');
+  foreach ([
+    ['ProcessingComparison', 'PRC', 'ItemsReceivedLastYearQuantity', 11, 'field_overall_req_received_yr'],
+    ['ProcessingComparison', 'PRC', 'ItemsProcessedLastYearQuantity', 12, 'field_overall_req_processed_yr'],
+    ['ProcessingComparison', 'APC', 'ItemsReceivedLastYearQuantity', 21, 'field_overall_via_app_recd_yr'],
+    ['ProcessingComparison', 'APC', 'ItemsProcessedLastYearQuantity', 22, 'field_overall_via_app_proc_yr'],
+    ['BacklogComparison', 'BLR', 'BacklogLastYearQuantity', 31, 'field_overall_xiia_back_req_end_'],
+    ['BacklogComparison', 'ABC', 'BacklogLastYearQuantity', 32, 'field_overall_xiia_back_app_end_'],
+  ] as [$element, $prefix, $quantity, $expected, $overall_field]) {
+    foreach ([0 => (string) $annual->get($overall_field)->value, 1 => (string) $expected, 2 => '0'] as $id => $value) {
+      $query = '//foia:' . $element . '[@s:id="' . $prefix . $id . '"]/foia:' . $quantity;
+      $check($xpath->evaluate('string(' . $query . ')') === $value, 'Incorrect previous-year comparison: ' . $prefix . $id . '/' . $quantity);
+    }
+  }
+  $check(str_contains($report->get('field_messages')->value, 'last-year values remain 0'), 'Missing prior component did not produce a note.');
   // Review notes must persist without blocking XML replacement.
   $row = array_fill(0, 29, '');
   $row[0] = 'Component';

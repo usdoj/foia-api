@@ -324,7 +324,7 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds request or appeal comparisons with zero counts for last year.
+   * Adds request or appeal comparisons with optional prior-year report counts.
    */
   private function addProcessingComparison(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map, string $section_name, string $prefix): void {
     $section = $this->addTextElement($document, $root, 'foia', $section_name);
@@ -334,14 +334,18 @@ final class XmlReportBuilder {
     }
     $organizations['ORG0'] = $statistics['overall'];
 
+    $previous = ['ORG0' => $statistics['previous']['overall'] ?? []];
+    foreach ($component_map as $component_id => $organization_id) {
+      $previous[$organization_id] = $statistics['previous']['components'][$component_id] ?? [];
+    }
     foreach ($organizations as $organization_id => $counts) {
       $entry = $this->addTextElement($document, $section, 'foia', 'ProcessingComparison');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
       // Reuse the inclusive fiscal-year counts already aggregated.
       $fields = [
-        'ItemsReceivedLastYearQuantity' => 0,
+        'ItemsReceivedLastYearQuantity' => $previous[$organization_id]['received'] ?? 0,
         'ItemsReceivedCurrentYearQuantity' => $counts['received'],
-        'ItemsProcessedLastYearQuantity' => 0,
+        'ItemsProcessedLastYearQuantity' => $previous[$organization_id]['processed'] ?? 0,
         'ItemsProcessedCurrentYearQuantity' => $counts['processed'],
       ];
       foreach ($fields as $name => $quantity) {
@@ -358,7 +362,7 @@ final class XmlReportBuilder {
   }
 
   /**
-   * Adds request or appeal backlog comparisons with zero for last year.
+   * Adds backlog comparisons with optional prior-year report counts.
    */
   private function addBacklogComparison(\DOMDocument $document, \DOMElement $root, array $statistics, array $component_map, string $section_name, string $prefix, string $counter): void {
     $section = $this->addTextElement($document, $root, 'foia', $section_name);
@@ -368,11 +372,15 @@ final class XmlReportBuilder {
     }
     $organizations['ORG0'] = $statistics['overall'];
 
+    $previous = ['ORG0' => $statistics['previous']['overall'] ?? []];
+    foreach ($component_map as $component_id => $organization_id) {
+      $previous[$organization_id] = $statistics['previous']['components'][$component_id] ?? [];
+    }
     foreach ($organizations as $organization_id => $counts) {
       $entry = $this->addTextElement($document, $section, 'foia', 'BacklogComparison');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
       // Reuse the matching count emitted in BacklogSection.
-      $this->addTextElement($document, $entry, 'foia', 'BacklogLastYearQuantity', '0');
+      $this->addTextElement($document, $entry, 'foia', 'BacklogLastYearQuantity', (string) ($previous[$organization_id][$counter] ?? 0));
       $this->addTextElement($document, $entry, 'foia', 'BacklogCurrentYearQuantity', (string) $counts[$counter]);
     }
     foreach ($organizations as $organization_id => $counts) {

@@ -17,6 +17,7 @@ use Drupal\foia_raw_data_to_report\SectionDataCsvValidator;
 use Drupal\foia_raw_data_to_report\ReportNotifications;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\XmlReportBuilder;
+use Drupal\foia_raw_data_to_report\PreviousYearComparisonData;
 use Drupal\foia_raw_data_to_report\StatuteAggregator;
 use Drupal\foia_raw_data_to_report\RequestStatisticsAggregator;
 use Drupal\foia_raw_data_to_report\ConsultationStatisticsAggregator;
@@ -249,6 +250,22 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $oldest_pending_consultations = (new OldestPendingRequestAggregator())->aggregate($sources, $fiscal_year, TRUE);
     $personnel_and_cost = (new PersonnelAndCostAggregator())->aggregate($section_sources);
     $fees_collected = (new FeesCollectedAggregator())->aggregate($personnel_and_cost);
+    $previous = (new PreviousYearComparisonData($this->entityTypeManager))->load(
+      (int) $node->get('field_agency')->target_id,
+      $fiscal_year,
+      array_map(static fn($component) => (int) $component->id(), $components),
+    );
+    $request_statistics['previous'] = $previous['requests'];
+    $appeal_statistics['previous'] = $previous['appeals'];
+    $backlog['previous'] = $previous['backlog'];
+    if ($previous['notes']) {
+      $node->set('field_messages', [
+        'value' => $node->get('field_messages')->value . "\n\n" . implode("\n", $previous['notes']),
+        'format' => 'plain_text',
+      ]);
+      // Persist lookup notes even if a later XML generation step fails.
+      $node->save();
+    }
     $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals, $processed_response_times, $information_granted_response_times, $simple_response_increments, $complex_response_increments, $expedited_response_increments, $pending_perfected_requests, $oldest_pending_requests, $expedited_processing, $fee_waivers, $fees_collected, $backlog, $consultation_statistics, $oldest_pending_consultations, $personnel_and_cost);
     $field = $node->get('field_request_data_xml');
     $previous_file = $field->entity;

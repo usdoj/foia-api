@@ -746,19 +746,20 @@ ten agency-wide are retained in memory.
 `ProcessedRequestComparisonSection` reuses the existing request statistics:
 Column I within the fiscal year supplies `ItemsReceivedCurrentYearQuantity`,
 and Column K within the fiscal year supplies `ItemsProcessedCurrentYearQuantity`.
-October 1 and September 30 are included. Both last-year quantities are `0`.
+October 1 and September 30 are included. Last-year quantities come from the
+previous annual report when available, otherwise default to `0` with notes.
 No additional CSV pass is needed.
 
 Each component and the agency have a `ProcessingComparison`, including zero
 counts, with `PRC1`, `PRC2`, etc. and `PRC0` linked to Organization entries via
-`ProcessingComparisonOrganizationAssociation`. Agency quantities are the sums
-of component quantities.
+`ProcessingComparisonOrganizationAssociation`. Current-year agency quantities
+sum component quantities; prior-year agency quantities use stored report totals.
 
 ## Backlogged request comparison
 
 `BackloggedRequestComparisonSection` reuses the request counts from
 `BacklogSection` for `BacklogCurrentYearQuantity`. `BacklogLastYearQuantity`
-is always `0`. No additional CSV pass is needed.
+uses the prior annual report when available, otherwise `0` with notes. No additional CSV pass is needed.
 
 Each component and the agency have a `BacklogComparison`, including zero
 counts. `BLR1`, `BLR2`, etc. and agency `BLR0` link to their Organization entries
@@ -767,7 +768,8 @@ through `BacklogComparisonOrganizationAssociation`.
 ## Processed appeal comparison
 
 `ProcessedAppealComparisonSection` reuses the received and processed counts
-from `ProcessedAppealSection`. Both last-year quantities are `0`. Each
+from `ProcessedAppealSection`. Last-year quantities use the prior annual
+report when available, otherwise `0` with notes. Each
 component and the agency have a `ProcessingComparison`, including zero counts,
 with `APC1`, `APC2`, etc. and `APC0` linked to Organization entries through
 `ProcessingComparisonOrganizationAssociation`. No additional CSV pass is
@@ -776,7 +778,7 @@ needed; the request and appeal comparisons share the same XML formatter.
 ## Backlogged appeal comparison
 
 `BackloggedAppealComparisonSection` reuses `BackloggedAppealQuantity` from
-`BacklogSection` for its current-year count and emits `0` for last year.
+`BacklogSection` for its current-year count and uses the prior annual report for last year, defaulting to `0` with notes.
 Every component and the agency have a `BacklogComparison`, including zeros,
 with `ABC1`, `ABC2`, etc. and `ABC0` linked to Organization entries through
 `BacklogComparisonOrganizationAssociation`. Request and appeal backlog
@@ -948,3 +950,16 @@ holidays) for adjudication median, average, and the within-ten-days counter.
 Intervals have a minimum of one day. Missing R uses fiscal year-end for median
 and average, but does not contribute to the within-ten counter. Ten calendar
 days is inclusive. Fee waivers and other sections continue using working days.
+
+## Previous annual report comparisons
+
+The four request/appeal processed/backlog comparison sections look up the
+annual_foia_report_data node for the same Agency and report year minus one.
+Components match paragraph field_agency_component entity IDs in
+field_foia_requests_va, field_admin_app_via, and field_foia_xiia. Agency totals
+use the prior report's stored overall fields, including components absent from
+the current upload. Missing report/component/field data defaults to 0 and adds
+nonblocking notes to field_messages. Multiple matching reports or duplicate
+component paragraphs are treated as ambiguous, with 0 defaults and notes.
+Lookup exceptions are caught so queue processing can continue. Prior fields
+must contain nonnegative integer quantities; no historical data is modified.
