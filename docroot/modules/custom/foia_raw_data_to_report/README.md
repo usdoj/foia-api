@@ -607,7 +607,8 @@ The shared `WorkingDays` calendar excludes weekends and federal holidays.
 
 Frequency maps provide counts, exact medians, and averages per component and
 across all agency rows. Empty tracks emit quantity 0 and literal `N/A` in both
-median/average value elements; populated averages have two decimals. Same-day
+median/average value elements; populated averages have two decimals unless
+they end in .00, which is omitted for whole-number output. Same-day
 ages remain numeric zero. `PendingPerfectedRequestsSection` follows expedited
 increments and uses `PPR1`, `PPR2`, etc. and agency `PPR0` organization links.
 

@@ -698,6 +698,8 @@ final class XmlReportBuilder {
         $this->addTextElement($document, $bin, 'foia', 'PendingRequestQuantity', (string) $values['quantity']);
         $median = $values['quantity'] === 0 ? 'N/A' : (string) $values['median'];
         $average = $values['quantity'] === 0 ? 'N/A' : number_format($values['average'], 2, '.', '');
+        $median = preg_replace('/\.00$/', '', $median);
+        $average = preg_replace('/\.00$/', '', $average);
         $this->addTextElement($document, $bin, 'foia', 'PendingRequestMedianDaysValue', $median);
         $this->addTextElement($document, $bin, 'foia', 'PendingRequestAverageDaysValue', $average);
       }
