@@ -614,14 +614,14 @@ increments and uses `PPR1`, `PPR2`, etc. and agency `PPR0` organization links.
 
 ## Oldest pending requests
 
-`OldestPendingRequestAggregator` selects rows with I populated and K blank,
+`OldestPendingRequestAggregator` selects rows with I and J populated and K blank,
 without track or disposition filters. Pending age uses the shared working-day
 calendar from the actual received date through fiscal year-end, excluding the
 start day and including the end day. Prior-year time is included.
 
 At most ten items are retained per component and for the entire agency, sorted
-by descending pending days, then ascending receipt date for ties. Duplicate
-rows remain separate entries. Empty components retain their empty container
+by ascending perfected date (J), then ascending receipt date (I) for ties.
+Duplicate rows remain separate entries. Empty components retain their empty container
 and association. `OldestPendingRequestSection` follows pending perfected
 requests, with ISO receipt dates and `OPR1`, `OPR2`, etc.; `OPR0` is the agency.
 The oldest-appeal section also uses the shared working-day calendar.
@@ -931,3 +931,9 @@ combine available appeal intervals and ignore empty components. Actual zero-day
 intervals remain numeric zero (including the average); nonzero averages retain
 two decimal places. Eligibility requires Column X; blank Y uses fiscal year-end.
 Columns Z-AC are not required for response-time eligibility.
+
+OldestPendingRequestSection ranks the ten earliest Column J dates per component
+and across the agency, breaking equal perfected dates by earliest Column I.
+OldItemReceiptDate and pending working days continue to use Column I. Blank or
+whitespace-only J rows are excluded. The consultation-only listing retains its
+existing selection without requiring J.
