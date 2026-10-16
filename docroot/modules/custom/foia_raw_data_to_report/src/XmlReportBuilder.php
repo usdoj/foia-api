@@ -434,6 +434,10 @@ final class XmlReportBuilder {
     }
     $organizations['ORG0'] = $other_reasons['overall'];
     foreach ($organizations as $organization_id => $reasons) {
+      // Keep empty uploaded components visible with an explicit zero reason.
+      if ($section_name === 'RequestDenialOtherReasonSection' && $reasons === []) {
+        $reasons = [['description' => 'N/A', 'quantity' => 0]];
+      }
       $entry = $this->addTextElement($document, $section, 'foia', 'ComponentOtherDenialReason');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', $prefix . substr($organization_id, 3));
       foreach ($reasons as $reason) {
