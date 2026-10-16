@@ -632,9 +632,9 @@ Rows with nonblank Column X (Appeal Date Received) are excluded from all
 expedited-processing counts, for both components and agency totals.
 
 `ExpeditedProcessingAggregator` counts uppercase G and D in Column S as granted
-and denied. With both Q and R present, adjudications taking at most ten working
-days also increment the timely counter. The shared calendar excludes the start
-day, includes the end day, and skips weekends and listed federal holidays.
+and denied. With both Q and R present, adjudications taking at most ten calendar
+days also increment the timely counter. Elapsed calendar days include weekends
+and holidays, with a minimum interval of one day.
 Same-day determinations qualify. Blank R still counts the outcome, but not a
 timely adjudication. Invalid or reversed dates produce contextual exceptions.
 
@@ -876,8 +876,8 @@ Section IX-XI columns E-H supply fees and subsection statistics.
 PersonnelAndCostSection, ProcessedConsultationSection, and ProcessedRequestSection
 end with an empty FootnoteText element after their organization associations.
 ExpeditedProcessing and FeeWaiver entries include AdjudicationMedianDaysValue
-and AdjudicationAverageDaysValue after granted/denied quantities. Working days
-are counted from Q to R for expedited processing and T to U for fee waivers,
+and AdjudicationAverageDaysValue after granted/denied quantities. Calendar days
+are counted from Q to R for expedited processing; working days from T to U for fee waivers,
 excluding the start date and including the end date. Missing completion dates
 use September 30 of the report fiscal year. Only granted/denied outcomes
 contribute; expedited processing continues to exclude appeal rows. Agency
@@ -938,8 +938,14 @@ OldItemReceiptDate and pending working days continue to use Column I. Blank or
 whitespace-only J rows are excluded. The consultation-only listing retains its
 existing selection without requiring J.
 
-Expedited-processing adjudication intervals have a minimum of one working day:
+Expedited-processing adjudication intervals have a minimum of one calendar day:
 zero-day intervals are counted as one before calculating component and agency
 averages and medians, including when a missing R uses fiscal year-end. This
 minimum does not apply to fee-waiver intervals. The within-ten-days counter
 still requires an actual determination date and includes same-day outcomes.
+
+ExpeditedProcessingSection uses elapsed calendar days (including weekends and
+holidays) for adjudication median, average, and the within-ten-days counter.
+Intervals have a minimum of one day. Missing R uses fiscal year-end for median
+and average, but does not contribute to the within-ten counter. Ten calendar
+days is inclusive. Fee waivers and other sections continue using working days.

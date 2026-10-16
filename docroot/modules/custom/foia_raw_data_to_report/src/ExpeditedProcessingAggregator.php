@@ -13,7 +13,7 @@ final class ExpeditedProcessingAggregator {
   public const OUTCOMES = ['G' => 'granted', 'D' => 'denied'];
 
   /**
-   * Counts granted, denied, and adjudications within ten working days.
+   * Counts granted, denied, and adjudications within ten calendar days.
    *
    * @param array $sources
    *   Component/file pairs with component_id and uri keys, plus an optional
@@ -26,7 +26,6 @@ final class ExpeditedProcessingAggregator {
    */
   public function aggregate(array $sources, int $fiscal_year): array {
     $empty = ['granted' => 0, 'denied' => 0, 'within_ten' => 0];
-    $working_days = new WorkingDays();
     $components = [];
     $histograms = [];
     $end_of_year = sprintf('09/30/%04d', $fiscal_year);
@@ -67,19 +66,15 @@ final class ExpeditedProcessingAggregator {
           $determined = trim($columns[17]);
           $context = sprintf('Component %s, CSV %s, record %d', $source['component_label'] ?? $id, basename($source['uri']), $record);
           $start = $this->calendarDate($received, $context . ', Column Q');
-          // Expedited adjudication intervals have a minimum of one day.
-          $days = max(1, AdjudicationStatistics::days($received, $determined === '' ? $end_of_year : $determined));
-          $histograms[$id][$days] = ($histograms[$id][$days] ?? 0) + 1;
-          // Only actual determinations contribute to the within-ten counter.
-          if ($determined === '') {
-            continue;
-          }
-          $end = $this->calendarDate($determined, $context . ', Column R');
+          $end = $this->calendarDate($determined === '' ? $end_of_year : $determined, $context . ', Column R or fiscal year-end');
           if ($end < $start) {
             throw new \RuntimeException($context . ': Column R cannot precede Column Q.');
           }
-          // Exclude the start day and include the end day; ten is inclusive.
-          if ($working_days->count($received, $determined) <= 10) {
+          // Use elapsed calendar days, counting same-day outcomes as one day.
+          $days = max(1, (int) $start->diff($end)->days);
+          $histograms[$id][$days] = ($histograms[$id][$days] ?? 0) + 1;
+          // Only actual determinations within ten calendar days qualify.
+          if ($determined !== '' && $days <= 10) {
             $components[$id]['within_ten']++;
           }
         }

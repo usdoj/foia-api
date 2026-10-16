@@ -10,7 +10,7 @@ use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Checks working-day adjudication summaries and XML for both outcome sections.
+ * Checks calendar-day expedited and working-day fee-waiver summaries.
  */
 #[Group('foia_raw_data_to_report')]
 class AdjudicationStatisticsTest extends UnitTestCase {
@@ -42,10 +42,11 @@ class AdjudicationStatisticsTest extends UnitTestCase {
         [new FeeWaiverAggregator(), 'addFeeWaivers', 'FeeWaiver', 'FW'],
       ] as [$aggregator, $method, $element, $prefix]) {
         $statistics = $aggregator->aggregate($sources, 2025);
-        $this->assertSame(10.5, $statistics['components'][1]['average']);
-        $this->assertSame(10.5, $statistics['components'][1]['median']);
-        $this->assertSame(25 / 3, $statistics['overall']['average']);
-        $this->assertEquals(4, $statistics['overall']['median']);
+        $expedited = $aggregator instanceof ExpeditedProcessingAggregator;
+        $this->assertSame($expedited ? 14.5 : 10.5, $statistics['components'][1]['average']);
+        $this->assertSame($expedited ? 14.5 : 10.5, $statistics['components'][1]['median']);
+        $this->assertSame($expedited ? 35 / 3 : 25 / 3, $statistics['overall']['average']);
+        $this->assertEquals($expedited ? 6 : 4, $statistics['overall']['median']);
         $document = new \DOMDocument();
         $root = $document->createElement('report');
         $document->appendChild($root);
@@ -56,9 +57,9 @@ class AdjudicationStatisticsTest extends UnitTestCase {
         $xpath->registerNamespace('foia', 'http://leisp.usdoj.gov/niem/FoiaAnnualReport/extension/1.03');
         $xpath->registerNamespace('s', 'http://niem.gov/niem/structures/2.0');
         $expected = [
-          0 => ['8.33', '4'],
-          1 => ['10.5', '10.5'],
-          2 => ['4', '4'],
+          0 => $expedited ? ['11.67', '6'] : ['8.33', '4'],
+          1 => $expedited ? ['14.5', '14.5'] : ['10.5', '10.5'],
+          2 => $expedited ? ['6', '6'] : ['4', '4'],
           3 => ['N/A', 'N/A'],
         ];
         foreach ($expected as $id => [$average, $median]) {
@@ -115,6 +116,34 @@ class AdjudicationStatisticsTest extends UnitTestCase {
       $fees = (new FeeWaiverAggregator())->aggregate($sources, 2025);
       $this->assertEquals(0.25, $fees['overall']['average']);
       $this->assertEquals(0, $fees['overall']['median']);
+    }
+    finally {
+      unlink($path);
+    }
+  }
+
+  /**
+   * Ten-day checks include weekends and holidays, with an inclusive threshold.
+   */
+  public function testCalendarDayThreshold(): void {
+    $path = tempnam(sys_get_temp_dir(), 'expedited-calendar-');
+    try {
+      $stream = fopen($path, 'wb');
+      fputcsv($stream, array_fill(0, 29, 'column'), ',', '"', '');
+      foreach (['09/08/2025', '09/09/2025'] as $end) {
+        $row = array_fill(0, 29, '');
+        $row[16] = '08/29/2025';
+        $row[17] = $end;
+        $row[18] = 'D';
+        fputcsv($stream, $row, ',', '"', '');
+      }
+      fclose($stream);
+      $statistics = (new ExpeditedProcessingAggregator())->aggregate([
+        ['component_id' => 1, 'uri' => $path],
+      ], 2025);
+      $this->assertSame(1, $statistics['overall']['within_ten']);
+      $this->assertSame(10.5, $statistics['overall']['average']);
+      $this->assertSame(10.5, $statistics['overall']['median']);
     }
     finally {
       unlink($path);
