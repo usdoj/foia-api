@@ -937,3 +937,9 @@ and across the agency, breaking equal perfected dates by earliest Column I.
 OldItemReceiptDate and pending working days continue to use Column I. Blank or
 whitespace-only J rows are excluded. The consultation-only listing retains its
 existing selection without requiring J.
+
+Expedited-processing adjudication intervals have a minimum of one working day:
+zero-day intervals are counted as one before calculating component and agency
+averages and medians, including when a missing R uses fiscal year-end. This
+minimum does not apply to fee-waiver intervals. The within-ten-days counter
+still requires an actual determination date and includes same-day outcomes.

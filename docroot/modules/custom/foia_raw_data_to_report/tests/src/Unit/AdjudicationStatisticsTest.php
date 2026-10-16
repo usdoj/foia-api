@@ -83,4 +83,42 @@ class AdjudicationStatisticsTest extends UnitTestCase {
     $this->assertSame(0, AdjudicationStatistics::days('09/30/2025', '09/30/2025'));
   }
 
+  /**
+   * Floors expedited intervals before summarizing; fee waivers stay unchanged.
+   */
+  public function testExpeditedMinimumDay(): void {
+    $path = tempnam(sys_get_temp_dir(), 'expedited-minimum-');
+    try {
+      $stream = fopen($path, 'wb');
+      fputcsv($stream, array_fill(0, 29, 'column'), ',', '"', '');
+      foreach ([
+        ['09/03/2025', '09/03/2025'],
+        ['09/03/2025', '09/04/2025'],
+        ['09/05/2025', '09/06/2025'],
+        ['09/30/2025', ''],
+      ] as [$received, $determined]) {
+        $row = array_fill(0, 29, '');
+        $row[16] = $row[19] = $received;
+        $row[17] = $row[20] = $determined;
+        $row[18] = $row[21] = 'G';
+        fputcsv($stream, $row, ',', '"', '');
+      }
+      fclose($stream);
+      $sources = [['component_id' => 1, 'uri' => $path]];
+      $expedited = (new ExpeditedProcessingAggregator())->aggregate($sources, 2025);
+      foreach ([$expedited['components'][1], $expedited['overall']] as $statistics) {
+        $this->assertEquals(1, $statistics['average']);
+        $this->assertEquals(1, $statistics['median']);
+        $this->assertSame(4, $statistics['granted']);
+        $this->assertSame(3, $statistics['within_ten']);
+      }
+      $fees = (new FeeWaiverAggregator())->aggregate($sources, 2025);
+      $this->assertEquals(0.25, $fees['overall']['average']);
+      $this->assertEquals(0, $fees['overall']['median']);
+    }
+    finally {
+      unlink($path);
+    }
+  }
+
 }

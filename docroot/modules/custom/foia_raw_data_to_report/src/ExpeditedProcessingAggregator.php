@@ -67,7 +67,8 @@ final class ExpeditedProcessingAggregator {
           $determined = trim($columns[17]);
           $context = sprintf('Component %s, CSV %s, record %d', $source['component_label'] ?? $id, basename($source['uri']), $record);
           $start = $this->calendarDate($received, $context . ', Column Q');
-          $days = AdjudicationStatistics::days($received, $determined === '' ? $end_of_year : $determined);
+          // Expedited adjudication intervals have a minimum of one day.
+          $days = max(1, AdjudicationStatistics::days($received, $determined === '' ? $end_of_year : $determined));
           $histograms[$id][$days] = ($histograms[$id][$days] ?? 0) + 1;
           // Only actual determinations contribute to the within-ten counter.
           if ($determined === '') {
