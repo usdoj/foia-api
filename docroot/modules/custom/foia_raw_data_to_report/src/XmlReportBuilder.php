@@ -572,7 +572,7 @@ final class XmlReportBuilder {
       $entry = $this->addTextElement($document, $section, 'foia', 'ResponseTime');
       $entry->setAttributeNS(self::NAMESPACES['s'], 's:id', 'ART' . substr($organization_id, 3));
       foreach ($fields as $key => $name) {
-        $value = $key === 'average' ? number_format($values[$key], 2, '.', '') : (string) $values[$key];
+        $value = $key === 'average' && (float) $values[$key] !== 0.0 ? number_format($values[$key], 2, '.', '') : (string) $values[$key];
         $this->addTextElement($document, $entry, 'foia', $name, $value);
       }
     }
