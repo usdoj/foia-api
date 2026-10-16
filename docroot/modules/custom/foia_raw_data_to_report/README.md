@@ -533,7 +533,8 @@ pending appeals retain an empty container and their organization association.
 K (Date Completed), with S, C, or E in M. Whitespace-only dates are skipped.
 The start is always J; Column I is never used as a fallback. This selection
 also applies to information-granted response times and all three increment
-sections, which additionally require disposition 1 or 2. No fiscal-year
+sections. Only the information-granted section additionally requires
+disposition 1 or 2; increment sections do not filter on Column N. No fiscal-year
 clamping or Days Tolled subtraction is applied. Invalid dates or an end
 before its start stop generation with a contextual error.
 
@@ -569,8 +570,8 @@ for components and `IGRT0` for the agency. Associations retain the example's
 ## Simple response-time increments
 
 `aggregateSimpleIncrements()` shares the processed-response CSV reader and
-working-day calculation. It includes completed requests with Track S and
-Disposition 1 or 2. Zero-day completions count in 1–20. The thirteen bins
+working-day calculation. It includes perfected, completed requests with Track S regardless of
+Column N, including a blank disposition. Zero-day completions count in 1–20. The thirteen bins
 include both endpoints, followed by the open-ended 401+ bin. Agency counts
 sum component counts.
 
@@ -583,7 +584,7 @@ entries (including zero counts), followed by `TimeIncrementTotalQuantity`.
 
 `aggregateComplexIncrements()` uses the same thirteen bins and working-day
 calculation as simple increments, selecting Track C instead of S. Completed
-requests with disposition 1 or 2 contribute; zero-day responses count in 1–20.
+requests contribute regardless of Column N; zero-day responses count in 1–20.
 All bins, including zero counts, and their sum are emitted for every component
 and the agency. `ComplexResponseTimeIncrementsSection` follows the simple
 section and uses `CRT1`, `CRT2`, etc. and agency `CRT0` organization references.
@@ -591,7 +592,7 @@ section and uses `CRT1`, `CRT2`, etc. and agency `CRT0` organization references.
 ## Expedited response-time increments
 
 `aggregateExpeditedIncrements()` selects Track E, using the same calculation,
-disposition 1/2 filter, thirteen bins, zero counts, and totals as simple and
+unrestricted disposition selection, thirteen bins, zero counts, and totals as simple and
 complex increments. Zero-day responses count in 1–20.
 `ExpeditedResponseTimeIncrementsSection` follows the complex section, with
 `ERT1`, `ERT2`, etc. linked to components and `ERT0` linked to the agency.
