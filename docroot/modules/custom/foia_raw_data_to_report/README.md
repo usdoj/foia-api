@@ -506,7 +506,8 @@ same-day completion is zero. Weekends and federal holidays do not count.
 Day-frequency maps keep memory independent of the number of rows. They yield
 the exact median (averaging the middle pair for even counts), average rounded
 to two decimals, minimum, and maximum. The agency uses combined frequencies,
-not averages of component statistics. Empty components report zeros.
+not averages of component statistics. Empty components report N/A for all
+four statistics.
 
 `AppealResponseTimeSection` follows the appeal other-reasons section, using
 `ART1`, `ART2`, etc. for components and `ART0` for the agency, associated with
@@ -921,3 +922,10 @@ validated upload paragraphs. When a component has no other-denial reasons, it
 contains one OtherDenialReason with description N/A and quantity 0, and a
 ComponentOtherDenialReasonQuantity of 0. The same applies to an empty agency
 total. Organization associations remain present for all entries.
+
+AppealResponseTimeSection emits N/A for all four statistics when no appeal
+rows contribute to a component, or to the agency overall. Agency statistics
+combine available appeal intervals and ignore empty components. Actual zero-day
+intervals remain numeric zero (including the average); nonzero averages retain
+two decimal places. Eligibility requires Column X; blank Y uses fiscal year-end.
+Columns Z-AC are not required for response-time eligibility.
