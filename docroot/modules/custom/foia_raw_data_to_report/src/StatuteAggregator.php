@@ -291,7 +291,7 @@ final class StatuteAggregator {
       'citation' => 'N/A',
     ],
     56 => [
-      'description' => '34 U.S.C. § 10231(a)',
+      'description' => '34 U.S.C. § 10231 (formerly at 42 U.S.C. § 3789g)',
       'information_withheld' => 'Data received by the Bureau of Justice Statistics and used only for statistical or research purposes',
       'citation' => 'N/A',
     ],
