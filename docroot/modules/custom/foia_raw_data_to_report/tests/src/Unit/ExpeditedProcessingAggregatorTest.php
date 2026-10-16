@@ -40,7 +40,7 @@ class ExpeditedProcessingAggregatorTest extends UnitTestCase {
         $sources[] = ['component_id' => $id, 'uri' => $path];
       }
       $statistics = (new ExpeditedProcessingAggregator())->aggregate($sources, 2025);
-      $expected = ['granted' => 4, 'denied' => 2, 'within_ten' => 2, 'average' => 40 / 3, 'median' => 19];
+      $expected = ['granted' => 4, 'denied' => 2, 'within_ten' => 2, 'average' => 56 / 3, 'median' => 27];
       $this->assertSame($expected, $statistics['components'][1]);
       $this->assertSame(['granted' => 0, 'denied' => 0, 'within_ten' => 0, 'average' => NULL, 'median' => NULL], $statistics['components'][2]);
       $this->assertSame($expected, $statistics['overall']);

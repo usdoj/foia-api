@@ -67,31 +67,31 @@ final class ProcessedResponseTimeAggregator {
   ];
 
   /**
-   * Counts simple information-granted requests in all thirteen day ranges.
+   * Counts simple processed requests in all thirteen day ranges.
    */
   public function aggregateSimpleIncrements(array $sources): array {
     return $this->aggregateIncrements($sources, 'S');
   }
 
   /**
-   * Counts complex information-granted requests in all thirteen day ranges.
+   * Counts complex processed requests in all thirteen day ranges.
    */
   public function aggregateComplexIncrements(array $sources): array {
     return $this->aggregateIncrements($sources, 'C');
   }
 
   /**
-   * Counts expedited information-granted requests in all thirteen day ranges.
+   * Counts expedited processed requests in all thirteen day ranges.
    */
   public function aggregateExpeditedIncrements(array $sources): array {
     return $this->aggregateIncrements($sources, 'E');
   }
 
   /**
-   * Bins completed information-granted requests for the selected track.
+   * Bins perfected, completed requests for the selected track.
    */
   private function aggregateIncrements(array $sources, string $track): array {
-    $histograms = $this->collectHistograms($sources, TRUE, $track);
+    $histograms = $this->collectHistograms($sources, FALSE, $track);
     $empty = array_fill_keys(array_keys(self::INCREMENTS), 0);
     $components = [];
     $overall = $empty;

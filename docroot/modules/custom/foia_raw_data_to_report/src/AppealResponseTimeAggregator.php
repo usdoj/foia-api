@@ -104,7 +104,7 @@ final class AppealResponseTimeAggregator {
    */
   private function summarize(array $histogram): array {
     if ($histogram === []) {
-      return ['median' => 0, 'average' => 0, 'lowest' => 0, 'highest' => 0];
+      return ['median' => NULL, 'average' => NULL, 'lowest' => NULL, 'highest' => NULL];
     }
     ksort($histogram, SORT_NUMERIC);
     $count = array_sum($histogram);

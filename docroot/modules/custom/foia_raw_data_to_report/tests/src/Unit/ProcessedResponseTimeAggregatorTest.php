@@ -26,6 +26,7 @@ class ProcessedResponseTimeAggregatorTest extends UnitTestCase {
         foreach ([
           ['09/03/2025', '09/05/2025', '1'],
           ['09/03/2025', '09/09/2025', '3'],
+          ['09/03/2025', '09/09/2025', ''],
           ['', '09/30/2025', '1'],
           ['   ', '09/30/2025', '2'],
           ['09/03/2025', '', '1'],
@@ -46,7 +47,7 @@ class ProcessedResponseTimeAggregatorTest extends UnitTestCase {
       $granted = $aggregator->aggregate($sources, TRUE);
       foreach (['S', 'C', 'E'] as $track) {
         foreach ([$processed['components'][1], $processed['overall']] as $values) {
-          $this->assertEquals(['median' => 3, 'average' => 3, 'lowest' => 2, 'highest' => 4], $values[$track]);
+          $this->assertEquals(['median' => 4, 'average' => 10 / 3, 'lowest' => 2, 'highest' => 4], $values[$track]);
         }
         foreach ([$granted['components'][1], $granted['overall']] as $values) {
           $this->assertEquals(['median' => 2, 'average' => 2, 'lowest' => 2, 'highest' => 2], $values[$track]);
@@ -54,8 +55,8 @@ class ProcessedResponseTimeAggregatorTest extends UnitTestCase {
       }
       foreach (['aggregateSimpleIncrements', 'aggregateComplexIncrements', 'aggregateExpeditedIncrements'] as $method) {
         $increments = $aggregator->$method($sources);
-        $this->assertSame(1, $increments['components'][1]['1-20']);
-        $this->assertSame(1, array_sum($increments['components'][1]));
+        $this->assertSame(3, $increments['components'][1]['1-20']);
+        $this->assertSame(3, array_sum($increments['components'][1]));
         $this->assertSame($increments['components'][1], $increments['overall']);
       }
     }
