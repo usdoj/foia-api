@@ -670,9 +670,9 @@ agency `PC0` link to Organization entries through
 `FeesCollectedAggregator` uses Section IX-XI Column E for each component's
 fees, with agency fees summed across components. `FeesCollectedCostPercent`
 is fees divided by the matching `TotalCostAmount` from personnel and cost,
-multiplied by 100 and rounded half-up to two decimal places, with a trailing %. The agency
+multiplied by 100 and rounded half-up to two decimal places, without a percent-sign suffix. The agency
 ratio uses total agency fees divided by total agency costs. A zero total cost
-produces `0.00%`, even when fees are nonzero. Fee amounts are rounded half-up
+produces `0.00`, even when fees are nonzero. Fee amounts are rounded half-up
 to at most two decimal places, with trailing zeros removed. Exact decimal arithmetic
 avoids floating-point rounding. Column W in the raw request CSV no longer
 supplies this section. Existing FC/ORG links and zero-count entries remain.

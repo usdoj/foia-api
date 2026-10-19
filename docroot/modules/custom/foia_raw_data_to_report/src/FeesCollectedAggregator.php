@@ -33,7 +33,7 @@ final class FeesCollectedAggregator {
     return [
       'amount' => (string) $amount->toScale(2, RoundingMode::HalfUp)->strippedOfTrailingZeros(),
       // A zero denominator produces zero, even if fees are nonzero.
-      'ratio' => ($cost->isZero() ? '0.00' : (string) $amount->multipliedBy(100)->dividedBy($cost, 2, RoundingMode::HalfUp)) . '%',
+      'ratio' => $cost->isZero() ? '0.00' : (string) $amount->multipliedBy(100)->dividedBy($cost, 2, RoundingMode::HalfUp),
     ];
   }
 
