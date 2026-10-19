@@ -506,7 +506,8 @@ same-day completion is zero. Weekends and federal holidays do not count.
 Day-frequency maps keep memory independent of the number of rows. They yield
 the exact median (averaging the middle pair for even counts), average rounded
 to two decimals, minimum, and maximum. The agency uses combined frequencies,
-not averages of component statistics. Empty components report zeros.
+not averages of component statistics. Empty components report N/A for all
+four statistics.
 
 `AppealResponseTimeSection` follows the appeal other-reasons section, using
 `ART1`, `ART2`, etc. for components and `ART0` for the agency, associated with
@@ -532,7 +533,8 @@ pending appeals retain an empty container and their organization association.
 K (Date Completed), with S, C, or E in M. Whitespace-only dates are skipped.
 The start is always J; Column I is never used as a fallback. This selection
 also applies to information-granted response times and all three increment
-sections, which additionally require disposition 1 or 2. No fiscal-year
+sections. Only the information-granted section additionally requires
+disposition 1 or 2; increment sections do not filter on Column N. No fiscal-year
 clamping or Days Tolled subtraction is applied. Invalid dates or an end
 before its start stop generation with a contextual error.
 
@@ -568,8 +570,8 @@ for components and `IGRT0` for the agency. Associations retain the example's
 ## Simple response-time increments
 
 `aggregateSimpleIncrements()` shares the processed-response CSV reader and
-working-day calculation. It includes completed requests with Track S and
-Disposition 1 or 2. Zero-day completions count in 1–20. The thirteen bins
+working-day calculation. It includes perfected, completed requests with Track S regardless of
+Column N, including a blank disposition. Zero-day completions count in 1–20. The thirteen bins
 include both endpoints, followed by the open-ended 401+ bin. Agency counts
 sum component counts.
 
@@ -582,7 +584,7 @@ entries (including zero counts), followed by `TimeIncrementTotalQuantity`.
 
 `aggregateComplexIncrements()` uses the same thirteen bins and working-day
 calculation as simple increments, selecting Track C instead of S. Completed
-requests with disposition 1 or 2 contribute; zero-day responses count in 1–20.
+requests contribute regardless of Column N; zero-day responses count in 1–20.
 All bins, including zero counts, and their sum are emitted for every component
 and the agency. `ComplexResponseTimeIncrementsSection` follows the simple
 section and uses `CRT1`, `CRT2`, etc. and agency `CRT0` organization references.
@@ -590,7 +592,7 @@ section and uses `CRT1`, `CRT2`, etc. and agency `CRT0` organization references.
 ## Expedited response-time increments
 
 `aggregateExpeditedIncrements()` selects Track E, using the same calculation,
-disposition 1/2 filter, thirteen bins, zero counts, and totals as simple and
+unrestricted disposition selection, thirteen bins, zero counts, and totals as simple and
 complex increments. Zero-day responses count in 1–20.
 `ExpeditedResponseTimeIncrementsSection` follows the complex section, with
 `ERT1`, `ERT2`, etc. linked to components and `ERT0` linked to the agency.
@@ -605,20 +607,21 @@ The shared `WorkingDays` calendar excludes weekends and federal holidays.
 
 Frequency maps provide counts, exact medians, and averages per component and
 across all agency rows. Empty tracks emit quantity 0 and literal `N/A` in both
-median/average value elements; populated averages have two decimals. Same-day
+median/average value elements; populated averages have two decimals unless
+they end in .00, which is omitted for whole-number output. Same-day
 ages remain numeric zero. `PendingPerfectedRequestsSection` follows expedited
 increments and uses `PPR1`, `PPR2`, etc. and agency `PPR0` organization links.
 
 ## Oldest pending requests
 
-`OldestPendingRequestAggregator` selects rows with I populated and K blank,
+`OldestPendingRequestAggregator` selects rows with I and J populated and K blank,
 without track or disposition filters. Pending age uses the shared working-day
 calendar from the actual received date through fiscal year-end, excluding the
 start day and including the end day. Prior-year time is included.
 
 At most ten items are retained per component and for the entire agency, sorted
-by descending pending days, then ascending receipt date for ties. Duplicate
-rows remain separate entries. Empty components retain their empty container
+by ascending perfected date (J), then ascending receipt date (I) for ties.
+Duplicate rows remain separate entries. Empty components retain their empty container
 and association. `OldestPendingRequestSection` follows pending perfected
 requests, with ISO receipt dates and `OPR1`, `OPR2`, etc.; `OPR0` is the agency.
 The oldest-appeal section also uses the shared working-day calendar.
@@ -629,9 +632,9 @@ Rows with nonblank Column X (Appeal Date Received) are excluded from all
 expedited-processing counts, for both components and agency totals.
 
 `ExpeditedProcessingAggregator` counts uppercase G and D in Column S as granted
-and denied. With both Q and R present, adjudications taking at most ten working
-days also increment the timely counter. The shared calendar excludes the start
-day, includes the end day, and skips weekends and listed federal holidays.
+and denied. With both Q and R present, adjudications taking at most ten calendar
+days also increment the timely counter. Elapsed calendar days include weekends
+and holidays, with a minimum interval of one day.
 Same-day determinations qualify. Blank R still counts the outcome, but not a
 timely adjudication. Invalid or reversed dates produce contextual exceptions.
 
@@ -667,9 +670,9 @@ agency `PC0` link to Organization entries through
 `FeesCollectedAggregator` uses Section IX-XI Column E for each component's
 fees, with agency fees summed across components. `FeesCollectedCostPercent`
 is fees divided by the matching `TotalCostAmount` from personnel and cost,
-multiplied by 100 and rounded half-up to four decimal places. The agency
+multiplied by 100 and rounded half-up to two decimal places, with a trailing %. The agency
 ratio uses total agency fees divided by total agency costs. A zero total cost
-produces `0.0000`, even when fees are nonzero. Fee amounts are rounded half-up
+produces `0.00%`, even when fees are nonzero. Fee amounts are rounded half-up
 to at most two decimal places, with trailing zeros removed. Exact decimal arithmetic
 avoids floating-point rounding. Column W in the raw request CSV no longer
 supplies this section. Existing FC/ORG links and zero-count entries remain.
@@ -697,8 +700,7 @@ same pass as personnel, cost, fee, and exclusion totals.
 `BacklogAggregator` counts rows whose request or appeal interval exceeds the
 working days allowed in Column D (exactly that many days does not qualify).
 Rows with blank Days Allowed are excluded from both counts. Only requests
-with blank K and appeals with blank Y contribute. Requests use J, falling back
-to I; appeals use X. Both intervals end on September 30 of the report year.
+with blank K and appeals with blank Y contribute. Requests use only I, regardless of J; appeals use X. Both intervals end on September 30 of the report year.
 Whitespace-only closing dates are treated as blank. Actual start dates are
 retained, including prior fiscal years. No track or disposition filter applies.
 Rows without a start date for the relevant item are skipped.
@@ -744,19 +746,20 @@ ten agency-wide are retained in memory.
 `ProcessedRequestComparisonSection` reuses the existing request statistics:
 Column I within the fiscal year supplies `ItemsReceivedCurrentYearQuantity`,
 and Column K within the fiscal year supplies `ItemsProcessedCurrentYearQuantity`.
-October 1 and September 30 are included. Both last-year quantities are `0`.
+October 1 and September 30 are included. Last-year quantities come from the
+previous annual report when available, otherwise default to `0` with notes.
 No additional CSV pass is needed.
 
 Each component and the agency have a `ProcessingComparison`, including zero
 counts, with `PRC1`, `PRC2`, etc. and `PRC0` linked to Organization entries via
-`ProcessingComparisonOrganizationAssociation`. Agency quantities are the sums
-of component quantities.
+`ProcessingComparisonOrganizationAssociation`. Current-year agency quantities
+sum component quantities; prior-year agency quantities use stored report totals.
 
 ## Backlogged request comparison
 
 `BackloggedRequestComparisonSection` reuses the request counts from
 `BacklogSection` for `BacklogCurrentYearQuantity`. `BacklogLastYearQuantity`
-is always `0`. No additional CSV pass is needed.
+uses the prior annual report when available, otherwise `0` with notes. No additional CSV pass is needed.
 
 Each component and the agency have a `BacklogComparison`, including zero
 counts. `BLR1`, `BLR2`, etc. and agency `BLR0` link to their Organization entries
@@ -765,7 +768,8 @@ through `BacklogComparisonOrganizationAssociation`.
 ## Processed appeal comparison
 
 `ProcessedAppealComparisonSection` reuses the received and processed counts
-from `ProcessedAppealSection`. Both last-year quantities are `0`. Each
+from `ProcessedAppealSection`. Last-year quantities use the prior annual
+report when available, otherwise `0` with notes. Each
 component and the agency have a `ProcessingComparison`, including zero counts,
 with `APC1`, `APC2`, etc. and `APC0` linked to Organization entries through
 `ProcessingComparisonOrganizationAssociation`. No additional CSV pass is
@@ -774,7 +778,7 @@ needed; the request and appeal comparisons share the same XML formatter.
 ## Backlogged appeal comparison
 
 `BackloggedAppealComparisonSection` reuses `BackloggedAppealQuantity` from
-`BacklogSection` for its current-year count and emits `0` for last year.
+`BacklogSection` for its current-year count and uses the prior annual report for last year, defaulting to `0` with notes.
 Every component and the agency have a `BacklogComparison`, including zeros,
 with `ABC1`, `ABC2`, etc. and `ABC0` linked to Organization entries through
 `BacklogComparisonOrganizationAssociation`. Request and appeal backlog
@@ -873,8 +877,8 @@ Section IX-XI columns E-H supply fees and subsection statistics.
 PersonnelAndCostSection, ProcessedConsultationSection, and ProcessedRequestSection
 end with an empty FootnoteText element after their organization associations.
 ExpeditedProcessing and FeeWaiver entries include AdjudicationMedianDaysValue
-and AdjudicationAverageDaysValue after granted/denied quantities. Working days
-are counted from Q to R for expedited processing and T to U for fee waivers,
+and AdjudicationAverageDaysValue after granted/denied quantities. Calendar days
+are counted from Q to R for expedited processing; working days from T to U for fee waivers,
 excluding the start date and including the end date. Missing completion dates
 use September 30 of the report fiscal year. Only granted/denied outcomes
 contribute; expedited processing continues to exclude appeal rows. Agency
@@ -921,3 +925,41 @@ validated upload paragraphs. When a component has no other-denial reasons, it
 contains one OtherDenialReason with description N/A and quantity 0, and a
 ComponentOtherDenialReasonQuantity of 0. The same applies to an empty agency
 total. Organization associations remain present for all entries.
+
+AppealResponseTimeSection emits N/A for all four statistics when no appeal
+rows contribute to a component, or to the agency overall. Agency statistics
+combine available appeal intervals and ignore empty components. Actual zero-day
+intervals remain numeric zero (including the average); nonzero averages retain
+two decimal places. Eligibility requires Column X; blank Y uses fiscal year-end.
+Columns Z-AC are not required for response-time eligibility.
+
+OldestPendingRequestSection ranks the ten earliest Column J dates per component
+and across the agency, breaking equal perfected dates by earliest Column I.
+OldItemReceiptDate and pending working days continue to use Column I. Blank or
+whitespace-only J rows are excluded. The consultation-only listing retains its
+existing selection without requiring J.
+
+Expedited-processing adjudication intervals have a minimum of one calendar day:
+zero-day intervals are counted as one before calculating component and agency
+averages and medians, including when a missing R uses fiscal year-end. This
+minimum does not apply to fee-waiver intervals. The within-ten-days counter
+still requires an actual determination date and includes same-day outcomes.
+
+ExpeditedProcessingSection uses elapsed calendar days (including weekends and
+holidays) for adjudication median, average, and the within-ten-days counter.
+Intervals have a minimum of one day. Missing R uses fiscal year-end for median
+and average, but does not contribute to the within-ten counter. Ten calendar
+days is inclusive. Fee waivers and other sections continue using working days.
+
+## Previous annual report comparisons
+
+The four request/appeal processed/backlog comparison sections look up the
+annual_foia_report_data node for the same Agency and report year minus one.
+Components match paragraph field_agency_component entity IDs in
+field_foia_requests_va, field_admin_app_via, and field_foia_xiia. Agency totals
+use the prior report's stored overall fields, including components absent from
+the current upload. Missing report/component/field data defaults to 0 and adds
+nonblocking notes to field_messages. Multiple matching reports or duplicate
+component paragraphs are treated as ambiguous, with 0 defaults and notes.
+Lookup exceptions are caught so queue processing can continue. Prior fields
+must contain nonnegative integer quantities; no historical data is modified.

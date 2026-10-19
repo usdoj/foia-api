@@ -62,13 +62,13 @@ class PersonnelAndCostAggregatorTest extends UnitTestCase {
       foreach ([1 => '3.01', 0 => '6.01'] as $id => $amount) {
         $base = '//foia:FeesCollected[@s:id="FC' . $id . '"]';
         $this->assertSame($amount, $xpath->evaluate('string(' . $base . '/foia:FeesCollectedAmount)'));
-        $this->assertSame('10.0137', $xpath->evaluate('string(' . $base . '/foia:FeesCollectedCostPercent)'));
+        $this->assertSame('10.01%', $xpath->evaluate('string(' . $base . '/foia:FeesCollectedCostPercent)'));
       }
       $zero = (new FeesCollectedAggregator())->aggregate([
         'components' => [],
         'overall' => ['FeesCollectedAmount' => '0', 'TotalCostAmount' => '0'],
       ]);
-      $this->assertSame(['amount' => '0', 'ratio' => '0.0000'], $zero['overall']);
+      $this->assertSame(['amount' => '0', 'ratio' => '0.00%'], $zero['overall']);
     }
     finally {
       unlink($path);

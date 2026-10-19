@@ -3,7 +3,7 @@
 namespace Drupal\foia_raw_data_to_report;
 
 /**
- * Streams Columns I and K into the ten oldest pending requests.
+ * Selects the oldest perfected pending requests or pending consultations.
  */
 final class OldestPendingRequestAggregator {
 
@@ -52,6 +52,10 @@ final class OldestPendingRequestAggregator {
           if ($consultations_only && trim($columns[2]) !== 'Y') {
             continue;
           }
+          $perfected_text = trim($columns[9]);
+          if (!$consultations_only && $perfected_text === '') {
+            continue;
+          }
           // Pending requests have a received date and no completed date.
           $received_text = trim($columns[8]);
           if ($received_text === '' || trim($columns[10]) !== '') {
@@ -62,11 +66,21 @@ final class OldestPendingRequestAggregator {
           if ($received > $end) {
             throw new \RuntimeException($context . ': Date Initially Received is after the report fiscal year.');
           }
+          if (!$consultations_only) {
+            $perfected_context = sprintf('Component %s, CSV %s, record %d, Column J', $source['component_label'] ?? $id, basename($source['uri']), $record);
+            $perfected = $this->calendarDate($perfected_text, $perfected_context);
+            if ($perfected > $end || $perfected < $received) {
+              throw new \RuntimeException($perfected_context . ': Date Perfected must be on or after receipt and no later than fiscal year-end.');
+            }
+          }
           // Use elapsed working days, including time in prior fiscal years.
           $item = [
             'receipt_date' => $received->format('Y-m-d'),
             'pending_days' => $working_days->count($received_text, $end->format('m/d/Y')),
           ];
+          if (!$consultations_only) {
+            $item['perfected_date'] = $perfected->format('Y-m-d');
+          }
           $this->retainOldest($components[$id], $item);
           $this->retainOldest($overall, $item);
         }
@@ -82,12 +96,17 @@ final class OldestPendingRequestAggregator {
   }
 
   /**
-   * Keeps the ten highest ages, breaking ties by the earliest receipt date.
+   * Ranks requests by perfected date and consultations by working-day age.
    */
   private function retainOldest(array &$items, array $item): void {
     $items[] = $item;
     // Preserve duplicate rows; equal working-day ages can span weekends.
-    usort($items, static fn(array $a, array $b): int => ($b['pending_days'] <=> $a['pending_days']) ?: strcmp($a['receipt_date'], $b['receipt_date']));
+    usort($items, static function (array $a, array $b): int {
+      if (isset($a['perfected_date'])) {
+        return strcmp($a['perfected_date'], $b['perfected_date']) ?: strcmp($a['receipt_date'], $b['receipt_date']);
+      }
+      return ($b['pending_days'] <=> $a['pending_days']) ?: strcmp($a['receipt_date'], $b['receipt_date']);
+    });
     if (count($items) > 10) {
       array_pop($items);
     }

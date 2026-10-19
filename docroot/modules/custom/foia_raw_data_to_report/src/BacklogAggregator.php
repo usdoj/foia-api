@@ -56,11 +56,10 @@ final class BacklogAggregator {
           if (!in_array($days_allowed, ['20', '30'], TRUE)) {
             throw new \RuntimeException($context . ': Column D: Expected Days Allowed to be 20 or 30.');
           }
-          // Request age starts at J, falling back to I, without track filters.
-          $perfected = trim($columns[9]);
-          $request_start = $perfected !== '' ? $perfected : trim($columns[8]);
+          // Request backlog age starts only at I, without track filters.
+          $request_start = trim($columns[8]);
           $intervals = [
-            'requests' => [$request_start, trim($columns[10]), 'J or I', 'K'],
+            'requests' => [$request_start, trim($columns[10]), 'I', 'K'],
             'appeals' => [trim($columns[23]), trim($columns[24]), 'X', 'Y'],
           ];
           foreach ($intervals as $kind => [$start, $end, $start_column, $end_column]) {

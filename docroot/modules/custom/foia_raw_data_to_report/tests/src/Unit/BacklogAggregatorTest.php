@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\Group;
 class BacklogAggregatorTest extends UnitTestCase {
 
   /**
-   * Excludes closed items and preserves thresholds, holidays, and J fallback.
+   * Excludes closed items and preserves thresholds regardless of J.
    */
   public function testOpenItemsOnly(): void {
     $paths = [];
@@ -28,6 +28,7 @@ class BacklogAggregatorTest extends UnitTestCase {
         fputcsv($stream, array_fill(0, 29, 'column'), ',', '"', '');
         $examples = [
           ['20', '08/29/2025', '', TRUE],
+          ['20', '08/01/2025', '', FALSE],
           ['20', '09/02/2025', '', FALSE],
           ['30', '08/15/2025', '  ', TRUE],
           ['30', '08/18/2025', '', FALSE],
@@ -42,8 +43,8 @@ class BacklogAggregatorTest extends UnitTestCase {
             $row = array_fill(0, 29, '');
             $row[3] = $allowed;
             if ($kind === 'request') {
-              $row[8] = $fallback ? $start : '08/01/2025';
-              $row[9] = $fallback ? '' : $start;
+              $row[8] = $start;
+              $row[9] = $fallback ? '' : '09/30/2025';
               $row[10] = $end;
             }
             else {
@@ -57,9 +58,9 @@ class BacklogAggregatorTest extends UnitTestCase {
         $sources[] = ['component_id' => $id, 'uri' => $path];
       }
       $statistics = (new BacklogAggregator())->aggregate($sources, 2025);
-      $this->assertSame(['requests' => 2, 'appeals' => 2], $statistics['components'][1]);
+      $this->assertSame(['requests' => 3, 'appeals' => 3], $statistics['components'][1]);
       $this->assertSame(['requests' => 0, 'appeals' => 0], $statistics['components'][2]);
-      $this->assertSame(['requests' => 2, 'appeals' => 2], $statistics['overall']);
+      $this->assertSame(['requests' => 3, 'appeals' => 3], $statistics['overall']);
     }
     finally {
       foreach ($paths as $path) {
