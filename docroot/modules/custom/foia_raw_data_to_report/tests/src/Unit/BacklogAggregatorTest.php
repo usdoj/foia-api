@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\Group;
 class BacklogAggregatorTest extends UnitTestCase {
 
   /**
-   * Excludes closed items and preserves thresholds and the J-to-I fallback.
+   * Requires J for requests while preserving open-item and threshold rules.
    */
   public function testOpenItemsOnly(): void {
     $paths = [];
@@ -29,6 +29,7 @@ class BacklogAggregatorTest extends UnitTestCase {
         $examples = [
           ['20', '08/29/2025', '', TRUE],
           ['20', '08/01/2025', '', FALSE],
+          ['20', '08/29/2025', '', FALSE],
           ['20', '09/02/2025', '', FALSE],
           ['30', '08/15/2025', '  ', TRUE],
           ['30', '08/18/2025', '', FALSE],
@@ -36,15 +37,15 @@ class BacklogAggregatorTest extends UnitTestCase {
           ['', '08/01/2025', '', FALSE],
         ];
         foreach (['request', 'appeal'] as $kind) {
-          foreach ($examples as [$allowed, $start, $end, $fallback]) {
+          foreach ($examples as [$allowed, $start, $end, $blank_perfected]) {
             if ($closed_only && trim($end) === '') {
               continue;
             }
             $row = array_fill(0, 29, '');
             $row[3] = $allowed;
             if ($kind === 'request') {
-              $row[8] = $start;
-              $row[9] = $fallback ? ($allowed === '20' ? '' : '   ') : '09/30/2025';
+              $row[8] = '01/01/2025';
+              $row[9] = $blank_perfected ? ($allowed === '20' ? '' : '   ') : $start;
               $row[10] = $end;
             }
             else {
@@ -58,9 +59,9 @@ class BacklogAggregatorTest extends UnitTestCase {
         $sources[] = ['component_id' => $id, 'uri' => $path];
       }
       $statistics = (new BacklogAggregator())->aggregate($sources, 2025);
-      $this->assertSame(['requests' => 2, 'appeals' => 3], $statistics['components'][1]);
+      $this->assertSame(['requests' => 2, 'appeals' => 4], $statistics['components'][1]);
       $this->assertSame(['requests' => 0, 'appeals' => 0], $statistics['components'][2]);
-      $this->assertSame(['requests' => 2, 'appeals' => 3], $statistics['overall']);
+      $this->assertSame(['requests' => 2, 'appeals' => 4], $statistics['overall']);
     }
     finally {
       foreach ($paths as $path) {
