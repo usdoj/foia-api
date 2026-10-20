@@ -310,7 +310,7 @@ class CsvValidatorTest extends UnitTestCase {
   }
 
   /**
-   * Requires Q for R or S, but does not require R for Q, S, or T.
+   * Requires Q for R or S, and R when both Q and S are populated.
    */
   public function testExpeditedReceivedDependency(): void {
     $header = implode(',', array_fill(0, 29, 'column')) . "\n";
@@ -328,10 +328,18 @@ class CsvValidatorTest extends UnitTestCase {
       [],
       [16 => '01/02/2026'],
       [19 => '01/02/2026'],
-      [16 => '01/02/2026', 18 => 'D'],
       [16 => '01/02/2026', 17 => '01/03/2026', 18 => 'D'],
     ] as $overrides) {
       $this->assertSame([], $this->validateContents($header . $this->csvRow($overrides)));
+    }
+    $message = 'CSV record 2: Column R: If Column Q "Request for Expedited Processing - Date Received" has data and Column S "Request for Expedited Processing - Granted/Denied" has data, then Column R "Request for Expedited Processing - Date of Determination" must have a date.';
+    foreach (['G', 'D', '0'] as $outcome) {
+      foreach (['', '   '] as $determined) {
+        $row = $this->csvRow([16 => '01/02/2026', 17 => $determined, 18 => $outcome, 12 => 'E']);
+        $this->assertSame([$message], $this->validateContents($header . $row));
+        $row = $this->csvRow([8 => '', 23 => '01/02/2026', 16 => '01/02/2026', 17 => $determined, 18 => $outcome]);
+        $this->assertSame([$message], $this->validateContents($header . $row));
+      }
     }
     // The existing R date-order and S granted/denied rules still apply.
     $row = $this->csvRow([16 => '01/03/2026', 17 => '01/02/2026', 18 => 'D']);
@@ -366,9 +374,7 @@ class CsvValidatorTest extends UnitTestCase {
     foreach ([
       [],
       [16 => '01/03/2026'],
-      [16 => '01/03/2026', 18 => 'D'],
       [16 => '01/03/2026', 17 => '01/04/2026', 18 => 'D'],
-      [16 => '01/03/2026', 18 => 'G'],
       [16 => '01/03/2026', 17 => '01/04/2026', 18 => 'G'],
     ] as $values) {
       $this->assertSame([], $this->validateContents($header . $this->csvRow($appeal + $values)));
@@ -433,7 +439,7 @@ class CsvValidatorTest extends UnitTestCase {
    */
   public function testExpeditedTrackMessage(): void {
     $header = implode(',', array_fill(0, 29, 'column')) . "\n";
-    $row = $this->csvRow([16 => '01/02/2026', 18 => 'G']);
+    $row = $this->csvRow([16 => '01/02/2026', 17 => '01/03/2026', 18 => 'G']);
     $this->assertSame(
       ['CSV record 2: Column M: If Column S contains a G, Column M must contain an E'],
       $this->validateContents($header . $row),

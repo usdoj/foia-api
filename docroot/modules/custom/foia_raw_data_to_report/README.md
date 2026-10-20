@@ -963,3 +963,8 @@ nonblocking notes to field_messages. Multiple matching reports or duplicate
 component paragraphs are treated as ambiguous, with 0 defaults and notes.
 Lookup exceptions are caught so queue processing can continue. Prior fields
 must contain nonnegative integer quantities; no historical data is modified.
+
+CSV validation requires a nonblank determination date in R whenever Q and S
+both contain data. Whitespace-only cells are treated as blank. This applies to
+initial requests and appeals; existing date-format, fiscal-year, and date-order
+checks continue to apply. Q alone does not require R.

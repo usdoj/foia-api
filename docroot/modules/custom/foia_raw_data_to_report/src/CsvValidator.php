@@ -382,6 +382,11 @@ final class CsvValidator {
           $errors[] = sprintf('CSV record %d: Column Q: Column Q must contain value if there is value in either Columns R or S', $record);
         }
 
+        // Column R: Q and S together require a determination date.
+        if ($ep_received !== '' && trim($columns[18]) !== '' && $ep_determined === '') {
+          $errors[] = sprintf('CSV record %d: Column R: If Column Q "Request for Expedited Processing - Date Received" has data and Column S "Request for Expedited Processing - Granted/Denied" has data, then Column R "Request for Expedited Processing - Date of Determination" must have a date.', $record);
+        }
+
         if ($ep_determined !== '') {
           // Column R: Require a real date using the same format as Column Q.
           if ($ep_determined_date === NULL) {
