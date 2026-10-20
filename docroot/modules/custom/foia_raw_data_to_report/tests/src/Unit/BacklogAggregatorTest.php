@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\Group;
 class BacklogAggregatorTest extends UnitTestCase {
 
   /**
-   * Excludes closed items and preserves thresholds regardless of J.
+   * Excludes closed items and preserves thresholds and the J-to-I fallback.
    */
   public function testOpenItemsOnly(): void {
     $paths = [];
@@ -44,7 +44,7 @@ class BacklogAggregatorTest extends UnitTestCase {
             $row[3] = $allowed;
             if ($kind === 'request') {
               $row[8] = $start;
-              $row[9] = $fallback ? '' : '09/30/2025';
+              $row[9] = $fallback ? ($allowed === '20' ? '' : '   ') : '09/30/2025';
               $row[10] = $end;
             }
             else {
@@ -58,9 +58,9 @@ class BacklogAggregatorTest extends UnitTestCase {
         $sources[] = ['component_id' => $id, 'uri' => $path];
       }
       $statistics = (new BacklogAggregator())->aggregate($sources, 2025);
-      $this->assertSame(['requests' => 3, 'appeals' => 3], $statistics['components'][1]);
+      $this->assertSame(['requests' => 2, 'appeals' => 3], $statistics['components'][1]);
       $this->assertSame(['requests' => 0, 'appeals' => 0], $statistics['components'][2]);
-      $this->assertSame(['requests' => 3, 'appeals' => 3], $statistics['overall']);
+      $this->assertSame(['requests' => 2, 'appeals' => 3], $statistics['overall']);
     }
     finally {
       foreach ($paths as $path) {

@@ -700,7 +700,8 @@ same pass as personnel, cost, fee, and exclusion totals.
 `BacklogAggregator` counts rows whose request or appeal interval exceeds the
 working days allowed in Column D (exactly that many days does not qualify).
 Rows with blank Days Allowed are excluded from both counts. Only requests
-with blank K and appeals with blank Y contribute. Requests use only I, regardless of J; appeals use X. Both intervals end on September 30 of the report year.
+with blank K and appeals with blank Y contribute. Requests use J when populated, falling back to I when J is blank or
+whitespace-only; appeals use X. Both intervals end on September 30 of the report year.
 Whitespace-only closing dates are treated as blank. Actual start dates are
 retained, including prior fiscal years. No track or disposition filter applies.
 Rows without a start date for the relevant item are skipped.
@@ -963,3 +964,8 @@ nonblocking notes to field_messages. Multiple matching reports or duplicate
 component paragraphs are treated as ambiguous, with 0 defaults and notes.
 Lookup exceptions are caught so queue processing can continue. Prior fields
 must contain nonnegative integer quantities; no historical data is modified.
+
+CSV validation requires a nonblank determination date in R whenever Q and S
+both contain data. Whitespace-only cells are treated as blank. This applies to
+initial requests and appeals; existing date-format, fiscal-year, and date-order
+checks continue to apply. Q alone does not require R.
