@@ -969,3 +969,8 @@ CSV validation requires a nonblank determination date in R whenever Q and S
 both contain data. Whitespace-only cells are treated as blank. This applies to
 initial requests and appeals; existing date-format, fiscal-year, and date-order
 checks continue to apply. Q alone does not require R.
+
+Nonblank AB now requires the exact code 11 (Other) among the comma-separated
+AA entries. Other AA codes can accompany 11. Whitespace-only AB is blank;
+whitespace around AA codes is ignored. This complements the rule requiring
+AB whenever AA contains 11.

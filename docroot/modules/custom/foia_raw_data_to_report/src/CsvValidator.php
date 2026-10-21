@@ -533,6 +533,11 @@ final class CsvValidator {
           $errors[] = sprintf('CSV record %d: Column AB: If Column AA has code 11 (Other) entered, there must be a value in Column AB', $record);
         }
 
+        // Column AB: Explanatory text requires the complete Other code in AA.
+        if (trim($columns[27]) !== '' && !in_array('11', $appeal_denial_reasons, TRUE)) {
+          $errors[] = sprintf('CSV record %d: Column AB: If Column AB "Reasons for Denial on Appeal "Other" Reason(s)" has a value, one of the values of Column AA "Reasons for Denial on Appeal" must be "11".', $record);
+        }
+
         // Column AC: Appeal exemptions require one of these dispositions in Z.
         $exemption_dispositions = ['1', '2'];
         if (trim($columns[28]) !== '' && !in_array($appeal_disposition, $exemption_dispositions, TRUE)) {

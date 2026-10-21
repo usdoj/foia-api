@@ -257,6 +257,27 @@ class CsvValidatorTest extends UnitTestCase {
   }
 
   /**
+   * Explanatory text requires an exact code 11 among the AA entries.
+   */
+  public function testAppealOtherExplanationRequiresCode(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    $base = [8 => '', 23 => '01/01/2026', 24 => '01/02/2026', 27 => 'Explanation'];
+    $message = 'CSV record 2: Column AB: If Column AB "Reasons for Denial on Appeal "Other" Reason(s)" has a value, one of the values of Column AA "Reasons for Denial on Appeal" must be "11".';
+    foreach (['', '  ', '1', '1,10', '6, 2'] as $reasons) {
+      $row = $this->csvRow($base + [25 => trim($reasons) === '' ? '3' : '1', 26 => $reasons]);
+      $this->assertSame([$message], $this->validateContents($header . $row));
+    }
+    foreach (['11', '1,11', ' 11 , 1 ', '1,11,11'] as $reasons) {
+      $row = $this->csvRow($base + [25 => '1', 26 => $reasons]);
+      $this->assertSame([], $this->validateContents($header . $row));
+    }
+    $row = $this->csvRow($base + [25 => '1', 26 => '111']);
+    $this->assertContains($message, $this->validateContents($header . $row));
+    $row = $this->csvRow(array_replace($base, [25 => '3', 27 => '   ']));
+    $this->assertSame([], $this->validateContents($header . $row));
+  }
+
+  /**
    * Restricts appeal exemptions to disposition codes 1 and 2.
    */
   public function testAppealExemptionDisposition(): void {
