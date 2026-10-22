@@ -974,3 +974,14 @@ Nonblank AB now requires the exact code 11 (Other) among the comma-separated
 AA entries. Other AA codes can accompany 11. Whitespace-only AB is blank;
 whitespace around AA codes is ignored. This complements the rule requiring
 AB whenever AA contains 11.
+
+## Empty component entries in appeal sections
+
+ProcessedAppealSection, AppealDispositionSection,
+AppealDispositionAppliedExemptionsSection, AppealNonExemptionDenialSection,
+AppealDenialOtherReasonSection, AppealResponseTimeSection, and
+OldestPendingAppealSection omit components with only zero/N/A values or no
+pending items. Their organization associations are omitted with them. Filtering
+is section-specific; existing organization IDs and agency-overall entries remain.
+Request, consultation, comparison, and root Organization entries are unchanged.
+An oldest-pending appeal with a receipt date is retained even when its age is 0.
