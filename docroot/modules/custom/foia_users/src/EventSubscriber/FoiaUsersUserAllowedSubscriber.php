@@ -3,8 +3,8 @@
 namespace Drupal\foia_users\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\externalauth\ExternalAuthInterface;
 use Drupal\samlauth\Event\SamlauthEvents;
 use Drupal\samlauth\Event\SamlauthUserAllowedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,11 +15,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class FoiaUsersUserAllowedSubscriber implements EventSubscriberInterface {
 
   /**
-   * The external auth service.
+   * The entity type manager.
    *
-   * @var \Drupal\externalauth\ExternalAuthInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected ExternalAuthInterface $externalAuth;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The config factory.
@@ -38,19 +38,19 @@ class FoiaUsersUserAllowedSubscriber implements EventSubscriberInterface {
   /**
    * Constructs the subscriber object.
    *
-   * @param \Drupal\externalauth\ExternalAuthInterface $external_auth
-   *   The external authentication service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
    */
   public function __construct(
-    ExternalAuthInterface $external_auth,
+    EntityTypeManagerInterface $entity_type_manager,
     ConfigFactoryInterface $config_factory,
     MessengerInterface $messenger
   ) {
-    $this->externalAuth = $external_auth;
+    $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->messenger = $messenger;
   }
@@ -83,17 +83,22 @@ class FoiaUsersUserAllowedSubscriber implements EventSubscriberInterface {
       return;
     }
     $config = $this->configFactory->get('samlauth.authentication');
-    $unique_id_attr = $config->get('unique_id_attribute');
-    if (empty($unique_id_attr) || empty($attributes[$unique_id_attr][0])) {
+    $unique_id_attribute = $config->get('unique_id_attribute');
+
+    if (empty($unique_id_attribute) || empty($attributes[$unique_id_attribute][0])) {
       $this->messenger->addError('Your account is not permitted to log in via SSO.');
       $event->disallow();
       return;
     }
-    $unique_id_value = $attributes[$unique_id_attr][0];
-    $account = $this->externalAuth->load($unique_id_value, 'samlauth');
+    $unique_value = $attributes[$unique_id_attribute][0];
+    $users = $this->entityTypeManager
+      ->getStorage('user')
+      ->loadByProperties([$unique_id_attribute => $unique_value]);
+    $account = reset($users) ?: NULL;
     if (!$account || !$account->hasRole('non_sso')) {
       $this->messenger->addError('Your account is not permitted to log in via SSO.');
       $event->disallow();
+      return;
     }
   }
 
