@@ -19,4 +19,3 @@ DDev and Docker can be used to spin up this project.
 
 * [Issue queue](https://github.com/usdoj/foia-api/issues)
 * [GitHub](https://github.com/usdoj/foia-api)
-
