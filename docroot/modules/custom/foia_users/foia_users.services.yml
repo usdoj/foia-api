@@ -1,0 +1,5 @@
+services:
+  foia_users.samlauth_subscriber:
+    class: Drupal\foia_users\EventSubscriber\FoiaUsersUserAllowedSubscriber
+    tags:
+      - { name: event_subscriber }
