@@ -298,7 +298,11 @@ final class XmlReportBuilder {
     ];
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $statistics['components'][$component_id];
+      $values = $statistics['components'][$component_id];
+      if ($section_name === 'ProcessedAppealSection' && array_sum($values) == 0) {
+        continue;
+      }
+      $organizations[$organization_id] = $values;
     }
     $organizations['ORG0'] = $statistics['overall'];
 
@@ -438,7 +442,11 @@ final class XmlReportBuilder {
     $section = $this->addTextElement($document, $root, 'foia', $section_name);
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $other_reasons['components'][$component_id];
+      $values = $other_reasons['components'][$component_id];
+      if ($section_name === 'AppealDenialOtherReasonSection' && array_sum(array_column($values, 'quantity')) == 0) {
+        continue;
+      }
+      $organizations[$organization_id] = $values;
     }
     $organizations['ORG0'] = $other_reasons['overall'];
     foreach ($organizations as $organization_id => $reasons) {
@@ -473,7 +481,11 @@ final class XmlReportBuilder {
     $section = $this->addTextElement($document, $root, 'foia', $section_name);
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $exemptions['components'][$component_id];
+      $values = $exemptions['components'][$component_id];
+      if ($section_name === 'AppealDispositionAppliedExemptionsSection' && array_sum($values) == 0) {
+        continue;
+      }
+      $organizations[$organization_id] = $values;
     }
     $organizations['ORG0'] = $exemptions['overall'];
     foreach ($organizations as $organization_id => $counts) {
@@ -511,7 +523,11 @@ final class XmlReportBuilder {
     ];
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $dispositions['components'][$component_id];
+      $values = $dispositions['components'][$component_id];
+      if (array_sum($values) == 0) {
+        continue;
+      }
+      $organizations[$organization_id] = $values;
     }
     $organizations['ORG0'] = $dispositions['overall'];
     foreach ($organizations as $organization_id => $counts) {
@@ -538,7 +554,11 @@ final class XmlReportBuilder {
     $section = $this->addTextElement($document, $root, 'foia', 'AppealNonExemptionDenialSection');
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $denials['components'][$component_id];
+      $values = $denials['components'][$component_id];
+      if (array_sum($values) == 0) {
+        continue;
+      }
+      $organizations[$organization_id] = $values;
     }
     $organizations['ORG0'] = $denials['overall'];
     foreach ($organizations as $organization_id => $counts) {
@@ -567,7 +587,11 @@ final class XmlReportBuilder {
     $section = $this->addTextElement($document, $root, 'foia', 'AppealResponseTimeSection');
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $statistics['components'][$component_id];
+      $values = $statistics['components'][$component_id];
+      if (array_sum($values) == 0) {
+        continue;
+      }
+      $organizations[$organization_id] = $values;
     }
     $organizations['ORG0'] = $statistics['overall'];
     $fields = [
@@ -605,7 +629,11 @@ final class XmlReportBuilder {
     $section = $this->addTextElement($document, $root, 'foia', $section_name);
     $organizations = [];
     foreach ($component_map as $component_id => $organization_id) {
-      $organizations[$organization_id] = $pending['components'][$component_id];
+      $values = $pending['components'][$component_id];
+      if ($section_name === 'OldestPendingAppealSection' && $values === []) {
+        continue;
+      }
+      $organizations[$organization_id] = $values;
     }
     $organizations['ORG0'] = $pending['overall'];
     foreach ($organizations as $organization_id => $items) {
