@@ -12,6 +12,7 @@ default:
         - Drupal\DrupalExtension\Context\ConfigContext
         - Imbo\BehatApiExtension\Context\ApiContext
         - DrevOps\BehatScreenshotExtension\Context\ScreenshotContext
+        - FailAid\Context\FailureContext
       paths:
         - "%paths.base%/features"
   extensions:
@@ -63,14 +64,16 @@ default:
       fail: true
       fail_prefix: 'failed_'
       purge: true
-      # BEHAT_SCREENSHOT_DIR
-#    Bex\Behat\ScreenshotExtension:
-#      screenshot_taking_mode: failed_steps
-#      image_drivers:
-#        local:
-#          screenshot_directory: /var/www/html/tests/behat/screenshots
     Imbo\BehatApiExtension:
       apiClient:
         base_uri: https://foia-api.ddev.site
         timeout: 5.0
         verify: false
+    FailAid\Extension:
+      output:
+        screenshot: false
+      screenshot:
+        directory: '/var/www/html/tests/behat/screenshots'
+        mode: png
+        autoClean: true
+        size: 1444x2044
