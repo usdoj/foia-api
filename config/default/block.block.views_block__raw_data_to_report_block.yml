@@ -1,0 +1,39 @@
+uuid: feb2f858-8001-4cbc-9746-9301be6360b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.raw_data_to_report_content
+  module:
+    - system
+    - user
+    - views
+  theme:
+    - bartik
+id: views_block__raw_data_to_report_block
+theme: bartik
+region: content
+weight: 1
+provider: null
+plugin: 'views_block:raw_data_to_report_content-raw_data_to_report_block'
+settings:
+  id: 'views_block:raw_data_to_report_content-raw_data_to_report_block'
+  label: ''
+  label_display: '0'
+  provider: views
+  context_mapping: {  }
+  views_label: ''
+  items_per_page: null
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/user/*'
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      agency_manager: agency_manager

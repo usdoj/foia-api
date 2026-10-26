@@ -24,19 +24,19 @@
         "drupal/config_split": "^2.0",
         "drupal/confirm_leave": "^1.0@beta",
         "drupal/consumers": "^1.17",
-        "drupal/core": "11.3.13",
-        "drupal/core-composer-scaffold": "11.3.13",
+        "drupal/core": "11.4.10",
+        "drupal/core-composer-scaffold": "11.4.10",
         "drupal/core-dev": "11.3.12",
-        "drupal/core-project-message": "11.3.13",
-        "drupal/core-recommended": "11.3.13",
+        "drupal/core-project-message": "11.4.10",
+        "drupal/core-recommended": "11.4.10",
         "drupal/core-vendor-hardening": "^10.3.1",
         "drupal/core_context": "*",
         "drupal/ctools": "^4.1",
         "drupal/ctools_block": "^4.0",
         "drupal/devel": "^5.4",
-        "drupal/diff": "^1.10",
+        "drupal/diff": "^2.1",
         "drupal/entity_block": "^2.0",
-        "drupal/entity_browser": "^2.9",
+        "drupal/entity_browser": "^2.17",
         "drupal/entity_clone": "^2.2@beta",
         "drupal/entity_embed": "^1.4.0",
         "drupal/entity_reference_revisions": "^1.10.0",
@@ -46,7 +46,7 @@
         "drupal/feeds_ex": "^1.0@beta",
         "drupal/field_group": "^4.0",
         "drupal/field_permissions": "^1.2",
-        "drupal/file_entity": "^2.0@RC",
+        "drupal/file_entity": "^2.9",
         "drupal/form_mode_manager": "^3.1",
         "drupal/gin": "^5.0",
         "drupal/gin_toolbar": "^3.0",
@@ -91,13 +91,14 @@
         "drupal/symfony_mailer": "^2.0",
         "drupal/time_field": "^2.1.0",
         "drupal/typed_data": "^2.1",
+        "drupal/unique_field": "^2.2",
         "drupal/upgrade_status": "^4.0",
         "drupal/video_embed_field": "^3.1",
         "drupal/view_unpublished": "^1.1.0",
         "drupal/views_bulk_operations": "^4.4",
         "drupal/views_data_export": "^1.10",
         "drupal/views_infinite_scroll": "^2.0.1",
-        "drupal/webform": "^6.3@RC",
+        "drupal/webform": "^6.3",
         "drupal/xmlsitemap": "^2.0",
         "drush/drush": "^13",
         "egulias/email-validator": "^4.0.0",
@@ -190,7 +191,10 @@
 	    },
 	    "drupal/symfony_mailer": {
                 "#3589038 CommentLinkBuilderInterface not found": "https://www.drupal.org/files/issues/2026-05-13/symfony_mailer-3589038-mailerpass-class-exists-guard.patch"
-	    }
+            },
+            "drupal/form_mode_manager": {
+                "#3608797: FatalError: FormModeManagerDisplayEditForm::submitForm must be compatible with EntityFormDisplayEditForm::submitForm": "patches/form_mode_manager-3608797-1.patch"
+            }
         },
         "installer-types": [
             "bower-asset",
@@ -246,6 +250,7 @@
             "phpstan/extension-installer": true,
             "simplesamlphp/composer-module-installer": true,
             "simplesamlphp/composer-xmlprovider-installer": true,
+            "symfony/runtime": true,
             "tbachert/spi": true
         },
         "platform": {

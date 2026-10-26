@@ -1,0 +1,13 @@
+diff --git a/src/Form/FormModeManagerDisplayEditForm.php b/src/Form/FormModeManagerDisplayEditForm.php
+index 174f0f9fc5b092165e99debb1e79405b9de545d8..39ab3c014c4dd6fede8ce1219f25db67d713b65c 100644
+--- a/src/Form/FormModeManagerDisplayEditForm.php
++++ b/src/Form/FormModeManagerDisplayEditForm.php
+@@ -80,7 +80,7 @@ class FormModeManagerDisplayEditForm extends EntityFormDisplayEditForm {
+    * Add more precise cache/routes invalidation when we are sure these,
+    * form-mode as added/deleted onto entities.
+    */
+-  public function submitForm(array &$form, FormStateInterface $form_state) {
++  public function submitForm(array &$form, FormStateInterface $form_state): void {
+     parent::submitForm($form, $form_state);
+     if ($this->isDefaultForm() && $this->formModesUpdated($form, $form_state)) {
+       $this->cacheTagsInvalidator->invalidateTags([

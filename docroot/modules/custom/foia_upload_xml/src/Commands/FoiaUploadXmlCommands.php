@@ -412,6 +412,7 @@ class FoiaUploadXmlCommands extends DrushCommands {
    */
   public function reset() {
     $migrations = [
+      'component',
       'component_requests_va',
       'foia_agency_report',
       'foia_requests_va',

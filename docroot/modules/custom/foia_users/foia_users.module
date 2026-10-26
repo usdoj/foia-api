@@ -155,7 +155,7 @@ function foia_users_check_agency_administrator_access(EntityInterface $user) {
  * Custom submit handler for agency value.
  */
 function foia_users_form_validation_foia_agency($form, $form_state) {
-  if ($form_state->hasValue('field_agency')) {
+  if ($form_state->hasValue('field_agency') && is_array($form_state->getValue('field_agency'))) {
     $user_roles = $form_state->getValue('roles');
     $user_agency = $form_state->getValue('field_agency')[0]['target_id'];
     $user_role_match = FALSE;

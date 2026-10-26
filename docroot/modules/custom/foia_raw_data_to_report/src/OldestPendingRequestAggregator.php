@@ -1,0 +1,126 @@
+<?php
+
+namespace Drupal\foia_raw_data_to_report;
+
+/**
+ * Selects the oldest perfected pending requests or pending consultations.
+ */
+final class OldestPendingRequestAggregator {
+
+  /**
+   * Collects at most ten receipt dates per component and for the agency.
+   *
+   * @param array $sources
+   *   Component/file pairs with component_id and uri keys, plus an optional
+   *   component_label for error messages.
+   * @param int $fiscal_year
+   *   The validated report year.
+   * @param bool $consultations_only
+   *   Whether to include only rows with Column C equal to Y.
+   *
+   * @return array
+   *   Component and overall lists with receipt_date and pending_days entries.
+   */
+  public function aggregate(array $sources, int $fiscal_year, bool $consultations_only = FALSE): array {
+    $end = new \DateTimeImmutable($fiscal_year . '-09-30', new \DateTimeZone('UTC'));
+    $working_days = new WorkingDays();
+    $components = [];
+    $overall = [];
+    foreach ($sources as $source) {
+      $id = $source['component_id'];
+      $components[$id] ??= [];
+      $stream = @fopen($source['uri'], 'rb');
+      if ($stream === FALSE) {
+        throw new \RuntimeException('Unable to reopen a validated CSV for oldest pending requests.');
+      }
+      try {
+        $header = TRUE;
+        $record = 0;
+        while (($columns = fgetcsv($stream, 0, ',', '"', '')) !== FALSE) {
+          $record++;
+          if ($columns === [NULL]) {
+            continue;
+          }
+          if (count($columns) !== CsvValidator::EXPECTED_COLUMNS) {
+            throw new \RuntimeException('CSV column count changed after validation.');
+          }
+          if ($header) {
+            $header = FALSE;
+            continue;
+          }
+          // Consultation listings include only rows marked Y in Column C.
+          if ($consultations_only && trim($columns[2]) !== 'Y') {
+            continue;
+          }
+          $perfected_text = trim($columns[9]);
+          if (!$consultations_only && $perfected_text === '') {
+            continue;
+          }
+          // Pending requests have a received date and no completed date.
+          $received_text = trim($columns[8]);
+          if ($received_text === '' || trim($columns[10]) !== '') {
+            continue;
+          }
+          $context = sprintf('Component %s, CSV %s, record %d, Column I', $source['component_label'] ?? $id, basename($source['uri']), $record);
+          $received = $this->calendarDate($received_text, $context);
+          if ($received > $end) {
+            throw new \RuntimeException($context . ': Date Initially Received is after the report fiscal year.');
+          }
+          if (!$consultations_only) {
+            $perfected_context = sprintf('Component %s, CSV %s, record %d, Column J', $source['component_label'] ?? $id, basename($source['uri']), $record);
+            $perfected = $this->calendarDate($perfected_text, $perfected_context);
+            if ($perfected > $end || $perfected < $received) {
+              throw new \RuntimeException($perfected_context . ': Date Perfected must be on or after receipt and no later than fiscal year-end.');
+            }
+          }
+          // Use elapsed working days, including time in prior fiscal years.
+          $item = [
+            'receipt_date' => $received->format('Y-m-d'),
+            'pending_days' => $working_days->count($received_text, $end->format('m/d/Y')),
+          ];
+          if (!$consultations_only) {
+            $item['perfected_date'] = $perfected->format('Y-m-d');
+          }
+          $this->retainOldest($components[$id], $item);
+          $this->retainOldest($overall, $item);
+        }
+        if (!feof($stream)) {
+          throw new \RuntimeException('Unable to finish reading a CSV for oldest pending requests.');
+        }
+      }
+      finally {
+        fclose($stream);
+      }
+    }
+    return ['components' => $components, 'overall' => $overall];
+  }
+
+  /**
+   * Ranks requests by perfected date and consultations by working-day age.
+   */
+  private function retainOldest(array &$items, array $item): void {
+    $items[] = $item;
+    // Preserve duplicate rows; equal working-day ages can span weekends.
+    usort($items, static function (array $a, array $b): int {
+      if (isset($a['perfected_date'])) {
+        return strcmp($a['perfected_date'], $b['perfected_date']) ?: strcmp($a['receipt_date'], $b['receipt_date']);
+      }
+      return ($b['pending_days'] <=> $a['pending_days']) ?: strcmp($a['receipt_date'], $b['receipt_date']);
+    });
+    if (count($items) > 10) {
+      array_pop($items);
+    }
+  }
+
+  /**
+   * Parses calendar dates defensively if a file changed after validation.
+   */
+  private function calendarDate(string $value, string $context): \DateTimeImmutable {
+    if (!preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $value, $parts)
+      || !checkdate((int) $parts[1], (int) $parts[2], (int) $parts[3])) {
+      throw new \RuntimeException($context . ': Expected a valid date in MM/DD/YYYY format.');
+    }
+    return new \DateTimeImmutable(sprintf('%04d-%02d-%02d', $parts[3], $parts[1], $parts[2]), new \DateTimeZone('UTC'));
+  }
+
+}

@@ -1,0 +1,31 @@
+uuid: 653e201c-f285-4d0f-8e93-e94530bbb357
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_component_uploads
+    - node.type.raw_data_to_report
+    - paragraphs.paragraphs_type.raw_data_component_upload
+  module:
+    - entity_reference_revisions
+id: node.raw_data_to_report.field_component_uploads
+field_name: field_component_uploads
+entity_type: node
+bundle: raw_data_to_report
+label: 'Component CSV uploads'
+description: 'Add one CSV per Agency Component. Components must belong to the selected Agency.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      raw_data_component_upload: raw_data_component_upload
+    negate: 0
+    target_bundles_drag_drop:
+      raw_data_component_upload:
+        weight: 0
+        enabled: true
+field_type: entity_reference_revisions
