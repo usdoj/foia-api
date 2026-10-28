@@ -107,8 +107,13 @@ class SamlServiceDecorator extends SamlService {
   protected function doLogin($unique_id, ?AccountInterface $account = NULL) {
     $attributes = $this->getAttributes();
     $csp_present = isset($attributes['CSP']) && !empty($attributes['CSP']);
+    $login_gov_csp_values = [
+      'https://idp.int.identitysandbox.gov/api/saml',
+      'https://secure.login.gov/api/saml',
+    ];
+    $login_gov = $csp_present && in_array($attributes['CSP'], $login_gov_csp_values);
 
-    if ($csp_present && $account && !$account->hasRole('non_sso')) {
+    if ($login_gov && $account && !$account->hasRole('non_sso')) {
       $this->foiaLogger->warning(
         'FOIA rule: login blocked for uid @uid because CSP attribute is present and user lacks non_sso role.',
         ['@uid' => $account->id()]
