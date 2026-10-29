@@ -115,11 +115,17 @@ class SamlServiceDecorator extends SamlService {
 
     if ($login_gov && $account && !$account->hasRole('non_sso')) {
       $this->foiaLogger->warning(
-        'FOIA rule: login blocked for uid @uid because CSP attribute is present and user lacks non_sso role.',
+        'Login.gov login blocked for uid @uid because CSP attribute is present and user lacks non_sso role.',
         ['@uid' => $account->id()]
       );
 
       throw new AccessDeniedHttpException('Login rejected due to FOIA Non-SSO policy.');
+    }
+    if ($csp_present) {
+      $this->foiaLogger->warning('SAML login allowed for uid @uid. CSP attribute: @csp.', [
+        '@uid' => $account->id(),
+        '@csp' => $attributes['CSP'],
+      ]);
     }
 
     return parent::doLogin($unique_id, $account);
