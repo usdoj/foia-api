@@ -122,9 +122,10 @@ class SamlServiceDecorator extends SamlService {
       throw new AccessDeniedHttpException('Login rejected due to FOIA Non-SSO policy.');
     }
     if ($csp_present) {
-      $this->foiaLogger->warning('SAML login allowed for uid @uid. CSP attribute: @csp.', [
+      $this->foiaLogger->warning('SAML login allowed for uid @uid - non_sso role? @hasRole - CSP attribute: @csp', [
         '@uid' => $account->id(),
-        '@csp' => $attributes['CSP'],
+        '@csp' => print_r($attributes['CSP'], TRUE),
+        '@hasRole' => $account->hasRole('non_sso'),
       ]);
     }
 
