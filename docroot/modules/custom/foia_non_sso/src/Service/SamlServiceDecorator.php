@@ -106,12 +106,12 @@ class SamlServiceDecorator extends SamlService {
    */
   protected function doLogin($unique_id, ?AccountInterface $account = NULL) {
     $attributes = $this->getAttributes();
-    $csp_present = isset($attributes['CSP']) && !empty($attributes['CSP']);
+    $csp_present = isset($attributes['CSP']) && !empty($attributes['CSP']) && !empty($attributes['CSP'][0]);
     $login_gov_csp_values = [
       'https://idp.int.identitysandbox.gov/api/saml',
       'https://secure.login.gov/api/saml',
     ];
-    $login_gov = $csp_present && in_array($attributes['CSP'], $login_gov_csp_values);
+    $login_gov = $csp_present && in_array($attributes['CSP'][0], $login_gov_csp_values);
 
     if ($login_gov && $account && !$account->hasRole('non_sso')) {
       $this->foiaLogger->warning(
@@ -120,13 +120,6 @@ class SamlServiceDecorator extends SamlService {
       );
 
       throw new AccessDeniedHttpException('Login rejected due to FOIA Non-SSO policy.');
-    }
-    if ($csp_present) {
-      $this->foiaLogger->warning('SAML login allowed for uid @uid - non_sso role? @hasRole - CSP attribute: @csp', [
-        '@uid' => $account->id(),
-        '@csp' => print_r($attributes['CSP'], TRUE),
-        '@hasRole' => $account->hasRole('non_sso'),
-      ]);
     }
 
     return parent::doLogin($unique_id, $account);
