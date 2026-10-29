@@ -36,13 +36,6 @@ class SamlServiceDecorator extends SamlService {
   protected $foiaLogger;
 
   /**
-   * Messenger for rule enforcement events.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $foiaMessenger;
-
-  /**
    * Constructs the decorator.
    *
    * @param \Drupal\externalauth\ExternalAuth $external_auth
@@ -100,7 +93,6 @@ class SamlServiceDecorator extends SamlService {
     );
 
     $this->foiaLogger = $logger;
-    $this->foiaMessenger = $messenger;
   }
 
   /**
@@ -126,7 +118,7 @@ class SamlServiceDecorator extends SamlService {
         'Login.gov login blocked for uid @uid because CSP attribute is present and user lacks non_sso role.',
         ['@uid' => $account->id()]
       );
-      $this->foiaMessenger->addError('Please try to log in using "PIV or CAC" instead of "LOGIN.GOV". Contact us for more information.');
+
       throw new AccessDeniedHttpException('Login rejected due to FOIA Non-SSO policy.');
     }
 
