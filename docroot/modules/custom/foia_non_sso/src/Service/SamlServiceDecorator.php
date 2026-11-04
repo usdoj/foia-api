@@ -113,12 +113,6 @@ class SamlServiceDecorator extends SamlService {
     ];
     $login_gov = $csp_present && in_array($attributes['CSP'][0], $login_gov_csp_values);
 
-    $this->foiaLogger->warning('SAML login considered for uid @uid - non_sso role? @hasRole - CSP attribute: @csp', [
-      '@uid' => $account->id(),
-      '@hasRole' => $account->hasRole('non_sso'),
-      '@csp' => $attributes['CSP'][0],
-    ]);
-
     if ($login_gov && $account && !$account->hasRole('non_sso')) {
       $this->foiaLogger->warning(
         'Login.gov login blocked for uid @uid because CSP attribute is present and user lacks non_sso role.',
