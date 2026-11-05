@@ -144,6 +144,7 @@ final class CsvValidator {
         // already requires it to be blank for consultation rows.
         $statutes = trim($columns[4]);
         $has_other_statute = FALSE;
+        $other_count = 0;
         if ($statutes !== '') {
           // Column E: Multiple IDs must use commas, not another separator.
           // Detect digit groups separated by non-comma characters; whitespace
@@ -164,6 +165,17 @@ final class CsvValidator {
             $statute_ids[] = (int) $statute;
           }
 
+          $other_count = count(array_filter($statute_ids, static fn(int $id): bool => $id === 77));
+          if ($other_count > 1) {
+            foreach ([5, 6, 7] as $index) {
+              $values = OtherStatuteValues::parse($columns[$index]);
+              if ($values === NULL || count($values) !== $other_count || in_array('', $values, TRUE)) {
+                $errors[] = sprintf('CSV record %d: Column E ( Exemption 3 Statutes ) has multiple instances of `77`, which requires multiple double-quoted, comma separated values in Columns F, G, and H', $record);
+                break;
+              }
+            }
+          }
+
           // Column E: Any list containing 77 requires all of F, G and H.
           // Lists with only IDs 1-76 require all three fields to be blank.
           $has_other_statute = in_array(77, $statute_ids, TRUE);
@@ -181,6 +193,17 @@ final class CsvValidator {
           $exemptions = array_map('trim', explode(',', $columns[15]));
           if (!in_array('3', $exemptions, TRUE)) {
             $errors[] = sprintf("CSV record %d: Column E: If Column E contains information, a '3' must be listed in Column P", $record);
+          }
+        }
+
+        // Quoted lists in F-H require repeated code 77, even when E is blank.
+        if ($other_count < 2) {
+          foreach ([5, 6, 7] as $index) {
+            $values = OtherStatuteValues::parse($columns[$index]);
+            if ($values !== NULL && count($values) > 1) {
+              $errors[] = sprintf('CSV record %d: Multi-values in Column F, G, or H requires multiple values of `77` in Column E', $record);
+              break;
+            }
           }
         }
 

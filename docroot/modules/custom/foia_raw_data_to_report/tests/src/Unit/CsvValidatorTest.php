@@ -15,6 +15,49 @@ use PHPUnit\Framework\Attributes\Group;
 class CsvValidatorTest extends UnitTestCase {
 
   /**
+   * Repeated other statutes require equally sized, fully quoted detail lists.
+   */
+  public function testMultipleOtherStatutes(): void {
+    $header = implode(',', array_fill(0, 29, 'column')) . "\n";
+    $base = [
+      4 => '1,77,77',
+      5 => '"First, statute","Second statute"',
+      6 => '"First withheld","Second withheld"',
+      7 => '"First ""quoted"" citation","Second citation"',
+      9 => '01/01/2026',
+      10 => '01/02/2026',
+      12 => 'S',
+      13 => '2',
+      15 => '3',
+    ];
+    $this->assertSame([], $this->validateContents($header . $this->csvRow($base)));
+    $spaced = array_replace($base, [5 => ' " First, statute " , "Second statute" ']);
+    $this->assertSame([], $this->validateContents($header . $this->csvRow($spaced)));
+    $message = 'CSV record 2: Column E ( Exemption 3 Statutes ) has multiple instances of `77`, which requires multiple double-quoted, comma separated values in Columns F, G, and H';
+    foreach ([5, 6, 7] as $index) {
+      foreach ([
+        'Single value', '"Only one"', 'First,Second', '"First",""',
+        '"First","Second",', '"First","Second","Third"',
+      ] as $value) {
+        $row = array_replace($base, [$index => $value]);
+        $this->assertContains($message, $this->validateContents($header . $this->csvRow($row)));
+      }
+    }
+    foreach ([5, 6, 7] as $index) {
+      $row = array_replace($base, [
+        4 => '77',
+        5 => 'Statute',
+        6 => 'Withheld',
+        7 => 'Citation',
+        $index => '"First","Second"',
+      ]);
+      $this->assertSame(['CSV record 2: Multi-values in Column F, G, or H requires multiple values of `77` in Column E'], $this->validateContents($header . $this->csvRow($row)));
+    }
+    $row = array_replace($base, [4 => '77', 5 => 'Statute, with comma', 6 => 'Withheld', 7 => 'Citation']);
+    $this->assertSame([], $this->validateContents($header . $this->csvRow($row)));
+  }
+
+  /**
    * Rejects nonblank disposition codes outside the single integer range.
    */
   public function testDispositionRange(): void {
