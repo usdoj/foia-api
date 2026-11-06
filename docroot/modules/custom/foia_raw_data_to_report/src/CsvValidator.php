@@ -170,7 +170,7 @@ final class CsvValidator {
             foreach ([5, 6, 7] as $index) {
               $values = OtherStatuteValues::parse($columns[$index]);
               if ($values === NULL || count($values) !== $other_count || in_array('', $values, TRUE)) {
-                $errors[] = sprintf('CSV record %d: Column E ( Exemption 3 Statutes ) has multiple instances of `77`, which requires multiple double-quoted, comma separated values in Columns F, G, and H', $record);
+                $errors[] = sprintf('CSV record %d: Column E ( Exemption 3 Statutes ) has multiple instances of `77`, which requires multiple quoted, comma separated values in Columns F, G, and H, such as "test 1", "test 2", "test 3"', $record);
                 break;
               }
             }

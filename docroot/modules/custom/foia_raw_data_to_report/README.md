@@ -115,6 +115,25 @@ XML Report again to retry. Each upload result identifies its component and filen
 with **CSV validated.** for files that pass. Any failure prevents generation of
 the single replacement XML; all files are still checked.
 
+Processing messages stay inline up to 1,000 physical lines, including blank
+lines. Longer results are saved in full to the optional private Messages file
+(`field_messages_file`) as `<nid>_messages.txt`; the Messages field shows a short
+download notice instead. This applies to errors, warnings, review notes, and
+processing failures. Each queue run clears the previous messages attachment;
+subsequent saves replace it or remove it when the result fits inline. The file
+is generated automatically and is hidden on the edit form. File access follows
+the same report and field permissions as XML attachments. A storage failure
+produces a short inline notice and an application log entry, never the full
+oversized text. Validation still collects messages in worker memory.
+
+Deploy the field, display, and agency role configuration along with the code,
+and rebuild Drupal caches before processing queue items. Local integration
+verification for message storage, replacement, cleanup, and access:
+
+```bash
+ddev drush php:script docroot/modules/custom/foia_raw_data_to_report/tests/integration/report_messages.php
+```
+
 Column checks are grouped in `CsvValidator::validate()` in column order, with
 comments describing each rule. The first nonblank record is treated as the
 header; its names are not validated. Data records currently require:

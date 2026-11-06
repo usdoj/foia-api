@@ -14,3 +14,6 @@ services:
       - { name: event_subscriber }
   foia_raw_data_to_report.section_csv_validator:
     class: Drupal\foia_raw_data_to_report\SectionDataCsvValidator
+  foia_raw_data_to_report.messages:
+    class: Drupal\foia_raw_data_to_report\ReportMessages
+    arguments: ['@file_system', '@file.repository', '@logger.channel.foia_raw_data_to_report']
