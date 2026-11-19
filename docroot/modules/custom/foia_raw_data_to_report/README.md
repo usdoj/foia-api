@@ -115,6 +115,25 @@ XML Report again to retry. Each upload result identifies its component and filen
 with **CSV validated.** for files that pass. Any failure prevents generation of
 the single replacement XML; all files are still checked.
 
+Processing messages stay inline up to 1,000 physical lines, including blank
+lines. Longer results are saved in full to the optional private Messages file
+(`field_messages_file`) as `<nid>_messages.txt`; the Messages field shows a short
+download notice instead. This applies to errors, warnings, review notes, and
+processing failures. Each queue run clears the previous messages attachment;
+subsequent saves replace it or remove it when the result fits inline. The file
+is generated automatically and is hidden on the edit form. File access follows
+the same report and field permissions as XML attachments. A storage failure
+produces a short inline notice and an application log entry, never the full
+oversized text. Validation still collects messages in worker memory.
+
+Deploy the field, display, and agency role configuration along with the code,
+and rebuild Drupal caches before processing queue items. Local integration
+verification for message storage, replacement, cleanup, and access:
+
+```bash
+ddev drush php:script docroot/modules/custom/foia_raw_data_to_report/tests/integration/report_messages.php
+```
+
 Column checks are grouped in `CsvValidator::validate()` in column order, with
 comments describing each rule. The first nonblank record is treated as the
 header; its names are not validated. Data records currently require:
@@ -132,6 +151,12 @@ header; its names are not validated. Data records currently require:
   If any ID is 77, F, G, and H must each contain information. Otherwise, all
   three must be blank. A nonblank E also requires a standalone `3` in P's
   comma-separated exemptions. Consultation rows must leave E blank.
+  Repeated `77` IDs require F, G, and H to each contain exactly one
+  double-quoted, comma-separated value per occurrence, paired in order.
+  For example, E `77,77` pairs with F `"Statute A","Statute B"`.
+  Commas inside quoted values are preserved; embedded quotes are doubled.
+  These lists are cell contents; the enclosing CSV must also escape them.
+  Quoted multi-value lists in any of F-H are invalid unless E repeats `77`.
 - **F (Other Exemption 3 Statutes):** when nonblank, requires code 77 in E.
 - **G (Information Withheld):** when nonblank, requires code 77 in E and data in F.
 - **H (Case Citation):** when nonblank, requires code 77 in E and data in F and G.
@@ -280,8 +305,9 @@ ddev behat -f RawDataToReport.feature
 
 After validation, `StatuteAggregator` streams each component CSV in a separate
 pass, one record at a time. Component identity comes from the paragraph, not
-Column A. Each distinct statute ID in Column E counts once per request row;
-agency totals sum the component counts. No request rows are retained.
+Column A. Each distinct built-in statute ID in Column E counts once per
+request row. Every occurrence of code 77 counts for its paired statute
+description; agency totals sum the component counts. No request rows are retained.
 
 `StatuteAggregator::STATUTES` embeds statute names, information withheld, and
 case citations from `Exemption 3 Codes (003).csv`. Citation continuation rows
@@ -291,7 +317,10 @@ values. The source CSV is not needed at runtime.
 
 Codes 1-76 use only the embedded details and are grouped by numeric ID. Code
 77 uses the trimmed Other Statute description in F; different descriptions
-produce separate entries. Only code 77 reads Information Withheld from G and
+produce separate entries. Repeated descriptions share an entry and each
+occurrence increments its usage count, including within one request. When 77
+is repeated, F-H are decoded as quoted lists and paired by position.
+Only code 77 reads Information Withheld from G and
 Case Citation from H, retaining distinct nonblank values joined with newlines.
 Withheld text populates `foia:ReliedUponStatuteInformationWithheldText`; citations
 populate `nc:Case/nc:CaseTitleText` (or `N/A` when empty). Memory grows with

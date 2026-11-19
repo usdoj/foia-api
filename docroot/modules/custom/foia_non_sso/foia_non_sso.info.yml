@@ -1,0 +1,8 @@
+name: 'FOIA Non SSO Control'
+type: module
+description: 'Blocks SAML logins when CSP attribute is present and user lacks non_sso role.'
+core_version_requirement: ^10.3 || ^11
+package: Custom
+dependencies:
+  - drupal:user
+  - drupal:samlauth

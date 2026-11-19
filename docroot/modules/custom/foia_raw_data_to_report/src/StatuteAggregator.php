@@ -434,15 +434,27 @@ final class StatuteAggregator {
           if (trim($columns[4]) === '') {
             continue;
           }
-          // One request counts once per statute, even if its ID is repeated.
-          $ids = array_unique(array_map('intval', explode(',', $columns[4])));
+          // Preserve repeated custom IDs while deduplicating built-in IDs.
+          $all_ids = array_map('intval', explode(',', $columns[4]));
+          $other_count = count(array_filter($all_ids, static fn(int $id): bool => $id === 77));
+          $custom_values = [];
+          foreach ([5, 6, 7] as $index) {
+            $values = $other_count > 1 ? OtherStatuteValues::parse($columns[$index]) : [trim($columns[$index])];
+            if ($values === NULL || ($other_count > 1 && (count($values) !== $other_count || in_array('', $values, TRUE)))) {
+              throw new \RuntimeException('CSV other statute values changed after validation.');
+            }
+            $custom_values[$index] = $values;
+          }
+          // Built-in IDs count once per row; every occurrence of 77 is paired.
+          $ids = array_merge(array_values(array_diff(array_unique($all_ids), [77])), array_fill(0, $other_count, 77));
+          $other_index = 0;
           foreach ($ids as $id) {
             if (!isset(self::STATUTES[$id])) {
               throw new \RuntimeException('CSV contains an unknown statute ID after validation.');
             }
             // Other statutes must remain distinct rather than sharing ID 77's
             // generic label. Identical trimmed descriptions share one entry.
-            $description = $id === 77 ? trim($columns[5]) : self::STATUTES[$id]['description'];
+            $description = $id === 77 ? $custom_values[5][$other_index] : self::STATUTES[$id]['description'];
             $key = $id === 77 ? '77:' . $description : (string) $id;
             if (!isset($statutes[$key])) {
               $statutes[$key] = [
@@ -455,13 +467,16 @@ final class StatuteAggregator {
             $component_id = $source['component_id'];
             $statutes[$key]['counts'][$component_id] = ($statutes[$key]['counts'][$component_id] ?? 0) + 1;
             // Only code 77 uses request-supplied withheld text and citations.
-            $withheld = $id === 77 ? trim($columns[6]) : self::STATUTES[$id]['information_withheld'];
+            $withheld = $id === 77 ? $custom_values[6][$other_index] : self::STATUTES[$id]['information_withheld'];
             if ($withheld !== '') {
               $statutes[$key]['information_withheld'][$withheld] = $withheld;
             }
-            $citation = $id === 77 ? trim($columns[7]) : self::STATUTES[$id]['citation'];
+            $citation = $id === 77 ? $custom_values[7][$other_index] : self::STATUTES[$id]['citation'];
             if ($citation !== '') {
               $statutes[$key]['citations'][$citation] = $citation;
+            }
+            if ($id === 77) {
+              $other_index++;
             }
           }
         }

@@ -1,0 +1,25 @@
+services:
+  logger.channel.foia_non_sso:
+    parent: logger.channel_base
+    arguments: ['foia_non_sso']
+
+  foia_non_sso.saml_decorator:
+    class: Drupal\foia_non_sso\Service\SamlServiceDecorator
+    decorates: samlauth.saml
+    parent: samlauth.saml
+    arguments:
+      - '@externalauth.externalauth'
+      - '@externalauth.authmap'
+      - '@config.factory'
+      - '@entity_type.manager'
+      - '@logger.channel.foia_non_sso'
+      - '@event_dispatcher'
+      - '@request_stack'
+      - '@tempstore.private'
+      - '@flood'
+      - '@current_user'
+      - '@messenger'
+      - '@string_translation'
+    calls:
+      - [setKeyRepository, ['@?key.repository']]
+    public: false

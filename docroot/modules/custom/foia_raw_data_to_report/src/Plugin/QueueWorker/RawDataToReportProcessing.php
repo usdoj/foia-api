@@ -15,6 +15,7 @@ use Drupal\foia_raw_data_to_report\CsvValidator;
 use Drupal\foia_raw_data_to_report\PersonnelAndCostAggregator;
 use Drupal\foia_raw_data_to_report\SectionDataCsvValidator;
 use Drupal\foia_raw_data_to_report\ReportNotifications;
+use Drupal\foia_raw_data_to_report\ReportMessages;
 use Drupal\foia_raw_data_to_report\UploadAssignments;
 use Drupal\foia_raw_data_to_report\XmlReportBuilder;
 use Drupal\foia_raw_data_to_report\PreviousYearComparisonData;
@@ -51,7 +52,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
   /**
    * Constructs the report queue worker.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator, protected ReportNotifications $notifications, protected SectionDataCsvValidator $sectionCsvValidator) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected EntityTypeManagerInterface $entityTypeManager, protected FileSystemInterface $fileSystem, protected FileRepositoryInterface $fileRepository, protected CsvValidator $csvValidator, protected ReportNotifications $notifications, protected SectionDataCsvValidator $sectionCsvValidator, protected ReportMessages $reportMessages) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
@@ -69,6 +70,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       $container->get('foia_raw_data_to_report.csv_validator'),
       $container->get('foia_raw_data_to_report.notifications'),
       $container->get('foia_raw_data_to_report.section_csv_validator'),
+      $container->get('foia_raw_data_to_report.messages'),
     );
   }
 
@@ -92,8 +94,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
       throw new \InvalidArgumentException('The queued node is not a raw data report.');
     }
     // Clear persisted messages before validating the current upload.
-    $node->set('field_messages', []);
-    $node->save();
+    $this->reportMessages->save($node, '');
     $assignment_errors = UploadAssignments::validate($node);
     $messages = [];
     $has_errors = FALSE;
@@ -169,30 +170,22 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
         $messages[] = 'Warning: no CSV has been attached for these Components: ' . implode(', ', $names);
       }
     }
-    $node->set('field_messages', [
-      'value' => ($has_errors ? "No new XML report was generated.\n\n" : '') . implode("\n\n", $messages),
-      'format' => 'plain_text',
-    ]);
-    $node->save();
+    $message_text = ($has_errors ? "No new XML report was generated.\n\n" : '') . implode("\n\n", $messages);
+    $this->reportMessages->save($node, $message_text);
     if ($has_errors) {
       // Invalid input is a completed task, not a retryable exception.
       $this->notifications->record($data, 'validation_failed');
       return;
     }
     try {
-      $this->generateXmlReport($node);
+      $this->generateXmlReport($node, $message_text);
     }
     catch (\Throwable $exception) {
       // Reload persisted state: generation may have changed the XML field in
       // memory before failing. Save only messages alongside the stored file.
       $stored_node = $storage->loadUnchanged($node->id());
       if ($stored_node instanceof NodeInterface) {
-        $validation_messages = (string) $stored_node->get('field_messages')->value;
-        $stored_node->set('field_messages', [
-          'value' => $validation_messages . "\n\nXML report processing failed: " . $exception->getMessage(),
-          'format' => 'plain_text',
-        ]);
-        $stored_node->save();
+        $this->reportMessages->save($stored_node, $message_text . "\n\nXML report processing failed: " . $exception->getMessage());
       }
       $this->notifications->record($data, 'failed');
       // Preserve Drush logging and the queue's existing retry behavior.
@@ -204,7 +197,7 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
   /**
    * Builds and attaches report XML after all component CSVs pass validation.
    */
-  protected function generateXmlReport(NodeInterface $node): void {
+  protected function generateXmlReport(NodeInterface $node, string &$message_text): void {
     $components = [];
     $sources = [];
     $section_sources = [];
@@ -259,12 +252,9 @@ final class RawDataToReportProcessing extends QueueWorkerBase implements Contain
     $appeal_statistics['previous'] = $previous['appeals'];
     $backlog['previous'] = $previous['backlog'];
     if ($previous['notes']) {
-      $node->set('field_messages', [
-        'value' => $node->get('field_messages')->value . "\n\n" . implode("\n", $previous['notes']),
-        'format' => 'plain_text',
-      ]);
+      $message_text .= "\n\n" . implode("\n", $previous['notes']);
       // Persist lookup notes even if a later XML generation step fails.
-      $node->save();
+      $this->reportMessages->save($node, $message_text);
     }
     $xml = (new XmlReportBuilder())->build($node->get('field_agency')->entity, $components, $fiscal_year, $statutes, $request_statistics, $dispositions, $other_reasons, $applied_exemptions, $appeal_statistics, $appeal_dispositions, $appeal_exemptions, $appeal_denials, $appeal_other_reasons, $appeal_response_times, $oldest_pending_appeals, $processed_response_times, $information_granted_response_times, $simple_response_increments, $complex_response_increments, $expedited_response_increments, $pending_perfected_requests, $oldest_pending_requests, $expedited_processing, $fee_waivers, $fees_collected, $backlog, $consultation_statistics, $oldest_pending_consultations, $personnel_and_cost);
     $field = $node->get('field_request_data_xml');

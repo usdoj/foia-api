@@ -50,7 +50,7 @@ function foia_raw_data_to_report_node_access(NodeInterface $node, $op, AccountIn
 /**
  * Implements hook_file_access().
  *
- * Applies report node and field access to private CSV and XML attachments.
+ * Applies report node and field access to private report attachments.
  * PURPOSE: Preserves report access rules with File Entity's access handler.
  */
 function foia_raw_data_to_report_file_access(FileInterface $file, $operation, AccountInterface $account) {
@@ -61,7 +61,7 @@ function foia_raw_data_to_report_file_access(FileInterface $file, $operation, Ac
   $resolver = \Drupal::service(FileReferenceResolver::class);
   $access = AccessResult::neutral()->cachePerUser()->addCacheableDependency($file);
   $is_report_file = FALSE;
-  $report_fields = ['field_request_data_csv', 'field_request_data_xml'];
+  $report_fields = ['field_request_data_csv', 'field_request_data_xml', 'field_messages_file'];
   $upload_fields = ['field_request_data_csv', 'section_ix_xi_data'];
   foreach ($resolver->getReferences($file) as $usage) {
     $entity = $resolver->loadEntityFromUsage($usage);

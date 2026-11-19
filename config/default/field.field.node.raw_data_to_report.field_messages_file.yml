@@ -1,0 +1,33 @@
+uuid: b055896a-a86f-4dd7-b519-ff927219d121
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_messages_file
+    - node.type.raw_data_to_report
+  module:
+    - file
+    - foia_autocalc
+third_party_settings:
+  foia_autocalc:
+    autocalc_settings:
+      description: ''
+      autocalc_config: ''
+id: node.raw_data_to_report.field_messages_file
+field_name: field_messages_file
+entity_type: node
+bundle: raw_data_to_report
+label: 'Messages file'
+description: 'Complete messages from the latest processing run when there are more than 1,000 lines.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: 'request_data_tool/messages/[node:nid]'
+  file_extensions: txt
+  max_filesize: ''
+  description_field: false
+field_type: file

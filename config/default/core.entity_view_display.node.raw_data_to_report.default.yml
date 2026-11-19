@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.raw_data_to_report.field_component_uploads
     - field.field.node.raw_data_to_report.field_foia_annual_report_yr
     - field.field.node.raw_data_to_report.field_messages
+    - field.field.node.raw_data_to_report.field_messages_file
     - field.field.node.raw_data_to_report.field_request_data_xml
     - node.type.raw_data_to_report
   module:
@@ -59,6 +60,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 104
+    region: content
+  field_messages_file:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: false
+    third_party_settings: {  }
+    weight: 105
     region: content
   field_request_data_xml:
     type: file_default
